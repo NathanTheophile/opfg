@@ -62,7 +62,13 @@ describe('catalog resolution', () => {
     expect(state.currentEventId).toBe('departure');
 
     state = resolveChoice(state, contentCatalog.events, 'departure', 'set_sail').state;
-    expect(state).toMatchObject({ month: 1, locationId: 'open_sea', currentEventId: 'mira_castaway' });
+    expect(state).toMatchObject({
+      ageMonths: 181,
+      month: 1,
+      travelState: 'at_sea',
+      locationId: 'open_sea',
+      currentEventId: 'mira_castaway',
+    });
     expect(state.flags).toContain('career_departed');
     expect(state.history[0]).toEqual({
       eventId: 'departure',
@@ -116,5 +122,49 @@ describe('catalog resolution', () => {
     expect(result.state.history[0].outcomeId).toBe('rolled');
     expect(result.outcome.id).toBe('rolled');
     expect(result.dice).toMatchObject({ outcomeId: 'rolled', modifierTotal: 0 });
+  });
+
+  it('advances age in childhood without advancing active-career month', () => {
+    const childhoodEvent: EventDefinition = {
+      ...event('childhood_time', 1),
+      choices: [{
+        id: 'grow',
+        text: 'Grow',
+        resolution: {
+          type: 'deterministic',
+          outcome: { id: 'one_year', text: 'One year passes.', advanceMonths: 12, effects: [] },
+        },
+      }],
+    };
+    const state = createInitialGameState();
+    state.careerPhase = 'childhood';
+    state.ageMonths = 120;
+    state.currentEventId = childhoodEvent.id;
+
+    const result = resolveChoice(state, [childhoodEvent], childhoodEvent.id, 'grow').state;
+
+    expect(result).toMatchObject({ careerPhase: 'childhood', ageMonths: 132, month: 0 });
+    expect(result.history[0].month).toBe(0);
+  });
+
+  it('advances absolute age and career month together in the active phase', () => {
+    const activeEvent: EventDefinition = {
+      ...event('active_time', 1),
+      choices: [{
+        id: 'advance',
+        text: 'Advance',
+        resolution: {
+          type: 'deterministic',
+          outcome: { id: 'three_months', text: 'Three months pass.', advanceMonths: 3, effects: [] },
+        },
+      }],
+    };
+    const state = createInitialGameState();
+    state.currentEventId = activeEvent.id;
+
+    const result = resolveChoice(state, [activeEvent], activeEvent.id, 'advance').state;
+
+    expect(result).toMatchObject({ careerPhase: 'active', ageMonths: 183, month: 3 });
+    expect(result.history[0].month).toBe(3);
   });
 });

@@ -74,6 +74,9 @@ export function App() {
     <main>
       <h1>Jam OP Fan Game</h1>
       <p>Month: {gameState.month}</p>
+      <p>Age: {Math.floor(gameState.ageMonths / 12)} years, {gameState.ageMonths % 12} months</p>
+      <p>Phase: {gameState.careerPhase}</p>
+      <p>Travel: {gameState.travelState}</p>
       <p>Location: {gameState.locationId}</p>
       <p>Ship: {gameState.ship.condition}</p>
       <p>Career: {gameState.careerStatus}</p>

@@ -24,7 +24,7 @@ export const contentCatalog = {
               advanceMonths: 1,
               effects: [
                 { type: 'setFlag', flagId: 'career_departed' },
-                { type: 'moveToLocation', locationId: 'open_sea' },
+                { type: 'moveToLocation', locationId: 'open_sea', travelState: 'at_sea' },
               ],
             },
           },
@@ -293,7 +293,7 @@ export const contentCatalog = {
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'setFlag', flagId: 'reefs_hard_crossing' },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
-                      { type: 'moveToLocation', locationId: 'outer_route' },
+                      { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
                   },
                 },
@@ -304,7 +304,7 @@ export const contentCatalog = {
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
-                      { type: 'moveToLocation', locationId: 'outer_route' },
+                      { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
                   },
                 },
@@ -315,7 +315,7 @@ export const contentCatalog = {
                     effects: [
                       { type: 'setFlag', flagId: 'reefs_hard_crossing' },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
-                      { type: 'moveToLocation', locationId: 'outer_route' },
+                      { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
                   },
                 },
@@ -325,7 +325,7 @@ export const contentCatalog = {
                     id: 'reefs_force_success', text: 'Le passage est franchi.', advanceMonths: 3,
                     effects: [
                       { type: 'setFlag', flagId: 'reefs_crossed' },
-                      { type: 'moveToLocation', locationId: 'outer_route' },
+                      { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
                   },
                 },
@@ -336,7 +336,7 @@ export const contentCatalog = {
                     effects: [
                       { type: 'setFlag', flagId: 'reefs_clean_crossing' },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
-                      { type: 'moveToLocation', locationId: 'outer_route' },
+                      { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
                   },
                 },
@@ -355,7 +355,7 @@ export const contentCatalog = {
               effects: [
                 { type: 'setFlag', flagId: 'reefs_clean_crossing' },
                 { type: 'setFlag', flagId: 'reefs_crossed' },
-                { type: 'moveToLocation', locationId: 'outer_route' },
+                { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
               ],
             },
           },
@@ -371,7 +371,7 @@ export const contentCatalog = {
               effects: [
                 { type: 'setFlag', flagId: 'reefs_clean_crossing' },
                 { type: 'setFlag', flagId: 'reefs_crossed' },
-                { type: 'moveToLocation', locationId: 'outer_route' },
+                { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
               ],
             },
           },
@@ -407,7 +407,7 @@ export const contentCatalog = {
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'setFlag', flagId: 'reefs_hard_crossing' },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
-                      { type: 'moveToLocation', locationId: 'outer_route' },
+                      { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
                   },
                 },
@@ -418,7 +418,7 @@ export const contentCatalog = {
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
-                      { type: 'moveToLocation', locationId: 'outer_route' },
+                      { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
                   },
                 },
@@ -429,7 +429,7 @@ export const contentCatalog = {
                     effects: [
                       { type: 'setFlag', flagId: 'reefs_hard_crossing' },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
-                      { type: 'moveToLocation', locationId: 'outer_route' },
+                      { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
                   },
                 },
@@ -439,7 +439,7 @@ export const contentCatalog = {
                     id: 'reefs_breakers_success', text: 'Les brisants offrent un passage rapide.', advanceMonths: 3,
                     effects: [
                       { type: 'setFlag', flagId: 'reefs_crossed' },
-                      { type: 'moveToLocation', locationId: 'outer_route' },
+                      { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
                   },
                 },
@@ -450,7 +450,7 @@ export const contentCatalog = {
                     effects: [
                       { type: 'setFlag', flagId: 'reefs_clean_crossing' },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
-                      { type: 'moveToLocation', locationId: 'outer_route' },
+                      { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
                   },
                 },

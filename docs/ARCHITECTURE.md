@@ -91,6 +91,14 @@ For Slice 0:
 - no `usedEvents`;
 - no generic `ArcState`.
 
+Career time and geography use distinct authoritative fields:
+
+- `careerPhase` identifies origins, childhood, or active career; `careerStatus` independently says whether the run has ended;
+- `ageMonths` is absolute biological age and advances whenever an outcome advances time;
+- `month` is elapsed time since the active career began and advances only during the active phase;
+- `travelState` identifies sea or land while `locationId` identifies the precise location;
+- `moveToLocation` updates `travelState` and `locationId` together.
+
 ### React UI
 
 Displays GameState and engine results.
@@ -155,6 +163,7 @@ Initial persistence:
 - normalize/restore function when loading.
 
 A save must preserve seeded RNG state and scheduled consequences.
+Save schema version 2 also persists career phase, absolute age, and travel state. Development saves from version 1 are rejected without migration.
 
 ---
 

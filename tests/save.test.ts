@@ -32,6 +32,8 @@ class MemoryStorage implements StorageLike {
 function detailedState(): GameState {
   const state = createInitialGameState(0xfedcba98);
   state.month = 6;
+  state.ageMonths = 186;
+  state.travelState = 'at_sea';
   state.locationId = 'reefs';
   state.player.stats = { navigation: 3, presence: 2, willpower: 4 };
   state.player.traits = ['audacious'];
@@ -116,7 +118,7 @@ describe('restored deterministic RNG', () => {
 describe('invalid saves', () => {
   it.each([
     ['not json', '{broken'],
-    ['incomplete object', JSON.stringify({ version: 1 })],
+    ['legacy version 1', JSON.stringify({ ...detailedState(), version: 1 })],
     ['unknown version', JSON.stringify({ ...detailedState(), version: 99 })],
   ])('rejects %s', (_label, raw) => {
     expect(deserializeGameState(raw)).toBeNull();

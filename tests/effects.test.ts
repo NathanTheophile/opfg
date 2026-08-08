@@ -65,4 +65,14 @@ describe('applyEffects', () => {
       { eventId: 'return', dueMonth: 10, sourceEventId: 'source_event', sourceChoiceId: 'source_choice' },
     ]);
   });
+
+  it('moves location and sea/land context atomically', () => {
+    const result = applyEffects(
+      createInitialGameState(),
+      [{ type: 'moveToLocation', locationId: 'open_sea', travelState: 'at_sea' }],
+      context,
+    );
+
+    expect(result).toMatchObject({ locationId: 'open_sea', travelState: 'at_sea' });
+  });
 });

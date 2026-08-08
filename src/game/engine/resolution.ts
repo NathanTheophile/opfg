@@ -57,9 +57,10 @@ function finalizeOutcome(
     sourceEventId: eventId,
     sourceChoiceId: choiceId,
   });
-  const resolvedMonth = afterEffects.month + outcome.advanceMonths;
+  const resolvedMonth = afterEffects.month + (afterEffects.careerPhase === 'active' ? outcome.advanceMonths : 0);
   const resolvedState: GameState = {
     ...afterEffects,
+    ageMonths: afterEffects.ageMonths + outcome.advanceMonths,
     month: resolvedMonth,
     history: [
       ...afterEffects.history,

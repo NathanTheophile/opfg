@@ -50,6 +50,7 @@ function applyEffect(state: GameState, effect: Effect, context: EffectContext): 
       return;
     case 'moveToLocation':
       state.locationId = effect.locationId;
+      state.travelState = effect.travelState;
       return;
     case 'setNpcStatus':
       state.npcs[effect.npcId] = { ...getNpcState(state, effect.npcId), status: effect.status };

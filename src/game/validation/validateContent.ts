@@ -15,6 +15,11 @@ const CONDITION_TYPES = new Set([
   'hasFlag',
   'hasItem',
   'locationIs',
+  'isAtSea',
+  'isOnLand',
+  'careerPhaseIs',
+  'ageAtLeastMonths',
+  'ageAtMostMonths',
   'shipConditionAtLeast',
   'shipConditionAtMost',
   'npcStatusIs',
@@ -143,6 +148,12 @@ function validateCondition(
     validateReference(value.npcId, references.npcIds, 'NpcId', path, errors);
   }
   if (type === 'statAtLeast') validateStat(value.statId, path, errors);
+  if (type === 'careerPhaseIs' && !['origins', 'childhood', 'active'].includes(String(value.phase))) {
+    errors.push({ path, message: `Invalid CareerPhase "${String(value.phase)}".` });
+  }
+  if ((type === 'ageAtLeastMonths' || type === 'ageAtMostMonths') && !isNonNegativeNumber(value.value)) {
+    errors.push({ path, message: `${type} requires a non-negative number.` });
+  }
   if (type === 'hasChosen') {
     const eventId = validateReference(value.eventId, references.eventIds, 'EventId', path, errors);
     if (eventId && references.eventIds.has(eventId)) {
@@ -248,6 +259,9 @@ function validateEffect(
     validateReference(effect.npcId, references.npcIds, 'NpcId', path, errors);
   }
   if (type === 'modifyStat') validateStat(effect.statId, path, errors);
+  if (type === 'moveToLocation' && !['at_sea', 'on_land'].includes(String(effect.travelState))) {
+    errors.push({ path, message: `Invalid TravelState "${String(effect.travelState)}".` });
+  }
   if (type === 'scheduleEvent') {
     const eventId = validateReference(effect.eventId, references.eventIds, 'EventId', path, errors);
     if (eventId && references.eventIds.has(eventId) && !references.scheduledOnlyEventIds.has(eventId)) {
@@ -304,4 +318,8 @@ function isRecord(value: unknown): value is UnknownRecord {
 
 function stringValue(value: unknown): string | undefined {
   return typeof value === 'string' && value.length > 0 ? value : undefined;
+}
+
+function isNonNegativeNumber(value: unknown): value is number {
+  return typeof value === 'number' && Number.isFinite(value) && value >= 0;
 }

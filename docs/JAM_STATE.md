@@ -31,6 +31,11 @@ The temporary demonstration content has been removed. The real Slice 0 exercises
 - Save uses one `localStorage` slot.
 - No backend for Slice 0.
 - React does not own gameplay rules.
+- `careerPhase` (`origins`, `childhood`, `active`) is distinct from run `careerStatus`; the current VS0 starts directly in `active`.
+- `ageMonths` is absolute age; `month` is elapsed active-career time and remains zero outside the active phase.
+- `travelState` (`at_sea` / `on_land`) is the broad geographic context; `locationId` remains the precise location.
+- Location effects update `travelState` and `locationId` atomically.
+- Save schema version is 2; development saves from version 1 are intentionally rejected without migration.
 
 ---
 

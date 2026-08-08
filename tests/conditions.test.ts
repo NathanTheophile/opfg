@@ -39,6 +39,19 @@ describe('evaluateCondition', () => {
     expect(evaluateCondition({ type: 'npcRelationshipAtLeast', npcId: 'absent', value: -100 }, state)).toBe(false);
   });
 
+  it('evaluates career phase, age boundaries, and geography', () => {
+    const state = createInitialGameState();
+
+    expect(evaluateCondition({ type: 'careerPhaseIs', phase: 'active' }, state)).toBe(true);
+    expect(evaluateCondition({ type: 'ageAtLeastMonths', value: 180 }, state)).toBe(true);
+    expect(evaluateCondition({ type: 'ageAtMostMonths', value: 180 }, state)).toBe(true);
+    expect(evaluateCondition({ type: 'ageAtLeastMonths', value: 181 }, state)).toBe(false);
+    expect(evaluateCondition({ type: 'ageAtMostMonths', value: 179 }, state)).toBe(false);
+    expect(evaluateCondition({ type: 'isOnLand' }, state)).toBe(true);
+    expect(evaluateCondition({ type: 'isAtSea' }, state)).toBe(false);
+    expect(evaluateCondition({ type: 'locationIs', locationId: 'starter_port' }, state)).toBe(true);
+  });
+
   it('evaluates NPC relationship and hasChosen from state history', () => {
     const state = createInitialGameState();
     state.npcs.mira = { status: 'crew', relationship: 40 };

@@ -1,5 +1,6 @@
 import type {
   ChoiceId,
+  CareerPhase,
   EventId,
   FlagId,
   ItemId,
@@ -9,6 +10,7 @@ import type {
   OutcomeId,
   PlayerStats,
   TraitId,
+  TravelState,
 } from '../model/schema';
 
 export type StatId = keyof PlayerStats;
@@ -22,6 +24,11 @@ export type Condition =
   | { type: 'hasFlag'; flagId: FlagId }
   | { type: 'hasItem'; itemId: ItemId }
   | { type: 'locationIs'; locationId: LocationId }
+  | { type: 'isAtSea' }
+  | { type: 'isOnLand' }
+  | { type: 'careerPhaseIs'; phase: CareerPhase }
+  | { type: 'ageAtLeastMonths'; value: number }
+  | { type: 'ageAtMostMonths'; value: number }
   | { type: 'shipConditionAtLeast'; value: number }
   | { type: 'shipConditionAtMost'; value: number }
   | { type: 'npcStatusIs'; npcId: NpcId; status: NpcStatus }
@@ -36,7 +43,7 @@ export type Effect =
   | { type: 'removeItem'; itemId: ItemId }
   | { type: 'modifyStat'; statId: StatId; amount: number }
   | { type: 'modifyShipCondition'; amount: number }
-  | { type: 'moveToLocation'; locationId: LocationId }
+  | { type: 'moveToLocation'; locationId: LocationId; travelState: TravelState }
   | { type: 'setNpcStatus'; npcId: NpcId; status: NpcStatus }
   | { type: 'modifyNpcRelationship'; npcId: NpcId; amount: number }
   | { type: 'scheduleEvent'; eventId: EventId; delayMonths: number }

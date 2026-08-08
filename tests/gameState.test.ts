@@ -6,9 +6,12 @@ describe('createInitialGameState', () => {
     const state = createInitialGameState(1234);
 
     expect(state).toEqual({
-      version: 1,
+      version: 2,
       rngState: 1234,
+      careerPhase: 'active',
+      ageMonths: 180,
       month: 0,
+      travelState: 'on_land',
       locationId: 'starter_port',
       player: {
         stats: {

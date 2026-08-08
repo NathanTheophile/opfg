@@ -25,6 +25,16 @@ export function evaluateCondition(condition: Condition, state: GameState): boole
       return state.items.includes(condition.itemId);
     case 'locationIs':
       return state.locationId === condition.locationId;
+    case 'isAtSea':
+      return state.travelState === 'at_sea';
+    case 'isOnLand':
+      return state.travelState === 'on_land';
+    case 'careerPhaseIs':
+      return state.careerPhase === condition.phase;
+    case 'ageAtLeastMonths':
+      return state.ageMonths >= condition.value;
+    case 'ageAtMostMonths':
+      return state.ageMonths <= condition.value;
     case 'shipConditionAtLeast':
       return state.ship.condition >= condition.value;
     case 'shipConditionAtMost':

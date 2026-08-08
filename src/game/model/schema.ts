@@ -44,11 +44,16 @@ export interface ScheduledEvent {
 }
 
 export type CareerStatus = 'active' | 'ended';
+export type CareerPhase = 'origins' | 'childhood' | 'active';
+export type TravelState = 'at_sea' | 'on_land';
 
 export interface GameState {
   version: number;
   rngState: number;
+  careerPhase: CareerPhase;
+  ageMonths: number;
   month: number;
+  travelState: TravelState;
   locationId: LocationId;
   player: PlayerState;
   ship: ShipState;

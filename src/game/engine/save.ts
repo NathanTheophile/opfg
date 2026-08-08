@@ -1,7 +1,7 @@
-import type { GameState, NpcState } from '../model/schema';
+import type { CareerPhase, GameState, NpcState, TravelState } from '../model/schema';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 1;
+const CURRENT_SAVE_VERSION = 2;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable']);
 
 export interface StorageLike {
@@ -54,7 +54,8 @@ export function clearGameState(storage: StorageLike): boolean {
 
 function readGameState(value: unknown): GameState | null {
   if (!isRecord(value) || value.version !== CURRENT_SAVE_VERSION) return null;
-  if (!isUint32(value.rngState) || !isNonNegativeInteger(value.month) || !isString(value.locationId)) return null;
+  if (!isUint32(value.rngState) || !isNonNegativeInteger(value.ageMonths) || !isNonNegativeInteger(value.month)) return null;
+  if (!isCareerPhase(value.careerPhase) || !isTravelState(value.travelState) || !isString(value.locationId)) return null;
   if (!isRecord(value.player) || !isRecord(value.player.stats) || !isStringArray(value.player.traits)) return null;
   if (!isFiniteNumber(value.player.stats.navigation)) return null;
   if (!isFiniteNumber(value.player.stats.presence)) return null;
@@ -72,7 +73,10 @@ function readGameState(value: unknown): GameState | null {
   return {
     version: CURRENT_SAVE_VERSION,
     rngState: value.rngState,
+    careerPhase: value.careerPhase,
+    ageMonths: value.ageMonths,
     month: value.month,
+    travelState: value.travelState,
     locationId: value.locationId,
     player: {
       stats: {
@@ -151,6 +155,14 @@ function isString(value: unknown): value is string {
 
 function isNpcStatus(value: unknown): value is NpcState['status'] {
   return typeof value === 'string' && NPC_STATUSES.has(value);
+}
+
+function isCareerPhase(value: unknown): value is CareerPhase {
+  return value === 'origins' || value === 'childhood' || value === 'active';
+}
+
+function isTravelState(value: unknown): value is TravelState {
+  return value === 'at_sea' || value === 'on_land';
 }
 
 function isStringArray(value: unknown): value is string[] {
