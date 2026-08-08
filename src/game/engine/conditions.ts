@@ -45,6 +45,8 @@ export function evaluateCondition(condition: Condition, state: GameState): boole
       return state.npcs[condition.npcId]?.status === condition.status;
     case 'npcRelationshipAtLeast':
       return (state.npcs[condition.npcId]?.relationship ?? Number.NEGATIVE_INFINITY) >= condition.value;
+    case 'npcStatAtLeast':
+      return (state.npcs[condition.npcId]?.stats[condition.statId] ?? Number.NEGATIVE_INFINITY) >= condition.value;
     case 'hasChosen':
       return state.history.some(
         (entry) => entry.eventId === condition.eventId && entry.choiceId === condition.choiceId,

@@ -115,6 +115,27 @@ describe('validateContent', () => {
     expect(messages(asymmetric)).toContainEqual(expect.stringContaining('must be symmetric'));
   });
 
+  it('validates NPC definitions, NPC stat conditions, and NPC stat effects', () => {
+    const catalog = cloneCatalog();
+    catalog.npcs[0].name = '';
+    catalog.npcs[0].initialStats.loyalty = 51;
+    catalog.events[0].eligibility = {
+      type: 'npcStatAtLeast', npcId: 'missing_npc', statId: 'navigation', value: 51,
+    };
+    catalog.events[0].choices[0].resolution.outcome.effects = [{
+      type: 'modifyNpcStat', npcId: 'missing_npc', statId: 'charisma', amount: Number.POSITIVE_INFINITY,
+    }];
+
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('NPC name must be a non-empty string'));
+    expect(errors).toContainEqual(expect.stringContaining('loyalty must be a finite number from 0 to 50'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown NpcId "missing_npc"'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid NpcStatId "navigation"'));
+    expect(errors).toContainEqual(expect.stringContaining('npcStatAtLeast value must be a finite number from 0 to 50'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid NpcStatId "charisma"'));
+    expect(errors).toContainEqual(expect.stringContaining('modifyNpcStat amount must be finite'));
+  });
+
   it('validates the vNext DiceResolution contract and rejects legacy fields', () => {
     const catalog = cloneCatalog();
     const choice = eventById(catalog, 'black_squall').choices[0];

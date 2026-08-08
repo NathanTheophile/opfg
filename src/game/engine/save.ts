@@ -1,7 +1,7 @@
-import type { CareerEndReason, CareerPhase, GameState, NpcState, TravelState } from '../model/schema';
+import type { CareerEndReason, CareerPhase, GameState, NpcState, NpcStats, TravelState } from '../model/schema';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 4;
+const CURRENT_SAVE_VERSION = 5;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable']);
 
 export interface StorageLike {
@@ -120,9 +120,28 @@ function readNpcs(value: unknown): GameState['npcs'] | null {
     if (!isString(npcId) || !isRecord(npc)) return null;
     if (!isNpcStatus(npc.status)) return null;
     if (!isFiniteNumber(npc.relationship) || npc.relationship < -100 || npc.relationship > 100) return null;
-    npcs[npcId] = { status: npc.status, relationship: npc.relationship };
+    const stats = readNpcStats(npc.stats);
+    if (stats === null) return null;
+    npcs[npcId] = { status: npc.status, relationship: npc.relationship, stats };
   }
   return npcs;
+}
+
+function readNpcStats(value: unknown): NpcStats | null {
+  if (!isRecord(value)) return null;
+  if (!isStatValue(value.health) || !isStatValue(value.morale) || !isStatValue(value.strength)) return null;
+  if (!isStatValue(value.observation) || !isStatValue(value.intelligence) || !isStatValue(value.luck)) return null;
+  if (!isStatValue(value.loyalty) || !isStatValue(value.calm)) return null;
+  return {
+    health: value.health,
+    morale: value.morale,
+    strength: value.strength,
+    observation: value.observation,
+    intelligence: value.intelligence,
+    luck: value.luck,
+    loyalty: value.loyalty,
+    calm: value.calm,
+  };
 }
 
 function readHistory(value: unknown): GameState['history'] | null {

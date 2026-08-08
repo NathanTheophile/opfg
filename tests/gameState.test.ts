@@ -6,7 +6,7 @@ describe('createInitialGameState', () => {
     const state = createInitialGameState(1234);
 
     expect(state).toEqual({
-      version: 4,
+      version: 5,
       rngState: 1234,
       careerPhase: 'active',
       ageMonths: 180,
@@ -34,6 +34,16 @@ describe('createInitialGameState', () => {
         mira: {
           status: 'unavailable',
           relationship: 0,
+          stats: {
+            health: 25,
+            morale: 25,
+            strength: 25,
+            observation: 25,
+            intelligence: 25,
+            luck: 25,
+            loyalty: 25,
+            calm: 25,
+          },
         },
       },
       history: [],

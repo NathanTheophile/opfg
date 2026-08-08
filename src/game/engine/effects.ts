@@ -1,5 +1,6 @@
 import type { Effect } from '../content/schema';
 import type { ChoiceId, EventId, GameState, NpcState } from '../model/schema';
+import { createDefaultNpcState } from '../model/npcState';
 
 export interface EffectContext {
   sourceEventId: EventId;
@@ -18,7 +19,7 @@ export function applyEffects(state: GameState, effects: Effect[], context: Effec
     flags: [...state.flags],
     items: [...state.items],
     npcs: Object.fromEntries(
-      Object.entries(state.npcs).map(([npcId, npc]) => [npcId, { ...npc }]),
+      Object.entries(state.npcs).map(([npcId, npc]) => [npcId, { ...npc, stats: { ...npc.stats } }]),
     ),
     history: [...state.history],
     scheduledEvents: [...state.scheduledEvents],
@@ -72,6 +73,17 @@ function applyEffect(state: GameState, effect: Effect, context: EffectContext): 
       };
       return;
     }
+    case 'modifyNpcStat': {
+      const npc = getNpcState(state, effect.npcId);
+      state.npcs[effect.npcId] = {
+        ...npc,
+        stats: {
+          ...npc.stats,
+          [effect.statId]: clamp(npc.stats[effect.statId] + effect.amount, 0, 50),
+        },
+      };
+      return;
+    }
     case 'scheduleEvent':
       state.scheduledEvents.push({
         eventId: effect.eventId,
@@ -91,7 +103,7 @@ function applyEffect(state: GameState, effect: Effect, context: EffectContext): 
 }
 
 function getNpcState(state: GameState, npcId: string): NpcState {
-  return state.npcs[npcId] ?? { status: 'known', relationship: 0 };
+  return state.npcs[npcId] ?? createDefaultNpcState();
 }
 
 function clamp(value: number, minimum: number, maximum: number): number {

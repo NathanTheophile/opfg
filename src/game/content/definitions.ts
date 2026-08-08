@@ -7,7 +7,20 @@ export const contentCatalog = {
     description: 'Vous avez tendance à privilégier les solutions risquées et directes.',
   }],
   items: [{ id: 'sealed_chart' }, { id: 'mira_letter_of_passage' }],
-  npcs: [{ id: 'mira' }],
+  npcs: [{
+    id: 'mira',
+    name: 'Mira',
+    initialStats: {
+      health: 25,
+      morale: 25,
+      strength: 25,
+      observation: 25,
+      intelligence: 25,
+      luck: 25,
+      loyalty: 25,
+      calm: 25,
+    },
+  }],
   events: [
     {
       id: 'departure',

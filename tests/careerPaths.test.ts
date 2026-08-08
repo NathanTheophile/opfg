@@ -6,6 +6,7 @@ import { resolveChoice } from '../src/game/engine/resolution';
 import { deserializeGameState, serializeGameState } from '../src/game/engine/save';
 import { createInitialGameState } from '../src/game/model/initialState';
 import type { GameState } from '../src/game/model/schema';
+import { createDefaultNpcStats } from '../src/game/model/npcState';
 
 function newCareer(seed = 123): GameState {
   return selectNextEvent(createInitialGameState(seed), contentCatalog.events);
@@ -53,7 +54,7 @@ describe('real Slice 0 career paths', () => {
     expect(state.careerStatus).toBe('ended');
     expect(state.currentEventId).toBeNull();
     expect(state.month).toBe(15);
-    expect(state.npcs.mira).toEqual({ status: 'crew', relationship: 55 });
+    expect(state.npcs.mira).toEqual({ status: 'crew', relationship: 55, stats: createDefaultNpcStats() });
     expect(state.flags).toContain('ending_with_mira');
     expect(state.history.map(({ eventId }) => eventId)).toEqual([
       'departure',
@@ -138,7 +139,7 @@ describe('real catalog conditional choices', () => {
 
   it('unlocks Mira Hunters choices at the specified relation and Charisma thresholds', () => {
     const state = createInitialGameState();
-    state.npcs.mira = { status: 'crew', relationship: 39 };
+    state.npcs.mira = { status: 'crew', relationship: 39, stats: createDefaultNpcStats() };
     expect(getChoiceState(choice('mira_hunters', 'let_mira_speak'), state).available).toBe(false);
     expect(getChoiceState(choice('mira_hunters', 'bluff_hunters'), state).available).toBe(false);
 

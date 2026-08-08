@@ -46,7 +46,11 @@ The temporary demonstration content has been removed. The real Slice 0 exercises
 - `hasPlayed`, `hasChosen`, and `hasOutcome` derive distinct historical facts from `history`.
 - `careerEndReason` is persisted as `death` or `legacy`; current VS0 endings provisionally use `legacy`.
 - Trait definitions support validated symmetric `oppositeTraitId` references. Runtime opposite removal during `addTrait` is intentionally deferred to avoid coupling the engine to global content.
-- Save schema version is 4; development saves from version 3 are intentionally rejected without migration.
+- NPC profiles persist eight `0–50` stats: health, morale, strength, observation, intelligence, luck, loyalty, and calm.
+- NPC `relationship` remains a separate `-100..100` relation with the player. Loyalty describes general reliability/commitment and does not mirror relationship; calm describes control under pressure.
+- The Event contract exposes `npcStatAtLeast` and `modifyNpcStat`; no NPC DiceCheck or autonomous behavior exists.
+- Mira uses neutral development fixtures at 25 in both her content definition and initial state. This small duplication is intentional to keep Content and initial runtime state decoupled.
+- Save schema version is 5; development saves from version 4 are intentionally rejected without migration.
 
 ---
 

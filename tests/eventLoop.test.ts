@@ -5,6 +5,7 @@ import { selectNextEvent } from '../src/game/engine/events';
 import { resolveChoice } from '../src/game/engine/resolution';
 import { nextRandom } from '../src/game/engine/rng';
 import { createInitialGameState } from '../src/game/model/initialState';
+import { createDefaultNpcStats } from '../src/game/model/npcState';
 
 function event(id: string, priority: number, eligibility?: EventDefinition['eligibility']): EventDefinition {
   return {
@@ -79,7 +80,9 @@ describe('catalog resolution', () => {
 
     const result = resolveChoice(state, contentCatalog.events, 'mira_castaway', 'rescue_recruit');
     expect(result.state.currentEventId).toBe('black_squall');
-    expect(result.state.npcs.mira).toEqual({ status: 'crew', relationship: 25 });
+    expect(result.state.npcs.mira).toEqual({
+      status: 'crew', relationship: 25, stats: createDefaultNpcStats(),
+    });
     expect(result.dice).toBeUndefined();
   });
 

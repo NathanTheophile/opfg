@@ -30,9 +30,23 @@ export interface ShipState {
 
 export type NpcStatus = 'known' | 'crew' | 'departed' | 'unavailable';
 
+export interface NpcStats {
+  health: number;
+  morale: number;
+  strength: number;
+  observation: number;
+  intelligence: number;
+  luck: number;
+  loyalty: number;
+  calm: number;
+}
+
+export type NpcStatId = keyof NpcStats;
+
 export interface NpcState {
   status: NpcStatus;
   relationship: number;
+  stats: NpcStats;
 }
 
 export interface HistoryEntry {

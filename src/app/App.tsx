@@ -7,7 +7,7 @@ import { resolveChoice } from '../game/engine/resolution';
 import type { ChoiceResolutionResult } from '../game/engine/resolution';
 import { clearGameState, loadGameState, saveGameState } from '../game/engine/save';
 import { createInitialGameState } from '../game/model/initialState';
-import type { GameState } from '../game/model/schema';
+import type { GameState, NpcStatId } from '../game/model/schema';
 import type { DiceResult, StatId } from '../game/content/schema';
 import { assertValidContent } from '../game/validation/validateContent';
 
@@ -33,6 +33,19 @@ const RESULT_LABELS: Record<DiceResult, string> = {
   success: 'Succès',
   criticalSuccess: 'Succès critique',
 };
+
+const NPC_STAT_LABELS: Record<NpcStatId, string> = {
+  health: 'Santé',
+  morale: 'Moral',
+  strength: 'Force',
+  observation: 'Observation',
+  intelligence: 'Intelligence',
+  luck: 'Chance',
+  loyalty: 'Loyauté',
+  calm: 'Calme',
+};
+
+const NPC_STAT_IDS = Object.keys(NPC_STAT_LABELS) as NpcStatId[];
 
 function generateCareerSeed(): number {
   if (globalThis.crypto?.getRandomValues) {
@@ -126,6 +139,24 @@ export function App() {
               <p>{trait.description}</p>
             </div>
           ) : null;
+        })}
+      </section>
+
+      <section>
+        <h2>NPC Profiles</h2>
+        {Object.entries(gameState.npcs).map(([npcId, npc]) => {
+          const definition = contentCatalog.npcs.find(({ id }) => id === npcId);
+          return (
+            <div key={npcId}>
+              <h3>{definition?.name ?? npcId}</h3>
+              <p>Status: {npc.status}</p>
+              <p>Relationship: {npc.relationship > 0 ? '+' : ''}{npc.relationship}</p>
+              <h4>Stats</h4>
+              {NPC_STAT_IDS.map((statId) => (
+                <p key={statId}>{NPC_STAT_LABELS[statId]}: {npc.stats[statId]}</p>
+              ))}
+            </div>
+          );
         })}
       </section>
 

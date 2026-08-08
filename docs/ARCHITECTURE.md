@@ -105,6 +105,8 @@ Player Traits remain persistent `TraitId[]` values. Their public names and descr
 
 DiceResolution uses one main stat, a success threshold from 2 to 19, optional conditional modifiers, optional secret Trait result overrides, and exactly four Outcomes. Stats `20–30` contribute zero; every four points outside that safe zone contributes another `±1`, capped naturally by the `0–50` stat range. Raw 1 is an absolute critical failure; otherwise total `>= 20` is critical success, total `>= successThreshold` is success, and lower totals fail. Player-facing probability enumerates all 20 raw rolls, excludes secret Trait overrides, and is derived rather than persisted. The legacy bands/multipliers system has been removed.
 
+Persistent NPC profiles keep two independent concepts. `NpcStats` describes the NPC's own behavioral capabilities on the `0–50` scale: health, morale, strength, observation, intelligence, luck, loyalty, and calm. `relationship` remains the NPC-to-player relationship on `-100..100`; loyalty never aliases or automatically follows it. Loyalty represents general reliability or commitment, while calm represents emotional control under pressure. Events access these data through `npcStatusIs`, `npcRelationshipAtLeast`, `npcStatAtLeast`, `setNpcStatus`, `modifyNpcRelationship`, and `modifyNpcStat`. NPC stats do not create autonomous behavior or NPC DiceChecks.
+
 ### React UI
 
 Displays GameState and engine results.
@@ -175,7 +177,7 @@ Initial persistence:
 - normalize/restore function when loading.
 
 A save must preserve seeded RNG state and scheduled consequences.
-Save schema version 4 persists age-based scheduled events and `careerEndReason`. Development saves from version 3 are rejected without migration.
+Save schema version 5 persists NPC stats alongside status and relationship. Development saves from version 4 are rejected without migration.
 
 ---
 

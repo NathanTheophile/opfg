@@ -7,6 +7,8 @@ import type {
   ItemId,
   LocationId,
   NpcId,
+  NpcStatId,
+  NpcStats,
   NpcStatus,
   OutcomeId,
   PlayerStats,
@@ -34,6 +36,7 @@ export type Condition =
   | { type: 'shipConditionAtMost'; value: number }
   | { type: 'npcStatusIs'; npcId: NpcId; status: NpcStatus }
   | { type: 'npcRelationshipAtLeast'; npcId: NpcId; value: number }
+  | { type: 'npcStatAtLeast'; npcId: NpcId; statId: NpcStatId; value: number }
   | { type: 'hasChosen'; eventId: EventId; choiceId: ChoiceId }
   | { type: 'hasPlayed'; eventId: EventId }
   | { type: 'hasOutcome'; eventId: EventId; outcomeId: OutcomeId }
@@ -51,6 +54,7 @@ export type Effect =
   | { type: 'moveToLocation'; locationId: LocationId; travelState: TravelState }
   | { type: 'setNpcStatus'; npcId: NpcId; status: NpcStatus }
   | { type: 'modifyNpcRelationship'; npcId: NpcId; amount: number }
+  | { type: 'modifyNpcStat'; npcId: NpcId; statId: NpcStatId; amount: number }
   | { type: 'scheduleEvent'; eventId: EventId; delayMonths: number }
   | { type: 'setCareerPhase'; phase: CareerPhase }
   | { type: 'endCareer'; reason: CareerEndReason };
@@ -122,6 +126,8 @@ export interface ItemDefinition {
 
 export interface NpcDefinition {
   id: NpcId;
+  name: string;
+  initialStats: NpcStats;
 }
 
 export interface ContentCatalog {

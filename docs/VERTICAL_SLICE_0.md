@@ -58,6 +58,17 @@ npcs
 NpcState
   status
   relationship
+  stats
+
+NpcStats
+  health
+  morale
+  strength
+  observation
+  intelligence
+  luck
+  loyalty
+  calm
 
 status =
   known
@@ -107,7 +118,6 @@ Pas encore de :
 - XP ;
 - inventaire quantitatif ;
 - rôles d'équipage ;
-- stats des PNJ ;
 - multiples bateaux ;
 - factions ;
 - `ArcState` générique ;
@@ -195,6 +205,7 @@ shipConditionAtMost(value)
 npcStatusIs(npcId, status)
 
 npcRelationshipAtLeast(npcId, value)
+npcStatAtLeast(npcId, statId, value)
 
 hasChosen(eventId, choiceId)
 
@@ -343,6 +354,7 @@ moveToLocation
 
 setNpcStatus
 modifyNpcRelationship
+modifyNpcStat
 
 scheduleEvent
 

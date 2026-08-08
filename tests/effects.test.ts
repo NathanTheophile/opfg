@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Effect } from '../src/game/content/schema';
 import { applyEffects } from '../src/game/engine/effects';
 import { createInitialGameState } from '../src/game/model/initialState';
+import { createDefaultNpcStats } from '../src/game/model/npcState';
 
 const context = { sourceEventId: 'source_event', sourceChoiceId: 'source_choice' };
 
@@ -37,8 +38,10 @@ describe('applyEffects', () => {
 
     expect(damaged.ship.condition).toBe(0);
     expect(repaired.ship.condition).toBe(3);
-    expect(related.npcs.new_npc).toEqual({ status: 'known', relationship: 100 });
-    expect(state.npcs).toEqual({ mira: { status: 'unavailable', relationship: 0 } });
+    expect(related.npcs.new_npc).toEqual({ status: 'known', relationship: 100, stats: createDefaultNpcStats() });
+    expect(state.npcs).toEqual({
+      mira: { status: 'unavailable', relationship: 0, stats: createDefaultNpcStats() },
+    });
   });
 
   it('initializes an absent NPC deterministically when setting status', () => {
@@ -48,7 +51,7 @@ describe('applyEffects', () => {
       context,
     );
 
-    expect(result.npcs.mira).toEqual({ status: 'crew', relationship: 0 });
+    expect(result.npcs.mira).toEqual({ status: 'crew', relationship: 0, stats: createDefaultNpcStats() });
   });
 
   it('schedules an event with due month and causal source IDs', () => {
@@ -92,6 +95,46 @@ describe('applyEffects', () => {
 
     expect(high.player.stats.health).toBe(50);
     expect(low.player.stats.health).toBe(0);
+  });
+
+  it('modifies and clamps NPC stats while keeping relationship independent', () => {
+    const state = createInitialGameState();
+    state.npcs.mira.relationship = 80;
+    state.npcs.mira.stats.loyalty = 10;
+    state.npcs.mira.stats.calm = 48;
+    state.npcs.mira.stats.morale = 2;
+
+    const relationshipChanged = applyEffects(
+      state,
+      [{ type: 'modifyNpcRelationship', npcId: 'mira', amount: -20 }],
+      context,
+    );
+    const statsChanged = applyEffects(relationshipChanged, [
+      { type: 'modifyNpcStat', npcId: 'mira', statId: 'loyalty', amount: 5 },
+      { type: 'modifyNpcStat', npcId: 'mira', statId: 'calm', amount: 10 },
+      { type: 'modifyNpcStat', npcId: 'mira', statId: 'morale', amount: -10 },
+    ], context);
+
+    expect(relationshipChanged.npcs.mira).toMatchObject({ relationship: 60, stats: { loyalty: 10 } });
+    expect(statsChanged.npcs.mira).toMatchObject({
+      relationship: 60,
+      stats: { loyalty: 15, calm: 50, morale: 0 },
+    });
+  });
+
+  it('materializes an absent NPC with one coherent default profile', () => {
+    const state = createInitialGameState();
+    const result = applyEffects(
+      state,
+      [{ type: 'modifyNpcStat', npcId: 'new_npc', statId: 'loyalty', amount: 5 }],
+      context,
+    );
+
+    expect(result.npcs.new_npc).toEqual({
+      status: 'known',
+      relationship: 0,
+      stats: { ...createDefaultNpcStats(), loyalty: 30 },
+    });
   });
 
   it('adds and removes traits idempotently', () => {

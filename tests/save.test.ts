@@ -12,6 +12,7 @@ import {
 import type { StorageLike } from '../src/game/engine/save';
 import { createInitialGameState } from '../src/game/model/initialState';
 import type { GameState } from '../src/game/model/schema';
+import { createDefaultNpcStats } from '../src/game/model/npcState';
 
 class MemoryStorage implements StorageLike {
   readonly values = new Map<string, string>();
@@ -50,7 +51,13 @@ function detailedState(): GameState {
   state.ship.condition = 1;
   state.flags = ['left_starter_port'];
   state.items = ['sealed_chart'];
-  state.npcs = { mira: { status: 'crew', relationship: 42 } };
+  state.npcs = {
+    mira: {
+      status: 'crew',
+      relationship: -40,
+      stats: { ...createDefaultNpcStats(), loyalty: 45, calm: 8 },
+    },
+  };
   state.history = [
     { eventId: 'departure', choiceId: 'set_sail', outcomeId: 'left_port', month: 1 },
   ];
@@ -137,7 +144,7 @@ describe('restored deterministic RNG', () => {
 describe('invalid saves', () => {
   it.each([
     ['not json', '{broken'],
-    ['legacy version 3', JSON.stringify({ ...detailedState(), version: 3 })],
+    ['legacy version 4', JSON.stringify({ ...detailedState(), version: 4 })],
     ['unknown version', JSON.stringify({ ...detailedState(), version: 99 })],
   ])('rejects %s', (_label, raw) => {
     expect(deserializeGameState(raw)).toBeNull();
@@ -154,6 +161,25 @@ describe('invalid saves', () => {
     const state = detailedState();
     state.player.stats.navigation = navigation;
     expect(deserializeGameState(JSON.stringify(state))).toBeNull();
+  });
+
+  it('preserves NPC relationship and behavioral stats without mixing them', () => {
+    const restored = deserializeGameState(serializeGameState(detailedState()));
+    expect(restored?.npcs.mira).toMatchObject({
+      relationship: -40,
+      stats: { loyalty: 45, calm: 8 },
+    });
+  });
+
+  it('rejects missing or out-of-range NPC stats', () => {
+    const state = detailedState();
+    const missing = structuredClone(state) as any;
+    delete missing.npcs.mira.stats.calm;
+    const outOfRange = structuredClone(state);
+    outOfRange.npcs.mira.stats.loyalty = 51;
+
+    expect(deserializeGameState(JSON.stringify(missing))).toBeNull();
+    expect(deserializeGameState(JSON.stringify(outOfRange))).toBeNull();
   });
 
   it('rejects inconsistent career end state and preserves a valid reason', () => {

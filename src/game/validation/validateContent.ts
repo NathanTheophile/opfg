@@ -16,6 +16,16 @@ const STAT_IDS = new Set([
   'luck',
   'awakening',
 ]);
+const NPC_STAT_IDS = new Set([
+  'health',
+  'morale',
+  'strength',
+  'observation',
+  'intelligence',
+  'luck',
+  'loyalty',
+  'calm',
+]);
 const CONDITION_TYPES = new Set([
   'all',
   'any',
@@ -34,6 +44,7 @@ const CONDITION_TYPES = new Set([
   'shipConditionAtMost',
   'npcStatusIs',
   'npcRelationshipAtLeast',
+  'npcStatAtLeast',
   'hasChosen',
   'hasPlayed',
   'hasOutcome',
@@ -51,6 +62,7 @@ const EFFECT_TYPES = new Set([
   'moveToLocation',
   'setNpcStatus',
   'modifyNpcRelationship',
+  'modifyNpcStat',
   'scheduleEvent',
   'setCareerPhase',
   'endCareer',
@@ -65,7 +77,8 @@ export function validateContent(catalog: unknown): ContentValidationError[] {
   const traits = readRecords(catalog.traits, 'traits', errors);
   const traitIds = collectIds(traits, 'traits', errors);
   const itemIds = collectIds(readRecords(catalog.items, 'items', errors), 'items', errors);
-  const npcIds = collectIds(readRecords(catalog.npcs, 'npcs', errors), 'npcs', errors);
+  const npcs = readRecords(catalog.npcs, 'npcs', errors);
+  const npcIds = collectIds(npcs, 'npcs', errors);
   const choicesByEvent = new Map<string, Set<string>>();
   const outcomesByEvent = new Map<string, Set<string>>();
   const scheduledOnlyEventIds = new Set<string>();
@@ -83,6 +96,7 @@ export function validateContent(catalog: unknown): ContentValidationError[] {
   }
 
   validateTraitOpposites(traits, traitIds, errors);
+  validateNpcDefinitions(npcs, errors);
   const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, npcIds, scheduledOnlyEventIds };
   for (const [eventIndex, event] of events.entries()) {
     validateEvent(event, `events[${eventIndex}]`, references, errors);
@@ -173,8 +187,14 @@ function validateCondition(
 
   if (type === 'hasTrait') validateReference(value.traitId, references.traitIds, 'TraitId', path, errors);
   if (type === 'hasItem') validateReference(value.itemId, references.itemIds, 'ItemId', path, errors);
-  if (type === 'npcStatusIs' || type === 'npcRelationshipAtLeast') {
+  if (type === 'npcStatusIs' || type === 'npcRelationshipAtLeast' || type === 'npcStatAtLeast') {
     validateReference(value.npcId, references.npcIds, 'NpcId', path, errors);
+  }
+  if (type === 'npcStatAtLeast') {
+    validateNpcStat(value.statId, path, errors);
+    if (!isNumberInRange(value.value, 0, 50)) {
+      errors.push({ path, message: 'npcStatAtLeast value must be a finite number from 0 to 50.' });
+    }
   }
   if (type === 'statAtLeast') validateStat(value.statId, path, errors);
   if (type === 'careerPhaseIs' && !['origins', 'childhood', 'active'].includes(String(value.phase))) {
@@ -311,8 +331,14 @@ function validateEffect(
   if (type === 'addTrait' || type === 'removeTrait') {
     validateReference(effect.traitId, references.traitIds, 'TraitId', path, errors);
   }
-  if (type === 'setNpcStatus' || type === 'modifyNpcRelationship') {
+  if (type === 'setNpcStatus' || type === 'modifyNpcRelationship' || type === 'modifyNpcStat') {
     validateReference(effect.npcId, references.npcIds, 'NpcId', path, errors);
+  }
+  if (type === 'modifyNpcStat') {
+    validateNpcStat(effect.statId, path, errors);
+    if (typeof effect.amount !== 'number' || !Number.isFinite(effect.amount)) {
+      errors.push({ path, message: 'modifyNpcStat amount must be finite.' });
+    }
   }
   if (type === 'modifyStat') validateStat(effect.statId, path, errors);
   if (type === 'moveToLocation' && !['at_sea', 'on_land'].includes(String(effect.travelState))) {
@@ -335,6 +361,12 @@ function validateEffect(
 function validateStat(value: unknown, path: string, errors: ContentValidationError[]): void {
   if (typeof value !== 'string' || !STAT_IDS.has(value)) {
     errors.push({ path, message: `Invalid StatId "${String(value)}".` });
+  }
+}
+
+function validateNpcStat(value: unknown, path: string, errors: ContentValidationError[]): void {
+  if (typeof value !== 'string' || !NPC_STAT_IDS.has(value)) {
+    errors.push({ path, message: `Invalid NpcStatId "${String(value)}".` });
   }
 }
 
@@ -400,6 +432,22 @@ function validateTraitOpposites(
   });
 }
 
+function validateNpcDefinitions(npcs: UnknownRecord[], errors: ContentValidationError[]): void {
+  npcs.forEach((npc, index) => {
+    const path = `npcs[${index}]`;
+    if (!stringValue(npc.name)) errors.push({ path: `${path}.name`, message: 'NPC name must be a non-empty string.' });
+    if (!isRecord(npc.initialStats)) {
+      errors.push({ path: `${path}.initialStats`, message: 'NPC initialStats must be an object.' });
+      return;
+    }
+    for (const statId of NPC_STAT_IDS) {
+      if (!isNumberInRange(npc.initialStats[statId], 0, 50)) {
+        errors.push({ path: `${path}.initialStats.${statId}`, message: `${statId} must be a finite number from 0 to 50.` });
+      }
+    }
+  });
+}
+
 function readRecords(value: unknown, path: string, errors: ContentValidationError[]): UnknownRecord[] {
   if (!Array.isArray(value)) {
     errors.push({ path, message: 'Expected an array.' });
@@ -423,4 +471,8 @@ function stringValue(value: unknown): string | undefined {
 
 function isNonNegativeNumber(value: unknown): value is number {
   return typeof value === 'number' && Number.isFinite(value) && value >= 0;
+}
+
+function isNumberInRange(value: unknown, minimum: number, maximum: number): value is number {
+  return typeof value === 'number' && Number.isFinite(value) && value >= minimum && value <= maximum;
 }
