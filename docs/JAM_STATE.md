@@ -2,9 +2,16 @@
 
 ## Current playable state
 
-No implementation started yet.
+A deterministic browser-playable loop is available with three temporary events:
 
-The vertical slice contract is locked sufficiently to begin repository bootstrap and engine implementation.
+```text
+Departure
+-> Open Sea
+-> The Reefs
+-> temporary career end
+```
+
+The runtime evaluates Slice 0 Conditions, exposes visible/available choice state, applies Effects immutably, advances time, records history and selects the next normal event by eligibility and priority. Seeded tie-breaking is implemented. Scheduled events can be written to state but are not consumed yet.
 
 ---
 
@@ -30,14 +37,11 @@ The vertical slice contract is locked sufficiently to begin repository bootstrap
 
 ## Current priority
 
-1. Bootstrap repository.
-2. Define Slice 0 model types and initial GameState.
-3. Verify JSON round-trip.
-4. Implement Condition / Effect / EventDefinition contracts.
-5. Add minimal content validator.
-6. Implement event resolution loop.
-7. Reach first browser-playable Event → Choice → State → Next Event flow.
-8. Add scheduled consequences, seeded dice, save/load and Mira test content.
+1. Implement runtime DiceCheck resolution and its visible result.
+2. Consume due scheduled events before normal events.
+3. Add one-slot localStorage save/load.
+4. Replace temporary events with the Slice 0 test content and Mira mini-arc.
+5. Complete the first playable career through month 12.
 
 ---
 
@@ -52,6 +56,15 @@ Game-design ambiguities discovered during implementation must be returned to the
 ## Known bugs
 
 None yet.
+
+---
+
+## Current runtime limits
+
+- DiceResolution is represented but deliberately rejected at runtime.
+- Scheduled events are recorded with causal source IDs but not selected yet.
+- Save/load is not implemented.
+- Current narrative content is temporary test content only.
 
 ---
 
