@@ -135,14 +135,14 @@ describe('real catalog conditional choices', () => {
     expect(getChoiceState(choice('reefs', 'ride_breakers'), state).visible).toBe(true);
   });
 
-  it('unlocks Mira Hunters choices at the specified relation and Presence thresholds', () => {
+  it('unlocks Mira Hunters choices at the specified relation and Charisma thresholds', () => {
     const state = createInitialGameState();
     state.npcs.mira = { status: 'crew', relationship: 39 };
     expect(getChoiceState(choice('mira_hunters', 'let_mira_speak'), state).available).toBe(false);
     expect(getChoiceState(choice('mira_hunters', 'bluff_hunters'), state).available).toBe(false);
 
     state.npcs.mira.relationship = 40;
-    state.player.stats.presence = 3;
+    state.player.stats.charisma = 3;
     expect(getChoiceState(choice('mira_hunters', 'let_mira_speak'), state).available).toBe(true);
     expect(getChoiceState(choice('mira_hunters', 'bluff_hunters'), state).available).toBe(true);
   });

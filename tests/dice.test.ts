@@ -110,7 +110,7 @@ describe('DiceResolution integration', () => {
     expect(result.dice).toMatchObject({ modifierTotal: 3, outcomeId: result.outcome.id });
     expect(result.dice?.modifiers).toEqual([
       { label: 'Navigation', value: 2, displayInfluence: 'forte influence' },
-      { label: 'Volonté', value: 1, displayInfluence: 'influence moyenne' },
+      { label: 'Moral', value: 1, displayInfluence: 'influence moyenne' },
     ]);
     expect('lastRoll' in result.state).toBe(false);
     expect('lastOutcome' in result.state).toBe(false);

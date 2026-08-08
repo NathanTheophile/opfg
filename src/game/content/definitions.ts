@@ -1,7 +1,11 @@
 import type { ContentCatalog } from './schema';
 
 export const contentCatalog = {
-  traits: [{ id: 'audacious' }],
+  traits: [{
+    id: 'audacious',
+    name: 'Audacieux',
+    description: 'Vous avez tendance à privilégier les solutions risquées et directes.',
+  }],
   items: [{ id: 'sealed_chart' }, { id: 'mira_letter_of_passage' }],
   npcs: [{ id: 'mira' }],
   events: [
@@ -129,8 +133,8 @@ export const contentCatalog = {
                   displayLabel: 'Navigation', displayInfluence: 'forte influence',
                 },
                 {
-                  type: 'statModifier', statId: 'willpower', multiplier: 1,
-                  displayLabel: 'Volonté', displayInfluence: 'influence moyenne',
+                  type: 'statModifier', statId: 'morale', multiplier: 1,
+                  displayLabel: 'Moral', displayInfluence: 'influence moyenne',
                 },
                 {
                   type: 'conditionalModifier',
@@ -275,8 +279,8 @@ export const contentCatalog = {
                   displayLabel: 'Navigation', displayInfluence: 'forte influence',
                 },
                 {
-                  type: 'statModifier', statId: 'willpower', multiplier: 1,
-                  displayLabel: 'Volonté', displayInfluence: 'influence moyenne',
+                  type: 'statModifier', statId: 'morale', multiplier: 1,
+                  displayLabel: 'Moral', displayInfluence: 'influence moyenne',
                 },
                 {
                   type: 'conditionalModifier',
@@ -389,8 +393,8 @@ export const contentCatalog = {
                   displayLabel: 'Navigation', displayInfluence: 'influence moyenne',
                 },
                 {
-                  type: 'statModifier', statId: 'willpower', multiplier: 2,
-                  displayLabel: 'Volonté', displayInfluence: 'forte influence',
+                  type: 'statModifier', statId: 'morale', multiplier: 2,
+                  displayLabel: 'Moral', displayInfluence: 'forte influence',
                 },
                 {
                   type: 'conditionalModifier',
@@ -563,8 +567,8 @@ export const contentCatalog = {
         },
         {
           id: 'bluff_hunters',
-          text: '[Présence 3] Convaincre les poursuivants qu’ils se trompent de navire.',
-          availableIf: { type: 'statAtLeast', statId: 'presence', value: 3 },
+          text: '[Charisme 3] Convaincre les poursuivants qu’ils se trompent de navire.',
+          availableIf: { type: 'statAtLeast', statId: 'charisma', value: 3 },
           resolution: {
             type: 'deterministic',
             outcome: {
@@ -588,8 +592,8 @@ export const contentCatalog = {
                   displayLabel: 'Navigation', displayInfluence: 'forte influence',
                 },
                 {
-                  type: 'statModifier', statId: 'willpower', multiplier: 1,
-                  displayLabel: 'Volonté', displayInfluence: 'influence moyenne',
+                  type: 'statModifier', statId: 'morale', multiplier: 1,
+                  displayLabel: 'Moral', displayInfluence: 'influence moyenne',
                 },
                 {
                   type: 'conditionalModifier',

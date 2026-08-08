@@ -5,7 +5,17 @@ export interface ContentValidationError {
 
 type UnknownRecord = Record<string, unknown>;
 
-const STAT_IDS = new Set(['navigation', 'presence', 'willpower']);
+const STAT_IDS = new Set([
+  'health',
+  'morale',
+  'strength',
+  'observation',
+  'intelligence',
+  'navigation',
+  'charisma',
+  'luck',
+  'awakening',
+]);
 const CONDITION_TYPES = new Set([
   'all',
   'any',
@@ -32,6 +42,8 @@ const EFFECT_TYPES = new Set([
   'clearFlag',
   'addItem',
   'removeItem',
+  'addTrait',
+  'removeTrait',
   'modifyStat',
   'modifyShipCondition',
   'moveToLocation',
@@ -254,6 +266,9 @@ function validateEffect(
   }
   if (type === 'addItem' || type === 'removeItem') {
     validateReference(effect.itemId, references.itemIds, 'ItemId', path, errors);
+  }
+  if (type === 'addTrait' || type === 'removeTrait') {
+    validateReference(effect.traitId, references.traitIds, 'TraitId', path, errors);
   }
   if (type === 'setNpcStatus' || type === 'modifyNpcRelationship') {
     validateReference(effect.npcId, references.npcIds, 'NpcId', path, errors);

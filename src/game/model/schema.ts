@@ -8,9 +8,15 @@ export type ItemId = string;
 export type NpcId = string;
 
 export interface PlayerStats {
+  health: number;
+  morale: number;
+  strength: number;
+  observation: number;
+  intelligence: number;
   navigation: number;
-  presence: number;
-  willpower: number;
+  charisma: number;
+  luck: number;
+  awakening: number | null;
 }
 
 export interface PlayerState {

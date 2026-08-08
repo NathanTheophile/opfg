@@ -1,7 +1,7 @@
 import type { CareerPhase, GameState, NpcState, TravelState } from '../model/schema';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 2;
+const CURRENT_SAVE_VERSION = 3;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable']);
 
 export interface StorageLike {
@@ -57,9 +57,15 @@ function readGameState(value: unknown): GameState | null {
   if (!isUint32(value.rngState) || !isNonNegativeInteger(value.ageMonths) || !isNonNegativeInteger(value.month)) return null;
   if (!isCareerPhase(value.careerPhase) || !isTravelState(value.travelState) || !isString(value.locationId)) return null;
   if (!isRecord(value.player) || !isRecord(value.player.stats) || !isStringArray(value.player.traits)) return null;
+  if (!isFiniteNumber(value.player.stats.health)) return null;
+  if (!isFiniteNumber(value.player.stats.morale)) return null;
+  if (!isFiniteNumber(value.player.stats.strength)) return null;
+  if (!isFiniteNumber(value.player.stats.observation)) return null;
+  if (!isFiniteNumber(value.player.stats.intelligence)) return null;
   if (!isFiniteNumber(value.player.stats.navigation)) return null;
-  if (!isFiniteNumber(value.player.stats.presence)) return null;
-  if (!isFiniteNumber(value.player.stats.willpower)) return null;
+  if (!isFiniteNumber(value.player.stats.charisma)) return null;
+  if (!isFiniteNumber(value.player.stats.luck)) return null;
+  if (!(value.player.stats.awakening === null || isFiniteNumber(value.player.stats.awakening))) return null;
   if (!isRecord(value.ship) || !isIntegerInRange(value.ship.condition, 0, 3)) return null;
   if (!isStringArray(value.flags) || !isStringArray(value.items)) return null;
 
@@ -80,9 +86,15 @@ function readGameState(value: unknown): GameState | null {
     locationId: value.locationId,
     player: {
       stats: {
+        health: value.player.stats.health,
+        morale: value.player.stats.morale,
+        strength: value.player.stats.strength,
+        observation: value.player.stats.observation,
+        intelligence: value.player.stats.intelligence,
         navigation: value.player.stats.navigation,
-        presence: value.player.stats.presence,
-        willpower: value.player.stats.willpower,
+        charisma: value.player.stats.charisma,
+        luck: value.player.stats.luck,
+        awakening: value.player.stats.awakening,
       },
       traits: [...value.player.traits],
     },

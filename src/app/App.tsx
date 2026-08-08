@@ -83,6 +83,31 @@ export function App() {
       <button type="button" onClick={() => startCareer(true)}>Restart Career</button>
 
       <section>
+        <h2>Player Profile</h2>
+        <p>Health: {gameState.player.stats.health}</p>
+        <p>Morale: {gameState.player.stats.morale}</p>
+        <p>Strength: {gameState.player.stats.strength}</p>
+        <p>Observation: {gameState.player.stats.observation}</p>
+        <p>Intelligence: {gameState.player.stats.intelligence}</p>
+        <p>Navigation: {gameState.player.stats.navigation}</p>
+        <p>Charisma: {gameState.player.stats.charisma}</p>
+        <p>Luck: {gameState.player.stats.luck}</p>
+        <p>Awakening: {gameState.player.stats.awakening ?? '—'}</p>
+        <h3>Traits</h3>
+        {gameState.player.traits.length === 0 ? (
+          <p>None</p>
+        ) : gameState.player.traits.map((traitId) => {
+          const trait = contentCatalog.traits.find(({ id }) => id === traitId);
+          return trait ? (
+            <div key={trait.id}>
+              <strong>{trait.name}</strong>
+              <p>{trait.description}</p>
+            </div>
+          ) : null;
+        })}
+      </section>
+
+      <section>
         <h2>Current Event</h2>
         {currentEvent ? (
           <>

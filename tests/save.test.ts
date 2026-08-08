@@ -35,7 +35,17 @@ function detailedState(): GameState {
   state.ageMonths = 186;
   state.travelState = 'at_sea';
   state.locationId = 'reefs';
-  state.player.stats = { navigation: 3, presence: 2, willpower: 4 };
+  state.player.stats = {
+    health: 2,
+    morale: 4,
+    strength: 2,
+    observation: 3,
+    intelligence: 3,
+    navigation: 3,
+    charisma: 2,
+    luck: 1,
+    awakening: null,
+  };
   state.player.traits = ['audacious'];
   state.ship.condition = 1;
   state.flags = ['left_starter_port'];
@@ -70,6 +80,15 @@ describe('GameState serialization', () => {
     expect(restored?.scheduledEvents).toEqual(state.scheduledEvents);
     expect(restored?.currentEventId).toBe('reefs');
     expect(restored?.rngState).toBe(state.rngState);
+  });
+
+  it('round-trips active and inactive awakening values', () => {
+    const inactive = detailedState();
+    const active = detailedState();
+    active.player.stats.awakening = 5;
+
+    expect(deserializeGameState(serializeGameState(inactive))?.player.stats.awakening).toBeNull();
+    expect(deserializeGameState(serializeGameState(active))?.player.stats.awakening).toBe(5);
   });
 });
 
@@ -118,7 +137,7 @@ describe('restored deterministic RNG', () => {
 describe('invalid saves', () => {
   it.each([
     ['not json', '{broken'],
-    ['legacy version 1', JSON.stringify({ ...detailedState(), version: 1 })],
+    ['legacy version 2', JSON.stringify({ ...detailedState(), version: 2 })],
     ['unknown version', JSON.stringify({ ...detailedState(), version: 99 })],
   ])('rejects %s', (_label, raw) => {
     expect(deserializeGameState(raw)).toBeNull();

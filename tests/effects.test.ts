@@ -75,4 +75,29 @@ describe('applyEffects', () => {
 
     expect(result).toMatchObject({ locationId: 'open_sea', travelState: 'at_sea' });
   });
+
+  it('modifies active stats and rejects inactive awakening', () => {
+    const state = createInitialGameState();
+    const modified = applyEffects(state, [{ type: 'modifyStat', statId: 'health', amount: 2 }], context);
+
+    expect(modified.player.stats.health).toBe(3);
+    expect(() => applyEffects(state, [{ type: 'modifyStat', statId: 'awakening', amount: 1 }], context))
+      .toThrow('Cannot modify inactive stat "awakening".');
+  });
+
+  it('adds and removes traits idempotently', () => {
+    const added = applyEffects(
+      createInitialGameState(),
+      [
+        { type: 'addTrait', traitId: 'audacious' },
+        { type: 'addTrait', traitId: 'audacious' },
+        { type: 'removeTrait', traitId: 'missing' },
+      ],
+      context,
+    );
+    const removed = applyEffects(added, [{ type: 'removeTrait', traitId: 'audacious' }], context);
+
+    expect(added.player.traits).toEqual(['audacious']);
+    expect(removed.player.traits).toEqual([]);
+  });
 });

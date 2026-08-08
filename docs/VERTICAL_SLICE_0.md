@@ -33,8 +33,8 @@ locationId = "starter_port"
 
 player.stats
   navigation
-  presence
-  willpower
+  charisma
+  morale
 
 player.traits
   TraitId[]
@@ -667,7 +667,7 @@ Le premier produit un DiceCheck :
 
 ```text
 Navigation = forte influence
-Volonté = influence moyenne
+Moral = influence moyenne
 Bateau endommagé = malus
 ```
 

@@ -35,7 +35,12 @@ The temporary demonstration content has been removed. The real Slice 0 exercises
 - `ageMonths` is absolute age; `month` is elapsed active-career time and remains zero outside the active phase.
 - `travelState` (`at_sea` / `on_land`) is the broad geographic context; `locationId` remains the precise location.
 - Location effects update `travelState` and `locationId` atomically.
-- Save schema version is 2; development saves from version 1 are intentionally rejected without migration.
+- The player profile uses `health`, `morale`, `strength`, `observation`, `intelligence`, `navigation`, `charisma`, `luck`, and nullable `awakening`.
+- `awakening: null` means the stat is inaccessible; a number means it is active. No Devil Fruit mechanics exist yet.
+- Initial Slice 0 stat values are temporary development fixtures and balancing remains undefined.
+- Traits are persistent IDs with public definitions in the content catalog; `addTrait` and `removeTrait` are available effects.
+- The current DiceCheck remains the legacy Slice 0 implementation until T10.
+- Save schema version is 3; development saves from version 2 are intentionally rejected without migration.
 
 ---
 

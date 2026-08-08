@@ -42,9 +42,18 @@ function applyEffect(state: GameState, effect: Effect, context: EffectContext): 
     case 'removeItem':
       state.items = state.items.filter((itemId) => itemId !== effect.itemId);
       return;
-    case 'modifyStat':
-      state.player.stats[effect.statId] += effect.amount;
+    case 'addTrait':
+      if (!state.player.traits.includes(effect.traitId)) state.player.traits.push(effect.traitId);
       return;
+    case 'removeTrait':
+      state.player.traits = state.player.traits.filter((traitId) => traitId !== effect.traitId);
+      return;
+    case 'modifyStat': {
+      const currentValue = state.player.stats[effect.statId];
+      if (currentValue === null) throw new Error(`Cannot modify inactive stat "${effect.statId}".`);
+      state.player.stats[effect.statId] = currentValue + effect.amount;
+      return;
+    }
     case 'modifyShipCondition':
       state.ship.condition = clamp(state.ship.condition + effect.amount, 0, 3);
       return;

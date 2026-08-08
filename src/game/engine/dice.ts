@@ -35,9 +35,11 @@ export function resolveDiceCheck(check: DiceCheck, state: GameState): DiceCheckR
   const { rawRoll, nextRngState } = rollD20(state.rngState);
   const modifiers = check.modifiers.flatMap((modifier): AppliedDiceModifier[] => {
     if (modifier.type === 'statModifier') {
+      const stat = state.player.stats[modifier.statId];
+      if (stat === null) throw new Error(`Cannot use inactive stat "${modifier.statId}" in a DiceCheck.`);
       return [{
         label: modifier.displayLabel,
-        value: state.player.stats[modifier.statId] * modifier.multiplier,
+        value: stat * modifier.multiplier,
         displayInfluence: modifier.displayInfluence,
       }];
     }

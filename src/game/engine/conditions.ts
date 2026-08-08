@@ -17,8 +17,10 @@ export function evaluateCondition(condition: Condition, state: GameState): boole
       return !evaluateCondition(condition.condition, state);
     case 'hasTrait':
       return state.player.traits.includes(condition.traitId);
-    case 'statAtLeast':
-      return state.player.stats[condition.statId] >= condition.value;
+    case 'statAtLeast': {
+      const stat = state.player.stats[condition.statId];
+      return stat !== null && stat >= condition.value;
+    }
     case 'hasFlag':
       return state.flags.includes(condition.flagId);
     case 'hasItem':

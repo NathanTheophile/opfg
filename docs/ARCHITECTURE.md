@@ -99,6 +99,10 @@ Career time and geography use distinct authoritative fields:
 - `travelState` identifies sea or land while `locationId` identifies the precise location;
 - `moveToLocation` updates `travelState` and `locationId` together.
 
+The persistent player profile contains eight normally active numeric stats: `health`, `morale`, `strength`, `observation`, `intelligence`, `navigation`, `charisma`, and `luck`. `awakening` is `null` while inaccessible and numeric only when active. Slice 0 initializes these values with temporary development fixtures; balancing is not defined yet.
+
+Player Traits remain persistent `TraitId[]` values. Their public names and descriptions live in the content catalog, while `addTrait` and `removeTrait` update the profile idempotently. The existing DiceCheck remains the temporary Slice 0 implementation until T10.
+
 ### React UI
 
 Displays GameState and engine results.
@@ -163,7 +167,7 @@ Initial persistence:
 - normalize/restore function when loading.
 
 A save must preserve seeded RNG state and scheduled consequences.
-Save schema version 2 also persists career phase, absolute age, and travel state. Development saves from version 1 are rejected without migration.
+Save schema version 3 persists the complete player profile in addition to career phase, absolute age, and travel state. Development saves from version 2 are rejected without migration.
 
 ---
 

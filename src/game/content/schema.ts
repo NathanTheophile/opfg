@@ -41,6 +41,8 @@ export type Effect =
   | { type: 'clearFlag'; flagId: FlagId }
   | { type: 'addItem'; itemId: ItemId }
   | { type: 'removeItem'; itemId: ItemId }
+  | { type: 'addTrait'; traitId: TraitId }
+  | { type: 'removeTrait'; traitId: TraitId }
   | { type: 'modifyStat'; statId: StatId; amount: number }
   | { type: 'modifyShipCondition'; amount: number }
   | { type: 'moveToLocation'; locationId: LocationId; travelState: TravelState }
@@ -116,6 +118,8 @@ export interface EventDefinition {
 
 export interface TraitDefinition {
   id: TraitId;
+  name: string;
+  description: string;
 }
 
 export interface ItemDefinition {

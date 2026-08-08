@@ -19,6 +19,11 @@ function eventById(catalog: Record<string, any>, eventId: string): Record<string
 describe('validateContent', () => {
   it('accepts the playable catalog', () => {
     expect(validateContent(contentCatalog)).toEqual([]);
+    expect(contentCatalog.traits).toContainEqual({
+      id: 'audacious',
+      name: 'Audacieux',
+      description: expect.any(String),
+    });
   });
 
   it('rejects duplicate EventIds and ChoiceIds', () => {
@@ -66,6 +71,18 @@ describe('validateContent', () => {
     expect(messages(catalog)).toContainEqual(expect.stringContaining('Unknown EventId "missing_event"'));
   });
 
+  it('rejects addTrait and removeTrait targeting unknown traits', () => {
+    const catalog = cloneCatalog();
+    catalog.events[0].choices[0].resolution.outcome.effects = [
+      { type: 'addTrait', traitId: 'missing_trait' },
+      { type: 'removeTrait', traitId: 'another_missing_trait' },
+    ];
+
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('Unknown TraitId "missing_trait"'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown TraitId "another_missing_trait"'));
+  });
+
   it('rejects empty, unordered, and non-terminal DiceCheck bands', () => {
     const catalog = cloneCatalog();
     const choice = catalog.events[0].choices[0];
@@ -88,12 +105,12 @@ describe('validateContent', () => {
     const catalog = cloneCatalog();
     catalog.events[1].eligibility = { type: 'customScript' };
     catalog.events[0].choices[0].resolution.outcome.effects[0] = { type: 'customEffect' };
-    eventById(catalog, 'reefs').choices.find((choice: Record<string, any>) => choice.id === 'read_currents').availableIf.statId = 'luck';
+    eventById(catalog, 'reefs').choices.find((choice: Record<string, any>) => choice.id === 'read_currents').availableIf.statId = 'legacy_stat';
 
     const errors = messages(catalog);
     expect(errors).toContainEqual(expect.stringContaining('Unknown Condition type "customScript"'));
     expect(errors).toContainEqual(expect.stringContaining('Unknown Effect type "customEffect"'));
-    expect(errors).toContainEqual(expect.stringContaining('Invalid StatId "luck"'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid StatId "legacy_stat"'));
   });
 
   it('rejects scheduling a normal event and accepts a scheduledOnly target', () => {

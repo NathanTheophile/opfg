@@ -6,7 +6,7 @@ describe('createInitialGameState', () => {
     const state = createInitialGameState(1234);
 
     expect(state).toEqual({
-      version: 2,
+      version: 3,
       rngState: 1234,
       careerPhase: 'active',
       ageMonths: 180,
@@ -15,9 +15,15 @@ describe('createInitialGameState', () => {
       locationId: 'starter_port',
       player: {
         stats: {
+          health: 1,
+          morale: 1,
+          strength: 1,
+          observation: 1,
+          intelligence: 1,
           navigation: 1,
-          presence: 1,
-          willpower: 1,
+          charisma: 1,
+          luck: 1,
+          awakening: null,
         },
         traits: [],
       },

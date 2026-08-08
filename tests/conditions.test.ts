@@ -39,6 +39,16 @@ describe('evaluateCondition', () => {
     expect(evaluateCondition({ type: 'npcRelationshipAtLeast', npcId: 'absent', value: -100 }, state)).toBe(false);
   });
 
+  it('evaluates new core stats and handles inactive awakening', () => {
+    const state = createInitialGameState();
+
+    expect(evaluateCondition({ type: 'statAtLeast', statId: 'navigation', value: 1 }, state)).toBe(true);
+    expect(evaluateCondition({ type: 'statAtLeast', statId: 'charisma', value: 1 }, state)).toBe(true);
+    expect(evaluateCondition({ type: 'statAtLeast', statId: 'awakening', value: 0 }, state)).toBe(false);
+    state.player.stats.awakening = 5;
+    expect(evaluateCondition({ type: 'statAtLeast', statId: 'awakening', value: 5 }, state)).toBe(true);
+  });
+
   it('evaluates career phase, age boundaries, and geography', () => {
     const state = createInitialGameState();
 
