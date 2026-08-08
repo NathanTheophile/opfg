@@ -10,6 +10,12 @@ function messages(catalog: unknown): string[] {
   return validateContent(catalog).map(({ path, message }) => `${path}: ${message}`);
 }
 
+function eventById(catalog: Record<string, any>, eventId: string): Record<string, any> {
+  const event = catalog.events.find((entry: Record<string, any>) => entry.id === eventId);
+  if (!event) throw new Error(`Missing event fixture "${eventId}".`);
+  return event;
+}
+
 describe('validateContent', () => {
   it('accepts the playable catalog', () => {
     expect(validateContent(contentCatalog)).toEqual([]);
@@ -82,7 +88,7 @@ describe('validateContent', () => {
     const catalog = cloneCatalog();
     catalog.events[1].eligibility = { type: 'customScript' };
     catalog.events[0].choices[0].resolution.outcome.effects[0] = { type: 'customEffect' };
-    catalog.events[3].choices[1].availableIf.statId = 'luck';
+    eventById(catalog, 'reefs').choices.find((choice: Record<string, any>) => choice.id === 'read_currents').availableIf.statId = 'luck';
 
     const errors = messages(catalog);
     expect(errors).toContainEqual(expect.stringContaining('Unknown Condition type "customScript"'));
@@ -92,7 +98,11 @@ describe('validateContent', () => {
 
   it('rejects scheduling a normal event and accepts a scheduledOnly target', () => {
     const invalidCatalog = cloneCatalog();
-    invalidCatalog.events[0].choices[0].resolution.outcome.effects[1].eventId = 'departure';
+    eventById(invalidCatalog, 'departure').choices[0].resolution.outcome.effects[0] = {
+      type: 'scheduleEvent',
+      eventId: 'departure',
+      delayMonths: 1,
+    };
 
     expect(messages(invalidCatalog)).toContainEqual(
       expect.stringContaining('must target an event with scheduledOnly: true'),

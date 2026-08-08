@@ -103,7 +103,7 @@ export function App() {
             })}
           </>
         ) : (
-          <p>{gameState.careerStatus === 'ended' ? 'Temporary career complete.' : 'No event available.'}</p>
+          <p>{gameState.careerStatus === 'ended' ? 'Career complete.' : 'No event available.'}</p>
         )}
       </section>
 

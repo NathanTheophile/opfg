@@ -2,17 +2,15 @@
 
 ## Current playable state
 
-A deterministic browser-playable loop is available with temporary normal and scheduled events:
+A complete functional Vertical Slice 0 career is browser-playable with the nine locked catalog events:
 
 ```text
-Departure
--> Open Sea
--> A Delayed Warning (scheduled for month 2)
--> The Reefs
--> temporary career end
+Departure -> Mira Castaway -> Black Squall -> Wreck -> Reefs
+-> Mira mini-arc and/or delayed favor
+-> Year One End
 ```
 
-The runtime evaluates Slice 0 Conditions, exposes visible/available choice state, resolves deterministic and seeded d20 choices, applies Effects immutably, advances time and records history. Due eligible scheduled events take priority over normal eligibility/priority selection; ineligible entries remain queued until they become valid and resolved entries are consumed. One versioned localStorage slot automatically saves the complete post-resolution GameState, including RNG, current event and scheduled consequences. Dice display results remain transient UI data.
+The temporary demonstration content has been removed. The real Slice 0 exercises deterministic and seeded d20 choices, locked/hidden choices, persistent Mira status and relationship, the recruited Mira mini-arc, Mira’s scheduled return favor, and career endings through Year One End. One versioned localStorage slot preserves the complete post-resolution GameState; dice display results remain transient UI data.
 
 ---
 
@@ -38,8 +36,8 @@ The runtime evaluates Slice 0 Conditions, exposes visible/available choice state
 
 ## Current priority
 
-1. Replace temporary events with the Slice 0 test content and Mira mini-arc.
-2. Complete the first playable career through month 12.
+1. Playtest and tune the locked Slice 0 content without changing its mechanics.
+2. Begin final narrative writing and presentation work after validation.
 
 ---
 
@@ -54,12 +52,6 @@ Game-design ambiguities discovered during implementation must be returned to the
 ## Known bugs
 
 None yet.
-
----
-
-## Current runtime limits
-
-- Current narrative content is temporary test content only.
 
 ---
 

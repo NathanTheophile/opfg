@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 import type { DiceCheck } from '../src/game/content/schema';
 import { contentCatalog } from '../src/game/content/definitions';
 import { resolveDiceCheck, rollD20, selectDiceOutcome } from '../src/game/engine/dice';
-import { selectNextEvent } from '../src/game/engine/events';
 import { resolveChoice } from '../src/game/engine/resolution';
 import { createInitialGameState } from '../src/game/model/initialState';
 
@@ -90,29 +89,28 @@ describe('dice bands', () => {
 
 describe('DiceResolution integration', () => {
   it('applies the selected outcome and exposes roll details without persisting them', () => {
-    let state = selectNextEvent(createInitialGameState(123), contentCatalog.events);
-    state = resolveChoice(state, contentCatalog.events, 'departure', 'set_sail').state;
-    state = resolveChoice(state, contentCatalog.events, 'open_sea', 'recover_chart').state;
-    state = resolveChoice(state, contentCatalog.events, 'delayed_warning', 'heed_warning').state;
+    const state = createInitialGameState(123);
+    state.currentEventId = 'reefs';
+    state.locationId = 'open_sea';
+    state.flags = ['wreck_resolved'];
     const rngBeforeRoll = state.rngState;
 
-    const result = resolveChoice(state, contentCatalog.events, 'reefs', 'risk_crossing');
+    const result = resolveChoice(state, contentCatalog.events, 'reefs', 'force_passage');
 
-    expect(result.state).toMatchObject({ month: 3, careerStatus: 'ended', currentEventId: null });
+    expect(result.state.month).toBeGreaterThanOrEqual(3);
+    expect(result.state.locationId).toBe('outer_route');
+    expect(result.state.flags).toContain('reefs_crossed');
     expect(result.state.rngState).not.toBe(rngBeforeRoll);
     expect(result.state.history.at(-1)).toEqual({
       eventId: 'reefs',
-      choiceId: 'risk_crossing',
+      choiceId: 'force_passage',
       outcomeId: result.outcome.id,
-      month: 3,
+      month: result.state.month,
     });
-    expect(result.dice).toMatchObject({
-      modifierTotal: 0,
-      outcomeId: result.outcome.id,
-    });
+    expect(result.dice).toMatchObject({ modifierTotal: 3, outcomeId: result.outcome.id });
     expect(result.dice?.modifiers).toEqual([
-      { label: 'Navigation', value: 2, displayInfluence: 'strong influence' },
-      { label: 'Damaged ship', value: -2, displayInfluence: 'significant penalty' },
+      { label: 'Navigation', value: 2, displayInfluence: 'forte influence' },
+      { label: 'Volonté', value: 1, displayInfluence: 'influence moyenne' },
     ]);
     expect('lastRoll' in result.state).toBe(false);
     expect('lastOutcome' in result.state).toBe(false);

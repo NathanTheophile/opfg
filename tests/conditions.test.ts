@@ -25,7 +25,7 @@ describe('evaluateCondition', () => {
 
   it.each([
     [{ type: 'statAtLeast', statId: 'navigation', value: 1 }, true],
-    [{ type: 'hasTrait', traitId: 'steady_nerves' }, false],
+    [{ type: 'hasTrait', traitId: 'audacious' }, false],
     [{ type: 'hasItem', itemId: 'sealed_chart' }, false],
     [{ type: 'monthAtLeast', value: 1 }, false],
   ] satisfies [Condition, boolean][])('evaluates %s', (condition, expected) => {
@@ -35,8 +35,8 @@ describe('evaluateCondition', () => {
   it('returns false for conditions targeting an absent NPC', () => {
     const state = createInitialGameState();
 
-    expect(evaluateCondition({ type: 'npcStatusIs', npcId: 'mira', status: 'known' }, state)).toBe(false);
-    expect(evaluateCondition({ type: 'npcRelationshipAtLeast', npcId: 'mira', value: -100 }, state)).toBe(false);
+    expect(evaluateCondition({ type: 'npcStatusIs', npcId: 'absent', status: 'known' }, state)).toBe(false);
+    expect(evaluateCondition({ type: 'npcRelationshipAtLeast', npcId: 'absent', value: -100 }, state)).toBe(false);
   });
 
   it('evaluates NPC relationship and hasChosen from state history', () => {

@@ -1,28 +1,29 @@
 import type { ContentCatalog } from './schema';
 
 export const contentCatalog = {
-  traits: [{ id: 'steady_nerves' }],
-  items: [{ id: 'sealed_chart' }],
+  traits: [{ id: 'audacious' }],
+  items: [{ id: 'sealed_chart' }, { id: 'mira_letter_of_passage' }],
   npcs: [{ id: 'mira' }],
   events: [
     {
       id: 'departure',
-      title: 'Departure',
-      text: 'Your ship is ready at the starter port.',
+      title: 'Le départ',
+      text: 'Le navire est prêt à quitter le port d’origine.',
+      scheduledOnly: false,
+      eligibility: { type: 'locationIs', locationId: 'starter_port' },
       priority: 100,
       choices: [
         {
           id: 'set_sail',
-          text: 'Set sail',
+          text: 'Prendre la mer.',
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'left_port',
-              text: 'The voyage begins.',
+              id: 'departure_set_sail',
+              text: 'La carrière commence en pleine mer.',
               advanceMonths: 1,
               effects: [
-                { type: 'setFlag', flagId: 'left_starter_port' },
-                { type: 'scheduleEvent', eventId: 'delayed_warning', delayMonths: 2 },
+                { type: 'setFlag', flagId: 'career_departed' },
                 { type: 'moveToLocation', locationId: 'open_sea' },
               ],
             },
@@ -31,32 +32,71 @@ export const contentCatalog = {
       ],
     },
     {
-      id: 'open_sea',
-      title: 'Open Sea',
-      text: 'An abandoned chart case drifts alongside the ship.',
+      id: 'mira_castaway',
+      title: 'Une naufragée',
+      text: 'Une naufragée nommée Mira dérive au large.',
+      scheduledOnly: false,
       eligibility: {
         type: 'all',
         conditions: [
-          { type: 'hasChosen', eventId: 'departure', choiceId: 'set_sail' },
-          { type: 'hasFlag', flagId: 'left_starter_port' },
+          { type: 'hasFlag', flagId: 'career_departed' },
           { type: 'locationIs', locationId: 'open_sea' },
+          { type: 'npcStatusIs', npcId: 'mira', status: 'unavailable' },
         ],
       },
-      priority: 50,
+      priority: 90,
       choices: [
         {
-          id: 'recover_chart',
-          text: 'Recover the chart and continue',
+          id: 'rescue_recruit',
+          text: 'La secourir et lui proposer de rejoindre l’équipage.',
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'chart_recovered',
-              text: 'The sealed chart shows a path through nearby reefs.',
+              id: 'mira_castaway_recruited',
+              text: 'Mira rejoint l’équipage.',
               advanceMonths: 1,
               effects: [
-                { type: 'addItem', itemId: 'sealed_chart' },
-                { type: 'modifyShipCondition', amount: -1 },
-                { type: 'moveToLocation', locationId: 'reefs' },
+                { type: 'setNpcStatus', npcId: 'mira', status: 'crew' },
+                { type: 'modifyNpcRelationship', npcId: 'mira', amount: 25 },
+                { type: 'setFlag', flagId: 'mira_rescued' },
+                { type: 'setFlag', flagId: 'castaway_resolved' },
+              ],
+            },
+          },
+        },
+        {
+          id: 'rescue_dropoff',
+          text: 'La secourir, mais la déposer au prochain endroit sûr.',
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'mira_castaway_dropped_off',
+              text: 'Mira est déposée en sécurité.',
+              advanceMonths: 1,
+              effects: [
+                { type: 'setNpcStatus', npcId: 'mira', status: 'departed' },
+                { type: 'modifyNpcRelationship', npcId: 'mira', amount: 15 },
+                { type: 'setFlag', flagId: 'mira_rescued' },
+                { type: 'setFlag', flagId: 'castaway_resolved' },
+                { type: 'scheduleEvent', eventId: 'mira_returns_favor', delayMonths: 6 },
+              ],
+            },
+          },
+        },
+        {
+          id: 'leave_mira',
+          text: 'Ne pas prendre le risque de la récupérer.',
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'mira_castaway_abandoned',
+              text: 'Le navire poursuit sa route sans Mira.',
+              advanceMonths: 1,
+              effects: [
+                { type: 'setNpcStatus', npcId: 'mira', status: 'unavailable' },
+                { type: 'modifyNpcRelationship', npcId: 'mira', amount: -20 },
+                { type: 'setFlag', flagId: 'mira_abandoned' },
+                { type: 'setFlag', flagId: 'castaway_resolved' },
               ],
             },
           },
@@ -64,22 +104,146 @@ export const contentCatalog = {
       ],
     },
     {
-      id: 'delayed_warning',
-      title: 'A Delayed Warning',
-      text: 'A message sent after your departure finally catches up with the ship.',
-      scheduledOnly: true,
-      priority: 0,
+      id: 'black_squall',
+      title: 'Le grain noir',
+      text: 'Un grain noir barre la route du navire.',
+      scheduledOnly: false,
+      eligibility: {
+        type: 'all',
+        conditions: [
+          { type: 'hasFlag', flagId: 'castaway_resolved' },
+          { type: 'locationIs', locationId: 'open_sea' },
+        ],
+      },
+      priority: 80,
       choices: [
         {
-          id: 'heed_warning',
-          text: 'Heed the warning',
+          id: 'cut_through_squall',
+          text: 'Maintenir le cap et traverser le grain.',
+          resolution: {
+            type: 'dice',
+            check: {
+              modifiers: [
+                {
+                  type: 'statModifier', statId: 'navigation', multiplier: 2,
+                  displayLabel: 'Navigation', displayInfluence: 'forte influence',
+                },
+                {
+                  type: 'statModifier', statId: 'willpower', multiplier: 1,
+                  displayLabel: 'Volonté', displayInfluence: 'influence moyenne',
+                },
+                {
+                  type: 'conditionalModifier',
+                  condition: { type: 'shipConditionAtMost', value: 1 },
+                  value: -4, displayLabel: 'Bateau endommagé', displayInfluence: 'malus important',
+                },
+              ],
+              bands: [
+                {
+                  maxInclusive: 7,
+                  outcome: {
+                    id: 'black_squall_catastrophe', text: 'Le grain tourne à la catastrophe.', advanceMonths: 4,
+                    effects: [
+                      { type: 'modifyShipCondition', amount: -1 },
+                      { type: 'setFlag', flagId: 'black_squall_disaster' },
+                      { type: 'setFlag', flagId: 'black_squall_resolved' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: 12,
+                  outcome: {
+                    id: 'black_squall_failure', text: 'Le navire sort endommagé du grain.', advanceMonths: 3,
+                    effects: [
+                      { type: 'modifyShipCondition', amount: -1 },
+                      { type: 'setFlag', flagId: 'black_squall_resolved' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: 15,
+                  outcome: {
+                    id: 'black_squall_success_cost', text: 'Le passage réussit au prix d’un long détour.', advanceMonths: 4,
+                    effects: [
+                      { type: 'setFlag', flagId: 'black_squall_delayed' },
+                      { type: 'setFlag', flagId: 'black_squall_resolved' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: 20,
+                  outcome: {
+                    id: 'black_squall_success', text: 'Le navire traverse le grain.', advanceMonths: 3,
+                    effects: [{ type: 'setFlag', flagId: 'black_squall_resolved' }],
+                  },
+                },
+                {
+                  maxInclusive: null,
+                  outcome: {
+                    id: 'black_squall_exceptional', text: 'Le grain est parfaitement maîtrisé.', advanceMonths: 3,
+                    effects: [
+                      { type: 'setFlag', flagId: 'black_squall_mastered' },
+                      { type: 'setFlag', flagId: 'black_squall_resolved' },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        },
+        {
+          id: 'heave_to',
+          text: 'Réduire la voilure et attendre que le grain passe.',
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'warning_received',
-              text: 'The warning confirms that dangerous reefs lie ahead.',
-              advanceMonths: 0,
-              effects: [{ type: 'setFlag', flagId: 'received_delayed_warning' }],
+              id: 'black_squall_waited', text: 'Le navire attend la fin du grain.', advanceMonths: 4,
+              effects: [
+                { type: 'setFlag', flagId: 'black_squall_delayed' },
+                { type: 'setFlag', flagId: 'black_squall_resolved' },
+              ],
+            },
+          },
+        },
+      ],
+    },
+    {
+      id: 'wreck',
+      title: 'L’épave',
+      text: 'Une épave dérive non loin de la route.',
+      scheduledOnly: false,
+      eligibility: {
+        type: 'all',
+        conditions: [
+          { type: 'hasFlag', flagId: 'black_squall_resolved' },
+          { type: 'locationIs', locationId: 'open_sea' },
+        ],
+      },
+      priority: 70,
+      choices: [
+        {
+          id: 'search_wreck',
+          text: 'Explorer l’épave avant de repartir.',
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'wreck_chart_found', text: 'Une carte scellée est retrouvée.', advanceMonths: 3,
+              effects: [
+                { type: 'addItem', itemId: 'sealed_chart' },
+                { type: 'setFlag', flagId: 'wreck_searched' },
+                { type: 'setFlag', flagId: 'wreck_resolved' },
+              ],
+            },
+          },
+        },
+        {
+          id: 'leave_wreck',
+          text: 'Ne pas perdre de temps et poursuivre la route.',
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'wreck_ignored', text: 'L’épave est laissée derrière.', advanceMonths: 3,
+              effects: [{ type: 'setFlag', flagId: 'wreck_resolved' }],
             },
           },
         },
@@ -87,71 +251,93 @@ export const contentCatalog = {
     },
     {
       id: 'reefs',
-      title: 'The Reefs',
-      text: 'Sharp reefs block the route ahead.',
+      title: 'Les récifs',
+      text: 'Une barrière de récifs bloque la route extérieure.',
+      scheduledOnly: false,
       eligibility: {
         type: 'all',
         conditions: [
-          { type: 'hasChosen', eventId: 'open_sea', choiceId: 'recover_chart' },
-          { type: 'locationIs', locationId: 'reefs' },
+          { type: 'hasFlag', flagId: 'wreck_resolved' },
+          { type: 'locationIs', locationId: 'open_sea' },
         ],
       },
-      priority: 50,
+      priority: 70,
       choices: [
         {
-          id: 'risk_crossing',
-          text: 'Risk a crossing through the reefs',
+          id: 'force_passage',
+          text: 'Tenter de trouver un passage au milieu des récifs.',
           resolution: {
             type: 'dice',
             check: {
               modifiers: [
                 {
-                  type: 'statModifier',
-                  statId: 'navigation',
-                  multiplier: 2,
-                  displayLabel: 'Navigation',
-                  displayInfluence: 'strong influence',
+                  type: 'statModifier', statId: 'navigation', multiplier: 2,
+                  displayLabel: 'Navigation', displayInfluence: 'forte influence',
+                },
+                {
+                  type: 'statModifier', statId: 'willpower', multiplier: 1,
+                  displayLabel: 'Volonté', displayInfluence: 'influence moyenne',
                 },
                 {
                   type: 'conditionalModifier',
-                  condition: { type: 'shipConditionAtMost', value: 2 },
-                  value: -2,
-                  displayLabel: 'Damaged ship',
-                  displayInfluence: 'significant penalty',
+                  condition: { type: 'shipConditionAtMost', value: 1 },
+                  value: -3, displayLabel: 'Bateau endommagé', displayInfluence: 'malus important',
                 },
               ],
               bands: [
                 {
                   maxInclusive: 7,
                   outcome: {
-                    id: 'reef_disaster',
-                    text: 'The ship is wrecked against the reefs.',
-                    advanceMonths: 1,
+                    id: 'reefs_force_catastrophe', text: 'La traversée est catastrophique.', advanceMonths: 4,
                     effects: [
-                      { type: 'modifyShipCondition', amount: -3 },
-                      { type: 'endCareer' },
+                      { type: 'modifyShipCondition', amount: -1 },
+                      { type: 'setFlag', flagId: 'reefs_hard_crossing' },
+                      { type: 'setFlag', flagId: 'reefs_crossed' },
+                      { type: 'moveToLocation', locationId: 'outer_route' },
                     ],
                   },
                 },
                 {
-                  maxInclusive: 14,
+                  maxInclusive: 12,
                   outcome: {
-                    id: 'reef_costly_crossing',
-                    text: 'You cross the reefs, but the hull takes another hit.',
-                    advanceMonths: 1,
+                    id: 'reefs_force_failure', text: 'Le passage endommage le navire.', advanceMonths: 3,
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
-                      { type: 'endCareer' },
+                      { type: 'setFlag', flagId: 'reefs_crossed' },
+                      { type: 'moveToLocation', locationId: 'outer_route' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: 15,
+                  outcome: {
+                    id: 'reefs_force_success_cost', text: 'Le passage réussit au prix d’une traversée difficile.', advanceMonths: 4,
+                    effects: [
+                      { type: 'setFlag', flagId: 'reefs_hard_crossing' },
+                      { type: 'setFlag', flagId: 'reefs_crossed' },
+                      { type: 'moveToLocation', locationId: 'outer_route' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: 20,
+                  outcome: {
+                    id: 'reefs_force_success', text: 'Le passage est franchi.', advanceMonths: 3,
+                    effects: [
+                      { type: 'setFlag', flagId: 'reefs_crossed' },
+                      { type: 'moveToLocation', locationId: 'outer_route' },
                     ],
                   },
                 },
                 {
                   maxInclusive: null,
                   outcome: {
-                    id: 'reef_safe_crossing',
-                    text: 'You find a clean line through the reefs.',
-                    advanceMonths: 1,
-                    effects: [{ type: 'endCareer' }],
+                    id: 'reefs_force_exceptional', text: 'Le passage est franchi sans difficulté.', advanceMonths: 3,
+                    effects: [
+                      { type: 'setFlag', flagId: 'reefs_clean_crossing' },
+                      { type: 'setFlag', flagId: 'reefs_crossed' },
+                      { type: 'moveToLocation', locationId: 'outer_route' },
+                    ],
                   },
                 },
               ],
@@ -160,46 +346,445 @@ export const contentCatalog = {
         },
         {
           id: 'read_currents',
-          text: '[Navigation 3] Read the currents',
+          text: '[Navigation 3] Repérer le chenal à partir des courants.',
           availableIf: { type: 'statAtLeast', statId: 'navigation', value: 3 },
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'currents_crossed',
-              text: 'You guide the ship safely through.',
-              advanceMonths: 1,
-              effects: [{ type: 'endCareer' }],
-            },
-          },
-        },
-        {
-          id: 'use_chart',
-          text: 'Use the sealed chart',
-          visibleIf: { type: 'hasItem', itemId: 'sealed_chart' },
-          resolution: {
-            type: 'deterministic',
-            outcome: {
-              id: 'chart_crossing',
-              text: 'The chart reveals a safe channel.',
-              advanceMonths: 1,
+              id: 'reefs_navigation_solution', text: 'Les courants révèlent un chenal sûr.', advanceMonths: 3,
               effects: [
-                { type: 'removeItem', itemId: 'sealed_chart' },
-                { type: 'endCareer' },
+                { type: 'setFlag', flagId: 'reefs_clean_crossing' },
+                { type: 'setFlag', flagId: 'reefs_crossed' },
+                { type: 'moveToLocation', locationId: 'outer_route' },
               ],
             },
           },
         },
         {
-          id: 'steady_course',
-          text: '[Steady Nerves] Hold a perfect course',
-          visibleIf: { type: 'hasTrait', traitId: 'steady_nerves' },
+          id: 'use_sealed_chart',
+          text: 'Utiliser la carte trouvée dans l’épave.',
+          visibleIf: { type: 'hasItem', itemId: 'sealed_chart' },
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'steady_crossing',
-              text: 'You never waver.',
-              advanceMonths: 1,
-              effects: [{ type: 'endCareer' }],
+              id: 'reefs_chart_solution', text: 'La carte indique une route sûre.', advanceMonths: 3,
+              effects: [
+                { type: 'setFlag', flagId: 'reefs_clean_crossing' },
+                { type: 'setFlag', flagId: 'reefs_crossed' },
+                { type: 'moveToLocation', locationId: 'outer_route' },
+              ],
+            },
+          },
+        },
+        {
+          id: 'ride_breakers',
+          text: '[Audacieux] Profiter des brisants pour forcer un passage rapide.',
+          visibleIf: { type: 'hasTrait', traitId: 'audacious' },
+          resolution: {
+            type: 'dice',
+            check: {
+              modifiers: [
+                {
+                  type: 'statModifier', statId: 'navigation', multiplier: 1,
+                  displayLabel: 'Navigation', displayInfluence: 'influence moyenne',
+                },
+                {
+                  type: 'statModifier', statId: 'willpower', multiplier: 2,
+                  displayLabel: 'Volonté', displayInfluence: 'forte influence',
+                },
+                {
+                  type: 'conditionalModifier',
+                  condition: { type: 'shipConditionAtMost', value: 1 },
+                  value: -3, displayLabel: 'Bateau endommagé', displayInfluence: 'malus important',
+                },
+              ],
+              bands: [
+                {
+                  maxInclusive: 7,
+                  outcome: {
+                    id: 'reefs_breakers_catastrophe', text: 'Les brisants malmènent le navire.', advanceMonths: 4,
+                    effects: [
+                      { type: 'modifyShipCondition', amount: -1 },
+                      { type: 'setFlag', flagId: 'reefs_hard_crossing' },
+                      { type: 'setFlag', flagId: 'reefs_crossed' },
+                      { type: 'moveToLocation', locationId: 'outer_route' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: 12,
+                  outcome: {
+                    id: 'reefs_breakers_failure', text: 'Le navire franchit les brisants avec des dégâts.', advanceMonths: 3,
+                    effects: [
+                      { type: 'modifyShipCondition', amount: -1 },
+                      { type: 'setFlag', flagId: 'reefs_crossed' },
+                      { type: 'moveToLocation', locationId: 'outer_route' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: 15,
+                  outcome: {
+                    id: 'reefs_breakers_success_cost', text: 'Le passage est difficile mais réussi.', advanceMonths: 4,
+                    effects: [
+                      { type: 'setFlag', flagId: 'reefs_hard_crossing' },
+                      { type: 'setFlag', flagId: 'reefs_crossed' },
+                      { type: 'moveToLocation', locationId: 'outer_route' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: 20,
+                  outcome: {
+                    id: 'reefs_breakers_success', text: 'Les brisants offrent un passage rapide.', advanceMonths: 3,
+                    effects: [
+                      { type: 'setFlag', flagId: 'reefs_crossed' },
+                      { type: 'moveToLocation', locationId: 'outer_route' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: null,
+                  outcome: {
+                    id: 'reefs_breakers_exceptional', text: 'Le passage est parfaitement exécuté.', advanceMonths: 3,
+                    effects: [
+                      { type: 'setFlag', flagId: 'reefs_clean_crossing' },
+                      { type: 'setFlag', flagId: 'reefs_crossed' },
+                      { type: 'moveToLocation', locationId: 'outer_route' },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        },
+      ],
+    },
+    {
+      id: 'mira_confession',
+      title: 'L’aveu de Mira',
+      text: 'Mira révèle pourquoi des hommes la recherchent.',
+      scheduledOnly: false,
+      eligibility: {
+        type: 'all',
+        conditions: [
+          { type: 'hasFlag', flagId: 'black_squall_resolved' },
+          { type: 'npcStatusIs', npcId: 'mira', status: 'crew' },
+          { type: 'monthAtLeast', value: 5 },
+        ],
+      },
+      priority: 85,
+      choices: [
+        {
+          id: 'trust_mira',
+          text: 'Lui faire confiance et accepter qu’elle reste à bord.',
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'mira_confession_trusted', text: 'Mira reste à bord avec votre confiance.', advanceMonths: 1,
+              effects: [
+                { type: 'modifyNpcRelationship', npcId: 'mira', amount: 20 },
+                { type: 'setFlag', flagId: 'mira_trusted' },
+                { type: 'setFlag', flagId: 'mira_confession_resolved' },
+              ],
+            },
+          },
+        },
+        {
+          id: 'keep_watch',
+          text: 'La laisser rester, mais la garder sous surveillance.',
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'mira_confession_watched', text: 'Mira reste sous surveillance.', advanceMonths: 1,
+              effects: [
+                { type: 'modifyNpcRelationship', npcId: 'mira', amount: -5 },
+                { type: 'setFlag', flagId: 'mira_mistrusted' },
+                { type: 'setFlag', flagId: 'mira_confession_resolved' },
+              ],
+            },
+          },
+        },
+        {
+          id: 'put_mira_ashore',
+          text: 'La débarquer pour éviter ses problèmes.',
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'mira_confession_exiled', text: 'Mira quitte le navire.', advanceMonths: 1,
+              effects: [
+                { type: 'modifyNpcRelationship', npcId: 'mira', amount: -20 },
+                { type: 'setNpcStatus', npcId: 'mira', status: 'departed' },
+                { type: 'setFlag', flagId: 'mira_confession_resolved' },
+              ],
+            },
+          },
+        },
+      ],
+    },
+    {
+      id: 'mira_hunters',
+      title: 'Les chasseurs de Mira',
+      text: 'Les poursuivants de Mira retrouvent votre navire.',
+      scheduledOnly: false,
+      eligibility: {
+        type: 'all',
+        conditions: [
+          { type: 'hasFlag', flagId: 'reefs_crossed' },
+          { type: 'locationIs', locationId: 'outer_route' },
+          { type: 'npcStatusIs', npcId: 'mira', status: 'crew' },
+          {
+            type: 'any',
+            conditions: [
+              { type: 'hasChosen', eventId: 'mira_confession', choiceId: 'trust_mira' },
+              { type: 'hasChosen', eventId: 'mira_confession', choiceId: 'keep_watch' },
+            ],
+          },
+          { type: 'monthAtLeast', value: 10 },
+        ],
+      },
+      priority: 85,
+      choices: [
+        {
+          id: 'let_mira_speak',
+          text: '[Relation Mira 40] Faire confiance à Mira pour négocier.',
+          availableIf: { type: 'npcRelationshipAtLeast', npcId: 'mira', value: 40 },
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'mira_hunters_negotiated', text: 'Mira obtient une issue pacifique.', advanceMonths: 1,
+              effects: [
+                { type: 'modifyNpcRelationship', npcId: 'mira', amount: 10 },
+                { type: 'setFlag', flagId: 'mira_hunters_peaceful' },
+                { type: 'setFlag', flagId: 'mira_hunters_resolved' },
+              ],
+            },
+          },
+        },
+        {
+          id: 'bluff_hunters',
+          text: '[Présence 3] Convaincre les poursuivants qu’ils se trompent de navire.',
+          availableIf: { type: 'statAtLeast', statId: 'presence', value: 3 },
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'mira_hunters_bluffed', text: 'Le bluff éloigne les poursuivants.', advanceMonths: 1,
+              effects: [
+                { type: 'modifyNpcRelationship', npcId: 'mira', amount: 5 },
+                { type: 'setFlag', flagId: 'mira_hunters_resolved' },
+              ],
+            },
+          },
+        },
+        {
+          id: 'outrun_hunters',
+          text: 'Tenter de semer leurs navires.',
+          resolution: {
+            type: 'dice',
+            check: {
+              modifiers: [
+                {
+                  type: 'statModifier', statId: 'navigation', multiplier: 2,
+                  displayLabel: 'Navigation', displayInfluence: 'forte influence',
+                },
+                {
+                  type: 'statModifier', statId: 'willpower', multiplier: 1,
+                  displayLabel: 'Volonté', displayInfluence: 'influence moyenne',
+                },
+                {
+                  type: 'conditionalModifier',
+                  condition: { type: 'shipConditionAtMost', value: 1 },
+                  value: -4, displayLabel: 'Bateau endommagé', displayInfluence: 'malus important',
+                },
+              ],
+              bands: [
+                {
+                  maxInclusive: 7,
+                  outcome: {
+                    id: 'mira_hunters_escape_catastrophe', text: 'La fuite tourne à la catastrophe.', advanceMonths: 1,
+                    effects: [
+                      { type: 'modifyShipCondition', amount: -1 },
+                      { type: 'modifyNpcRelationship', npcId: 'mira', amount: -10 },
+                      { type: 'setNpcStatus', npcId: 'mira', status: 'departed' },
+                      { type: 'setFlag', flagId: 'mira_hunters_resolved' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: 12,
+                  outcome: {
+                    id: 'mira_hunters_escape_failure', text: 'La fuite coûte cher au navire.', advanceMonths: 1,
+                    effects: [
+                      { type: 'modifyShipCondition', amount: -1 },
+                      { type: 'modifyNpcRelationship', npcId: 'mira', amount: -5 },
+                      { type: 'setFlag', flagId: 'mira_hunters_resolved' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: 15,
+                  outcome: {
+                    id: 'mira_hunters_escape_success_cost', text: 'Les poursuivants sont semés avec difficulté.', advanceMonths: 1,
+                    effects: [
+                      { type: 'modifyShipCondition', amount: -1 },
+                      { type: 'modifyNpcRelationship', npcId: 'mira', amount: 5 },
+                      { type: 'setFlag', flagId: 'mira_hunters_resolved' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: 20,
+                  outcome: {
+                    id: 'mira_hunters_escape_success', text: 'Les poursuivants sont semés.', advanceMonths: 1,
+                    effects: [
+                      { type: 'modifyNpcRelationship', npcId: 'mira', amount: 10 },
+                      { type: 'setFlag', flagId: 'mira_hunters_resolved' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: null,
+                  outcome: {
+                    id: 'mira_hunters_escape_exceptional', text: 'La fuite est une réussite éclatante.', advanceMonths: 1,
+                    effects: [
+                      { type: 'modifyNpcRelationship', npcId: 'mira', amount: 15 },
+                      { type: 'setFlag', flagId: 'mira_hunters_resolved' },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        },
+        {
+          id: 'hand_over_mira',
+          text: 'Livrer Mira pour éviter un affrontement.',
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'mira_hunters_betrayed', text: 'Mira est livrée à ses poursuivants.', advanceMonths: 1,
+              effects: [
+                { type: 'modifyNpcRelationship', npcId: 'mira', amount: -50 },
+                { type: 'setNpcStatus', npcId: 'mira', status: 'unavailable' },
+                { type: 'setFlag', flagId: 'mira_betrayed' },
+                { type: 'setFlag', flagId: 'mira_hunters_resolved' },
+              ],
+            },
+          },
+        },
+      ],
+    },
+    {
+      id: 'mira_returns_favor',
+      title: 'Une dette honorée',
+      text: 'Mira revient honorer la dette née de son sauvetage.',
+      scheduledOnly: true,
+      eligibility: {
+        type: 'all',
+        conditions: [
+          { type: 'hasChosen', eventId: 'mira_castaway', choiceId: 'rescue_dropoff' },
+          { type: 'npcStatusIs', npcId: 'mira', status: 'departed' },
+        ],
+      },
+      priority: 100,
+      choices: [
+        {
+          id: 'accept_mira_favor',
+          text: 'Accepter la lettre de passage que Mira a obtenue.',
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'mira_favor_received', text: 'Mira remet une lettre de passage.', advanceMonths: 0,
+              effects: [
+                { type: 'addItem', itemId: 'mira_letter_of_passage' },
+                { type: 'modifyNpcRelationship', npcId: 'mira', amount: 10 },
+                { type: 'setFlag', flagId: 'mira_returned_favor' },
+              ],
+            },
+          },
+        },
+      ],
+    },
+    {
+      id: 'year_one_end',
+      title: 'Un an en mer',
+      text: 'La première année de carrière touche à sa fin.',
+      scheduledOnly: false,
+      eligibility: {
+        type: 'all',
+        conditions: [
+          { type: 'hasFlag', flagId: 'reefs_crossed' },
+          { type: 'locationIs', locationId: 'outer_route' },
+          { type: 'monthAtLeast', value: 11 },
+          {
+            type: 'any',
+            conditions: [
+              { type: 'not', condition: { type: 'npcStatusIs', npcId: 'mira', status: 'crew' } },
+              { type: 'hasFlag', flagId: 'mira_hunters_resolved' },
+            ],
+          },
+        ],
+      },
+      priority: 100,
+      choices: [
+        {
+          id: 'press_on',
+          text: 'Poursuivre la route vers des mers plus dangereuses.',
+          availableIf: { type: 'shipConditionAtLeast', value: 1 },
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'year_one_continues', text: 'La carrière continue au-delà de la première année.', advanceMonths: 1,
+              effects: [{ type: 'setFlag', flagId: 'ending_press_on' }, { type: 'endCareer' }],
+            },
+          },
+        },
+        {
+          id: 'use_mira_passage',
+          text: 'Utiliser la route que Mira vous a fait parvenir.',
+          visibleIf: {
+            type: 'all',
+            conditions: [
+              { type: 'hasItem', itemId: 'mira_letter_of_passage' },
+              { type: 'shipConditionAtLeast', value: 1 },
+            ],
+          },
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'year_one_mira_favor', text: 'La lettre ouvre une nouvelle route.', advanceMonths: 1,
+              effects: [{ type: 'setFlag', flagId: 'ending_mira_favor' }, { type: 'endCareer' }],
+            },
+          },
+        },
+        {
+          id: 'sail_with_mira',
+          text: 'Continuer l’aventure avec Mira à bord.',
+          visibleIf: {
+            type: 'all',
+            conditions: [
+              { type: 'npcStatusIs', npcId: 'mira', status: 'crew' },
+              { type: 'npcRelationshipAtLeast', npcId: 'mira', value: 40 },
+              { type: 'shipConditionAtLeast', value: 1 },
+            ],
+          },
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'year_one_with_mira', text: 'Mira reste à bord pour la suite.', advanceMonths: 1,
+              effects: [{ type: 'setFlag', flagId: 'ending_with_mira' }, { type: 'endCareer' }],
+            },
+          },
+        },
+        {
+          id: 'make_landfall',
+          text: 'Le bateau ne peut plus continuer. Faire escale.',
+          visibleIf: { type: 'shipConditionAtMost', value: 0 },
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'year_one_ship_broken', text: 'La première expédition prend fin à terre.', advanceMonths: 1,
+              effects: [{ type: 'setFlag', flagId: 'ending_ship_broken' }, { type: 'endCareer' }],
             },
           },
         },

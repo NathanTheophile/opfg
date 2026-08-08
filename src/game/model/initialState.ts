@@ -22,7 +22,12 @@ export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
     },
     flags: [],
     items: [],
-    npcs: {},
+    npcs: {
+      mira: {
+        status: 'unavailable',
+        relationship: 0,
+      },
+    },
     history: [],
     scheduledEvents: [],
     currentEventId: null,

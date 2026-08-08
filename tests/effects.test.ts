@@ -31,14 +31,14 @@ describe('applyEffects', () => {
     const repaired = applyEffects(damaged, [{ type: 'modifyShipCondition', amount: 10 }], context);
     const related = applyEffects(
       state,
-      [{ type: 'modifyNpcRelationship', npcId: 'mira', amount: 150 }],
+      [{ type: 'modifyNpcRelationship', npcId: 'new_npc', amount: 150 }],
       context,
     );
 
     expect(damaged.ship.condition).toBe(0);
     expect(repaired.ship.condition).toBe(3);
-    expect(related.npcs.mira).toEqual({ status: 'known', relationship: 100 });
-    expect(state.npcs).toEqual({});
+    expect(related.npcs.new_npc).toEqual({ status: 'known', relationship: 100 });
+    expect(state.npcs).toEqual({ mira: { status: 'unavailable', relationship: 0 } });
   });
 
   it('initializes an absent NPC deterministically when setting status', () => {

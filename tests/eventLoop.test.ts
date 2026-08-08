@@ -56,51 +56,30 @@ describe('normal event selection', () => {
   });
 });
 
-describe('deterministic resolution', () => {
-  it('plays all three temporary events with effects, post-advance history, and next selection', () => {
+describe('catalog resolution', () => {
+  it('starts the real Slice 0 with departure followed by Mira Castaway', () => {
     let state = selectNextEvent(createInitialGameState(), contentCatalog.events);
     expect(state.currentEventId).toBe('departure');
 
     state = resolveChoice(state, contentCatalog.events, 'departure', 'set_sail').state;
-    expect(state).toMatchObject({ month: 1, locationId: 'open_sea', currentEventId: 'open_sea' });
-    expect(state.flags).toContain('left_starter_port');
-    expect(state.scheduledEvents).toEqual([
-      {
-        eventId: 'delayed_warning',
-        dueMonth: 2,
-        sourceEventId: 'departure',
-        sourceChoiceId: 'set_sail',
-      },
-    ]);
+    expect(state).toMatchObject({ month: 1, locationId: 'open_sea', currentEventId: 'mira_castaway' });
+    expect(state.flags).toContain('career_departed');
     expect(state.history[0]).toEqual({
       eventId: 'departure',
       choiceId: 'set_sail',
-      outcomeId: 'left_port',
+      outcomeId: 'departure_set_sail',
       month: 1,
     });
 
-    state = resolveChoice(state, contentCatalog.events, 'open_sea', 'recover_chart').state;
-    expect(state).toMatchObject({ month: 2, locationId: 'reefs', currentEventId: 'delayed_warning' });
-    expect(state.items).toContain('sealed_chart');
-
-    state = resolveChoice(state, contentCatalog.events, 'delayed_warning', 'heed_warning').state;
-    expect(state).toMatchObject({ month: 2, currentEventId: 'reefs' });
-    expect(state.scheduledEvents).toEqual([]);
-
-    const finalResult = resolveChoice(state, contentCatalog.events, 'reefs', 'use_chart');
-    state = finalResult.state;
-    expect(state).toMatchObject({ month: 3, careerStatus: 'ended', currentEventId: null });
-    expect(state.items).not.toContain('sealed_chart');
-    expect(state.history).toHaveLength(4);
-    expect(finalResult.outcome.id).toBe('chart_crossing');
-    expect(finalResult.dice).toBeUndefined();
+    const result = resolveChoice(state, contentCatalog.events, 'mira_castaway', 'rescue_recruit');
+    expect(result.state.currentEventId).toBe('black_squall');
+    expect(result.state.npcs.mira).toEqual({ status: 'crew', relationship: 25 });
+    expect(result.dice).toBeUndefined();
   });
 
   it('rejects a locked choice even when called directly', () => {
-    let state = selectNextEvent(createInitialGameState(), contentCatalog.events);
-    state = resolveChoice(state, contentCatalog.events, 'departure', 'set_sail').state;
-    state = resolveChoice(state, contentCatalog.events, 'open_sea', 'recover_chart').state;
-    state = resolveChoice(state, contentCatalog.events, 'delayed_warning', 'heed_warning').state;
+    const state = createInitialGameState();
+    state.currentEventId = 'reefs';
 
     expect(() => resolveChoice(state, contentCatalog.events, 'reefs', 'read_currents')).toThrow(
       'Choice "read_currents" is not available.',

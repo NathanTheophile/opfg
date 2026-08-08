@@ -34,7 +34,7 @@ function detailedState(): GameState {
   state.month = 6;
   state.locationId = 'reefs';
   state.player.stats = { navigation: 3, presence: 2, willpower: 4 };
-  state.player.traits = ['steady_nerves'];
+  state.player.traits = ['audacious'];
   state.ship.condition = 1;
   state.flags = ['left_starter_port'];
   state.items = ['sealed_chart'];
@@ -44,7 +44,7 @@ function detailedState(): GameState {
   ];
   state.scheduledEvents = [
     {
-      eventId: 'delayed_warning',
+      eventId: 'mira_returns_favor',
       dueMonth: 7,
       sourceEventId: 'departure',
       sourceChoiceId: 'set_sail',
@@ -101,7 +101,7 @@ describe('restored deterministic RNG', () => {
   it('produces the same next DiceCheck as the uninterrupted state', () => {
     const state = detailedState();
     const reefs = contentCatalog.events.find(({ id }) => id === 'reefs');
-    const riskyChoice = reefs?.choices.find(({ id }) => id === 'risk_crossing');
+    const riskyChoice = reefs?.choices.find(({ id }) => id === 'force_passage');
     if (riskyChoice?.resolution.type !== 'dice') throw new Error('Missing risky DiceCheck fixture.');
 
     const restored = deserializeGameState(serializeGameState(state));

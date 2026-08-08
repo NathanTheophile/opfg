@@ -21,7 +21,12 @@ describe('createInitialGameState', () => {
       ship: { condition: 3 },
       flags: [],
       items: [],
-      npcs: {},
+      npcs: {
+        mira: {
+          status: 'unavailable',
+          relationship: 0,
+        },
+      },
       history: [],
       scheduledEvents: [],
       currentEventId: null,
