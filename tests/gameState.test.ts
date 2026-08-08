@@ -1,0 +1,53 @@
+import { describe, expect, it } from 'vitest';
+import { createInitialGameState } from '../src/game/model/initialState';
+
+describe('createInitialGameState', () => {
+  it('creates a career matching the Slice 0 invariants', () => {
+    const state = createInitialGameState(1234);
+
+    expect(state).toEqual({
+      version: 1,
+      rngState: 1234,
+      month: 0,
+      locationId: 'starter_port',
+      player: {
+        stats: {
+          navigation: 1,
+          presence: 1,
+          willpower: 1,
+        },
+        traits: [],
+      },
+      ship: { condition: 3 },
+      flags: [],
+      items: [],
+      npcs: {},
+      history: [],
+      scheduledEvents: [],
+      currentEventId: null,
+      careerStatus: 'active',
+    });
+  });
+
+  it('does not share mutable objects or arrays between careers', () => {
+    const first = createInitialGameState();
+    const second = createInitialGameState();
+
+    expect(first.player).not.toBe(second.player);
+    expect(first.player.stats).not.toBe(second.player.stats);
+    expect(first.player.traits).not.toBe(second.player.traits);
+    expect(first.ship).not.toBe(second.ship);
+    expect(first.flags).not.toBe(second.flags);
+    expect(first.items).not.toBe(second.items);
+    expect(first.npcs).not.toBe(second.npcs);
+    expect(first.history).not.toBe(second.history);
+    expect(first.scheduledEvents).not.toBe(second.scheduledEvents);
+  });
+
+  it('survives a JSON round-trip without data loss', () => {
+    const state = createInitialGameState(9876);
+    const restored: unknown = JSON.parse(JSON.stringify(state));
+
+    expect(restored).toEqual(state);
+  });
+});

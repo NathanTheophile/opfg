@@ -1,0 +1,106 @@
+# AGENTS.md
+
+## Project
+
+Jam OP Fan Game — web game jam, 72 hours.
+
+Stack:
+- React
+- Vite
+- TypeScript
+- Vitest
+- localStorage
+- no backend unless explicitly approved
+
+## Source of truth
+
+Before modifying gameplay systems, read:
+
+- `docs/VERTICAL_SLICE_0.md`
+- `docs/ARCHITECTURE.md`
+- `docs/JAM_STATE.md`
+
+`VERTICAL_SLICE_0.md` is the source of truth for the current game-design scope.
+
+Do not invent gameplay rules when the specification is ambiguous. Surface the ambiguity instead.
+
+## Core rules
+
+- Keep the game runnable throughout the jam.
+- Prefer the smallest implementation that satisfies the current slice.
+- Do not add abstractions for hypothetical future features.
+- Do not add dependencies unless they solve an immediate problem.
+- Keep Engine, Content, GameState and React UI separated.
+- Narrative content must be data-driven.
+- Content data must not contain arbitrary callbacks/functions.
+- Persistent GameState must remain directly JSON-serializable.
+- Persistent GameState must not contain `Map`, `Set`, `Date`, class instances, functions or callbacks.
+- Do not store information that can be reliably derived from the source state.
+- Do not add duplicate sources of truth.
+- Stable IDs must be used for gameplay/content references.
+
+## GameState
+
+Persistent GameState contains only actual career state.
+
+Do not add derived caches such as:
+- `usedEvents` when the information is already derivable from `history`;
+- crew counts when crew state already exists;
+- duplicated age/time values.
+
+For Slice 0:
+- flags and items are arrays;
+- NPC state is stored in `Record<NpcId, NpcState>`;
+- no generic `ArcState`.
+
+## Architecture
+
+Expected flow:
+
+`Content -> Engine -> GameState -> React UI`
+
+React must not implement gameplay rules.
+
+The engine should be usable independently from React so it can be unit-tested and simulated.
+
+## Scope discipline
+
+Do not implement deferred systems listed in `docs/VERTICAL_SLICE_0.md` unless explicitly requested.
+
+In particular, do not proactively add:
+- backend/cloud;
+- accounts;
+- generic arc framework;
+- generic quest framework;
+- economy;
+- factions;
+- complex inventory;
+- procedural narrative generation;
+- repeatable event framework;
+- complex state management libraries.
+
+## Validation
+
+Before considering a task complete, run:
+
+```bash
+npm test
+npm run build
+```
+
+Run content validation as soon as the command exists.
+
+A task is complete only when:
+1. requested behavior works;
+2. tests pass;
+3. production build passes;
+4. no unrelated architecture or mechanics were added;
+5. the repository remains runnable.
+
+## Changes
+
+Keep changes scoped to the task.
+
+Do not refactor unrelated files unless required to complete the requested behavior.
+
+Prefer one coherent commit per verified increment.
