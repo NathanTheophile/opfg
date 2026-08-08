@@ -62,32 +62,17 @@ export interface Outcome {
   effects: Effect[];
 }
 
-export interface StatModifier {
-  type: 'statModifier';
-  statId: StatId;
-  multiplier: number;
-  displayLabel: string;
-  displayInfluence: string;
-}
+export type DiceResult = 'criticalFailure' | 'failure' | 'success' | 'criticalSuccess';
 
-export interface ConditionalModifier {
-  type: 'conditionalModifier';
+export interface ConditionalDiceModifier {
   condition: Condition;
   value: number;
   displayLabel: string;
-  displayInfluence: string;
 }
 
-export type DiceModifier = StatModifier | ConditionalModifier;
-
-export interface DiceBand {
-  maxInclusive: number | null;
-  outcome: Outcome;
-}
-
-export interface DiceCheck {
-  modifiers: DiceModifier[];
-  bands: DiceBand[];
+export interface TraitResultOverride {
+  traitId: TraitId;
+  forceResult: 'criticalFailure' | 'criticalSuccess';
 }
 
 export interface DeterministicResolution {
@@ -97,7 +82,11 @@ export interface DeterministicResolution {
 
 export interface DiceResolution {
   type: 'dice';
-  check: DiceCheck;
+  statId: StatId;
+  successThreshold: number;
+  modifiers?: ConditionalDiceModifier[];
+  traitOverrides?: TraitResultOverride[];
+  outcomes: Record<DiceResult, Outcome>;
 }
 
 export type Resolution = DeterministicResolution | DiceResolution;

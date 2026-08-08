@@ -80,9 +80,18 @@ describe('applyEffects', () => {
     const state = createInitialGameState();
     const modified = applyEffects(state, [{ type: 'modifyStat', statId: 'health', amount: 2 }], context);
 
-    expect(modified.player.stats.health).toBe(3);
+    expect(modified.player.stats.health).toBe(27);
     expect(() => applyEffects(state, [{ type: 'modifyStat', statId: 'awakening', amount: 1 }], context))
       .toThrow('Cannot modify inactive stat "awakening".');
+  });
+
+  it('clamps active stats to the 0..50 contract', () => {
+    const state = createInitialGameState();
+    const high = applyEffects(state, [{ type: 'modifyStat', statId: 'health', amount: 100 }], context);
+    const low = applyEffects(state, [{ type: 'modifyStat', statId: 'health', amount: -100 }], context);
+
+    expect(high.player.stats.health).toBe(50);
+    expect(low.player.stats.health).toBe(0);
   });
 
   it('adds and removes traits idempotently', () => {

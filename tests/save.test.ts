@@ -128,8 +128,8 @@ describe('restored deterministic RNG', () => {
     const restored = deserializeGameState(serializeGameState(state));
     if (!restored) throw new Error('Expected a valid restored state.');
 
-    expect(resolveDiceCheck(riskyChoice.resolution.check, restored)).toEqual(
-      resolveDiceCheck(riskyChoice.resolution.check, state),
+    expect(resolveDiceCheck(riskyChoice.resolution, restored)).toEqual(
+      resolveDiceCheck(riskyChoice.resolution, state),
     );
   });
 });
@@ -148,6 +148,12 @@ describe('invalid saves', () => {
     const raw = JSON.stringify({ ...malformed, ship: { condition: 99 } });
 
     expect(deserializeGameState(raw)).toBeNull();
+  });
+
+  it.each([-1, 51, Number.POSITIVE_INFINITY])('rejects out-of-range stat value %s', (navigation) => {
+    const state = detailedState();
+    state.player.stats.navigation = navigation;
+    expect(deserializeGameState(JSON.stringify(state))).toBeNull();
   });
 
   it('rejects inconsistent career end state and preserves a valid reason', () => {

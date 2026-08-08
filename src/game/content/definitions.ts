@@ -126,72 +126,42 @@ export const contentCatalog = {
           text: 'Maintenir le cap et traverser le grain.',
           resolution: {
             type: 'dice',
-            check: {
-              modifiers: [
-                {
-                  type: 'statModifier', statId: 'navigation', multiplier: 2,
-                  displayLabel: 'Navigation', displayInfluence: 'forte influence',
-                },
-                {
-                  type: 'statModifier', statId: 'morale', multiplier: 1,
-                  displayLabel: 'Moral', displayInfluence: 'influence moyenne',
-                },
-                {
-                  type: 'conditionalModifier',
-                  condition: { type: 'shipConditionAtMost', value: 1 },
-                  value: -4, displayLabel: 'Bateau endommagé', displayInfluence: 'malus important',
-                },
-              ],
-              bands: [
-                {
-                  maxInclusive: 7,
-                  outcome: {
+            statId: 'navigation',
+            successThreshold: 13,
+            modifiers: [
+              {
+                condition: { type: 'shipConditionAtMost', value: 1 },
+                value: -4,
+                displayLabel: 'Bateau endommagé',
+              },
+            ],
+            outcomes: {
+              criticalFailure: {
                     id: 'black_squall_catastrophe', text: 'Le grain tourne à la catastrophe.', advanceMonths: 4,
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'setFlag', flagId: 'black_squall_disaster' },
                       { type: 'setFlag', flagId: 'black_squall_resolved' },
                     ],
-                  },
-                },
-                {
-                  maxInclusive: 12,
-                  outcome: {
+              },
+              failure: {
                     id: 'black_squall_failure', text: 'Le navire sort endommagé du grain.', advanceMonths: 3,
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'setFlag', flagId: 'black_squall_resolved' },
                     ],
-                  },
-                },
-                {
-                  maxInclusive: 15,
-                  outcome: {
-                    id: 'black_squall_success_cost', text: 'Le passage réussit au prix d’un long détour.', advanceMonths: 4,
-                    effects: [
-                      { type: 'setFlag', flagId: 'black_squall_delayed' },
-                      { type: 'setFlag', flagId: 'black_squall_resolved' },
-                    ],
-                  },
-                },
-                {
-                  maxInclusive: 20,
-                  outcome: {
+              },
+              success: {
                     id: 'black_squall_success', text: 'Le navire traverse le grain.', advanceMonths: 3,
                     effects: [{ type: 'setFlag', flagId: 'black_squall_resolved' }],
-                  },
-                },
-                {
-                  maxInclusive: null,
-                  outcome: {
+              },
+              criticalSuccess: {
                     id: 'black_squall_exceptional', text: 'Le grain est parfaitement maîtrisé.', advanceMonths: 3,
                     effects: [
                       { type: 'setFlag', flagId: 'black_squall_mastered' },
                       { type: 'setFlag', flagId: 'black_squall_resolved' },
                     ],
-                  },
-                },
-              ],
+              },
             },
           },
         },
@@ -272,26 +242,15 @@ export const contentCatalog = {
           text: 'Tenter de trouver un passage au milieu des récifs.',
           resolution: {
             type: 'dice',
-            check: {
-              modifiers: [
-                {
-                  type: 'statModifier', statId: 'navigation', multiplier: 2,
-                  displayLabel: 'Navigation', displayInfluence: 'forte influence',
-                },
-                {
-                  type: 'statModifier', statId: 'morale', multiplier: 1,
-                  displayLabel: 'Moral', displayInfluence: 'influence moyenne',
-                },
-                {
-                  type: 'conditionalModifier',
-                  condition: { type: 'shipConditionAtMost', value: 1 },
-                  value: -3, displayLabel: 'Bateau endommagé', displayInfluence: 'malus important',
-                },
-              ],
-              bands: [
-                {
-                  maxInclusive: 7,
-                  outcome: {
+            statId: 'navigation',
+            successThreshold: 13,
+            modifiers: [{
+              condition: { type: 'shipConditionAtMost', value: 1 },
+              value: -3,
+              displayLabel: 'Bateau endommagé',
+            }],
+            outcomes: {
+              criticalFailure: {
                     id: 'reefs_force_catastrophe', text: 'La traversée est catastrophique.', advanceMonths: 4,
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
@@ -299,59 +258,37 @@ export const contentCatalog = {
                       { type: 'setFlag', flagId: 'reefs_crossed' },
                       { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
-                  },
-                },
-                {
-                  maxInclusive: 12,
-                  outcome: {
+              },
+              failure: {
                     id: 'reefs_force_failure', text: 'Le passage endommage le navire.', advanceMonths: 3,
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
                       { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
-                  },
-                },
-                {
-                  maxInclusive: 15,
-                  outcome: {
-                    id: 'reefs_force_success_cost', text: 'Le passage réussit au prix d’une traversée difficile.', advanceMonths: 4,
-                    effects: [
-                      { type: 'setFlag', flagId: 'reefs_hard_crossing' },
-                      { type: 'setFlag', flagId: 'reefs_crossed' },
-                      { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
-                    ],
-                  },
-                },
-                {
-                  maxInclusive: 20,
-                  outcome: {
+              },
+              success: {
                     id: 'reefs_force_success', text: 'Le passage est franchi.', advanceMonths: 3,
                     effects: [
                       { type: 'setFlag', flagId: 'reefs_crossed' },
                       { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
-                  },
-                },
-                {
-                  maxInclusive: null,
-                  outcome: {
+              },
+              criticalSuccess: {
                     id: 'reefs_force_exceptional', text: 'Le passage est franchi sans difficulté.', advanceMonths: 3,
                     effects: [
                       { type: 'setFlag', flagId: 'reefs_clean_crossing' },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
                       { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
-                  },
-                },
-              ],
+              },
             },
           },
         },
         {
           id: 'read_currents',
-          text: '[Navigation 3] Repérer le chenal à partir des courants.',
-          availableIf: { type: 'statAtLeast', statId: 'navigation', value: 3 },
+          text: '[Navigation 35] Repérer le chenal à partir des courants.',
+          availableIf: { type: 'statAtLeast', statId: 'navigation', value: 35 },
           resolution: {
             type: 'deterministic',
             outcome: {
@@ -386,26 +323,15 @@ export const contentCatalog = {
           visibleIf: { type: 'hasTrait', traitId: 'audacious' },
           resolution: {
             type: 'dice',
-            check: {
-              modifiers: [
-                {
-                  type: 'statModifier', statId: 'navigation', multiplier: 1,
-                  displayLabel: 'Navigation', displayInfluence: 'influence moyenne',
-                },
-                {
-                  type: 'statModifier', statId: 'morale', multiplier: 2,
-                  displayLabel: 'Moral', displayInfluence: 'forte influence',
-                },
-                {
-                  type: 'conditionalModifier',
-                  condition: { type: 'shipConditionAtMost', value: 1 },
-                  value: -3, displayLabel: 'Bateau endommagé', displayInfluence: 'malus important',
-                },
-              ],
-              bands: [
-                {
-                  maxInclusive: 7,
-                  outcome: {
+            statId: 'morale',
+            successThreshold: 13,
+            modifiers: [{
+              condition: { type: 'shipConditionAtMost', value: 1 },
+              value: -3,
+              displayLabel: 'Bateau endommagé',
+            }],
+            outcomes: {
+              criticalFailure: {
                     id: 'reefs_breakers_catastrophe', text: 'Les brisants malmènent le navire.', advanceMonths: 4,
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
@@ -413,52 +339,30 @@ export const contentCatalog = {
                       { type: 'setFlag', flagId: 'reefs_crossed' },
                       { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
-                  },
-                },
-                {
-                  maxInclusive: 12,
-                  outcome: {
+              },
+              failure: {
                     id: 'reefs_breakers_failure', text: 'Le navire franchit les brisants avec des dégâts.', advanceMonths: 3,
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
                       { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
-                  },
-                },
-                {
-                  maxInclusive: 15,
-                  outcome: {
-                    id: 'reefs_breakers_success_cost', text: 'Le passage est difficile mais réussi.', advanceMonths: 4,
-                    effects: [
-                      { type: 'setFlag', flagId: 'reefs_hard_crossing' },
-                      { type: 'setFlag', flagId: 'reefs_crossed' },
-                      { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
-                    ],
-                  },
-                },
-                {
-                  maxInclusive: 20,
-                  outcome: {
+              },
+              success: {
                     id: 'reefs_breakers_success', text: 'Les brisants offrent un passage rapide.', advanceMonths: 3,
                     effects: [
                       { type: 'setFlag', flagId: 'reefs_crossed' },
                       { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
-                  },
-                },
-                {
-                  maxInclusive: null,
-                  outcome: {
+              },
+              criticalSuccess: {
                     id: 'reefs_breakers_exceptional', text: 'Le passage est parfaitement exécuté.', advanceMonths: 3,
                     effects: [
                       { type: 'setFlag', flagId: 'reefs_clean_crossing' },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
                       { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
-                  },
-                },
-              ],
+              },
             },
           },
         },
@@ -567,8 +471,8 @@ export const contentCatalog = {
         },
         {
           id: 'bluff_hunters',
-          text: '[Charisme 3] Convaincre les poursuivants qu’ils se trompent de navire.',
-          availableIf: { type: 'statAtLeast', statId: 'charisma', value: 3 },
+          text: '[Charisme 35] Convaincre les poursuivants qu’ils se trompent de navire.',
+          availableIf: { type: 'statAtLeast', statId: 'charisma', value: 35 },
           resolution: {
             type: 'deterministic',
             outcome: {
@@ -585,26 +489,15 @@ export const contentCatalog = {
           text: 'Tenter de semer leurs navires.',
           resolution: {
             type: 'dice',
-            check: {
-              modifiers: [
-                {
-                  type: 'statModifier', statId: 'navigation', multiplier: 2,
-                  displayLabel: 'Navigation', displayInfluence: 'forte influence',
-                },
-                {
-                  type: 'statModifier', statId: 'morale', multiplier: 1,
-                  displayLabel: 'Moral', displayInfluence: 'influence moyenne',
-                },
-                {
-                  type: 'conditionalModifier',
-                  condition: { type: 'shipConditionAtMost', value: 1 },
-                  value: -4, displayLabel: 'Bateau endommagé', displayInfluence: 'malus important',
-                },
-              ],
-              bands: [
-                {
-                  maxInclusive: 7,
-                  outcome: {
+            statId: 'navigation',
+            successThreshold: 13,
+            modifiers: [{
+              condition: { type: 'shipConditionAtMost', value: 1 },
+              value: -4,
+              displayLabel: 'Bateau endommagé',
+            }],
+            outcomes: {
+              criticalFailure: {
                     id: 'mira_hunters_escape_catastrophe', text: 'La fuite tourne à la catastrophe.', advanceMonths: 1,
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
@@ -612,51 +505,29 @@ export const contentCatalog = {
                       { type: 'setNpcStatus', npcId: 'mira', status: 'departed' },
                       { type: 'setFlag', flagId: 'mira_hunters_resolved' },
                     ],
-                  },
-                },
-                {
-                  maxInclusive: 12,
-                  outcome: {
+              },
+              failure: {
                     id: 'mira_hunters_escape_failure', text: 'La fuite coûte cher au navire.', advanceMonths: 1,
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'modifyNpcRelationship', npcId: 'mira', amount: -5 },
                       { type: 'setFlag', flagId: 'mira_hunters_resolved' },
                     ],
-                  },
-                },
-                {
-                  maxInclusive: 15,
-                  outcome: {
-                    id: 'mira_hunters_escape_success_cost', text: 'Les poursuivants sont semés avec difficulté.', advanceMonths: 1,
-                    effects: [
-                      { type: 'modifyShipCondition', amount: -1 },
-                      { type: 'modifyNpcRelationship', npcId: 'mira', amount: 5 },
-                      { type: 'setFlag', flagId: 'mira_hunters_resolved' },
-                    ],
-                  },
-                },
-                {
-                  maxInclusive: 20,
-                  outcome: {
+              },
+              success: {
                     id: 'mira_hunters_escape_success', text: 'Les poursuivants sont semés.', advanceMonths: 1,
                     effects: [
                       { type: 'modifyNpcRelationship', npcId: 'mira', amount: 10 },
                       { type: 'setFlag', flagId: 'mira_hunters_resolved' },
                     ],
-                  },
-                },
-                {
-                  maxInclusive: null,
-                  outcome: {
+              },
+              criticalSuccess: {
                     id: 'mira_hunters_escape_exceptional', text: 'La fuite est une réussite éclatante.', advanceMonths: 1,
                     effects: [
                       { type: 'modifyNpcRelationship', npcId: 'mira', amount: 15 },
                       { type: 'setFlag', flagId: 'mira_hunters_resolved' },
                     ],
-                  },
-                },
-              ],
+              },
             },
           },
         },

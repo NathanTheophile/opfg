@@ -28,7 +28,7 @@ export function resolveChoice(
     choice.resolution.type === 'deterministic'
       ? { outcome: choice.resolution.outcome, state }
       : (() => {
-          const diceResult = resolveDiceCheck(choice.resolution.check, state);
+          const diceResult = resolveDiceCheck(choice.resolution, state);
           return {
             outcome: diceResult.outcome,
             dice: diceResult.dice,

@@ -1,29 +1,50 @@
 import { describe, expect, it } from 'vitest';
-import type { DiceCheck } from '../src/game/content/schema';
+import type { DiceResolution, Outcome } from '../src/game/content/schema';
 import { contentCatalog } from '../src/game/content/definitions';
-import { resolveDiceCheck, rollD20, selectDiceOutcome } from '../src/game/engine/dice';
+import {
+  evaluateDiceRoll,
+  getDicePreview,
+  resolveDiceCheck,
+  rollD20,
+  statToDiceModifier,
+} from '../src/game/engine/dice';
 import { resolveChoice } from '../src/game/engine/resolution';
 import { createInitialGameState } from '../src/game/model/initialState';
 
-const outcomes = {
-  low: { id: 'low', text: 'Low', advanceMonths: 1, effects: [] },
-  middle: { id: 'middle', text: 'Middle', advanceMonths: 1, effects: [] },
-  high: { id: 'high', text: 'High', advanceMonths: 1, effects: [] },
-};
+function outcome(id: string): Outcome {
+  return { id, text: id, advanceMonths: 1, effects: [] };
+}
 
-const bands = [
-  { maxInclusive: 7, outcome: outcomes.low },
-  { maxInclusive: 14, outcome: outcomes.middle },
-  { maxInclusive: null, outcome: outcomes.high },
-];
+function resolution(overrides: Partial<DiceResolution> = {}): DiceResolution {
+  return {
+    type: 'dice',
+    statId: 'navigation',
+    successThreshold: 14,
+    outcomes: {
+      criticalFailure: outcome('critical_failure'),
+      failure: outcome('failure'),
+      success: outcome('success'),
+      criticalSuccess: outcome('critical_success'),
+    },
+    ...overrides,
+  };
+}
+
+describe('statToDiceModifier', () => {
+  it.each([
+    [0, -5], [3, -5], [4, -4], [7, -4], [8, -3], [11, -3], [12, -2], [15, -2],
+    [16, -1], [19, -1], [20, 0], [25, 0], [30, 0], [31, 1], [34, 1], [35, 2],
+    [38, 2], [39, 3], [42, 3], [43, 4], [46, 4], [47, 5], [50, 5],
+  ])('maps %i to %i', (value, expected) => {
+    expect(statToDiceModifier(value)).toBe(expected);
+  });
+});
 
 describe('seeded d20', () => {
   it('is deterministic, stays within 1..20, and advances rngState', () => {
     for (let seed = 0; seed < 100; seed += 1) {
       const first = rollD20(seed);
-      const second = rollD20(seed);
-
-      expect(first).toEqual(second);
+      expect(first).toEqual(rollD20(seed));
       expect(first.rawRoll).toBeGreaterThanOrEqual(1);
       expect(first.rawRoll).toBeLessThanOrEqual(20);
       expect(first.nextRngState).not.toBe(seed);
@@ -31,64 +52,92 @@ describe('seeded d20', () => {
   });
 });
 
-describe('dice modifiers', () => {
-  const check: DiceCheck = {
-    modifiers: [
-      {
-        type: 'statModifier',
-        statId: 'navigation',
-        multiplier: 2,
-        displayLabel: 'Navigation',
-        displayInfluence: 'strong',
-      },
-      {
-        type: 'conditionalModifier',
-        condition: { type: 'shipConditionAtMost', value: 2 },
-        value: -3,
-        displayLabel: 'Damaged ship',
-        displayInfluence: 'penalty',
-      },
-    ],
-    bands: [{ maxInclusive: null, outcome: outcomes.high }],
-  };
+describe('vNext roll evaluation', () => {
+  it('makes raw 1 an absolute critical failure before bonuses or Trait overrides', () => {
+    const state = createInitialGameState();
+    state.player.stats.navigation = 50;
+    state.player.traits = ['lucky'];
+    const check = resolution({
+      modifiers: [{ condition: { type: 'hasFlag', flagId: 'bonus' }, value: 100, displayLabel: 'Bonus' }],
+      traitOverrides: [{ traitId: 'lucky', forceResult: 'criticalSuccess' }],
+    });
+    state.flags = ['bonus'];
 
-  it('calculates stat modifiers and applies true conditional modifiers', () => {
-    const state = createInitialGameState(10);
-    state.player.stats.navigation = 3;
-    state.ship.condition = 2;
-
-    const result = resolveDiceCheck(check, state);
-
-    expect(result.dice.modifiers).toEqual([
-      { label: 'Navigation', value: 6, displayInfluence: 'strong' },
-      { label: 'Damaged ship', value: -3, displayInfluence: 'penalty' },
-    ]);
-    expect(result.dice.modifierTotal).toBe(3);
-    expect(result.dice.total).toBe(result.dice.rawRoll + 3);
+    const result = evaluateDiceRoll(check, state, 1);
+    expect(result).toMatchObject({ result: 'criticalFailure', total: 1, modifierTotal: 0 });
+    expect('traitOverrideApplied' in result).toBe(false);
   });
 
-  it('omits false conditional modifiers', () => {
-    const result = resolveDiceCheck(check, createInitialGameState(10));
+  it('uses stat modifier, threshold, and total 20 critical success boundaries', () => {
+    const state = createInitialGameState();
+    state.player.stats.navigation = 38;
+    const check = resolution({ successThreshold: 14 });
 
-    expect(result.dice.modifiers).toEqual([
-      { label: 'Navigation', value: 2, displayInfluence: 'strong' },
-    ]);
-    expect(result.dice.modifierTotal).toBe(2);
+    expect(evaluateDiceRoll(check, state, 11).result).toBe('failure');
+    expect(evaluateDiceRoll(check, state, 12).result).toBe('success');
+    expect(evaluateDiceRoll(check, state, 17).result).toBe('success');
+    expect(evaluateDiceRoll(check, state, 18)).toMatchObject({ statModifier: 2, total: 20, result: 'criticalSuccess' });
+  });
+
+  it('does not make a natural 20 critical when a malus lowers total below 20', () => {
+    const state = createInitialGameState();
+    state.ship.condition = 1;
+    const check = resolution({
+      successThreshold: 13,
+      modifiers: [{ condition: { type: 'shipConditionAtMost', value: 1 }, value: -3, displayLabel: 'Ship' }],
+    });
+
+    expect(evaluateDiceRoll(check, state, 20)).toMatchObject({ total: 17, result: 'success' });
+  });
+
+  it('applies secret Trait overrides after numeric resolution and rejects conflicts', () => {
+    const state = createInitialGameState();
+    state.player.traits = ['clumsy'];
+    const forcedFailure = resolution({ traitOverrides: [{ traitId: 'clumsy', forceResult: 'criticalFailure' }] });
+    expect(evaluateDiceRoll(forcedFailure, state, 20)).toMatchObject({
+      result: 'criticalFailure', traitOverrideApplied: true,
+    });
+
+    const forcedSuccess = resolution({ traitOverrides: [{ traitId: 'clumsy', forceResult: 'criticalSuccess' }] });
+    expect(evaluateDiceRoll(forcedSuccess, state, 2)).toMatchObject({
+      result: 'criticalSuccess', traitOverrideApplied: true,
+    });
+
+    state.player.traits.push('lucky');
+    const conflicting = resolution({ traitOverrides: [
+      { traitId: 'clumsy', forceResult: 'criticalFailure' },
+      { traitId: 'lucky', forceResult: 'criticalSuccess' },
+    ] });
+    expect(() => evaluateDiceRoll(conflicting, state, 10)).toThrow('conflicting DiceResults');
+  });
+
+  it('rejects inactive awakening except for the absolute raw 1 rule', () => {
+    const state = createInitialGameState();
+    const check = resolution({ statId: 'awakening' });
+
+    expect(() => evaluateDiceRoll(check, state, 2)).toThrow('Cannot use inactive stat "awakening"');
+    expect(evaluateDiceRoll(check, state, 1).result).toBe('criticalFailure');
+    expect(getDicePreview(check, state)).toEqual({ available: false, statId: 'awakening' });
   });
 });
 
-describe('dice bands', () => {
-  it('includes exact thresholds and moves to the next band above them', () => {
-    expect(selectDiceOutcome(bands, 7).id).toBe('low');
-    expect(selectDiceOutcome(bands, 8).id).toBe('middle');
-    expect(selectDiceOutcome(bands, 14).id).toBe('middle');
-    expect(selectDiceOutcome(bands, 15).id).toBe('high');
-    expect(selectDiceOutcome(bands, 100).id).toBe('high');
+describe('probability preview', () => {
+  it('evaluates all 20 rolls, excludes secret Traits, and caps normal success at 95%', () => {
+    const state = createInitialGameState();
+    state.flags = ['huge_bonus'];
+    state.player.traits = ['clumsy'];
+    const check = resolution({
+      successThreshold: 2,
+      modifiers: [{ condition: { type: 'hasFlag', flagId: 'huge_bonus' }, value: 100, displayLabel: 'Bonus' }],
+      traitOverrides: [{ traitId: 'clumsy', forceResult: 'criticalFailure' }],
+    });
+
+    expect(getDicePreview(check, state)).toMatchObject({ available: true, successProbability: 0.95 });
   });
 });
 
 describe('DiceResolution integration', () => {
-  it('applies the selected outcome and exposes roll details without persisting them', () => {
+  it('applies one of four Outcomes and exposes transient diagnostics', () => {
     const state = createInitialGameState(123);
     state.currentEventId = 'reefs';
     state.locationId = 'open_sea';
@@ -97,22 +146,18 @@ describe('DiceResolution integration', () => {
 
     const result = resolveChoice(state, contentCatalog.events, 'reefs', 'force_passage');
 
-    expect(result.state.month).toBeGreaterThanOrEqual(3);
     expect(result.state.locationId).toBe('outer_route');
     expect(result.state.flags).toContain('reefs_crossed');
     expect(result.state.rngState).not.toBe(rngBeforeRoll);
-    expect(result.state.history.at(-1)).toEqual({
-      eventId: 'reefs',
-      choiceId: 'force_passage',
-      outcomeId: result.outcome.id,
-      month: result.state.month,
-    });
-    expect(result.dice).toMatchObject({ modifierTotal: 3, outcomeId: result.outcome.id });
-    expect(result.dice?.modifiers).toEqual([
-      { label: 'Navigation', value: 2, displayInfluence: 'forte influence' },
-      { label: 'Moral', value: 1, displayInfluence: 'influence moyenne' },
-    ]);
+    expect(result.dice).toMatchObject({ statId: 'navigation', statValue: 25, outcomeId: result.outcome.id });
+    expect(['criticalFailure', 'failure', 'success', 'criticalSuccess']).toContain(result.dice?.result);
     expect('lastRoll' in result.state).toBe(false);
-    expect('lastOutcome' in result.state).toBe(false);
+  });
+
+  it('is deterministic across identical state and resolution', () => {
+    const check = resolution();
+    const first = createInitialGameState(456);
+    const second = structuredClone(first);
+    expect(resolveDiceCheck(check, first)).toEqual(resolveDiceCheck(check, second));
   });
 });

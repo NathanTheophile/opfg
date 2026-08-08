@@ -128,7 +128,7 @@ describe('real catalog conditional choices', () => {
     expect(getChoiceState(choice('reefs', 'use_sealed_chart'), state)).toEqual({ visible: false, available: false });
     expect(getChoiceState(choice('reefs', 'ride_breakers'), state)).toEqual({ visible: false, available: false });
 
-    state.player.stats.navigation = 3;
+    state.player.stats.navigation = 35;
     state.items.push('sealed_chart');
     state.player.traits.push('audacious');
     expect(getChoiceState(choice('reefs', 'read_currents'), state).available).toBe(true);
@@ -143,7 +143,7 @@ describe('real catalog conditional choices', () => {
     expect(getChoiceState(choice('mira_hunters', 'bluff_hunters'), state).available).toBe(false);
 
     state.npcs.mira.relationship = 40;
-    state.player.stats.charisma = 3;
+    state.player.stats.charisma = 35;
     expect(getChoiceState(choice('mira_hunters', 'let_mira_speak'), state).available).toBe(true);
     expect(getChoiceState(choice('mira_hunters', 'bluff_hunters'), state).available).toBe(true);
   });

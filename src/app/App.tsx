@@ -1,17 +1,38 @@
 import { useState } from 'react';
 import { contentCatalog } from '../game/content/definitions';
 import { getChoiceState } from '../game/engine/conditions';
+import { getDicePreview } from '../game/engine/dice';
 import { findCurrentEvent, selectNextEvent } from '../game/engine/events';
 import { resolveChoice } from '../game/engine/resolution';
 import type { ChoiceResolutionResult } from '../game/engine/resolution';
 import { clearGameState, loadGameState, saveGameState } from '../game/engine/save';
 import { createInitialGameState } from '../game/model/initialState';
 import type { GameState } from '../game/model/schema';
+import type { DiceResult, StatId } from '../game/content/schema';
 import { assertValidContent } from '../game/validation/validateContent';
 
 assertValidContent(contentCatalog);
 
 let fallbackSeed = Date.now() >>> 0;
+
+const STAT_LABELS: Record<StatId, string> = {
+  health: 'Santé',
+  morale: 'Moral',
+  strength: 'Force',
+  observation: 'Observation',
+  intelligence: 'Intelligence',
+  navigation: 'Navigation',
+  charisma: 'Charisme',
+  luck: 'Chance',
+  awakening: 'Éveil',
+};
+
+const RESULT_LABELS: Record<DiceResult, string> = {
+  criticalFailure: 'Échec critique',
+  failure: 'Échec',
+  success: 'Succès',
+  criticalSuccess: 'Succès critique',
+};
 
 function generateCareerSeed(): number {
   if (globalThis.crypto?.getRandomValues) {
@@ -118,6 +139,14 @@ export function App() {
             {currentEvent.choices.map((choice) => {
               const choiceState = getChoiceState(choice, gameState);
               if (!choiceState.visible) return null;
+              const preview = choice.resolution.type === 'dice'
+                ? getDicePreview(choice.resolution, gameState)
+                : null;
+              const dicePrefix = preview === null
+                ? ''
+                : preview.available
+                  ? `[${STAT_LABELS[preview.statId]} — ${Math.round(preview.successProbability * 100)} %] `
+                  : `[${STAT_LABELS[preview.statId]} — inactive] `;
 
               return (
                 <button
@@ -126,7 +155,7 @@ export function App() {
                   disabled={!choiceState.available}
                   onClick={() => choose(currentEvent.id, choice.id)}
                 >
-                  {choice.text}
+                  {dicePrefix}{choice.text}
                 </button>
               );
             })}
@@ -141,13 +170,20 @@ export function App() {
           <h2>Last Resolution</h2>
           {lastResolution.dice && (
             <>
-              <p>Roll: {lastResolution.dice.rawRoll}</p>
-              {lastResolution.dice.modifiers.map((modifier, index) => (
+              <p>D20: {lastResolution.dice.rawRoll}</p>
+              {lastResolution.dice.statValue !== null && (
+                <p>
+                  {STAT_LABELS[lastResolution.dice.statId]}: {lastResolution.dice.statModifier >= 0 ? '+' : ''}
+                  {lastResolution.dice.statModifier}
+                </p>
+              )}
+              {lastResolution.dice.conditionalModifiers.map((modifier, index) => (
                 <p key={`${modifier.label}-${index}`}>
-                  {modifier.label}: {modifier.value >= 0 ? '+' : ''}{modifier.value} ({modifier.displayInfluence})
+                  {modifier.label}: {modifier.value >= 0 ? '+' : ''}{modifier.value}
                 </p>
               ))}
               <p>Total: {lastResolution.dice.total}</p>
+              <p>Result: {RESULT_LABELS[lastResolution.dice.result]}</p>
             </>
           )}
           <p>Outcome: {lastResolution.outcome.text}</p>

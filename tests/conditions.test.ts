@@ -42,8 +42,8 @@ describe('evaluateCondition', () => {
   it('evaluates new core stats and handles inactive awakening', () => {
     const state = createInitialGameState();
 
-    expect(evaluateCondition({ type: 'statAtLeast', statId: 'navigation', value: 1 }, state)).toBe(true);
-    expect(evaluateCondition({ type: 'statAtLeast', statId: 'charisma', value: 1 }, state)).toBe(true);
+    expect(evaluateCondition({ type: 'statAtLeast', statId: 'navigation', value: 25 }, state)).toBe(true);
+    expect(evaluateCondition({ type: 'statAtLeast', statId: 'charisma', value: 25 }, state)).toBe(true);
     expect(evaluateCondition({ type: 'statAtLeast', statId: 'awakening', value: 0 }, state)).toBe(false);
     state.player.stats.awakening = 5;
     expect(evaluateCondition({ type: 'statAtLeast', statId: 'awakening', value: 5 }, state)).toBe(true);
@@ -97,7 +97,7 @@ describe('getChoiceState', () => {
         {
           id: 'locked',
           text: 'Locked',
-          availableIf: { type: 'statAtLeast', statId: 'navigation', value: 3 },
+          availableIf: { type: 'statAtLeast', statId: 'navigation', value: 35 },
           resolution: { type: 'deterministic', outcome },
         },
         state,

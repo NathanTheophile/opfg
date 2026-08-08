@@ -51,7 +51,7 @@ function applyEffect(state: GameState, effect: Effect, context: EffectContext): 
     case 'modifyStat': {
       const currentValue = state.player.stats[effect.statId];
       if (currentValue === null) throw new Error(`Cannot modify inactive stat "${effect.statId}".`);
-      state.player.stats[effect.statId] = currentValue + effect.amount;
+      state.player.stats[effect.statId] = clamp(currentValue + effect.amount, 0, 50);
       return;
     }
     case 'modifyShipCondition':

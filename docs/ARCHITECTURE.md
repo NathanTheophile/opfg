@@ -99,9 +99,11 @@ Career time and geography use distinct authoritative fields:
 - `travelState` identifies sea or land while `locationId` identifies the precise location;
 - `moveToLocation` updates `travelState` and `locationId` together.
 
-The persistent player profile contains eight normally active numeric stats: `health`, `morale`, `strength`, `observation`, `intelligence`, `navigation`, `charisma`, and `luck`. `awakening` is `null` while inaccessible and numeric only when active. Slice 0 initializes these values with temporary development fixtures; balancing is not defined yet.
+The persistent player profile contains eight normally active numeric stats: `health`, `morale`, `strength`, `observation`, `intelligence`, `navigation`, `charisma`, and `luck`. Active stats use the `0–50` range; `awakening` is `null` while inaccessible and follows the same range when active. Slice 0 initializes active stats at the neutral fixture value `25`; final balancing is not defined yet.
 
-Player Traits remain persistent `TraitId[]` values. Their public names and descriptions live in the content catalog, while `addTrait` and `removeTrait` update the profile idempotently. The existing DiceCheck remains the temporary Slice 0 implementation until T10.
+Player Traits remain persistent `TraitId[]` values. Their public names and descriptions live in the content catalog, while `addTrait` and `removeTrait` update the profile idempotently.
+
+DiceResolution uses one main stat, a success threshold from 2 to 19, optional conditional modifiers, optional secret Trait result overrides, and exactly four Outcomes. Stats `20–30` contribute zero; every four points outside that safe zone contributes another `±1`, capped naturally by the `0–50` stat range. Raw 1 is an absolute critical failure; otherwise total `>= 20` is critical success, total `>= successThreshold` is success, and lower totals fail. Player-facing probability enumerates all 20 raw rolls, excludes secret Trait overrides, and is derived rather than persisted. The legacy bands/multipliers system has been removed.
 
 ### React UI
 
@@ -154,7 +156,7 @@ Use discriminated unions for declarative gameplay data such as:
 - `Condition`;
 - `Effect`;
 - `Resolution`;
-- `DiceModifier`.
+- `DiceResult`.
 
 Prefer classes only where runtime encapsulation or dependencies provide real value, for example an engine/session/service.
 

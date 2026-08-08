@@ -37,14 +37,15 @@ The temporary demonstration content has been removed. The real Slice 0 exercises
 - Location effects update `travelState` and `locationId` atomically.
 - The player profile uses `health`, `morale`, `strength`, `observation`, `intelligence`, `navigation`, `charisma`, `luck`, and nullable `awakening`.
 - `awakening: null` means the stat is inaccessible; a number means it is active. No Devil Fruit mechanics exist yet.
-- Initial Slice 0 stat values are temporary development fixtures and balancing remains undefined.
+- Active stats use `0–50`; initial Slice 0 values are the neutral temporary fixture `25` and balancing remains undefined.
 - Traits are persistent IDs with public definitions in the content catalog; `addTrait` and `removeTrait` are available effects.
-- The current DiceCheck remains the legacy Slice 0 implementation until T10.
+- DiceCheck vNext uses one main stat, the `20–30` neutral zone, `±1` per four points, four Outcomes, absolute critical failure on raw 1, critical success at total 20+, and a per-check success threshold.
+- Dice probabilities enumerate all 20 raw rolls, exclude secret Trait overrides, and are never persisted.
+- The legacy Dice bands, stat multipliers, and influence labels have been removed.
 - Scheduled consequences use `dueAgeMonths`, derived from absolute `ageMonths`, so they also work outside active career.
 - `hasPlayed`, `hasChosen`, and `hasOutcome` derive distinct historical facts from `history`.
 - `careerEndReason` is persisted as `death` or `legacy`; current VS0 endings provisionally use `legacy`.
 - Trait definitions support validated symmetric `oppositeTraitId` references. Runtime opposite removal during `addTrait` is intentionally deferred to avoid coupling the engine to global content.
-- The current DiceCheck remains legacy and unchanged until T10.
 - Save schema version is 4; development saves from version 3 are intentionally rejected without migration.
 
 ---

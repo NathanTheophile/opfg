@@ -119,6 +119,7 @@ function validateEvent(
   }
 
   const choices = readRecords(event.choices, `${path}.choices`, errors);
+  const diceStatIds = new Set<string>();
   for (const [choiceIndex, choice] of choices.entries()) {
     const choicePath = `${path}.choices[${choiceIndex}]`;
     if (choice.visibleIf !== undefined) {
@@ -128,6 +129,12 @@ function validateEvent(
       validateCondition(choice.availableIf, `${choicePath}.availableIf`, references, errors);
     }
     validateResolution(choice.resolution, `${choicePath}.resolution`, references, errors);
+    if (isRecord(choice.resolution) && choice.resolution.type === 'dice') {
+      const statId = stringValue(choice.resolution.statId);
+      if (statId && diceStatIds.has(statId)) {
+        errors.push({ path: choicePath, message: `Multiple DiceChoices in one Event cannot use StatId "${statId}".` });
+      } else if (statId) diceStatIds.add(statId);
+    }
   }
 }
 
@@ -208,51 +215,65 @@ function validateResolution(
     return;
   }
   if (value.type === 'dice') {
-    validateDiceCheck(value.check, `${path}.check`, references, errors);
+    validateDiceResolution(value, path, references, errors);
     return;
   }
   errors.push({ path, message: `Unknown Resolution type "${String(value.type)}".` });
 }
 
-function validateDiceCheck(
+function validateDiceResolution(
   value: unknown,
   path: string,
   references: References,
   errors: ContentValidationError[],
 ): void {
   if (!isRecord(value)) {
-    errors.push({ path, message: 'DiceCheck must be an object.' });
+    errors.push({ path, message: 'DiceResolution must be an object.' });
     return;
   }
+  validateStat(value.statId, path, errors);
+  if (!Number.isInteger(value.successThreshold) || (value.successThreshold as number) < 2 || (value.successThreshold as number) > 19) {
+    errors.push({ path, message: 'successThreshold must be an integer from 2 to 19.' });
+  }
+  if (value.check !== undefined || value.bands !== undefined) {
+    errors.push({ path, message: 'Legacy DiceCheck fields are not supported.' });
+  }
 
-  const modifiers = readRecords(value.modifiers, `${path}.modifiers`, errors);
+  const modifiers = value.modifiers === undefined ? [] : readRecords(value.modifiers, `${path}.modifiers`, errors);
   for (const [index, modifier] of modifiers.entries()) {
     const modifierPath = `${path}.modifiers[${index}]`;
-    if (modifier.type === 'statModifier') validateStat(modifier.statId, modifierPath, errors);
-    else if (modifier.type === 'conditionalModifier') {
-      validateCondition(modifier.condition, `${modifierPath}.condition`, references, errors);
-    } else errors.push({ path: modifierPath, message: `Unknown DiceModifier type "${String(modifier.type)}".` });
+    validateCondition(modifier.condition, `${modifierPath}.condition`, references, errors);
+    if (typeof modifier.value !== 'number' || !Number.isFinite(modifier.value)) {
+      errors.push({ path: modifierPath, message: 'ConditionalDiceModifier value must be finite.' });
+    }
+    if (!stringValue(modifier.displayLabel)) {
+      errors.push({ path: modifierPath, message: 'ConditionalDiceModifier requires displayLabel.' });
+    }
   }
 
-  const bands = readRecords(value.bands, `${path}.bands`, errors);
-  if (bands.length === 0) {
-    errors.push({ path: `${path}.bands`, message: 'DiceCheck requires at least one band.' });
+  const overrides = value.traitOverrides === undefined
+    ? []
+    : readRecords(value.traitOverrides, `${path}.traitOverrides`, errors);
+  const overrideKeys = new Set<string>();
+  for (const [index, override] of overrides.entries()) {
+    const overridePath = `${path}.traitOverrides[${index}]`;
+    validateReference(override.traitId, references.traitIds, 'TraitId', overridePath, errors);
+    if (!(override.forceResult === 'criticalFailure' || override.forceResult === 'criticalSuccess')) {
+      errors.push({ path: overridePath, message: `Invalid forced DiceResult "${String(override.forceResult)}".` });
+    }
+    const key = `${String(override.traitId)}:${String(override.forceResult)}`;
+    if (overrideKeys.has(key)) errors.push({ path: overridePath, message: 'Duplicate TraitResultOverride.' });
+    overrideKeys.add(key);
+  }
+
+  if (!isRecord(value.outcomes)) {
+    errors.push({ path: `${path}.outcomes`, message: 'DiceResolution requires exactly four Outcomes.' });
     return;
   }
-
-  let previousMax = Number.NEGATIVE_INFINITY;
-  bands.forEach((band, index) => {
-    const bandPath = `${path}.bands[${index}]`;
-    const max = band.maxInclusive;
-    if (max === null) {
-      if (index !== bands.length - 1) errors.push({ path: bandPath, message: 'Only the final band may be unbounded.' });
-    } else if (typeof max !== 'number' || !Number.isFinite(max) || max <= previousMax) {
-      errors.push({ path: bandPath, message: 'maxInclusive must be a finite, strictly increasing number or final null.' });
-    } else previousMax = max;
-    validateOutcome(band.outcome, `${bandPath}.outcome`, references, errors);
-  });
-  if (bands.at(-1)?.maxInclusive !== null) {
-    errors.push({ path: `${path}.bands`, message: 'Final dice band must be unbounded (maxInclusive: null).' });
+  const resultKeys = ['criticalFailure', 'failure', 'success', 'criticalSuccess'];
+  for (const key of resultKeys) validateOutcome(value.outcomes[key], `${path}.outcomes.${key}`, references, errors);
+  for (const key of Object.keys(value.outcomes)) {
+    if (!resultKeys.includes(key)) errors.push({ path: `${path}.outcomes.${key}`, message: `Unknown DiceResult "${key}".` });
   }
 }
 
@@ -266,6 +287,7 @@ function validateOutcome(
     errors.push({ path, message: 'Outcome must be an object.' });
     return;
   }
+  if (!stringValue(value.id)) errors.push({ path: `${path}.id`, message: 'Outcome requires a non-empty ID.' });
   const effects = readRecords(value.effects, `${path}.effects`, errors);
   effects.forEach((effect, index) =>
     validateEffect(effect, `${path}.effects[${index}]`, references, errors),
@@ -349,10 +371,8 @@ function collectOutcomeIds(choices: UnknownRecord[]): Set<string> {
   for (const choice of choices) {
     if (!isRecord(choice.resolution)) continue;
     if (choice.resolution.type === 'deterministic') addOutcome(choice.resolution.outcome);
-    if (choice.resolution.type === 'dice' && isRecord(choice.resolution.check) && Array.isArray(choice.resolution.check.bands)) {
-      choice.resolution.check.bands.forEach((band) => {
-        if (isRecord(band)) addOutcome(band.outcome);
-      });
+    if (choice.resolution.type === 'dice' && isRecord(choice.resolution.outcomes)) {
+      Object.values(choice.resolution.outcomes).forEach(addOutcome);
     }
   }
   return outcomeIds;

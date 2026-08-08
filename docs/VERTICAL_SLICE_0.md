@@ -500,7 +500,7 @@ Scheduled due
 
 ---
 
-# 10. RNG / DiceCheck minimal
+# 10. RNG / DiceCheck vNext
 
 Un seul dé :
 
@@ -512,44 +512,29 @@ Tous les jets utilisent le PRNG seedé de la carrière.
 
 Jamais `Math.random()` directement pour une décision de gameplay.
 
-## DiceCheck
+## Contrat
 
 ```text
-DiceCheck
-  modifiers[]
-  bands[]
-```
-
-## Modifier
-
-Deux formes suffisent.
-
-### Stat
-
-```text
-statModifier
+DiceResolution
   statId
-  multiplier
-  displayLabel
-  displayInfluence
+  successThreshold
+  modifiers?[]
+  traitOverrides?[]
+  outcomes
+    criticalFailure
+    failure
+    success
+    criticalSuccess
 ```
 
-Exemple :
+Une seule statistique principale est utilisée. Les statistiques actives sont limitées à `0–50` et converties en modificateur : zone neutre `20–30`, puis `±1` par tranche de quatre points, jusqu’à `±5`.
 
-```text
-Navigation × 2
-"Navigation"
-"forte influence"
-```
+Les autres influences sont des modificateurs conditionnels explicites :
 
-### Bonus/malus conditionnel
-
-```text
-conditionalModifier
+ConditionalDiceModifier
   condition
   value
   displayLabel
-  displayInfluence
 ```
 
 Exemple :
@@ -559,43 +544,30 @@ if ship.condition <= 1
   -4
 
 "Bateau endommagé"
-"malus important"
 ```
 
 ## Résultat
 
 ```text
-total =
+raw 1
+  → criticalFailure absolu
+
+sinon total =
   d20
-  + modifiers actifs
+  + modificateur de stat
+  + modificateurs conditionnels actifs
+
+total >= 20
+  → criticalSuccess
+
+sinon total >= successThreshold
+  → success
+
+sinon
+  → failure
 ```
 
-Les bandes sont définies explicitement par le DiceCheck.
-
-Exemple :
-
-```text
-<= 7   catastrophe
-8–12   échec
-13–15  réussite avec coût
-16–20  réussite
->= 21  réussite exceptionnelle
-```
-
-Chaque bande pointe vers un `Outcome`.
-
-### Important
-
-Pas de règle :
-
-```text
-1 naturel = catastrophe automatique
-20 naturel = réussite exceptionnelle automatique
-```
-
-dans le premier slice.
-
-Les caractéristiques doivent pouvoir réellement protéger un personnage compétent contre certains mauvais jets.
+Les Trait overrides secrets sont appliqués après le résultat numérique, sauf sur un raw 1 qui arrête immédiatement la résolution. La probabilité affichée énumère les 20 résultats possibles sans appliquer ces overrides et n’est jamais persistée.
 
 ---
 

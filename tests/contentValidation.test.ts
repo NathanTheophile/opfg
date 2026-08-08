@@ -115,22 +115,34 @@ describe('validateContent', () => {
     expect(messages(asymmetric)).toContainEqual(expect.stringContaining('must be symmetric'));
   });
 
-  it('rejects empty, unordered, and non-terminal DiceCheck bands', () => {
+  it('validates the vNext DiceResolution contract and rejects legacy fields', () => {
     const catalog = cloneCatalog();
-    const choice = catalog.events[0].choices[0];
-    choice.resolution = {
-      type: 'dice',
-      check: { modifiers: [], bands: [] },
-    };
-    expect(messages(catalog)).toContainEqual(expect.stringContaining('requires at least one band'));
-
-    choice.resolution.check.bands = [
-      { maxInclusive: 12, outcome: { id: 'a', text: 'a', advanceMonths: 0, effects: [] } },
-      { maxInclusive: 10, outcome: { id: 'b', text: 'b', advanceMonths: 0, effects: [] } },
+    const choice = eventById(catalog, 'black_squall').choices[0];
+    choice.resolution.successThreshold = 20;
+    delete choice.resolution.outcomes.failure;
+    choice.resolution.check = { bands: [] };
+    choice.resolution.traitOverrides = [
+      { traitId: 'missing_trait', forceResult: 'success' },
+      { traitId: 'audacious', forceResult: 'criticalFailure' },
+      { traitId: 'audacious', forceResult: 'criticalFailure' },
     ];
     const errors = messages(catalog);
-    expect(errors).toContainEqual(expect.stringContaining('strictly increasing'));
-    expect(errors).toContainEqual(expect.stringContaining('Final dice band must be unbounded'));
+    expect(errors).toContainEqual(expect.stringContaining('successThreshold must be an integer from 2 to 19'));
+    expect(errors).toContainEqual(expect.stringContaining('Legacy DiceCheck fields are not supported'));
+    expect(errors).toContainEqual(expect.stringContaining('Outcome must be an object'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown TraitId "missing_trait"'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid forced DiceResult "success"'));
+    expect(errors).toContainEqual(expect.stringContaining('Duplicate TraitResultOverride'));
+  });
+
+  it('rejects two DiceChoices using the same main stat in one Event', () => {
+    const catalog = cloneCatalog();
+    const reefs = eventById(catalog, 'reefs');
+    reefs.choices.find((choice: Record<string, any>) => choice.id === 'ride_breakers').resolution.statId = 'navigation';
+
+    expect(messages(catalog)).toContainEqual(
+      expect.stringContaining('Multiple DiceChoices in one Event cannot use StatId "navigation"'),
+    );
   });
 
   it('rejects unknown Condition and Effect types and invalid StatIds', () => {

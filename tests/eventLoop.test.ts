@@ -101,14 +101,13 @@ describe('catalog resolution', () => {
           text: 'Roll',
           resolution: {
             type: 'dice',
-            check: {
-              modifiers: [],
-              bands: [
-                {
-                  maxInclusive: null,
-                  outcome: { id: 'rolled', text: 'Rolled', advanceMonths: 0, effects: [] },
-                },
-              ],
+            statId: 'navigation',
+            successThreshold: 13,
+            outcomes: {
+              criticalFailure: { id: 'critical_failure', text: 'Critical failure', advanceMonths: 0, effects: [] },
+              failure: { id: 'failure', text: 'Failure', advanceMonths: 0, effects: [] },
+              success: { id: 'success', text: 'Success', advanceMonths: 0, effects: [] },
+              criticalSuccess: { id: 'critical_success', text: 'Critical success', advanceMonths: 0, effects: [] },
             },
           },
         },
@@ -119,9 +118,9 @@ describe('catalog resolution', () => {
     const result = resolveChoice(state, [diceEvent], 'dice', 'roll');
 
     expect(result.state).toMatchObject({ month: 0, currentEventId: null });
-    expect(result.state.history[0].outcomeId).toBe('rolled');
-    expect(result.outcome.id).toBe('rolled');
-    expect(result.dice).toMatchObject({ outcomeId: 'rolled', modifierTotal: 0 });
+    expect(result.state.history[0].outcomeId).toBe(result.outcome.id);
+    expect(['critical_failure', 'failure', 'success', 'critical_success']).toContain(result.outcome.id);
+    expect(result.dice).toMatchObject({ outcomeId: result.outcome.id, modifierTotal: 0 });
   });
 
   it('advances age in childhood without advancing active-career month', () => {
