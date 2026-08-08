@@ -82,7 +82,7 @@ describe('validateContent', () => {
     const catalog = cloneCatalog();
     catalog.events[1].eligibility = { type: 'customScript' };
     catalog.events[0].choices[0].resolution.outcome.effects[0] = { type: 'customEffect' };
-    catalog.events[2].choices[0].availableIf.statId = 'luck';
+    catalog.events[2].choices[1].availableIf.statId = 'luck';
 
     const errors = messages(catalog);
     expect(errors).toContainEqual(expect.stringContaining('Unknown Condition type "customScript"'));

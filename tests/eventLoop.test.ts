@@ -61,7 +61,7 @@ describe('deterministic resolution', () => {
     let state = selectNextEvent(createInitialGameState(), contentCatalog.events);
     expect(state.currentEventId).toBe('departure');
 
-    state = resolveChoice(state, contentCatalog.events, 'departure', 'set_sail');
+    state = resolveChoice(state, contentCatalog.events, 'departure', 'set_sail').state;
     expect(state).toMatchObject({ month: 1, locationId: 'open_sea', currentEventId: 'open_sea' });
     expect(state.flags).toContain('left_starter_port');
     expect(state.history[0]).toEqual({
@@ -71,27 +71,30 @@ describe('deterministic resolution', () => {
       month: 1,
     });
 
-    state = resolveChoice(state, contentCatalog.events, 'open_sea', 'recover_chart');
+    state = resolveChoice(state, contentCatalog.events, 'open_sea', 'recover_chart').state;
     expect(state).toMatchObject({ month: 2, locationId: 'reefs', currentEventId: 'reefs' });
     expect(state.items).toContain('sealed_chart');
 
-    state = resolveChoice(state, contentCatalog.events, 'reefs', 'use_chart');
+    const finalResult = resolveChoice(state, contentCatalog.events, 'reefs', 'use_chart');
+    state = finalResult.state;
     expect(state).toMatchObject({ month: 3, careerStatus: 'ended', currentEventId: null });
     expect(state.items).not.toContain('sealed_chart');
     expect(state.history).toHaveLength(3);
+    expect(finalResult.outcome.id).toBe('chart_crossing');
+    expect(finalResult.dice).toBeUndefined();
   });
 
   it('rejects a locked choice even when called directly', () => {
     let state = selectNextEvent(createInitialGameState(), contentCatalog.events);
-    state = resolveChoice(state, contentCatalog.events, 'departure', 'set_sail');
-    state = resolveChoice(state, contentCatalog.events, 'open_sea', 'recover_chart');
+    state = resolveChoice(state, contentCatalog.events, 'departure', 'set_sail').state;
+    state = resolveChoice(state, contentCatalog.events, 'open_sea', 'recover_chart').state;
 
     expect(() => resolveChoice(state, contentCatalog.events, 'reefs', 'read_currents')).toThrow(
       'Choice "read_currents" is not available.',
     );
   });
 
-  it('rejects DiceResolution explicitly', () => {
+  it('resolves DiceResolution and returns its transient roll details', () => {
     const diceEvent: EventDefinition = {
       ...event('dice', 1),
       choices: [
@@ -115,8 +118,11 @@ describe('deterministic resolution', () => {
     };
     const state = selectNextEvent(createInitialGameState(), [diceEvent]);
 
-    expect(() => resolveChoice(state, [diceEvent], 'dice', 'roll')).toThrow(
-      'DiceResolution is not implemented yet.',
-    );
+    const result = resolveChoice(state, [diceEvent], 'dice', 'roll');
+
+    expect(result.state).toMatchObject({ month: 0, currentEventId: null });
+    expect(result.state.history[0].outcomeId).toBe('rolled');
+    expect(result.outcome.id).toBe('rolled');
+    expect(result.dice).toMatchObject({ outcomeId: 'rolled', modifierTotal: 0 });
   });
 });

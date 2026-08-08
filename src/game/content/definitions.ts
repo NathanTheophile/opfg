@@ -54,6 +54,7 @@ export const contentCatalog = {
               advanceMonths: 1,
               effects: [
                 { type: 'addItem', itemId: 'sealed_chart' },
+                { type: 'modifyShipCondition', amount: -1 },
                 { type: 'moveToLocation', locationId: 'reefs' },
               ],
             },
@@ -74,6 +75,66 @@ export const contentCatalog = {
       },
       priority: 50,
       choices: [
+        {
+          id: 'risk_crossing',
+          text: 'Risk a crossing through the reefs',
+          resolution: {
+            type: 'dice',
+            check: {
+              modifiers: [
+                {
+                  type: 'statModifier',
+                  statId: 'navigation',
+                  multiplier: 2,
+                  displayLabel: 'Navigation',
+                  displayInfluence: 'strong influence',
+                },
+                {
+                  type: 'conditionalModifier',
+                  condition: { type: 'shipConditionAtMost', value: 2 },
+                  value: -2,
+                  displayLabel: 'Damaged ship',
+                  displayInfluence: 'significant penalty',
+                },
+              ],
+              bands: [
+                {
+                  maxInclusive: 7,
+                  outcome: {
+                    id: 'reef_disaster',
+                    text: 'The ship is wrecked against the reefs.',
+                    advanceMonths: 1,
+                    effects: [
+                      { type: 'modifyShipCondition', amount: -3 },
+                      { type: 'endCareer' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: 14,
+                  outcome: {
+                    id: 'reef_costly_crossing',
+                    text: 'You cross the reefs, but the hull takes another hit.',
+                    advanceMonths: 1,
+                    effects: [
+                      { type: 'modifyShipCondition', amount: -1 },
+                      { type: 'endCareer' },
+                    ],
+                  },
+                },
+                {
+                  maxInclusive: null,
+                  outcome: {
+                    id: 'reef_safe_crossing',
+                    text: 'You find a clean line through the reefs.',
+                    advanceMonths: 1,
+                    effects: [{ type: 'endCareer' }],
+                  },
+                },
+              ],
+            },
+          },
+        },
         {
           id: 'read_currents',
           text: '[Navigation 3] Read the currents',

@@ -11,7 +11,7 @@ Departure
 -> temporary career end
 ```
 
-The runtime evaluates Slice 0 Conditions, exposes visible/available choice state, applies Effects immutably, advances time, records history and selects the next normal event by eligibility and priority. Seeded tie-breaking is implemented. Scheduled events can be written to state but are not consumed yet.
+The runtime evaluates Slice 0 Conditions, exposes visible/available choice state, resolves deterministic and seeded d20 choices, applies Effects immutably, advances time, records history and selects the next normal event by eligibility and priority. Dice results expose active modifiers, totals and Outcome text as transient UI data. Scheduled events can be written to state but are not consumed yet.
 
 ---
 
@@ -37,11 +37,10 @@ The runtime evaluates Slice 0 Conditions, exposes visible/available choice state
 
 ## Current priority
 
-1. Implement runtime DiceCheck resolution and its visible result.
-2. Consume due scheduled events before normal events.
-3. Add one-slot localStorage save/load.
-4. Replace temporary events with the Slice 0 test content and Mira mini-arc.
-5. Complete the first playable career through month 12.
+1. Consume due scheduled events before normal events.
+2. Add one-slot localStorage save/load.
+3. Replace temporary events with the Slice 0 test content and Mira mini-arc.
+4. Complete the first playable career through month 12.
 
 ---
 
@@ -61,7 +60,6 @@ None yet.
 
 ## Current runtime limits
 
-- DiceResolution is represented but deliberately rejected at runtime.
 - Scheduled events are recorded with causal source IDs but not selected yet.
 - Save/load is not implemented.
 - Current narrative content is temporary test content only.

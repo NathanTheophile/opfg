@@ -1,6 +1,8 @@
-import type { EventDefinition } from '../content/schema';
+import type { EventDefinition, Outcome } from '../content/schema';
 import type { ChoiceId, EventId, GameState } from '../model/schema';
 import { getChoiceState } from './conditions';
+import { resolveDiceCheck } from './dice';
+import type { DiceRollResult } from './dice';
 import { applyEffects } from './effects';
 import { selectNextEvent } from './events';
 
@@ -9,7 +11,7 @@ export function resolveChoice(
   events: readonly EventDefinition[],
   eventId: EventId,
   choiceId: ChoiceId,
-): GameState {
+): ChoiceResolutionResult {
   if (state.currentEventId !== eventId) throw new Error(`Event "${eventId}" is not the current event.`);
 
   const event = events.find(({ id }) => id === eventId);
@@ -22,11 +24,35 @@ export function resolveChoice(
   if (!choiceState.visible || !choiceState.available) {
     throw new Error(`Choice "${choiceId}" is not available.`);
   }
-  if (choice.resolution.type === 'dice') {
-    throw new Error('DiceResolution is not implemented yet.');
-  }
+  const resolution: { state: GameState; outcome: Outcome; dice?: DiceRollResult } =
+    choice.resolution.type === 'deterministic'
+      ? { outcome: choice.resolution.outcome, state }
+      : (() => {
+          const diceResult = resolveDiceCheck(choice.resolution.check, state);
+          return {
+            outcome: diceResult.outcome,
+            dice: diceResult.dice,
+            state: { ...state, rngState: diceResult.nextRngState },
+          };
+        })();
 
-  const { outcome } = choice.resolution;
+  return finalizeOutcome(resolution.state, events, eventId, choiceId, resolution.outcome, resolution.dice);
+}
+
+export interface ChoiceResolutionResult {
+  state: GameState;
+  outcome: Outcome;
+  dice?: DiceRollResult;
+}
+
+function finalizeOutcome(
+  state: GameState,
+  events: readonly EventDefinition[],
+  eventId: EventId,
+  choiceId: ChoiceId,
+  outcome: Outcome,
+  dice?: DiceRollResult,
+): ChoiceResolutionResult {
   const afterEffects = applyEffects(state, outcome.effects, {
     sourceEventId: eventId,
     sourceChoiceId: choiceId,
@@ -41,5 +67,9 @@ export function resolveChoice(
     ],
   };
 
-  return selectNextEvent(resolvedState, events);
+  return {
+    state: selectNextEvent(resolvedState, events),
+    outcome,
+    dice,
+  };
 }
