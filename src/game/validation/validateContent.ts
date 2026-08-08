@@ -74,9 +74,11 @@ const EFFECT_TYPES = new Set([
   'endCareer',
 ]);
 
-export function validateContent(catalog: unknown): ContentValidationError[] {
+export function validateContent(catalog: unknown, sourceDictionary: LocalizationDictionary = dictionaries[SOURCE_LOCALE]): ContentValidationError[] {
   const errors: ContentValidationError[] = [];
   if (!isRecord(catalog)) return [{ path: 'catalog', message: 'Expected an object.' }];
+  if (catalog.schemaVersion !== CONTENT_SCHEMA_VERSION) errors.push({ path: 'schemaVersion', message: `Unsupported Content schema version "${String(catalog.schemaVersion)}".` });
+  validateLocalizationKeys(catalog, 'catalog', sourceDictionary, errors);
 
   const events = readRecords(catalog.events, 'events', errors);
   const eventIds = collectIds(events, 'events', errors);
@@ -288,8 +290,8 @@ function validateDiceResolution(
     if (typeof modifier.value !== 'number' || !Number.isFinite(modifier.value)) {
       errors.push({ path: modifierPath, message: 'ConditionalDiceModifier value must be finite.' });
     }
-    if (!stringValue(modifier.displayLabel)) {
-      errors.push({ path: modifierPath, message: 'ConditionalDiceModifier requires displayLabel.' });
+    if (!stringValue(modifier.displayLabelKey)) {
+      errors.push({ path: modifierPath, message: 'ConditionalDiceModifier requires displayLabelKey.' });
     }
   }
 
@@ -460,7 +462,7 @@ function validateTraitOpposites(
 function validateNpcDefinitions(npcs: UnknownRecord[], references: References, errors: ContentValidationError[]): void {
   npcs.forEach((npc, index) => {
     const path = `npcs[${index}]`;
-    if (!stringValue(npc.name)) errors.push({ path: `${path}.name`, message: 'NPC name must be a non-empty string.' });
+    if (!stringValue(npc.nameKey)) errors.push({ path: `${path}.nameKey`, message: 'NPC nameKey must be a non-empty string.' });
     validateNullableReference(npc.raceId, references.raceIds, 'RaceId', `${path}.raceId`, errors);
     validateNullableReference(npc.originSeaId, references.seaIds, 'SeaId', `${path}.originSeaId`, errors);
     validateNullableReference(npc.affiliationId, references.affiliationIds, 'AffiliationId', `${path}.affiliationId`, errors);
@@ -478,7 +480,7 @@ function validateNpcDefinitions(npcs: UnknownRecord[], references: References, e
 
 function validateNamedDefinitions(definitions: UnknownRecord[], path: string, errors: ContentValidationError[]): void {
   definitions.forEach((definition, index) => {
-    if (!stringValue(definition.name)) errors.push({ path: `${path}[${index}].name`, message: 'Definition name must be a non-empty string.' });
+    if (!stringValue(definition.nameKey)) errors.push({ path: `${path}[${index}].nameKey`, message: 'Definition nameKey must be a non-empty string.' });
   });
 }
 
@@ -513,6 +515,20 @@ function isRecord(value: unknown): value is UnknownRecord {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+function validateLocalizationKeys(value: unknown, path: string, dictionary: LocalizationDictionary, errors: ContentValidationError[]): void {
+  if (Array.isArray(value)) {
+    value.forEach((entry, index) => validateLocalizationKeys(entry, `${path}[${index}]`, dictionary, errors));
+    return;
+  }
+  if (!isRecord(value)) return;
+  for (const [property, child] of Object.entries(value)) {
+    const childPath = `${path}.${property}`;
+    if (property.endsWith('Key')) {
+      if (!stringValue(child) || dictionary[String(child)] === undefined) errors.push({ path: childPath, message: `Missing source localization key "${String(child)}".` });
+    } else validateLocalizationKeys(child, childPath, dictionary, errors);
+  }
+}
+
 function stringValue(value: unknown): string | undefined {
   return typeof value === 'string' && value.length > 0 ? value : undefined;
 }
@@ -524,3 +540,5 @@ function isNonNegativeNumber(value: unknown): value is number {
 function isNumberInRange(value: unknown, minimum: number, maximum: number): value is number {
   return typeof value === 'number' && Number.isFinite(value) && value >= minimum && value <= maximum;
 }
+import { CONTENT_SCHEMA_VERSION } from '../content/schema';
+import { dictionaries, SOURCE_LOCALE, type LocalizationDictionary } from '../localization';

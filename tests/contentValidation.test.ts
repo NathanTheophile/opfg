@@ -21,8 +21,8 @@ describe('validateContent', () => {
     expect(validateContent(contentCatalog)).toEqual([]);
     expect(contentCatalog.traits).toContainEqual({
       id: 'audacious',
-      name: 'Audacieux',
-      description: expect.any(String),
+      nameKey: 'trait.audacious.name',
+      descriptionKey: 'trait.audacious.description',
     });
   });
 
@@ -129,7 +129,7 @@ describe('validateContent', () => {
 
   it('validates NPC definitions, NPC stat conditions, and NPC stat effects', () => {
     const catalog = cloneCatalog();
-    catalog.npcs[0].name = '';
+    catalog.npcs[0].nameKey = '';
     catalog.npcs[0].initialStats.loyalty = 51;
     catalog.events[0].eligibility = {
       type: 'npcStatAtLeast', npcId: 'missing_npc', statId: 'navigation', value: 51,
@@ -139,7 +139,7 @@ describe('validateContent', () => {
     }];
 
     const errors = messages(catalog);
-    expect(errors).toContainEqual(expect.stringContaining('NPC name must be a non-empty string'));
+    expect(errors).toContainEqual(expect.stringContaining('NPC nameKey must be a non-empty string'));
     expect(errors).toContainEqual(expect.stringContaining('loyalty must be a finite number from 0 to 50'));
     expect(errors).toContainEqual(expect.stringContaining('Unknown NpcId "missing_npc"'));
     expect(errors).toContainEqual(expect.stringContaining('Invalid NpcStatId "navigation"'));

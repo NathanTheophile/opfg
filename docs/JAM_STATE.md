@@ -54,6 +54,8 @@ The temporary demonstration content has been removed. The real Slice 0 exercises
 - Player identity is a separate nullable `PlayerProfile` (`name`, `raceId`, `originSeaId`, `affiliationId`) filled by Origins Events. Race, sea, and affiliation definitions are data-driven registries; the current catalogs are deliberately minimal fixtures.
 - The playable fixture pipeline now starts in Origins, progresses through four Childhood age bands using the Event engine and absolute-age scheduler, transitions at 180 months, then enters the unchanged adult Slice 0 with `month = 0`.
 - History records both active-career `month` and absolute `ageMonths` after each Outcome.
+- The Content Contract is frozen at `CONTENT_SCHEMA_VERSION = 1`. Gameplay definitions contain localization keys rather than display text; French is the complete source/fallback dictionary and English may remain partial.
+- UI locale is a separate persisted preference and never enters `GameState` (save remains version 6).
 
 ---
 

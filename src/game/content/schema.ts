@@ -18,6 +18,9 @@ import type {
   SeaId,
   AffiliationId,
 } from '../model/schema';
+import type { LocalizationKey } from '../localization/keys';
+
+export const CONTENT_SCHEMA_VERSION = 1;
 
 export type StatId = keyof PlayerStats;
 
@@ -70,7 +73,7 @@ export type Effect =
 
 export interface Outcome {
   id: OutcomeId;
-  text: string;
+  textKey: LocalizationKey;
   advanceMonths: number;
   effects: Effect[];
 }
@@ -80,7 +83,7 @@ export type DiceResult = 'criticalFailure' | 'failure' | 'success' | 'criticalSu
 export interface ConditionalDiceModifier {
   condition: Condition;
   value: number;
-  displayLabel: string;
+  displayLabelKey: LocalizationKey;
 }
 
 export interface TraitResultOverride {
@@ -109,12 +112,12 @@ export interface TextChoiceInput {
   target: 'playerName';
   minLength: number;
   maxLength: number;
-  placeholder?: string;
+  placeholderKey?: LocalizationKey;
 }
 
 export interface ChoiceDefinition {
   id: ChoiceId;
-  text: string;
+  textKey: LocalizationKey;
   visibleIf?: Condition;
   availableIf?: Condition;
   input?: TextChoiceInput;
@@ -123,8 +126,8 @@ export interface ChoiceDefinition {
 
 export interface EventDefinition {
   id: EventId;
-  title: string;
-  text: string;
+  titleKey: LocalizationKey;
+  textKey: LocalizationKey;
   scheduledOnly?: boolean;
   eligibility?: Condition;
   priority: number;
@@ -133,29 +136,31 @@ export interface EventDefinition {
 
 export interface TraitDefinition {
   id: TraitId;
-  name: string;
-  description: string;
+  nameKey: LocalizationKey;
+  descriptionKey: LocalizationKey;
   oppositeTraitId?: TraitId;
 }
 
 export interface ItemDefinition {
   id: ItemId;
+  nameKey: LocalizationKey;
 }
 
 export interface NpcDefinition {
   id: NpcId;
-  name: string;
+  nameKey: LocalizationKey;
   raceId: RaceId | null;
   originSeaId: SeaId | null;
   affiliationId: AffiliationId | null;
   initialStats: NpcStats;
 }
 
-export interface RaceDefinition { id: RaceId; name: string }
-export interface SeaDefinition { id: SeaId; name: string }
-export interface AffiliationDefinition { id: AffiliationId; name: string }
+export interface RaceDefinition { id: RaceId; nameKey: LocalizationKey }
+export interface SeaDefinition { id: SeaId; nameKey: LocalizationKey }
+export interface AffiliationDefinition { id: AffiliationId; nameKey: LocalizationKey }
 
 export interface ContentCatalog {
+  schemaVersion: number;
   races: RaceDefinition[];
   seas: SeaDefinition[];
   affiliations: AffiliationDefinition[];

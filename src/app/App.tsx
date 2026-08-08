@@ -10,42 +10,27 @@ import { createInitialGameState } from '../game/model/initialState';
 import type { GameState, NpcStatId } from '../game/model/schema';
 import type { DiceResult, StatId } from '../game/content/schema';
 import { assertValidContent } from '../game/validation/validateContent';
+import { loadLocale, saveLocale, supportedLocales, t, type LocaleId } from '../game/localization';
 
 assertValidContent(contentCatalog);
 
 let fallbackSeed = Date.now() >>> 0;
 
-const STAT_LABELS: Record<StatId, string> = {
-  health: 'Santé',
-  morale: 'Moral',
-  strength: 'Force',
-  observation: 'Observation',
-  intelligence: 'Intelligence',
-  navigation: 'Navigation',
-  charisma: 'Charisme',
-  luck: 'Chance',
-  awakening: 'Éveil',
+const STAT_LABEL_KEYS: Record<StatId, string> = {
+  health: 'stat.health', morale: 'stat.morale', strength: 'stat.strength', observation: 'stat.observation',
+  intelligence: 'stat.intelligence', navigation: 'stat.navigation', charisma: 'stat.charisma', luck: 'stat.luck', awakening: 'stat.awakening',
 };
 
-const RESULT_LABELS: Record<DiceResult, string> = {
-  criticalFailure: 'Échec critique',
-  failure: 'Échec',
-  success: 'Succès',
-  criticalSuccess: 'Succès critique',
+const RESULT_LABEL_KEYS: Record<DiceResult, string> = {
+  criticalFailure: 'dice.criticalFailure', failure: 'dice.failure', success: 'dice.success', criticalSuccess: 'dice.criticalSuccess',
 };
 
-const NPC_STAT_LABELS: Record<NpcStatId, string> = {
-  health: 'Santé',
-  morale: 'Moral',
-  strength: 'Force',
-  observation: 'Observation',
-  intelligence: 'Intelligence',
-  luck: 'Chance',
-  loyalty: 'Loyauté',
-  calm: 'Calme',
+const NPC_STAT_LABEL_KEYS: Record<NpcStatId, string> = {
+  health: 'stat.health', morale: 'stat.morale', strength: 'stat.strength', observation: 'stat.observation',
+  intelligence: 'stat.intelligence', luck: 'stat.luck', loyalty: 'npcStat.loyalty', calm: 'npcStat.calm',
 };
 
-const NPC_STAT_IDS = Object.keys(NPC_STAT_LABELS) as NpcStatId[];
+const NPC_STAT_IDS = Object.keys(NPC_STAT_LABEL_KEYS) as NpcStatId[];
 
 function generateCareerSeed(): number {
   if (globalThis.crypto?.getRandomValues) {
@@ -60,11 +45,15 @@ function createNewCareer(seed: number = generateCareerSeed()): GameState {
 }
 
 export function App() {
+  const [locale, setLocale] = useState<LocaleId>(() => loadLocale(window.localStorage, navigator.language));
   const [savedGame, setSavedGame] = useState<GameState | null>(() => loadGameState(window.localStorage));
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [lastResolution, setLastResolution] = useState<ChoiceResolutionResult | null>(null);
   const [choiceInput, setChoiceInput] = useState('');
   const [inputError, setInputError] = useState<string | null>(null);
+  const translate = (key: string) => t(key, locale, { playerName: gameState?.player.profile.name ?? '' });
+  const changeLocale = (nextLocale: LocaleId) => { saveLocale(window.localStorage, nextLocale); setLocale(nextLocale); };
+  const languageSelector = <div>{translate('ui.language')}: {supportedLocales.map((entry) => <button key={entry} type="button" disabled={locale === entry} onClick={() => changeLocale(entry)}>{entry.toUpperCase()}</button>)}</div>;
 
   const startCareer = (restart: boolean) => {
     if (restart) clearGameState(window.localStorage);
@@ -86,14 +75,15 @@ export function App() {
   if (!gameState) {
     return (
       <main>
-        <h1>Jam OP Fan Game</h1>
+        <h1>{translate('ui.app.title')}</h1>
+        {languageSelector}
         {savedGame ? (
           <>
-            <button type="button" onClick={continueCareer}>Continue Career</button>
-            <button type="button" onClick={() => startCareer(true)}>Restart Career</button>
+            <button type="button" onClick={continueCareer}>{translate('ui.action.continueCareer')}</button>
+            <button type="button" onClick={() => startCareer(true)}>{translate('ui.action.restartCareer')}</button>
           </>
         ) : (
-          <button type="button" onClick={() => startCareer(false)}>New Career</button>
+          <button type="button" onClick={() => startCareer(false)}>{translate('ui.action.newCareer')}</button>
         )}
       </main>
     );
@@ -104,8 +94,8 @@ export function App() {
     let result: ChoiceResolutionResult;
     try {
       result = resolveChoice(gameState, contentCatalog.events, eventId, choiceId, input);
-    } catch (error) {
-      setInputError(error instanceof Error ? error.message : 'Invalid input.');
+    } catch {
+      setInputError(translate('ui.invalidInput'));
       return;
     }
     saveGameState(window.localStorage, result.state);
@@ -118,60 +108,53 @@ export function App() {
 
   return (
     <main>
-      <h1>Jam OP Fan Game</h1>
-      <p>Month: {gameState.month}</p>
-      <p>Age: {Math.floor(gameState.ageMonths / 12)} years, {gameState.ageMonths % 12} months</p>
-      <p>Phase: {gameState.careerPhase}</p>
-      <p>Travel: {gameState.travelState}</p>
-      <p>Location: {gameState.locationId}</p>
-      <p>Ship: {gameState.ship.condition}</p>
-      <p>Career: {gameState.careerStatus}</p>
-      <p>Career End: {gameState.careerEndReason ?? '—'}</p>
-      <button type="button" onClick={() => startCareer(true)}>Restart Career</button>
+      <h1>{translate('ui.app.title')}</h1>
+      {languageSelector}
+      <p>{translate('ui.month')}: {gameState.month}</p>
+      <p>{translate('ui.age')}: {Math.floor(gameState.ageMonths / 12)} {translate('ui.years')}, {gameState.ageMonths % 12} {translate('ui.month').toLowerCase()}</p>
+      <p>{translate('ui.phase')}: {translate(`phase.${gameState.careerPhase}`)}</p>
+      <p>{translate('ui.travel')}: {translate(`travel.${gameState.travelState}`)}</p>
+      <p>{translate('ui.location')}: {gameState.locationId}</p>
+      <p>{translate('ui.ship')}: {gameState.ship.condition}</p>
+      <p>{translate('ui.career')}: {translate(`careerStatus.${gameState.careerStatus}`)}</p>
+      <p>{translate('ui.careerEnd')}: {gameState.careerEndReason ? translate(`careerEndReason.${gameState.careerEndReason}`) : '—'}</p>
+      <button type="button" onClick={() => startCareer(true)}>{translate('ui.action.restartCareer')}</button>
 
       <section>
-        <h2>Player Profile</h2>
-        <h3>Identity</h3>
-        <p>Nom: {gameState.player.profile.name ?? '—'}</p>
-        <p>Race: {contentCatalog.races.find(({ id }) => id === gameState.player.profile.raceId)?.name ?? '—'}</p>
-        <p>Mer d’origine: {contentCatalog.seas.find(({ id }) => id === gameState.player.profile.originSeaId)?.name ?? '—'}</p>
-        <p>Affiliation: {contentCatalog.affiliations.find(({ id }) => id === gameState.player.profile.affiliationId)?.name ?? '—'}</p>
-        <h3>Stats</h3>
-        <p>Health: {gameState.player.stats.health}</p>
-        <p>Morale: {gameState.player.stats.morale}</p>
-        <p>Strength: {gameState.player.stats.strength}</p>
-        <p>Observation: {gameState.player.stats.observation}</p>
-        <p>Intelligence: {gameState.player.stats.intelligence}</p>
-        <p>Navigation: {gameState.player.stats.navigation}</p>
-        <p>Charisma: {gameState.player.stats.charisma}</p>
-        <p>Luck: {gameState.player.stats.luck}</p>
-        <p>Awakening: {gameState.player.stats.awakening ?? '—'}</p>
-        <h3>Traits</h3>
+        <h2>{translate('ui.profile.title')}</h2>
+        <h3>{translate('ui.profile.identity')}</h3>
+        <p>{translate('ui.field.name')}: {gameState.player.profile.name ?? '—'}</p>
+        <p>{translate('ui.field.race')}: {gameState.player.profile.raceId ? translate(contentCatalog.races.find(({ id }) => id === gameState.player.profile.raceId)?.nameKey ?? '') : '—'}</p>
+        <p>{translate('ui.field.originSea')}: {gameState.player.profile.originSeaId ? translate(contentCatalog.seas.find(({ id }) => id === gameState.player.profile.originSeaId)?.nameKey ?? '') : '—'}</p>
+        <p>{translate('ui.field.affiliation')}: {gameState.player.profile.affiliationId ? translate(contentCatalog.affiliations.find(({ id }) => id === gameState.player.profile.affiliationId)?.nameKey ?? '') : '—'}</p>
+        <h3>{translate('ui.profile.stats')}</h3>
+        {(Object.keys(STAT_LABEL_KEYS) as StatId[]).map((statId) => <p key={statId}>{translate(STAT_LABEL_KEYS[statId])}: {gameState.player.stats[statId] ?? '—'}</p>)}
+        <h3>{translate('ui.profile.traits')}</h3>
         {gameState.player.traits.length === 0 ? (
-          <p>None</p>
+          <p>{translate('ui.profile.none')}</p>
         ) : gameState.player.traits.map((traitId) => {
           const trait = contentCatalog.traits.find(({ id }) => id === traitId);
           return trait ? (
             <div key={trait.id}>
-              <strong>{trait.name}</strong>
-              <p>{trait.description}</p>
+              <strong>{translate(trait.nameKey)}</strong>
+              <p>{translate(trait.descriptionKey)}</p>
             </div>
           ) : null;
         })}
       </section>
 
       <section>
-        <h2>NPC Profiles</h2>
+        <h2>{translate('ui.npcProfiles')}</h2>
         {Object.entries(gameState.npcs).map(([npcId, npc]) => {
           const definition = contentCatalog.npcs.find(({ id }) => id === npcId);
           return (
             <div key={npcId}>
-              <h3>{definition?.name ?? npcId}</h3>
-              <p>Status: {npc.status}</p>
-              <p>Relationship: {npc.relationship > 0 ? '+' : ''}{npc.relationship}</p>
-              <h4>Stats</h4>
+              <h3>{definition ? translate(definition.nameKey) : npcId}</h3>
+              <p>{translate('ui.status')}: {translate(`npcStatus.${npc.status}`)}</p>
+              <p>{translate('ui.relationship')}: {npc.relationship > 0 ? '+' : ''}{npc.relationship}</p>
+              <h4>{translate('ui.profile.stats')}</h4>
               {NPC_STAT_IDS.map((statId) => (
-                <p key={statId}>{NPC_STAT_LABELS[statId]}: {npc.stats[statId]}</p>
+                <p key={statId}>{translate(NPC_STAT_LABEL_KEYS[statId])}: {npc.stats[statId]}</p>
               ))}
             </div>
           );
@@ -179,12 +162,12 @@ export function App() {
       </section>
 
       <section>
-        <h2>Current Event</h2>
+        <h2>{translate('ui.currentEvent')}</h2>
         {currentEvent ? (
           <>
-            <h3>{currentEvent.title}</h3>
-            <p>{currentEvent.text}</p>
-            <h4>Choices</h4>
+            <h3>{translate(currentEvent.titleKey)}</h3>
+            <p>{translate(currentEvent.textKey)}</p>
+            <h4>{translate('ui.choices')}</h4>
             {inputError && <p role="alert">{inputError}</p>}
             {currentEvent.choices.map((choice) => {
               const choiceState = getChoiceState(choice, gameState);
@@ -195,8 +178,8 @@ export function App() {
               const dicePrefix = preview === null
                 ? ''
                 : preview.available
-                  ? `[${STAT_LABELS[preview.statId]} — ${Math.round(preview.successProbability * 100)} %] `
-                  : `[${STAT_LABELS[preview.statId]} — inactive] `;
+                  ? `[${translate(STAT_LABEL_KEYS[preview.statId])} — ${Math.round(preview.successProbability * 100)} %] `
+                  : `[${translate(STAT_LABEL_KEYS[preview.statId])} — ${translate('ui.inactive')}] `;
 
               return (
                 <div key={choice.id}>
@@ -207,7 +190,7 @@ export function App() {
                       value={choiceInput}
                       minLength={choice.input.minLength}
                       maxLength={choice.input.maxLength}
-                      placeholder={choice.input.placeholder}
+                      placeholder={choice.input.placeholderKey ? translate(choice.input.placeholderKey) : undefined}
                       onChange={(event) => setChoiceInput(event.target.value)}
                     />
                   )}
@@ -216,39 +199,39 @@ export function App() {
                     disabled={!choiceState.available}
                     onClick={() => choose(currentEvent.id, choice.id, choice.input ? choiceInput : undefined)}
                   >
-                    {dicePrefix}{choice.text}
+                    {dicePrefix}{translate(choice.textKey)}
                   </button>
                 </div>
               );
             })}
           </>
         ) : (
-          <p>{gameState.careerStatus === 'ended' ? 'Career complete.' : 'No event available.'}</p>
+          <p>{translate(gameState.careerStatus === 'ended' ? 'ui.careerComplete' : 'ui.noEvent')}</p>
         )}
       </section>
 
       {lastResolution && (
         <section>
-          <h2>Last Resolution</h2>
+          <h2>{translate('ui.lastResolution')}</h2>
           {lastResolution.dice && (
             <>
-              <p>D20: {lastResolution.dice.rawRoll}</p>
+              <p>{translate('ui.d20')}: {lastResolution.dice.rawRoll}</p>
               {lastResolution.dice.statValue !== null && (
                 <p>
-                  {STAT_LABELS[lastResolution.dice.statId]}: {lastResolution.dice.statModifier >= 0 ? '+' : ''}
+                  {translate(STAT_LABEL_KEYS[lastResolution.dice.statId])}: {lastResolution.dice.statModifier >= 0 ? '+' : ''}
                   {lastResolution.dice.statModifier}
                 </p>
               )}
               {lastResolution.dice.conditionalModifiers.map((modifier, index) => (
-                <p key={`${modifier.label}-${index}`}>
-                  {modifier.label}: {modifier.value >= 0 ? '+' : ''}{modifier.value}
+                <p key={`${modifier.labelKey}-${index}`}>
+                  {translate(modifier.labelKey)}: {modifier.value >= 0 ? '+' : ''}{modifier.value}
                 </p>
               ))}
-              <p>Total: {lastResolution.dice.total}</p>
-              <p>Result: {RESULT_LABELS[lastResolution.dice.result]}</p>
+              <p>{translate('ui.total')}: {lastResolution.dice.total}</p>
+              <p>{translate('ui.result')}: {translate(RESULT_LABEL_KEYS[lastResolution.dice.result])}</p>
             </>
           )}
-          <p>Outcome: {lastResolution.outcome.text}</p>
+          <p>{translate('ui.outcome')}: {translate(lastResolution.outcome.textKey)}</p>
         </section>
       )}
     </main>

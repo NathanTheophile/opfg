@@ -40,6 +40,8 @@ Contains declarative game data:
 
 Content may reference gameplay entities through stable IDs.
 
+All player-facing content references stable localization keys. The unique gameplay catalog is never duplicated per locale. Flat French and English dictionaries are resolved by the localization layer, with French as source and fallback. `ContentCatalog.schemaVersion` is independent from the save version and is validated before use.
+
 Content must not contain arbitrary JavaScript callbacks or gameplay functions.
 
 Events marked `scheduledOnly: true` are excluded from the normal event pool. They can only be selected from a due `GameState.scheduledEvents` entry; due but currently ineligible entries remain queued.
@@ -117,6 +119,7 @@ React may:
 - display dice results;
 - trigger engine actions;
 - display save/new/restart controls.
+- resolve localization keys using the current UI locale.
 
 React must not duplicate gameplay rules.
 

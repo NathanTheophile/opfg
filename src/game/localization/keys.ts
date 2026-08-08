@@ -1,0 +1,15 @@
+import type { ChoiceId, EventId, ItemId, NpcId, OutcomeId, RaceId, SeaId, AffiliationId, TraitId } from '../model/schema';
+export type LocalizationKey = string;
+export const eventTitleKey = (id: EventId): LocalizationKey => `event.${id}.title`;
+export const eventTextKey = (id: EventId): LocalizationKey => `event.${id}.text`;
+export const choiceTextKey = (eventId: EventId, id: ChoiceId): LocalizationKey => `event.${eventId}.choice.${id}.text`;
+export const outcomeTextKey = (eventId: EventId, choiceId: ChoiceId, id: OutcomeId): LocalizationKey => `event.${eventId}.choice.${choiceId}.outcome.${id}.text`;
+export const choicePlaceholderKey = (eventId: EventId, id: ChoiceId): LocalizationKey => `event.${eventId}.choice.${id}.placeholder`;
+export const modifierLabelKey = (eventId: EventId, choiceId: ChoiceId, index: string): LocalizationKey => `event.${eventId}.choice.${choiceId}.modifier.${index}.label`;
+export const traitNameKey = (id: TraitId): LocalizationKey => `trait.${id}.name`;
+export const traitDescriptionKey = (id: TraitId): LocalizationKey => `trait.${id}.description`;
+export const itemNameKey = (id: ItemId): LocalizationKey => `item.${id}.name`;
+export const raceNameKey = (id: RaceId): LocalizationKey => `race.${id}.name`;
+export const seaNameKey = (id: SeaId): LocalizationKey => `sea.${id}.name`;
+export const affiliationNameKey = (id: AffiliationId): LocalizationKey => `affiliation.${id}.name`;
+export const npcNameKey = (id: NpcId): LocalizationKey => `npc.${id}.name`;

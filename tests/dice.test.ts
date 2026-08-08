@@ -58,7 +58,7 @@ describe('vNext roll evaluation', () => {
     state.player.stats.navigation = 50;
     state.player.traits = ['lucky'];
     const check = resolution({
-      modifiers: [{ condition: { type: 'hasFlag', flagId: 'bonus' }, value: 100, displayLabel: 'Bonus' }],
+      modifiers: [{ condition: { type: 'hasFlag', flagId: 'bonus' }, value: 100, displayLabelKey: 'test.bonus' }],
       traitOverrides: [{ traitId: 'lucky', forceResult: 'criticalSuccess' }],
     });
     state.flags = ['bonus'];
@@ -84,7 +84,7 @@ describe('vNext roll evaluation', () => {
     state.ship.condition = 1;
     const check = resolution({
       successThreshold: 13,
-      modifiers: [{ condition: { type: 'shipConditionAtMost', value: 1 }, value: -3, displayLabel: 'Ship' }],
+      modifiers: [{ condition: { type: 'shipConditionAtMost', value: 1 }, value: -3, displayLabelKey: 'test.ship' }],
     });
 
     expect(evaluateDiceRoll(check, state, 20)).toMatchObject({ total: 17, result: 'success' });
@@ -128,7 +128,7 @@ describe('probability preview', () => {
     state.player.traits = ['clumsy'];
     const check = resolution({
       successThreshold: 2,
-      modifiers: [{ condition: { type: 'hasFlag', flagId: 'huge_bonus' }, value: 100, displayLabel: 'Bonus' }],
+      modifiers: [{ condition: { type: 'hasFlag', flagId: 'huge_bonus' }, value: 100, displayLabelKey: 'test.bonus' }],
       traitOverrides: [{ traitId: 'clumsy', forceResult: 'criticalFailure' }],
     });
 

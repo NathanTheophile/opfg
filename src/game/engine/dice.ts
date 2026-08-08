@@ -9,7 +9,7 @@ import { evaluateCondition } from './conditions';
 import { nextRandom } from './rng';
 
 export interface AppliedDiceModifier {
-  label: string;
+  labelKey: string;
   value: number;
 }
 
@@ -83,7 +83,7 @@ export function evaluateDiceRoll(
   const statModifier = statToDiceModifier(statValue);
   const conditionalModifiers = (resolution.modifiers ?? []).flatMap((modifier): AppliedDiceModifier[] =>
     evaluateCondition(modifier.condition, state)
-      ? [{ label: modifier.displayLabel, value: modifier.value }]
+      ? [{ labelKey: modifier.displayLabelKey, value: modifier.value }]
       : [],
   );
   const modifierTotal = statModifier + conditionalModifiers.reduce((sum, modifier) => sum + modifier.value, 0);
