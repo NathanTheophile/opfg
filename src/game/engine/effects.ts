@@ -75,13 +75,18 @@ function applyEffect(state: GameState, effect: Effect, context: EffectContext): 
     case 'scheduleEvent':
       state.scheduledEvents.push({
         eventId: effect.eventId,
-        dueMonth: state.month + effect.delayMonths,
+        dueAgeMonths: state.ageMonths + effect.delayMonths,
         sourceEventId: context.sourceEventId,
         sourceChoiceId: context.sourceChoiceId,
       });
       return;
+    case 'setCareerPhase':
+      state.careerPhase = effect.phase;
+      return;
     case 'endCareer':
       state.careerStatus = 'ended';
+      state.careerEndReason = effect.reason;
+      state.currentEventId = null;
   }
 }
 

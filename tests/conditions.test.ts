@@ -70,6 +70,17 @@ describe('evaluateCondition', () => {
     expect(evaluateCondition({ type: 'npcRelationshipAtLeast', npcId: 'mira', value: 40 }, state)).toBe(true);
     expect(evaluateCondition({ type: 'hasChosen', eventId: 'departure', choiceId: 'set_sail' }, state)).toBe(true);
   });
+
+  it('keeps hasPlayed, hasChosen, and hasOutcome semantics distinct', () => {
+    const state = createInitialGameState();
+    state.history.push({ eventId: 'event_a', choiceId: 'choice_x', outcomeId: 'failure', month: 1 });
+
+    expect(evaluateCondition({ type: 'hasPlayed', eventId: 'event_a' }, state)).toBe(true);
+    expect(evaluateCondition({ type: 'hasChosen', eventId: 'event_a', choiceId: 'choice_x' }, state)).toBe(true);
+    expect(evaluateCondition({ type: 'hasChosen', eventId: 'event_a', choiceId: 'choice_y' }, state)).toBe(false);
+    expect(evaluateCondition({ type: 'hasOutcome', eventId: 'event_a', outcomeId: 'failure' }, state)).toBe(true);
+    expect(evaluateCondition({ type: 'hasOutcome', eventId: 'event_a', outcomeId: 'success' }, state)).toBe(false);
+  });
 });
 
 describe('getChoiceState', () => {

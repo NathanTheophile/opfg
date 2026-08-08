@@ -739,7 +739,7 @@ export const contentCatalog = {
             type: 'deterministic',
             outcome: {
               id: 'year_one_continues', text: 'La carrière continue au-delà de la première année.', advanceMonths: 1,
-              effects: [{ type: 'setFlag', flagId: 'ending_press_on' }, { type: 'endCareer' }],
+              effects: [{ type: 'setFlag', flagId: 'ending_press_on' }, { type: 'endCareer', reason: 'legacy' }],
             },
           },
         },
@@ -757,7 +757,7 @@ export const contentCatalog = {
             type: 'deterministic',
             outcome: {
               id: 'year_one_mira_favor', text: 'La lettre ouvre une nouvelle route.', advanceMonths: 1,
-              effects: [{ type: 'setFlag', flagId: 'ending_mira_favor' }, { type: 'endCareer' }],
+              effects: [{ type: 'setFlag', flagId: 'ending_mira_favor' }, { type: 'endCareer', reason: 'legacy' }],
             },
           },
         },
@@ -776,7 +776,7 @@ export const contentCatalog = {
             type: 'deterministic',
             outcome: {
               id: 'year_one_with_mira', text: 'Mira reste à bord pour la suite.', advanceMonths: 1,
-              effects: [{ type: 'setFlag', flagId: 'ending_with_mira' }, { type: 'endCareer' }],
+              effects: [{ type: 'setFlag', flagId: 'ending_with_mira' }, { type: 'endCareer', reason: 'legacy' }],
             },
           },
         },
@@ -788,7 +788,7 @@ export const contentCatalog = {
             type: 'deterministic',
             outcome: {
               id: 'year_one_ship_broken', text: 'La première expédition prend fin à terre.', advanceMonths: 1,
-              effects: [{ type: 'setFlag', flagId: 'ending_ship_broken' }, { type: 'endCareer' }],
+              effects: [{ type: 'setFlag', flagId: 'ending_ship_broken' }, { type: 'endCareer', reason: 'legacy' }],
             },
           },
         },

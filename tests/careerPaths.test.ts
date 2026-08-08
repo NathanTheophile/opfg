@@ -74,7 +74,7 @@ describe('real Slice 0 career paths', () => {
     expect(state.scheduledEvents).toEqual([
       {
         eventId: 'mira_returns_favor',
-        dueMonth: 7,
+        dueAgeMonths: 187,
         sourceEventId: 'mira_castaway',
         sourceChoiceId: 'rescue_dropoff',
       },
@@ -90,6 +90,7 @@ describe('real Slice 0 career paths', () => {
     state = play(state, 'year_one_end', 'use_mira_passage');
 
     expect(state.careerStatus).toBe('ended');
+    expect(state.careerEndReason).toBe('legacy');
     expect(state.flags).toContain('ending_mira_favor');
   });
 

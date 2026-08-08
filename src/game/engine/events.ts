@@ -8,7 +8,7 @@ export function selectNextEvent(state: GameState, events: readonly EventDefiniti
 
   const playedEventIds = new Set(state.history.map(({ eventId }) => eventId));
   const scheduledCandidates = state.scheduledEvents.flatMap((scheduledEvent) => {
-    if (scheduledEvent.dueMonth > state.month || playedEventIds.has(scheduledEvent.eventId)) return [];
+    if (scheduledEvent.dueAgeMonths > state.ageMonths || playedEventIds.has(scheduledEvent.eventId)) return [];
     const event = events.find(({ id }) => id === scheduledEvent.eventId);
     if (!event || (event.eligibility !== undefined && !evaluateCondition(event.eligibility, state))) return [];
     return [event];

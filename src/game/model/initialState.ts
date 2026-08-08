@@ -4,7 +4,7 @@ const DEFAULT_SEED = 0x1a2b3c4d;
 
 export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
   return {
-    version: 3,
+    version: 4,
     rngState: seed >>> 0,
     careerPhase: 'active',
     ageMonths: 15 * 12,
@@ -41,5 +41,6 @@ export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
     scheduledEvents: [],
     currentEventId: null,
     careerStatus: 'active',
+    careerEndReason: null,
   };
 }

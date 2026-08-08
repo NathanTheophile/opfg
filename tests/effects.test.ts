@@ -62,7 +62,7 @@ describe('applyEffects', () => {
     );
 
     expect(result.scheduledEvents).toEqual([
-      { eventId: 'return', dueMonth: 10, sourceEventId: 'source_event', sourceChoiceId: 'source_choice' },
+      { eventId: 'return', dueAgeMonths: 186, sourceEventId: 'source_event', sourceChoiceId: 'source_choice' },
     ]);
   });
 
@@ -99,5 +99,19 @@ describe('applyEffects', () => {
 
     expect(added.player.traits).toEqual(['audacious']);
     expect(removed.player.traits).toEqual([]);
+  });
+
+  it('sets career phase without implicit side effects', () => {
+    const state = createInitialGameState();
+    const result = applyEffects(state, [{ type: 'setCareerPhase', phase: 'childhood' }], context);
+
+    expect(result).toMatchObject({ careerPhase: 'childhood', ageMonths: 180, month: 0, locationId: 'starter_port' });
+    expect(result.player.stats).toEqual(state.player.stats);
+  });
+
+  it.each(['death', 'legacy'] as const)('ends a career with reason %s', (reason) => {
+    const result = applyEffects(createInitialGameState(), [{ type: 'endCareer', reason }], context);
+
+    expect(result).toMatchObject({ careerStatus: 'ended', careerEndReason: reason });
   });
 });

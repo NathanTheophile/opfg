@@ -135,7 +135,13 @@ Eligible
 → Next event
 ```
 
-Scheduled events due at the current month are considered before normal events, subject to their eligibility. Their queue entry is consumed only when the corresponding event is resolved.
+Scheduled events use absolute age: `dueAgeMonths` is computed from `ageMonths + delayMonths`. Entries due at the current age are considered before normal events, subject to eligibility, and are consumed only when the selected occurrence is actually resolved.
+
+Historical Conditions derive exclusively from `history`: `hasPlayed` checks an Event, `hasChosen` checks an Event/Choice pair, and `hasOutcome` checks an Event/Outcome pair.
+
+`careerEndReason` is `null` during an active career and records `death` or `legacy` when `endCareer` ends it. `setCareerPhase` changes only the phase and has no implicit time, location, Event, or profile effects.
+
+Trait definitions may declare a symmetric `oppositeTraitId`. Content validation enforces valid, non-self, symmetric references. Runtime enforcement during `addTrait` remains deferred until the engine can receive definitions without coupling gameplay state to global content.
 
 RNG is applied only after invalid candidates have been filtered.
 
@@ -167,7 +173,7 @@ Initial persistence:
 - normalize/restore function when loading.
 
 A save must preserve seeded RNG state and scheduled consequences.
-Save schema version 3 persists the complete player profile in addition to career phase, absolute age, and travel state. Development saves from version 2 are rejected without migration.
+Save schema version 4 persists age-based scheduled events and `careerEndReason`. Development saves from version 3 are rejected without migration.
 
 ---
 

@@ -35,6 +35,8 @@ const CONDITION_TYPES = new Set([
   'npcStatusIs',
   'npcRelationshipAtLeast',
   'hasChosen',
+  'hasPlayed',
+  'hasOutcome',
   'monthAtLeast',
 ]);
 const EFFECT_TYPES = new Set([
@@ -50,6 +52,7 @@ const EFFECT_TYPES = new Set([
   'setNpcStatus',
   'modifyNpcRelationship',
   'scheduleEvent',
+  'setCareerPhase',
   'endCareer',
 ]);
 
@@ -59,10 +62,12 @@ export function validateContent(catalog: unknown): ContentValidationError[] {
 
   const events = readRecords(catalog.events, 'events', errors);
   const eventIds = collectIds(events, 'events', errors);
-  const traitIds = collectIds(readRecords(catalog.traits, 'traits', errors), 'traits', errors);
+  const traits = readRecords(catalog.traits, 'traits', errors);
+  const traitIds = collectIds(traits, 'traits', errors);
   const itemIds = collectIds(readRecords(catalog.items, 'items', errors), 'items', errors);
   const npcIds = collectIds(readRecords(catalog.npcs, 'npcs', errors), 'npcs', errors);
   const choicesByEvent = new Map<string, Set<string>>();
+  const outcomesByEvent = new Map<string, Set<string>>();
   const scheduledOnlyEventIds = new Set<string>();
 
   for (const [eventIndex, event] of events.entries()) {
@@ -70,11 +75,15 @@ export function validateContent(catalog: unknown): ContentValidationError[] {
     const eventId = stringValue(event.id);
     const choices = readRecords(event.choices, `${eventPath}.choices`, errors);
     const choiceIds = collectIds(choices, `${eventPath}.choices`, errors);
-    if (eventId) choicesByEvent.set(eventId, choiceIds);
+    if (eventId) {
+      choicesByEvent.set(eventId, choiceIds);
+      outcomesByEvent.set(eventId, collectOutcomeIds(choices));
+    }
     if (eventId && event.scheduledOnly === true) scheduledOnlyEventIds.add(eventId);
   }
 
-  const references = { eventIds, choicesByEvent, traitIds, itemIds, npcIds, scheduledOnlyEventIds };
+  validateTraitOpposites(traits, traitIds, errors);
+  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, npcIds, scheduledOnlyEventIds };
   for (const [eventIndex, event] of events.entries()) {
     validateEvent(event, `events[${eventIndex}]`, references, errors);
   }
@@ -92,6 +101,7 @@ export function assertValidContent(catalog: unknown): void {
 interface References {
   eventIds: Set<string>;
   choicesByEvent: Map<string, Set<string>>;
+  outcomesByEvent: Map<string, Set<string>>;
   traitIds: Set<string>;
   itemIds: Set<string>;
   npcIds: Set<string>;
@@ -170,6 +180,15 @@ function validateCondition(
     const eventId = validateReference(value.eventId, references.eventIds, 'EventId', path, errors);
     if (eventId && references.eventIds.has(eventId)) {
       validateReference(value.choiceId, references.choicesByEvent.get(eventId) ?? new Set(), 'ChoiceId', path, errors);
+    }
+  }
+  if (type === 'hasPlayed') {
+    validateReference(value.eventId, references.eventIds, 'EventId', path, errors);
+  }
+  if (type === 'hasOutcome') {
+    const eventId = validateReference(value.eventId, references.eventIds, 'EventId', path, errors);
+    if (eventId && references.eventIds.has(eventId)) {
+      validateReference(value.outcomeId, references.outcomesByEvent.get(eventId) ?? new Set(), 'OutcomeId', path, errors);
     }
   }
 }
@@ -277,6 +296,12 @@ function validateEffect(
   if (type === 'moveToLocation' && !['at_sea', 'on_land'].includes(String(effect.travelState))) {
     errors.push({ path, message: `Invalid TravelState "${String(effect.travelState)}".` });
   }
+  if (type === 'setCareerPhase' && !['origins', 'childhood', 'active'].includes(String(effect.phase))) {
+    errors.push({ path, message: `Invalid CareerPhase "${String(effect.phase)}".` });
+  }
+  if (type === 'endCareer' && !['death', 'legacy'].includes(String(effect.reason))) {
+    errors.push({ path, message: `Invalid CareerEndReason "${String(effect.reason)}".` });
+  }
   if (type === 'scheduleEvent') {
     const eventId = validateReference(effect.eventId, references.eventIds, 'EventId', path, errors);
     if (eventId && references.eventIds.has(eventId) && !references.scheduledOnlyEventIds.has(eventId)) {
@@ -312,6 +337,47 @@ function collectIds(records: UnknownRecord[], path: string, errors: ContentValid
     else ids.add(id);
   });
   return ids;
+}
+
+function collectOutcomeIds(choices: UnknownRecord[]): Set<string> {
+  const outcomeIds = new Set<string>();
+  const addOutcome = (value: unknown) => {
+    if (!isRecord(value)) return;
+    const id = stringValue(value.id);
+    if (id) outcomeIds.add(id);
+  };
+  for (const choice of choices) {
+    if (!isRecord(choice.resolution)) continue;
+    if (choice.resolution.type === 'deterministic') addOutcome(choice.resolution.outcome);
+    if (choice.resolution.type === 'dice' && isRecord(choice.resolution.check) && Array.isArray(choice.resolution.check.bands)) {
+      choice.resolution.check.bands.forEach((band) => {
+        if (isRecord(band)) addOutcome(band.outcome);
+      });
+    }
+  }
+  return outcomeIds;
+}
+
+function validateTraitOpposites(
+  traits: UnknownRecord[],
+  traitIds: Set<string>,
+  errors: ContentValidationError[],
+): void {
+  const traitsById = new Map(traits.flatMap((trait) => {
+    const id = stringValue(trait.id);
+    return id ? [[id, trait] as const] : [];
+  }));
+  traits.forEach((trait, index) => {
+    const id = stringValue(trait.id);
+    if (!id || trait.oppositeTraitId === undefined) return;
+    const path = `traits[${index}].oppositeTraitId`;
+    const oppositeId = validateReference(trait.oppositeTraitId, traitIds, 'TraitId', path, errors);
+    if (!oppositeId || !traitIds.has(oppositeId)) return;
+    if (oppositeId === id) errors.push({ path, message: 'A Trait cannot be its own opposite.' });
+    else if (traitsById.get(oppositeId)?.oppositeTraitId !== id) {
+      errors.push({ path, message: `Opposite Trait relationship "${id}" / "${oppositeId}" must be symmetric.` });
+    }
+  });
 }
 
 function readRecords(value: unknown, path: string, errors: ContentValidationError[]): UnknownRecord[] {

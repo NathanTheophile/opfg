@@ -30,10 +30,10 @@ function event(
   };
 }
 
-function schedule(state: ReturnType<typeof createInitialGameState>, eventId: string, dueMonth: number) {
+function schedule(state: ReturnType<typeof createInitialGameState>, eventId: string, dueAgeMonths: number) {
   state.scheduledEvents.push({
     eventId,
-    dueMonth,
+    dueAgeMonths,
     sourceEventId: 'source',
     sourceChoiceId: 'choice',
   });
@@ -52,12 +52,12 @@ describe('scheduled event selection', () => {
   it('ignores non-due entries and selects a due eligible event before normal content', () => {
     const events = [event('scheduled', 0, true), event('normal', 100)];
     const futureState = createInitialGameState();
-    schedule(futureState, 'scheduled', 2);
+    schedule(futureState, 'scheduled', 182);
     expect(selectNextEvent(futureState, events).currentEventId).toBe('normal');
 
     const dueState = createInitialGameState();
-    dueState.month = 2;
-    schedule(dueState, 'scheduled', 2);
+    dueState.ageMonths = 182;
+    schedule(dueState, 'scheduled', 182);
     expect(selectNextEvent(dueState, events).currentEventId).toBe('scheduled');
   });
 
@@ -112,8 +112,80 @@ describe('scheduled event consumption', () => {
     const result = resolveChoice(selected, events, 'scheduled', 'resolve');
 
     expect(result.state.scheduledEvents).toEqual([
-      { eventId: 'other', dueMonth: 3, sourceEventId: 'source', sourceChoiceId: 'choice' },
+      { eventId: 'other', dueAgeMonths: 3, sourceEventId: 'source', sourceChoiceId: 'choice' },
     ]);
     expect(result.state.history[0].eventId).toBe('scheduled');
+  });
+
+  it('does not consume a future occurrence made due by the resolved outcome', () => {
+    const scheduled = event('scheduled', 10, true);
+    scheduled.choices[0].resolution = {
+      type: 'deterministic',
+      outcome: { id: 'resolved', text: 'Resolved', advanceMonths: 12, effects: [] },
+    };
+    const state = createInitialGameState();
+    schedule(state, 'scheduled', 180);
+    schedule(state, 'scheduled', 190);
+
+    const result = resolveChoice(selectNextEvent(state, [scheduled]), [scheduled], 'scheduled', 'resolve');
+
+    expect(result.state.scheduledEvents).toEqual([
+      { eventId: 'scheduled', dueAgeMonths: 190, sourceEventId: 'source', sourceChoiceId: 'choice' },
+    ]);
+  });
+});
+
+describe('age-based scheduling', () => {
+  it('becomes due during childhood while active-career month remains zero', () => {
+    const source = event('source', 10);
+    source.choices[0].resolution = {
+      type: 'deterministic',
+      outcome: {
+        id: 'year_passed',
+        text: 'A year passes.',
+        advanceMonths: 12,
+        effects: [{ type: 'scheduleEvent', eventId: 'scheduled', delayMonths: 12 }],
+      },
+    };
+    const scheduled = event('scheduled', 0, true);
+    const state = createInitialGameState();
+    state.careerPhase = 'childhood';
+    state.ageMonths = 120;
+    state.currentEventId = 'source';
+
+    const result = resolveChoice(state, [source, scheduled], 'source', 'resolve').state;
+
+    expect(result).toMatchObject({ ageMonths: 132, month: 0, currentEventId: 'scheduled' });
+    expect(result.scheduledEvents[0].dueAgeMonths).toBe(132);
+  });
+
+  it('schedules from absolute age during active career', () => {
+    const state = createInitialGameState();
+    state.ageMonths = 180;
+    state.month = 5;
+
+    const result = resolveChoice(
+      { ...state, currentEventId: 'source' },
+      [{
+        ...event('source', 1),
+        choices: [{
+          id: 'resolve',
+          text: 'Resolve',
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'scheduled',
+              text: 'Scheduled',
+              advanceMonths: 0,
+              effects: [{ type: 'scheduleEvent', eventId: 'later', delayMonths: 6 }],
+            },
+          },
+        }],
+      }, event('later', 0, true)],
+      'source',
+      'resolve',
+    ).state;
+
+    expect(result.scheduledEvents[0].dueAgeMonths).toBe(186);
   });
 });

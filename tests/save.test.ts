@@ -57,7 +57,7 @@ function detailedState(): GameState {
   state.scheduledEvents = [
     {
       eventId: 'mira_returns_favor',
-      dueMonth: 7,
+      dueAgeMonths: 187,
       sourceEventId: 'departure',
       sourceChoiceId: 'set_sail',
     },
@@ -137,7 +137,7 @@ describe('restored deterministic RNG', () => {
 describe('invalid saves', () => {
   it.each([
     ['not json', '{broken'],
-    ['legacy version 2', JSON.stringify({ ...detailedState(), version: 2 })],
+    ['legacy version 3', JSON.stringify({ ...detailedState(), version: 3 })],
     ['unknown version', JSON.stringify({ ...detailedState(), version: 99 })],
   ])('rejects %s', (_label, raw) => {
     expect(deserializeGameState(raw)).toBeNull();
@@ -148,5 +148,14 @@ describe('invalid saves', () => {
     const raw = JSON.stringify({ ...malformed, ship: { condition: 99 } });
 
     expect(deserializeGameState(raw)).toBeNull();
+  });
+
+  it('rejects inconsistent career end state and preserves a valid reason', () => {
+    const activeWithReason = { ...detailedState(), careerEndReason: 'legacy' };
+    const ended = { ...detailedState(), careerStatus: 'ended', careerEndReason: 'death' };
+
+    expect(deserializeGameState(JSON.stringify(activeWithReason))).toBeNull();
+    expect(deserializeGameState(JSON.stringify(ended))?.careerEndReason).toBe('death');
+    expect(deserializeGameState(JSON.stringify({ ...ended, careerEndReason: null }))).toBeNull();
   });
 });

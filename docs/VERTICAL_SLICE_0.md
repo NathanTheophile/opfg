@@ -76,7 +76,7 @@ history[]
 
 scheduledEvents[]
   eventId
-  dueMonth
+  dueAgeMonths
   sourceEventId
   sourceChoiceId
 
@@ -378,7 +378,7 @@ scheduleEvent
 Le moteur convertit cela en :
 
 ```text
-dueMonth = currentMonth + 6
+dueAgeMonths = currentAgeMonths + 6
 ```
 
 et conserve :
@@ -448,7 +448,7 @@ Après chaque résolution :
 Chercher :
 
 ```text
-scheduledEvent.dueMonth <= currentMonth
+scheduledEvent.dueAgeMonths <= currentAgeMonths
 ```
 
 Ils doivent également satisfaire leur `eligibility`.

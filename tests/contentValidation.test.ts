@@ -60,6 +60,23 @@ describe('validateContent', () => {
     expect(errors).toContainEqual(expect.stringContaining('Unknown NpcId "missing_npc"'));
   });
 
+  it('validates hasPlayed and deterministic or dice hasOutcome references', () => {
+    const catalog = cloneCatalog();
+    catalog.events[0].eligibility = {
+      type: 'all',
+      conditions: [
+        { type: 'hasPlayed', eventId: 'missing_event' },
+        { type: 'hasOutcome', eventId: 'departure', outcomeId: 'missing_outcome' },
+        { type: 'hasOutcome', eventId: 'black_squall', outcomeId: 'missing_dice_outcome' },
+      ],
+    };
+
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('Unknown EventId "missing_event"'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown OutcomeId "missing_outcome"'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown OutcomeId "missing_dice_outcome"'));
+  });
+
   it('rejects scheduleEvent targeting an unknown event', () => {
     const catalog = cloneCatalog();
     catalog.events[0].choices[0].resolution.outcome.effects[0] = {
@@ -81,6 +98,21 @@ describe('validateContent', () => {
     const errors = messages(catalog);
     expect(errors).toContainEqual(expect.stringContaining('Unknown TraitId "missing_trait"'));
     expect(errors).toContainEqual(expect.stringContaining('Unknown TraitId "another_missing_trait"'));
+  });
+
+  it('rejects invalid opposite Trait references and asymmetric relationships', () => {
+    const missing = cloneCatalog();
+    missing.traits[0].oppositeTraitId = 'missing_trait';
+    expect(messages(missing)).toContainEqual(expect.stringContaining('Unknown TraitId "missing_trait"'));
+
+    const self = cloneCatalog();
+    self.traits[0].oppositeTraitId = 'audacious';
+    expect(messages(self)).toContainEqual(expect.stringContaining('cannot be its own opposite'));
+
+    const asymmetric = cloneCatalog();
+    asymmetric.traits.push({ id: 'cautious', name: 'Cautious', description: 'Careful.' });
+    asymmetric.traits[0].oppositeTraitId = 'cautious';
+    expect(messages(asymmetric)).toContainEqual(expect.stringContaining('must be symmetric'));
   });
 
   it('rejects empty, unordered, and non-terminal DiceCheck bands', () => {

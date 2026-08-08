@@ -49,6 +49,12 @@ export function evaluateCondition(condition: Condition, state: GameState): boole
       return state.history.some(
         (entry) => entry.eventId === condition.eventId && entry.choiceId === condition.choiceId,
       );
+    case 'hasPlayed':
+      return state.history.some((entry) => entry.eventId === condition.eventId);
+    case 'hasOutcome':
+      return state.history.some(
+        (entry) => entry.eventId === condition.eventId && entry.outcomeId === condition.outcomeId,
+      );
     case 'monthAtLeast':
       return state.month >= condition.value;
   }

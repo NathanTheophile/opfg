@@ -1,7 +1,7 @@
-import type { CareerPhase, GameState, NpcState, TravelState } from '../model/schema';
+import type { CareerEndReason, CareerPhase, GameState, NpcState, TravelState } from '../model/schema';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 3;
+const CURRENT_SAVE_VERSION = 4;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable']);
 
 export interface StorageLike {
@@ -75,6 +75,9 @@ function readGameState(value: unknown): GameState | null {
   if (npcs === null || history === null || scheduledEvents === null) return null;
   if (!(value.currentEventId === null || isString(value.currentEventId))) return null;
   if (!(value.careerStatus === 'active' || value.careerStatus === 'ended')) return null;
+  if (!isCareerEndReason(value.careerEndReason)) return null;
+  if (value.careerStatus === 'active' && value.careerEndReason !== null) return null;
+  if (value.careerStatus === 'ended' && value.careerEndReason === null) return null;
 
   return {
     version: CURRENT_SAVE_VERSION,
@@ -106,6 +109,7 @@ function readGameState(value: unknown): GameState | null {
     scheduledEvents,
     currentEventId: value.currentEventId,
     careerStatus: value.careerStatus,
+    careerEndReason: value.careerEndReason,
   };
 }
 
@@ -145,13 +149,13 @@ function readScheduledEvents(value: unknown): GameState['scheduledEvents'] | nul
     (entry) =>
       isRecord(entry) &&
       isString(entry.eventId) &&
-      isNonNegativeInteger(entry.dueMonth) &&
+      isNonNegativeInteger(entry.dueAgeMonths) &&
       isString(entry.sourceEventId) &&
       isString(entry.sourceChoiceId),
   )) return null;
   return value.map((entry) => ({
     eventId: entry.eventId as string,
-    dueMonth: entry.dueMonth as number,
+    dueAgeMonths: entry.dueAgeMonths as number,
     sourceEventId: entry.sourceEventId as string,
     sourceChoiceId: entry.sourceChoiceId as string,
   }));
@@ -175,6 +179,10 @@ function isCareerPhase(value: unknown): value is CareerPhase {
 
 function isTravelState(value: unknown): value is TravelState {
   return value === 'at_sea' || value === 'on_land';
+}
+
+function isCareerEndReason(value: unknown): value is CareerEndReason | null {
+  return value === null || value === 'death' || value === 'legacy';
 }
 
 function isStringArray(value: unknown): value is string[] {

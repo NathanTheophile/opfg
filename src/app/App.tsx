@@ -80,6 +80,7 @@ export function App() {
       <p>Location: {gameState.locationId}</p>
       <p>Ship: {gameState.ship.condition}</p>
       <p>Career: {gameState.careerStatus}</p>
+      <p>Career End: {gameState.careerEndReason ?? '—'}</p>
       <button type="button" onClick={() => startCareer(true)}>Restart Career</button>
 
       <section>

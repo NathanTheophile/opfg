@@ -6,7 +6,7 @@ describe('createInitialGameState', () => {
     const state = createInitialGameState(1234);
 
     expect(state).toEqual({
-      version: 3,
+      version: 4,
       rngState: 1234,
       careerPhase: 'active',
       ageMonths: 180,
@@ -40,6 +40,7 @@ describe('createInitialGameState', () => {
       scheduledEvents: [],
       currentEventId: null,
       careerStatus: 'active',
+      careerEndReason: null,
     });
   });
 

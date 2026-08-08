@@ -40,7 +40,12 @@ The temporary demonstration content has been removed. The real Slice 0 exercises
 - Initial Slice 0 stat values are temporary development fixtures and balancing remains undefined.
 - Traits are persistent IDs with public definitions in the content catalog; `addTrait` and `removeTrait` are available effects.
 - The current DiceCheck remains the legacy Slice 0 implementation until T10.
-- Save schema version is 3; development saves from version 2 are intentionally rejected without migration.
+- Scheduled consequences use `dueAgeMonths`, derived from absolute `ageMonths`, so they also work outside active career.
+- `hasPlayed`, `hasChosen`, and `hasOutcome` derive distinct historical facts from `history`.
+- `careerEndReason` is persisted as `death` or `legacy`; current VS0 endings provisionally use `legacy`.
+- Trait definitions support validated symmetric `oppositeTraitId` references. Runtime opposite removal during `addTrait` is intentionally deferred to avoid coupling the engine to global content.
+- The current DiceCheck remains legacy and unchanged until T10.
+- Save schema version is 4; development saves from version 3 are intentionally rejected without migration.
 
 ---
 

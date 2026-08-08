@@ -1,5 +1,6 @@
 import type {
   ChoiceId,
+  CareerEndReason,
   CareerPhase,
   EventId,
   FlagId,
@@ -34,6 +35,8 @@ export type Condition =
   | { type: 'npcStatusIs'; npcId: NpcId; status: NpcStatus }
   | { type: 'npcRelationshipAtLeast'; npcId: NpcId; value: number }
   | { type: 'hasChosen'; eventId: EventId; choiceId: ChoiceId }
+  | { type: 'hasPlayed'; eventId: EventId }
+  | { type: 'hasOutcome'; eventId: EventId; outcomeId: OutcomeId }
   | { type: 'monthAtLeast'; value: number };
 
 export type Effect =
@@ -49,7 +52,8 @@ export type Effect =
   | { type: 'setNpcStatus'; npcId: NpcId; status: NpcStatus }
   | { type: 'modifyNpcRelationship'; npcId: NpcId; amount: number }
   | { type: 'scheduleEvent'; eventId: EventId; delayMonths: number }
-  | { type: 'endCareer' };
+  | { type: 'setCareerPhase'; phase: CareerPhase }
+  | { type: 'endCareer'; reason: CareerEndReason };
 
 export interface Outcome {
   id: OutcomeId;
@@ -120,6 +124,7 @@ export interface TraitDefinition {
   id: TraitId;
   name: string;
   description: string;
+  oppositeTraitId?: TraitId;
 }
 
 export interface ItemDefinition {

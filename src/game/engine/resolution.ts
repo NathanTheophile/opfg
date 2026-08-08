@@ -66,7 +66,7 @@ function finalizeOutcome(
       ...afterEffects.history,
       { eventId, choiceId, outcomeId: outcome.id, month: resolvedMonth },
     ],
-    scheduledEvents: consumeScheduledEntry(afterEffects, events, eventId),
+    scheduledEvents: consumeScheduledEntry(afterEffects, events, eventId, state.ageMonths),
   };
 
   return {
@@ -80,11 +80,12 @@ function consumeScheduledEntry(
   state: GameState,
   events: readonly EventDefinition[],
   eventId: EventId,
+  selectionAgeMonths: number,
 ): GameState['scheduledEvents'] {
   if (events.find(({ id }) => id === eventId)?.scheduledOnly !== true) return state.scheduledEvents;
 
   const entryIndex = state.scheduledEvents.findIndex(
-    (entry) => entry.eventId === eventId && entry.dueMonth <= state.month,
+    (entry) => entry.eventId === eventId && entry.dueAgeMonths <= selectionAgeMonths,
   );
   return entryIndex < 0
     ? state.scheduledEvents

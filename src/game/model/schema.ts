@@ -44,12 +44,13 @@ export interface HistoryEntry {
 
 export interface ScheduledEvent {
   eventId: EventId;
-  dueMonth: number;
+  dueAgeMonths: number;
   sourceEventId: EventId;
   sourceChoiceId: ChoiceId;
 }
 
 export type CareerStatus = 'active' | 'ended';
+export type CareerEndReason = 'death' | 'legacy';
 export type CareerPhase = 'origins' | 'childhood' | 'active';
 export type TravelState = 'at_sea' | 'on_land';
 
@@ -70,4 +71,5 @@ export interface GameState {
   scheduledEvents: ScheduledEvent[];
   currentEventId: EventId | null;
   careerStatus: CareerStatus;
+  careerEndReason: CareerEndReason | null;
 }
