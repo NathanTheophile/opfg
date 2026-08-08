@@ -101,6 +101,7 @@ export interface EventDefinition {
   id: EventId;
   title: string;
   text: string;
+  scheduledOnly?: boolean;
   eligibility?: Condition;
   priority: number;
   choices: ChoiceDefinition[];

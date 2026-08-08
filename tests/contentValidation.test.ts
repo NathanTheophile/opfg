@@ -82,11 +82,21 @@ describe('validateContent', () => {
     const catalog = cloneCatalog();
     catalog.events[1].eligibility = { type: 'customScript' };
     catalog.events[0].choices[0].resolution.outcome.effects[0] = { type: 'customEffect' };
-    catalog.events[2].choices[1].availableIf.statId = 'luck';
+    catalog.events[3].choices[1].availableIf.statId = 'luck';
 
     const errors = messages(catalog);
     expect(errors).toContainEqual(expect.stringContaining('Unknown Condition type "customScript"'));
     expect(errors).toContainEqual(expect.stringContaining('Unknown Effect type "customEffect"'));
     expect(errors).toContainEqual(expect.stringContaining('Invalid StatId "luck"'));
+  });
+
+  it('rejects scheduling a normal event and accepts a scheduledOnly target', () => {
+    const invalidCatalog = cloneCatalog();
+    invalidCatalog.events[0].choices[0].resolution.outcome.effects[1].eventId = 'departure';
+
+    expect(messages(invalidCatalog)).toContainEqual(
+      expect.stringContaining('must target an event with scheduledOnly: true'),
+    );
+    expect(validateContent(contentCatalog)).toEqual([]);
   });
 });

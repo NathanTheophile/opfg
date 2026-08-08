@@ -2,16 +2,17 @@
 
 ## Current playable state
 
-A deterministic browser-playable loop is available with three temporary events:
+A deterministic browser-playable loop is available with temporary normal and scheduled events:
 
 ```text
 Departure
 -> Open Sea
+-> A Delayed Warning (scheduled for month 2)
 -> The Reefs
 -> temporary career end
 ```
 
-The runtime evaluates Slice 0 Conditions, exposes visible/available choice state, resolves deterministic and seeded d20 choices, applies Effects immutably, advances time, records history and selects the next normal event by eligibility and priority. Dice results expose active modifiers, totals and Outcome text as transient UI data. Scheduled events can be written to state but are not consumed yet.
+The runtime evaluates Slice 0 Conditions, exposes visible/available choice state, resolves deterministic and seeded d20 choices, applies Effects immutably, advances time and records history. Due eligible scheduled events take priority over normal eligibility/priority selection; ineligible entries remain queued until they become valid and resolved entries are consumed. Dice results expose active modifiers, totals and Outcome text as transient UI data.
 
 ---
 
@@ -37,10 +38,9 @@ The runtime evaluates Slice 0 Conditions, exposes visible/available choice state
 
 ## Current priority
 
-1. Consume due scheduled events before normal events.
-2. Add one-slot localStorage save/load.
-3. Replace temporary events with the Slice 0 test content and Mira mini-arc.
-4. Complete the first playable career through month 12.
+1. Add one-slot localStorage save/load.
+2. Replace temporary events with the Slice 0 test content and Mira mini-arc.
+3. Complete the first playable career through month 12.
 
 ---
 
@@ -60,7 +60,6 @@ None yet.
 
 ## Current runtime limits
 
-- Scheduled events are recorded with causal source IDs but not selected yet.
 - Save/load is not implemented.
 - Current narrative content is temporary test content only.
 

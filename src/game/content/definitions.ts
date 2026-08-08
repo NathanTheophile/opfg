@@ -22,6 +22,7 @@ export const contentCatalog = {
               advanceMonths: 1,
               effects: [
                 { type: 'setFlag', flagId: 'left_starter_port' },
+                { type: 'scheduleEvent', eventId: 'delayed_warning', delayMonths: 2 },
                 { type: 'moveToLocation', locationId: 'open_sea' },
               ],
             },
@@ -57,6 +58,28 @@ export const contentCatalog = {
                 { type: 'modifyShipCondition', amount: -1 },
                 { type: 'moveToLocation', locationId: 'reefs' },
               ],
+            },
+          },
+        },
+      ],
+    },
+    {
+      id: 'delayed_warning',
+      title: 'A Delayed Warning',
+      text: 'A message sent after your departure finally catches up with the ship.',
+      scheduledOnly: true,
+      priority: 0,
+      choices: [
+        {
+          id: 'heed_warning',
+          text: 'Heed the warning',
+          resolution: {
+            type: 'deterministic',
+            outcome: {
+              id: 'warning_received',
+              text: 'The warning confirms that dangerous reefs lie ahead.',
+              advanceMonths: 0,
+              effects: [{ type: 'setFlag', flagId: 'received_delayed_warning' }],
             },
           },
         },

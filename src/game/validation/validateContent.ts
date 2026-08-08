@@ -46,6 +46,7 @@ export function validateContent(catalog: unknown): ContentValidationError[] {
   const itemIds = collectIds(readRecords(catalog.items, 'items', errors), 'items', errors);
   const npcIds = collectIds(readRecords(catalog.npcs, 'npcs', errors), 'npcs', errors);
   const choicesByEvent = new Map<string, Set<string>>();
+  const scheduledOnlyEventIds = new Set<string>();
 
   for (const [eventIndex, event] of events.entries()) {
     const eventPath = `events[${eventIndex}]`;
@@ -53,9 +54,10 @@ export function validateContent(catalog: unknown): ContentValidationError[] {
     const choices = readRecords(event.choices, `${eventPath}.choices`, errors);
     const choiceIds = collectIds(choices, `${eventPath}.choices`, errors);
     if (eventId) choicesByEvent.set(eventId, choiceIds);
+    if (eventId && event.scheduledOnly === true) scheduledOnlyEventIds.add(eventId);
   }
 
-  const references = { eventIds, choicesByEvent, traitIds, itemIds, npcIds };
+  const references = { eventIds, choicesByEvent, traitIds, itemIds, npcIds, scheduledOnlyEventIds };
   for (const [eventIndex, event] of events.entries()) {
     validateEvent(event, `events[${eventIndex}]`, references, errors);
   }
@@ -76,6 +78,7 @@ interface References {
   traitIds: Set<string>;
   itemIds: Set<string>;
   npcIds: Set<string>;
+  scheduledOnlyEventIds: Set<string>;
 }
 
 function validateEvent(
@@ -246,7 +249,10 @@ function validateEffect(
   }
   if (type === 'modifyStat') validateStat(effect.statId, path, errors);
   if (type === 'scheduleEvent') {
-    validateReference(effect.eventId, references.eventIds, 'EventId', path, errors);
+    const eventId = validateReference(effect.eventId, references.eventIds, 'EventId', path, errors);
+    if (eventId && references.eventIds.has(eventId) && !references.scheduledOnlyEventIds.has(eventId)) {
+      errors.push({ path, message: `Scheduled EventId "${eventId}" must target an event with scheduledOnly: true.` });
+    }
   }
 }
 

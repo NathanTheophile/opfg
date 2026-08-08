@@ -93,6 +93,7 @@ describe('DiceResolution integration', () => {
     let state = selectNextEvent(createInitialGameState(123), contentCatalog.events);
     state = resolveChoice(state, contentCatalog.events, 'departure', 'set_sail').state;
     state = resolveChoice(state, contentCatalog.events, 'open_sea', 'recover_chart').state;
+    state = resolveChoice(state, contentCatalog.events, 'delayed_warning', 'heed_warning').state;
     const rngBeforeRoll = state.rngState;
 
     const result = resolveChoice(state, contentCatalog.events, 'reefs', 'risk_crossing');

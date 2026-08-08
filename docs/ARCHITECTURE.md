@@ -42,6 +42,8 @@ Content may reference gameplay entities through stable IDs.
 
 Content must not contain arbitrary JavaScript callbacks or gameplay functions.
 
+Events marked `scheduledOnly: true` are excluded from the normal event pool. They can only be selected from a due `GameState.scheduledEvents` entry; due but currently ineligible entries remain queued.
+
 ### Engine
 
 Owns gameplay rules.
@@ -121,7 +123,7 @@ Eligible
 → Next event
 ```
 
-Scheduled events due at the current month are considered before normal events, subject to their eligibility.
+Scheduled events due at the current month are considered before normal events, subject to their eligibility. Their queue entry is consumed only when the corresponding event is resolved.
 
 RNG is applied only after invalid candidates have been filtered.
 
