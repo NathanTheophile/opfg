@@ -4,27 +4,68 @@ import { getChoiceState } from '../game/engine/conditions';
 import { findCurrentEvent, selectNextEvent } from '../game/engine/events';
 import { resolveChoice } from '../game/engine/resolution';
 import type { ChoiceResolutionResult } from '../game/engine/resolution';
+import { clearGameState, loadGameState, saveGameState } from '../game/engine/save';
 import { createInitialGameState } from '../game/model/initialState';
+import type { GameState } from '../game/model/schema';
 import { assertValidContent } from '../game/validation/validateContent';
 
 assertValidContent(contentCatalog);
 
-function createNewCareer() {
-  return selectNextEvent(createInitialGameState(), contentCatalog.events);
+let fallbackSeed = Date.now() >>> 0;
+
+function generateCareerSeed(): number {
+  if (globalThis.crypto?.getRandomValues) {
+    return globalThis.crypto.getRandomValues(new Uint32Array(1))[0];
+  }
+  fallbackSeed = (fallbackSeed + 0x6d2b79f5) >>> 0;
+  return fallbackSeed;
+}
+
+function createNewCareer(seed: number = generateCareerSeed()): GameState {
+  return selectNextEvent(createInitialGameState(seed), contentCatalog.events);
 }
 
 export function App() {
-  const [gameState, setGameState] = useState(createNewCareer);
+  const [savedGame, setSavedGame] = useState<GameState | null>(() => loadGameState(window.localStorage));
+  const [gameState, setGameState] = useState<GameState | null>(null);
   const [lastResolution, setLastResolution] = useState<ChoiceResolutionResult | null>(null);
-  const currentEvent = findCurrentEvent(gameState, contentCatalog.events);
 
-  const startNewCareer = () => {
-    setGameState(createNewCareer());
+  const startCareer = (restart: boolean) => {
+    if (restart) clearGameState(window.localStorage);
+    const state = createNewCareer();
+    saveGameState(window.localStorage, state);
+    setSavedGame(state);
+    setGameState(state);
     setLastResolution(null);
   };
 
+  const continueCareer = () => {
+    if (!savedGame) return;
+    setGameState(savedGame);
+    setLastResolution(null);
+  };
+
+  if (!gameState) {
+    return (
+      <main>
+        <h1>Jam OP Fan Game</h1>
+        {savedGame ? (
+          <>
+            <button type="button" onClick={continueCareer}>Continue Career</button>
+            <button type="button" onClick={() => startCareer(true)}>Restart Career</button>
+          </>
+        ) : (
+          <button type="button" onClick={() => startCareer(false)}>New Career</button>
+        )}
+      </main>
+    );
+  }
+
+  const currentEvent = findCurrentEvent(gameState, contentCatalog.events);
   const choose = (eventId: string, choiceId: string) => {
     const result = resolveChoice(gameState, contentCatalog.events, eventId, choiceId);
+    saveGameState(window.localStorage, result.state);
+    setSavedGame(result.state);
     setGameState(result.state);
     setLastResolution(result);
   };
@@ -36,9 +77,7 @@ export function App() {
       <p>Location: {gameState.locationId}</p>
       <p>Ship: {gameState.ship.condition}</p>
       <p>Career: {gameState.careerStatus}</p>
-      <button type="button" onClick={startNewCareer}>
-        New Career
-      </button>
+      <button type="button" onClick={() => startCareer(true)}>Restart Career</button>
 
       <section>
         <h2>Current Event</h2>

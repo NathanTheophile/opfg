@@ -1,0 +1,174 @@
+import type { GameState, NpcState } from '../model/schema';
+
+export const SAVE_KEY = 'jam-op-fan-game.save';
+const CURRENT_SAVE_VERSION = 1;
+const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable']);
+
+export interface StorageLike {
+  getItem(key: string): string | null;
+  setItem(key: string, value: string): void;
+  removeItem(key: string): void;
+}
+
+export function serializeGameState(state: GameState): string {
+  return JSON.stringify(state);
+}
+
+export function deserializeGameState(raw: string): GameState | null {
+  let value: unknown;
+  try {
+    value = JSON.parse(raw);
+  } catch {
+    return null;
+  }
+
+  return readGameState(value);
+}
+
+export function saveGameState(storage: StorageLike, state: GameState): boolean {
+  try {
+    storage.setItem(SAVE_KEY, serializeGameState(state));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function loadGameState(storage: StorageLike): GameState | null {
+  try {
+    const raw = storage.getItem(SAVE_KEY);
+    return raw === null ? null : deserializeGameState(raw);
+  } catch {
+    return null;
+  }
+}
+
+export function clearGameState(storage: StorageLike): boolean {
+  try {
+    storage.removeItem(SAVE_KEY);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function readGameState(value: unknown): GameState | null {
+  if (!isRecord(value) || value.version !== CURRENT_SAVE_VERSION) return null;
+  if (!isUint32(value.rngState) || !isNonNegativeInteger(value.month) || !isString(value.locationId)) return null;
+  if (!isRecord(value.player) || !isRecord(value.player.stats) || !isStringArray(value.player.traits)) return null;
+  if (!isFiniteNumber(value.player.stats.navigation)) return null;
+  if (!isFiniteNumber(value.player.stats.presence)) return null;
+  if (!isFiniteNumber(value.player.stats.willpower)) return null;
+  if (!isRecord(value.ship) || !isIntegerInRange(value.ship.condition, 0, 3)) return null;
+  if (!isStringArray(value.flags) || !isStringArray(value.items)) return null;
+
+  const npcs = readNpcs(value.npcs);
+  const history = readHistory(value.history);
+  const scheduledEvents = readScheduledEvents(value.scheduledEvents);
+  if (npcs === null || history === null || scheduledEvents === null) return null;
+  if (!(value.currentEventId === null || isString(value.currentEventId))) return null;
+  if (!(value.careerStatus === 'active' || value.careerStatus === 'ended')) return null;
+
+  return {
+    version: CURRENT_SAVE_VERSION,
+    rngState: value.rngState,
+    month: value.month,
+    locationId: value.locationId,
+    player: {
+      stats: {
+        navigation: value.player.stats.navigation,
+        presence: value.player.stats.presence,
+        willpower: value.player.stats.willpower,
+      },
+      traits: [...value.player.traits],
+    },
+    ship: { condition: value.ship.condition },
+    flags: [...value.flags],
+    items: [...value.items],
+    npcs,
+    history,
+    scheduledEvents,
+    currentEventId: value.currentEventId,
+    careerStatus: value.careerStatus,
+  };
+}
+
+function readNpcs(value: unknown): GameState['npcs'] | null {
+  if (!isRecord(value)) return null;
+  const npcs: GameState['npcs'] = {};
+  for (const [npcId, npc] of Object.entries(value)) {
+    if (!isString(npcId) || !isRecord(npc)) return null;
+    if (!isNpcStatus(npc.status)) return null;
+    if (!isFiniteNumber(npc.relationship) || npc.relationship < -100 || npc.relationship > 100) return null;
+    npcs[npcId] = { status: npc.status, relationship: npc.relationship };
+  }
+  return npcs;
+}
+
+function readHistory(value: unknown): GameState['history'] | null {
+  if (!Array.isArray(value)) return null;
+  if (!value.every(
+    (entry) =>
+      isRecord(entry) &&
+      isString(entry.eventId) &&
+      isString(entry.choiceId) &&
+      isString(entry.outcomeId) &&
+      isNonNegativeInteger(entry.month),
+  )) return null;
+  return value.map((entry) => ({
+    eventId: entry.eventId as string,
+    choiceId: entry.choiceId as string,
+    outcomeId: entry.outcomeId as string,
+    month: entry.month as number,
+  }));
+}
+
+function readScheduledEvents(value: unknown): GameState['scheduledEvents'] | null {
+  if (!Array.isArray(value)) return null;
+  if (!value.every(
+    (entry) =>
+      isRecord(entry) &&
+      isString(entry.eventId) &&
+      isNonNegativeInteger(entry.dueMonth) &&
+      isString(entry.sourceEventId) &&
+      isString(entry.sourceChoiceId),
+  )) return null;
+  return value.map((entry) => ({
+    eventId: entry.eventId as string,
+    dueMonth: entry.dueMonth as number,
+    sourceEventId: entry.sourceEventId as string,
+    sourceChoiceId: entry.sourceChoiceId as string,
+  }));
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isString(value: unknown): value is string {
+  return typeof value === 'string' && value.length > 0;
+}
+
+function isNpcStatus(value: unknown): value is NpcState['status'] {
+  return typeof value === 'string' && NPC_STATUSES.has(value);
+}
+
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every(isString);
+}
+
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === 'number' && Number.isFinite(value);
+}
+
+function isNonNegativeInteger(value: unknown): value is number {
+  return typeof value === 'number' && Number.isInteger(value) && value >= 0;
+}
+
+function isUint32(value: unknown): value is number {
+  return isNonNegativeInteger(value) && value <= 0xffffffff;
+}
+
+function isIntegerInRange(value: unknown, minimum: number, maximum: number): value is number {
+  return typeof value === 'number' && Number.isInteger(value) && value >= minimum && value <= maximum;
+}

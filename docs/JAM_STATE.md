@@ -12,7 +12,7 @@ Departure
 -> temporary career end
 ```
 
-The runtime evaluates Slice 0 Conditions, exposes visible/available choice state, resolves deterministic and seeded d20 choices, applies Effects immutably, advances time and records history. Due eligible scheduled events take priority over normal eligibility/priority selection; ineligible entries remain queued until they become valid and resolved entries are consumed. Dice results expose active modifiers, totals and Outcome text as transient UI data.
+The runtime evaluates Slice 0 Conditions, exposes visible/available choice state, resolves deterministic and seeded d20 choices, applies Effects immutably, advances time and records history. Due eligible scheduled events take priority over normal eligibility/priority selection; ineligible entries remain queued until they become valid and resolved entries are consumed. One versioned localStorage slot automatically saves the complete post-resolution GameState, including RNG, current event and scheduled consequences. Dice display results remain transient UI data.
 
 ---
 
@@ -38,9 +38,8 @@ The runtime evaluates Slice 0 Conditions, exposes visible/available choice state
 
 ## Current priority
 
-1. Add one-slot localStorage save/load.
-2. Replace temporary events with the Slice 0 test content and Mira mini-arc.
-3. Complete the first playable career through month 12.
+1. Replace temporary events with the Slice 0 test content and Mira mini-arc.
+2. Complete the first playable career through month 12.
 
 ---
 
@@ -60,7 +59,6 @@ None yet.
 
 ## Current runtime limits
 
-- Save/load is not implemented.
 - Current narrative content is temporary test content only.
 
 ---
