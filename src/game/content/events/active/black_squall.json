@@ -1,0 +1,123 @@
+{
+  "id": "black_squall",
+  "titleKey": "event.black_squall.title",
+  "textKey": "event.black_squall.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasFlag",
+        "flagId": "castaway_resolved"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "open_sea"
+      }
+    ]
+  },
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "cut_through_squall",
+      "textKey": "event.black_squall.choice.cut_through_squall.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 13,
+        "modifiers": [
+          {
+            "condition": {
+              "type": "shipConditionAtMost",
+              "value": 1
+            },
+            "value": -4,
+            "displayLabelKey": "event.black_squall.choice.cut_through_squall.modifier.0.label"
+          }
+        ],
+        "outcomes": {
+          "criticalFailure": {
+            "id": "black_squall_catastrophe",
+            "textKey": "event.black_squall.choice.cut_through_squall.outcome.black_squall_catastrophe.text",
+            "effects": [
+              {
+                "type": "modifyShipCondition",
+                "amount": -1
+              },
+              {
+                "type": "setFlag",
+                "flagId": "black_squall_disaster"
+              },
+              {
+                "type": "setFlag",
+                "flagId": "black_squall_resolved"
+              }
+            ]
+          },
+          "failure": {
+            "id": "black_squall_failure",
+            "textKey": "event.black_squall.choice.cut_through_squall.outcome.black_squall_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipCondition",
+                "amount": -1
+              },
+              {
+                "type": "setFlag",
+                "flagId": "black_squall_resolved"
+              }
+            ]
+          },
+          "success": {
+            "id": "black_squall_success",
+            "textKey": "event.black_squall.choice.cut_through_squall.outcome.black_squall_success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "black_squall_resolved"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "black_squall_exceptional",
+            "textKey": "event.black_squall.choice.cut_through_squall.outcome.black_squall_exceptional.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "black_squall_mastered"
+              },
+              {
+                "type": "setFlag",
+                "flagId": "black_squall_resolved"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "heave_to",
+      "textKey": "event.black_squall.choice.heave_to.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "black_squall_waited",
+          "textKey": "event.black_squall.choice.heave_to.outcome.black_squall_waited.text",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "black_squall_delayed"
+            },
+            {
+              "type": "setFlag",
+              "flagId": "black_squall_resolved"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -33,6 +33,7 @@ Do not invent gameplay rules when the specification is ambiguous. Surface the am
 - Do not add dependencies unless they solve an immediate problem.
 - Keep Engine, Content, GameState and React UI separated.
 - Narrative content must be data-driven.
+- Store each Event in its own JSON file under `src/game/content/events/`; the catalogue is auto-discovered.
 - Content data must not contain arbitrary callbacks/functions.
 - Persistent GameState must remain directly JSON-serializable.
 - Persistent GameState must not contain `Map`, `Set`, `Date`, class instances, functions or callbacks.

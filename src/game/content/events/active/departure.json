@@ -1,0 +1,43 @@
+{
+  "id": "departure",
+  "titleKey": "event.departure.title",
+  "textKey": "event.departure.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "starter_port"
+      }
+    ]
+  },
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "set_sail",
+      "textKey": "event.departure.choice.set_sail.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "departure_set_sail",
+          "textKey": "event.departure.choice.set_sail.outcome.departure_set_sail.text",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "career_departed"
+            },
+            {
+              "type": "moveToLocation",
+              "locationId": "open_sea",
+              "travelState": "at_sea"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

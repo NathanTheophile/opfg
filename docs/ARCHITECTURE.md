@@ -22,4 +22,8 @@ Scheduled selection never consumes RNG. A scheduled occurrence remains pending w
 
 `EventDefinition` is a discriminated union of `normal`, `scheduled`, and `critical`. Priority belongs only to scheduled definitions. Locations declare whether normal scheduled reach is blocked. Outcomes contain localization, identity, and effects only; phase rules own time advancement.
 
+Each Event is stored as one JSON file under `src/game/content/events/**`, named after its `EventId`. `eventCatalog.ts` discovers these files recursively with an eager Vite glob, verifies filename/ID agreement, and sorts the resulting catalogue lexically by Event ID. Consequently, adding an Event requires no TypeScript import or manifest edit, while seeded selection receives a stable ordering on every machine and build.
+
+`definitions.ts` retains the small shared registries and assembles them with this single auto-discovered Event catalogue. Temporary filler Events remain visibly isolated under `events/fixtures/`.
+
 The validator checks structural combinations, references, localization, scheduled priorities/reach/fallback, critical triggers, dice contracts, and opposite traits. Persistent data contains only JSON values.

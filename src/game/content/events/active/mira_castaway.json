@@ -1,0 +1,128 @@
+{
+  "id": "mira_castaway",
+  "titleKey": "event.mira_castaway.title",
+  "textKey": "event.mira_castaway.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasFlag",
+        "flagId": "career_departed"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "open_sea"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "mira",
+        "status": "unavailable"
+      }
+    ]
+  },
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "rescue_recruit",
+      "textKey": "event.mira_castaway.choice.rescue_recruit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mira_castaway_recruited",
+          "textKey": "event.mira_castaway.choice.rescue_recruit.outcome.mira_castaway_recruited.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "mira",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": 25
+            },
+            {
+              "type": "setFlag",
+              "flagId": "mira_rescued"
+            },
+            {
+              "type": "setFlag",
+              "flagId": "castaway_resolved"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rescue_dropoff",
+      "textKey": "event.mira_castaway.choice.rescue_dropoff.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mira_castaway_dropped_off",
+          "textKey": "event.mira_castaway.choice.rescue_dropoff.outcome.mira_castaway_dropped_off.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "mira",
+              "status": "departed"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": 15
+            },
+            {
+              "type": "setFlag",
+              "flagId": "mira_rescued"
+            },
+            {
+              "type": "setFlag",
+              "flagId": "castaway_resolved"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "mira_returns_favor",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_mira",
+      "textKey": "event.mira_castaway.choice.leave_mira.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mira_castaway_abandoned",
+          "textKey": "event.mira_castaway.choice.leave_mira.outcome.mira_castaway_abandoned.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "mira",
+              "status": "unavailable"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": -20
+            },
+            {
+              "type": "setFlag",
+              "flagId": "mira_abandoned"
+            },
+            {
+              "type": "setFlag",
+              "flagId": "castaway_resolved"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

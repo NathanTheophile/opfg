@@ -3,6 +3,7 @@
 Implemented and verified:
 
 - Content Contract v2 with Normal, Scheduled, and Critical event variants;
+- one JSON file per Event, recursively auto-discovered and deterministically sorted by Event ID;
 - save/GameState v7 with `ageMonths`, Active `slotInMonth`, nullable ship, and NPC `dead` status;
 - seeded uniform normal selection and deterministic scheduled ordering;
 - scheduled location reach, cancellation, and fallback;

@@ -41,8 +41,9 @@ describe('validateContent', () => {
 
   it('rejects duplicate EventIds and ChoiceIds', () => {
     const catalog = cloneCatalog();
-    catalog.events.push(structuredClone(catalog.events[0]));
-    catalog.events[0].choices.push(structuredClone(catalog.events[0].choices[0]));
+    const originName = eventById(catalog, 'origin_name');
+    catalog.events.push(structuredClone(originName));
+    originName.choices.push(structuredClone(originName.choices[0]));
 
     const errors = messages(catalog);
     expect(errors).toContainEqual(expect.stringContaining('Duplicate ID "origin_name"'));
@@ -51,7 +52,7 @@ describe('validateContent', () => {
 
   it('rejects unknown Event, NPC, Item, and Trait references recursively', () => {
     const catalog = cloneCatalog();
-    catalog.events[1].eligibility = {
+    eventById(catalog, 'origin_race').eligibility = {
       type: 'all',
       conditions: [
         { type: 'hasChosen', eventId: 'missing_event', choiceId: 'missing_choice' },
@@ -75,7 +76,7 @@ describe('validateContent', () => {
 
   it('validates hasPlayed and deterministic or dice hasOutcome references', () => {
     const catalog = cloneCatalog();
-    catalog.events[0].eligibility = {
+    eventById(catalog, 'origin_name').eligibility = {
       type: 'all',
       conditions: [
         { type: 'hasPlayed', eventId: 'missing_event' },
@@ -92,7 +93,7 @@ describe('validateContent', () => {
 
   it('rejects scheduleEvent targeting an unknown event', () => {
     const catalog = cloneCatalog();
-    catalog.events[0].choices[0].resolution.outcome.effects[0] = {
+    eventById(catalog, 'origin_to_childhood').choices[0].resolution.outcome.effects[0] = {
       type: 'scheduleEvent',
       eventId: 'missing_event',
       delayMonths: 1,
@@ -103,7 +104,7 @@ describe('validateContent', () => {
 
   it('rejects addTrait and removeTrait targeting unknown traits', () => {
     const catalog = cloneCatalog();
-    catalog.events[0].choices[0].resolution.outcome.effects = [
+    eventById(catalog, 'origin_name').choices[0].resolution.outcome.effects = [
       { type: 'addTrait', traitId: 'missing_trait' },
       { type: 'removeTrait', traitId: 'another_missing_trait' },
     ];
@@ -132,10 +133,10 @@ describe('validateContent', () => {
     const catalog = cloneCatalog();
     catalog.npcs[0].nameKey = '';
     catalog.npcs[0].initialStats.loyalty = 51;
-    catalog.events[0].eligibility = {
+    eventById(catalog, 'origin_name').eligibility = {
       type: 'npcStatAtLeast', npcId: 'missing_npc', statId: 'navigation', value: 51,
     };
-    catalog.events[0].choices[0].resolution.outcome.effects = [{
+    eventById(catalog, 'origin_name').choices[0].resolution.outcome.effects = [{
       type: 'modifyNpcStat', npcId: 'missing_npc', statId: 'charisma', amount: Number.POSITIVE_INFINITY,
     }];
 
@@ -181,8 +182,8 @@ describe('validateContent', () => {
 
   it('rejects unknown Condition and Effect types and invalid StatIds', () => {
     const catalog = cloneCatalog();
-    catalog.events[1].eligibility = { type: 'customScript' };
-    catalog.events[0].choices[0].resolution.outcome.effects[0] = { type: 'customEffect' };
+    eventById(catalog, 'origin_race').eligibility = { type: 'customScript' };
+    eventById(catalog, 'origin_to_childhood').choices[0].resolution.outcome.effects[0] = { type: 'customEffect' };
     eventById(catalog, 'reefs').choices.find((choice: Record<string, any>) => choice.id === 'read_currents').availableIf.statId = 'legacy_stat';
 
     const errors = messages(catalog);

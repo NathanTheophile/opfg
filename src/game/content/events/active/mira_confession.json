@@ -1,0 +1,105 @@
+{
+  "id": "mira_confession",
+  "titleKey": "event.mira_confession.title",
+  "textKey": "event.mira_confession.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasFlag",
+        "flagId": "black_squall_resolved"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "mira",
+        "status": "crew"
+      }
+    ]
+  },
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "trust_mira",
+      "textKey": "event.mira_confession.choice.trust_mira.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mira_confession_trusted",
+          "textKey": "event.mira_confession.choice.trust_mira.outcome.mira_confession_trusted.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": 20
+            },
+            {
+              "type": "setFlag",
+              "flagId": "mira_trusted"
+            },
+            {
+              "type": "setFlag",
+              "flagId": "mira_confession_resolved"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_watch",
+      "textKey": "event.mira_confession.choice.keep_watch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mira_confession_watched",
+          "textKey": "event.mira_confession.choice.keep_watch.outcome.mira_confession_watched.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": -5
+            },
+            {
+              "type": "setFlag",
+              "flagId": "mira_mistrusted"
+            },
+            {
+              "type": "setFlag",
+              "flagId": "mira_confession_resolved"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "put_mira_ashore",
+      "textKey": "event.mira_confession.choice.put_mira_ashore.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mira_confession_exiled",
+          "textKey": "event.mira_confession.choice.put_mira_ashore.outcome.mira_confession_exiled.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": -20
+            },
+            {
+              "type": "setNpcStatus",
+              "npcId": "mira",
+              "status": "departed"
+            },
+            {
+              "type": "setFlag",
+              "flagId": "mira_confession_resolved"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,284 @@
+{
+  "id": "reefs",
+  "titleKey": "event.reefs.title",
+  "textKey": "event.reefs.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasFlag",
+        "flagId": "wreck_resolved"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "open_sea"
+      }
+    ]
+  },
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "force_passage",
+      "textKey": "event.reefs.choice.force_passage.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 13,
+        "modifiers": [
+          {
+            "condition": {
+              "type": "shipConditionAtMost",
+              "value": 1
+            },
+            "value": -3,
+            "displayLabelKey": "event.reefs.choice.force_passage.modifier.0.label"
+          }
+        ],
+        "outcomes": {
+          "criticalFailure": {
+            "id": "reefs_force_catastrophe",
+            "textKey": "event.reefs.choice.force_passage.outcome.reefs_force_catastrophe.text",
+            "effects": [
+              {
+                "type": "modifyShipCondition",
+                "amount": -1
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reefs_hard_crossing"
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reefs_crossed"
+              },
+              {
+                "type": "moveToLocation",
+                "locationId": "outer_route",
+                "travelState": "at_sea"
+              }
+            ]
+          },
+          "failure": {
+            "id": "reefs_force_failure",
+            "textKey": "event.reefs.choice.force_passage.outcome.reefs_force_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipCondition",
+                "amount": -1
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reefs_crossed"
+              },
+              {
+                "type": "moveToLocation",
+                "locationId": "outer_route",
+                "travelState": "at_sea"
+              }
+            ]
+          },
+          "success": {
+            "id": "reefs_force_success",
+            "textKey": "event.reefs.choice.force_passage.outcome.reefs_force_success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reefs_crossed"
+              },
+              {
+                "type": "moveToLocation",
+                "locationId": "outer_route",
+                "travelState": "at_sea"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "reefs_force_exceptional",
+            "textKey": "event.reefs.choice.force_passage.outcome.reefs_force_exceptional.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reefs_clean_crossing"
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reefs_crossed"
+              },
+              {
+                "type": "moveToLocation",
+                "locationId": "outer_route",
+                "travelState": "at_sea"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_currents",
+      "textKey": "event.reefs.choice.read_currents.text",
+      "availableIf": {
+        "type": "statAtLeast",
+        "statId": "navigation",
+        "value": 35
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reefs_navigation_solution",
+          "textKey": "event.reefs.choice.read_currents.outcome.reefs_navigation_solution.text",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "reefs_clean_crossing"
+            },
+            {
+              "type": "setFlag",
+              "flagId": "reefs_crossed"
+            },
+            {
+              "type": "moveToLocation",
+              "locationId": "outer_route",
+              "travelState": "at_sea"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "use_sealed_chart",
+      "textKey": "event.reefs.choice.use_sealed_chart.text",
+      "visibleIf": {
+        "type": "hasItem",
+        "itemId": "sealed_chart"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reefs_chart_solution",
+          "textKey": "event.reefs.choice.use_sealed_chart.outcome.reefs_chart_solution.text",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "reefs_clean_crossing"
+            },
+            {
+              "type": "setFlag",
+              "flagId": "reefs_crossed"
+            },
+            {
+              "type": "moveToLocation",
+              "locationId": "outer_route",
+              "travelState": "at_sea"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ride_breakers",
+      "textKey": "event.reefs.choice.ride_breakers.text",
+      "visibleIf": {
+        "type": "hasTrait",
+        "traitId": "audacious"
+      },
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 13,
+        "modifiers": [
+          {
+            "condition": {
+              "type": "shipConditionAtMost",
+              "value": 1
+            },
+            "value": -3,
+            "displayLabelKey": "event.reefs.choice.ride_breakers.modifier.0.label"
+          }
+        ],
+        "outcomes": {
+          "criticalFailure": {
+            "id": "reefs_breakers_catastrophe",
+            "textKey": "event.reefs.choice.ride_breakers.outcome.reefs_breakers_catastrophe.text",
+            "effects": [
+              {
+                "type": "modifyShipCondition",
+                "amount": -1
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reefs_hard_crossing"
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reefs_crossed"
+              },
+              {
+                "type": "moveToLocation",
+                "locationId": "outer_route",
+                "travelState": "at_sea"
+              }
+            ]
+          },
+          "failure": {
+            "id": "reefs_breakers_failure",
+            "textKey": "event.reefs.choice.ride_breakers.outcome.reefs_breakers_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipCondition",
+                "amount": -1
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reefs_crossed"
+              },
+              {
+                "type": "moveToLocation",
+                "locationId": "outer_route",
+                "travelState": "at_sea"
+              }
+            ]
+          },
+          "success": {
+            "id": "reefs_breakers_success",
+            "textKey": "event.reefs.choice.ride_breakers.outcome.reefs_breakers_success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reefs_crossed"
+              },
+              {
+                "type": "moveToLocation",
+                "locationId": "outer_route",
+                "travelState": "at_sea"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "reefs_breakers_exceptional",
+            "textKey": "event.reefs.choice.ride_breakers.outcome.reefs_breakers_exceptional.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reefs_clean_crossing"
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reefs_crossed"
+              },
+              {
+                "type": "moveToLocation",
+                "locationId": "outer_route",
+                "travelState": "at_sea"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "id": "wreck",
+  "titleKey": "event.wreck.title",
+  "textKey": "event.wreck.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasFlag",
+        "flagId": "black_squall_resolved"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "open_sea"
+      }
+    ]
+  },
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "search_wreck",
+      "textKey": "event.wreck.choice.search_wreck.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wreck_chart_found",
+          "textKey": "event.wreck.choice.search_wreck.outcome.wreck_chart_found.text",
+          "effects": [
+            {
+              "type": "addItem",
+              "itemId": "sealed_chart"
+            },
+            {
+              "type": "setFlag",
+              "flagId": "wreck_searched"
+            },
+            {
+              "type": "setFlag",
+              "flagId": "wreck_resolved"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_wreck",
+      "textKey": "event.wreck.choice.leave_wreck.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wreck_ignored",
+          "textKey": "event.wreck.choice.leave_wreck.outcome.wreck_ignored.text",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "wreck_resolved"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
