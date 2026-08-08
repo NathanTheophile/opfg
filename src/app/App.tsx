@@ -41,7 +41,7 @@ function generateCareerSeed(): number {
 }
 
 function createNewCareer(seed: number = generateCareerSeed()): GameState {
-  return selectNextEvent(createInitialGameState(seed), contentCatalog.events);
+  return selectNextEvent(createInitialGameState(seed), contentCatalog);
 }
 
 export function App() {
@@ -89,11 +89,11 @@ export function App() {
     );
   }
 
-  const currentEvent = findCurrentEvent(gameState, contentCatalog.events);
+  const currentEvent = findCurrentEvent(gameState, contentCatalog);
   const choose = (eventId: string, choiceId: string, input?: string) => {
     let result: ChoiceResolutionResult;
     try {
-      result = resolveChoice(gameState, contentCatalog.events, eventId, choiceId, input);
+      result = resolveChoice(gameState, contentCatalog, eventId, choiceId, input);
     } catch {
       setInputError(translate('ui.invalidInput'));
       return;
@@ -110,12 +110,13 @@ export function App() {
     <main>
       <h1>{translate('ui.app.title')}</h1>
       {languageSelector}
-      <p>{translate('ui.month')}: {gameState.month}</p>
+      <p>{translate('ui.month')}: {Math.max(0, gameState.ageMonths - 180)}</p>
+      <p>Slot: {gameState.slotInMonth}</p>
       <p>{translate('ui.age')}: {Math.floor(gameState.ageMonths / 12)} {translate('ui.years')}, {gameState.ageMonths % 12} {translate('ui.month').toLowerCase()}</p>
       <p>{translate('ui.phase')}: {translate(`phase.${gameState.careerPhase}`)}</p>
       <p>{translate('ui.travel')}: {translate(`travel.${gameState.travelState}`)}</p>
       <p>{translate('ui.location')}: {gameState.locationId}</p>
-      <p>{translate('ui.ship')}: {gameState.ship.condition}</p>
+      <p>{translate('ui.ship')}: {gameState.ship?.condition ?? '—'}</p>
       <p>{translate('ui.career')}: {translate(`careerStatus.${gameState.careerStatus}`)}</p>
       <p>{translate('ui.careerEnd')}: {gameState.careerEndReason ? translate(`careerEndReason.${gameState.careerEndReason}`) : '—'}</p>
       <button type="button" onClick={() => startCareer(true)}>{translate('ui.action.restartCareer')}</button>

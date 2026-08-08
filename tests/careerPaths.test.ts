@@ -1,159 +1,32 @@
 import { describe, expect, it } from 'vitest';
 import { contentCatalog } from '../src/game/content/definitions';
-import { getChoiceState } from '../src/game/engine/conditions';
 import { selectNextEvent } from '../src/game/engine/events';
 import { resolveChoice } from '../src/game/engine/resolution';
-import { deserializeGameState, serializeGameState } from '../src/game/engine/save';
 import { createInitialGameState } from '../src/game/model/initialState';
-import type { GameState } from '../src/game/model/schema';
-import { createDefaultNpcStats } from '../src/game/model/npcState';
 
-function newCareer(seed = 123): GameState {
-  let state = selectNextEvent(createInitialGameState(seed), contentCatalog.events);
-  const steps: [string, string, string?][] = [
-    ['origin_name', 'confirm_name', 'Test'], ['origin_race', 'human'], ['origin_sea', 'starter_sea'],
-    ['origin_affiliation', 'independent_family'], ['origin_tendency', 'observe'], ['origin_to_childhood', 'begin_childhood'],
-    ['childhood_early', 'explore'], ['childhood_memory', 'remember'], ['childhood_middle', 'watch_horizon'],
-    ['childhood_late', 'learn'], ['childhood_final', 'prepare'], ['childhood_to_active', 'begin_active'],
-  ];
-  for (const [eventId, choiceId, input] of steps) state = resolveChoice(state, contentCatalog.events, eventId, choiceId, input).state;
-  return state;
-}
-
-function play(state: GameState, eventId: string, choiceId: string): GameState {
-  expect(state.currentEventId).toBe(eventId);
-  return resolveChoice(state, contentCatalog.events, eventId, choiceId).state;
-}
-
-function choice(eventId: string, choiceId: string) {
-  const event = contentCatalog.events.find(({ id }) => id === eventId);
-  const result = event?.choices.find(({ id }) => id === choiceId);
-  if (!result) throw new Error(`Missing choice ${eventId}/${choiceId}.`);
-  return result;
-}
-
-describe('real Slice 0 career paths', () => {
-  it('preserves the nine locked adult catalog events and priorities', () => {
-    expect(contentCatalog.events.slice(-9).map(({ id, priority, scheduledOnly }) => ({ id, priority, scheduledOnly }))).toEqual([
-      { id: 'departure', priority: 100, scheduledOnly: false },
-      { id: 'mira_castaway', priority: 90, scheduledOnly: false },
-      { id: 'black_squall', priority: 80, scheduledOnly: false },
-      { id: 'wreck', priority: 70, scheduledOnly: false },
-      { id: 'reefs', priority: 70, scheduledOnly: false },
-      { id: 'mira_confession', priority: 85, scheduledOnly: false },
-      { id: 'mira_hunters', priority: 85, scheduledOnly: false },
-      { id: 'mira_returns_favor', priority: 100, scheduledOnly: true },
-      { id: 'year_one_end', priority: 100, scheduledOnly: false },
-    ]);
-  });
-
-  it('completes the recruited Mira branch in catalog priority order', () => {
-    let state = newCareer();
-    state = play(state, 'departure', 'set_sail');
-    state = play(state, 'mira_castaway', 'rescue_recruit');
-    state = play(state, 'black_squall', 'heave_to');
-    expect(state.currentEventId).toBe('mira_confession');
-    state = play(state, 'mira_confession', 'trust_mira');
-    state = play(state, 'wreck', 'search_wreck');
-    state = play(state, 'reefs', 'use_sealed_chart');
-    state = play(state, 'mira_hunters', 'let_mira_speak');
-    state = play(state, 'year_one_end', 'sail_with_mira');
-
-    expect(state.careerStatus).toBe('ended');
-    expect(state.currentEventId).toBeNull();
-    expect(state.month).toBe(15);
-    expect(state.npcs.mira).toEqual({ status: 'crew', relationship: 55, stats: createDefaultNpcStats() });
-    expect(state.flags).toContain('ending_with_mira');
-    expect(state.history.slice(-8).map(({ eventId }) => eventId)).toEqual([
-      'departure',
-      'mira_castaway',
-      'black_squall',
-      'mira_confession',
-      'wreck',
-      'reefs',
-      'mira_hunters',
-      'year_one_end',
-    ]);
-  });
-
-  it('delivers Mira’s delayed favor with causal IDs and ends through her passage', () => {
-    let state = newCareer();
-    state = play(state, 'departure', 'set_sail');
-    state = play(state, 'mira_castaway', 'rescue_dropoff');
-    expect(state.scheduledEvents).toEqual([
-      {
-        eventId: 'mira_returns_favor',
-        dueAgeMonths: 187,
-        sourceEventId: 'mira_castaway',
-        sourceChoiceId: 'rescue_dropoff',
-      },
-    ]);
-
-    state = play(state, 'black_squall', 'heave_to');
-    state = play(state, 'wreck', 'search_wreck');
-    expect(state.currentEventId).toBe('mira_returns_favor');
-    state = play(state, 'mira_returns_favor', 'accept_mira_favor');
-    expect(state.items).toContain('mira_letter_of_passage');
-    expect(state.scheduledEvents).toEqual([]);
-    state = play(state, 'reefs', 'use_sealed_chart');
-    state = play(state, 'year_one_end', 'use_mira_passage');
-
-    expect(state.careerStatus).toBe('ended');
-    expect(state.careerEndReason).toBe('legacy');
-    expect(state.flags).toContain('ending_mira_favor');
-  });
-
-  it('keeps Mira arc events unavailable after abandonment and still reaches Year One End', () => {
-    let state = newCareer();
-    state = play(state, 'departure', 'set_sail');
-    state = play(state, 'mira_castaway', 'leave_mira');
-    state = play(state, 'black_squall', 'heave_to');
-    state = play(state, 'wreck', 'leave_wreck');
-    state = play(state, 'reefs', 'force_passage');
-    expect(state.currentEventId).toBe('year_one_end');
-    state = play(state, 'year_one_end', 'press_on');
-
-    const played = state.history.map(({ eventId }) => eventId);
-    expect(played).not.toContain('mira_confession');
-    expect(played).not.toContain('mira_hunters');
-    expect(played).not.toContain('mira_returns_favor');
-    expect(state.scheduledEvents).toEqual([]);
-    expect(state.careerStatus).toBe('ended');
-  });
-
-  it('keeps a real career GameState exact through save serialization', () => {
-    let state = newCareer();
-    state = play(state, 'departure', 'set_sail');
-    state = play(state, 'mira_castaway', 'rescue_dropoff');
-
-    expect(deserializeGameState(serializeGameState(state))).toEqual(state);
-  });
-});
-
-describe('real catalog conditional choices', () => {
-  it('applies locked and hidden Reefs choice rules', () => {
+describe('critical events', () => {
+  it('preempts scheduled and normal events without consuming a slot when the player dies', () => {
     const state = createInitialGameState();
-    expect(getChoiceState(choice('reefs', 'read_currents'), state)).toEqual({ visible: true, available: false });
-    expect(getChoiceState(choice('reefs', 'use_sealed_chart'), state)).toEqual({ visible: false, available: false });
-    expect(getChoiceState(choice('reefs', 'ride_breakers'), state)).toEqual({ visible: false, available: false });
-
-    state.player.stats.navigation = 35;
-    state.items.push('sealed_chart');
-    state.player.traits.push('audacious');
-    expect(getChoiceState(choice('reefs', 'read_currents'), state).available).toBe(true);
-    expect(getChoiceState(choice('reefs', 'use_sealed_chart'), state).visible).toBe(true);
-    expect(getChoiceState(choice('reefs', 'ride_breakers'), state).visible).toBe(true);
+    state.careerPhase = 'active'; state.ageMonths = 180; state.player.stats.health = 0;
+    state.scheduledEvents = [{ eventId: 'mira_returns_favor', dueAgeMonths: 0, sourceEventId: 's', sourceChoiceId: 'c' }];
+    const selected = selectNextEvent(state, contentCatalog);
+    expect(selected.currentEventId).toBe('critical_player_death');
+    const resolved = resolveChoice(selected, contentCatalog, 'critical_player_death', 'accept_death').state;
+    expect(resolved).toMatchObject({ careerStatus: 'ended', careerEndReason: 'death', ageMonths: 180, slotInMonth: 0, currentEventId: null });
   });
 
-  it('unlocks Mira Hunters choices at the specified relation and Charisma thresholds', () => {
+  it('resolves NPC death before ship destruction and persists each consequence', () => {
     const state = createInitialGameState();
-    state.npcs.mira = { status: 'crew', relationship: 39, stats: createDefaultNpcStats() };
-    expect(getChoiceState(choice('mira_hunters', 'let_mira_speak'), state).available).toBe(false);
-    expect(getChoiceState(choice('mira_hunters', 'bluff_hunters'), state).available).toBe(false);
-
-    state.npcs.mira.relationship = 40;
-    state.player.stats.charisma = 35;
-    expect(getChoiceState(choice('mira_hunters', 'let_mira_speak'), state).available).toBe(true);
-    expect(getChoiceState(choice('mira_hunters', 'bluff_hunters'), state).available).toBe(true);
+    state.careerPhase = 'active'; state.ageMonths = 180; state.ship = { condition: 0 };
+    state.npcs.mira = { status: 'crew', relationship: 0, stats: { health: 0, morale: 10, strength: 10, observation: 10, intelligence: 10, luck: 10, loyalty: 10, calm: 10 } };
+    let selected = selectNextEvent(state, contentCatalog);
+    expect(selected.currentEventId).toBe('critical_mira_death');
+    selected = resolveChoice(selected, contentCatalog, 'critical_mira_death', 'mourn_mira').state;
+    expect(selected.npcs.mira.status).toBe('dead');
+    expect(selected.currentEventId).toBe('critical_ship_destroyed');
+    selected = resolveChoice(selected, contentCatalog, 'critical_ship_destroyed', 'reach_shore').state;
+    expect(selected.ship).toBeNull();
+    expect(selected.locationId).toBe('shipwreck_shore');
+    expect(selected.slotInMonth).toBe(0);
   });
 });

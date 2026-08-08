@@ -1,4 +1,4 @@
-import type { Effect } from '../content/schema';
+import type { ContentCatalog, Effect } from '../content/schema';
 import type { ChoiceId, EventId, GameState, NpcState } from '../model/schema';
 import { createDefaultNpcState } from '../model/npcState';
 
@@ -7,7 +7,7 @@ export interface EffectContext {
   sourceChoiceId: ChoiceId;
 }
 
-export function applyEffects(state: GameState, effects: Effect[], context: EffectContext): GameState {
+export function applyEffects(state: GameState, catalog: ContentCatalog, effects: Effect[], context: EffectContext): GameState {
   const next: GameState = {
     ...state,
     player: {
@@ -16,7 +16,7 @@ export function applyEffects(state: GameState, effects: Effect[], context: Effec
       stats: { ...state.player.stats },
       traits: [...state.player.traits],
     },
-    ship: { ...state.ship },
+    ship: state.ship === null ? null : { ...state.ship },
     flags: [...state.flags],
     items: [...state.items],
     npcs: Object.fromEntries(
@@ -26,11 +26,11 @@ export function applyEffects(state: GameState, effects: Effect[], context: Effec
     scheduledEvents: [...state.scheduledEvents],
   };
 
-  for (const effect of effects) applyEffect(next, effect, context);
+  for (const effect of effects) applyEffect(next, catalog, effect, context);
   return next;
 }
 
-function applyEffect(state: GameState, effect: Effect, context: EffectContext): void {
+function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, context: EffectContext): void {
   switch (effect.type) {
     case 'setFlag':
       if (!state.flags.includes(effect.flagId)) state.flags.push(effect.flagId);
@@ -45,7 +45,10 @@ function applyEffect(state: GameState, effect: Effect, context: EffectContext): 
       state.items = state.items.filter((itemId) => itemId !== effect.itemId);
       return;
     case 'addTrait':
-      if (!state.player.traits.includes(effect.traitId)) state.player.traits.push(effect.traitId);
+      if (state.player.traits.includes(effect.traitId)) return;
+      const definition = catalog.traits.find(({ id }) => id === effect.traitId);
+      if (definition?.oppositeTraitId && state.player.traits.includes(definition.oppositeTraitId)) return;
+      state.player.traits.push(effect.traitId);
       return;
     case 'removeTrait':
       state.player.traits = state.player.traits.filter((traitId) => traitId !== effect.traitId);
@@ -57,7 +60,13 @@ function applyEffect(state: GameState, effect: Effect, context: EffectContext): 
       return;
     }
     case 'modifyShipCondition':
+      if (state.ship === null) throw new Error('Cannot modify ship condition without a ship.');
       state.ship.condition = clamp(state.ship.condition + effect.amount, 0, 3);
+      return;
+    case 'loseShip':
+      state.ship = null;
+      state.locationId = effect.locationId;
+      state.travelState = effect.travelState;
       return;
     case 'moveToLocation':
       state.locationId = effect.locationId;

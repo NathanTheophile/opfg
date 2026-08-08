@@ -20,7 +20,7 @@ import type {
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 1;
+export const CONTENT_SCHEMA_VERSION = 2;
 
 export type StatId = keyof PlayerStats;
 
@@ -46,7 +46,6 @@ export type Condition =
   | { type: 'hasChosen'; eventId: EventId; choiceId: ChoiceId }
   | { type: 'hasPlayed'; eventId: EventId }
   | { type: 'hasOutcome'; eventId: EventId; outcomeId: OutcomeId }
-  | { type: 'monthAtLeast'; value: number }
   | { type: 'raceIs'; raceId: RaceId }
   | { type: 'originSeaIs'; seaId: SeaId }
   | { type: 'affiliationIs'; affiliationId: AffiliationId };
@@ -60,6 +59,7 @@ export type Effect =
   | { type: 'removeTrait'; traitId: TraitId }
   | { type: 'modifyStat'; statId: StatId; amount: number }
   | { type: 'modifyShipCondition'; amount: number }
+  | { type: 'loseShip'; locationId: LocationId; travelState: TravelState }
   | { type: 'moveToLocation'; locationId: LocationId; travelState: TravelState }
   | { type: 'setNpcStatus'; npcId: NpcId; status: NpcStatus }
   | { type: 'modifyNpcRelationship'; npcId: NpcId; amount: number }
@@ -74,7 +74,6 @@ export type Effect =
 export interface Outcome {
   id: OutcomeId;
   textKey: LocalizationKey;
-  advanceMonths: number;
   effects: Effect[];
 }
 
@@ -124,15 +123,24 @@ export interface ChoiceDefinition {
   resolution: Resolution;
 }
 
-export interface EventDefinition {
+interface EventBase {
   id: EventId;
   titleKey: LocalizationKey;
   textKey: LocalizationKey;
-  scheduledOnly?: boolean;
   eligibility?: Condition;
-  priority: number;
   choices: ChoiceDefinition[];
 }
+
+export type ScheduledPriority = 50 | 100 | 200 | 300;
+export type ScheduledReach = 'normal' | 'unrestricted';
+export type CriticalTrigger =
+  | { type: 'playerHealthDepleted' }
+  | { type: 'npcHealthDepleted'; npcId: NpcId }
+  | { type: 'shipDestroyed' };
+export type EventDefinition =
+  | (EventBase & { kind: 'normal' })
+  | (EventBase & { kind: 'scheduled'; priority: ScheduledPriority; scheduledReach?: ScheduledReach; cancelIf?: Condition; fallbackEventId?: EventId })
+  | (EventBase & { kind: 'critical'; trigger: CriticalTrigger });
 
 export interface TraitDefinition {
   id: TraitId;
@@ -158,12 +166,14 @@ export interface NpcDefinition {
 export interface RaceDefinition { id: RaceId; nameKey: LocalizationKey }
 export interface SeaDefinition { id: SeaId; nameKey: LocalizationKey }
 export interface AffiliationDefinition { id: AffiliationId; nameKey: LocalizationKey }
+export interface LocationDefinition { id: LocationId; blocksScheduledEvents: boolean }
 
 export interface ContentCatalog {
   schemaVersion: number;
   races: RaceDefinition[];
   seas: SeaDefinition[];
   affiliations: AffiliationDefinition[];
+  locations: LocationDefinition[];
   traits: TraitDefinition[];
   items: ItemDefinition[];
   npcs: NpcDefinition[];

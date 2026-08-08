@@ -12,7 +12,7 @@ import { resolveChoice } from '../src/game/engine/resolution';
 import { createInitialGameState } from '../src/game/model/initialState';
 
 function outcome(id: string): Outcome {
-  return { id, text: id, advanceMonths: 1, effects: [] };
+  return { id, textKey: 'fixture.childhood.outcome', effects: [] };
 }
 
 function resolution(overrides: Partial<DiceResolution> = {}): DiceResolution {
@@ -144,7 +144,7 @@ describe('DiceResolution integration', () => {
     state.flags = ['wreck_resolved'];
     const rngBeforeRoll = state.rngState;
 
-    const result = resolveChoice(state, contentCatalog.events, 'reefs', 'force_passage');
+    const result = resolveChoice(state, contentCatalog, 'reefs', 'force_passage');
 
     expect(result.state.locationId).toBe('outer_route');
     expect(result.state.flags).toContain('reefs_crossed');

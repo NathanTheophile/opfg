@@ -39,7 +39,7 @@ export interface ShipState {
   condition: number;
 }
 
-export type NpcStatus = 'known' | 'crew' | 'departed' | 'unavailable';
+export type NpcStatus = 'known' | 'crew' | 'departed' | 'unavailable' | 'dead';
 
 export interface NpcStats {
   health: number;
@@ -64,7 +64,6 @@ export interface HistoryEntry {
   eventId: EventId;
   choiceId: ChoiceId;
   outcomeId: OutcomeId;
-  month: number;
   ageMonths: number;
 }
 
@@ -85,11 +84,11 @@ export interface GameState {
   rngState: number;
   careerPhase: CareerPhase;
   ageMonths: number;
-  month: number;
+  slotInMonth: 0 | 1;
   travelState: TravelState;
   locationId: LocationId;
   player: PlayerState;
-  ship: ShipState;
+  ship: ShipState | null;
   flags: FlagId[];
   items: ItemId[];
   npcs: Record<NpcId, NpcState>;

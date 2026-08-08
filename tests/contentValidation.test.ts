@@ -23,6 +23,7 @@ describe('validateContent', () => {
       id: 'audacious',
       nameKey: 'trait.audacious.name',
       descriptionKey: 'trait.audacious.description',
+      oppositeTraitId: 'cautious',
     });
   });
 
@@ -97,7 +98,7 @@ describe('validateContent', () => {
       delayMonths: 1,
     };
 
-    expect(messages(catalog)).toContainEqual(expect.stringContaining('Unknown EventId "missing_event"'));
+    expect(messages(catalog)).toContainEqual(expect.stringContaining('Unknown Scheduled EventId "missing_event"'));
   });
 
   it('rejects addTrait and removeTrait targeting unknown traits', () => {
@@ -190,7 +191,7 @@ describe('validateContent', () => {
     expect(errors).toContainEqual(expect.stringContaining('Invalid StatId "legacy_stat"'));
   });
 
-  it('rejects scheduling a normal event and accepts a scheduledOnly target', () => {
+  it('rejects scheduling a normal event and accepts a scheduled target', () => {
     const invalidCatalog = cloneCatalog();
     eventById(invalidCatalog, 'departure').choices[0].resolution.outcome.effects[0] = {
       type: 'scheduleEvent',
@@ -199,8 +200,23 @@ describe('validateContent', () => {
     };
 
     expect(messages(invalidCatalog)).toContainEqual(
-      expect.stringContaining('must target an event with scheduledOnly: true'),
+      expect.stringContaining('Unknown Scheduled EventId "departure"'),
     );
     expect(validateContent(contentCatalog)).toEqual([]);
+  });
+
+  it('rejects removed v1 fields and invalid v2 event variants', () => {
+    const catalog = cloneCatalog();
+    eventById(catalog, 'departure').eligibility = { type: 'monthAtLeast', value: 1 };
+    eventById(catalog, 'departure').choices[0].resolution.outcome.advanceMonths = 1;
+    eventById(catalog, 'departure').priority = 100;
+    eventById(catalog, 'childhood_memory').scheduledReach = 'teleport';
+    eventById(catalog, 'childhood_memory').fallbackEventId = 'departure';
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('Unknown Condition type "monthAtLeast"'));
+    expect(errors).toContainEqual(expect.stringContaining('Outcome.advanceMonths is not supported'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid Normal/Scheduled/Critical field combination'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid scheduledReach'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown Scheduled EventId "departure"'));
   });
 });

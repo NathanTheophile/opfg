@@ -48,7 +48,6 @@ const CONDITION_TYPES = new Set([
   'hasChosen',
   'hasPlayed',
   'hasOutcome',
-  'monthAtLeast',
   'raceIs',
   'originSeaIs',
   'affiliationIs',
@@ -63,6 +62,7 @@ const EFFECT_TYPES = new Set([
   'modifyStat',
   'modifyShipCondition',
   'moveToLocation',
+  'loseShip',
   'setNpcStatus',
   'modifyNpcRelationship',
   'modifyNpcStat',
@@ -93,9 +93,11 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   const seaIds = collectIds(seas, 'seas', errors);
   const affiliations = readRecords(catalog.affiliations, 'affiliations', errors);
   const affiliationIds = collectIds(affiliations, 'affiliations', errors);
+  const locations = readRecords(catalog.locations, 'locations', errors);
+  const locationIds = collectIds(locations, 'locations', errors);
   const choicesByEvent = new Map<string, Set<string>>();
   const outcomesByEvent = new Map<string, Set<string>>();
-  const scheduledOnlyEventIds = new Set<string>();
+  const scheduledEventIds = new Set<string>();
 
   for (const [eventIndex, event] of events.entries()) {
     const eventPath = `events[${eventIndex}]`;
@@ -106,14 +108,15 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
       choicesByEvent.set(eventId, choiceIds);
       outcomesByEvent.set(eventId, collectOutcomeIds(choices));
     }
-    if (eventId && event.scheduledOnly === true) scheduledOnlyEventIds.add(eventId);
+    if (eventId && event.kind === 'scheduled') scheduledEventIds.add(eventId);
   }
 
   validateTraitOpposites(traits, traitIds, errors);
-  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, npcIds, raceIds, seaIds, affiliationIds, scheduledOnlyEventIds };
+  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, npcIds, raceIds, seaIds, affiliationIds, locationIds, scheduledEventIds };
   validateNamedDefinitions(races, 'races', errors);
   validateNamedDefinitions(seas, 'seas', errors);
   validateNamedDefinitions(affiliations, 'affiliations', errors);
+  locations.forEach((location, index) => { if (typeof location.blocksScheduledEvents !== 'boolean') errors.push({ path: `locations[${index}].blocksScheduledEvents`, message: 'Location requires blocksScheduledEvents.' }); });
   validateNpcDefinitions(npcs, references, errors);
   for (const [eventIndex, event] of events.entries()) {
     validateEvent(event, `events[${eventIndex}]`, references, errors);
@@ -139,7 +142,8 @@ interface References {
   raceIds: Set<string>;
   seaIds: Set<string>;
   affiliationIds: Set<string>;
-  scheduledOnlyEventIds: Set<string>;
+  locationIds: Set<string>;
+  scheduledEventIds: Set<string>;
 }
 
 function validateEvent(
@@ -148,6 +152,21 @@ function validateEvent(
   references: References,
   errors: ContentValidationError[],
 ): void {
+  if (!['normal', 'scheduled', 'critical'].includes(String(event.kind))) errors.push({ path, message: `Invalid Event kind "${String(event.kind)}".` });
+  if (event.scheduledOnly !== undefined || (event.kind !== 'scheduled' && event.priority !== undefined)) errors.push({ path, message: 'Invalid Normal/Scheduled/Critical field combination.' });
+  if (event.kind === 'scheduled') {
+    if (![50, 100, 200, 300].includes(Number(event.priority))) errors.push({ path, message: 'Scheduled priority must be 50, 100, 200, or 300.' });
+    if (event.scheduledReach !== undefined && !['normal', 'unrestricted'].includes(String(event.scheduledReach))) errors.push({ path, message: 'Invalid scheduledReach.' });
+    if (event.cancelIf !== undefined) validateCondition(event.cancelIf, `${path}.cancelIf`, references, errors);
+    if (event.fallbackEventId !== undefined) {
+      const fallback = validateReference(event.fallbackEventId, references.scheduledEventIds, 'Scheduled EventId', `${path}.fallbackEventId`, errors);
+      if (fallback === event.id) errors.push({ path: `${path}.fallbackEventId`, message: 'Scheduled Event cannot fallback to itself.' });
+    }
+  }
+  if (event.kind === 'critical') {
+    if (!isRecord(event.trigger) || !['playerHealthDepleted', 'npcHealthDepleted', 'shipDestroyed'].includes(String(event.trigger.type))) errors.push({ path: `${path}.trigger`, message: 'Invalid Critical trigger.' });
+    else if (event.trigger.type === 'npcHealthDepleted') validateReference(event.trigger.npcId, references.npcIds, 'NpcId', `${path}.trigger`, errors);
+  }
   if (event.eligibility !== undefined) {
     validateCondition(event.eligibility, `${path}.eligibility`, references, errors);
   }
@@ -208,6 +227,7 @@ function validateCondition(
 
   if (type === 'hasTrait') validateReference(value.traitId, references.traitIds, 'TraitId', path, errors);
   if (type === 'hasItem') validateReference(value.itemId, references.itemIds, 'ItemId', path, errors);
+  if (type === 'locationIs') validateReference(value.locationId, references.locationIds, 'LocationId', path, errors);
   if (type === 'npcStatusIs' || type === 'npcRelationshipAtLeast' || type === 'npcStatAtLeast') {
     validateReference(value.npcId, references.npcIds, 'NpcId', path, errors);
   }
@@ -332,6 +352,7 @@ function validateOutcome(
     return;
   }
   if (!stringValue(value.id)) errors.push({ path: `${path}.id`, message: 'Outcome requires a non-empty ID.' });
+  if (value.advanceMonths !== undefined) errors.push({ path, message: 'Outcome.advanceMonths is not supported in Content Schema v2.' });
   const effects = readRecords(value.effects, `${path}.effects`, errors);
   effects.forEach((effect, index) =>
     validateEffect(effect, `${path}.effects[${index}]`, references, errors),
@@ -365,9 +386,10 @@ function validateEffect(
     }
   }
   if (type === 'modifyStat') validateStat(effect.statId, path, errors);
-  if (type === 'moveToLocation' && !['at_sea', 'on_land'].includes(String(effect.travelState))) {
+  if ((type === 'moveToLocation' || type === 'loseShip') && !['at_sea', 'on_land'].includes(String(effect.travelState))) {
     errors.push({ path, message: `Invalid TravelState "${String(effect.travelState)}".` });
   }
+  if (type === 'moveToLocation' || type === 'loseShip') validateReference(effect.locationId, references.locationIds, 'LocationId', path, errors);
   if (type === 'setCareerPhase' && !['origins', 'childhood', 'active'].includes(String(effect.phase))) {
     errors.push({ path, message: `Invalid CareerPhase "${String(effect.phase)}".` });
   }
@@ -378,10 +400,8 @@ function validateEffect(
     errors.push({ path, message: `Invalid CareerEndReason "${String(effect.reason)}".` });
   }
   if (type === 'scheduleEvent') {
-    const eventId = validateReference(effect.eventId, references.eventIds, 'EventId', path, errors);
-    if (eventId && references.eventIds.has(eventId) && !references.scheduledOnlyEventIds.has(eventId)) {
-      errors.push({ path, message: `Scheduled EventId "${eventId}" must target an event with scheduledOnly: true.` });
-    }
+    validateReference(effect.eventId, references.scheduledEventIds, 'Scheduled EventId', path, errors);
+    if (!Number.isInteger(effect.delayMonths) || (effect.delayMonths as number) < 0) errors.push({ path, message: 'scheduleEvent delayMonths must be a non-negative integer.' });
   }
 }
 

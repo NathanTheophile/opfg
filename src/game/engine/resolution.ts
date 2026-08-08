@@ -1,6 +1,6 @@
-import type { EventDefinition, Outcome } from '../content/schema';
+import type { ContentCatalog, EventDefinition, Outcome } from '../content/schema';
 import type { ChoiceId, EventId, GameState } from '../model/schema';
-import { getChoiceState } from './conditions';
+import { evaluateCondition, getChoiceState } from './conditions';
 import { resolveDiceCheck } from './dice';
 import type { DiceRollResult } from './dice';
 import { applyEffects } from './effects';
@@ -8,14 +8,14 @@ import { selectNextEvent } from './events';
 
 export function resolveChoice(
   state: GameState,
-  events: readonly EventDefinition[],
+  catalog: ContentCatalog,
   eventId: EventId,
   choiceId: ChoiceId,
   input?: string,
 ): ChoiceResolutionResult {
   if (state.currentEventId !== eventId) throw new Error(`Event "${eventId}" is not the current event.`);
 
-  const event = events.find(({ id }) => id === eventId);
+  const event = catalog.events.find(({ id }) => id === eventId);
   if (!event) throw new Error(`Unknown event "${eventId}".`);
 
   const choice = event.choices.find(({ id }) => id === choiceId);
@@ -38,7 +38,7 @@ export function resolveChoice(
           };
         })();
 
-  return finalizeOutcome(resolution.state, events, eventId, choiceId, resolution.outcome, resolution.dice);
+  return finalizeOutcome(resolution.state, catalog, event, choiceId, resolution.outcome, resolution.dice);
 }
 
 export interface ChoiceResolutionResult {
@@ -49,30 +49,28 @@ export interface ChoiceResolutionResult {
 
 function finalizeOutcome(
   state: GameState,
-  events: readonly EventDefinition[],
-  eventId: EventId,
+  catalog: ContentCatalog,
+  event: EventDefinition,
   choiceId: ChoiceId,
   outcome: Outcome,
   dice?: DiceRollResult,
 ): ChoiceResolutionResult {
-  const afterEffects = applyEffects(state, outcome.effects, {
-    sourceEventId: eventId,
+  const afterEffects = applyEffects(state, catalog, outcome.effects, {
+    sourceEventId: event.id,
     sourceChoiceId: choiceId,
   });
-  const resolvedMonth = afterEffects.month + (afterEffects.careerPhase === 'active' ? outcome.advanceMonths : 0);
+  const afterSlot = consumePhaseSlot(afterEffects, state.careerPhase, event.kind !== 'critical');
   const resolvedState: GameState = {
-    ...afterEffects,
-    ageMonths: afterEffects.ageMonths + outcome.advanceMonths,
-    month: resolvedMonth,
+    ...afterSlot,
     history: [
-      ...afterEffects.history,
-      { eventId, choiceId, outcomeId: outcome.id, month: resolvedMonth, ageMonths: afterEffects.ageMonths + outcome.advanceMonths },
+      ...afterSlot.history,
+      { eventId: event.id, choiceId, outcomeId: outcome.id, ageMonths: afterSlot.ageMonths },
     ],
-    scheduledEvents: consumeScheduledEntry(afterEffects, events, eventId, state.ageMonths),
+    scheduledEvents: consumeScheduledEntry(afterSlot, catalog, event, state.ageMonths),
   };
 
   return {
-    state: selectNextEvent(resolvedState, events),
+    state: selectNextEvent(resolvedState, catalog),
     outcome,
     dice,
   };
@@ -91,16 +89,34 @@ function applyChoiceInput(state: GameState, inputDefinition: { target: 'playerNa
 
 function consumeScheduledEntry(
   state: GameState,
-  events: readonly EventDefinition[],
-  eventId: EventId,
+  catalog: ContentCatalog,
+  event: EventDefinition,
   selectionAgeMonths: number,
 ): GameState['scheduledEvents'] {
-  if (events.find(({ id }) => id === eventId)?.scheduledOnly !== true) return state.scheduledEvents;
+  if (event.kind !== 'scheduled') return state.scheduledEvents;
 
   const entryIndex = state.scheduledEvents.findIndex(
-    (entry) => entry.eventId === eventId && entry.dueAgeMonths <= selectionAgeMonths,
+    (entry) => {
+      if (entry.dueAgeMonths > selectionAgeMonths) return false;
+      const original = catalog.events.find((candidate): candidate is Extract<EventDefinition, { kind: 'scheduled' }> => candidate.id === entry.eventId && candidate.kind === 'scheduled');
+      return entry.eventId === event.id || (original?.cancelIf !== undefined && evaluateCondition(original.cancelIf, state) && original.fallbackEventId === event.id);
+    },
   );
   return entryIndex < 0
     ? state.scheduledEvents
     : state.scheduledEvents.filter((_, index) => index !== entryIndex);
+}
+
+function consumePhaseSlot(state: GameState, phaseBeforeResolution: GameState['careerPhase'], consumesSlot: boolean): GameState {
+  if (!consumesSlot) return state;
+  if (phaseBeforeResolution === 'origins') {
+    return state.careerPhase === 'childhood' ? { ...state, ageMonths: 12, slotInMonth: 0 } : state;
+  }
+  if (phaseBeforeResolution === 'childhood') {
+    const ageMonths = Math.min(180, state.ageMonths + (state.ageMonths < 108 ? 12 : 6));
+    return { ...state, ageMonths, careerPhase: ageMonths >= 180 ? 'active' : 'childhood', slotInMonth: 0 };
+  }
+  return state.slotInMonth === 0
+    ? { ...state, slotInMonth: 1 }
+    : { ...state, slotInMonth: 0, ageMonths: state.ageMonths + 1 };
 }

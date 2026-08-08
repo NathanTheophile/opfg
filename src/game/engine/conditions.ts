@@ -38,9 +38,9 @@ export function evaluateCondition(condition: Condition, state: GameState): boole
     case 'ageAtMostMonths':
       return state.ageMonths <= condition.value;
     case 'shipConditionAtLeast':
-      return state.ship.condition >= condition.value;
+      return state.ship !== null && state.ship.condition >= condition.value;
     case 'shipConditionAtMost':
-      return state.ship.condition <= condition.value;
+      return state.ship !== null && state.ship.condition <= condition.value;
     case 'npcStatusIs':
       return state.npcs[condition.npcId]?.status === condition.status;
     case 'npcRelationshipAtLeast':
@@ -57,8 +57,6 @@ export function evaluateCondition(condition: Condition, state: GameState): boole
       return state.history.some(
         (entry) => entry.eventId === condition.eventId && entry.outcomeId === condition.outcomeId,
       );
-    case 'monthAtLeast':
-      return state.month >= condition.value;
     case 'raceIs':
       return state.player.profile.raceId !== null && state.player.profile.raceId === condition.raceId;
     case 'originSeaIs':

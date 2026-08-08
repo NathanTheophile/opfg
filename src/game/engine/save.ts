@@ -1,8 +1,8 @@
 import type { CareerEndReason, CareerPhase, GameState, NpcState, NpcStats, TravelState } from '../model/schema';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 6;
-const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable']);
+const CURRENT_SAVE_VERSION = 7;
+const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
   getItem(key: string): string | null;
@@ -54,7 +54,7 @@ export function clearGameState(storage: StorageLike): boolean {
 
 function readGameState(value: unknown): GameState | null {
   if (!isRecord(value) || value.version !== CURRENT_SAVE_VERSION) return null;
-  if (!isUint32(value.rngState) || !isNonNegativeInteger(value.ageMonths) || !isNonNegativeInteger(value.month)) return null;
+  if (!isUint32(value.rngState) || !isNonNegativeInteger(value.ageMonths) || !(value.slotInMonth === 0 || value.slotInMonth === 1)) return null;
   if (!isCareerPhase(value.careerPhase) || !isTravelState(value.travelState) || !isString(value.locationId)) return null;
   if (!isRecord(value.player) || !isRecord(value.player.stats) || !isStringArray(value.player.traits)) return null;
   const profile = readPlayerProfile(value.player.profile);
@@ -68,7 +68,7 @@ function readGameState(value: unknown): GameState | null {
   if (!isStatValue(value.player.stats.charisma)) return null;
   if (!isStatValue(value.player.stats.luck)) return null;
   if (!(value.player.stats.awakening === null || isStatValue(value.player.stats.awakening))) return null;
-  if (!isRecord(value.ship) || !isIntegerInRange(value.ship.condition, 0, 3)) return null;
+  if (!(value.ship === null || (isRecord(value.ship) && isIntegerInRange(value.ship.condition, 0, 3)))) return null;
   if (!isStringArray(value.flags) || !isStringArray(value.items)) return null;
 
   const npcs = readNpcs(value.npcs);
@@ -80,13 +80,14 @@ function readGameState(value: unknown): GameState | null {
   if (!isCareerEndReason(value.careerEndReason)) return null;
   if (value.careerStatus === 'active' && value.careerEndReason !== null) return null;
   if (value.careerStatus === 'ended' && value.careerEndReason === null) return null;
+  if (value.careerPhase !== 'active' && value.slotInMonth !== 0) return null;
 
   return {
     version: CURRENT_SAVE_VERSION,
     rngState: value.rngState,
     careerPhase: value.careerPhase,
     ageMonths: value.ageMonths,
-    month: value.month,
+    slotInMonth: value.slotInMonth,
     travelState: value.travelState,
     locationId: value.locationId,
     player: {
@@ -104,7 +105,7 @@ function readGameState(value: unknown): GameState | null {
       },
       traits: [...value.player.traits],
     },
-    ship: { condition: value.ship.condition },
+    ship: value.ship === null ? null : { condition: value.ship.condition as number },
     flags: [...value.flags],
     items: [...value.items],
     npcs,
@@ -155,14 +156,12 @@ function readHistory(value: unknown): GameState['history'] | null {
       isString(entry.eventId) &&
       isString(entry.choiceId) &&
       isString(entry.outcomeId) &&
-      isNonNegativeInteger(entry.month) &&
       isNonNegativeInteger(entry.ageMonths),
   )) return null;
   return value.map((entry) => ({
     eventId: entry.eventId as string,
     choiceId: entry.choiceId as string,
     outcomeId: entry.outcomeId as string,
-    month: entry.month as number,
     ageMonths: entry.ageMonths as number,
   }));
 }

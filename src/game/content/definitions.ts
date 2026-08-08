@@ -1,6 +1,17 @@
 import { CONTENT_SCHEMA_VERSION } from './schema';
 import { eventTitleKey, eventTextKey, choiceTextKey, outcomeTextKey, choicePlaceholderKey, modifierLabelKey, traitNameKey, traitDescriptionKey, itemNameKey, raceNameKey, seaNameKey, affiliationNameKey, npcNameKey } from '../localization/keys';
-import type { ContentCatalog } from './schema';
+import type { ContentCatalog, EventDefinition } from './schema';
+
+const childhoodFixtureEvents = Array.from({ length: 20 }, (_, index): EventDefinition => {
+  const id = `childhood_fixture_${String(index + 1).padStart(2, '0')}`;
+  return {
+    id, kind: 'normal', titleKey: 'fixture.childhood.title', textKey: 'fixture.childhood.text',
+    eligibility: { type: 'careerPhaseIs', phase: 'childhood' },
+    choices: [{ id: 'continue', textKey: 'fixture.childhood.choice', resolution: { type: 'deterministic', outcome: {
+      id: 'continued', textKey: 'fixture.childhood.outcome', effects: [],
+    } } }],
+  };
+});
 
 export const contentCatalog = {
   schemaVersion: CONTENT_SCHEMA_VERSION,
@@ -8,11 +19,16 @@ export const contentCatalog = {
   races: [{ id: 'human', nameKey: raceNameKey('human') }],
   seas: [{ id: 'starter_sea', nameKey: seaNameKey('starter_sea') }],
   affiliations: [{ id: 'independent_family', nameKey: affiliationNameKey('independent_family') }],
-  traits: [{
-    id: 'audacious',
-    nameKey: traitNameKey('audacious'),
-    descriptionKey: traitDescriptionKey('audacious'),
-  }],
+  locations: [
+    { id: 'starter_port', blocksScheduledEvents: false }, { id: 'open_sea', blocksScheduledEvents: false },
+    { id: 'outer_route', blocksScheduledEvents: false }, { id: 'isolated_cove', blocksScheduledEvents: true },
+    { id: 'shipwreck_shore', blocksScheduledEvents: false },
+  ],
+  traits: [
+    { id: 'audacious', nameKey: traitNameKey('audacious'), descriptionKey: traitDescriptionKey('audacious'), oppositeTraitId: 'cautious' },
+    { id: 'cautious', nameKey: traitNameKey('cautious'), descriptionKey: traitDescriptionKey('cautious'), oppositeTraitId: 'audacious' },
+    { id: 'resilient', nameKey: traitNameKey('resilient'), descriptionKey: traitDescriptionKey('resilient') },
+  ],
   items: [
     { id: 'sealed_chart', nameKey: itemNameKey('sealed_chart') },
     { id: 'mira_letter_of_passage', nameKey: itemNameKey('mira_letter_of_passage') },
@@ -36,76 +52,88 @@ export const contentCatalog = {
   }],
   events: [
     {
-      id: 'origin_name', titleKey: eventTitleKey('origin_name'), textKey: eventTextKey('origin_name'), priority: 100,
+      id: 'origin_name', titleKey: eventTitleKey('origin_name'), textKey: eventTextKey('origin_name'), kind: 'normal',
       eligibility: { type: 'careerPhaseIs', phase: 'origins' },
       choices: [{
         id: 'confirm_name', textKey: choiceTextKey('origin_name', 'confirm_name'),
         input: { type: 'text', target: 'playerName', minLength: 1, maxLength: 32, placeholderKey: choicePlaceholderKey('origin_name', 'confirm_name') },
-        resolution: { type: 'deterministic', outcome: { id: 'name_chosen', textKey: outcomeTextKey('origin_name', 'confirm_name', 'name_chosen'), advanceMonths: 0, effects: [] } },
+        resolution: { type: 'deterministic', outcome: { id: 'name_chosen', textKey: outcomeTextKey('origin_name', 'confirm_name', 'name_chosen'), effects: [] } },
       }],
     },
     {
-      id: 'origin_race', titleKey: eventTitleKey('origin_race'), textKey: eventTextKey('origin_race'), priority: 100,
+      id: 'origin_race', titleKey: eventTitleKey('origin_race'), textKey: eventTextKey('origin_race'), kind: 'normal',
       eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'origins' }, { type: 'hasPlayed', eventId: 'origin_name' }] },
-      choices: [{ id: 'human', textKey: choiceTextKey('origin_race', 'human'), resolution: { type: 'deterministic', outcome: { id: 'human_origin', textKey: outcomeTextKey('origin_race', 'human', 'human_origin'), advanceMonths: 0, effects: [{ type: 'setRace', raceId: 'human' }] } } }],
+      choices: [{ id: 'human', textKey: choiceTextKey('origin_race', 'human'), resolution: { type: 'deterministic', outcome: { id: 'human_origin', textKey: outcomeTextKey('origin_race', 'human', 'human_origin'), effects: [{ type: 'setRace', raceId: 'human' }] } } }],
     },
     {
-      id: 'origin_sea', titleKey: eventTitleKey('origin_sea'), textKey: eventTextKey('origin_sea'), priority: 100,
+      id: 'origin_sea', titleKey: eventTitleKey('origin_sea'), textKey: eventTextKey('origin_sea'), kind: 'normal',
       eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'origins' }, { type: 'hasPlayed', eventId: 'origin_race' }] },
-      choices: [{ id: 'starter_sea', textKey: choiceTextKey('origin_sea', 'starter_sea'), resolution: { type: 'deterministic', outcome: { id: 'starter_sea_origin', textKey: outcomeTextKey('origin_sea', 'starter_sea', 'starter_sea_origin'), advanceMonths: 0, effects: [{ type: 'setOriginSea', seaId: 'starter_sea' }] } } }],
+      choices: [{ id: 'starter_sea', textKey: choiceTextKey('origin_sea', 'starter_sea'), resolution: { type: 'deterministic', outcome: { id: 'starter_sea_origin', textKey: outcomeTextKey('origin_sea', 'starter_sea', 'starter_sea_origin'), effects: [{ type: 'setOriginSea', seaId: 'starter_sea' }] } } }],
     },
     {
-      id: 'origin_affiliation', titleKey: eventTitleKey('origin_affiliation'), textKey: eventTextKey('origin_affiliation'), priority: 100,
+      id: 'origin_affiliation', titleKey: eventTitleKey('origin_affiliation'), textKey: eventTextKey('origin_affiliation'), kind: 'normal',
       eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'origins' }, { type: 'hasPlayed', eventId: 'origin_sea' }] },
-      choices: [{ id: 'independent_family', textKey: choiceTextKey('origin_affiliation', 'independent_family'), resolution: { type: 'deterministic', outcome: { id: 'independent_origin', textKey: outcomeTextKey('origin_affiliation', 'independent_family', 'independent_origin'), advanceMonths: 0, effects: [{ type: 'setAffiliation', affiliationId: 'independent_family' }] } } }],
+      choices: [{ id: 'independent_family', textKey: choiceTextKey('origin_affiliation', 'independent_family'), resolution: { type: 'deterministic', outcome: { id: 'independent_origin', textKey: outcomeTextKey('origin_affiliation', 'independent_family', 'independent_origin'), effects: [{ type: 'setAffiliation', affiliationId: 'independent_family' }] } } }],
     },
     {
-      id: 'origin_tendency', titleKey: eventTitleKey('origin_tendency'), textKey: eventTextKey('origin_tendency'), priority: 100,
+      id: 'origin_tendency', titleKey: eventTitleKey('origin_tendency'), textKey: eventTextKey('origin_tendency'), kind: 'normal',
       eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'origins' }, { type: 'hasPlayed', eventId: 'origin_affiliation' }] },
-      choices: [{ id: 'observe', textKey: choiceTextKey('origin_tendency', 'observe'), resolution: { type: 'deterministic', outcome: { id: 'observant_start', textKey: outcomeTextKey('origin_tendency', 'observe', 'observant_start'), advanceMonths: 0, effects: [{ type: 'modifyStat', statId: 'observation', amount: 2 }] } } }],
+      choices: [{ id: 'observe', textKey: choiceTextKey('origin_tendency', 'observe'), resolution: { type: 'deterministic', outcome: { id: 'observant_start', textKey: outcomeTextKey('origin_tendency', 'observe', 'observant_start'), effects: [{ type: 'modifyStat', statId: 'observation', amount: 2 }] } } }],
     },
     {
-      id: 'origin_to_childhood', titleKey: eventTitleKey('origin_to_childhood'), textKey: eventTextKey('origin_to_childhood'), priority: 100,
+      id: 'origin_to_childhood', titleKey: eventTitleKey('origin_to_childhood'), textKey: eventTextKey('origin_to_childhood'), kind: 'normal',
       eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'origins' }, { type: 'hasPlayed', eventId: 'origin_tendency' }] },
-      choices: [{ id: 'begin_childhood', textKey: choiceTextKey('origin_to_childhood', 'begin_childhood'), resolution: { type: 'deterministic', outcome: { id: 'childhood_begins', textKey: outcomeTextKey('origin_to_childhood', 'begin_childhood', 'childhood_begins'), advanceMonths: 0, effects: [{ type: 'setCareerPhase', phase: 'childhood' }] } } }],
+      choices: [{ id: 'begin_childhood', textKey: choiceTextKey('origin_to_childhood', 'begin_childhood'), resolution: { type: 'deterministic', outcome: { id: 'childhood_begins', textKey: outcomeTextKey('origin_to_childhood', 'begin_childhood', 'childhood_begins'), effects: [{ type: 'setCareerPhase', phase: 'childhood' }, { type: 'addTrait', traitId: 'audacious' }, { type: 'scheduleEvent', eventId: 'childhood_memory', delayMonths: 48 }] } } }],
     },
     {
-      id: 'childhood_early', titleKey: eventTitleKey('childhood_early'), textKey: eventTextKey('childhood_early'), priority: 100,
+      id: 'childhood_early', titleKey: eventTitleKey('childhood_early'), textKey: eventTextKey('childhood_early'), kind: 'normal',
       eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'childhood' }, { type: 'ageAtMostMonths', value: 59 }] },
-      choices: [{ id: 'explore', textKey: choiceTextKey('childhood_early', 'explore'), resolution: { type: 'deterministic', outcome: { id: 'early_growth', textKey: outcomeTextKey('childhood_early', 'explore', 'early_growth'), advanceMonths: 60, effects: [{ type: 'modifyStat', statId: 'health', amount: 1 }, { type: 'scheduleEvent', eventId: 'childhood_memory', delayMonths: 48 }] } } }],
+      choices: [{ id: 'explore', textKey: choiceTextKey('childhood_early', 'explore'), resolution: { type: 'deterministic', outcome: { id: 'early_growth', textKey: outcomeTextKey('childhood_early', 'explore', 'early_growth'), effects: [{ type: 'modifyStat', statId: 'health', amount: 1 }] } } }],
     },
     {
-      id: 'childhood_middle', titleKey: eventTitleKey('childhood_middle'), textKey: eventTextKey('childhood_middle'), priority: 100,
+      id: 'childhood_middle', titleKey: eventTitleKey('childhood_middle'), textKey: eventTextKey('childhood_middle'), kind: 'normal',
       eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'childhood' }, { type: 'ageAtLeastMonths', value: 60 }, { type: 'ageAtMostMonths', value: 107 }, { type: 'originSeaIs', seaId: 'starter_sea' }] },
-      choices: [{ id: 'watch_horizon', textKey: choiceTextKey('childhood_middle', 'watch_horizon'), resolution: { type: 'deterministic', outcome: { id: 'middle_growth', textKey: outcomeTextKey('childhood_middle', 'watch_horizon', 'middle_growth'), advanceMonths: 48, effects: [{ type: 'modifyStat', statId: 'navigation', amount: 2 }] } } }],
+      choices: [{ id: 'watch_horizon', textKey: choiceTextKey('childhood_middle', 'watch_horizon'), resolution: { type: 'deterministic', outcome: { id: 'middle_growth', textKey: outcomeTextKey('childhood_middle', 'watch_horizon', 'middle_growth'), effects: [{ type: 'modifyStat', statId: 'navigation', amount: 2 }] } } }],
     },
     {
-      id: 'childhood_memory', titleKey: eventTitleKey('childhood_memory'), textKey: eventTextKey('childhood_memory'), scheduledOnly: true, priority: 110,
+      id: 'childhood_memory', titleKey: eventTitleKey('childhood_memory'), textKey: eventTextKey('childhood_memory'), kind: 'scheduled', priority: 100, scheduledReach: 'normal',
       eligibility: { type: 'careerPhaseIs', phase: 'childhood' },
-      choices: [{ id: 'remember', textKey: choiceTextKey('childhood_memory', 'remember'), resolution: { type: 'deterministic', outcome: { id: 'memory_kept', textKey: outcomeTextKey('childhood_memory', 'remember', 'memory_kept'), advanceMonths: 0, effects: [] } } }],
+      choices: [{ id: 'remember', textKey: choiceTextKey('childhood_memory', 'remember'), resolution: { type: 'deterministic', outcome: { id: 'memory_kept', textKey: outcomeTextKey('childhood_memory', 'remember', 'memory_kept'), effects: [{ type: 'addTrait', traitId: 'resilient' }] } } }],
     },
     {
-      id: 'childhood_late', titleKey: eventTitleKey('childhood_late'), textKey: eventTextKey('childhood_late'), priority: 100,
+      id: 'childhood_late', titleKey: eventTitleKey('childhood_late'), textKey: eventTextKey('childhood_late'), kind: 'normal',
       eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'childhood' }, { type: 'ageAtLeastMonths', value: 108 }, { type: 'ageAtMostMonths', value: 143 }] },
-      choices: [{ id: 'learn', textKey: choiceTextKey('childhood_late', 'learn'), resolution: { type: 'deterministic', outcome: { id: 'late_growth', textKey: outcomeTextKey('childhood_late', 'learn', 'late_growth'), advanceMonths: 36, effects: [{ type: 'modifyStat', statId: 'intelligence', amount: 2 }] } } }],
+      choices: [{ id: 'learn', textKey: choiceTextKey('childhood_late', 'learn'), resolution: { type: 'deterministic', outcome: { id: 'late_growth', textKey: outcomeTextKey('childhood_late', 'learn', 'late_growth'), effects: [{ type: 'modifyStat', statId: 'intelligence', amount: 2 }] } } }],
     },
     {
-      id: 'childhood_final', titleKey: eventTitleKey('childhood_final'), textKey: eventTextKey('childhood_final'), priority: 100,
+      id: 'childhood_final', titleKey: eventTitleKey('childhood_final'), textKey: eventTextKey('childhood_final'), kind: 'normal',
       eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'childhood' }, { type: 'ageAtLeastMonths', value: 144 }, { type: 'ageAtMostMonths', value: 179 }] },
-      choices: [{ id: 'prepare', textKey: choiceTextKey('childhood_final', 'prepare'), resolution: { type: 'deterministic', outcome: { id: 'final_growth', textKey: outcomeTextKey('childhood_final', 'prepare', 'final_growth'), advanceMonths: 36, effects: [{ type: 'addTrait', traitId: 'audacious' }] } } }],
+      choices: [{ id: 'prepare', textKey: choiceTextKey('childhood_final', 'prepare'), resolution: { type: 'deterministic', outcome: { id: 'final_growth', textKey: outcomeTextKey('childhood_final', 'prepare', 'final_growth'), effects: [{ type: 'addTrait', traitId: 'audacious' }] } } }],
     },
     {
-      id: 'childhood_to_active', titleKey: eventTitleKey('childhood_to_active'), textKey: eventTextKey('childhood_to_active'), priority: 100,
+      id: 'childhood_to_active', titleKey: eventTitleKey('childhood_to_active'), textKey: eventTextKey('childhood_to_active'), kind: 'normal',
       eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'childhood' }, { type: 'ageAtLeastMonths', value: 180 }] },
-      choices: [{ id: 'begin_active', textKey: choiceTextKey('childhood_to_active', 'begin_active'), resolution: { type: 'deterministic', outcome: { id: 'active_begins', textKey: outcomeTextKey('childhood_to_active', 'begin_active', 'active_begins'), advanceMonths: 0, effects: [{ type: 'setCareerPhase', phase: 'active' }] } } }],
+      choices: [{ id: 'begin_active', textKey: choiceTextKey('childhood_to_active', 'begin_active'), resolution: { type: 'deterministic', outcome: { id: 'active_begins', textKey: outcomeTextKey('childhood_to_active', 'begin_active', 'active_begins'), effects: [{ type: 'setCareerPhase', phase: 'active' }] } } }],
+    },
+    ...childhoodFixtureEvents,
+    {
+      id: 'critical_player_death', kind: 'critical', trigger: { type: 'playerHealthDepleted' }, titleKey: eventTitleKey('critical_player_death'), textKey: eventTextKey('critical_player_death'),
+      choices: [{ id: 'accept_death', textKey: choiceTextKey('critical_player_death', 'accept_death'), resolution: { type: 'deterministic', outcome: { id: 'death', textKey: outcomeTextKey('critical_player_death', 'accept_death', 'death'), effects: [{ type: 'endCareer', reason: 'death' }] } } }],
+    },
+    {
+      id: 'critical_mira_death', kind: 'critical', trigger: { type: 'npcHealthDepleted', npcId: 'mira' }, titleKey: eventTitleKey('critical_mira_death'), textKey: eventTextKey('critical_mira_death'),
+      choices: [{ id: 'mourn_mira', textKey: choiceTextKey('critical_mira_death', 'mourn_mira'), resolution: { type: 'deterministic', outcome: { id: 'mira_dead', textKey: outcomeTextKey('critical_mira_death', 'mourn_mira', 'mira_dead'), effects: [{ type: 'setNpcStatus', npcId: 'mira', status: 'dead' }] } } }],
+    },
+    {
+      id: 'critical_ship_destroyed', kind: 'critical', trigger: { type: 'shipDestroyed' }, titleKey: eventTitleKey('critical_ship_destroyed'), textKey: eventTextKey('critical_ship_destroyed'),
+      choices: [{ id: 'reach_shore', textKey: choiceTextKey('critical_ship_destroyed', 'reach_shore'), resolution: { type: 'deterministic', outcome: { id: 'ship_lost', textKey: outcomeTextKey('critical_ship_destroyed', 'reach_shore', 'ship_lost'), effects: [{ type: 'loseShip', locationId: 'shipwreck_shore', travelState: 'on_land' }] } } }],
     },
     {
       id: 'departure',
       titleKey: eventTitleKey('departure'),
       textKey: eventTextKey('departure'),
-      scheduledOnly: false,
       eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'active' }, { type: 'locationIs', locationId: 'starter_port' }] },
-      priority: 100,
+      kind: 'normal',
       choices: [
         {
           id: 'set_sail',
@@ -115,7 +143,6 @@ export const contentCatalog = {
             outcome: {
               id: 'departure_set_sail',
               textKey: outcomeTextKey('departure', 'set_sail', 'departure_set_sail'),
-              advanceMonths: 1,
               effects: [
                 { type: 'setFlag', flagId: 'career_departed' },
                 { type: 'moveToLocation', locationId: 'open_sea', travelState: 'at_sea' },
@@ -129,7 +156,6 @@ export const contentCatalog = {
       id: 'mira_castaway',
       titleKey: eventTitleKey('mira_castaway'),
       textKey: eventTextKey('mira_castaway'),
-      scheduledOnly: false,
       eligibility: {
         type: 'all',
         conditions: [
@@ -139,7 +165,7 @@ export const contentCatalog = {
           { type: 'npcStatusIs', npcId: 'mira', status: 'unavailable' },
         ],
       },
-      priority: 90,
+      kind: 'normal',
       choices: [
         {
           id: 'rescue_recruit',
@@ -149,7 +175,6 @@ export const contentCatalog = {
             outcome: {
               id: 'mira_castaway_recruited',
               textKey: outcomeTextKey('mira_castaway', 'rescue_recruit', 'mira_castaway_recruited'),
-              advanceMonths: 1,
               effects: [
                 { type: 'setNpcStatus', npcId: 'mira', status: 'crew' },
                 { type: 'modifyNpcRelationship', npcId: 'mira', amount: 25 },
@@ -167,7 +192,6 @@ export const contentCatalog = {
             outcome: {
               id: 'mira_castaway_dropped_off',
               textKey: outcomeTextKey('mira_castaway', 'rescue_dropoff', 'mira_castaway_dropped_off'),
-              advanceMonths: 1,
               effects: [
                 { type: 'setNpcStatus', npcId: 'mira', status: 'departed' },
                 { type: 'modifyNpcRelationship', npcId: 'mira', amount: 15 },
@@ -186,7 +210,6 @@ export const contentCatalog = {
             outcome: {
               id: 'mira_castaway_abandoned',
               textKey: outcomeTextKey('mira_castaway', 'leave_mira', 'mira_castaway_abandoned'),
-              advanceMonths: 1,
               effects: [
                 { type: 'setNpcStatus', npcId: 'mira', status: 'unavailable' },
                 { type: 'modifyNpcRelationship', npcId: 'mira', amount: -20 },
@@ -202,7 +225,6 @@ export const contentCatalog = {
       id: 'black_squall',
       titleKey: eventTitleKey('black_squall'),
       textKey: eventTextKey('black_squall'),
-      scheduledOnly: false,
       eligibility: {
         type: 'all',
         conditions: [
@@ -211,7 +233,7 @@ export const contentCatalog = {
           { type: 'locationIs', locationId: 'open_sea' },
         ],
       },
-      priority: 80,
+      kind: 'normal',
       choices: [
         {
           id: 'cut_through_squall',
@@ -229,7 +251,7 @@ export const contentCatalog = {
             ],
             outcomes: {
               criticalFailure: {
-                    id: 'black_squall_catastrophe', textKey: outcomeTextKey('black_squall', 'cut_through_squall', 'black_squall_catastrophe'), advanceMonths: 4,
+                    id: 'black_squall_catastrophe', textKey: outcomeTextKey('black_squall', 'cut_through_squall', 'black_squall_catastrophe'),
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'setFlag', flagId: 'black_squall_disaster' },
@@ -237,18 +259,18 @@ export const contentCatalog = {
                     ],
               },
               failure: {
-                    id: 'black_squall_failure', textKey: outcomeTextKey('black_squall', 'cut_through_squall', 'black_squall_failure'), advanceMonths: 3,
+                    id: 'black_squall_failure', textKey: outcomeTextKey('black_squall', 'cut_through_squall', 'black_squall_failure'),
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'setFlag', flagId: 'black_squall_resolved' },
                     ],
               },
               success: {
-                    id: 'black_squall_success', textKey: outcomeTextKey('black_squall', 'cut_through_squall', 'black_squall_success'), advanceMonths: 3,
+                    id: 'black_squall_success', textKey: outcomeTextKey('black_squall', 'cut_through_squall', 'black_squall_success'),
                     effects: [{ type: 'setFlag', flagId: 'black_squall_resolved' }],
               },
               criticalSuccess: {
-                    id: 'black_squall_exceptional', textKey: outcomeTextKey('black_squall', 'cut_through_squall', 'black_squall_exceptional'), advanceMonths: 3,
+                    id: 'black_squall_exceptional', textKey: outcomeTextKey('black_squall', 'cut_through_squall', 'black_squall_exceptional'),
                     effects: [
                       { type: 'setFlag', flagId: 'black_squall_mastered' },
                       { type: 'setFlag', flagId: 'black_squall_resolved' },
@@ -263,7 +285,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'black_squall_waited', textKey: outcomeTextKey('black_squall', 'heave_to', 'black_squall_waited'), advanceMonths: 4,
+              id: 'black_squall_waited', textKey: outcomeTextKey('black_squall', 'heave_to', 'black_squall_waited'),
               effects: [
                 { type: 'setFlag', flagId: 'black_squall_delayed' },
                 { type: 'setFlag', flagId: 'black_squall_resolved' },
@@ -277,7 +299,6 @@ export const contentCatalog = {
       id: 'wreck',
       titleKey: eventTitleKey('wreck'),
       textKey: eventTextKey('wreck'),
-      scheduledOnly: false,
       eligibility: {
         type: 'all',
         conditions: [
@@ -286,7 +307,7 @@ export const contentCatalog = {
           { type: 'locationIs', locationId: 'open_sea' },
         ],
       },
-      priority: 70,
+      kind: 'normal',
       choices: [
         {
           id: 'search_wreck',
@@ -294,7 +315,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'wreck_chart_found', textKey: outcomeTextKey('wreck', 'search_wreck', 'wreck_chart_found'), advanceMonths: 3,
+              id: 'wreck_chart_found', textKey: outcomeTextKey('wreck', 'search_wreck', 'wreck_chart_found'),
               effects: [
                 { type: 'addItem', itemId: 'sealed_chart' },
                 { type: 'setFlag', flagId: 'wreck_searched' },
@@ -309,7 +330,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'wreck_ignored', textKey: outcomeTextKey('wreck', 'leave_wreck', 'wreck_ignored'), advanceMonths: 3,
+              id: 'wreck_ignored', textKey: outcomeTextKey('wreck', 'leave_wreck', 'wreck_ignored'),
               effects: [{ type: 'setFlag', flagId: 'wreck_resolved' }],
             },
           },
@@ -320,7 +341,6 @@ export const contentCatalog = {
       id: 'reefs',
       titleKey: eventTitleKey('reefs'),
       textKey: eventTextKey('reefs'),
-      scheduledOnly: false,
       eligibility: {
         type: 'all',
         conditions: [
@@ -329,7 +349,7 @@ export const contentCatalog = {
           { type: 'locationIs', locationId: 'open_sea' },
         ],
       },
-      priority: 70,
+      kind: 'normal',
       choices: [
         {
           id: 'force_passage',
@@ -345,7 +365,7 @@ export const contentCatalog = {
             }],
             outcomes: {
               criticalFailure: {
-                    id: 'reefs_force_catastrophe', textKey: outcomeTextKey('reefs', 'force_passage', 'reefs_force_catastrophe'), advanceMonths: 4,
+                    id: 'reefs_force_catastrophe', textKey: outcomeTextKey('reefs', 'force_passage', 'reefs_force_catastrophe'),
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'setFlag', flagId: 'reefs_hard_crossing' },
@@ -354,7 +374,7 @@ export const contentCatalog = {
                     ],
               },
               failure: {
-                    id: 'reefs_force_failure', textKey: outcomeTextKey('reefs', 'force_passage', 'reefs_force_failure'), advanceMonths: 3,
+                    id: 'reefs_force_failure', textKey: outcomeTextKey('reefs', 'force_passage', 'reefs_force_failure'),
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
@@ -362,14 +382,14 @@ export const contentCatalog = {
                     ],
               },
               success: {
-                    id: 'reefs_force_success', textKey: outcomeTextKey('reefs', 'force_passage', 'reefs_force_success'), advanceMonths: 3,
+                    id: 'reefs_force_success', textKey: outcomeTextKey('reefs', 'force_passage', 'reefs_force_success'),
                     effects: [
                       { type: 'setFlag', flagId: 'reefs_crossed' },
                       { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
               },
               criticalSuccess: {
-                    id: 'reefs_force_exceptional', textKey: outcomeTextKey('reefs', 'force_passage', 'reefs_force_exceptional'), advanceMonths: 3,
+                    id: 'reefs_force_exceptional', textKey: outcomeTextKey('reefs', 'force_passage', 'reefs_force_exceptional'),
                     effects: [
                       { type: 'setFlag', flagId: 'reefs_clean_crossing' },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
@@ -386,7 +406,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'reefs_navigation_solution', textKey: outcomeTextKey('reefs', 'read_currents', 'reefs_navigation_solution'), advanceMonths: 3,
+              id: 'reefs_navigation_solution', textKey: outcomeTextKey('reefs', 'read_currents', 'reefs_navigation_solution'),
               effects: [
                 { type: 'setFlag', flagId: 'reefs_clean_crossing' },
                 { type: 'setFlag', flagId: 'reefs_crossed' },
@@ -402,7 +422,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'reefs_chart_solution', textKey: outcomeTextKey('reefs', 'use_sealed_chart', 'reefs_chart_solution'), advanceMonths: 3,
+              id: 'reefs_chart_solution', textKey: outcomeTextKey('reefs', 'use_sealed_chart', 'reefs_chart_solution'),
               effects: [
                 { type: 'setFlag', flagId: 'reefs_clean_crossing' },
                 { type: 'setFlag', flagId: 'reefs_crossed' },
@@ -426,7 +446,7 @@ export const contentCatalog = {
             }],
             outcomes: {
               criticalFailure: {
-                    id: 'reefs_breakers_catastrophe', textKey: outcomeTextKey('reefs', 'ride_breakers', 'reefs_breakers_catastrophe'), advanceMonths: 4,
+                    id: 'reefs_breakers_catastrophe', textKey: outcomeTextKey('reefs', 'ride_breakers', 'reefs_breakers_catastrophe'),
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'setFlag', flagId: 'reefs_hard_crossing' },
@@ -435,7 +455,7 @@ export const contentCatalog = {
                     ],
               },
               failure: {
-                    id: 'reefs_breakers_failure', textKey: outcomeTextKey('reefs', 'ride_breakers', 'reefs_breakers_failure'), advanceMonths: 3,
+                    id: 'reefs_breakers_failure', textKey: outcomeTextKey('reefs', 'ride_breakers', 'reefs_breakers_failure'),
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
@@ -443,14 +463,14 @@ export const contentCatalog = {
                     ],
               },
               success: {
-                    id: 'reefs_breakers_success', textKey: outcomeTextKey('reefs', 'ride_breakers', 'reefs_breakers_success'), advanceMonths: 3,
+                    id: 'reefs_breakers_success', textKey: outcomeTextKey('reefs', 'ride_breakers', 'reefs_breakers_success'),
                     effects: [
                       { type: 'setFlag', flagId: 'reefs_crossed' },
                       { type: 'moveToLocation', locationId: 'outer_route', travelState: 'at_sea' },
                     ],
               },
               criticalSuccess: {
-                    id: 'reefs_breakers_exceptional', textKey: outcomeTextKey('reefs', 'ride_breakers', 'reefs_breakers_exceptional'), advanceMonths: 3,
+                    id: 'reefs_breakers_exceptional', textKey: outcomeTextKey('reefs', 'ride_breakers', 'reefs_breakers_exceptional'),
                     effects: [
                       { type: 'setFlag', flagId: 'reefs_clean_crossing' },
                       { type: 'setFlag', flagId: 'reefs_crossed' },
@@ -466,17 +486,16 @@ export const contentCatalog = {
       id: 'mira_confession',
       titleKey: eventTitleKey('mira_confession'),
       textKey: eventTextKey('mira_confession'),
-      scheduledOnly: false,
       eligibility: {
         type: 'all',
         conditions: [
           { type: 'careerPhaseIs', phase: 'active' },
           { type: 'hasFlag', flagId: 'black_squall_resolved' },
           { type: 'npcStatusIs', npcId: 'mira', status: 'crew' },
-          { type: 'monthAtLeast', value: 5 },
+          
         ],
       },
-      priority: 85,
+      kind: 'normal',
       choices: [
         {
           id: 'trust_mira',
@@ -484,7 +503,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'mira_confession_trusted', textKey: outcomeTextKey('mira_confession', 'trust_mira', 'mira_confession_trusted'), advanceMonths: 1,
+              id: 'mira_confession_trusted', textKey: outcomeTextKey('mira_confession', 'trust_mira', 'mira_confession_trusted'),
               effects: [
                 { type: 'modifyNpcRelationship', npcId: 'mira', amount: 20 },
                 { type: 'setFlag', flagId: 'mira_trusted' },
@@ -499,7 +518,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'mira_confession_watched', textKey: outcomeTextKey('mira_confession', 'keep_watch', 'mira_confession_watched'), advanceMonths: 1,
+              id: 'mira_confession_watched', textKey: outcomeTextKey('mira_confession', 'keep_watch', 'mira_confession_watched'),
               effects: [
                 { type: 'modifyNpcRelationship', npcId: 'mira', amount: -5 },
                 { type: 'setFlag', flagId: 'mira_mistrusted' },
@@ -514,7 +533,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'mira_confession_exiled', textKey: outcomeTextKey('mira_confession', 'put_mira_ashore', 'mira_confession_exiled'), advanceMonths: 1,
+              id: 'mira_confession_exiled', textKey: outcomeTextKey('mira_confession', 'put_mira_ashore', 'mira_confession_exiled'),
               effects: [
                 { type: 'modifyNpcRelationship', npcId: 'mira', amount: -20 },
                 { type: 'setNpcStatus', npcId: 'mira', status: 'departed' },
@@ -529,7 +548,6 @@ export const contentCatalog = {
       id: 'mira_hunters',
       titleKey: eventTitleKey('mira_hunters'),
       textKey: eventTextKey('mira_hunters'),
-      scheduledOnly: false,
       eligibility: {
         type: 'all',
         conditions: [
@@ -544,10 +562,10 @@ export const contentCatalog = {
               { type: 'hasChosen', eventId: 'mira_confession', choiceId: 'keep_watch' },
             ],
           },
-          { type: 'monthAtLeast', value: 10 },
+          
         ],
       },
-      priority: 85,
+      kind: 'normal',
       choices: [
         {
           id: 'let_mira_speak',
@@ -556,7 +574,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'mira_hunters_negotiated', textKey: outcomeTextKey('mira_hunters', 'let_mira_speak', 'mira_hunters_negotiated'), advanceMonths: 1,
+              id: 'mira_hunters_negotiated', textKey: outcomeTextKey('mira_hunters', 'let_mira_speak', 'mira_hunters_negotiated'),
               effects: [
                 { type: 'modifyNpcRelationship', npcId: 'mira', amount: 10 },
                 { type: 'setFlag', flagId: 'mira_hunters_peaceful' },
@@ -572,7 +590,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'mira_hunters_bluffed', textKey: outcomeTextKey('mira_hunters', 'bluff_hunters', 'mira_hunters_bluffed'), advanceMonths: 1,
+              id: 'mira_hunters_bluffed', textKey: outcomeTextKey('mira_hunters', 'bluff_hunters', 'mira_hunters_bluffed'),
               effects: [
                 { type: 'modifyNpcRelationship', npcId: 'mira', amount: 5 },
                 { type: 'setFlag', flagId: 'mira_hunters_resolved' },
@@ -594,7 +612,7 @@ export const contentCatalog = {
             }],
             outcomes: {
               criticalFailure: {
-                    id: 'mira_hunters_escape_catastrophe', textKey: outcomeTextKey('mira_hunters', 'outrun_hunters', 'mira_hunters_escape_catastrophe'), advanceMonths: 1,
+                    id: 'mira_hunters_escape_catastrophe', textKey: outcomeTextKey('mira_hunters', 'outrun_hunters', 'mira_hunters_escape_catastrophe'),
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'modifyNpcRelationship', npcId: 'mira', amount: -10 },
@@ -603,7 +621,7 @@ export const contentCatalog = {
                     ],
               },
               failure: {
-                    id: 'mira_hunters_escape_failure', textKey: outcomeTextKey('mira_hunters', 'outrun_hunters', 'mira_hunters_escape_failure'), advanceMonths: 1,
+                    id: 'mira_hunters_escape_failure', textKey: outcomeTextKey('mira_hunters', 'outrun_hunters', 'mira_hunters_escape_failure'),
                     effects: [
                       { type: 'modifyShipCondition', amount: -1 },
                       { type: 'modifyNpcRelationship', npcId: 'mira', amount: -5 },
@@ -611,14 +629,14 @@ export const contentCatalog = {
                     ],
               },
               success: {
-                    id: 'mira_hunters_escape_success', textKey: outcomeTextKey('mira_hunters', 'outrun_hunters', 'mira_hunters_escape_success'), advanceMonths: 1,
+                    id: 'mira_hunters_escape_success', textKey: outcomeTextKey('mira_hunters', 'outrun_hunters', 'mira_hunters_escape_success'),
                     effects: [
                       { type: 'modifyNpcRelationship', npcId: 'mira', amount: 10 },
                       { type: 'setFlag', flagId: 'mira_hunters_resolved' },
                     ],
               },
               criticalSuccess: {
-                    id: 'mira_hunters_escape_exceptional', textKey: outcomeTextKey('mira_hunters', 'outrun_hunters', 'mira_hunters_escape_exceptional'), advanceMonths: 1,
+                    id: 'mira_hunters_escape_exceptional', textKey: outcomeTextKey('mira_hunters', 'outrun_hunters', 'mira_hunters_escape_exceptional'),
                     effects: [
                       { type: 'modifyNpcRelationship', npcId: 'mira', amount: 15 },
                       { type: 'setFlag', flagId: 'mira_hunters_resolved' },
@@ -633,7 +651,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'mira_hunters_betrayed', textKey: outcomeTextKey('mira_hunters', 'hand_over_mira', 'mira_hunters_betrayed'), advanceMonths: 1,
+              id: 'mira_hunters_betrayed', textKey: outcomeTextKey('mira_hunters', 'hand_over_mira', 'mira_hunters_betrayed'),
               effects: [
                 { type: 'modifyNpcRelationship', npcId: 'mira', amount: -50 },
                 { type: 'setNpcStatus', npcId: 'mira', status: 'unavailable' },
@@ -649,7 +667,9 @@ export const contentCatalog = {
       id: 'mira_returns_favor',
       titleKey: eventTitleKey('mira_returns_favor'),
       textKey: eventTextKey('mira_returns_favor'),
-      scheduledOnly: true,
+      kind: 'scheduled',
+      priority: 100,
+      scheduledReach: 'normal',
       eligibility: {
         type: 'all',
         conditions: [
@@ -658,7 +678,6 @@ export const contentCatalog = {
           { type: 'npcStatusIs', npcId: 'mira', status: 'departed' },
         ],
       },
-      priority: 100,
       choices: [
         {
           id: 'accept_mira_favor',
@@ -666,7 +685,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'mira_favor_received', textKey: outcomeTextKey('mira_returns_favor', 'accept_mira_favor', 'mira_favor_received'), advanceMonths: 0,
+              id: 'mira_favor_received', textKey: outcomeTextKey('mira_returns_favor', 'accept_mira_favor', 'mira_favor_received'),
               effects: [
                 { type: 'addItem', itemId: 'mira_letter_of_passage' },
                 { type: 'modifyNpcRelationship', npcId: 'mira', amount: 10 },
@@ -681,14 +700,13 @@ export const contentCatalog = {
       id: 'year_one_end',
       titleKey: eventTitleKey('year_one_end'),
       textKey: eventTextKey('year_one_end'),
-      scheduledOnly: false,
       eligibility: {
         type: 'all',
         conditions: [
           { type: 'careerPhaseIs', phase: 'active' },
           { type: 'hasFlag', flagId: 'reefs_crossed' },
           { type: 'locationIs', locationId: 'outer_route' },
-          { type: 'monthAtLeast', value: 11 },
+          
           {
             type: 'any',
             conditions: [
@@ -698,7 +716,7 @@ export const contentCatalog = {
           },
         ],
       },
-      priority: 100,
+      kind: 'normal',
       choices: [
         {
           id: 'press_on',
@@ -707,7 +725,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'year_one_continues', textKey: outcomeTextKey('year_one_end', 'press_on', 'year_one_continues'), advanceMonths: 1,
+              id: 'year_one_continues', textKey: outcomeTextKey('year_one_end', 'press_on', 'year_one_continues'),
               effects: [{ type: 'setFlag', flagId: 'ending_press_on' }, { type: 'endCareer', reason: 'legacy' }],
             },
           },
@@ -725,7 +743,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'year_one_mira_favor', textKey: outcomeTextKey('year_one_end', 'use_mira_passage', 'year_one_mira_favor'), advanceMonths: 1,
+              id: 'year_one_mira_favor', textKey: outcomeTextKey('year_one_end', 'use_mira_passage', 'year_one_mira_favor'),
               effects: [{ type: 'setFlag', flagId: 'ending_mira_favor' }, { type: 'endCareer', reason: 'legacy' }],
             },
           },
@@ -744,7 +762,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'year_one_with_mira', textKey: outcomeTextKey('year_one_end', 'sail_with_mira', 'year_one_with_mira'), advanceMonths: 1,
+              id: 'year_one_with_mira', textKey: outcomeTextKey('year_one_end', 'sail_with_mira', 'year_one_with_mira'),
               effects: [{ type: 'setFlag', flagId: 'ending_with_mira' }, { type: 'endCareer', reason: 'legacy' }],
             },
           },
@@ -756,7 +774,7 @@ export const contentCatalog = {
           resolution: {
             type: 'deterministic',
             outcome: {
-              id: 'year_one_ship_broken', textKey: outcomeTextKey('year_one_end', 'make_landfall', 'year_one_ship_broken'), advanceMonths: 1,
+              id: 'year_one_ship_broken', textKey: outcomeTextKey('year_one_end', 'make_landfall', 'year_one_ship_broken'),
               effects: [{ type: 'setFlag', flagId: 'ending_ship_broken' }, { type: 'endCareer', reason: 'legacy' }],
             },
           },

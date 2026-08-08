@@ -16,11 +16,12 @@ Stack:
 
 Before modifying gameplay systems, read:
 
-- `docs/VERTICAL_SLICE_0.md`
+- `docs/GAME_DESIGN.md`
 - `docs/ARCHITECTURE.md`
+- `docs/LOCALIZATION.md`
 - `docs/JAM_STATE.md`
 
-`VERTICAL_SLICE_0.md` is the source of truth for the current game-design scope.
+`GAME_DESIGN.md` is the game-design authority. `ARCHITECTURE.md` defines the technical architecture, `LOCALIZATION.md` defines localization policy, and the TypeScript schemas are the executable content contract. `VERTICAL_SLICE_0.md` is historical context only.
 
 Do not invent gameplay rules when the specification is ambiguous. Surface the ambiguity instead.
 
@@ -65,7 +66,7 @@ The engine should be usable independently from React so it can be unit-tested an
 
 ## Scope discipline
 
-Do not implement deferred systems listed in `docs/VERTICAL_SLICE_0.md` unless explicitly requested.
+Do not implement systems outside `docs/GAME_DESIGN.md` unless explicitly requested.
 
 In particular, do not proactively add:
 - backend/cloud;
