@@ -6,14 +6,15 @@ describe('createInitialGameState', () => {
     const state = createInitialGameState(1234);
 
     expect(state).toEqual({
-      version: 5,
+      version: 6,
       rngState: 1234,
-      careerPhase: 'active',
-      ageMonths: 180,
+      careerPhase: 'origins',
+      ageMonths: 0,
       month: 0,
       travelState: 'on_land',
       locationId: 'starter_port',
       player: {
+        profile: { name: null, raceId: null, originSeaId: null, affiliationId: null },
         stats: {
           health: 25,
           morale: 25,
@@ -59,6 +60,7 @@ describe('createInitialGameState', () => {
     const second = createInitialGameState();
 
     expect(first.player).not.toBe(second.player);
+    expect(first.player.profile).not.toBe(second.player.profile);
     expect(first.player.stats).not.toBe(second.player.stats);
     expect(first.player.traits).not.toBe(second.player.traits);
     expect(first.ship).not.toBe(second.ship);

@@ -65,7 +65,7 @@ describe('applyEffects', () => {
     );
 
     expect(result.scheduledEvents).toEqual([
-      { eventId: 'return', dueAgeMonths: 186, sourceEventId: 'source_event', sourceChoiceId: 'source_choice' },
+      { eventId: 'return', dueAgeMonths: 6, sourceEventId: 'source_event', sourceChoiceId: 'source_choice' },
     ]);
   });
 
@@ -157,7 +157,7 @@ describe('applyEffects', () => {
     const state = createInitialGameState();
     const result = applyEffects(state, [{ type: 'setCareerPhase', phase: 'childhood' }], context);
 
-    expect(result).toMatchObject({ careerPhase: 'childhood', ageMonths: 180, month: 0, locationId: 'starter_port' });
+    expect(result).toMatchObject({ careerPhase: 'childhood', ageMonths: 0, month: 0, locationId: 'starter_port' });
     expect(result.player.stats).toEqual(state.player.stats);
   });
 

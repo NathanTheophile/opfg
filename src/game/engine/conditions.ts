@@ -59,6 +59,12 @@ export function evaluateCondition(condition: Condition, state: GameState): boole
       );
     case 'monthAtLeast':
       return state.month >= condition.value;
+    case 'raceIs':
+      return state.player.profile.raceId !== null && state.player.profile.raceId === condition.raceId;
+    case 'originSeaIs':
+      return state.player.profile.originSeaId !== null && state.player.profile.originSeaId === condition.seaId;
+    case 'affiliationIs':
+      return state.player.profile.affiliationId !== null && state.player.profile.affiliationId === condition.affiliationId;
   }
 }
 

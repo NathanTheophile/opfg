@@ -49,6 +49,9 @@ const CONDITION_TYPES = new Set([
   'hasPlayed',
   'hasOutcome',
   'monthAtLeast',
+  'raceIs',
+  'originSeaIs',
+  'affiliationIs',
 ]);
 const EFFECT_TYPES = new Set([
   'setFlag',
@@ -65,6 +68,9 @@ const EFFECT_TYPES = new Set([
   'modifyNpcStat',
   'scheduleEvent',
   'setCareerPhase',
+  'setRace',
+  'setOriginSea',
+  'setAffiliation',
   'endCareer',
 ]);
 
@@ -79,6 +85,12 @@ export function validateContent(catalog: unknown): ContentValidationError[] {
   const itemIds = collectIds(readRecords(catalog.items, 'items', errors), 'items', errors);
   const npcs = readRecords(catalog.npcs, 'npcs', errors);
   const npcIds = collectIds(npcs, 'npcs', errors);
+  const races = readRecords(catalog.races, 'races', errors);
+  const raceIds = collectIds(races, 'races', errors);
+  const seas = readRecords(catalog.seas, 'seas', errors);
+  const seaIds = collectIds(seas, 'seas', errors);
+  const affiliations = readRecords(catalog.affiliations, 'affiliations', errors);
+  const affiliationIds = collectIds(affiliations, 'affiliations', errors);
   const choicesByEvent = new Map<string, Set<string>>();
   const outcomesByEvent = new Map<string, Set<string>>();
   const scheduledOnlyEventIds = new Set<string>();
@@ -96,8 +108,11 @@ export function validateContent(catalog: unknown): ContentValidationError[] {
   }
 
   validateTraitOpposites(traits, traitIds, errors);
-  validateNpcDefinitions(npcs, errors);
-  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, npcIds, scheduledOnlyEventIds };
+  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, npcIds, raceIds, seaIds, affiliationIds, scheduledOnlyEventIds };
+  validateNamedDefinitions(races, 'races', errors);
+  validateNamedDefinitions(seas, 'seas', errors);
+  validateNamedDefinitions(affiliations, 'affiliations', errors);
+  validateNpcDefinitions(npcs, references, errors);
   for (const [eventIndex, event] of events.entries()) {
     validateEvent(event, `events[${eventIndex}]`, references, errors);
   }
@@ -119,6 +134,9 @@ interface References {
   traitIds: Set<string>;
   itemIds: Set<string>;
   npcIds: Set<string>;
+  raceIds: Set<string>;
+  seaIds: Set<string>;
+  affiliationIds: Set<string>;
   scheduledOnlyEventIds: Set<string>;
 }
 
@@ -142,6 +160,7 @@ function validateEvent(
     if (choice.availableIf !== undefined) {
       validateCondition(choice.availableIf, `${choicePath}.availableIf`, references, errors);
     }
+    if (choice.input !== undefined) validateChoiceInput(choice.input, `${choicePath}.input`, errors);
     validateResolution(choice.resolution, `${choicePath}.resolution`, references, errors);
     if (isRecord(choice.resolution) && choice.resolution.type === 'dice') {
       const statId = stringValue(choice.resolution.statId);
@@ -218,6 +237,9 @@ function validateCondition(
       validateReference(value.outcomeId, references.outcomesByEvent.get(eventId) ?? new Set(), 'OutcomeId', path, errors);
     }
   }
+  if (type === 'raceIs') validateReference(value.raceId, references.raceIds, 'RaceId', path, errors);
+  if (type === 'originSeaIs') validateReference(value.seaId, references.seaIds, 'SeaId', path, errors);
+  if (type === 'affiliationIs') validateReference(value.affiliationId, references.affiliationIds, 'AffiliationId', path, errors);
 }
 
 function validateResolution(
@@ -347,6 +369,9 @@ function validateEffect(
   if (type === 'setCareerPhase' && !['origins', 'childhood', 'active'].includes(String(effect.phase))) {
     errors.push({ path, message: `Invalid CareerPhase "${String(effect.phase)}".` });
   }
+  if (type === 'setRace') validateReference(effect.raceId, references.raceIds, 'RaceId', path, errors);
+  if (type === 'setOriginSea') validateReference(effect.seaId, references.seaIds, 'SeaId', path, errors);
+  if (type === 'setAffiliation') validateReference(effect.affiliationId, references.affiliationIds, 'AffiliationId', path, errors);
   if (type === 'endCareer' && !['death', 'legacy'].includes(String(effect.reason))) {
     errors.push({ path, message: `Invalid CareerEndReason "${String(effect.reason)}".` });
   }
@@ -432,10 +457,13 @@ function validateTraitOpposites(
   });
 }
 
-function validateNpcDefinitions(npcs: UnknownRecord[], errors: ContentValidationError[]): void {
+function validateNpcDefinitions(npcs: UnknownRecord[], references: References, errors: ContentValidationError[]): void {
   npcs.forEach((npc, index) => {
     const path = `npcs[${index}]`;
     if (!stringValue(npc.name)) errors.push({ path: `${path}.name`, message: 'NPC name must be a non-empty string.' });
+    validateNullableReference(npc.raceId, references.raceIds, 'RaceId', `${path}.raceId`, errors);
+    validateNullableReference(npc.originSeaId, references.seaIds, 'SeaId', `${path}.originSeaId`, errors);
+    validateNullableReference(npc.affiliationId, references.affiliationIds, 'AffiliationId', `${path}.affiliationId`, errors);
     if (!isRecord(npc.initialStats)) {
       errors.push({ path: `${path}.initialStats`, message: 'NPC initialStats must be an object.' });
       return;
@@ -446,6 +474,26 @@ function validateNpcDefinitions(npcs: UnknownRecord[], errors: ContentValidation
       }
     }
   });
+}
+
+function validateNamedDefinitions(definitions: UnknownRecord[], path: string, errors: ContentValidationError[]): void {
+  definitions.forEach((definition, index) => {
+    if (!stringValue(definition.name)) errors.push({ path: `${path}[${index}].name`, message: 'Definition name must be a non-empty string.' });
+  });
+}
+
+function validateNullableReference(value: unknown, ids: Set<string>, label: string, path: string, errors: ContentValidationError[]): void {
+  if (value !== null) validateReference(value, ids, label, path, errors);
+}
+
+function validateChoiceInput(value: unknown, path: string, errors: ContentValidationError[]): void {
+  if (!isRecord(value) || value.type !== 'text' || value.target !== 'playerName') {
+    errors.push({ path, message: 'Choice input must be text targeting playerName.' });
+    return;
+  }
+  if (!Number.isInteger(value.minLength) || !Number.isInteger(value.maxLength) || (value.minLength as number) < 1 || (value.maxLength as number) > 32 || (value.minLength as number) > (value.maxLength as number)) {
+    errors.push({ path, message: 'Text input length must be an integer range within 1 to 32.' });
+  }
 }
 
 function readRecords(value: unknown, path: string, errors: ContentValidationError[]): UnknownRecord[] {

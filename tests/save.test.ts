@@ -48,6 +48,7 @@ function detailedState(): GameState {
     awakening: null,
   };
   state.player.traits = ['audacious'];
+  state.player.profile = { name: 'Nami', raceId: 'human', originSeaId: 'starter_sea', affiliationId: 'independent_family' };
   state.ship.condition = 1;
   state.flags = ['left_starter_port'];
   state.items = ['sealed_chart'];
@@ -59,7 +60,7 @@ function detailedState(): GameState {
     },
   };
   state.history = [
-    { eventId: 'departure', choiceId: 'set_sail', outcomeId: 'left_port', month: 1 },
+    { eventId: 'departure', choiceId: 'set_sail', outcomeId: 'left_port', month: 1, ageMonths: 181 },
   ];
   state.scheduledEvents = [
     {
@@ -144,7 +145,7 @@ describe('restored deterministic RNG', () => {
 describe('invalid saves', () => {
   it.each([
     ['not json', '{broken'],
-    ['legacy version 4', JSON.stringify({ ...detailedState(), version: 4 })],
+    ['legacy version 5', JSON.stringify({ ...detailedState(), version: 5 })],
     ['unknown version', JSON.stringify({ ...detailedState(), version: 99 })],
   ])('rejects %s', (_label, raw) => {
     expect(deserializeGameState(raw)).toBeNull();
@@ -155,6 +156,15 @@ describe('invalid saves', () => {
     const raw = JSON.stringify({ ...malformed, ship: { condition: 99 } });
 
     expect(deserializeGameState(raw)).toBeNull();
+  });
+
+  it('validates PlayerProfile and HistoryEntry ageMonths', () => {
+    const blankName = structuredClone(detailedState());
+    blankName.player.profile.name = '   ';
+    const missingAge = structuredClone(detailedState()) as any;
+    delete missingAge.history[0].ageMonths;
+    expect(deserializeGameState(JSON.stringify(blankName))).toBeNull();
+    expect(deserializeGameState(JSON.stringify(missingAge))).toBeNull();
   });
 
   it.each([-1, 51, Number.POSITIVE_INFINITY])('rejects out-of-range stat value %s', (navigation) => {

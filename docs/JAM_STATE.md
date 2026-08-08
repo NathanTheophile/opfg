@@ -50,14 +50,17 @@ The temporary demonstration content has been removed. The real Slice 0 exercises
 - NPC `relationship` remains a separate `-100..100` relation with the player. Loyalty describes general reliability/commitment and does not mirror relationship; calm describes control under pressure.
 - The Event contract exposes `npcStatAtLeast` and `modifyNpcStat`; no NPC DiceCheck or autonomous behavior exists.
 - Mira uses neutral development fixtures at 25 in both her content definition and initial state. This small duplication is intentional to keep Content and initial runtime state decoupled.
-- Save schema version is 5; development saves from version 4 are intentionally rejected without migration.
+- Save schema version is 6; development saves from version 5 are intentionally rejected without migration.
+- Player identity is a separate nullable `PlayerProfile` (`name`, `raceId`, `originSeaId`, `affiliationId`) filled by Origins Events. Race, sea, and affiliation definitions are data-driven registries; the current catalogs are deliberately minimal fixtures.
+- The playable fixture pipeline now starts in Origins, progresses through four Childhood age bands using the Event engine and absolute-age scheduler, transitions at 180 months, then enters the unchanged adult Slice 0 with `month = 0`.
+- History records both active-career `month` and absolute `ageMonths` after each Outcome.
 
 ---
 
 ## Current priority
 
-1. Playtest and tune the locked Slice 0 content without changing its mechanics.
-2. Begin final narrative writing and presentation work after validation.
+1. Replace temporary Origins/Childhood registries and fixtures only when final Game Design is provided.
+2. Playtest and tune the locked adult Slice 0 without changing its mechanics.
 
 ---
 

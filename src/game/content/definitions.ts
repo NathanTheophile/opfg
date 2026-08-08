@@ -1,6 +1,10 @@
 import type { ContentCatalog } from './schema';
 
 export const contentCatalog = {
+  // Temporary T12 registries, pending final game-design catalogs.
+  races: [{ id: 'human', name: 'Humain' }],
+  seas: [{ id: 'starter_sea', name: 'Mer de départ' }],
+  affiliations: [{ id: 'independent_family', name: 'Famille indépendante' }],
   traits: [{
     id: 'audacious',
     name: 'Audacieux',
@@ -10,6 +14,9 @@ export const contentCatalog = {
   npcs: [{
     id: 'mira',
     name: 'Mira',
+    raceId: null,
+    originSeaId: null,
+    affiliationId: null,
     initialStats: {
       health: 25,
       morale: 25,
@@ -23,11 +30,75 @@ export const contentCatalog = {
   }],
   events: [
     {
+      id: 'origin_name', title: 'Votre nom', text: 'Quel nom porterez-vous sur les mers ?', priority: 100,
+      eligibility: { type: 'careerPhaseIs', phase: 'origins' },
+      choices: [{
+        id: 'confirm_name', text: 'Valider ce nom',
+        input: { type: 'text', target: 'playerName', minLength: 1, maxLength: 32, placeholder: 'Votre nom' },
+        resolution: { type: 'deterministic', outcome: { id: 'name_chosen', text: 'Ce nom sera le vôtre.', advanceMonths: 0, effects: [] } },
+      }],
+    },
+    {
+      id: 'origin_race', title: 'Votre peuple', text: 'De quel peuple êtes-vous issu ?', priority: 100,
+      eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'origins' }, { type: 'hasPlayed', eventId: 'origin_name' }] },
+      choices: [{ id: 'human', text: 'Humain', resolution: { type: 'deterministic', outcome: { id: 'human_origin', text: 'Vous êtes humain.', advanceMonths: 0, effects: [{ type: 'setRace', raceId: 'human' }] } } }],
+    },
+    {
+      id: 'origin_sea', title: 'Votre mer d’origine', text: 'Sur quelle mer êtes-vous né ?', priority: 100,
+      eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'origins' }, { type: 'hasPlayed', eventId: 'origin_race' }] },
+      choices: [{ id: 'starter_sea', text: 'La mer de départ', resolution: { type: 'deterministic', outcome: { id: 'starter_sea_origin', text: 'Cette mer a façonné vos premiers horizons.', advanceMonths: 0, effects: [{ type: 'setOriginSea', seaId: 'starter_sea' }] } } }],
+    },
+    {
+      id: 'origin_affiliation', title: 'Votre milieu familial', text: 'Quelle affiliation vos parents vous ont-ils transmise ?', priority: 100,
+      eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'origins' }, { type: 'hasPlayed', eventId: 'origin_sea' }] },
+      choices: [{ id: 'independent_family', text: 'Une famille indépendante', resolution: { type: 'deterministic', outcome: { id: 'independent_origin', text: 'Votre famille ne servait aucune puissance.', advanceMonths: 0, effects: [{ type: 'setAffiliation', affiliationId: 'independent_family' }] } } }],
+    },
+    {
+      id: 'origin_tendency', title: 'Première tendance', text: 'Enfant, vous observiez longuement avant d’agir.', priority: 100,
+      eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'origins' }, { type: 'hasPlayed', eventId: 'origin_affiliation' }] },
+      choices: [{ id: 'observe', text: 'Cultiver votre sens de l’observation.', resolution: { type: 'deterministic', outcome: { id: 'observant_start', text: 'Votre regard devient plus attentif.', advanceMonths: 0, effects: [{ type: 'modifyStat', statId: 'observation', amount: 2 }] } } }],
+    },
+    {
+      id: 'origin_to_childhood', title: 'Les premières années', text: 'Votre enfance commence.', priority: 100,
+      eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'origins' }, { type: 'hasPlayed', eventId: 'origin_tendency' }] },
+      choices: [{ id: 'begin_childhood', text: 'Grandir.', resolution: { type: 'deterministic', outcome: { id: 'childhood_begins', text: 'Les années passent.', advanceMonths: 0, effects: [{ type: 'setCareerPhase', phase: 'childhood' }] } } }],
+    },
+    {
+      id: 'childhood_early', title: 'Premiers pas', text: 'Vos premières années forgent votre vitalité.', priority: 100,
+      eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'childhood' }, { type: 'ageAtMostMonths', value: 59 }] },
+      choices: [{ id: 'explore', text: 'Explorer votre environnement.', resolution: { type: 'deterministic', outcome: { id: 'early_growth', text: 'Vous grandissez.', advanceMonths: 60, effects: [{ type: 'modifyStat', statId: 'health', amount: 1 }, { type: 'scheduleEvent', eventId: 'childhood_memory', delayMonths: 48 }] } } }],
+    },
+    {
+      id: 'childhood_middle', title: 'L’appel du large', text: 'Votre mer d’origine nourrit votre curiosité.', priority: 100,
+      eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'childhood' }, { type: 'ageAtLeastMonths', value: 60 }, { type: 'ageAtMostMonths', value: 107 }, { type: 'originSeaIs', seaId: 'starter_sea' }] },
+      choices: [{ id: 'watch_horizon', text: 'Observer l’horizon.', resolution: { type: 'deterministic', outcome: { id: 'middle_growth', text: 'Vous apprenez à lire le large.', advanceMonths: 48, effects: [{ type: 'modifyStat', statId: 'navigation', amount: 2 }] } } }],
+    },
+    {
+      id: 'childhood_memory', title: 'Un souvenir ancien', text: 'Une leçon de vos premières années vous revient.', scheduledOnly: true, priority: 110,
+      eligibility: { type: 'careerPhaseIs', phase: 'childhood' },
+      choices: [{ id: 'remember', text: 'Garder cette leçon.', resolution: { type: 'deterministic', outcome: { id: 'memory_kept', text: 'Ce souvenir vous accompagne.', advanceMonths: 0, effects: [] } } }],
+    },
+    {
+      id: 'childhood_late', title: 'Années d’apprentissage', text: 'Vous apprenez à décider par vous-même.', priority: 100,
+      eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'childhood' }, { type: 'ageAtLeastMonths', value: 108 }, { type: 'ageAtMostMonths', value: 143 }] },
+      choices: [{ id: 'learn', text: 'Étudier avec application.', resolution: { type: 'deterministic', outcome: { id: 'late_growth', text: 'Votre jugement progresse.', advanceMonths: 36, effects: [{ type: 'modifyStat', statId: 'intelligence', amount: 2 }] } } }],
+    },
+    {
+      id: 'childhood_final', title: 'À l’aube du départ', text: 'Les dernières années avant votre carrière vous endurcissent.', priority: 100,
+      eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'childhood' }, { type: 'ageAtLeastMonths', value: 144 }, { type: 'ageAtMostMonths', value: 179 }] },
+      choices: [{ id: 'prepare', text: 'Vous préparer au monde.', resolution: { type: 'deterministic', outcome: { id: 'final_growth', text: 'Vous atteignez quinze ans.', advanceMonths: 36, effects: [{ type: 'addTrait', traitId: 'audacious' }] } } }],
+    },
+    {
+      id: 'childhood_to_active', title: 'Le début de la carrière', text: 'Votre vie active peut commencer.', priority: 100,
+      eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'childhood' }, { type: 'ageAtLeastMonths', value: 180 }] },
+      choices: [{ id: 'begin_active', text: 'Prendre votre destin en main.', resolution: { type: 'deterministic', outcome: { id: 'active_begins', text: 'Votre carrière commence.', advanceMonths: 0, effects: [{ type: 'setCareerPhase', phase: 'active' }] } } }],
+    },
+    {
       id: 'departure',
       title: 'Le départ',
       text: 'Le navire est prêt à quitter le port d’origine.',
       scheduledOnly: false,
-      eligibility: { type: 'locationIs', locationId: 'starter_port' },
+      eligibility: { type: 'all', conditions: [{ type: 'careerPhaseIs', phase: 'active' }, { type: 'locationIs', locationId: 'starter_port' }] },
       priority: 100,
       choices: [
         {
@@ -56,6 +127,7 @@ export const contentCatalog = {
       eligibility: {
         type: 'all',
         conditions: [
+          { type: 'careerPhaseIs', phase: 'active' },
           { type: 'hasFlag', flagId: 'career_departed' },
           { type: 'locationIs', locationId: 'open_sea' },
           { type: 'npcStatusIs', npcId: 'mira', status: 'unavailable' },
@@ -128,6 +200,7 @@ export const contentCatalog = {
       eligibility: {
         type: 'all',
         conditions: [
+          { type: 'careerPhaseIs', phase: 'active' },
           { type: 'hasFlag', flagId: 'castaway_resolved' },
           { type: 'locationIs', locationId: 'open_sea' },
         ],
@@ -202,6 +275,7 @@ export const contentCatalog = {
       eligibility: {
         type: 'all',
         conditions: [
+          { type: 'careerPhaseIs', phase: 'active' },
           { type: 'hasFlag', flagId: 'black_squall_resolved' },
           { type: 'locationIs', locationId: 'open_sea' },
         ],
@@ -244,6 +318,7 @@ export const contentCatalog = {
       eligibility: {
         type: 'all',
         conditions: [
+          { type: 'careerPhaseIs', phase: 'active' },
           { type: 'hasFlag', flagId: 'wreck_resolved' },
           { type: 'locationIs', locationId: 'open_sea' },
         ],
@@ -389,6 +464,7 @@ export const contentCatalog = {
       eligibility: {
         type: 'all',
         conditions: [
+          { type: 'careerPhaseIs', phase: 'active' },
           { type: 'hasFlag', flagId: 'black_squall_resolved' },
           { type: 'npcStatusIs', npcId: 'mira', status: 'crew' },
           { type: 'monthAtLeast', value: 5 },
@@ -451,6 +527,7 @@ export const contentCatalog = {
       eligibility: {
         type: 'all',
         conditions: [
+          { type: 'careerPhaseIs', phase: 'active' },
           { type: 'hasFlag', flagId: 'reefs_crossed' },
           { type: 'locationIs', locationId: 'outer_route' },
           { type: 'npcStatusIs', npcId: 'mira', status: 'crew' },
@@ -570,6 +647,7 @@ export const contentCatalog = {
       eligibility: {
         type: 'all',
         conditions: [
+          { type: 'careerPhaseIs', phase: 'active' },
           { type: 'hasChosen', eventId: 'mira_castaway', choiceId: 'rescue_dropoff' },
           { type: 'npcStatusIs', npcId: 'mira', status: 'departed' },
         ],
@@ -601,6 +679,7 @@ export const contentCatalog = {
       eligibility: {
         type: 'all',
         conditions: [
+          { type: 'careerPhaseIs', phase: 'active' },
           { type: 'hasFlag', flagId: 'reefs_crossed' },
           { type: 'locationIs', locationId: 'outer_route' },
           { type: 'monthAtLeast', value: 11 },

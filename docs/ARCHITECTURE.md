@@ -177,7 +177,11 @@ Initial persistence:
 - normalize/restore function when loading.
 
 A save must preserve seeded RNG state and scheduled consequences.
-Save schema version 5 persists NPC stats alongside status and relationship. Development saves from version 4 are rejected without migration.
+Save schema version 6 persists `PlayerProfile` and `HistoryEntry.ageMonths` alongside NPC stats. Development saves from version 5 are rejected without migration.
+
+Player identity is distinct from numeric stats and Traits. `PlayerProfile` stores nullable name, race, origin sea, and inherited affiliation while Origins Events fill them through a narrowly typed text input and explicit Effects. Race, sea, and affiliation labels live in dedicated `ContentCatalog` registries. NPC identity remains static in `NpcDefinition`; mutable NPC runtime state stays in `NpcState`.
+
+The fixture career now uses the same Event engine across `origins -> childhood -> active`. Childhood age bands are expressed only through absolute-month Conditions, keep active-career `month` at zero, and may use the absolute-age scheduler. Adult events explicitly require the active phase.
 
 ---
 

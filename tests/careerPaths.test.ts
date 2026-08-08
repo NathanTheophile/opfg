@@ -9,7 +9,15 @@ import type { GameState } from '../src/game/model/schema';
 import { createDefaultNpcStats } from '../src/game/model/npcState';
 
 function newCareer(seed = 123): GameState {
-  return selectNextEvent(createInitialGameState(seed), contentCatalog.events);
+  let state = selectNextEvent(createInitialGameState(seed), contentCatalog.events);
+  const steps: [string, string, string?][] = [
+    ['origin_name', 'confirm_name', 'Test'], ['origin_race', 'human'], ['origin_sea', 'starter_sea'],
+    ['origin_affiliation', 'independent_family'], ['origin_tendency', 'observe'], ['origin_to_childhood', 'begin_childhood'],
+    ['childhood_early', 'explore'], ['childhood_memory', 'remember'], ['childhood_middle', 'watch_horizon'],
+    ['childhood_late', 'learn'], ['childhood_final', 'prepare'], ['childhood_to_active', 'begin_active'],
+  ];
+  for (const [eventId, choiceId, input] of steps) state = resolveChoice(state, contentCatalog.events, eventId, choiceId, input).state;
+  return state;
 }
 
 function play(state: GameState, eventId: string, choiceId: string): GameState {
@@ -25,8 +33,8 @@ function choice(eventId: string, choiceId: string) {
 }
 
 describe('real Slice 0 career paths', () => {
-  it('contains exactly the nine locked catalog events and priorities', () => {
-    expect(contentCatalog.events.map(({ id, priority, scheduledOnly }) => ({ id, priority, scheduledOnly }))).toEqual([
+  it('preserves the nine locked adult catalog events and priorities', () => {
+    expect(contentCatalog.events.slice(-9).map(({ id, priority, scheduledOnly }) => ({ id, priority, scheduledOnly }))).toEqual([
       { id: 'departure', priority: 100, scheduledOnly: false },
       { id: 'mira_castaway', priority: 90, scheduledOnly: false },
       { id: 'black_squall', priority: 80, scheduledOnly: false },
@@ -56,7 +64,7 @@ describe('real Slice 0 career paths', () => {
     expect(state.month).toBe(15);
     expect(state.npcs.mira).toEqual({ status: 'crew', relationship: 55, stats: createDefaultNpcStats() });
     expect(state.flags).toContain('ending_with_mira');
-    expect(state.history.map(({ eventId }) => eventId)).toEqual([
+    expect(state.history.slice(-8).map(({ eventId }) => eventId)).toEqual([
       'departure',
       'mira_castaway',
       'black_squall',

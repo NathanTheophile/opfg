@@ -30,7 +30,7 @@ function event(id: string, priority: number, eligibility?: EventDefinition['elig
 describe('normal event selection', () => {
   it('excludes played and ineligible events, then keeps maximum priority', () => {
     const state = createInitialGameState();
-    state.history.push({ eventId: 'played', choiceId: 'continue', outcomeId: 'done', month: 0 });
+    state.history.push({ eventId: 'played', choiceId: 'continue', outcomeId: 'done', month: 0, ageMonths: 0 });
     const selected = selectNextEvent(state, [
       event('played', 100),
       event('ineligible', 90, { type: 'hasFlag', flagId: 'missing' }),
@@ -58,32 +58,20 @@ describe('normal event selection', () => {
 });
 
 describe('catalog resolution', () => {
-  it('starts the real Slice 0 with departure followed by Mira Castaway', () => {
+  it('starts the real career with the name Origin event', () => {
     let state = selectNextEvent(createInitialGameState(), contentCatalog.events);
-    expect(state.currentEventId).toBe('departure');
+    expect(state.currentEventId).toBe('origin_name');
 
-    state = resolveChoice(state, contentCatalog.events, 'departure', 'set_sail').state;
+    state = resolveChoice(state, contentCatalog.events, 'origin_name', 'confirm_name', '  Luffy  ').state;
     expect(state).toMatchObject({
-      ageMonths: 181,
-      month: 1,
-      travelState: 'at_sea',
-      locationId: 'open_sea',
-      currentEventId: 'mira_castaway',
+      ageMonths: 0,
+      month: 0,
+      currentEventId: 'origin_race',
     });
-    expect(state.flags).toContain('career_departed');
+    expect(state.player.profile.name).toBe('Luffy');
     expect(state.history[0]).toEqual({
-      eventId: 'departure',
-      choiceId: 'set_sail',
-      outcomeId: 'departure_set_sail',
-      month: 1,
+      eventId: 'origin_name', choiceId: 'confirm_name', outcomeId: 'name_chosen', month: 0, ageMonths: 0,
     });
-
-    const result = resolveChoice(state, contentCatalog.events, 'mira_castaway', 'rescue_recruit');
-    expect(result.state.currentEventId).toBe('black_squall');
-    expect(result.state.npcs.mira).toEqual({
-      status: 'crew', relationship: 25, stats: createDefaultNpcStats(),
-    });
-    expect(result.dice).toBeUndefined();
   });
 
   it('rejects a locked choice even when called directly', () => {
@@ -162,11 +150,14 @@ describe('catalog resolution', () => {
       }],
     };
     const state = createInitialGameState();
+    state.careerPhase = 'active';
+    state.ageMonths = 180;
     state.currentEventId = activeEvent.id;
 
     const result = resolveChoice(state, [activeEvent], activeEvent.id, 'advance').state;
 
     expect(result).toMatchObject({ careerPhase: 'active', ageMonths: 183, month: 3 });
     expect(result.history[0].month).toBe(3);
+    expect(result.history[0].ageMonths).toBe(183);
   });
 });

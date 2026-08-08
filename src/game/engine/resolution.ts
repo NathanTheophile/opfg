@@ -11,6 +11,7 @@ export function resolveChoice(
   events: readonly EventDefinition[],
   eventId: EventId,
   choiceId: ChoiceId,
+  input?: string,
 ): ChoiceResolutionResult {
   if (state.currentEventId !== eventId) throw new Error(`Event "${eventId}" is not the current event.`);
 
@@ -24,15 +25,16 @@ export function resolveChoice(
   if (!choiceState.visible || !choiceState.available) {
     throw new Error(`Choice "${choiceId}" is not available.`);
   }
+  const stateWithInput = choice.input === undefined ? state : applyChoiceInput(state, choice.input, input);
   const resolution: { state: GameState; outcome: Outcome; dice?: DiceRollResult } =
     choice.resolution.type === 'deterministic'
-      ? { outcome: choice.resolution.outcome, state }
+      ? { outcome: choice.resolution.outcome, state: stateWithInput }
       : (() => {
-          const diceResult = resolveDiceCheck(choice.resolution, state);
+          const diceResult = resolveDiceCheck(choice.resolution, stateWithInput);
           return {
             outcome: diceResult.outcome,
             dice: diceResult.dice,
-            state: { ...state, rngState: diceResult.nextRngState },
+            state: { ...stateWithInput, rngState: diceResult.nextRngState },
           };
         })();
 
@@ -64,7 +66,7 @@ function finalizeOutcome(
     month: resolvedMonth,
     history: [
       ...afterEffects.history,
-      { eventId, choiceId, outcomeId: outcome.id, month: resolvedMonth },
+      { eventId, choiceId, outcomeId: outcome.id, month: resolvedMonth, ageMonths: afterEffects.ageMonths + outcome.advanceMonths },
     ],
     scheduledEvents: consumeScheduledEntry(afterEffects, events, eventId, state.ageMonths),
   };
@@ -73,6 +75,17 @@ function finalizeOutcome(
     state: selectNextEvent(resolvedState, events),
     outcome,
     dice,
+  };
+}
+
+function applyChoiceInput(state: GameState, inputDefinition: { target: 'playerName'; minLength: number; maxLength: number }, input: string | undefined): GameState {
+  const normalized = input?.trim() ?? '';
+  if (normalized.length < inputDefinition.minLength || normalized.length > inputDefinition.maxLength) {
+    throw new Error(`Input for "${inputDefinition.target}" must contain ${inputDefinition.minLength} to ${inputDefinition.maxLength} characters.`);
+  }
+  return {
+    ...state,
+    player: { ...state.player, profile: { ...state.player.profile, name: normalized } },
   };
 }
 

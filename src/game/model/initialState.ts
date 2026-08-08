@@ -5,14 +5,15 @@ const DEFAULT_SEED = 0x1a2b3c4d;
 
 export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
   return {
-    version: 5,
+    version: 6,
     rngState: seed >>> 0,
-    careerPhase: 'active',
-    ageMonths: 15 * 12,
+    careerPhase: 'origins',
+    ageMonths: 0,
     month: 0,
     travelState: 'on_land',
     locationId: 'starter_port',
     player: {
+      profile: { name: null, raceId: null, originSeaId: null, affiliationId: null },
       // Temporary, deliberately simple Slice 0 starting data.
       stats: {
         health: 25,

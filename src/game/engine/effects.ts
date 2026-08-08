@@ -12,6 +12,7 @@ export function applyEffects(state: GameState, effects: Effect[], context: Effec
     ...state,
     player: {
       ...state.player,
+      profile: { ...state.player.profile },
       stats: { ...state.player.stats },
       traits: [...state.player.traits],
     },
@@ -94,6 +95,15 @@ function applyEffect(state: GameState, effect: Effect, context: EffectContext): 
       return;
     case 'setCareerPhase':
       state.careerPhase = effect.phase;
+      return;
+    case 'setRace':
+      state.player.profile.raceId = effect.raceId;
+      return;
+    case 'setOriginSea':
+      state.player.profile.originSeaId = effect.seaId;
+      return;
+    case 'setAffiliation':
+      state.player.profile.affiliationId = effect.affiliationId;
       return;
     case 'endCareer':
       state.careerStatus = 'ended';

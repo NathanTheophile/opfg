@@ -6,6 +6,16 @@ export type TraitId = string;
 export type FlagId = string;
 export type ItemId = string;
 export type NpcId = string;
+export type RaceId = string;
+export type SeaId = string;
+export type AffiliationId = string;
+
+export interface PlayerProfile {
+  name: string | null;
+  raceId: RaceId | null;
+  originSeaId: SeaId | null;
+  affiliationId: AffiliationId | null;
+}
 
 export interface PlayerStats {
   health: number;
@@ -20,6 +30,7 @@ export interface PlayerStats {
 }
 
 export interface PlayerState {
+  profile: PlayerProfile;
   stats: PlayerStats;
   traits: TraitId[];
 }
@@ -54,6 +65,7 @@ export interface HistoryEntry {
   choiceId: ChoiceId;
   outcomeId: OutcomeId;
   month: number;
+  ageMonths: number;
 }
 
 export interface ScheduledEvent {

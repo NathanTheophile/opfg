@@ -1,7 +1,7 @@
 import type { CareerEndReason, CareerPhase, GameState, NpcState, NpcStats, TravelState } from '../model/schema';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 5;
+const CURRENT_SAVE_VERSION = 6;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable']);
 
 export interface StorageLike {
@@ -57,6 +57,8 @@ function readGameState(value: unknown): GameState | null {
   if (!isUint32(value.rngState) || !isNonNegativeInteger(value.ageMonths) || !isNonNegativeInteger(value.month)) return null;
   if (!isCareerPhase(value.careerPhase) || !isTravelState(value.travelState) || !isString(value.locationId)) return null;
   if (!isRecord(value.player) || !isRecord(value.player.stats) || !isStringArray(value.player.traits)) return null;
+  const profile = readPlayerProfile(value.player.profile);
+  if (profile === null) return null;
   if (!isStatValue(value.player.stats.health)) return null;
   if (!isStatValue(value.player.stats.morale)) return null;
   if (!isStatValue(value.player.stats.strength)) return null;
@@ -88,6 +90,7 @@ function readGameState(value: unknown): GameState | null {
     travelState: value.travelState,
     locationId: value.locationId,
     player: {
+      profile,
       stats: {
         health: value.player.stats.health,
         morale: value.player.stats.morale,
@@ -152,14 +155,28 @@ function readHistory(value: unknown): GameState['history'] | null {
       isString(entry.eventId) &&
       isString(entry.choiceId) &&
       isString(entry.outcomeId) &&
-      isNonNegativeInteger(entry.month),
+      isNonNegativeInteger(entry.month) &&
+      isNonNegativeInteger(entry.ageMonths),
   )) return null;
   return value.map((entry) => ({
     eventId: entry.eventId as string,
     choiceId: entry.choiceId as string,
     outcomeId: entry.outcomeId as string,
     month: entry.month as number,
+    ageMonths: entry.ageMonths as number,
   }));
+}
+
+function readPlayerProfile(value: unknown): GameState['player']['profile'] | null {
+  if (!isRecord(value)) return null;
+  if (!(value.name === null || (typeof value.name === 'string' && value.name.trim().length > 0))) return null;
+  if (!isNullableString(value.raceId) || !isNullableString(value.originSeaId) || !isNullableString(value.affiliationId)) return null;
+  return {
+    name: value.name === null ? null : value.name.trim(),
+    raceId: value.raceId,
+    originSeaId: value.originSeaId,
+    affiliationId: value.affiliationId,
+  };
 }
 
 function readScheduledEvents(value: unknown): GameState['scheduledEvents'] | null {
@@ -186,6 +203,10 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function isString(value: unknown): value is string {
   return typeof value === 'string' && value.length > 0;
+}
+
+function isNullableString(value: unknown): value is string | null {
+  return value === null || isString(value);
 }
 
 function isNpcStatus(value: unknown): value is NpcState['status'] {

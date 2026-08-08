@@ -36,6 +36,12 @@ player.stats
   charisma
   morale
 
+player.profile
+  name: string | null
+  raceId: RaceId | null
+  originSeaId: SeaId | null
+  affiliationId: AffiliationId | null
+
 player.traits
   TraitId[]
 
@@ -84,6 +90,7 @@ history[]
   choiceId
   outcomeId
   month
+  ageMonths
 
 scheduledEvents[]
   eventId

@@ -63,6 +63,8 @@ export function App() {
   const [savedGame, setSavedGame] = useState<GameState | null>(() => loadGameState(window.localStorage));
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [lastResolution, setLastResolution] = useState<ChoiceResolutionResult | null>(null);
+  const [choiceInput, setChoiceInput] = useState('');
+  const [inputError, setInputError] = useState<string | null>(null);
 
   const startCareer = (restart: boolean) => {
     if (restart) clearGameState(window.localStorage);
@@ -71,6 +73,8 @@ export function App() {
     setSavedGame(state);
     setGameState(state);
     setLastResolution(null);
+    setChoiceInput('');
+    setInputError(null);
   };
 
   const continueCareer = () => {
@@ -96,12 +100,20 @@ export function App() {
   }
 
   const currentEvent = findCurrentEvent(gameState, contentCatalog.events);
-  const choose = (eventId: string, choiceId: string) => {
-    const result = resolveChoice(gameState, contentCatalog.events, eventId, choiceId);
+  const choose = (eventId: string, choiceId: string, input?: string) => {
+    let result: ChoiceResolutionResult;
+    try {
+      result = resolveChoice(gameState, contentCatalog.events, eventId, choiceId, input);
+    } catch (error) {
+      setInputError(error instanceof Error ? error.message : 'Invalid input.');
+      return;
+    }
     saveGameState(window.localStorage, result.state);
     setSavedGame(result.state);
     setGameState(result.state);
     setLastResolution(result);
+    setChoiceInput('');
+    setInputError(null);
   };
 
   return (
@@ -119,6 +131,12 @@ export function App() {
 
       <section>
         <h2>Player Profile</h2>
+        <h3>Identity</h3>
+        <p>Nom: {gameState.player.profile.name ?? '—'}</p>
+        <p>Race: {contentCatalog.races.find(({ id }) => id === gameState.player.profile.raceId)?.name ?? '—'}</p>
+        <p>Mer d’origine: {contentCatalog.seas.find(({ id }) => id === gameState.player.profile.originSeaId)?.name ?? '—'}</p>
+        <p>Affiliation: {contentCatalog.affiliations.find(({ id }) => id === gameState.player.profile.affiliationId)?.name ?? '—'}</p>
+        <h3>Stats</h3>
         <p>Health: {gameState.player.stats.health}</p>
         <p>Morale: {gameState.player.stats.morale}</p>
         <p>Strength: {gameState.player.stats.strength}</p>
@@ -167,6 +185,7 @@ export function App() {
             <h3>{currentEvent.title}</h3>
             <p>{currentEvent.text}</p>
             <h4>Choices</h4>
+            {inputError && <p role="alert">{inputError}</p>}
             {currentEvent.choices.map((choice) => {
               const choiceState = getChoiceState(choice, gameState);
               if (!choiceState.visible) return null;
@@ -180,14 +199,26 @@ export function App() {
                   : `[${STAT_LABELS[preview.statId]} — inactive] `;
 
               return (
-                <button
-                  key={choice.id}
-                  type="button"
-                  disabled={!choiceState.available}
-                  onClick={() => choose(currentEvent.id, choice.id)}
-                >
-                  {dicePrefix}{choice.text}
-                </button>
+                <div key={choice.id}>
+                  {choice.input?.type === 'text' && (
+                    <input
+                      type="text"
+                      aria-label={choice.input.target}
+                      value={choiceInput}
+                      minLength={choice.input.minLength}
+                      maxLength={choice.input.maxLength}
+                      placeholder={choice.input.placeholder}
+                      onChange={(event) => setChoiceInput(event.target.value)}
+                    />
+                  )}
+                  <button
+                    type="button"
+                    disabled={!choiceState.available}
+                    onClick={() => choose(currentEvent.id, choice.id, choice.input ? choiceInput : undefined)}
+                  >
+                    {dicePrefix}{choice.text}
+                  </button>
+                </div>
               );
             })}
           </>

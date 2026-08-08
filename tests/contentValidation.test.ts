@@ -26,14 +26,26 @@ describe('validateContent', () => {
     });
   });
 
+  it('validates identity registries, NPC profile references, and text input', () => {
+    const catalog = cloneCatalog();
+    catalog.npcs[0].raceId = 'missing_race';
+    eventById(catalog, 'origin_race').choices[0].resolution.outcome.effects[0].raceId = 'missing_race';
+    eventById(catalog, 'childhood_middle').eligibility.conditions[3].seaId = 'missing_sea';
+    eventById(catalog, 'origin_name').choices[0].input.target = 'unknown';
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('Unknown RaceId "missing_race"'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown SeaId "missing_sea"'));
+    expect(errors).toContainEqual(expect.stringContaining('Choice input must be text targeting playerName'));
+  });
+
   it('rejects duplicate EventIds and ChoiceIds', () => {
     const catalog = cloneCatalog();
     catalog.events.push(structuredClone(catalog.events[0]));
     catalog.events[0].choices.push(structuredClone(catalog.events[0].choices[0]));
 
     const errors = messages(catalog);
-    expect(errors).toContainEqual(expect.stringContaining('Duplicate ID "departure"'));
-    expect(errors).toContainEqual(expect.stringContaining('Duplicate ID "set_sail"'));
+    expect(errors).toContainEqual(expect.stringContaining('Duplicate ID "origin_name"'));
+    expect(errors).toContainEqual(expect.stringContaining('Duplicate ID "confirm_name"'));
   });
 
   it('rejects unknown Event, NPC, Item, and Trait references recursively', () => {

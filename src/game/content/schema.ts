@@ -14,6 +14,9 @@ import type {
   PlayerStats,
   TraitId,
   TravelState,
+  RaceId,
+  SeaId,
+  AffiliationId,
 } from '../model/schema';
 
 export type StatId = keyof PlayerStats;
@@ -40,7 +43,10 @@ export type Condition =
   | { type: 'hasChosen'; eventId: EventId; choiceId: ChoiceId }
   | { type: 'hasPlayed'; eventId: EventId }
   | { type: 'hasOutcome'; eventId: EventId; outcomeId: OutcomeId }
-  | { type: 'monthAtLeast'; value: number };
+  | { type: 'monthAtLeast'; value: number }
+  | { type: 'raceIs'; raceId: RaceId }
+  | { type: 'originSeaIs'; seaId: SeaId }
+  | { type: 'affiliationIs'; affiliationId: AffiliationId };
 
 export type Effect =
   | { type: 'setFlag'; flagId: FlagId }
@@ -57,6 +63,9 @@ export type Effect =
   | { type: 'modifyNpcStat'; npcId: NpcId; statId: NpcStatId; amount: number }
   | { type: 'scheduleEvent'; eventId: EventId; delayMonths: number }
   | { type: 'setCareerPhase'; phase: CareerPhase }
+  | { type: 'setRace'; raceId: RaceId }
+  | { type: 'setOriginSea'; seaId: SeaId }
+  | { type: 'setAffiliation'; affiliationId: AffiliationId }
   | { type: 'endCareer'; reason: CareerEndReason };
 
 export interface Outcome {
@@ -95,11 +104,20 @@ export interface DiceResolution {
 
 export type Resolution = DeterministicResolution | DiceResolution;
 
+export interface TextChoiceInput {
+  type: 'text';
+  target: 'playerName';
+  minLength: number;
+  maxLength: number;
+  placeholder?: string;
+}
+
 export interface ChoiceDefinition {
   id: ChoiceId;
   text: string;
   visibleIf?: Condition;
   availableIf?: Condition;
+  input?: TextChoiceInput;
   resolution: Resolution;
 }
 
@@ -127,10 +145,20 @@ export interface ItemDefinition {
 export interface NpcDefinition {
   id: NpcId;
   name: string;
+  raceId: RaceId | null;
+  originSeaId: SeaId | null;
+  affiliationId: AffiliationId | null;
   initialStats: NpcStats;
 }
 
+export interface RaceDefinition { id: RaceId; name: string }
+export interface SeaDefinition { id: SeaId; name: string }
+export interface AffiliationDefinition { id: AffiliationId; name: string }
+
 export interface ContentCatalog {
+  races: RaceDefinition[];
+  seas: SeaDefinition[];
+  affiliations: AffiliationDefinition[];
   traits: TraitDefinition[];
   items: ItemDefinition[];
   npcs: NpcDefinition[];

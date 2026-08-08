@@ -67,6 +67,7 @@ describe('scheduled event selection', () => {
       event('normal', 10),
     ];
     const state = createInitialGameState();
+    state.ageMonths = 180;
     schedule(state, 'scheduled', 0);
 
     const ineligible = selectNextEvent(state, events);
@@ -124,6 +125,7 @@ describe('scheduled event consumption', () => {
       outcome: { id: 'resolved', text: 'Resolved', advanceMonths: 12, effects: [] },
     };
     const state = createInitialGameState();
+    state.ageMonths = 180;
     schedule(state, 'scheduled', 180);
     schedule(state, 'scheduled', 190);
 
