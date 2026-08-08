@@ -1,5 +1,3 @@
-import type { ContentCatalog } from '../content/schema';
-
 export interface ContentValidationError {
   path: string;
   message: string;
@@ -65,7 +63,7 @@ export function validateContent(catalog: unknown): ContentValidationError[] {
   return errors;
 }
 
-export function assertValidContent(catalog: unknown): asserts catalog is ContentCatalog {
+export function assertValidContent(catalog: unknown): void {
   const errors = validateContent(catalog);
   if (errors.length > 0) {
     throw new Error(errors.map(({ path, message }) => `${path}: ${message}`).join('\n'));
