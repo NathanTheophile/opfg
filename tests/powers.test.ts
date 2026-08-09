@@ -81,4 +81,20 @@ describe('Powers V1', () => {
     expect(restored?.npcs.mira.powers.haki.conqueror).toBe(0);
     expect('awakening' in (restored?.player.stats ?? {})).toBe(false);
   });
+
+  it('keeps NPC Fruit assignment monotone and rejects replacing a different Fruit', () => {
+    let state = createInitialGameState();
+    state = apply(state, [{ type: 'setNpcDevilFruit', npcId: 'mira', fruitId: 'flame_fruit' }]);
+    state = apply(state, [{ type: 'increaseNpcDevilFruitAwakening', npcId: 'mira', amount: 7 }]);
+    const repeated = apply(state, [{ type: 'setNpcDevilFruit', npcId: 'mira', fruitId: 'flame_fruit' }]);
+    expect(repeated.npcs.mira.powers).toMatchObject({ devilFruitId: 'flame_fruit', devilFruitAwakening: 7 });
+    expect(() => apply(repeated, [{ type: 'setNpcDevilFruit', npcId: 'mira', fruitId: 'falcon_fruit' }])).toThrow('already has a Devil Fruit');
+  });
+
+  it('requires an NPC Fruit before evaluating its Awakening threshold', () => {
+    const state = createInitialGameState();
+    expect(evaluateCondition({ type: 'npcDevilFruitAwakeningAtLeast', npcId: 'mira', value: 0 }, state, catalog)).toBe(false);
+    state.npcs.mira.powers.devilFruitId = 'flame_fruit';
+    expect(evaluateCondition({ type: 'npcDevilFruitAwakeningAtLeast', npcId: 'mira', value: 0 }, state, catalog)).toBe(true);
+  });
 });

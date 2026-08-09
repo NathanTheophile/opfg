@@ -113,7 +113,7 @@ export const createLocalesArchive = (project: AuthoringProject): Uint8Array => c
 
 export interface BundleReadResult { eventFiles: EventImportFile[]; dictionaries: Record<string, Record<string,string>>; warnings: string[]; manifest?: Record<string, unknown>; }
 export const readEventsBundle = async (bytes: ArrayBuffer | Uint8Array): Promise<BundleReadResult> => {
-  const entries = await readZip(bytes); const decoder = new TextDecoder(); const eventFiles: EventImportFile[] = []; const dictionaries: Record<string, Record<string,string>> = {}; const warnings: string[] = []; let manifest: Record<string, unknown> | undefined;
+  const entries = await readZip(bytes); const decoder = new TextDecoder('utf-8', { fatal: true }); const eventFiles: EventImportFile[] = []; const dictionaries: Record<string, Record<string,string>> = {}; const warnings: string[] = []; let manifest: Record<string, unknown> | undefined;
   for (const [path, data] of entries) {
     if (path === 'manifest.json') { try { const raw = JSON.parse(decoder.decode(data)); if (isRecord(raw)) manifest = raw; } catch { warnings.push('manifest.json is invalid JSON.'); } continue; }
     if (/^events\/.*\.json$/i.test(path)) { eventFiles.push({ name: eventFilename(path) + '.json', path, text: decoder.decode(data) }); continue; }

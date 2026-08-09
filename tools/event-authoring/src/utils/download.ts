@@ -15,9 +15,8 @@ export const downloadBlob = (filename: string, blob: Blob): void => {
   URL.revokeObjectURL(url);
 };
 
-export const downloadText = (filename: string, content: string, mime = 'application/json'): void =>
+export const downloadText = (filename: string, content: string, mime = 'application/json;charset=utf-8'): void =>
   downloadBlob(filename, new Blob([content], { type: mime }));
 
 export const downloadBytes = (filename: string, content: Uint8Array, mime = 'application/zip'): void =>
   downloadBlob(filename, new Blob([toArrayBuffer(content)], { type: mime }));
-

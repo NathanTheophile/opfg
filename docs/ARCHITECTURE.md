@@ -1,4 +1,4 @@
-﻿# Architecture
+# Architecture
 
 The repository keeps four responsibilities separate: locale-neutral Content, pure Engine rules, JSON-compatible GameState, and React presentation. Engine APIs receive `ContentCatalog` explicitly; there is no content singleton or React dependency.
 
@@ -6,7 +6,7 @@ Powers V1 uses a JSON-compatible `PowerState` shared by Player and NPC. GameStat
 
 ## Runtime state and time
 
-Save v13 stores one clock, `ageMonths`, plus `slotInMonth: 0 | 1`. Origins ends at age 12. Childhood consumes eight annual slots followed by twelve half-year slots and enters Active at age 180. Outside Active the slot is always zero. In Active, slot zero becomes one without changing age; consuming slot one resets it and increments age by one month. Saves v7 Ã  v10 sont migrÃ©es au chargement vers v13. La migration v9 initialise `agility` Ã  25 ; la migration v10 ajoute `familyStructureId` et `socialClassId` avec la valeur `null`.
+Save v13 stores one clock, `ageMonths`, plus `slotInMonth: 0 | 1`. Origins ends at age 12. Childhood consumes eight annual slots followed by twelve half-year slots and enters Active at age 180. Outside Active the slot is always zero. In Active, slot zero becomes one without changing age; consuming slot one resets it and increments age by one month. Saves v7 à v10 sont migrées au chargement vers v13. La migration v9 initialise `agility` à 25 ; la migration v10 ajoute `familyStructureId` et `socialClassId` avec la valeur `null`.
 
 The player owns a two-slot stack inventory and persistent Berrys. A nullable active `ship` is a named instance referencing an authored `ShipDefinition`; it owns current HP and cargo stacks. `pendingShip` exists only during deterministic Critical replacement. Ship type registries own maximum HP, NPC crew capacity, and cargo slots.
 

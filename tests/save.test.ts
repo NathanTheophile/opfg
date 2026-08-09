@@ -1,9 +1,52 @@
-﻿import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createInitialGameState } from '../src/game/model/initialState';
 import { deserializeGameState, serializeGameState } from '../src/game/engine/save';
 import { createDefaultPowerState } from '../src/game/engine/powers';
 
 describe('save v13', () => {
+  it('migrates v11 sequentially through v12 to complete v13 Powers and immediate/navigation state', () => {
+    const current = createInitialGameState(11);
+    const legacy = structuredClone(current) as unknown as Record<string, unknown>;
+    legacy.version = 11;
+    delete legacy.immediateEventQueue;
+    delete legacy.pendingSlotPhase;
+    delete legacy.immediateEventsResolvedInChain;
+    delete legacy.navigationDecisionAgeMonths;
+    const player = legacy.player as Record<string, unknown>;
+    delete player.powers;
+    (player.stats as Record<string, unknown>).awakening = null;
+    for (const npc of Object.values(legacy.npcs as Record<string, Record<string, unknown>>)) delete npc.powers;
+
+    const restored = deserializeGameState(JSON.stringify(legacy));
+
+    expect(restored).toMatchObject({
+      version: 13,
+      immediateEventQueue: [],
+      pendingSlotPhase: null,
+      immediateEventsResolvedInChain: 0,
+      navigationDecisionAgeMonths: null,
+      player: { powers: createDefaultPowerState() },
+      npcs: { mira: { powers: createDefaultPowerState() } },
+    });
+    expect(restored?.player.stats).not.toHaveProperty('awakening');
+  });
+
+  it('migrates v12 directly to v13 Powers defaults', () => {
+    const legacy = structuredClone(createInitialGameState(12)) as unknown as Record<string, unknown>;
+    legacy.version = 12;
+    const player = legacy.player as Record<string, unknown>;
+    delete player.powers;
+    (player.stats as Record<string, unknown>).awakening = null;
+    for (const npc of Object.values(legacy.npcs as Record<string, Record<string, unknown>>)) delete npc.powers;
+
+    const restored = deserializeGameState(JSON.stringify(legacy));
+
+    expect(restored?.version).toBe(13);
+    expect(restored?.player.powers).toEqual(createDefaultPowerState());
+    expect(restored?.npcs.mira.powers).toEqual(createDefaultPowerState());
+    expect(restored?.player.stats).not.toHaveProperty('awakening');
+  });
+
   it('round-trips every v11 field including Origins profile, unbounded health, leadership, passengers, and inventories', () => {
     const state = createInitialGameState(123);
     state.careerPhase = 'active';

@@ -177,7 +177,7 @@ function migrateLegacySave(value: unknown): unknown {
   if (isRecord(migrated) && migrated.version === 11) {
     migrated = {
       ...migrated,
-      version: CURRENT_SAVE_VERSION,
+      version: 12,
       immediateEventQueue: [],
       pendingSlotPhase: null,
       immediateEventsResolvedInChain: 0,

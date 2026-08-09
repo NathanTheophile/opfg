@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   ArrowRight,
   Brain,
@@ -364,7 +364,7 @@ export function OutcomePanel({
     >
       <PanelHeader className="mb-0 px-5 pb-4 pt-5 md:px-7 md:pb-5 md:pt-6">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold">
-          ConsÃ©quence
+          Conséquence
         </p>
         <PanelTitle className="text-2xl md:text-[1.75rem]">
           {outcome.title ?? 'La suite de votre histoire'}
@@ -381,7 +381,7 @@ export function OutcomePanel({
         {outcome.dice && (
           <div
             className="mt-4 flex flex-wrap gap-2"
-            aria-label="RÃ©sultat du DiceCheck"
+            aria-label="Résultat du DiceCheck"
           >
             <Badge variant="gold">
               {outcome.dice.statLabel}{' '}
@@ -409,7 +409,7 @@ export function OutcomePanel({
         {outcome.effects && outcome.effects.length > 0 && (
           <div
             className="mt-5 flex flex-wrap gap-2"
-            aria-label="Effets de la consÃ©quence"
+            aria-label="Effets de la conséquence"
           >
             {outcome.effects.map((effect) => {
               const statVisual = getStatVisual(effect);

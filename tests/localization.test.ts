@@ -7,6 +7,23 @@ import { eventTitleKey } from '../src/game/localization/keys';
 import { validateContent } from '../src/game/validation/validateContent';
 
 describe('localization runtime', () => {
+  it('keeps authoritative French labels as Unicode without mojibake', () => {
+    expect(dictionaries.fr['power.awakening']).toBe('Éveil');
+    expect(dictionaries.fr['race.giant.name']).toBe('Géant');
+    expect(dictionaries.fr['stat.agility']).toBe('Agilité');
+    expect(dictionaries.fr['stat.health']).toBe('Santé');
+    expect(dictionaries.fr['npcStatus.crew']).toBe('Équipage');
+    expect(dictionaries.fr['affiliation.revolutionary.name']).toBe('Révolutionnaire');
+    expect(dictionaries.fr['power.haki.observation']).toBe('Haki de l’Observation');
+    expect(dictionaries.fr['power.haki.armament']).toBe('Haki de l’Armement');
+    expect(dictionaries.fr['power.haki.conqueror']).toBe('Haki du Conquérant');
+    expect(dictionaries.fr['ui.navigation.goToSea']).toBe('Prendre la mer');
+    expect(dictionaries.fr['ui.navigation.dock']).toBe('Accoster');
+    for (const value of Object.values(dictionaries.fr)) {
+      expect(value).not.toMatch(/Ãƒ|Ã‚|â€™|â€œ|â€|ï¿½|�/u);
+    }
+  });
+
   it('looks up French, uses English when present, and falls back to French', () => {
     expect(t(eventTitleKey('black_squall'), 'fr')).toBe('Le grain noir');
     expect(t('ui.field.name', 'en')).toBe('Name');

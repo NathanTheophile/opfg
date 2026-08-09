@@ -263,6 +263,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       const npc = getNpcState(state, effect.npcId);
       if (!catalog.devilFruits.some(({ id }) => id === effect.fruitId)) throw new Error(`Unknown Devil Fruit "${effect.fruitId}".`);
       if (npc.powers.devilFruitId !== null && npc.powers.devilFruitId !== effect.fruitId) throw new Error(`NPC "${effect.npcId}" already has a Devil Fruit.`);
+      if (npc.powers.devilFruitId === effect.fruitId) return;
       npc.powers.devilFruitId = effect.fruitId; npc.powers.devilFruitAwakening = 0; state.npcs[effect.npcId] = npc;
       return;
     }

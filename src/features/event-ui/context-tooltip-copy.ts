@@ -1,4 +1,4 @@
-﻿export type TooltipLocale = 'fr' | 'en';
+export type TooltipLocale = 'fr' | 'en';
 
 export type ContextStatId =
   | 'health'
@@ -33,35 +33,35 @@ const STAT_DETAILS: Record<
 > = {
   fr: {
     health:
-      "DÃ©termine combien de dÃ©gÃ¢ts vous pouvez encaisser avant de vous effondrer. Les bandages ne sont pas une stratÃ©gie, mÃªme si certains Ã©quipages semblent penser le contraireâ€¦",
+      "Détermine combien de dégâts vous pouvez encaisser avant de vous effondrer. Les bandages ne sont pas une stratégie, même si certains équipages semblent penser le contraire…",
     morale:
-      "Aide Ã  encaisser la peur, les dÃ©faites et les trÃ¨s mauvaises nouvelles. Un bon banquet rÃ¨gle beaucoup de choses. Pas tout.",
+      "Aide à encaisser la peur, les défaites et les très mauvaises nouvelles. Un bon banquet règle beaucoup de choses. Pas tout.",
     strength:
-      "Sert au combat rapprochÃ© et au dÃ©veloppement du Haki de lâ€™Armement. Vous perdrez quand mÃªme face aux Kung-Fu Dugongsâ€¦",
+      "Sert au combat rapproché et au développement du Haki de l’Armement. Vous perdrez quand même face aux Kung-Fu Dugongs…",
     agility:
-      "Sert Ã  esquiver, poursuivre et vous sortir des situations qui exigent des jambes. Courir sur lâ€™eau reste rÃ©servÃ© aux gens beaucoup trop entraÃ®nÃ©s.",
+      "Sert à esquiver, poursuivre et vous sortir des situations qui exigent des jambes. Courir sur l’eau reste réservé aux gens beaucoup trop entraînés.",
     observation:
-      "Aide Ã  repÃ©rer les dangers, lire lâ€™adversaire et dÃ©velopper le Haki de lâ€™Observation. Voir venir le coup ne garantit pas que vous saurez lâ€™Ã©viter.",
+      "Aide à repérer les dangers, lire l’adversaire et développer le Haki de l’Observation. Voir venir le coup ne garantit pas que vous saurez l’éviter.",
     intelligence:
-      "Sert Ã  comprendre, planifier et rÃ©soudre les problÃ¨mes qui ne cÃ¨dent pas aprÃ¨s trois coups de poing. Oui, il y en a.",
+      "Sert à comprendre, planifier et résoudre les problèmes qui ne cèdent pas après trois coups de poing. Oui, il y en a.",
     navigation:
-      "Sert Ã  lire les mers, les courants et les routes impossibles de Grand Line. Sans Ã§a, mÃªme un Log Pose ressemble surtout Ã  une dÃ©coration.",
+      "Sert à lire les mers, les courants et les routes impossibles de Grand Line. Sans ça, même un Log Pose ressemble surtout à une décoration.",
     charisma:
-      "Aide Ã  convaincre, recruter et imposer votre prÃ©sence. Crier que vous serez Roi des Pirates fonctionne Ã©tonnamment bien, mais pas sur tout le monde.",
+      "Aide à convaincre, recruter et imposer votre présence. Crier que vous serez Roi des Pirates fonctionne étonnamment bien, mais pas sur tout le monde.",
     luck:
-      "Intervient quand le plan est mauvais mais que lâ€™univers hÃ©site encore Ã  vous punir. Ne remplace ni un navigateur ni un cerveau.",
+      "Intervient quand le plan est mauvais mais que l’univers hésite encore à vous punir. Ne remplace ni un navigateur ni un cerveau.",
     loyalty:
-      "Mesure lâ€™attachement dâ€™un membre Ã  lâ€™Ã©quipage et sa volontÃ© de rester quand tout part mal. Les chansons autour dâ€™un tonneau aident.",
+      "Mesure l’attachement d’un membre à l’équipage et sa volonté de rester quand tout part mal. Les chansons autour d’un tonneau aident.",
     calm:
-      "Mesure sa capacitÃ© Ã  garder la tÃªte froide sous pression. Utile lorsquâ€™un Amiral dÃ©cide que votre journÃ©e Ã©tait trop tranquille.",
+      "Mesure sa capacité à garder la tête froide sous pression. Utile lorsqu’un Amiral décide que votre journée était trop tranquille.",
   },
   en: {
     health:
-      "How much punishment you can take before collapsing. Bandages are not a strategy, even if some crews seem convinced otherwiseâ€¦",
+      "How much punishment you can take before collapsing. Bandages are not a strategy, even if some crews seem convinced otherwise…",
     morale:
       "Helps you endure fear, defeats and extremely bad news. A proper banquet fixes many things. Not everything.",
     strength:
-      "Used for close combat and developing Armament Haki. You will still lose to the Kung-Fu Dugongsâ€¦",
+      "Used for close combat and developing Armament Haki. You will still lose to the Kung-Fu Dugongs…",
     agility:
       "Used to dodge, chase and escape situations that require functioning legs. Running on water is still reserved for absurdly trained people.",
     observation:
@@ -84,15 +84,15 @@ const STAT_DETAILS: Record<
 const UI_DETAILS = {
   fr: {
     world:
-      "Votre position actuelle et lâ€™Ã©tat du voyage. Si le nom du lieu ne vous dit rien, blÃ¢mez le navigateur avec assurance.",
+      "Votre position actuelle et l’état du voyage. Si le nom du lieu ne vous dit rien, blâmez le navigateur avec assurance.",
     time:
-      "Votre Ã¢ge et la phase actuelle de votre carriÃ¨re. Sur Grand Line, vieillir est dÃ©jÃ  une forme de rÃ©ussite.",
+      "Votre âge et la phase actuelle de votre carrière. Sur Grand Line, vieillir est déjà une forme de réussite.",
     ship:
-      "Votre navire, son type et son Ã©tat. Ã€ 0 PV, il devient surtout un trÃ¨s mauvais sous-marin.",
+      "Votre navire, son type et son état. À 0 PV, il devient surtout un très mauvais sous-marin.",
     crewRole:
-      "Le poste principal de ce membre Ã  bord. MÃªme les pirates finissent par dÃ©couvrir les joies de lâ€™organigramme.",
+      "Le poste principal de ce membre à bord. Même les pirates finissent par découvrir les joies de l’organigramme.",
     crew:
-      "Membres actuellement embarquÃ©s par rapport Ã  la capacitÃ© du navire. Au-delÃ , quelquâ€™un finit forcÃ©ment par dormir dans les tonneaux.",
+      "Membres actuellement embarqués par rapport à la capacité du navire. Au-delà, quelqu’un finit forcément par dormir dans les tonneaux.",
   },
   en: {
     world:

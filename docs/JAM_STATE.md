@@ -1,4 +1,4 @@
-﻿# Jam state
+# Jam state
 
 Implemented and verified:
 
@@ -16,7 +16,7 @@ Implemented and verified:
 - player death, NPC death, ship destruction, shipless-at-sea, and ship replacement critical fixtures;
 - authored ShipDefinitions, HP, crew/cargo capacity invariants, cargo stacks, and location-gated ship sales;
 - Crew System V1 using persistent NPC statuses, player-free crew capacity, immutable authored roles, cargo-slot passengers, and leadership-gated management;
-- Origins â†’ 20-slot Childhood â†’ Active fixture pipeline;
+- Origins → 20-slot Childhood → Active fixture pipeline;
 - French source/fallback localization and partial English support;
 - exact JSON save round-trip and clean rejection of legacy saves.
 - reproducible headless run simulation, batch coverage metrics, static content diagnostics, and Node CLI validation.

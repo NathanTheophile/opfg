@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Badge, Button, Panel } from '@/components/ui';
 import type { ChoiceDefinition, ContentCatalog, DiceResult, StatId } from '@/game/content/schema';

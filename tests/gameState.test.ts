@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createInitialGameState } from '../src/game/model/initialState';
 
 describe('GameState v13', () => {

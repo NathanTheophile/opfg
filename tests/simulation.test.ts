@@ -1,4 +1,4 @@
-﻿import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { ContentCatalog, EventDefinition } from '../src/game/content/schema';
 import { contentCatalog } from '../src/game/content/definitions';
 import { diagnoseContent } from '../src/game/simulation/diagnostics';

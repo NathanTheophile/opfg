@@ -107,7 +107,10 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
     case 'npcDevilFruitIs': return state.npcs[condition.npcId]?.powers.devilFruitId === condition.fruitId;
     case 'npcDevilFruitTypeIs': return catalog?.devilFruits.find(({ id }) => id === state.npcs[condition.npcId]?.powers.devilFruitId)?.type === condition.fruitType;
     case 'npcDevilFruitHasTag': return catalog?.devilFruits.find(({ id }) => id === state.npcs[condition.npcId]?.powers.devilFruitId)?.tags.includes(condition.tagId) === true;
-    case 'npcDevilFruitAwakeningAtLeast': return (state.npcs[condition.npcId]?.powers.devilFruitAwakening ?? -1) >= condition.value;
+    case 'npcDevilFruitAwakeningAtLeast': {
+      const powers = state.npcs[condition.npcId]?.powers;
+      return powers?.devilFruitId !== null && powers?.devilFruitId !== undefined && powers.devilFruitAwakening >= condition.value;
+    }
     case 'npcHakiAtLeast': return (state.npcs[condition.npcId]?.powers.haki[condition.hakiType] ?? -1) >= condition.level;
     case 'npcHakiIsAwakened': return (state.npcs[condition.npcId]?.powers.haki[condition.hakiType] ?? 0) > 0;
   }

@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createDemoProject } from '../src/authoring/demo';
 import type { AuthoringProject } from '../src/authoring/types';
 import { migrateImportedProject } from '../src/gameSchema/migrations';
@@ -6,7 +6,7 @@ import { CONTENT_SCHEMA_VERSION, type ContentCatalog, type EventDefinition } fro
 import { exportToGameCatalog, toRuntimeCatalog, toRuntimeEvent } from '../src/gameSchema/current/exporter';
 import { validateContent, validateSingleEventShape } from '../src/gameSchema/current/validator';
 import { createEventsArchive, importEventFiles, parseEventImportFile, readEventsBundle } from '../src/io/events';
-import { exportLocaleDictionary } from '../src/localization/store';
+import { exportLocaleDictionary, setLocalizedText } from '../src/localization/store';
 import { readZip } from '../src/utils/zip';
 import { validateProject } from '../src/validation/validateProject';
 import repositoryDeparture from '../../../src/game/content/events/active/departure.json';
@@ -202,6 +202,20 @@ describe('Event import/export', () => {
     expect(read.dictionaries.fr['event.departure.title']).toBe(exportLocaleDictionary(project.localization, 'fr')['event.departure.title']);
     const imported = importEventFiles(emptyWorkspace(), read.eventFiles);
     expect(imported.report.imported).toBe(project.events.length);
+  });
+
+  it('round-trips Unicode localization through bundle export and import', async () => {
+    const expected = 'Équipage d’élite — l’île n’était déjà plus visible.';
+    const project = createDemoProject();
+    project.localization = setLocalizedText(project.localization, 'event.departure.title', 'fr', expected);
+
+    const first = await readEventsBundle(createEventsArchive(project, { bundle: true, includeLocales: true }));
+    expect(first.dictionaries.fr['event.departure.title']).toBe(expected);
+
+    const imported = importEventFiles(emptyWorkspace(), first.eventFiles);
+    const withLocales = { ...imported.project, localization: project.localization };
+    const second = await readEventsBundle(createEventsArchive(withLocales, { bundle: true, includeLocales: true }));
+    expect(second.dictionaries.fr['event.departure.title']).toBe(expected);
   });
 });
 
