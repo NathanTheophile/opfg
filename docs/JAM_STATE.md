@@ -12,5 +12,6 @@ Implemented and verified:
 - Origins → 20-slot Childhood → Active fixture pipeline;
 - French source/fallback localization and partial English support;
 - exact JSON save round-trip and clean rejection of legacy saves.
+- reproducible headless run simulation, batch coverage metrics, static content diagnostics, and Node CLI validation.
 
 The UI remains deliberately minimal. Rich narrative batches, standalone authoring tools, 3D scenes/dice, repeatable events, cooldowns, rarity, and broader progression systems remain out of scope.

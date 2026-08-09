@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { contentCatalog } from '../src/game/content/definitions';
 import { buildEventCatalog, eventCatalog } from '../src/game/content/eventCatalog';
+import { loadNodeContentCatalog } from '../src/game/content/nodeContentCatalog';
 import { validateContent } from '../src/game/validation/validateContent';
 
 describe('eventCatalog', () => {
@@ -39,5 +40,9 @@ describe('eventCatalog', () => {
     expect(() => buildEventCatalog({
       './events/active/wrong.json': { id: 'actual', kind: 'normal', titleKey: 'x', textKey: 'x', choices: [] },
     })).toThrow(/does not match EventId/);
+  });
+
+  it('loads the exact same catalog in Node CLI and Vite runtimes', () => {
+    expect(loadNodeContentCatalog()).toEqual(contentCatalog);
   });
 });
