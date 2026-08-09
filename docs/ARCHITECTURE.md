@@ -4,7 +4,9 @@ The repository keeps four responsibilities separate: locale-neutral Content, pur
 
 ## Runtime state and time
 
-Save v7 stores one clock, `ageMonths`, plus `slotInMonth: 0 | 1`. Origins ends at age 12. Childhood consumes eight annual slots followed by twelve half-year slots and enters Active at age 180. Outside Active the slot is always zero. In Active, slot zero becomes one without changing age; consuming slot one resets it and increments age by one month.
+Save v8 stores one clock, `ageMonths`, plus `slotInMonth: 0 | 1`. Origins ends at age 12. Childhood consumes eight annual slots followed by twelve half-year slots and enters Active at age 180. Outside Active the slot is always zero. In Active, slot zero becomes one without changing age; consuming slot one resets it and increments age by one month. Save v7 is migrated on load to v8.
+
+The player owns a two-slot stack inventory and persistent Berrys. A nullable active `ship` is a named instance referencing an authored `ShipDefinition`; it owns current HP and cargo stacks. `pendingShip` exists only during deterministic Critical replacement. Ship type registries own maximum HP, NPC crew capacity, and cargo slots. Whether the player consumes crew capacity remains a Game Design decision and is not encoded as persistent state.
 
 History records the age after the resolved event consumed its slot. It is the authority for normal one-shot consumption. Critical events are recorded but consume neither time nor slots.
 
@@ -12,7 +14,7 @@ History records the age after the resolved event consumed its slot. It is the au
 
 Each selection restarts from the current state:
 
-1. Critical: player, NPC by stable ID, then ship. Exactly one is exposed to the UI.
+1. Critical: player, NPC by stable ID, then ship destruction, shipless-at-sea, or pending replacement. Exactly one is exposed to the UI.
 2. Scheduled: due occurrence, cancellation/fallback, location reach, eligibility, then priority descending, due age ascending, ID ascending.
 3. Normal: all eligible and unplayed definitions, uniformly selected with the seeded PRNG.
 
@@ -20,7 +22,7 @@ Scheduled selection never consumes RNG. A scheduled occurrence remains pending w
 
 ## Content Contract v2
 
-`EventDefinition` is a discriminated union of `normal`, `scheduled`, and `critical`. Priority belongs only to scheduled definitions. Locations declare whether normal scheduled reach is blocked. Outcomes contain localization, identity, and effects only; phase rules own time advancement.
+`EventDefinition` is a discriminated union of `normal`, `scheduled`, and `critical`. Priority belongs only to scheduled definitions. Locations declare whether normal scheduled reach is blocked and whether ship sales are allowed. Outcomes contain localization, identity, and effects only; phase rules own time advancement.
 
 Each Event is stored as one JSON file under `src/game/content/events/**`, named after its `EventId`. `eventCatalog.ts` discovers these files recursively with an eager Vite glob, verifies filename/ID agreement, and sorts the resulting catalogue lexically by Event ID. Consequently, adding an Event requires no TypeScript import or manifest edit, while seeded selection receives a stable ordering on every machine and build.
 

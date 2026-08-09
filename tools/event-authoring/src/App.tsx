@@ -36,7 +36,7 @@ const localeFromFile = (name: string, path?: string): string => {
   return basename.replace(/\.json$/i, '').replace(/^locales[-_]/i, '').toLowerCase();
 };
 
-const emptyRegistries = (): GameRegistries => ({ races: [], seas: [], affiliations: [], traits: [], items: [], npcs: [], locations: [], flags: [] });
+const emptyRegistries = (): GameRegistries => ({ races: [], seas: [], affiliations: [], traits: [], items: [], ships: [], npcs: [], locations: [], flags: [] });
 const blankProject = (): AuthoringProject => {
   const now = new Date().toISOString();
   return { authoringVersion: AUTHORING_VERSION, gameSchemaVersion: CONTENT_SCHEMA_VERSION, name: 'OPFG Events', sourceLocale: 'fr', supportedLocales: ['fr', 'en'], events: [], nodes: [], edges: [], registries: emptyRegistries(), localization: {}, metadata: { createdAt: now, updatedAt: now } };
@@ -53,7 +53,7 @@ const collectPositiveBadges = (condition?: Condition): string[] => {
 
 const collectRegistryKeys = (r: GameRegistries): string[] => [
   ...r.races.map((x) => x.nameKey), ...r.seas.map((x) => x.nameKey), ...r.affiliations.map((x) => x.nameKey),
-  ...r.traits.flatMap((x) => [x.nameKey, x.descriptionKey]), ...r.items.map((x) => x.nameKey), ...r.npcs.map((x) => x.nameKey),
+  ...r.traits.flatMap((x) => [x.nameKey, x.descriptionKey]), ...r.items.map((x) => x.nameKey), ...r.ships.map((x) => x.nameKey), ...r.npcs.map((x) => x.nameKey),
 ];
 const collectProjectKeys = (project: AuthoringProject): string[] => [...new Set([...project.events.flatMap(collectEventLocalizationKeys), ...collectRegistryKeys(project.registries)])];
 const collectFlagIds = (events: EventDefinition[]): string[] => {
@@ -73,7 +73,7 @@ const catalogToProject = (catalog: ContentCatalog, dictionaries: Record<string, 
   const events = structuredClone(catalog.events);
   const registries: GameRegistries = {
     races: structuredClone(catalog.races), seas: structuredClone(catalog.seas), affiliations: structuredClone(catalog.affiliations),
-    traits: structuredClone(catalog.traits), items: structuredClone(catalog.items), npcs: structuredClone(catalog.npcs),
+    traits: structuredClone(catalog.traits), items: structuredClone(catalog.items), ships: structuredClone(catalog.ships), npcs: structuredClone(catalog.npcs),
     locations: structuredClone(catalog.locations), flags: collectFlagIds(events).map((id) => ({ id })),
   };
   const temp: AuthoringProject = {
@@ -379,4 +379,3 @@ function EditorApp() {
 }
 
 export default function App() { return <ReactFlowProvider><EditorApp /></ReactFlowProvider>; }
-

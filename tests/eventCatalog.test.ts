@@ -7,7 +7,7 @@ import { validateContent } from '../src/game/validation/validateContent';
 describe('eventCatalog', () => {
   it('discovers the complete catalog once and in stable lexical order', () => {
     const ids = eventCatalog.map(({ id }) => id);
-    expect(ids).toHaveLength(44);
+    expect(ids).toHaveLength(46);
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids).toEqual([...ids].sort());
     expect(ids).toEqual(expect.arrayContaining([
@@ -18,6 +18,8 @@ describe('eventCatalog', () => {
       'critical_player_death',
       'critical_mira_death',
       'critical_ship_destroyed',
+      'critical_ship_missing_at_sea',
+      'critical_ship_replacement',
     ]));
   });
 
@@ -32,6 +34,8 @@ describe('eventCatalog', () => {
       'critical_mira_death',
       'critical_player_death',
       'critical_ship_destroyed',
+      'critical_ship_missing_at_sea',
+      'critical_ship_replacement',
     ]);
     expect(validateContent(contentCatalog)).toEqual([]);
   });

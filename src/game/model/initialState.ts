@@ -5,7 +5,7 @@ const DEFAULT_SEED = 0x1a2b3c4d;
 
 export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
   return {
-    version: 7,
+    version: 8,
     rngState: seed >>> 0,
     careerPhase: 'origins',
     ageMonths: 0,
@@ -27,12 +27,17 @@ export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
         awakening: null,
       },
       traits: [],
+      inventory: { capacity: 2, stacks: [] },
     },
     ship: {
-      condition: 3,
+      shipId: 'starter_sloop',
+      name: 'Wind Finch',
+      health: 30,
+      cargo: [],
     },
+    pendingShip: null,
+    berries: 0,
     flags: [],
-    items: [],
     npcs: {
       mira: {
         ...createDefaultNpcState(),

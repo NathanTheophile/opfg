@@ -105,9 +105,9 @@ export const migrateAuthoringV3ToV4 = (input: Record<string, unknown>): Result =
   const locations = asArray(registries.locations).flatMap((value) => {
     if (!isRecord(value) || typeof value.id !== 'string') return [];
     if (typeof value.blocksScheduledEvents !== 'boolean') warnings.push(`location ${value.id}: blocksScheduledEvents was absent in v0.3; defaulted to false and should be reviewed.`);
-    return [{ id: value.id, blocksScheduledEvents: value.blocksScheduledEvents === true }];
+    return [{ id: value.id, blocksScheduledEvents: value.blocksScheduledEvents === true, allowsShipSale: value.allowsShipSale === true }];
   });
-  const nextRegistries = { ...registries, traits, npcs, locations, flags: asArray(registries.flags) };
+  const nextRegistries = { ...registries, traits, npcs, locations, ships: asArray(registries.ships), flags: asArray(registries.flags) };
   const eventById = new Map(events.map((event) => [String(event.id), event]));
   const nodes: Array<Record<string, unknown>> = asArray(raw.nodes).flatMap<Record<string, unknown>>((value, index) => {
     if (!isRecord(value) || typeof value.eventId !== 'string') return [];
@@ -121,4 +121,3 @@ export const migrateAuthoringV3ToV4 = (input: Record<string, unknown>): Result =
 
   return { project: { ...raw, authoringVersion: 4, gameSchemaVersion: CONTENT_SCHEMA_VERSION, events, nodes, registries: nextRegistries, localization, metadata: { ...(isRecord(raw.metadata) ? raw.metadata : {}), migrationWarnings: warnings } }, reviewEventIds: [...review], warnings };
 };
-

@@ -47,9 +47,10 @@ export function validateSingleEventShape(value: unknown): ShapeIssue[] {
     races: [...references.raceIds].map((id) => ({ id, nameKey: `race.${id}.name` })),
     seas: [...references.seaIds].map((id) => ({ id, nameKey: `sea.${id}.name` })),
     affiliations: [...references.affiliationIds].map((id) => ({ id, nameKey: `affiliation.${id}.name` })),
-    locations: [...references.locationIds].map((id) => ({ id, blocksScheduledEvents: false })),
+    locations: [...references.locationIds].map((id) => ({ id, blocksScheduledEvents: false, allowsShipSale: false })),
     traits: [...references.traitIds].map((id) => ({ id, nameKey: `trait.${id}.name`, descriptionKey: `trait.${id}.description` })),
     items: [...references.itemIds].map((id) => ({ id, nameKey: `item.${id}.name` })),
+    ships: [...references.shipIds].map((id) => ({ id, nameKey: `ship.${id}.name`, maxHealth: 1, crewCapacity: 0, cargoSlots: 0 })),
     npcs: [...references.npcIds].map((id) => ({
       id, nameKey: `npc.${id}.name`, raceId: null, originSeaId: null, affiliationId: null,
       initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 },
@@ -71,11 +72,11 @@ function collectReferences(value: unknown) {
   const result = {
     eventIds: new Set<string>(), scheduledEventIds: new Set<string>(),
     choicesByEvent: new Map<string, Set<string>>(), outcomesByEvent: new Map<string, Set<string>>(),
-    traitIds: new Set<string>(), itemIds: new Set<string>(), npcIds: new Set<string>(), locationIds: new Set<string>(),
+    traitIds: new Set<string>(), itemIds: new Set<string>(), shipIds: new Set<string>(), npcIds: new Set<string>(), locationIds: new Set<string>(),
     raceIds: new Set<string>(), seaIds: new Set<string>(), affiliationIds: new Set<string>(),
   };
   walk(value, (record) => {
-    add(record.traitId, result.traitIds); add(record.itemId, result.itemIds); add(record.npcId, result.npcIds);
+    add(record.traitId, result.traitIds); add(record.itemId, result.itemIds); add(record.shipId, result.shipIds); add(record.npcId, result.npcIds);
     add(record.locationId, result.locationIds); add(record.raceId, result.raceIds); add(record.seaId, result.seaIds);
     add(record.affiliationId, result.affiliationIds);
     if (typeof record.eventId === 'string') {

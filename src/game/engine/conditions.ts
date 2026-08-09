@@ -1,20 +1,21 @@
 import type { ChoiceDefinition } from '../content/schema';
 import type { Condition } from '../content/schema';
 import type { GameState } from '../model/schema';
+import { availableCargoSlots, canAcquireShip, countCurrentCrew, findShipDefinition } from './ship';
 
 export interface ChoiceState {
   visible: boolean;
   available: boolean;
 }
 
-export function evaluateCondition(condition: Condition, state: GameState): boolean {
+export function evaluateCondition(condition: Condition, state: GameState, catalog?: import('../content/schema').ContentCatalog): boolean {
   switch (condition.type) {
     case 'all':
-      return condition.conditions.every((entry) => evaluateCondition(entry, state));
+      return condition.conditions.every((entry) => evaluateCondition(entry, state, catalog));
     case 'any':
-      return condition.conditions.some((entry) => evaluateCondition(entry, state));
+      return condition.conditions.some((entry) => evaluateCondition(entry, state, catalog));
     case 'not':
-      return !evaluateCondition(condition.condition, state);
+      return !evaluateCondition(condition.condition, state, catalog);
     case 'hasTrait':
       return state.player.traits.includes(condition.traitId);
     case 'statAtLeast': {
@@ -24,7 +25,9 @@ export function evaluateCondition(condition: Condition, state: GameState): boole
     case 'hasFlag':
       return state.flags.includes(condition.flagId);
     case 'hasItem':
-      return state.items.includes(condition.itemId);
+      return state.player.inventory.stacks.some(({ itemId }) => itemId === condition.itemId);
+    case 'berriesAtLeast':
+      return state.berries >= condition.value;
     case 'locationIs':
       return state.locationId === condition.locationId;
     case 'isAtSea':
@@ -37,10 +40,22 @@ export function evaluateCondition(condition: Condition, state: GameState): boole
       return state.ageMonths >= condition.value;
     case 'ageAtMostMonths':
       return state.ageMonths <= condition.value;
-    case 'shipConditionAtLeast':
-      return state.ship !== null && state.ship.condition >= condition.value;
-    case 'shipConditionAtMost':
-      return state.ship !== null && state.ship.condition <= condition.value;
+    case 'hasShip':
+      return state.ship !== null;
+    case 'shipIs':
+      return state.ship?.shipId === condition.shipId;
+    case 'shipHealthAtLeast':
+      return state.ship !== null && state.ship.health >= condition.value;
+    case 'shipHealthAtMost':
+      return state.ship !== null && state.ship.health <= condition.value;
+    case 'shipCrewCapacityAtLeast':
+      return state.ship !== null && catalog !== undefined && findShipDefinition(catalog, state.ship.shipId).crewCapacity >= condition.value;
+    case 'shipCargoSpaceAtLeast':
+      return state.ship !== null && catalog !== undefined && availableCargoSlots(state.ship, catalog) >= condition.value;
+    case 'canAcquireShip':
+      return catalog !== undefined && canAcquireShip(state, catalog, condition.shipId);
+    case 'canSellShip':
+      return state.ship !== null && state.pendingShip !== null && catalog?.locations.find(({ id }) => id === state.locationId)?.allowsShipSale === true;
     case 'npcStatusIs':
       return state.npcs[condition.npcId]?.status === condition.status;
     case 'npcRelationshipAtLeast':
@@ -66,10 +81,10 @@ export function evaluateCondition(condition: Condition, state: GameState): boole
   }
 }
 
-export function getChoiceState(choice: ChoiceDefinition, state: GameState): ChoiceState {
-  const visible = choice.visibleIf === undefined || evaluateCondition(choice.visibleIf, state);
+export function getChoiceState(choice: ChoiceDefinition, state: GameState, catalog?: import('../content/schema').ContentCatalog): ChoiceState {
+  const visible = choice.visibleIf === undefined || evaluateCondition(choice.visibleIf, state, catalog);
   return {
     visible,
-    available: visible && (choice.availableIf === undefined || evaluateCondition(choice.availableIf, state)),
+    available: visible && (choice.availableIf === undefined || evaluateCondition(choice.availableIf, state, catalog)),
   };
 }

@@ -17,6 +17,7 @@ import type {
   RaceId,
   SeaId,
   AffiliationId,
+  ShipId,
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
@@ -32,14 +33,21 @@ export type Condition =
   | { type: 'statAtLeast'; statId: StatId; value: number }
   | { type: 'hasFlag'; flagId: FlagId }
   | { type: 'hasItem'; itemId: ItemId }
+  | { type: 'berriesAtLeast'; value: number }
   | { type: 'locationIs'; locationId: LocationId }
   | { type: 'isAtSea' }
   | { type: 'isOnLand' }
   | { type: 'careerPhaseIs'; phase: CareerPhase }
   | { type: 'ageAtLeastMonths'; value: number }
   | { type: 'ageAtMostMonths'; value: number }
-  | { type: 'shipConditionAtLeast'; value: number }
-  | { type: 'shipConditionAtMost'; value: number }
+  | { type: 'hasShip' }
+  | { type: 'shipIs'; shipId: ShipId }
+  | { type: 'shipHealthAtLeast'; value: number }
+  | { type: 'shipHealthAtMost'; value: number }
+  | { type: 'shipCrewCapacityAtLeast'; value: number }
+  | { type: 'shipCargoSpaceAtLeast'; value: number }
+  | { type: 'canAcquireShip'; shipId: ShipId }
+  | { type: 'canSellShip' }
   | { type: 'npcStatusIs'; npcId: NpcId; status: NpcStatus }
   | { type: 'npcRelationshipAtLeast'; npcId: NpcId; value: number }
   | { type: 'npcStatAtLeast'; npcId: NpcId; statId: NpcStatId; value: number }
@@ -53,13 +61,18 @@ export type Condition =
 export type Effect =
   | { type: 'setFlag'; flagId: FlagId }
   | { type: 'clearFlag'; flagId: FlagId }
-  | { type: 'addItem'; itemId: ItemId }
-  | { type: 'removeItem'; itemId: ItemId }
+  | { type: 'addItem'; itemId: ItemId; quantity: number }
+  | { type: 'removeItem'; itemId: ItemId; quantity: number }
   | { type: 'addTrait'; traitId: TraitId }
   | { type: 'removeTrait'; traitId: TraitId }
   | { type: 'modifyStat'; statId: StatId; amount: number }
-  | { type: 'modifyShipCondition'; amount: number }
+  | { type: 'acquireShip'; shipId: ShipId; name: string; health?: number }
   | { type: 'loseShip'; locationId: LocationId; travelState: TravelState }
+  | { type: 'modifyShipHealth'; amount: number }
+  | { type: 'addCargoItem'; itemId: ItemId; quantity: number }
+  | { type: 'removeCargoItem'; itemId: ItemId; quantity: number }
+  | { type: 'resolveShipReplacement'; disposition: 'destroy' | 'sell' | 'abandon'; berries?: number }
+  | { type: 'modifyBerries'; amount: number }
   | { type: 'moveToLocation'; locationId: LocationId; travelState: TravelState }
   | { type: 'setNpcStatus'; npcId: NpcId; status: NpcStatus }
   | { type: 'modifyNpcRelationship'; npcId: NpcId; amount: number }
@@ -136,7 +149,9 @@ export type ScheduledReach = 'normal' | 'unrestricted';
 export type CriticalTrigger =
   | { type: 'playerHealthDepleted' }
   | { type: 'npcHealthDepleted'; npcId: NpcId }
-  | { type: 'shipDestroyed' };
+  | { type: 'shipDestroyed' }
+  | { type: 'shipMissingAtSea' }
+  | { type: 'shipReplacementPending' };
 export type EventDefinition =
   | (EventBase & { kind: 'normal' })
   | (EventBase & { kind: 'scheduled'; priority: ScheduledPriority; scheduledReach?: ScheduledReach; cancelIf?: Condition; fallbackEventId?: EventId })
@@ -154,6 +169,14 @@ export interface ItemDefinition {
   nameKey: LocalizationKey;
 }
 
+export interface ShipDefinition {
+  id: ShipId;
+  nameKey: LocalizationKey;
+  maxHealth: number;
+  crewCapacity: number;
+  cargoSlots: number;
+}
+
 export interface NpcDefinition {
   id: NpcId;
   nameKey: LocalizationKey;
@@ -166,7 +189,7 @@ export interface NpcDefinition {
 export interface RaceDefinition { id: RaceId; nameKey: LocalizationKey }
 export interface SeaDefinition { id: SeaId; nameKey: LocalizationKey }
 export interface AffiliationDefinition { id: AffiliationId; nameKey: LocalizationKey }
-export interface LocationDefinition { id: LocationId; blocksScheduledEvents: boolean }
+export interface LocationDefinition { id: LocationId; blocksScheduledEvents: boolean; allowsShipSale: boolean }
 
 export interface ContentCatalog {
   schemaVersion: number;
@@ -176,6 +199,7 @@ export interface ContentCatalog {
   locations: LocationDefinition[];
   traits: TraitDefinition[];
   items: ItemDefinition[];
+  ships: ShipDefinition[];
   npcs: NpcDefinition[];
   events: EventDefinition[];
 }

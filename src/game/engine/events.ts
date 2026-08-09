@@ -15,7 +15,7 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
 
   const played = new Set(state.history.map(({ eventId }) => eventId));
   const candidates = catalog.events.filter((event) =>
-    event.kind === 'normal' && !played.has(event.id) && isEligible(event, state),
+    event.kind === 'normal' && !played.has(event.id) && isEligible(event, state, catalog),
   );
   if (candidates.length === 0) return { ...state, scheduledEvents: scheduled.entries, currentEventId: null };
   if (candidates.length === 1) return { ...state, scheduledEvents: scheduled.entries, currentEventId: candidates[0].id };
@@ -35,7 +35,9 @@ function selectCriticalEvent(state: GameState, events: readonly EventDefinition[
     .filter(([, npc]) => npc.status !== 'dead' && npc.stats.health <= 0)
     .map(([npcId]) => npcId).sort()[0];
   if (deadNpcId) return critical.find(({ trigger }) => trigger.type === 'npcHealthDepleted' && trigger.npcId === deadNpcId);
-  if (state.ship !== null && state.ship.condition <= 0) return critical.find(({ trigger }) => trigger.type === 'shipDestroyed');
+  if (state.ship !== null && state.ship.health <= 0) return critical.find(({ trigger }) => trigger.type === 'shipDestroyed');
+  if (state.ship === null && state.travelState === 'at_sea') return critical.find(({ trigger }) => trigger.type === 'shipMissingAtSea');
+  if (state.pendingShip !== null) return critical.find(({ trigger }) => trigger.type === 'shipReplacementPending');
 }
 
 function selectScheduledEvent(state: GameState, catalog: ContentCatalog): { event?: EventDefinition; entries: ScheduledEvent[] } {
@@ -46,7 +48,7 @@ function selectScheduledEvent(state: GameState, catalog: ContentCatalog): { even
     const original = catalog.events.find((event): event is ScheduledDefinition => event.id === entry.eventId && event.kind === 'scheduled');
     if (!original) continue;
     let event = original;
-    if (original.cancelIf && evaluateCondition(original.cancelIf, state)) {
+    if (original.cancelIf && evaluateCondition(original.cancelIf, state, catalog)) {
       if (!original.fallbackEventId) {
         entries = removeOccurrence(entries, entry);
         continue;
@@ -57,7 +59,7 @@ function selectScheduledEvent(state: GameState, catalog: ContentCatalog): { even
     }
     const location = catalog.locations.find(({ id }) => id === state.locationId);
     if (location?.blocksScheduledEvents && (event.scheduledReach ?? 'normal') === 'normal') continue;
-    if (!isEligible(event, state)) continue;
+    if (!isEligible(event, state, catalog)) continue;
     candidates.push({ event, entry });
   }
   candidates.sort((a, b) => b.event.priority - a.event.priority || a.entry.dueAgeMonths - b.entry.dueAgeMonths || a.event.id.localeCompare(b.event.id));
@@ -69,8 +71,8 @@ function removeOccurrence(entries: ScheduledEvent[], target: ScheduledEvent): Sc
   return index < 0 ? entries : entries.filter((_, candidate) => candidate !== index);
 }
 
-function isEligible(event: EventDefinition, state: GameState): boolean {
-  return event.eligibility === undefined || evaluateCondition(event.eligibility, state);
+function isEligible(event: EventDefinition, state: GameState, catalog: ContentCatalog): boolean {
+  return event.eligibility === undefined || evaluateCondition(event.eligibility, state, catalog);
 }
 
 export function findCurrentEvent(state: GameState, catalog: ContentCatalog): EventDefinition | undefined {

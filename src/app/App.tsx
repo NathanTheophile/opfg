@@ -116,7 +116,7 @@ export function App() {
       <p>{translate('ui.phase')}: {translate(`phase.${gameState.careerPhase}`)}</p>
       <p>{translate('ui.travel')}: {translate(`travel.${gameState.travelState}`)}</p>
       <p>{translate('ui.location')}: {gameState.locationId}</p>
-      <p>{translate('ui.ship')}: {gameState.ship?.condition ?? '—'}</p>
+      <p>{translate('ui.ship')}: {gameState.ship ? `${gameState.ship.name} (${gameState.ship.health} HP)` : '—'}</p>
       <p>{translate('ui.career')}: {translate(`careerStatus.${gameState.careerStatus}`)}</p>
       <p>{translate('ui.careerEnd')}: {gameState.careerEndReason ? translate(`careerEndReason.${gameState.careerEndReason}`) : '—'}</p>
       <button type="button" onClick={() => startCareer(true)}>{translate('ui.action.restartCareer')}</button>
@@ -174,7 +174,7 @@ export function App() {
               const choiceState = getChoiceState(choice, gameState);
               if (!choiceState.visible) return null;
               const preview = choice.resolution.type === 'dice'
-                ? getDicePreview(choice.resolution, gameState)
+                ? getDicePreview(choice.resolution, gameState, contentCatalog)
                 : null;
               const dicePrefix = preview === null
                 ? ''

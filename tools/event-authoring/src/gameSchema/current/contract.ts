@@ -21,6 +21,7 @@ export {
   type ScheduledPriority,
   type ScheduledReach,
   type SeaDefinition,
+  type ShipDefinition,
   type StatId,
   type TextChoiceInput,
   type TraitDefinition,
@@ -43,6 +44,7 @@ export type {
   OutcomeId,
   RaceId,
   SeaId,
+  ShipId,
   TraitId,
   TravelState,
 } from '../../../../../src/game/model/schema';
@@ -57,6 +59,7 @@ import type {
   NpcDefinition,
   RaceDefinition,
   SeaDefinition,
+  ShipDefinition,
   StatId,
   TextChoiceInput,
   TraitDefinition,
@@ -91,6 +94,7 @@ export interface GameRegistries {
   locations: LocationDefinition[];
   traits: TraitDefinition[];
   items: ItemDefinition[];
+  ships: ShipDefinition[];
   npcs: NpcDefinition[];
   flags: FlagDefinition[];
 }

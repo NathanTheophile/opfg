@@ -27,6 +27,17 @@ describe('validateContent', () => {
     });
   });
 
+  it('validates ShipDefinition references, Location sale capability, and stack quantities', () => {
+    const catalog = cloneCatalog();
+    catalog.locations[0].allowsShipSale = 'yes';
+    eventById(catalog, 'wreck').choices[0].resolution.outcome.effects[0].quantity = 0;
+    eventById(catalog, 'year_one_end').choices[0].availableIf = { type: 'canAcquireShip', shipId: 'missing_ship' };
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('Location requires allowsShipSale'));
+    expect(errors).toContainEqual(expect.stringContaining('Item quantity must be a positive integer'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown ShipId "missing_ship"'));
+  });
+
   it('validates identity registries, NPC profile references, and text input', () => {
     const catalog = cloneCatalog();
     catalog.npcs[0].raceId = 'missing_race';

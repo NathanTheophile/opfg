@@ -34,14 +34,21 @@ const CONDITION_TYPES = new Set([
   'statAtLeast',
   'hasFlag',
   'hasItem',
+  'berriesAtLeast',
   'locationIs',
   'isAtSea',
   'isOnLand',
   'careerPhaseIs',
   'ageAtLeastMonths',
   'ageAtMostMonths',
-  'shipConditionAtLeast',
-  'shipConditionAtMost',
+  'hasShip',
+  'shipIs',
+  'shipHealthAtLeast',
+  'shipHealthAtMost',
+  'shipCrewCapacityAtLeast',
+  'shipCargoSpaceAtLeast',
+  'canAcquireShip',
+  'canSellShip',
   'npcStatusIs',
   'npcRelationshipAtLeast',
   'npcStatAtLeast',
@@ -60,7 +67,12 @@ const EFFECT_TYPES = new Set([
   'addTrait',
   'removeTrait',
   'modifyStat',
-  'modifyShipCondition',
+  'acquireShip',
+  'modifyShipHealth',
+  'addCargoItem',
+  'removeCargoItem',
+  'resolveShipReplacement',
+  'modifyBerries',
   'moveToLocation',
   'loseShip',
   'setNpcStatus',
@@ -85,6 +97,8 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   const traits = readRecords(catalog.traits, 'traits', errors);
   const traitIds = collectIds(traits, 'traits', errors);
   const itemIds = collectIds(readRecords(catalog.items, 'items', errors), 'items', errors);
+  const ships = readRecords(catalog.ships, 'ships', errors);
+  const shipIds = collectIds(ships, 'ships', errors);
   const npcs = readRecords(catalog.npcs, 'npcs', errors);
   const npcIds = collectIds(npcs, 'npcs', errors);
   const races = readRecords(catalog.races, 'races', errors);
@@ -112,11 +126,21 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   }
 
   validateTraitOpposites(traits, traitIds, errors);
-  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, npcIds, raceIds, seaIds, affiliationIds, locationIds, scheduledEventIds };
+  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, shipIds, npcIds, raceIds, seaIds, affiliationIds, locationIds, scheduledEventIds };
   validateNamedDefinitions(races, 'races', errors);
   validateNamedDefinitions(seas, 'seas', errors);
   validateNamedDefinitions(affiliations, 'affiliations', errors);
-  locations.forEach((location, index) => { if (typeof location.blocksScheduledEvents !== 'boolean') errors.push({ path: `locations[${index}].blocksScheduledEvents`, message: 'Location requires blocksScheduledEvents.' }); });
+  locations.forEach((location, index) => {
+    if (typeof location.blocksScheduledEvents !== 'boolean') errors.push({ path: `locations[${index}].blocksScheduledEvents`, message: 'Location requires blocksScheduledEvents.' });
+    if (typeof location.allowsShipSale !== 'boolean') errors.push({ path: `locations[${index}].allowsShipSale`, message: 'Location requires allowsShipSale.' });
+  });
+  ships.forEach((ship, index) => {
+    const path = `ships[${index}]`;
+    if (!stringValue(ship.nameKey)) errors.push({ path: `${path}.nameKey`, message: 'Ship requires nameKey.' });
+    for (const field of ['maxHealth', 'crewCapacity', 'cargoSlots'] as const) {
+      if (!Number.isInteger(ship[field]) || (ship[field] as number) < (field === 'maxHealth' ? 1 : 0)) errors.push({ path: `${path}.${field}`, message: `${field} must be a valid non-negative integer${field === 'maxHealth' ? ' greater than zero' : ''}.` });
+    }
+  });
   validateNpcDefinitions(npcs, references, errors);
   for (const [eventIndex, event] of events.entries()) {
     validateEvent(event, `events[${eventIndex}]`, references, errors);
@@ -138,6 +162,7 @@ interface References {
   outcomesByEvent: Map<string, Set<string>>;
   traitIds: Set<string>;
   itemIds: Set<string>;
+  shipIds: Set<string>;
   npcIds: Set<string>;
   raceIds: Set<string>;
   seaIds: Set<string>;
@@ -164,7 +189,7 @@ function validateEvent(
     }
   }
   if (event.kind === 'critical') {
-    if (!isRecord(event.trigger) || !['playerHealthDepleted', 'npcHealthDepleted', 'shipDestroyed'].includes(String(event.trigger.type))) errors.push({ path: `${path}.trigger`, message: 'Invalid Critical trigger.' });
+    if (!isRecord(event.trigger) || !['playerHealthDepleted', 'npcHealthDepleted', 'shipDestroyed', 'shipMissingAtSea', 'shipReplacementPending'].includes(String(event.trigger.type))) errors.push({ path: `${path}.trigger`, message: 'Invalid Critical trigger.' });
     else if (event.trigger.type === 'npcHealthDepleted') validateReference(event.trigger.npcId, references.npcIds, 'NpcId', `${path}.trigger`, errors);
   }
   if (event.eligibility !== undefined) {
@@ -227,6 +252,7 @@ function validateCondition(
 
   if (type === 'hasTrait') validateReference(value.traitId, references.traitIds, 'TraitId', path, errors);
   if (type === 'hasItem') validateReference(value.itemId, references.itemIds, 'ItemId', path, errors);
+  if (type === 'shipIs' || type === 'canAcquireShip') validateReference(value.shipId, references.shipIds, 'ShipId', path, errors);
   if (type === 'locationIs') validateReference(value.locationId, references.locationIds, 'LocationId', path, errors);
   if (type === 'npcStatusIs' || type === 'npcRelationshipAtLeast' || type === 'npcStatAtLeast') {
     validateReference(value.npcId, references.npcIds, 'NpcId', path, errors);
@@ -242,6 +268,9 @@ function validateCondition(
     errors.push({ path, message: `Invalid CareerPhase "${String(value.phase)}".` });
   }
   if ((type === 'ageAtLeastMonths' || type === 'ageAtMostMonths') && !isNonNegativeNumber(value.value)) {
+    errors.push({ path, message: `${type} requires a non-negative number.` });
+  }
+  if (['berriesAtLeast', 'shipHealthAtLeast', 'shipHealthAtMost', 'shipCrewCapacityAtLeast', 'shipCargoSpaceAtLeast'].includes(type) && !isNonNegativeNumber(value.value)) {
     errors.push({ path, message: `${type} requires a non-negative number.` });
   }
   if (type === 'hasChosen') {
@@ -372,6 +401,16 @@ function validateEffect(
   }
   if (type === 'addItem' || type === 'removeItem') {
     validateReference(effect.itemId, references.itemIds, 'ItemId', path, errors);
+    validatePositiveQuantity(effect.quantity, path, errors);
+  }
+  if (type === 'addCargoItem' || type === 'removeCargoItem') {
+    validateReference(effect.itemId, references.itemIds, 'ItemId', path, errors);
+    validatePositiveQuantity(effect.quantity, path, errors);
+  }
+  if (type === 'acquireShip') {
+    validateReference(effect.shipId, references.shipIds, 'ShipId', path, errors);
+    if (!stringValue(effect.name)) errors.push({ path, message: 'acquireShip requires a non-empty name.' });
+    if (effect.health !== undefined && (!isNonNegativeNumber(effect.health) || effect.health === 0)) errors.push({ path, message: 'acquireShip health must be greater than zero.' });
   }
   if (type === 'addTrait' || type === 'removeTrait') {
     validateReference(effect.traitId, references.traitIds, 'TraitId', path, errors);
@@ -386,6 +425,12 @@ function validateEffect(
     }
   }
   if (type === 'modifyStat') validateStat(effect.statId, path, errors);
+  if (['modifyStat', 'modifyShipHealth', 'modifyBerries', 'modifyNpcRelationship'].includes(type) && (typeof effect.amount !== 'number' || !Number.isFinite(effect.amount))) errors.push({ path, message: `${type} amount must be finite.` });
+  if (type === 'resolveShipReplacement') {
+    if (!['destroy', 'sell', 'abandon'].includes(String(effect.disposition))) errors.push({ path, message: 'Invalid ship replacement disposition.' });
+    if (effect.berries !== undefined && (!Number.isInteger(effect.berries) || (effect.berries as number) < 0)) errors.push({ path, message: 'Replacement sale Berrys must be a non-negative integer.' });
+    if (effect.disposition !== 'sell' && effect.berries !== undefined) errors.push({ path, message: 'Only a ship sale may grant Berrys.' });
+  }
   if ((type === 'moveToLocation' || type === 'loseShip') && !['at_sea', 'on_land'].includes(String(effect.travelState))) {
     errors.push({ path, message: `Invalid TravelState "${String(effect.travelState)}".` });
   }
@@ -403,6 +448,10 @@ function validateEffect(
     validateReference(effect.eventId, references.scheduledEventIds, 'Scheduled EventId', path, errors);
     if (!Number.isInteger(effect.delayMonths) || (effect.delayMonths as number) < 0) errors.push({ path, message: 'scheduleEvent delayMonths must be a non-negative integer.' });
   }
+}
+
+function validatePositiveQuantity(value: unknown, path: string, errors: ContentValidationError[]): void {
+  if (!Number.isInteger(value) || (value as number) <= 0) errors.push({ path, message: 'Item quantity must be a positive integer.' });
 }
 
 function validateStat(value: unknown, path: string, errors: ContentValidationError[]): void {

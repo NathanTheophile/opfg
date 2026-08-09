@@ -21,7 +21,7 @@ export function resolveChoice(
   const choice = event.choices.find(({ id }) => id === choiceId);
   if (!choice) throw new Error(`Unknown choice "${choiceId}" in event "${eventId}".`);
 
-  const choiceState = getChoiceState(choice, state);
+  const choiceState = getChoiceState(choice, state, catalog);
   if (!choiceState.visible || !choiceState.available) {
     throw new Error(`Choice "${choiceId}" is not available.`);
   }
@@ -30,7 +30,7 @@ export function resolveChoice(
     choice.resolution.type === 'deterministic'
       ? { outcome: choice.resolution.outcome, state: stateWithInput }
       : (() => {
-          const diceResult = resolveDiceCheck(choice.resolution, stateWithInput);
+          const diceResult = resolveDiceCheck(choice.resolution, stateWithInput, catalog);
           return {
             outcome: diceResult.outcome,
             dice: diceResult.dice,
@@ -99,7 +99,7 @@ function consumeScheduledEntry(
     (entry) => {
       if (entry.dueAgeMonths > selectionAgeMonths) return false;
       const original = catalog.events.find((candidate): candidate is Extract<EventDefinition, { kind: 'scheduled' }> => candidate.id === entry.eventId && candidate.kind === 'scheduled');
-      return entry.eventId === event.id || (original?.cancelIf !== undefined && evaluateCondition(original.cancelIf, state) && original.fallbackEventId === event.id);
+      return entry.eventId === event.id || (original?.cancelIf !== undefined && evaluateCondition(original.cancelIf, state, catalog) && original.fallbackEventId === event.id);
     },
   );
   return entryIndex < 0

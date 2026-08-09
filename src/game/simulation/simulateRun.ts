@@ -6,6 +6,7 @@ import { createInitialGameState } from '../model/initialState';
 import type { GameState } from '../model/schema';
 import { derivePolicySeed, randomSimulationPolicy, type SimulationPolicy } from './simulationPolicy';
 import type { DeadEndSnapshot, ResolvedSimulationEvent, SimulationRunResult, SimulationTerminationReason } from './types';
+import { assertValidSimulationState } from './stateDiagnostics';
 
 export interface SimulateRunOptions {
   seed: number;
@@ -30,6 +31,7 @@ export function simulateRun(options: SimulateRunOptions): SimulationRunResult {
   let consecutiveSameCritical = 0;
   let terminationReason: SimulationTerminationReason = 'deadEnd';
   let error: string | undefined;
+  let shipLosses = 0;
 
   while (true) {
     if (state.careerStatus === 'ended') {
@@ -46,10 +48,11 @@ export function simulateRun(options: SimulateRunOptions): SimulationRunResult {
     }
 
     try {
+      assertValidSimulationState(state, options.catalog);
       const event = findCurrentEvent(state, options.catalog);
       if (!event) throw new Error(`Selected Event "${state.currentEventId}" is absent from the ContentCatalog.`);
       const availableChoices = event.choices.filter((choice) => {
-        const choiceState = getChoiceState(choice, state);
+        const choiceState = getChoiceState(choice, state, options.catalog);
         return choiceState.visible && choiceState.available;
       });
       const selection = policy.choose(availableChoices, policyRngState);
@@ -61,6 +64,7 @@ export function simulateRun(options: SimulateRunOptions): SimulationRunResult {
         selection.choice.id,
         selection.choice.input ? 'SimPlayer' : undefined,
       );
+      if (state.ship !== null && result.state.ship === null) shipLosses += 1;
       resolvedEvents.push({
         eventId: event.id,
         choiceId: selection.choice.id,
@@ -109,10 +113,10 @@ export function simulateRun(options: SimulateRunOptions): SimulationRunResult {
     criticalEvents: resolvedEvents.filter(({ kind }) => kind === 'critical').length,
     diceChecks,
     traits: [...state.player.traits],
-    items: [...state.items],
+    items: state.player.inventory.stacks.map(({ itemId }) => itemId),
     playerDeath: state.careerStatus === 'ended' && state.careerEndReason === 'death',
     npcDeaths: Object.entries(state.npcs).flatMap(([npcId, npc]) => npc.status === 'dead' ? [npcId] : []),
-    shipLosses: state.ship === null ? 1 : 0,
+    shipLosses,
     maxAgeMonths,
     childhoodReached,
     activeReached,
@@ -133,7 +137,7 @@ function createDeadEndSnapshot(seed: number, state: GameState): DeadEndSnapshot 
     travelState: state.travelState,
     traits: [...state.player.traits],
     flags: [...state.flags],
-    items: [...state.items],
+    items: state.player.inventory.stacks.map(({ itemId }) => itemId),
     npcStatuses: Object.fromEntries(Object.entries(state.npcs).map(([id, npc]) => [id, npc.status])),
     scheduledEvents: state.scheduledEvents.map((entry) => ({ ...entry })),
     recentHistory: state.history.slice(-10).map((entry) => ({ ...entry })),

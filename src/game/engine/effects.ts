@@ -1,6 +1,7 @@
 import type { ContentCatalog, Effect } from '../content/schema';
 import type { ChoiceId, EventId, GameState, NpcState } from '../model/schema';
 import { createDefaultNpcState } from '../model/npcState';
+import { addStack, canAcquireShip, cloneInventory, cloneShip, findShipDefinition, removeStack } from './ship';
 
 export interface EffectContext {
   sourceEventId: EventId;
@@ -15,10 +16,12 @@ export function applyEffects(state: GameState, catalog: ContentCatalog, effects:
       profile: { ...state.player.profile },
       stats: { ...state.player.stats },
       traits: [...state.player.traits],
+      inventory: cloneInventory(state.player.inventory),
     },
-    ship: state.ship === null ? null : { ...state.ship },
+    ship: cloneShip(state.ship),
+    pendingShip: cloneShip(state.pendingShip),
     flags: [...state.flags],
-    items: [...state.items],
+    berries: state.berries,
     npcs: Object.fromEntries(
       Object.entries(state.npcs).map(([npcId, npc]) => [npcId, { ...npc, stats: { ...npc.stats } }]),
     ),
@@ -39,10 +42,10 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       state.flags = state.flags.filter((flagId) => flagId !== effect.flagId);
       return;
     case 'addItem':
-      if (!state.items.includes(effect.itemId)) state.items.push(effect.itemId);
+      addStack(state.player.inventory.stacks, effect.itemId, effect.quantity, state.player.inventory.capacity);
       return;
     case 'removeItem':
-      state.items = state.items.filter((itemId) => itemId !== effect.itemId);
+      removeStack(state.player.inventory.stacks, effect.itemId, effect.quantity);
       return;
     case 'addTrait':
       if (state.player.traits.includes(effect.traitId)) return;
@@ -59,12 +62,55 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       state.player.stats[effect.statId] = clamp(currentValue + effect.amount, 0, 50);
       return;
     }
-    case 'modifyShipCondition':
-      if (state.ship === null) throw new Error('Cannot modify ship condition without a ship.');
-      state.ship.condition = clamp(state.ship.condition + effect.amount, 0, 3);
+    case 'acquireShip': {
+      if (!canAcquireShip(state, catalog, effect.shipId)) throw new Error(`Ship "${effect.shipId}" cannot accommodate the current crew or cargo.`);
+      if (effect.name.trim().length === 0) throw new Error('Acquired ship requires a name.');
+      const definition = findShipDefinition(catalog, effect.shipId);
+      const health = effect.health ?? definition.maxHealth;
+      if (!Number.isFinite(health) || health <= 0 || health > definition.maxHealth) throw new Error(`Invalid initial health for Ship "${effect.shipId}".`);
+      const acquired = { shipId: effect.shipId, name: effect.name.trim(), health, cargo: [] };
+      if (state.ship === null) state.ship = acquired;
+      else state.pendingShip = acquired;
       return;
+    }
+    case 'modifyShipHealth': {
+      if (state.ship === null) throw new Error('Cannot modify ship health without a ship.');
+      const maximum = findShipDefinition(catalog, state.ship.shipId).maxHealth;
+      state.ship.health = clamp(state.ship.health + effect.amount, 0, maximum);
+      return;
+    }
+    case 'addCargoItem': {
+      if (state.ship === null) throw new Error('Cannot add cargo without a ship.');
+      addStack(state.ship.cargo, effect.itemId, effect.quantity, findShipDefinition(catalog, state.ship.shipId).cargoSlots);
+      return;
+    }
+    case 'removeCargoItem':
+      if (state.ship === null) throw new Error('Cannot remove cargo without a ship.');
+      removeStack(state.ship.cargo, effect.itemId, effect.quantity);
+      return;
+    case 'resolveShipReplacement': {
+      if (state.ship === null || state.pendingShip === null) throw new Error('No pending ship replacement to resolve.');
+      if (effect.disposition === 'destroy' && state.travelState !== 'on_land') throw new Error('A ship can only be destroyed on land during replacement.');
+      if (effect.disposition === 'sell') {
+        const location = catalog.locations.find(({ id }) => id === state.locationId);
+        if (!location?.allowsShipSale) throw new Error('Current Location does not allow ship sales.');
+        const proceeds = effect.berries ?? 0;
+        if (!Number.isInteger(proceeds) || proceeds < 0) throw new Error('Ship sale Berrys must be a non-negative integer.');
+        state.berries += proceeds;
+      }
+      state.pendingShip.cargo = state.ship.cargo.map((stack) => ({ ...stack }));
+      state.ship = state.pendingShip;
+      state.pendingShip = null;
+      return;
+    }
+    case 'modifyBerries': {
+      if (!Number.isInteger(effect.amount) || state.berries + effect.amount < 0) throw new Error('Berrys cannot become negative.');
+      state.berries += effect.amount;
+      return;
+    }
     case 'loseShip':
-      state.ship = null;
+      state.ship = state.pendingShip;
+      state.pendingShip = null;
       state.locationId = effect.locationId;
       state.travelState = effect.travelState;
       return;

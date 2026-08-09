@@ -221,21 +221,120 @@ Le statut `dead` est prévu. Si un membre d’équipage ou NPC critique atteint 
 
 ## 12. Navire
 
-Si `ship.condition <= 0`, un Critical Event de destruction ou naufrage se déclenche. La perte du navire n’est **pas** un Game Over automatique : le joueur perd l’embarcation et le Critical Event établit le nouveau contexte narratif et géographique.
+Le joueur ne possède pas nécessairement de bateau : `ship == null` est un état valide. Lorsqu’un bateau existe, il s’agit d’une **instance persistante distincte** associée à un type de bateau authoré. Le contenu initial vise environ cinq types, sans imposer une progression strictement verticale entre eux.
 
-## 13. Santé et mort du joueur
+Chaque type définit uniquement en V1 :
+
+- ses HP maximum ;
+- sa capacité maximale de personnes embarquées ;
+- le nombre d’emplacements de sa cale.
+
+Ces dimensions permettent des compromis de contenu : un navire marchand peut privilégier la cale, un navire orienté équipage la capacité humaine, et un bateau léger rester plus limité mais accessible plus tôt. Aucune valeur chiffrée ni liste définitive de navires n’est verrouillée ici.
+
+La vitesse, les canons, la puissance navale, les modules, les upgrades, le poids de cargaison, le crafting, les flottes et la possession simultanée de plusieurs bateaux sont hors scope V1. Le type de bateau ne crée pas non plus de `navigationTier` universel : un voyage peut rester possible avec un bateau inadapté, mais devenir très dangereux par les Events et leurs Conditions.
+
+### Instance et nom
+
+L’instance conserve au minimum son type, son nom, ses HP actuels et sa cargaison. Tous les bateaux ont un nom. Le joueur peut le personnaliser ; à défaut, le jeu peut en générer un. Ce nom appartient à l’instance et non au type, et doit pouvoir être utilisé dans les textes d’Events pour donner une valeur narrative à la perte ou au remplacement du bateau. La méthode de génération n’est pas définie ici et le nom ne sert pas de Condition gameplay V1.
+
+### HP et destruction
+
+Chaque type possède ses propres HP maximum. Un bateau acquis commence par défaut à son maximum, mais un Event peut authorer une acquisition déjà endommagée. Une même modification de HP couvre dégâts et réparations.
+
+Si `ship.health <= 0`, un Critical Event de destruction ou naufrage doit se déclencher. Le bateau ne doit pas être supprimé silencieusement avant que ce Critical ait traité la situation. Sa perte n’est **pas** un Game Over automatique : le Critical établit les conséquences narratives et le nouveau contexte géographique, et le joueur peut survivre sans bateau.
+
+L’état `ship == null` avec `travelState == at_sea` est nécessairement critique. Il ne doit pas atteindre normalement le prochain slot Scheduled ou Normal : un Critical Event doit le résoudre. Son contenu précis dépendra plus tard du contexte, de l’équipage et d’autres Conditions déclaratives ; il n’est pas conçu dans cette passe.
+
+La cargaison appartient au bateau. Lors d’une destruction, elle n’est jamais téléportée automatiquement dans l’inventaire personnel. Le Critical concerné décidera contextuellement si elle est perdue, sauvée en partie ou récupérée.
+
+Il n’existe aucune action UI générique permettant au joueur de détruire volontairement son bateau. Une destruction volontaire doit être explicitement proposée par un Event.
+
+### Équipage et capacité humaine
+
+La capacité humaine couvre les NPC membres d’équipage et pourra aussi couvrir de futurs passagers temporaires. Leur modèle exact n’est pas verrouillé et aucun nouveau statut NPC n’est décidé ici.
+
+Un membre d’équipage ne disparaît jamais automatiquement lorsque le bateau est perdu ou remplacé, ni lorsque le groupe rejoint la terre. L’équipage ne diminue que par une conséquence explicitement authorée : Event, départ, mort ou autre résolution déclarée. Après un naufrage, le groupe peut donc rester ensemble sans bateau.
+
+Un recrutement doit pouvoir rendre un Choice indisponible lorsque la capacité applicable est insuffisante, tout en le laissant visible et grisé si le contenu le souhaite. Cette règle repose sur deux protections complémentaires :
+
+- authoring/UI par Conditions déclaratives ;
+- invariant runtime empêchant un dépassement même si le contenu est incorrect.
+
+De même, un bateau trop petit pour accueillir l’équipage ou les occupants actuels selon les règles applicables ne peut pas être acquis. La question de savoir si le joueur compte lui-même dans cette capacité reste ouverte.
+
+### Acquisition et remplacement
+
+Si `ship == null`, un Event peut attribuer directement un bateau. Si `ship != null`, l’acquisition d’un nouveau bateau crée un remplacement en attente et déclenche une résolution forcée sous forme de Critical Event :
+
+```text
+acquisition proposée
+→ remplacement en attente
+→ Critical Event de remplacement
+→ résolution de l’ancien bateau et de sa cargaison
+→ nouveau bateau actif
+```
+
+Le nouveau bateau ne devient actif qu’après cette résolution. Le joueur ne possède jamais deux bateaux actifs simultanément.
+
+Le Critical de remplacement propose les possibilités V1 suivantes pour l’ancien bateau :
+
+- **détruire**, uniquement à terre ; pendant la jam, cela ne produit aucune ressource ;
+- **vendre**, uniquement dans une Location explicitement compatible avec la vente de navires, contre des Berrys ; être simplement `on_land` ne suffit pas ;
+- **abandonner**, partout et sans compensation automatique, afin que le remplacement reste toujours résoluble.
+
+La cargaison est transférée automatiquement vers le nouveau bateau lorsqu’elle tient dans sa cale. Si elle contient plus de stacks distincts que la nouvelle capacité, le joueur devra à terme choisir les stacks abandonnés. Cette règle est verrouillée, mais aucune UI ni logique complexe de sélection n’est requise pour la jam puisque la cale initiale reste vide.
+
+Aucun `previousShips[]` n’est conservé. L’Event, son Outcome, l’historique de carrière et les textes utilisant le nom du bateau suffisent à préserver sa trace narrative.
+
+### Contrat de contenu attendu
+
+Le contrat déclaratif devra pouvoir exprimer au minimum les Conditions suivantes :
+
+- `hasShip` ;
+- `shipIs` ;
+- `shipHealthAtLeast` et `shipHealthAtMost` ;
+- `shipCrewCapacityAtLeast` ;
+- `shipCargoSpaceAtLeast` ;
+- `canAcquireShip`, qui vérifie notamment la compatibilité avec les occupants actuels.
+
+Il devra également pouvoir exprimer au minimum les Effects `acquireShip`, `loseShip`, `modifyShipHealth`, `addCargoItem` et `removeCargoItem`. `acquireShip` autorise des HP initiaux authorés, avec le maximum par défaut. Le nom personnalisé pourra passer par l’input texte sans imposer un Effect générique dédié.
+
+## 13. Inventaires et Items
+
+Les possessions personnelles du joueur et la cale du bateau sont deux inventaires distincts.
+
+L’inventaire personnel possède par défaut **2 emplacements**. La cale possède un nombre fixe d’emplacements défini par le type de bateau. Les deux utilisent des stacks :
+
+```text
+1 type d’Item distinct = 1 emplacement
+une quantité supérieure à 1 reste dans le même emplacement
+```
+
+Il n’existe en V1 ni poids, ni volume ou taille variable par Item, ni limite maximale de stack définie. Les opérations d’ajout et de retrait devront porter sur des quantités. Aucun système complexe de transfert entre inventaire personnel et cale n’est défini.
+
+La cale fait partie du modèle dès la première implémentation du Ship System afin d’éviter une migration structurelle ultérieure. Elle reste toutefois vide dans le contenu initial de jam : aucune boucle de cargaison, logistique ou crafting, ni gameplay actif de cale n’est requis maintenant. Elle peut seulement être exposée conceptuellement dans l’UI.
+
+## 14. Berrys
+
+Le joueur possède une quantité persistante de Berrys. Cette ressource existe en V1 afin que les Events puissent la tester, l’ajouter ou la retirer, notamment lors de la vente d’un bateau. Le contrat pourra donc fournir les concepts `berriesAtLeast` et `modifyBerries`.
+
+Cela ne définit pas une économie générale. Les shops génériques, prix dynamiques, salaires, consommation quotidienne, nourriture, entretien automatique et commerce détaillé restent hors scope. La formule exacte du prix de vente d’un bateau n’est pas verrouillée.
+
+## 15. Santé et mort du joueur
 
 Si `player.health <= 0`, le joueur meurt et la carrière prend immédiatement fin avec la raison `death`.
 
 Il n’existe en V1 ni jet de survie, ni résurrection, ni interception par objet, ni sauvetage automatique, ni seconde chance universelle. Des variantes textuelles contextuelles pourront être ajoutées sans modifier cette règle.
 
-## 14. Critical Events
+## 16. Critical Events
 
 Les Critical Events traitent un petit ensemble de leviers vérifiés **avant chaque slot** :
 
 - santé du joueur à zéro ou moins ;
 - santé d’un membre d’équipage ou NPC critique à zéro ou moins ;
-- condition du navire à zéro ou moins.
+- HP du navire à zéro ou moins ;
+- absence de navire en mer ;
+- remplacement de navire en attente.
 
 Ils ne consomment **jamais** de slot.
 
@@ -260,7 +359,7 @@ Ordre V1 des familles :
 
 Si le joueur et le navire atteignent zéro simultanément, le Critical Event joueur est traité en premier.
 
-## 15. Ordre global avant chaque slot
+## 17. Ordre global avant chaque slot
 
 1. boucle de Critical Events jusqu’à stabilité ;
 2. Scheduled Events dus et exécutables ;
@@ -272,13 +371,13 @@ Si le joueur et le navire atteignent zéro simultanément, le Critical Event jou
 | Scheduled | Non | Oui | Urgence, échéance, puis ID |
 | Normal | Non | Oui | Tirage uniforme parmi les éligibles |
 
-## 16. Géographie
+## 18. Géographie
 
 Le GameState distingue la Location actuelle et l’état `at_sea` / `on_land`. La géographie est une dimension majeure d’éligibilité : certains Events appartiennent à un lieu précis, à la mer ou à la terre.
 
 Le catalogue réel de mers, îles, ports et lieux n’est pas finalisé et n’est pas défini ici.
 
-## 17. Principes de contenu
+## 19. Principes de contenu
 
 Les Events doivent privilégier :
 
@@ -290,7 +389,7 @@ Les Events doivent privilégier :
 
 La variété provient du volume d’Events authorés, des Conditions, de l’historique, du profil, des lieux, Traits, NPC et conséquences Scheduled. Les Events sont écrits à l’avance et validés. Aucune IA runtime ne les génère.
 
-## 18. Non-objectifs V1 et systèmes non définis
+## 20. Non-objectifs V1 et systèmes non définis
 
 Ne sont pas considérés comme décidés :
 
@@ -304,13 +403,29 @@ Ne sont pas considérés comme décidés :
 - backend, comptes ou cloud ;
 - système complet de fallback déjà utilisé dans le contenu.
 
-Ces sujets nécessitent une décision ultérieure explicite.
+Sont également explicitement hors scope V1 malgré les fondations du Ship System :
 
-## 19. Statut du batch de 30 Events
+- plusieurs bateaux actifs ou flotte historique structurée ;
+- statistiques de bateau autres que HP, capacité humaine et slots de cale ;
+- modules, upgrades, crafting et logistique de cargaison ;
+- économie générale au-delà des opérations de Berrys authorées par les Events ;
+- action UI générique de destruction volontaire du bateau.
+
+Les sujets non décidés nécessitent une décision ultérieure explicite. Les exclusions Ship System ci-dessus sont, elles, verrouillées pour la V1.
+
+## 21. Questions Ship System encore ouvertes
+
+Les décisions suivantes ne sont pas verrouillées et ne doivent pas être déduites par l’implémentation :
+
+- le joueur compte-t-il lui-même dans `crewCapacity` ;
+- quelle formule détermine le prix de vente d’un bateau ;
+- existe-t-il une limite quantitative maximale par stack d’Items.
+
+## 22. Statut du batch de 30 Events
 
 Le batch précédemment généré est uniquement un test de génération en volume. Il ne constitue pas le contenu Game Design définitif et ne doit pas servir à équilibrer ou définir les règles. Il sera réévalué ou remplacé après stabilisation de la boucle de gameplay.
 
-## 20. Technical implications pending implementation
+## 23. Technical implications pending implementation
 
 Les décisions suivantes sont verrouillées mais pas nécessairement implémentées :
 
@@ -327,6 +442,14 @@ Les décisions suivantes sont verrouillées mais pas nécessairement implément�
 - Critical Events sans consommation de slot ;
 - re-check complet après chaque Critical Event ;
 - tous les Events normaux one-shot ;
-- sélection uniforme sans weights.
+- sélection uniforme sans weights ;
+- instance de navire persistante et nullable, distincte de son type authoré ;
+- HP, nom et cale propres à l’instance du navire ;
+- capacité humaine et capacité de cale définies par le type ;
+- Critical de naufrage, d’absence de bateau en mer et de remplacement en attente ;
+- inventaire personnel de 2 slots distinct de la cale ;
+- Items stackables avec quantités ;
+- Berrys persistants et opérations déclaratives minimales ;
+- Conditions et Effects Ship listés dans la section 12.
 
 Cette liste prépare la prochaine passe technique ; elle ne décrit pas l’état actuel du code.

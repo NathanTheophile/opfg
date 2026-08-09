@@ -16,7 +16,7 @@ describe('conditions v2', () => {
 
   it('treats ship predicates as false without a ship', () => {
     const state = { ...createInitialGameState(), ship: null };
-    expect(evaluateCondition({ type: 'shipConditionAtLeast', value: 0 }, state)).toBe(false);
-    expect(evaluateCondition({ type: 'shipConditionAtMost', value: 3 }, state)).toBe(false);
+    expect(evaluateCondition({ type: 'shipHealthAtLeast', value: 0 }, state)).toBe(false);
+    expect(evaluateCondition({ type: 'shipHealthAtMost', value: 30 }, state)).toBe(false);
   });
 });

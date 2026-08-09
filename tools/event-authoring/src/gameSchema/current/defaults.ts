@@ -53,14 +53,21 @@ export const createCondition = (type: Condition['type']): Condition => {
     case 'statAtLeast': return { type, statId: 'luck', value: 20 };
     case 'hasFlag': return { type, flagId: '' };
     case 'hasItem': return { type, itemId: '' };
+    case 'berriesAtLeast': return { type, value: 0 };
     case 'locationIs': return { type, locationId: '' };
     case 'isAtSea': return { type };
     case 'isOnLand': return { type };
     case 'careerPhaseIs': return { type, phase: 'childhood' };
     case 'ageAtLeastMonths': return { type, value: 0 };
     case 'ageAtMostMonths': return { type, value: 0 };
-    case 'shipConditionAtLeast': return { type, value: 0 };
-    case 'shipConditionAtMost': return { type, value: 100 };
+    case 'hasShip': return { type };
+    case 'shipIs': return { type, shipId: '' };
+    case 'shipHealthAtLeast': return { type, value: 0 };
+    case 'shipHealthAtMost': return { type, value: 100 };
+    case 'shipCrewCapacityAtLeast': return { type, value: 0 };
+    case 'shipCargoSpaceAtLeast': return { type, value: 0 };
+    case 'canAcquireShip': return { type, shipId: '' };
+    case 'canSellShip': return { type };
     case 'npcStatusIs': return { type, npcId: '', status: 'known' };
     case 'npcRelationshipAtLeast': return { type, npcId: '', value: 0 };
     case 'npcStatAtLeast': return { type, npcId: '', statId: 'loyalty', value: 0 };
@@ -77,12 +84,17 @@ export const createEffect = (type: Effect['type']): Effect => {
   switch (type) {
     case 'setFlag': return { type, flagId: '' };
     case 'clearFlag': return { type, flagId: '' };
-    case 'addItem': return { type, itemId: '' };
-    case 'removeItem': return { type, itemId: '' };
+    case 'addItem': return { type, itemId: '', quantity: 1 };
+    case 'removeItem': return { type, itemId: '', quantity: 1 };
     case 'addTrait': return { type, traitId: '' };
     case 'removeTrait': return { type, traitId: '' };
     case 'modifyStat': return { type, statId: 'luck', amount: 0 };
-    case 'modifyShipCondition': return { type, amount: 0 };
+    case 'acquireShip': return { type, shipId: '', name: '' };
+    case 'modifyShipHealth': return { type, amount: 0 };
+    case 'addCargoItem': return { type, itemId: '', quantity: 1 };
+    case 'removeCargoItem': return { type, itemId: '', quantity: 1 };
+    case 'resolveShipReplacement': return { type, disposition: 'abandon' };
+    case 'modifyBerries': return { type, amount: 0 };
     case 'loseShip': return { type, locationId: '', travelState: 'on_land' };
     case 'moveToLocation': return { type, locationId: '', travelState: 'on_land' };
     case 'setNpcStatus': return { type, npcId: '', status: 'known' };
@@ -96,4 +108,3 @@ export const createEffect = (type: Effect['type']): Effect => {
     case 'endCareer': return { type, reason: 'death' };
   }
 };
-

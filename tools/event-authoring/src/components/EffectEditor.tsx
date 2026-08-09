@@ -3,7 +3,7 @@ import { NPC_STAT_IDS, NPC_STATUSES, PLAYER_STAT_IDS, type Effect, type GameRegi
 import { IdSelect, NumberInput } from './EditorPrimitives';
 
 export const EFFECT_TYPES: Effect['type'][] = [
-  'setFlag','clearFlag','addItem','removeItem','addTrait','removeTrait','modifyStat','modifyShipCondition','loseShip',
+  'setFlag','clearFlag','addItem','removeItem','addTrait','removeTrait','modifyStat','acquireShip','modifyShipHealth','addCargoItem','removeCargoItem','resolveShipReplacement','modifyBerries','loseShip',
   'moveToLocation','setNpcStatus','modifyNpcRelationship','modifyNpcStat','scheduleEvent','setCareerPhase','setRace',
   'setOriginSea','setAffiliation','endCareer',
 ];
@@ -13,10 +13,12 @@ export default function EffectEditor({ value, onChange, onRemove, registries, ev
   const params = (() => {
     switch (value.type) {
       case 'setFlag': case 'clearFlag': return <IdSelect value={value.flagId} options={registries.flags} onChange={(flagId) => onChange({ ...value, flagId })} />;
-      case 'addItem': case 'removeItem': return <IdSelect value={value.itemId} options={registries.items} onChange={(itemId) => onChange({ ...value, itemId })} />;
+      case 'addItem': case 'removeItem': case 'addCargoItem': case 'removeCargoItem': return <div className="inline-fields"><IdSelect value={value.itemId} options={registries.items} onChange={(itemId) => onChange({ ...value, itemId })} /><NumberInput value={value.quantity} min={1} onChange={(quantity) => onChange({ ...value, quantity })} /></div>;
       case 'addTrait': case 'removeTrait': return <IdSelect value={value.traitId} options={registries.traits} onChange={(traitId) => onChange({ ...value, traitId })} />;
       case 'modifyStat': return <div className="inline-fields"><select value={value.statId} onChange={(e) => onChange({ ...value, statId: e.target.value as typeof value.statId })}>{PLAYER_STAT_IDS.map((id) => <option key={id}>{id}</option>)}</select><NumberInput value={value.amount} onChange={(amount) => onChange({ ...value, amount })} /></div>;
-      case 'modifyShipCondition': return <NumberInput value={value.amount} onChange={(amount) => onChange({ ...value, amount })} />;
+      case 'modifyShipHealth': case 'modifyBerries': return <NumberInput value={value.amount} onChange={(amount) => onChange({ ...value, amount })} />;
+      case 'acquireShip': return <div className="inline-fields"><IdSelect value={value.shipId} options={registries.ships} onChange={(shipId) => onChange({ ...value, shipId })} /><input value={value.name} placeholder="ship name" onChange={(e) => onChange({ ...value, name: e.target.value })} /><NumberInput value={value.health ?? 0} min={0} onChange={(health) => onChange({ ...value, health: health || undefined })} /></div>;
+      case 'resolveShipReplacement': return <div className="inline-fields"><select value={value.disposition} onChange={(e) => onChange({ ...value, disposition: e.target.value as typeof value.disposition })}><option value="destroy">destroy</option><option value="sell">sell</option><option value="abandon">abandon</option></select>{value.disposition === 'sell' && <NumberInput value={value.berries ?? 0} min={0} onChange={(berries) => onChange({ ...value, berries })} />}</div>;
       case 'moveToLocation': case 'loseShip': return <div className="inline-fields"><IdSelect value={value.locationId} options={registries.locations} onChange={(locationId) => onChange({ ...value, locationId })} /><select value={value.travelState} onChange={(e) => onChange({ ...value, travelState: e.target.value as typeof value.travelState })}><option value="at_sea">at_sea</option><option value="on_land">on_land</option></select></div>;
       case 'setNpcStatus': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={value.status} onChange={(e) => onChange({ ...value, status: e.target.value as typeof value.status })}>{NPC_STATUSES.map((x) => <option key={x}>{x}</option>)}</select></div>;
       case 'modifyNpcRelationship': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><NumberInput value={value.amount} onChange={(amount) => onChange({ ...value, amount })} /></div>;
@@ -31,4 +33,3 @@ export default function EffectEditor({ value, onChange, onRemove, registries, ev
   })();
   return <div className="effect-row"><select value={value.type} onChange={(e) => onChange(createEffect(e.target.value as Effect['type']))}>{EFFECT_TYPES.map((type) => <option key={type}>{type}</option>)}</select><div className="effect-params">{params}</div><button className="icon danger" onClick={onRemove}>×</button></div>;
 }
-

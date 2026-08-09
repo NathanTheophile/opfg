@@ -29,6 +29,6 @@ describe('effects v2', () => {
 
   it('cannot modify a missing ship', () => {
     const state = { ...createInitialGameState(), ship: null };
-    expect(() => applyEffects(state, contentCatalog, [{ type: 'modifyShipCondition', amount: 1 }], context)).toThrow(/ship/i);
+    expect(() => applyEffects(state, contentCatalog, [{ type: 'modifyShipHealth', amount: 1 }], context)).toThrow(/ship/i);
   });
 });

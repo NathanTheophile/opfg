@@ -33,7 +33,8 @@ const exhaustiveEvent = (project: AuthoringProject): EventDefinition => {
     { type: 'hasFlag', flagId: 'storm_mastered' }, { type: 'hasItem', itemId: 'sealed_chart' },
     { type: 'locationIs', locationId: 'starter_port' }, { type: 'isAtSea' }, { type: 'isOnLand' },
     { type: 'careerPhaseIs', phase: 'active' }, { type: 'ageAtLeastMonths', value: 12 }, { type: 'ageAtMostMonths', value: 180 },
-    { type: 'shipConditionAtLeast', value: 1 }, { type: 'shipConditionAtMost', value: 50 },
+    { type: 'berriesAtLeast', value: 0 }, { type: 'hasShip' }, { type: 'shipIs', shipId: 'starter_sloop' }, { type: 'shipHealthAtLeast', value: 1 }, { type: 'shipHealthAtMost', value: 50 },
+    { type: 'shipCrewCapacityAtLeast', value: 1 }, { type: 'shipCargoSpaceAtLeast', value: 1 }, { type: 'canAcquireShip', shipId: 'starter_sloop' }, { type: 'canSellShip' },
     { type: 'npcStatusIs', npcId: 'mira', status: 'dead' }, { type: 'npcRelationshipAtLeast', npcId: 'mira', value: -20 },
     { type: 'npcStatAtLeast', npcId: 'mira', statId: 'loyalty', value: 20 },
     { type: 'hasChosen', eventId: 'departure', choiceId: 'set_sail' }, { type: 'hasPlayed', eventId: 'departure' },
@@ -44,9 +45,11 @@ const exhaustiveEvent = (project: AuthoringProject): EventDefinition => {
   event.choices[0].textKey = 'event.contract_exhaustive.choice.resolve.text';
   event.choices[0].resolution.outcome = { id: 'resolved', textKey: 'event.contract_exhaustive.choice.resolve.outcome.resolved.text', effects: [
     { type: 'setFlag', flagId: 'storm_mastered' }, { type: 'clearFlag', flagId: 'storm_mastered' },
-    { type: 'addItem', itemId: 'sealed_chart' }, { type: 'removeItem', itemId: 'sealed_chart' },
+    { type: 'addItem', itemId: 'sealed_chart', quantity: 1 }, { type: 'removeItem', itemId: 'sealed_chart', quantity: 1 },
     { type: 'addTrait', traitId: 'audacious' }, { type: 'removeTrait', traitId: 'cautious' },
-    { type: 'modifyStat', statId: 'morale', amount: 1 }, { type: 'modifyShipCondition', amount: -1 },
+    { type: 'modifyStat', statId: 'morale', amount: 1 }, { type: 'acquireShip', shipId: 'starter_sloop', name: 'Tool Ship', health: 20 }, { type: 'modifyShipHealth', amount: -1 },
+    { type: 'addCargoItem', itemId: 'sealed_chart', quantity: 2 }, { type: 'removeCargoItem', itemId: 'sealed_chart', quantity: 1 },
+    { type: 'resolveShipReplacement', disposition: 'sell', berries: 10 }, { type: 'modifyBerries', amount: 5 },
     { type: 'loseShip', locationId: 'starter_port', travelState: 'on_land' }, { type: 'moveToLocation', locationId: 'open_sea', travelState: 'at_sea' },
     { type: 'setNpcStatus', npcId: 'mira', status: 'dead' }, { type: 'modifyNpcRelationship', npcId: 'mira', amount: 1 },
     { type: 'modifyNpcStat', npcId: 'mira', statId: 'calm', amount: 1 }, { type: 'scheduleEvent', eventId: 'memory_returns', delayMonths: 6 },
@@ -205,7 +208,9 @@ describe('v0.3 project migration and validation', () => {
     };
     const result = migrateImportedProject(legacy);
     const event = result.project.events[0] as any;
-    expect(result.project.authoringVersion).toBe(4);
+    expect(result.project.authoringVersion).toBe(5);
+    expect(result.project.registries.ships).toEqual([]);
+    expect(result.project.registries.locations[0]).toHaveProperty('allowsShipSale', false);
     expect(result.project.gameSchemaVersion).toBe(2);
     expect(event.kind).toBe('normal');
     expect(event.eligibility).toBeUndefined();

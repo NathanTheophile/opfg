@@ -81,10 +81,10 @@ describe('vNext roll evaluation', () => {
 
   it('does not make a natural 20 critical when a malus lowers total below 20', () => {
     const state = createInitialGameState();
-    state.ship.condition = 1;
+    state.ship.health = 10;
     const check = resolution({
       successThreshold: 13,
-      modifiers: [{ condition: { type: 'shipConditionAtMost', value: 1 }, value: -3, displayLabelKey: 'test.ship' }],
+      modifiers: [{ condition: { type: 'shipHealthAtMost', value: 10 }, value: -3, displayLabelKey: 'test.ship' }],
     });
 
     expect(evaluateDiceRoll(check, state, 20)).toMatchObject({ total: 17, result: 'success' });

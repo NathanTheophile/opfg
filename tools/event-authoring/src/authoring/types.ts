@@ -1,7 +1,7 @@
 import type { EventDefinition, GameRegistries } from '../gameSchema/current/contract';
 import type { LocalizationAuthoringStore } from '../localization/types';
 
-export const AUTHORING_VERSION = 4 as const;
+export const AUTHORING_VERSION = 5 as const;
 
 export type AuthoringStatus = 'draft' | 'ready' | 'migrated' | 'needsReview';
 export type ContentFolder = 'origins' | 'childhood' | 'active' | 'scheduled' | 'critical' | 'fixtures/childhood';
@@ -41,4 +41,3 @@ export interface AuthoringProject {
     migrationWarnings?: string[];
   };
 }
-

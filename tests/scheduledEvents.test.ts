@@ -8,7 +8,7 @@ const outcome = { id: 'done', textKey: 'fixture.childhood.outcome' as const, eff
 const choice = [{ id: 'go', textKey: 'fixture.childhood.choice' as const, resolution: { type: 'deterministic' as const, outcome } }];
 const scheduled = (id: string, priority: 50|100|200|300, extra: Partial<Extract<EventDefinition,{kind:'scheduled'}>> = {}): EventDefinition => ({ id, kind: 'scheduled', priority, titleKey: 'fixture.childhood.title', textKey: 'fixture.childhood.text', choices: choice, ...extra });
 const normal: EventDefinition = { id: 'normal', kind: 'normal', titleKey: 'fixture.childhood.title', textKey: 'fixture.childhood.text', choices: choice };
-const catalog = (events: EventDefinition[]): ContentCatalog => ({ schemaVersion: 2, races: [], seas: [], affiliations: [], traits: [], items: [], npcs: [], locations: [{ id: 'starter_port', blocksScheduledEvents: false }, { id: 'blocked', blocksScheduledEvents: true }], events });
+const catalog = (events: EventDefinition[]): ContentCatalog => ({ schemaVersion: 2, races: [], seas: [], affiliations: [], traits: [], items: [], ships: [{ id: 'starter_sloop', nameKey: 'x', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 }], npcs: [], locations: [{ id: 'starter_port', blocksScheduledEvents: false, allowsShipSale: true }, { id: 'blocked', blocksScheduledEvents: true, allowsShipSale: false }], events });
 
 describe('scheduled events v2', () => {
   it('uses due age, conventional priority, then deterministic tie-breaks without RNG', () => {

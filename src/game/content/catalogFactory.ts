@@ -8,11 +8,11 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
     seas: [{ id: 'starter_sea', nameKey: seaNameKey('starter_sea') }],
     affiliations: [{ id: 'independent_family', nameKey: affiliationNameKey('independent_family') }],
     locations: [
-      { id: 'starter_port', blocksScheduledEvents: false },
-      { id: 'open_sea', blocksScheduledEvents: false },
-      { id: 'outer_route', blocksScheduledEvents: false },
-      { id: 'isolated_cove', blocksScheduledEvents: true },
-      { id: 'shipwreck_shore', blocksScheduledEvents: false },
+      { id: 'starter_port', blocksScheduledEvents: false, allowsShipSale: true },
+      { id: 'open_sea', blocksScheduledEvents: false, allowsShipSale: false },
+      { id: 'outer_route', blocksScheduledEvents: false, allowsShipSale: false },
+      { id: 'isolated_cove', blocksScheduledEvents: true, allowsShipSale: false },
+      { id: 'shipwreck_shore', blocksScheduledEvents: false, allowsShipSale: false },
     ],
     traits: [
       { id: 'audacious', nameKey: traitNameKey('audacious'), descriptionKey: traitDescriptionKey('audacious'), oppositeTraitId: 'cautious' },
@@ -22,6 +22,10 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
     items: [
       { id: 'sealed_chart', nameKey: itemNameKey('sealed_chart') },
       { id: 'mira_letter_of_passage', nameKey: itemNameKey('mira_letter_of_passage') },
+    ],
+    ships: [
+      { id: 'starter_sloop', nameKey: 'ship.starter_sloop.name', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 },
+      { id: 'trade_cog', nameKey: 'ship.trade_cog.name', maxHealth: 45, crewCapacity: 5, cargoSlots: 6 },
     ],
     npcs: [{
       id: 'mira', nameKey: npcNameKey('mira'), raceId: null, originSeaId: null, affiliationId: null,

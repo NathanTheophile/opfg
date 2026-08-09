@@ -9,6 +9,17 @@ export type NpcId = string;
 export type RaceId = string;
 export type SeaId = string;
 export type AffiliationId = string;
+export type ShipId = string;
+
+export interface ItemStack {
+  itemId: ItemId;
+  quantity: number;
+}
+
+export interface InventoryState {
+  capacity: number;
+  stacks: ItemStack[];
+}
 
 export interface PlayerProfile {
   name: string | null;
@@ -33,10 +44,14 @@ export interface PlayerState {
   profile: PlayerProfile;
   stats: PlayerStats;
   traits: TraitId[];
+  inventory: InventoryState;
 }
 
 export interface ShipState {
-  condition: number;
+  shipId: ShipId;
+  name: string;
+  health: number;
+  cargo: ItemStack[];
 }
 
 export type NpcStatus = 'known' | 'crew' | 'departed' | 'unavailable' | 'dead';
@@ -89,8 +104,9 @@ export interface GameState {
   locationId: LocationId;
   player: PlayerState;
   ship: ShipState | null;
+  pendingShip: ShipState | null;
+  berries: number;
   flags: FlagId[];
-  items: ItemId[];
   npcs: Record<NpcId, NpcState>;
   history: HistoryEntry[];
   scheduledEvents: ScheduledEvent[];

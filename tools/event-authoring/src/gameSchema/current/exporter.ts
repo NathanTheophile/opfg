@@ -18,6 +18,7 @@ export const toRuntimeCatalog = (project: AuthoringProject): ContentCatalog => (
   locations: structuredClone(project.registries.locations),
   traits: structuredClone(project.registries.traits),
   items: structuredClone(project.registries.items),
+  ships: structuredClone(project.registries.ships),
   npcs: structuredClone(project.registries.npcs),
   events: structuredClone(project.events),
 });
@@ -39,4 +40,3 @@ export const exportToGameCatalog = (project: AuthoringProject): GameExportResult
     blockingProjectErrors: 0,
   };
 };
-

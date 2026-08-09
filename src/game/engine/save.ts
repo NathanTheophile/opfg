@@ -1,7 +1,7 @@
-import type { CareerEndReason, CareerPhase, GameState, NpcState, NpcStats, TravelState } from '../model/schema';
+import type { CareerEndReason, CareerPhase, GameState, ItemStack, NpcState, NpcStats, ShipState, TravelState } from '../model/schema';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 7;
+const CURRENT_SAVE_VERSION = 8;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
@@ -22,7 +22,7 @@ export function deserializeGameState(raw: string): GameState | null {
     return null;
   }
 
-  return readGameState(value);
+  return readGameState(migrateLegacySave(value));
 }
 
 export function saveGameState(storage: StorageLike, state: GameState): boolean {
@@ -57,6 +57,8 @@ function readGameState(value: unknown): GameState | null {
   if (!isUint32(value.rngState) || !isNonNegativeInteger(value.ageMonths) || !(value.slotInMonth === 0 || value.slotInMonth === 1)) return null;
   if (!isCareerPhase(value.careerPhase) || !isTravelState(value.travelState) || !isString(value.locationId)) return null;
   if (!isRecord(value.player) || !isRecord(value.player.stats) || !isStringArray(value.player.traits)) return null;
+  const inventory = readInventory(value.player.inventory);
+  if (inventory === null || inventory.capacity !== 2) return null;
   const profile = readPlayerProfile(value.player.profile);
   if (profile === null) return null;
   if (!isStatValue(value.player.stats.health)) return null;
@@ -68,8 +70,10 @@ function readGameState(value: unknown): GameState | null {
   if (!isStatValue(value.player.stats.charisma)) return null;
   if (!isStatValue(value.player.stats.luck)) return null;
   if (!(value.player.stats.awakening === null || isStatValue(value.player.stats.awakening))) return null;
-  if (!(value.ship === null || (isRecord(value.ship) && isIntegerInRange(value.ship.condition, 0, 3)))) return null;
-  if (!isStringArray(value.flags) || !isStringArray(value.items)) return null;
+  const ship = readShip(value.ship);
+  const pendingShip = readShip(value.pendingShip);
+  if (ship === undefined || pendingShip === undefined || !isNonNegativeInteger(value.berries)) return null;
+  if (!isStringArray(value.flags)) return null;
 
   const npcs = readNpcs(value.npcs);
   const history = readHistory(value.history);
@@ -104,10 +108,12 @@ function readGameState(value: unknown): GameState | null {
         awakening: value.player.stats.awakening,
       },
       traits: [...value.player.traits],
+      inventory,
     },
-    ship: value.ship === null ? null : { condition: value.ship.condition as number },
+    ship,
+    pendingShip,
+    berries: value.berries,
     flags: [...value.flags],
-    items: [...value.items],
     npcs,
     history,
     scheduledEvents,
@@ -115,6 +121,51 @@ function readGameState(value: unknown): GameState | null {
     careerStatus: value.careerStatus,
     careerEndReason: value.careerEndReason,
   };
+}
+
+function migrateLegacySave(value: unknown): unknown {
+  if (!isRecord(value) || value.version !== 7) return value;
+  if (!isRecord(value.player)) return value;
+  const legacyItems = isStringArray(value.items) ? value.items : [];
+  const legacyShip = isRecord(value.ship) && isIntegerInRange(value.ship.condition, 0, 3)
+    ? { shipId: 'starter_sloop', name: 'Wind Finch', health: value.ship.condition * 10, cargo: [] }
+    : value.ship === null ? null : value.ship;
+  const { items: _items, ...withoutItems } = value;
+  return {
+    ...withoutItems,
+    version: CURRENT_SAVE_VERSION,
+    player: { ...value.player, inventory: { capacity: 2, stacks: legacyItems.map((itemId) => ({ itemId, quantity: 1 })) } },
+    ship: legacyShip,
+    pendingShip: null,
+    berries: 0,
+  };
+}
+
+function readInventory(value: unknown): GameState['player']['inventory'] | null {
+  if (!isRecord(value) || !isNonNegativeInteger(value.capacity)) return null;
+  const stacks = readStacks(value.stacks);
+  if (stacks === null || stacks.length > value.capacity) return null;
+  return { capacity: value.capacity, stacks };
+}
+
+function readShip(value: unknown): ShipState | null | undefined {
+  if (value === null) return null;
+  if (!isRecord(value) || !isString(value.shipId) || !isString(value.name) || !isFiniteNumber(value.health) || value.health < 0) return undefined;
+  const cargo = readStacks(value.cargo);
+  if (cargo === null) return undefined;
+  return { shipId: value.shipId, name: value.name, health: value.health, cargo };
+}
+
+function readStacks(value: unknown): ItemStack[] | null {
+  if (!Array.isArray(value)) return null;
+  const seen = new Set<string>();
+  const stacks: ItemStack[] = [];
+  for (const entry of value) {
+    if (!isRecord(entry) || !isString(entry.itemId) || !Number.isInteger(entry.quantity) || (entry.quantity as number) <= 0 || seen.has(entry.itemId)) return null;
+    seen.add(entry.itemId);
+    stacks.push({ itemId: entry.itemId, quantity: entry.quantity as number });
+  }
+  return stacks;
 }
 
 function readNpcs(value: unknown): GameState['npcs'] | null {

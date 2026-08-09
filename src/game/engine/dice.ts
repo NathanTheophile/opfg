@@ -62,6 +62,7 @@ export function evaluateDiceRoll(
   state: GameState,
   rawRoll: number,
   includeSecretOverrides = true,
+  catalog?: import('../content/schema').ContentCatalog,
 ): DiceRollResult {
   if (rawRoll === 1) {
     const result = 'criticalFailure';
@@ -82,7 +83,7 @@ export function evaluateDiceRoll(
   if (statValue === null) throw new Error(`Cannot use inactive stat "${resolution.statId}" in a DiceCheck.`);
   const statModifier = statToDiceModifier(statValue);
   const conditionalModifiers = (resolution.modifiers ?? []).flatMap((modifier): AppliedDiceModifier[] =>
-    evaluateCondition(modifier.condition, state)
+    evaluateCondition(modifier.condition, state, catalog)
       ? [{ labelKey: modifier.displayLabelKey, value: modifier.value }]
       : [],
   );
@@ -123,17 +124,17 @@ export function evaluateDiceRoll(
   };
 }
 
-export function resolveDiceCheck(resolution: DiceResolution, state: GameState): DiceCheckResult {
+export function resolveDiceCheck(resolution: DiceResolution, state: GameState, catalog?: import('../content/schema').ContentCatalog): DiceCheckResult {
   const { rawRoll, nextRngState } = rollD20(state.rngState);
-  const dice = evaluateDiceRoll(resolution, state, rawRoll);
+  const dice = evaluateDiceRoll(resolution, state, rawRoll, true, catalog);
   return { outcome: resolution.outcomes[dice.result], dice, nextRngState };
 }
 
-export function getDicePreview(resolution: DiceResolution, state: GameState): DicePreview {
+export function getDicePreview(resolution: DiceResolution, state: GameState, catalog?: import('../content/schema').ContentCatalog): DicePreview {
   const statValue = state.player.stats[resolution.statId];
   if (statValue === null) return { available: false, statId: resolution.statId };
   const rolls = Array.from({ length: 20 }, (_, index) =>
-    evaluateDiceRoll(resolution, state, index + 1, false),
+    evaluateDiceRoll(resolution, state, index + 1, false, catalog),
   );
   const successes = rolls.filter(({ result }) => result === 'success' || result === 'criticalSuccess').length;
   const representative = rolls[1];
