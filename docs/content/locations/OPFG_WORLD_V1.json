@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 3,
-  "status": "human-curated-proposal-v3-world-v1",
-  "purpose": "Complete OPFG World V1 curation proposal: 20 Locations per Blue plus expanded Paradise/New World/special regions.",
+  "schemaVersion": 4,
+  "status": "FINAL_WORLD_V1_AUTHORITY_READY_FOR_RUNTIME_INTEGRATION",
+  "purpose": "Final curated OPFG World V1 authority for runtime integration and Event authoring. 188 runtime Locations: 80 Blues + 108 Paradise/New World/special regions.",
   "sourceAuthorities": {
     "blueBase": "OPFG_V1_LOCATIONS_CURATED_PROPOSAL.json",
     "outsideBlueBase": "OPFG_WORLD_V1_CURATION_PROPOSAL_V2.json",
@@ -15,7 +15,23 @@
     "outsideBlueRuntimeLocations": 108,
     "birthPolicy": "four_blues_only",
     "paradiseRoutePolicy": "7 authored Paradise routes with comparable main-route depth; route membership is OPFG-authored, not claimed as exhaustive canon.",
-    "eggheadPolicy": "reference_only"
+    "eggheadPolicy": "reference_only",
+    "travelPolicy": {
+      "paradiseInitialRoute": "seeded_random_among_eligible_route_start_events",
+      "paradiseRouteLock": "soft; ordinary progression follows route, cross-route changes are rare and Event-driven",
+      "sabaody": "majority convergence before normal under-Red-Line passage",
+      "newWorld": "seeded-random Event-driven destination progression; no player destination menu by default",
+      "backtracking": "not free; rare and Event-driven",
+      "minimumLocalContentBeforeStandardDeparture": 1,
+      "specialLocations": "never generic random destinations",
+      "deadEndFallback": "Active-only; land resumes sea travel, sea continues navigation; fallback usage must be diagnosed"
+    },
+    "locationHierarchyPolicy": {
+      "parentLocationId": "optional runtime hierarchy; non-null parents must exist and be acyclic",
+      "display": "if current Location has a runtime parent chain, display root ancestor name + ' - ' + current Location name; otherwise display current Location name only",
+      "locationWithin": "current Location matches target or is a descendant of target",
+      "currentSeaIs": "uses current runtime Location seaId, not originSeaId"
+    }
   },
   "blueExpansionV3": {
     "addedCount": 20,
@@ -234,7 +250,7 @@
       "name": "Orange Town",
       "seaId": "east_blue",
       "type": "city",
-      "parentLocationId": "organ_archipelago",
+      "parentLocationId": null,
       "sourceType": "canon",
       "runtimeStatus": "v1",
       "canBeBirthLocation": true,
@@ -256,15 +272,16 @@
         "urban"
       ],
       "blocksScheduledEvents": false,
-      "authoringNotes": "Ville côtière polyvalente pour commerce, criminalité ponctuelle et vie civile.",
-      "provenance": "curated"
+      "authoringNotes": "Ville côtière polyvalente pour commerce, criminalité ponctuelle et vie civile. Runtime parent omitted in World V1; source/reference parent was `organ_archipelago`. Display current Location name alone.",
+      "provenance": "curated",
+      "curationReferenceParentLocationId": "organ_archipelago"
     },
     {
       "id": "syrup_village",
       "name": "Syrup Village",
       "seaId": "east_blue",
       "type": "village",
-      "parentLocationId": "gecko_archipelago",
+      "parentLocationId": null,
       "sourceType": "canon",
       "runtimeStatus": "v1",
       "canBeBirthLocation": true,
@@ -285,8 +302,9 @@
         "rural"
       ],
       "blocksScheduledEvents": false,
-      "authoringNotes": "Village rural et côtier, adapté aux Events de voisinage, commerce léger et départ en mer.",
-      "provenance": "curated"
+      "authoringNotes": "Village rural et côtier, adapté aux Events de voisinage, commerce léger et départ en mer. Runtime parent omitted in World V1; source/reference parent was `gecko_archipelago`. Display current Location name alone.",
+      "provenance": "curated",
+      "curationReferenceParentLocationId": "gecko_archipelago"
     },
     {
       "id": "shells_town",
@@ -351,7 +369,7 @@
       "name": "Cocoyasi Village",
       "seaId": "east_blue",
       "type": "village",
-      "parentLocationId": "conomi_archipelago",
+      "parentLocationId": null,
       "sourceType": "canon",
       "runtimeStatus": "v1",
       "canBeBirthLocation": true,
@@ -372,15 +390,16 @@
         "rural"
       ],
       "blocksScheduledEvents": false,
-      "authoringNotes": "Village côtier agricole, utile pour vie civile, navigation locale et tensions de pouvoir.",
-      "provenance": "curated"
+      "authoringNotes": "Village côtier agricole, utile pour vie civile, navigation locale et tensions de pouvoir. Runtime parent omitted in World V1; source/reference parent was `conomi_archipelago`. Display current Location name alone.",
+      "provenance": "curated",
+      "curationReferenceParentLocationId": "conomi_archipelago"
     },
     {
       "id": "loguetown",
       "name": "Loguetown",
       "seaId": "east_blue",
       "type": "city",
-      "parentLocationId": "pole_star_archipelago",
+      "parentLocationId": null,
       "sourceType": "canon",
       "runtimeStatus": "v1",
       "canBeBirthLocation": true,
@@ -407,8 +426,9 @@
         "urban"
       ],
       "blocksScheduledEvents": false,
-      "authoringNotes": "Grand hub commercial et Marine d'East Blue ; marché naval complet V1.",
-      "provenance": "curated"
+      "authoringNotes": "Grand hub commercial et Marine d'East Blue ; marché naval complet V1. Runtime parent omitted in World V1; source/reference parent was `pole_star_archipelago`. Display current Location name alone.",
+      "provenance": "curated",
+      "curationReferenceParentLocationId": "pole_star_archipelago"
     },
     {
       "id": "goa_capital",
@@ -448,7 +468,7 @@
       "name": "Arlong Park",
       "seaId": "east_blue",
       "type": "pirate_haven",
-      "parentLocationId": "conomi_archipelago",
+      "parentLocationId": null,
       "sourceType": "canon",
       "runtimeStatus": "v1",
       "canBeBirthLocation": false,
@@ -467,8 +487,9 @@
         "pirate_presence"
       ],
       "blocksScheduledEvents": false,
-      "authoringNotes": "Repaire pirate : extorsion, violence, contrebande et rencontres criminelles.",
-      "provenance": "curated"
+      "authoringNotes": "Repaire pirate : extorsion, violence, contrebande et rencontres criminelles. Runtime parent omitted in World V1; source/reference parent was `conomi_archipelago`. Display current Location name alone.",
+      "provenance": "curated",
+      "curationReferenceParentLocationId": "conomi_archipelago"
     },
     {
       "id": "153rd_branch",
@@ -499,7 +520,7 @@
       "name": "16th Branch",
       "seaId": "east_blue",
       "type": "marine_base",
-      "parentLocationId": "conomi_archipelago",
+      "parentLocationId": null,
       "sourceType": "canon",
       "runtimeStatus": "v1",
       "canBeBirthLocation": false,
@@ -515,8 +536,9 @@
         "military"
       ],
       "blocksScheduledEvents": false,
-      "authoringNotes": "Base Marine secondaire, adaptée aux Events de corruption, ordre et carrière.",
-      "provenance": "curated"
+      "authoringNotes": "Base Marine secondaire, adaptée aux Events de corruption, ordre et carrière. Runtime parent omitted in World V1; source/reference parent was `conomi_archipelago`. Display current Location name alone.",
+      "provenance": "curated",
+      "curationReferenceParentLocationId": "conomi_archipelago"
     },
     {
       "id": "baratie",
@@ -1715,7 +1737,7 @@
       "name": "Taya Village",
       "seaId": "south_blue",
       "type": "village",
-      "parentLocationId": "taya_kingdom",
+      "parentLocationId": null,
       "sourceType": "custom",
       "runtimeStatus": "v1",
       "canBeBirthLocation": true,
@@ -1735,8 +1757,9 @@
         "agricultural"
       ],
       "blocksScheduledEvents": false,
-      "authoringNotes": "Village OPFG modeste pour Origins ruraux et agricoles.",
-      "provenance": "custom_gap_fill"
+      "authoringNotes": "Village OPFG modeste pour Origins ruraux et agricoles. Runtime parent omitted in World V1; source/reference parent was `taya_kingdom`. Display current Location name alone.",
+      "provenance": "custom_gap_fill",
+      "curationReferenceParentLocationId": "taya_kingdom"
     },
     {
       "id": "south_74th_branch",
@@ -1882,7 +1905,7 @@
       "name": "Gosa Town",
       "seaId": "east_blue",
       "type": "city",
-      "parentLocationId": "conomi_archipelago",
+      "parentLocationId": null,
       "sourceType": "canon",
       "runtimeStatus": "v1",
       "canBeBirthLocation": false,
@@ -1900,8 +1923,9 @@
         "urban"
       ],
       "blocksScheduledEvents": false,
-      "authoringNotes": "Ville canonique ajoutée pour densifier le cluster Conomi. Les Events doivent respecter son état temporel lorsque pertinent.",
-      "provenance": "curated_v3"
+      "authoringNotes": "Ville canonique ajoutée pour densifier le cluster Conomi. Les Events doivent respecter son état temporel lorsque pertinent. Runtime parent omitted in World V1; source/reference parent was `conomi_archipelago`. Display current Location name alone.",
+      "provenance": "curated_v3",
+      "curationReferenceParentLocationId": "conomi_archipelago"
     },
     {
       "id": "oykot_kingdom",
@@ -2312,7 +2336,7 @@
       "id": "reverse_mountain",
       "name": "Reverse Mountain",
       "zone": "red_line",
-      "type": "landmark",
+      "type": "wilderness",
       "source": "catalog",
       "sourceConfidence": "source_catalog",
       "runtimeRole": "transition",
@@ -2329,13 +2353,14 @@
         "P0_INGRESS"
       ],
       "curationPolicy": "promote_v1",
-      "notes": "Entrée physique de Grand Line; Event de transition, pas une destination de vie normale."
+      "notes": "Entrée physique de Grand Line; Event de transition, pas une destination de vie normale.",
+      "curationOriginalType": "landmark"
     },
     {
       "id": "twin_capes",
       "name": "Twin Capes",
       "zone": "grand_line_paradise",
-      "type": "landmark",
+      "type": "port",
       "source": "catalog",
       "sourceConfidence": "source_catalog",
       "runtimeRole": "route_hub",
@@ -2353,7 +2378,8 @@
         "P0_INGRESS"
       ],
       "curationPolicy": "promote_v1",
-      "notes": "Hub de départ des sept routes Paradise."
+      "notes": "Hub de départ des sept routes Paradise.",
+      "curationOriginalType": "landmark"
     },
     {
       "id": "cactus_island",
@@ -3564,7 +3590,7 @@
       "id": "gyoncorde_plaza",
       "name": "Gyoncorde Plaza",
       "zone": "underwater",
-      "type": "landmark",
+      "type": "city",
       "source": "catalog",
       "sourceConfidence": "source_catalog",
       "runtimeRole": "local_cluster",
@@ -3579,7 +3605,8 @@
       ],
       "paradiseRouteGroups": [],
       "curationPolicy": "promote_v1",
-      "notes": null
+      "notes": null,
+      "curationOriginalType": "landmark"
     },
     {
       "id": "coral_hill",
@@ -4043,7 +4070,7 @@
       "id": "zou",
       "name": "Zou",
       "zone": "new_world",
-      "type": "other",
+      "type": "island",
       "source": "catalog",
       "sourceConfidence": "needs_type_review",
       "runtimeRole": "gated_special",
@@ -4057,7 +4084,8 @@
       ],
       "paradiseRouteGroups": [],
       "curationPolicy": "promote_v1",
-      "notes": "Location mobile/spéciale; jamais tirage maritime générique."
+      "notes": "Location mobile/spéciale; jamais tirage maritime générique.",
+      "curationOriginalType": "other"
     },
     {
       "id": "mokomo_dukedom",
@@ -4116,7 +4144,7 @@
       "id": "totto_land",
       "name": "Totto Land",
       "zone": "new_world",
-      "type": "region",
+      "type": "kingdom",
       "source": "catalog",
       "sourceConfidence": "source_catalog",
       "runtimeRole": "gated_special",
@@ -4131,7 +4159,8 @@
       ],
       "paradiseRouteGroups": [],
       "curationPolicy": "promote_v1",
-      "notes": null
+      "notes": null,
+      "curationOriginalType": "region"
     },
     {
       "id": "whole_cake_island",
@@ -4277,7 +4306,7 @@
       "id": "udon",
       "name": "Udon",
       "zone": "new_world",
-      "type": "region",
+      "type": "wilderness",
       "source": "catalog",
       "sourceConfidence": "source_catalog",
       "runtimeRole": "local_cluster",
@@ -4293,7 +4322,8 @@
       ],
       "paradiseRouteGroups": [],
       "curationPolicy": "promote_lore_exception",
-      "notes": "Promotion exceptionnelle pour offrir une zone Wano non-urbaine et industrielle."
+      "notes": "Promotion exceptionnelle pour offrir une zone Wano non-urbaine et industrielle.",
+      "curationOriginalType": "region"
     },
     {
       "id": "sphinx",
@@ -5238,6 +5268,11 @@
     "V2 deliberately expands Paradise scope: alternate routes are now similar in length to P1 and therefore require substantially more Event batches.",
     "V3 increases the Blue runtime roster from 60 to 80 without increasing Birth Location counts.",
     "Do not silently convert sourceType=uncertain Blue additions to canon.",
-    "Ironpine Mining Town is OPFG-original and exists specifically to prevent North Blue from remaining under-differentiated."
+    "Ironpine Mining Town is OPFG-original and exists specifically to prevent North Blue from remaining under-differentiated.",
+    "Runtime parentLocationId is optional. V1 sub-locations whose source parent is not promoted to runtime use parentLocationId=null and display their own name only.",
+    "Runtime Location types are normalized to the existing V1 LocationType union; no LocationType schema expansion is required.",
+    "Paradise route IDs are authoring/data structure only. Do not add persistent route state to GameState.",
+    "New World destination selection is random/Event-driven by design; do not add a destination-choice menu as core gameplay.",
+    "Dead-end fallback is Active-only and must not hide Origins/Childhood content holes."
   ]
 }

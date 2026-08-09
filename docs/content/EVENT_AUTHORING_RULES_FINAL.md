@@ -422,3 +422,228 @@ Event
 The goal is not to create a large deck of disconnected random cards.
 
 The goal is to create a coherent, replayable life history where origin, personality, geography, career, relationships, powers, and prior decisions meaningfully alter what happens later.
+
+# 22. World travel authoring contract
+
+## 22.1 No persistent route state
+
+Do not add `routeId`, `paradiseRouteId`, or equivalent persistent GameState for V1.
+
+Routes are reconstructed from current Location, History, authored Conditions, and the World V1 route graph.
+
+## 22.2 Paradise route selection is random
+
+After Reverse Mountain / Twin Capes, the initial Paradise route is selected randomly through the seeded Event-selection system.
+
+The player does **not** choose a route from a menu.
+
+Preferred content pattern:
+
+- one route-start Normal Event per eligible route;
+- all valid route-start Events are simultaneously eligible;
+- seeded uniform Event selection chooses one;
+- moving to that route's first Location makes the others ineligible.
+
+Do not add weights unless the design is explicitly revised.
+
+## 22.3 Locations are not board-game tiles
+
+Arrival does not automatically trigger departure.
+
+A Location should support local life before travel resumes.
+
+A standard departure Event should not become eligible until at least **one genuine local root Event** has occurred after arrival.
+
+This is an authoring rule for V1. Do not add new persistent visit-state solely to enforce it unless a later implementation audit proves it unavoidable.
+
+## 22.4 Staying is valid
+
+The player may remain at the same Location through multiple slots and Events.
+
+Large hubs and major islands should deliberately support multiple local Event families.
+
+## 22.5 Parent Location and sub-location are distinct
+
+`parentLocationId` represents runtime hierarchy.
+
+Examples:
+
+```text
+Alabasta Kingdom
+└─ Rainbase
+└─ Nanohana
+└─ Alubarna
+```
+
+Moving between members of the same runtime hierarchy is local movement, not a Paradise route change.
+
+If a Location has no runtime parent, it is displayed and authored as a standalone Location even if the wider Bible knows a reference-only geographic parent.
+
+## 22.6 Location display contract
+
+Core should expose enough information for UI to display:
+
+```text
+Root Location - Current Sub-location
+```
+
+Examples:
+
+```text
+Alabasta Kingdom - Rainbase
+Wano Country - Flower Capital
+```
+
+If no runtime parent exists, show only the current Location:
+
+```text
+Water Seven
+Gosa Town
+```
+
+For nested chains, use the top runtime ancestor plus the current Location. Do not force every intermediate node into HUD text.
+
+## 22.7 Current-region Conditions
+
+Event authoring requires:
+
+- `currentSeaIs(seaId)` — checks the current Location's `seaId`, never the player's origin sea;
+- `locationWithin(locationId)` — true when current Location is the target or any descendant.
+
+These complement `locationIs`, `locationHasTag`, and `locationHasService`.
+
+## 22.8 Cross-route movement is possible but rare
+
+Paradise routes are soft structures, not walls.
+
+Ordinary travel follows the current route family. Cross-route travel may happen through a deliberate Event, but must remain rare enough that the random initial route materially changes the run.
+
+Do not make every Paradise Location generically reachable from every other one.
+
+## 22.9 Backtracking is not free
+
+Returning to an earlier Grand Line Location requires an authored reason such as:
+
+- Eternal Pose / navigation aid;
+- specialized navigator opportunity;
+- following another ship;
+- transport by an organization;
+- capture or rescue;
+- storm/current detour;
+- Event-specific opportunity.
+
+Do not implement free fast travel.
+
+## 22.10 Special destinations are never generic random results
+
+Locations classified as special/gated must require dedicated authored access.
+
+Typical examples include Baltigo, Enies Lobby, Impel Down, Marineford/New Marineford, Mary Geoise, Amazon Lily, Zou, Totto Land, Wano, Hachinosu, and other World V1 entries explicitly marked gated/special.
+
+## 22.11 Sabaody is the majority Paradise convergence
+
+Most Paradise runs eventually reach Sabaody before the normal under-Red-Line transition.
+
+This is a strong world rule, not an absolute lock.
+
+Exceptional authored trajectories may reach the transition differently when strongly justified.
+
+Arrival at Sabaody does not force immediate departure.
+
+## 22.12 New World movement is random
+
+New World deliberately maximizes uncertainty.
+
+Do not create a default destination-choice menu.
+
+Normal progression should be authored so that several travel Events/destinations can be eligible and the seeded runtime randomly determines where the wind/current carries the run.
+
+The result must remain reproducible from the run seed.
+
+Special/gated destinations are excluded from generic random travel.
+
+## 22.13 Travel without a personal ship
+
+The player may geographically move without owning a ship through authored situations such as:
+
+- Marine transport;
+- merchant passage;
+- another pirate crew;
+- Revolutionary transport;
+- capture;
+- rescue;
+- escort.
+
+Do not add a persistent external-transport subsystem for V1.
+
+Because `ship == null && at_sea` is a critical invalid state, transport without a personal ship should normally resolve land-to-land inside the current Event/Immediate chain rather than leave the player at sea between slots.
+
+## 22.14 Leaving a sub-location for sea
+
+Monthly navigation must treat a sub-location as part of its runtime hierarchy.
+
+When the player attempts to go to sea from a sub-location, core may resolve a dockable ancestor as the effective access point.
+
+A Location with no runtime parent uses only its own docking data.
+
+This abstraction represents local travel to the coast/port; it does not require a separate map-navigation system.
+
+## 22.15 Dead-end fallback Events
+
+A normally accessible Active run must never terminate because the normal content pool is empty.
+
+After Critical / Immediate / Scheduled handling, if there is no eligible unplayed Normal Event, use a reserved fallback layer.
+
+Required behaviors:
+
+- **on land:** `dead_end_on_land` resumes sea travel;
+- **at sea:** `dead_end_at_sea` continues navigation toward a valid non-gated continuation.
+
+Fallback Events:
+
+- are not part of the ordinary random Normal pool;
+- are repeatable safety content;
+- only trigger after the normal pool is empty;
+- must not consume/disable themselves through the normal one-shot History rule;
+- should still be visible in History/diagnostics as fallback occurrences.
+
+Fallback navigation must respect World V1 geography. In Paradise it should prefer valid forward route adjacency; outside fixed Paradise routing it may use seeded random valid same-region travel targets. It must never randomly enter gated/special Locations.
+
+Fallbacks are emergency recovery, not normal route content.
+
+## 22.16 Childhood and Origins never use travel fallback
+
+Dead-end travel fallback is **Active-only**.
+
+If Origins or Childhood reaches zero eligible Events, that remains a true content error and must be reported by validation/simulation.
+
+A child should not escape a missing Childhood pool by "taking to sea."
+
+## 22.17 Every runtime Location requires ingress and egress coverage
+
+Batch manifests must state:
+
+- known ingress Locations;
+- known egress Locations;
+- local parent/sub-location transitions;
+- special/gated transitions;
+- rare cross-route transitions;
+- whether the batch contributes normal travel recovery.
+
+QA should be able to report runtime Locations with:
+
+- no known ingress;
+- no known ordinary egress;
+- excessive fallback activation.
+
+## 22.18 Geography validation
+
+A non-null `parentLocationId` must:
+
+- reference an existing runtime Location;
+- not point to itself;
+- not participate in a parent cycle.
+
+Travel Events must preserve coherent current sea, hierarchy, docking, and access rules.
+
+The World V1 authority may retain reference-only geographic relationships in notes, but runtime hierarchy uses runtime IDs only.
