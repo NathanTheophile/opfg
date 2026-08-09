@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { ButtonHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
+import './button.css';
 
 export const buttonVariants = cva(
   [
@@ -20,6 +21,7 @@ export const buttonVariants = cva(
           'border-[var(--border-default)] bg-surface text-fg hover:border-[var(--border-strong)] hover:bg-surface-hover active:bg-surface-pressed',
         primary:
           'border-[var(--border-accent)] bg-gold text-[var(--text-inverse)] hover:bg-gold-strong active:brightness-90',
+        glass: 'opfg-button-glass',
         subtle:
           'border-transparent bg-surface-soft text-fg-secondary shadow-none hover:border-[var(--border-subtle)] hover:bg-surface-hover hover:text-fg',
         danger:
