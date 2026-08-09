@@ -6,6 +6,20 @@
 
 Ce document consolide les décisions Game Design validées pour la jam. Les documents spécialisés restent autorités sur leurs domaines techniques, mais une ancienne hypothèse de gameplay contradictoire ne prévaut pas sur ce document.
 
+### Délégation d’autorité
+
+`GAME_DESIGN.md` reste l’autorité gameplay maîtresse et délègue les domaines spécialisés suivants :
+
+- [Carrières, réputation et Endings](design/CAREER_AND_ENDINGS.md) ;
+- [timeline mondiale et politique canon](design/WORLD_TIMELINE_AND_CANON.md) ;
+- [règles de production du contenu](content/CONTENT_BIBLE.md) ;
+- [catalogue V1 des 28 Traits](content/TRAITS_CATALOG.md) ;
+- [vocabulaire contrôlé des tags de Locations](content/locations/OPFG_LOCATION_TAGS.md).
+
+Le [catalogue géographique nettoyé](content/locations/OPFG_LOCATIONS_CATALOG.json) est une base de travail d’authoring de 502 entrées avec le statut `working_geographical_base`, et non l’autorité finale des Locations V1. Son [audit](content/locations/OPFG_LOCATION_REVIEW.md) et son [résumé](content/locations/OPFG_LOCATION_SUMMARY.md) sont des documents de support non autoritatifs.
+
+Après ces autorités design viennent, dans l’ordre, `ARCHITECTURE.md`, `LOCALIZATION.md`, puis le schéma TypeScript runtime. Une divergence du code avec le design validé constitue une dette d’implémentation et ne réécrit pas silencieusement la règle de design.
+
 ## 1. Vision d’une run
 
 Une run représente la construction puis la carrière d’un personnage dans un univers maritime aventureux inspiré de One Piece. Sa durée cible est d’environ **10 à 45 minutes**, selon la trajectoire et la longévité du personnage.
@@ -16,7 +30,7 @@ Une carrière traverse trois phases, dans cet ordre :
 2. `childhood` ;
 3. `active`.
 
-Le personnage peut mourir. D’autres formes de fin ou de legacy pourront exister, mais elles ne sont pas encore définies.
+Le personnage peut mourir ou atteindre une Ending authorée. Toute fin affiche l’écran final complet, y compris la mort.
 
 ## 2. Origins
 
@@ -45,7 +59,7 @@ La race crée un archétype sans RaceSystem dédié. Le contenu utilise `raceIs`
 - Parent seul (`single_parent`) : Intelligence +2, Observation +1, Moral -2, Chance -1.
 - Orphelin (`orphan`) : Observation +3, Agilité +2, Moral -4, Charisme -1.
 
-La structure reste persistante et testable par les Events. Les parents ne deviennent pas automatiquement des NPC.
+La structure reste persistante et testable par les Events. Origins instancie immédiatement des parents NPC persistants : deux pour `two_parents`, un pour `single_parent`, aucun par défaut pour `orphan`. En V1, ils utilisent la Race du joueur. Les frères et sœurs ne sont pas générés systématiquement et aucun pool contrôlé de noms familiaux n’est requis.
 
 ### Affiliation familiale
 
@@ -55,9 +69,11 @@ Les affiliations V1 sont `civilian`, `marine`, `pirate`, `revolutionary`, `bandi
 
 La carrière Active est stockée séparément dans `player.career`. Son affiliation est l’une de `civilian`, `pirate`, `marine`, `revolutionary` ou `bounty_hunter`. Changer d’affiliation ne modifie automatiquement ni la réputation, ni la prime, ni le grade, ni le titre, ni le leadership.
 
-La réputation et la prime sont des entiers positifs ou nuls sans plafond. La prime est indépendante des Berrys possédés. Le grade de Marine est optionnel et ordonné par les définitions de contenu ; aucune promotion automatique n’existe. Le titre de carrière est également optionnel et attribué uniquement par le contenu.
+La réputation est un entier `0..100`, initialisé à 0, qui peut augmenter ou diminuer. Elle mesure la quantité de notoriété, pas la moralité, et reste conservée lors d’un changement de carrière. La prime est un entier indépendant `>= 0`, sans plafond et distinct des Berrys possédés ; elle peut exister pour toute affiliation et persiste jusqu’à modification explicite par un Event.
 
-Une Ending est une conclusion de contenu identifiée et localisée. `endCareerWithEnding` termine la carrière avec la raison `legacy` et conserve son `endingId`. La mort reste gérée par la fin de carrière existante et ne reçoit pas automatiquement une Ending.
+Pirate et Civil n’ont pas de grade rigide et peuvent porter un titre personnalisé. Marine utilise une échelle compressée de 10 grades se terminant par Amiral en chef ; Révolutionnaire et Chasseur de primes utilisent chacun une échelle de 5 grades. Les échelles détaillées sont définies dans [Career & Endings](design/CAREER_AND_ENDINGS.md). Tout changement de carrière, promotion, prime ou titre passe exclusivement par un Event authoré ; rien n’est accordé automatiquement.
+
+Un Event authoré sélectionne une famille d’Ending et termine la run ; une logique déterministe de fin sélectionne ensuite la variante exacte selon l’état final. La cible est d’environ cinq Endings de base par carrière, quatre variantes chacune, complétées par des Endings universelles. La mort reçoit le même écran final complet et peut atteindre `100/100`. Le score final est distinct de la Réputation et utilise les six axes pondérés définis dans [Career & Endings](design/CAREER_AND_ENDINGS.md).
 
 ### Niveau social
 
@@ -182,6 +198,10 @@ Il n’existe aucun poids de rareté (`weight`, common/uncommon/rare ou probabil
 La priorité ne sert pas à sélectionner les Events normaux.
 
 ## 7. Temps et Conditions temporelles
+
+Le joueur naît deux ans après Luffy. Son entrée en phase Active à 15 ans correspond donc approximativement au début du voyage principal de Luffy à 17 ans ; après l’ellipse canon de deux ans, le joueur a environ 17 ans. Les conséquences majeures du canon restent protégées : le joueur agit surtout dans les interstices narratifs et ne remplace pas le rôle central des protagonistes canoniques.
+
+Les personnages, organisations et Locations sensibles au canon doivent porter des indications ou métadonnées de disponibilité temporelle exprimées relativement à `ageMonths`, sans inventer une précision calendaire absente des sources. La politique complète est définie dans [World Timeline & Canon](design/WORLD_TIMELINE_AND_CANON.md).
 
 - `ageAtLeastMonths` porte sur l’âge biologique absolu ;
 - `ageAtMostMonths` fixe sa borne supérieure ;
@@ -383,6 +403,8 @@ Le Critical de remplacement propose les possibilités V1 suivantes pour l’anci
 - **vendre**, uniquement dans une Location explicitement compatible avec la vente de navires, contre des Berrys ; être simplement `on_land` ne suffit pas ;
 - **abandonner**, partout et sans compensation automatique, afin que le remplacement reste toujours résoluble.
 
+L’autorité design des marchés navals est désormais `shipMarket: 'none' | 'small_craft' | 'full'`, distinct de `allowsDocking`. Le booléen runtime actuel `allowsShipSale` est une dette de migration technique et ne constitue plus le modèle final. Les six châssis génériques et les règles de marché sont définis dans la [Content Bible](content/CONTENT_BIBLE.md) ; les navires canoniques nommés peuvent être mentionnés mais ne sont pas obtenables en V1.
+
 La cargaison est transférée automatiquement vers le nouveau bateau lorsqu’elle tient dans sa cale. Si elle contient plus de stacks distincts que la nouvelle capacité, le joueur devra à terme choisir les stacks abandonnés. Cette règle est verrouillée, mais aucune UI ni logique complexe de sélection n’est requise pour la jam puisque la cale initiale reste vide.
 
 Aucun `previousShips[]` n’est conservé. L’Event, son Outcome, l’historique de carrière et les textes utilisant le nom du bateau suffisent à préserver sa trace narrative.
@@ -476,7 +498,7 @@ Si le joueur et le navire atteignent zéro simultanément, le Critical Event jou
 
 Le GameState distingue la Location actuelle et l’état `at_sea` / `on_land`. La géographie est une dimension majeure d’éligibilité : certains Events appartiennent à un lieu précis, à la mer ou à la terre.
 
-Le catalogue réel de mers, îles, ports et lieux n’est pas finalisé et n’est pas défini ici.
+Le catalogue final V1 de mers, îles, ports et lieux n’est pas encore verrouillé. Le [catalogue nettoyé de 502 entrées](content/locations/OPFG_LOCATIONS_CATALOG.json) reste une base géographique de travail, pas une source runtime finale. Birka/Birka Moon, Water Seven/Shipbuilding Island, les Birth Locations personnalisées, `shipMarket`, `services[]` et la sélection finale CORE/Birth restent à revoir.
 
 ## 20. Principes de contenu
 
@@ -490,14 +512,14 @@ Les Events doivent privilégier :
 
 La variété provient du volume d’Events authorés, des Conditions, de l’historique, du profil, des lieux, Traits, NPC et conséquences Scheduled. Les Events sont écrits à l’avance et validés. Aucune IA runtime ne les génère.
 
+En V1, les Choices spéciales ou bloquées restent généralement visibles mais grisées/désactivées afin de rendre perceptible la profondeur des trajectoires possibles. L’authoring privilégie donc `availableIf` à `visibleIf` pour ces possibilités ; les cacher doit être une décision narrative explicite.
+
 ## 21. Non-objectifs V1 et systèmes non définis
 
 Ne sont pas considérés comme décidés :
 
-- génération ou héritage détaillé ;
-- Devil Fruits et Haki détaillés ;
+- génération de fratrie systématique ou héritage détaillé au-delà des parents V1 ;
 - combat NPC autonome, DiceChecks NPC ou Traits NPC ;
-- affiliation active distincte de l’origine familiale ;
 - système générique de quêtes ou `ArcState` ;
 - répétition et cooldown d’Events ;
 - rareté pondérée ;

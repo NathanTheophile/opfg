@@ -4,6 +4,8 @@ The repository keeps four responsibilities separate: locale-neutral Content, pur
 
 Powers V1 uses a JSON-compatible `PowerState` shared by Player and NPC. GameState/save v14 persists the owned Devil Fruit, its monotone Awakening (`0..10`), three Haki levels (`0..5`), the grouped `player.career` state and optional `endingId`. Fruit and Career definitions live in Content Schema v4. `src/game/engine/powers.ts` owns consumption eligibility and Player Haki threshold synchronization; React only presents the resulting state.
 
+Design realignment debt: the current runtime still treats Reputation as an unbounded non-negative integer, exposes only a preliminary Marine ladder, has no persistent Origins parent NPC instantiation, and models ship commerce with `allowsShipSale: boolean`. The validated authorities require Reputation `0..100`, the complete career ladders and Ending/final-score model, and `shipMarket: 'none' | 'small_craft' | 'full'`. These are pending implementation changes; this architecture document does not override the design authorities.
+
 ## Runtime state and time
 
 Save v14 stores one clock, `ageMonths`, plus `slotInMonth: 0 | 1`. Origins ends at age 12. Childhood consumes eight annual slots followed by twelve half-year slots and enters Active at age 180. Outside Active the slot is always zero. In Active, slot zero becomes one without changing age; consuming slot one resets it and increments age by one month. Saves v7 à v13 sont migrées séquentiellement au chargement vers v14 ; la migration v13 ajoute `player.career` avec ses valeurs civiles par défaut et `endingId: null`.
