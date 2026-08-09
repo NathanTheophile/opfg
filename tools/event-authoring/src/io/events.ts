@@ -32,9 +32,10 @@ const phaseFromCondition = (condition: unknown): string | undefined => {
 export const inferContentFolder = (path: string | undefined, event: EventDefinition): ContentFolder => {
   const normalized = (path ?? '').replace(/\\/g, '/').toLowerCase();
   if (normalized.includes('fixtures/childhood/')) return 'fixtures/childhood';
-  for (const folder of ['origins','childhood','active','scheduled','critical'] as const) if (normalized.includes(`/events/${folder}/`) || normalized.startsWith(`events/${folder}/`) || normalized.includes(`/${folder}/`)) return folder;
+  for (const folder of ['origins','childhood','active','immediate','scheduled','critical'] as const) if (normalized.includes(`/events/${folder}/`) || normalized.startsWith(`events/${folder}/`) || normalized.includes(`/${folder}/`)) return folder;
   if (event.kind === 'scheduled') return 'scheduled';
   if (event.kind === 'critical') return 'critical';
+  if (event.kind === 'immediate') return 'immediate';
   const phase = phaseFromCondition(event.eligibility);
   return phase === 'origins' ? 'origins' : phase === 'childhood' ? 'childhood' : 'active';
 };
@@ -91,7 +92,7 @@ export const applyLocaleDictionaries = (project: AuthoringProject, dictionaries:
 };
 
 const eventPath = (project: AuthoringProject, event: EventDefinition): string => {
-  const node = project.nodes.find((x) => x.eventId === event.id); const folder = event.kind === 'scheduled' ? 'scheduled' : event.kind === 'critical' ? 'critical' : node?.contentFolder ?? 'active';
+  const node = project.nodes.find((x) => x.eventId === event.id); const folder = event.kind === 'immediate' ? 'immediate' : event.kind === 'scheduled' ? 'scheduled' : event.kind === 'critical' ? 'critical' : node?.contentFolder ?? 'active';
   return `events/${folder}/${event.id}.json`;
 };
 
@@ -128,4 +129,3 @@ export const readEventsBundle = async (bytes: ArrayBuffer | Uint8Array): Promise
   if (!eventFiles.length) warnings.push('ZIP contains no events/**/*.json files.');
   return { eventFiles, dictionaries, warnings, manifest };
 };
-

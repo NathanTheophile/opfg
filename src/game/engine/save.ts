@@ -1,7 +1,7 @@
 import type { CareerEndReason, CareerPhase, GameState, ItemStack, NpcState, NpcStats, ShipState, TravelState } from '../model/schema';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 11;
+const CURRENT_SAVE_VERSION = 12;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
@@ -79,7 +79,10 @@ function readGameState(value: unknown): GameState | null {
   const npcs = readNpcs(value.npcs);
   const history = readHistory(value.history);
   const scheduledEvents = readScheduledEvents(value.scheduledEvents);
-  if (npcs === null || history === null || scheduledEvents === null) return null;
+  if (npcs === null || history === null || scheduledEvents === null || !isStringArray(value.immediateEventQueue)) return null;
+  if (!(value.pendingSlotPhase === null || isCareerPhase(value.pendingSlotPhase))) return null;
+  if (!isNonNegativeInteger(value.immediateEventsResolvedInChain) || value.immediateEventsResolvedInChain > 1000) return null;
+  if (!(value.navigationDecisionAgeMonths === null || (isNonNegativeInteger(value.navigationDecisionAgeMonths) && value.navigationDecisionAgeMonths <= value.ageMonths))) return null;
   if (value.passengerNpcIds.some((npcId) => npcs[npcId] === undefined || npcs[npcId].status === 'crew' || npcs[npcId].status === 'dead')) return null;
   if (!(value.currentEventId === null || isString(value.currentEventId))) return null;
   if (!(value.careerStatus === 'active' || value.careerStatus === 'ended')) return null;
@@ -122,6 +125,10 @@ function readGameState(value: unknown): GameState | null {
     npcs,
     history,
     scheduledEvents,
+    immediateEventQueue: [...value.immediateEventQueue],
+    pendingSlotPhase: value.pendingSlotPhase,
+    immediateEventsResolvedInChain: value.immediateEventsResolvedInChain,
+    navigationDecisionAgeMonths: value.navigationDecisionAgeMonths,
     currentEventId: value.currentEventId,
     careerStatus: value.careerStatus,
     careerEndReason: value.careerEndReason,
@@ -158,11 +165,21 @@ function migrateLegacySave(value: unknown): unknown {
   if (isRecord(migrated) && migrated.version === 10 && isRecord(migrated.player) && isRecord(migrated.player.profile)) {
     migrated = {
       ...migrated,
-      version: CURRENT_SAVE_VERSION,
+      version: 11,
       player: {
         ...migrated.player,
         profile: { ...migrated.player.profile, familyStructureId: null, socialClassId: null },
       },
+    };
+  }
+  if (isRecord(migrated) && migrated.version === 11) {
+    migrated = {
+      ...migrated,
+      version: CURRENT_SAVE_VERSION,
+      immediateEventQueue: [],
+      pendingSlotPhase: null,
+      immediateEventsResolvedInChain: 0,
+      navigationDecisionAgeMonths: null,
     };
   }
   return migrated;

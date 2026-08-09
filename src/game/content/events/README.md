@@ -2,6 +2,8 @@
 
 Each JSON file under this directory contains exactly one `EventDefinition`. Files are discovered recursively by `eventCatalog.ts`; adding an Event does not require editing an import manifest.
 
+Immediate continuations use `kind: "immediate"`, live under `immediate/`, and are only reached through `queueImmediateEvent` Effects. They never participate in Normal selection.
+
 Rules:
 
 - use `<EventId>.json`, with the filename matching the JSON `id` exactly;

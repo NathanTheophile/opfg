@@ -92,6 +92,7 @@ export type Effect =
   | { type: 'modifyNpcRelationship'; npcId: NpcId; amount: number }
   | { type: 'modifyNpcStat'; npcId: NpcId; statId: NpcStatId; amount: number }
   | { type: 'scheduleEvent'; eventId: EventId; delayMonths: number }
+  | { type: 'queueImmediateEvent'; eventId: EventId }
   | { type: 'setCareerPhase'; phase: CareerPhase }
   | { type: 'setRace'; raceId: RaceId }
   | { type: 'setOriginSea'; seaId: SeaId }
@@ -170,6 +171,7 @@ export type CriticalTrigger =
   | { type: 'shipReplacementPending' };
 export type EventDefinition =
   | (EventBase & { kind: 'normal' })
+  | (EventBase & { kind: 'immediate' })
   | (EventBase & { kind: 'scheduled'; priority: ScheduledPriority; scheduledReach?: ScheduledReach; cancelIf?: Condition; fallbackEventId?: EventId })
   | (EventBase & { kind: 'critical'; trigger: CriticalTrigger });
 
@@ -210,7 +212,7 @@ export interface SeaDefinition { id: SeaId; nameKey: LocalizationKey }
 export interface AffiliationDefinition { id: AffiliationId; nameKey: LocalizationKey }
 export interface FamilyStructureDefinition { id: FamilyStructureId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
 export interface SocialClassDefinition { id: SocialClassId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
-export interface LocationDefinition { id: LocationId; seaId: SeaId | null; blocksScheduledEvents: boolean; allowsShipSale: boolean }
+export interface LocationDefinition { id: LocationId; seaId: SeaId | null; blocksScheduledEvents: boolean; allowsShipSale: boolean; allowsDocking: boolean }
 
 export interface ContentCatalog {
   schemaVersion: number;

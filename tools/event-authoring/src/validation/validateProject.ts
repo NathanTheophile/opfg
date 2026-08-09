@@ -75,7 +75,7 @@ export const validateProject = (project: AuthoringProject): ValidationResult => 
     const node = nodeByEvent.get(event.id);
     if (!node) issues.push({ severity: 'error', category: 'Authoring', code: 'missing-node', message: 'Event has no authoring node.', eventId: event.id });
     else {
-      const expected = event.kind === 'scheduled' ? 'scheduled' : event.kind === 'critical' ? 'critical' : undefined;
+      const expected = event.kind === 'immediate' ? 'immediate' : event.kind === 'scheduled' ? 'scheduled' : event.kind === 'critical' ? 'critical' : undefined;
       if (expected && node.contentFolder !== expected) issues.push({ severity: 'error', category: 'Authoring', code: 'folder-kind-mismatch', message: `${event.kind} Event must export under ${expected}/.`, eventId: event.id });
       if (event.kind === 'normal' && !['origins','childhood','active','fixtures/childhood'].includes(node.contentFolder)) issues.push({ severity: 'error', category: 'Authoring', code: 'folder-kind-mismatch', message: 'Normal Event requires origins, childhood, active, or fixtures/childhood folder.', eventId: event.id });
       if (node.status === 'needsReview') issues.push({ severity: 'needsReview', category: 'Authoring', code: 'migration-review', message: 'Event requires manual migration review.', eventId: event.id });

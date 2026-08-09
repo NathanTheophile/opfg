@@ -240,7 +240,7 @@ describe('validateContent', () => {
     const errors = messages(catalog);
     expect(errors).toContainEqual(expect.stringContaining('Unknown Condition type "monthAtLeast"'));
     expect(errors).toContainEqual(expect.stringContaining('Outcome.advanceMonths is not supported'));
-    expect(errors).toContainEqual(expect.stringContaining('Invalid Normal/Scheduled/Critical field combination'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid Event kind field combination'));
     expect(errors).toContainEqual(expect.stringContaining('Invalid scheduledReach'));
     expect(errors).toContainEqual(expect.stringContaining('Unknown Scheduled EventId "departure"'));
   });

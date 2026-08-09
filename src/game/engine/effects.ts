@@ -28,6 +28,7 @@ export function applyEffects(state: GameState, catalog: ContentCatalog, effects:
     ),
     history: [...state.history],
     scheduledEvents: [...state.scheduledEvents],
+    immediateEventQueue: [...state.immediateEventQueue],
   };
 
   for (const effect of effects) applyEffect(next, catalog, effect, context);
@@ -187,6 +188,9 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
         sourceEventId: context.sourceEventId,
         sourceChoiceId: context.sourceChoiceId,
       });
+      return;
+    case 'queueImmediateEvent':
+      state.immediateEventQueue.push(effect.eventId);
       return;
     case 'setCareerPhase':
       state.careerPhase = effect.phase;

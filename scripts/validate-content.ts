@@ -7,6 +7,7 @@ const errors = validateContent(catalog);
 const warnings = diagnoseContent(catalog);
 const counts = {
   normal: catalog.events.filter(({ kind }) => kind === 'normal').length,
+  immediate: catalog.events.filter(({ kind }) => kind === 'immediate').length,
   scheduled: catalog.events.filter(({ kind }) => kind === 'scheduled').length,
   critical: catalog.events.filter(({ kind }) => kind === 'critical').length,
 };
@@ -15,6 +16,7 @@ console.log('OPFG Content Validation\n');
 console.log(`Schema: ${catalog.schemaVersion}\n`);
 console.log(`Events: ${catalog.events.length}`);
 console.log(`  Normal: ${counts.normal}`);
+console.log(`  Immediate: ${counts.immediate}`);
 console.log(`  Scheduled: ${counts.scheduled}`);
 console.log(`  Critical: ${counts.critical}\n`);
 console.log(`Structural validation: ${errors.length} error(s)`);

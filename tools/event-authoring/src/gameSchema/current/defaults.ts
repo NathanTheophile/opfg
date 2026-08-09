@@ -112,6 +112,7 @@ export const createEffect = (type: Effect['type']): Effect => {
     case 'modifyNpcRelationship': return { type, npcId: '', amount: 0 };
     case 'modifyNpcStat': return { type, npcId: '', statId: 'loyalty', amount: 0 };
     case 'scheduleEvent': return { type, eventId: '', delayMonths: 0 };
+    case 'queueImmediateEvent': return { type, eventId: '' };
     case 'setCareerPhase': return { type, phase: 'active' };
     case 'setRace': return { type, raceId: '' };
     case 'setOriginSea': return { type, seaId: '' };

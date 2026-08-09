@@ -16,13 +16,14 @@ interface Props {
   registries: GameRegistries;
   eventIds: string[];
   scheduledEventIds: string[];
+  immediateEventIds: string[];
   localization: LocalizationAuthoringStore;
   activeLocale: string;
   sourceLocale: string;
   onLocalizedTextChange: (key: string, locale: string, text: string) => void;
 }
 
-export default function ChoiceEditor({ eventId, value, onChange, onRemove, registries, eventIds, scheduledEventIds, localization, activeLocale, sourceLocale, onLocalizedTextChange }: Props) {
+export default function ChoiceEditor({ eventId, value, onChange, onRemove, registries, eventIds, scheduledEventIds, immediateEventIds, localization, activeLocale, sourceLocale, onLocalizedTextChange }: Props) {
   const summary = getText(localization, value.textKey, sourceLocale).trim() || 'Untitled Choice';
   return <details className="choice-editor" open>
     <summary><span>{summary}</span><code>{value.id || 'no-id'}</code></summary>
@@ -35,10 +36,9 @@ export default function ChoiceEditor({ eventId, value, onChange, onRemove, regis
       {value.input?.placeholderKey && <LocalizedField label="Placeholder" localization={localization} localizationKey={value.input.placeholderKey} locale={activeLocale} sourceLocale={sourceLocale} onChange={(text) => onLocalizedTextChange(value.input!.placeholderKey!, activeLocale, text)} />}
       <div><div className="subheading">visibleIf</div><ConditionEditor value={value.visibleIf} onChange={(visibleIf) => onChange({ ...value, visibleIf })} registries={registries} eventIds={eventIds} /></div>
       <div><div className="subheading">availableIf</div><ConditionEditor value={value.availableIf} onChange={(availableIf) => onChange({ ...value, availableIf })} registries={registries} eventIds={eventIds} /></div>
-      <ResolutionEditor value={value.resolution} onChange={(resolution) => onChange({ ...value, resolution })} registries={registries} eventIds={eventIds} scheduledEventIds={scheduledEventIds} eventId={eventId} choiceId={value.id} localization={localization} activeLocale={activeLocale} sourceLocale={sourceLocale} onLocalizedTextChange={onLocalizedTextChange} />
+      <ResolutionEditor value={value.resolution} onChange={(resolution) => onChange({ ...value, resolution })} registries={registries} eventIds={eventIds} scheduledEventIds={scheduledEventIds} immediateEventIds={immediateEventIds} eventId={eventId} choiceId={value.id} localization={localization} activeLocale={activeLocale} sourceLocale={sourceLocale} onLocalizedTextChange={onLocalizedTextChange} />
     </div>
   </details>;
 }
 
 export { createChoice };
-

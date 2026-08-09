@@ -10,7 +10,7 @@ const baseCatalog = (events: EventDefinition[], extra: Partial<ContentCatalog> =
   schemaVersion: 2,
   races: [], seas: [], affiliations: [], familyStructures: [], socialClasses: [], traits: [], items: [], crewRoles: [], npcs: [],
   ships: [{ id: 'starter_sloop', nameKey: 'x', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 }],
-  locations: [{ id: 'starter_port', seaId: null, blocksScheduledEvents: false, allowsShipSale: true }],
+  locations: [{ id: 'starter_port', seaId: null, blocksScheduledEvents: false, allowsShipSale: true, allowsDocking: true }],
   events,
   ...extra,
 });
@@ -60,6 +60,19 @@ describe('simulation', () => {
     expect(first.summary.reachedActive).toBe(10);
     expect(first.summary.scheduledResolved).toBeGreaterThan(0);
     expect(first.events).toHaveLength(contentCatalog.events.length);
+  });
+
+  it('drives monthly navigation and counts a complete Immediate chain as one slot', () => {
+    const outcome = (effects: import('../src/game/content/schema').Effect[]) => ({ id: 'done', textKey: 'x', effects });
+    const events: EventDefinition[] = [
+      { id: 'root', kind: 'normal', titleKey: 'x', textKey: 'x', choices: [{ id: 'go', textKey: 'x', resolution: { type: 'deterministic', outcome: outcome([{ type: 'queueImmediateEvent', eventId: 'a' }]) } }] },
+      { id: 'a', kind: 'immediate', titleKey: 'x', textKey: 'x', choices: [{ id: 'go', textKey: 'x', resolution: { type: 'deterministic', outcome: outcome([{ type: 'queueImmediateEvent', eventId: 'b' }]) } }] },
+      { id: 'b', kind: 'immediate', titleKey: 'x', textKey: 'x', choices: [{ id: 'go', textKey: 'x', resolution: { type: 'deterministic', outcome: outcome([]) } }] },
+    ];
+    const state = createInitialGameState(9); state.careerPhase = 'active'; state.ageMonths = 180;
+    const result = simulateRun({ seed: 9, catalog: baseCatalog(events), initialState: state });
+    expect(result).toMatchObject({ normalEvents: 1, immediateEvents: 2, maximumImmediateChainLength: 2 });
+    expect(result.finalState).toMatchObject({ ageMonths: 180, slotInMonth: 1, navigationDecisionAgeMonths: 180 });
   });
 
   it('reports simple production diagnostics without pretending to solve reachability', () => {

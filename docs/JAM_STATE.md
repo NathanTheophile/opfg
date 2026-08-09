@@ -2,11 +2,13 @@
 
 Implemented and verified:
 
-- Content Contract v2 with Normal, Scheduled, and Critical event variants;
+- Content Contract v2 with Normal, Immediate, Scheduled, and Critical event variants;
 - one JSON file per Event, recursively auto-discovered and deterministically sorted by Event ID;
-- save/GameState v11 with v7-v10 migration, unbounded player health, D20-only attribute IDs, complete Origins profile, leadership, passengers, `ageMonths`, Active `slotInMonth`, stack inventory, Berrys, persistent nullable ship instances, pending replacement, and NPC `dead` status;
+- save/GameState v12 with v7-v11 migration, persisted Immediate queue/deferred slot/monthly navigation decision, unbounded player health, D20-only attribute IDs, complete Origins profile, leadership, passengers, `ageMonths`, Active `slotInMonth`, stack inventory, Berrys, persistent nullable ship instances, pending replacement, and NPC `dead` status;
 - seeded uniform normal selection and deterministic scheduled ordering;
 - scheduled location reach, cancellation, and fallback;
+- Immediate continuation chains with Critical preemption, eligibility pruning, cycle validation and runtime guard;
+- one persisted, zero-slot land/sea navigation choice per eligible Active month, with Location docking control;
 - runtime enforcement of symmetric opposite traits;
 - player death, NPC death, ship destruction, shipless-at-sea, and ship replacement critical fixtures;
 - authored ShipDefinitions, HP, crew/cargo capacity invariants, cargo stacks, and location-gated ship sales;

@@ -3,8 +3,10 @@ import { contentCatalog } from '../src/game/content/definitions';
 import { selectNextEvent } from '../src/game/engine/events';
 import { resolveChoice } from '../src/game/engine/resolution';
 import { createInitialGameState } from '../src/game/model/initialState';
+import { applyMonthlyNavigationChoice, needsMonthlyNavigationDecision } from '../src/game/engine/navigation';
 
 function resolveFirst(state: ReturnType<typeof createInitialGameState>) {
+  if (needsMonthlyNavigationDecision(state)) state = selectNextEvent(applyMonthlyNavigationChoice(state, contentCatalog, 'stay'), contentCatalog);
   const event = contentCatalog.events.find(({ id }) => id === state.currentEventId)!;
   if (!event) throw new Error(`No event at age ${state.ageMonths}; history ${state.history.length}; scheduled ${JSON.stringify(state.scheduledEvents)}`);
   const choice = event.choices[0];

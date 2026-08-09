@@ -4,7 +4,7 @@ import type { LocalizationStatus } from '../localization/types';
 export type EventNodeData = {
   eventId: string;
   title: string;
-  kind: 'normal' | 'scheduled' | 'critical';
+  kind: 'normal' | 'immediate' | 'scheduled' | 'critical';
   priority?: number;
   folder: string;
   choiceCount: number;
@@ -28,4 +28,3 @@ export default function EventNode({ data, selected }: NodeProps<EventFlowNode>) 
     <Handle type="source" position={Position.Right} />
   </div>;
 }
-

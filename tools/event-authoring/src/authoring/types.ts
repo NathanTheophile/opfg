@@ -1,10 +1,10 @@
 import type { EventDefinition, GameRegistries } from '../gameSchema/current/contract';
 import type { LocalizationAuthoringStore } from '../localization/types';
 
-export const AUTHORING_VERSION = 7 as const;
+export const AUTHORING_VERSION = 8 as const;
 
 export type AuthoringStatus = 'draft' | 'ready' | 'migrated' | 'needsReview';
-export type ContentFolder = 'origins' | 'childhood' | 'active' | 'scheduled' | 'critical' | 'fixtures/childhood';
+export type ContentFolder = 'origins' | 'childhood' | 'active' | 'immediate' | 'scheduled' | 'critical' | 'fixtures/childhood';
 
 export interface Point { x: number; y: number; }
 

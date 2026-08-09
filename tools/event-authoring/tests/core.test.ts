@@ -76,8 +76,12 @@ describe('Content Schema v2', () => {
   it('accepts every current Condition and Effect family', () => {
     const project = createDemoProject();
     const event = exhaustiveEvent(project);
+    const immediate = clone(project.events.find((value) => value.kind === 'normal')!);
+    Object.assign(immediate, { id: 'immediate_followup', kind: 'immediate', titleKey: 'event.immediate_followup.title', textKey: 'event.immediate_followup.text' });
+    if (event.kind !== 'normal' || event.choices[0].resolution.type !== 'deterministic') throw new Error('Unexpected exhaustive fixture.');
+    event.choices[0].resolution.outcome.effects.push({ type: 'queueImmediateEvent', eventId: 'immediate_followup' });
     const catalog = toRuntimeCatalog(project);
-    catalog.events.push(event);
+    catalog.events.push(event, immediate);
     expect(validateContent(catalog)).toEqual([]);
   });
 
@@ -89,7 +93,7 @@ describe('Content Schema v2', () => {
     const messages = validateSingleEventShape(event).map((issue) => issue.message).join('\n');
     expect(messages).toContain('Unknown Condition type "monthAtLeast"');
     expect(messages).toContain('Outcome.advanceMonths is not supported');
-    expect(messages).toContain('Invalid Normal/Scheduled/Critical field combination');
+    expect(messages).toContain('Invalid Event kind field combination');
   });
 
   it('validates Dice v2, including modifier label and exactly four outcomes', () => {
@@ -131,6 +135,15 @@ describe('Event import/export', () => {
     expect(parsed.errors).toEqual([]);
     expect(parsed.event).toEqual(source);
     expect(parsed.folder).toBe('active');
+  });
+
+  it('imports and exports Immediate Events in their dedicated folder', async () => {
+    const immediate = { ...clone(createDemoProject().events[0]), id: 'followup', kind: 'immediate' as const };
+    const imported = importEventFiles(emptyWorkspace(), [{ name: 'followup.json', path: 'events/immediate/followup.json', text: eventJson(immediate) }]);
+    expect(imported.report.rejected).toEqual([]);
+    expect(imported.project.nodes[0].contentFolder).toBe('immediate');
+    const zip = await readZip(createEventsArchive(imported.project, { bundle: false, includeLocales: false }));
+    expect([...zip.keys()]).toContain('events/immediate/followup.json');
   });
 
   it('imports multiple valid Events without aborting on one invalid file', () => {
@@ -209,7 +222,7 @@ describe('v0.3 project migration and validation', () => {
     };
     const result = migrateImportedProject(legacy);
     const event = result.project.events[0] as any;
-    expect(result.project.authoringVersion).toBe(7);
+    expect(result.project.authoringVersion).toBe(8);
     expect(result.project.registries.ships).toEqual([]);
     expect(result.project.registries.crewRoles).toEqual([]);
     expect(result.project.registries.locations[0]).toHaveProperty('allowsShipSale', false);

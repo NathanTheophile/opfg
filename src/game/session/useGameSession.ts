@@ -2,7 +2,8 @@ import { useMemo, useState } from 'react';
 import type { ContentCatalog } from '../content/schema';
 import { clearGameState, loadGameState, saveGameState, type StorageLike } from '../engine/save';
 import { findCurrentEvent } from '../engine/events';
-import { chooseInSession, createSessionState, dismissResolution, startNewRun } from './gameSession';
+import { chooseInSession, chooseMonthlyNavigationInSession, createSessionState, dismissResolution, getSessionNavigationOptions, startNewRun } from './gameSession';
+import type { MonthlyNavigationChoice } from '../engine/navigation';
 
 let fallbackSeed = Date.now() >>> 0;
 function generateSeed(): number {
@@ -28,6 +29,12 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
     return next.lastResolution;
   };
   const continueAfterResolution = () => setSession((current) => dismissResolution(current));
+  const navigationOptions = useMemo(() => getSessionNavigationOptions(session, catalog), [catalog, session]);
+  const chooseNavigation = (choice: MonthlyNavigationChoice) => {
+    const next = chooseMonthlyNavigationInSession(session, catalog, choice);
+    if (next.gameState) saveGameState(storage, next.gameState);
+    setSession(next);
+  };
 
-  return { ...session, currentEvent, startNewRun: start, restartRun: start, choose, continueAfterResolution };
+  return { ...session, currentEvent, navigationOptions, startNewRun: start, restartRun: start, choose, chooseNavigation, continueAfterResolution };
 }

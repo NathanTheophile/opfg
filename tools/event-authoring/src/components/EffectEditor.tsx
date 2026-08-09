@@ -4,12 +4,12 @@ import { IdSelect, NumberInput } from './EditorPrimitives';
 
 export const EFFECT_TYPES: Effect['type'][] = [
   'setFlag','clearFlag','addItem','removeItem','addTrait','removeTrait','modifyStat','modifyHealth','acquireShip','modifyShipHealth','addCargoItem','removeCargoItem','resolveShipReplacement','modifyBerries','loseShip',
-  'moveToLocation','setBirthLocation','setNpcStatus','setNpcPassenger','setLeadership','modifyNpcRelationship','modifyNpcStat','scheduleEvent','setCareerPhase','setRace',
+  'moveToLocation','setBirthLocation','setNpcStatus','setNpcPassenger','setLeadership','modifyNpcRelationship','modifyNpcStat','scheduleEvent','queueImmediateEvent','setCareerPhase','setRace',
   'setOriginSea','setAffiliation','setFamilyStructure','setSocialClass','endCareer',
 ];
 
-interface Props { value: Effect; onChange: (value: Effect) => void; onRemove: () => void; registries: GameRegistries; eventIds: string[]; scheduledEventIds: string[]; }
-export default function EffectEditor({ value, onChange, onRemove, registries, eventIds, scheduledEventIds }: Props) {
+interface Props { value: Effect; onChange: (value: Effect) => void; onRemove: () => void; registries: GameRegistries; eventIds: string[]; scheduledEventIds: string[]; immediateEventIds: string[]; }
+export default function EffectEditor({ value, onChange, onRemove, registries, eventIds, scheduledEventIds, immediateEventIds }: Props) {
   const supportsLeadershipOverride = ['acquireShip','loseShip','addCargoItem','removeCargoItem','resolveShipReplacement','setNpcStatus','setNpcPassenger'].includes(value.type);
   const params = (() => {
     switch (value.type) {
@@ -28,6 +28,7 @@ export default function EffectEditor({ value, onChange, onRemove, registries, ev
       case 'modifyNpcRelationship': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><NumberInput value={value.amount} onChange={(amount) => onChange({ ...value, amount })} /></div>;
       case 'modifyNpcStat': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={value.statId} onChange={(e) => onChange({ ...value, statId: e.target.value as typeof value.statId })}>{NPC_STAT_IDS.map((id) => <option key={id}>{id}</option>)}</select><NumberInput value={value.amount} onChange={(amount) => onChange({ ...value, amount })} /></div>;
       case 'scheduleEvent': return <div className="inline-fields"><IdSelect value={value.eventId} options={scheduledEventIds.map((id) => ({ id }))} onChange={(eventId) => onChange({ ...value, eventId })} /><NumberInput value={value.delayMonths} min={0} onChange={(delayMonths) => onChange({ ...value, delayMonths })} /></div>;
+      case 'queueImmediateEvent': return <IdSelect value={value.eventId} options={immediateEventIds.map((id) => ({ id }))} onChange={(eventId) => onChange({ ...value, eventId })} />;
       case 'setCareerPhase': return <select value={value.phase} onChange={(e) => onChange({ ...value, phase: e.target.value as typeof value.phase })}><option value="origins">origins</option><option value="childhood">childhood</option><option value="active">active</option></select>;
       case 'setRace': return <IdSelect value={value.raceId} options={registries.races} onChange={(raceId) => onChange({ ...value, raceId })} />;
       case 'setOriginSea': return <IdSelect value={value.seaId} options={registries.seas} onChange={(seaId) => onChange({ ...value, seaId })} />;

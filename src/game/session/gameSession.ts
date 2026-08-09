@@ -4,6 +4,7 @@ import { findCurrentEvent, selectNextEvent } from '../engine/events';
 import { resolveChoice, type ChoiceResolutionResult } from '../engine/resolution';
 import { createInitialGameState } from '../model/initialState';
 import type { GameState } from '../model/schema';
+import { applyMonthlyNavigationChoice, getMonthlyNavigationOptions, type MonthlyNavigationChoice } from '../engine/navigation';
 
 export interface GameSessionState {
   gameState: GameState | null;
@@ -33,4 +34,14 @@ export function chooseInSession(session: GameSessionState, catalog: ContentCatal
 
 export function dismissResolution(session: GameSessionState): GameSessionState {
   return { ...session, previousState: null, lastResolution: null };
+}
+
+export function chooseMonthlyNavigationInSession(session: GameSessionState, catalog: ContentCatalog, choice: MonthlyNavigationChoice): GameSessionState {
+  if (session.gameState === null) throw new Error('Cannot choose navigation without an active run.');
+  const next = applyMonthlyNavigationChoice(session.gameState, catalog, choice);
+  return { gameState: selectNextEvent(next, catalog), previousState: session.gameState, lastResolution: null };
+}
+
+export function getSessionNavigationOptions(session: GameSessionState, catalog: ContentCatalog) {
+  return session.gameState === null ? [] : getMonthlyNavigationOptions(session.gameState, catalog);
 }

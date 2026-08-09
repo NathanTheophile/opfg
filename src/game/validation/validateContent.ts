@@ -89,6 +89,7 @@ const EFFECT_TYPES = new Set([
   'modifyNpcRelationship',
   'modifyNpcStat',
   'scheduleEvent',
+  'queueImmediateEvent',
   'setCareerPhase',
   'setRace',
   'setOriginSea',
@@ -130,6 +131,7 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   const choicesByEvent = new Map<string, Set<string>>();
   const outcomesByEvent = new Map<string, Set<string>>();
   const scheduledEventIds = new Set<string>();
+  const immediateEventIds = new Set<string>();
 
   for (const [eventIndex, event] of events.entries()) {
     const eventPath = `events[${eventIndex}]`;
@@ -141,10 +143,11 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
       outcomesByEvent.set(eventId, collectOutcomeIds(choices));
     }
     if (eventId && event.kind === 'scheduled') scheduledEventIds.add(eventId);
+    if (eventId && event.kind === 'immediate') immediateEventIds.add(eventId);
   }
 
   validateTraitOpposites(traits, traitIds, errors);
-  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, shipIds, crewRoleIds, npcIds, raceIds, seaIds, affiliationIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds };
+  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, shipIds, crewRoleIds, npcIds, raceIds, seaIds, affiliationIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds, immediateEventIds };
   validateNamedDefinitions(races, 'races', errors);
   validateNamedDefinitions(seas, 'seas', errors);
   validateNamedDefinitions(affiliations, 'affiliations', errors);
@@ -155,6 +158,7 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
     validateNullableReference(location.seaId, seaIds, 'SeaId', `locations[${index}].seaId`, errors);
     if (typeof location.blocksScheduledEvents !== 'boolean') errors.push({ path: `locations[${index}].blocksScheduledEvents`, message: 'Location requires blocksScheduledEvents.' });
     if (typeof location.allowsShipSale !== 'boolean') errors.push({ path: `locations[${index}].allowsShipSale`, message: 'Location requires allowsShipSale.' });
+    if (typeof location.allowsDocking !== 'boolean') errors.push({ path: `locations[${index}].allowsDocking`, message: 'Location requires allowsDocking.' });
   });
   races.forEach((race, index) => validateOriginModifierDefinition(race, `races[${index}]`, true, errors));
   familyStructures.forEach((definition, index) => validateOriginModifierDefinition(definition, `familyStructures[${index}]`, false, errors));
@@ -170,6 +174,7 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   for (const [eventIndex, event] of events.entries()) {
     validateEvent(event, `events[${eventIndex}]`, references, errors);
   }
+  validateImmediateCycles(events, errors);
 
   return errors;
 }
@@ -197,6 +202,7 @@ interface References {
   socialClassIds: Set<string>;
   locationIds: Set<string>;
   scheduledEventIds: Set<string>;
+  immediateEventIds: Set<string>;
 }
 
 function validateEvent(
@@ -205,8 +211,10 @@ function validateEvent(
   references: References,
   errors: ContentValidationError[],
 ): void {
-  if (!['normal', 'scheduled', 'critical'].includes(String(event.kind))) errors.push({ path, message: `Invalid Event kind "${String(event.kind)}".` });
-  if (event.scheduledOnly !== undefined || (event.kind !== 'scheduled' && event.priority !== undefined)) errors.push({ path, message: 'Invalid Normal/Scheduled/Critical field combination.' });
+  if (!['normal', 'immediate', 'scheduled', 'critical'].includes(String(event.kind))) errors.push({ path, message: `Invalid Event kind "${String(event.kind)}".` });
+  if (event.scheduledOnly !== undefined
+    || (event.kind !== 'scheduled' && [event.priority, event.scheduledReach, event.cancelIf, event.fallbackEventId].some((value) => value !== undefined))
+    || (event.kind !== 'critical' && event.trigger !== undefined)) errors.push({ path, message: 'Invalid Event kind field combination.' });
   if (event.kind === 'scheduled') {
     if (![50, 100, 200, 300].includes(Number(event.priority))) errors.push({ path, message: 'Scheduled priority must be 50, 100, 200, or 300.' });
     if (event.scheduledReach !== undefined && !['normal', 'unrestricted'].includes(String(event.scheduledReach))) errors.push({ path, message: 'Invalid scheduledReach.' });
@@ -485,6 +493,42 @@ function validateEffect(
     validateReference(effect.eventId, references.scheduledEventIds, 'Scheduled EventId', path, errors);
     if (!Number.isInteger(effect.delayMonths) || (effect.delayMonths as number) < 0) errors.push({ path, message: 'scheduleEvent delayMonths must be a non-negative integer.' });
   }
+  if (type === 'queueImmediateEvent') validateReference(effect.eventId, references.immediateEventIds, 'Immediate EventId', path, errors);
+}
+
+function validateImmediateCycles(events: UnknownRecord[], errors: ContentValidationError[]): void {
+  const graph = new Map<string, Set<string>>();
+  for (const event of events) {
+    const source = stringValue(event.id);
+    if (!source) continue;
+    const targets = new Set<string>();
+    walkRecords(event.choices, (record) => {
+      if (record.type === 'queueImmediateEvent' && stringValue(record.eventId)) targets.add(String(record.eventId));
+    });
+    graph.set(source, targets);
+  }
+  const visiting = new Set<string>();
+  const visited = new Set<string>();
+  const visit = (id: string, path: string[]): void => {
+    if (visiting.has(id)) {
+      const start = path.indexOf(id);
+      errors.push({ path: 'events', message: `Immediate Event cycle detected: ${[...path.slice(start), id].join(' -> ')}.` });
+      return;
+    }
+    if (visited.has(id)) return;
+    visiting.add(id);
+    for (const target of graph.get(id) ?? []) visit(target, [...path, id]);
+    visiting.delete(id);
+    visited.add(id);
+  };
+  for (const id of graph.keys()) visit(id, []);
+}
+
+function walkRecords(value: unknown, visitor: (record: UnknownRecord) => void): void {
+  if (Array.isArray(value)) return value.forEach((entry) => walkRecords(entry, visitor));
+  if (!isRecord(value)) return;
+  visitor(value);
+  Object.values(value).forEach((entry) => walkRecords(entry, visitor));
 }
 
 function validatePositiveQuantity(value: unknown, path: string, errors: ContentValidationError[]): void {

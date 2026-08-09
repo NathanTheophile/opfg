@@ -9,7 +9,8 @@ The application remains independently installable and runnable, while its runtim
 `src/gameSchema/current/contract.ts` is now a thin authoring adapter over the canonical OPFG v2 contract in `src/game/content/schema.ts` and model IDs in `src/game/model/schema.ts`:
 
 - `CONTENT_SCHEMA_VERSION = 2`;
-- Event union: `normal`, `scheduled`, `critical`;
+- Event union: `normal`, `immediate`, `scheduled`, `critical`;
+- Immediate: explicit continuation only, authorable through `queueImmediateEvent`, exported under `events/immediate/`;
 - Normal: no priority, weight, repeat/cooldown or scheduled-only fields;
 - Scheduled: `priority: 50 | 100 | 200 | 300`, optional `scheduledReach`, `cancelIf`, `fallbackEventId`;
 - Critical: `playerHealthDepleted`, `npcHealthDepleted`, `shipDestroyed` triggers;

@@ -24,7 +24,9 @@ Scheduled selection never consumes RNG. A scheduled occurrence remains pending w
 
 ## Content Contract v2
 
-`EventDefinition` is a discriminated union of `normal`, `scheduled`, and `critical`. Priority belongs only to scheduled definitions. Locations declare whether normal scheduled reach is blocked and whether ship sales are allowed. Outcomes contain localization, identity, and effects only; phase rules own time advancement.
+`EventDefinition` is a discriminated union of `normal`, `immediate`, `scheduled`, and `critical`. Priority belongs only to scheduled definitions. Immediate definitions are explicit continuations queued by Effects; they never enter Normal selection and defer root-slot finalization until the chain is empty. Locations declare whether normal scheduled reach is blocked, whether ship sales are allowed, and whether docking is possible. Outcomes contain localization, identity, and effects only; phase rules own time advancement.
+
+At an Active month boundary the engine may expose a monthly navigation decision before Event selection. This session prompt is derived from persisted GameState and is not an authored Event. The selection order is Critical, pending navigation when applicable, Immediate, Scheduled, then Normal; an already-started Immediate chain always completes before the next month prompt.
 
 Each Event is stored as one JSON file under `src/game/content/events/**`, named after its `EventId`. `eventCatalog.ts` discovers these files recursively with an eager Vite glob, verifies filename/ID agreement, and sorts the resulting catalogue lexically by Event ID. Consequently, adding an Event requires no TypeScript import or manifest edit, while seeded selection receives a stable ordering on every machine and build.
 

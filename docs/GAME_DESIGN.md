@@ -140,7 +140,11 @@ Cette répartition guide la production de contenu ; ce n’est pas un quota cons
 
 Active commence toujours à **15 ans** et utilise **2 slots d’Event par mois**, soit au maximum 24 Events consommant un slot par année complète, hors Critical Events.
 
-Un slot peut être consommé par un Event normal, Scheduled, une conséquence, une suite d’arc ou une rencontre programmée. La provenance ne change pas son coût.
+### Navigation mensuelle
+
+Au début de chaque mois Active, avant le premier slot, un joueur Leader disposant d’un navire choisit une seule fois son contexte initial : rester à terre ou prendre la mer, rester en mer ou accoster lorsque la Location autorise l’accostage. Cette décision ne consomme ni Event ni slot et reste acquise pour le mois, même si un Event change ensuite le contexte de voyage. Un joueur non-Leader ou sans navire ne reçoit pas ce choix. La destination reste contrôlée exclusivement par les Events et leurs Effects.
+
+Un slot peut être consommé par un Event normal, Scheduled, une conséquence future ou une rencontre programmée. La provenance ne change pas son coût. Les continuations `immediate` définies ci-dessous constituent l’exception explicite : elles prolongent le même slot sans coût supplémentaire.
 
 Le GameState doit conceptuellement suivre `slotInMonth: 0 | 1` :
 
@@ -149,6 +153,12 @@ Le GameState doit conceptuellement suivre `slotInMonth: 0 | 1` :
 - puis mois 1, slot 0.
 
 Deux slots consommés font avancer l’âge biologique d’un mois. Comme en Childhood, le temps appartient à la boucle de phase, pas à l’Outcome.
+
+### Continuous / Immediate Events
+
+Un Event `immediate` est la continuation directe de la scène courante. Il est déclenché explicitement par un Outcome, n’entre jamais dans le pool Normal, ne consomme aucun slot et ne fait pas avancer le temps. Une chaîne peut contenir plusieurs Immediate Events et conserve le moment temporel de son Event racine. Le slot du Normal ou Scheduled racine n’est finalisé qu’après la fin complète de la chaîne.
+
+Un Immediate se distingue d’un Scheduled : l’Immediate continue la scène actuelle sans temps, tandis que le Scheduled représente une conséquence future dans la chronologie. Critical conserve la priorité et peut interrompre temporairement une chaîne Immediate avant sa reprise.
 
 ## 6. Sélection des Events normaux
 

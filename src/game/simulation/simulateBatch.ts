@@ -32,6 +32,12 @@ export interface SimulationBatchResult {
     normalResolved: number;
     scheduledResolved: number;
     criticalResolved: number;
+    immediateResolved: number;
+    averageImmediatePerSlot: number;
+    maximumImmediateChainLength: number;
+    immediateGuardsTriggered: number;
+    eventsAtSea: number;
+    eventsOnLand: number;
     playerDeaths: number;
     npcDeaths: number;
     npcDeathsById: Record<string, number>;
@@ -101,6 +107,12 @@ export function simulateBatch(options: SimulateBatchOptions): SimulationBatchRes
       normalResolved: runResults.reduce((sum, result) => sum + result.normalEvents, 0),
       scheduledResolved: runResults.reduce((sum, result) => sum + result.scheduledEvents, 0),
       criticalResolved: runResults.reduce((sum, result) => sum + result.criticalEvents, 0),
+      immediateResolved: runResults.reduce((sum, result) => sum + result.immediateEvents, 0),
+      averageImmediatePerSlot: runResults.reduce((sum, result) => sum + result.immediateEvents, 0) / Math.max(1, runResults.reduce((sum, result) => sum + result.normalEvents + result.scheduledEvents, 0)),
+      maximumImmediateChainLength: Math.max(...runResults.map(({ maximumImmediateChainLength }) => maximumImmediateChainLength)),
+      immediateGuardsTriggered: runResults.filter(({ immediateGuardTriggered }) => immediateGuardTriggered).length,
+      eventsAtSea: runResults.reduce((sum, result) => sum + result.resolvedEvents.filter(({ travelState }) => travelState === 'at_sea').length, 0),
+      eventsOnLand: runResults.reduce((sum, result) => sum + result.resolvedEvents.filter(({ travelState }) => travelState === 'on_land').length, 0),
       playerDeaths: runResults.filter(({ playerDeath }) => playerDeath).length,
       npcDeaths: Object.values(npcDeathsById).reduce((sum, count) => sum + count, 0),
       npcDeathsById,

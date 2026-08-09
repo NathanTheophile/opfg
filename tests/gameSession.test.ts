@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { contentCatalog } from '../src/game/content/definitions';
 import { resolveChoice } from '../src/game/engine/resolution';
 import { createInitialGameState } from '../src/game/model/initialState';
-import { chooseInSession, createSessionState, startNewRun, type GameSessionState } from '../src/game/session/gameSession';
+import { chooseInSession, chooseMonthlyNavigationInSession, createSessionState, getSessionNavigationOptions, startNewRun, type GameSessionState } from '../src/game/session/gameSession';
 
 function choose(session: GameSessionState, choiceId: string, input?: string): GameSessionState {
   return chooseInSession(session, contentCatalog, choiceId, input);
@@ -60,5 +60,15 @@ describe('GameSession', () => {
 
     expect(actual.lastResolution).toEqual(expected);
     expect(actual.gameState).toEqual(expected.state);
+  });
+
+  it('exposes monthly navigation as session state without creating history', () => {
+    const state = createInitialGameState(5);
+    state.careerPhase = 'active'; state.ageMonths = 180; state.locationId = 'starter_port'; state.travelState = 'on_land';
+    const session = createSessionState(state);
+    expect(getSessionNavigationOptions(session, contentCatalog).map(({ id }) => id)).toEqual(['stay', 'goToSea']);
+    const next = chooseMonthlyNavigationInSession(session, contentCatalog, 'goToSea');
+    expect(next.gameState).toMatchObject({ travelState: 'at_sea', slotInMonth: 0, navigationDecisionAgeMonths: 180 });
+    expect(next.gameState?.history).toEqual([]);
   });
 });

@@ -40,6 +40,8 @@ export function validateSingleEventShape(value: unknown): ShapeIssue[] {
       const base = { id, titleKey: `event.${id}.title`, textKey: `event.${id}.text`, choices };
       return references.scheduledEventIds.has(id)
         ? { ...base, kind: 'scheduled', priority: 100 }
+        : references.immediateEventIds.has(id)
+          ? { ...base, kind: 'immediate' }
         : { ...base, kind: 'normal' };
     });
   const catalog: ContentCatalog = {
@@ -49,7 +51,7 @@ export function validateSingleEventShape(value: unknown): ShapeIssue[] {
     affiliations: [...references.affiliationIds].map((id) => ({ id, nameKey: `affiliation.${id}.name` })),
     familyStructures: [...references.familyStructureIds].map((id) => ({ id, nameKey: `familyStructure.${id}.name`, attributeModifiers: {} })),
     socialClasses: [...references.socialClassIds].map((id) => ({ id, nameKey: `socialClass.${id}.name`, attributeModifiers: {} })),
-    locations: [...references.locationIds].map((id) => ({ id, seaId: null, blocksScheduledEvents: false, allowsShipSale: false })),
+    locations: [...references.locationIds].map((id) => ({ id, seaId: null, blocksScheduledEvents: false, allowsShipSale: false, allowsDocking: false })),
     traits: [...references.traitIds].map((id) => ({ id, nameKey: `trait.${id}.name`, descriptionKey: `trait.${id}.description` })),
     items: [...references.itemIds].map((id) => ({ id, nameKey: `item.${id}.name` })),
     ships: [...references.shipIds].map((id) => ({ id, nameKey: `ship.${id}.name`, maxHealth: 1, crewCapacity: 0, cargoSlots: 0 })),
@@ -73,7 +75,7 @@ export function validateEventDefinitionsShape(value: unknown): ShapeIssue[] {
 
 function collectReferences(value: unknown) {
   const result = {
-    eventIds: new Set<string>(), scheduledEventIds: new Set<string>(),
+    eventIds: new Set<string>(), scheduledEventIds: new Set<string>(), immediateEventIds: new Set<string>(),
     choicesByEvent: new Map<string, Set<string>>(), outcomesByEvent: new Map<string, Set<string>>(),
     traitIds: new Set<string>(), itemIds: new Set<string>(), shipIds: new Set<string>(), crewRoleIds: new Set<string>(), npcIds: new Set<string>(), locationIds: new Set<string>(),
     raceIds: new Set<string>(), seaIds: new Set<string>(), affiliationIds: new Set<string>(), familyStructureIds: new Set<string>(), socialClassIds: new Set<string>(),
@@ -86,6 +88,7 @@ function collectReferences(value: unknown) {
     if (typeof record.eventId === 'string') {
       result.eventIds.add(record.eventId);
       if (record.type === 'scheduleEvent') result.scheduledEventIds.add(record.eventId);
+      if (record.type === 'queueImmediateEvent') result.immediateEventIds.add(record.eventId);
       if (typeof record.choiceId === 'string') mapAdd(result.choicesByEvent, record.eventId, record.choiceId);
       if (typeof record.outcomeId === 'string') mapAdd(result.outcomesByEvent, record.eventId, record.outcomeId);
     }

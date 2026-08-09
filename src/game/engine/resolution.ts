@@ -4,7 +4,10 @@ import { evaluateCondition, getChoiceState } from './conditions';
 import { resolveDiceCheck } from './dice';
 import type { DiceRollResult } from './dice';
 import { applyEffects } from './effects';
-import { selectNextEvent } from './events';
+import { findCriticalEvent, selectNextEvent } from './events';
+import { consumePhaseSlot, finalizePendingSlot } from './time';
+
+const MAX_IMMEDIATE_EVENTS_PER_CHAIN = 1000;
 
 export function resolveChoice(
   state: GameState,
@@ -59,15 +62,29 @@ function finalizeOutcome(
     sourceEventId: event.id,
     sourceChoiceId: choiceId,
   });
-  const afterSlot = consumePhaseSlot(afterEffects, state.careerPhase, event.kind !== 'critical');
-  const resolvedState: GameState = {
-    ...afterSlot,
+  let resolvedState: GameState = {
+    ...afterEffects,
     history: [
-      ...afterSlot.history,
-      { eventId: event.id, choiceId, outcomeId: outcome.id, ageMonths: afterSlot.ageMonths },
+      ...afterEffects.history,
+      { eventId: event.id, choiceId, outcomeId: outcome.id, ageMonths: afterEffects.ageMonths },
     ],
-    scheduledEvents: consumeScheduledEntry(afterSlot, catalog, event, state.ageMonths),
+    scheduledEvents: consumeScheduledEntry(afterEffects, catalog, event, state.ageMonths),
   };
+
+  if (event.kind === 'immediate') {
+    if (resolvedState.immediateEventQueue[0] !== event.id) throw new Error(`Immediate Event "${event.id}" is not at the head of the pending queue.`);
+    const immediateEventsResolvedInChain = resolvedState.immediateEventsResolvedInChain + 1;
+    if (immediateEventsResolvedInChain > MAX_IMMEDIATE_EVENTS_PER_CHAIN) throw new Error(`Immediate Event chain exceeded runtime guard (${MAX_IMMEDIATE_EVENTS_PER_CHAIN}).`);
+    resolvedState = { ...resolvedState, immediateEventQueue: resolvedState.immediateEventQueue.slice(1), immediateEventsResolvedInChain };
+  } else if (event.kind === 'normal' || event.kind === 'scheduled') {
+    resolvedState = resolvedState.immediateEventQueue.length > 0
+      ? { ...resolvedState, pendingSlotPhase: state.careerPhase, immediateEventsResolvedInChain: 0 }
+      : consumePhaseSlot(resolvedState, state.careerPhase);
+  }
+
+  if (resolvedState.pendingSlotPhase !== null && resolvedState.immediateEventQueue.length === 0 && findCriticalEvent(resolvedState, catalog.events) === undefined) {
+    resolvedState = finalizePendingSlot(resolvedState);
+  }
 
   return {
     state: selectNextEvent(resolvedState, catalog),
@@ -105,18 +122,4 @@ function consumeScheduledEntry(
   return entryIndex < 0
     ? state.scheduledEvents
     : state.scheduledEvents.filter((_, index) => index !== entryIndex);
-}
-
-function consumePhaseSlot(state: GameState, phaseBeforeResolution: GameState['careerPhase'], consumesSlot: boolean): GameState {
-  if (!consumesSlot) return state;
-  if (phaseBeforeResolution === 'origins') {
-    return state.careerPhase === 'childhood' ? { ...state, ageMonths: 12, slotInMonth: 0 } : state;
-  }
-  if (phaseBeforeResolution === 'childhood') {
-    const ageMonths = Math.min(180, state.ageMonths + (state.ageMonths < 108 ? 12 : 6));
-    return { ...state, ageMonths, careerPhase: ageMonths >= 180 ? 'active' : 'childhood', slotInMonth: 0 };
-  }
-  return state.slotInMonth === 0
-    ? { ...state, slotInMonth: 1 }
-    : { ...state, slotInMonth: 0, ageMonths: state.ageMonths + 1 };
 }

@@ -120,6 +120,10 @@ export interface GameState {
   npcs: Record<NpcId, NpcState>;
   history: HistoryEntry[];
   scheduledEvents: ScheduledEvent[];
+  immediateEventQueue: EventId[];
+  pendingSlotPhase: CareerPhase | null;
+  immediateEventsResolvedInChain: number;
+  navigationDecisionAgeMonths: number | null;
   currentEventId: EventId | null;
   careerStatus: CareerStatus;
   careerEndReason: CareerEndReason | null;

@@ -14,6 +14,7 @@ interface Props {
   registries: GameRegistries;
   eventIds: string[];
   scheduledEventIds: string[];
+  immediateEventIds: string[];
   eventId: string;
   choiceId: string;
   localization: LocalizationAuthoringStore;
@@ -23,9 +24,9 @@ interface Props {
 }
 
 export default function ResolutionEditor(props: Props) {
-  const { value, onChange, registries, eventIds, scheduledEventIds, eventId, choiceId, localization, activeLocale, sourceLocale, onLocalizedTextChange } = props;
+  const { value, onChange, registries, eventIds, scheduledEventIds, immediateEventIds, eventId, choiceId, localization, activeLocale, sourceLocale, onLocalizedTextChange } = props;
   const setType = (type: Resolution['type']) => onChange(type === 'deterministic' ? createDeterministicResolution(eventId, choiceId) : createDiceResolution(eventId, choiceId));
-  const outcomeProps = { registries, eventIds, scheduledEventIds, localization, activeLocale, sourceLocale, onLocalizedTextChange };
+  const outcomeProps = { registries, eventIds, scheduledEventIds, immediateEventIds, localization, activeLocale, sourceLocale, onLocalizedTextChange };
 
   return <div className="resolution-editor">
     <Field label="Resolution"><select value={value.type} onChange={(e) => setType(e.target.value as Resolution['type'])}><option value="deterministic">Deterministic</option><option value="dice">Dice</option></select></Field>
@@ -49,4 +50,3 @@ export default function ResolutionEditor(props: Props) {
       </div>}
   </div>;
 }
-

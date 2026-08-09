@@ -10,6 +10,7 @@ export interface ResolvedSimulationEvent {
   kind: EventDefinition['kind'];
   ageMonths: number;
   diceResult?: DiceResult;
+  travelState: GameState['travelState'];
 }
 
 export interface DeadEndSnapshot {
@@ -37,6 +38,9 @@ export interface SimulationRunResult {
   normalEvents: number;
   scheduledEvents: number;
   criticalEvents: number;
+  immediateEvents: number;
+  maximumImmediateChainLength: number;
+  immediateGuardTriggered: boolean;
   diceChecks: Record<DiceResult, number> & { total: number };
   traits: string[];
   items: string[];

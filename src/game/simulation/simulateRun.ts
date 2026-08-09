@@ -5,6 +5,7 @@ import { resolveChoice } from '../engine/resolution';
 import { createInitialGameState } from '../model/initialState';
 import type { GameState } from '../model/schema';
 import { derivePolicySeed, randomSimulationPolicy, type SimulationPolicy } from './simulationPolicy';
+import { applyMonthlyNavigationChoice, getMonthlyNavigationOptions, needsMonthlyNavigationDecision } from '../engine/navigation';
 import type { DeadEndSnapshot, ResolvedSimulationEvent, SimulationRunResult, SimulationTerminationReason } from './types';
 import { assertValidSimulationState } from './stateDiagnostics';
 
@@ -32,11 +33,27 @@ export function simulateRun(options: SimulateRunOptions): SimulationRunResult {
   let terminationReason: SimulationTerminationReason = 'deadEnd';
   let error: string | undefined;
   let shipLosses = 0;
+  let currentImmediateChainLength = 0;
+  let maximumImmediateChainLength = 0;
+  let immediateGuardTriggered = false;
 
   while (true) {
     if (state.careerStatus === 'ended') {
       terminationReason = 'careerEnded';
       break;
+    }
+    if (state.currentEventId === null && needsMonthlyNavigationDecision(state)) {
+      try {
+        const navigationOptions = getMonthlyNavigationOptions(state, options.catalog);
+        const selection = (policy.chooseNavigation ?? randomSimulationPolicy.chooseNavigation!)(navigationOptions, policyRngState);
+        policyRngState = selection.nextRngState;
+        state = selectNextEvent(applyMonthlyNavigationChoice(state, options.catalog, selection.choice), options.catalog);
+        continue;
+      } catch (caught) {
+        terminationReason = 'simulationError';
+        error = caught instanceof Error ? caught.message : String(caught);
+        break;
+      }
     }
     if (state.currentEventId === null) {
       terminationReason = 'deadEnd';
@@ -71,6 +88,7 @@ export function simulateRun(options: SimulateRunOptions): SimulationRunResult {
         outcomeId: result.outcome.id,
         kind: event.kind,
         ageMonths: result.state.ageMonths,
+        travelState: result.state.travelState,
         ...(result.dice ? { diceResult: result.dice.result } : {}),
       });
 
@@ -78,10 +96,14 @@ export function simulateRun(options: SimulateRunOptions): SimulationRunResult {
         consecutiveSameCritical = previousCriticalId === event.id ? consecutiveSameCritical + 1 : 1;
         previousCriticalId = event.id;
         if (consecutiveSameCritical >= 3) possibleCriticalLoop = true;
-      } else {
+      } else if (event.kind !== 'immediate') {
         previousCriticalId = null;
         consecutiveSameCritical = 0;
       }
+      if (event.kind === 'immediate') {
+        currentImmediateChainLength += 1;
+        maximumImmediateChainLength = Math.max(maximumImmediateChainLength, currentImmediateChainLength);
+      } else if (event.kind !== 'critical') currentImmediateChainLength = 0;
 
       state = result.state;
       childhoodReached ||= state.careerPhase === 'childhood';
@@ -90,6 +112,7 @@ export function simulateRun(options: SimulateRunOptions): SimulationRunResult {
     } catch (caught) {
       terminationReason = 'simulationError';
       error = caught instanceof Error ? caught.message : String(caught);
+      immediateGuardTriggered = error.includes('Immediate Event chain exceeded runtime guard');
       break;
     }
   }
@@ -111,6 +134,9 @@ export function simulateRun(options: SimulateRunOptions): SimulationRunResult {
     normalEvents: resolvedEvents.filter(({ kind }) => kind === 'normal').length,
     scheduledEvents: resolvedEvents.filter(({ kind }) => kind === 'scheduled').length,
     criticalEvents: resolvedEvents.filter(({ kind }) => kind === 'critical').length,
+    immediateEvents: resolvedEvents.filter(({ kind }) => kind === 'immediate').length,
+    maximumImmediateChainLength,
+    immediateGuardTriggered,
     diceChecks,
     traits: [...state.player.traits],
     items: state.player.inventory.stacks.map(({ itemId }) => itemId),
