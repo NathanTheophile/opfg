@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Badge } from '@/components/ui';
+import { rollD20 } from '@/game/engine/dice';
+import { DicePanel, type DicePanelStatus } from '@/features/dice/DicePanel';
 import { EventPanel } from './EventPanel';
 import { OutcomePanel } from './OutcomePanel';
 import type { EventChoiceViewModel, EventViewModel, OutcomeViewModel } from './types';
@@ -22,6 +24,7 @@ const MOCK_EVENT: EventViewModel = {
       dice: {
         statLabel: 'Observation',
         successProbability: 0.64,
+        modifierTotal: 2,
       },
     },
     {
@@ -48,56 +51,240 @@ const MOCK_OUTCOMES: Record<string, OutcomeViewModel> = {
     body:
       "Votre regard s'attarde sur ses gestes plutôt que sur ses paroles. La poche qu'il protège ne contient pas de pièces : le papier rigide qui dépasse un instant ressemble beaucoup trop à un morceau de carte marine pour être une coïncidence.",
     effects: [
-      { id: 'dice-note', label: 'Résultat DiceCheck mocké pour la preview', tone: 'warning' },
       { id: 'observation', label: '+2 Observation', tone: 'positive' },
+      { id: 'lead', label: 'Fragment de carte repéré', tone: 'default' },
     ],
   },
 };
 
+const MOCK_FAILURE_OUTCOME: OutcomeViewModel = {
+  title: 'Un regard de trop',
+  body:
+    "Vous insistez une seconde de trop. Le marin rabat aussitôt sa veste sur sa poche et balaie la salle du regard. Vous n'avez pas pu distinguer ce qu'il cachait, et il se montre désormais beaucoup plus prudent.",
+  effects: [
+    { id: 'dice-failure', label: 'Échec du DiceCheck', tone: 'warning' },
+  ],
+};
+
 const PANEL_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const PANEL_TRANSITION = { duration: 0.28, ease: PANEL_EASE };
+const RESULT_HOLD_MS = 820;
+
+type ResolvedDiceStatus = Extract<
+  DicePanelStatus,
+  'success' | 'failure' | 'criticalSuccess' | 'criticalFailure'
+>;
+
+interface PendingDice {
+  choice: EventChoiceViewModel;
+  status: DicePanelStatus;
+  modifier: number;
+  result?: number;
+  rollKey?: number;
+}
+
+function resolveMockDiceStatus(result: number, successProbability: number): ResolvedDiceStatus {
+  if (result === 1) return 'criticalFailure';
+  if (result === 20) return 'criticalSuccess';
+
+  const successfulFaces = Math.max(0, Math.min(20, Math.round(successProbability * 20)));
+  const threshold = 21 - successfulFaces;
+  return result >= threshold ? 'success' : 'failure';
+}
+
+function outcomeForDiceStatus(status: ResolvedDiceStatus): OutcomeViewModel {
+  if (status === 'failure' || status === 'criticalFailure') {
+    return {
+      ...MOCK_FAILURE_OUTCOME,
+      effects: [
+        {
+          id: 'dice-result',
+          label: status === 'criticalFailure' ? 'Échec critique' : 'Échec',
+          tone: status === 'criticalFailure' ? 'critical' : 'warning',
+        },
+        ...(MOCK_FAILURE_OUTCOME.effects ?? []),
+      ],
+    };
+  }
+
+  const successOutcome = MOCK_OUTCOMES.observe;
+  return {
+    ...successOutcome,
+    effects: [
+      {
+        id: 'dice-result',
+        label: status === 'criticalSuccess' ? 'Réussite critique' : 'Réussite',
+        tone: 'positive',
+      },
+      ...(successOutcome.effects ?? []),
+    ],
+  };
+}
 
 export function EventPreview() {
   const [outcome, setOutcome] = useState<OutcomeViewModel | null>(null);
+  const [previewRngState, setPreviewRngState] = useState(0x0f6a2d91);
+  const [pendingDice, setPendingDice] = useState<PendingDice | null>(null);
+  const resolutionTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (resolutionTimerRef.current !== null) {
+        window.clearTimeout(resolutionTimerRef.current);
+      }
+    };
+  }, []);
 
   const selectChoice = (choice: EventChoiceViewModel) => {
-    if (choice.disabled) return;
+    if (choice.disabled || pendingDice) return;
+
+    if (choice.dice) {
+      setPendingDice({
+        choice,
+        status: 'armed',
+        modifier: choice.dice.modifierTotal ?? 0,
+      });
+      return;
+    }
+
     setOutcome(MOCK_OUTCOMES[choice.id] ?? MOCK_OUTCOMES.listen);
   };
 
+  const rollPendingDice = () => {
+    if (!pendingDice || pendingDice.status !== 'armed') return;
+
+    const roll = rollD20(previewRngState);
+    setPreviewRngState(roll.nextRngState);
+    setPendingDice({
+      ...pendingDice,
+      status: 'rolling',
+      result: roll.rawRoll,
+      rollKey: roll.nextRngState,
+    });
+  };
+
+  const completeDiceRoll = () => {
+    if (
+      !pendingDice ||
+      pendingDice.status !== 'rolling' ||
+      pendingDice.result === undefined ||
+      !pendingDice.choice.dice
+    ) {
+      return;
+    }
+
+    const resolvedStatus = resolveMockDiceStatus(
+      pendingDice.result,
+      pendingDice.choice.dice.successProbability,
+    );
+
+    setPendingDice({
+      ...pendingDice,
+      status: resolvedStatus,
+    });
+
+    const resolvedOutcome = outcomeForDiceStatus(resolvedStatus);
+
+    resolutionTimerRef.current = window.setTimeout(() => {
+      setOutcome(resolvedOutcome);
+      setPendingDice(null);
+      resolutionTimerRef.current = null;
+    }, RESULT_HOLD_MS);
+  };
+
+  const continueFromOutcome = () => {
+    setOutcome(null);
+    setPendingDice(null);
+  };
+
+  const showDice = pendingDice !== null;
+
   return (
-    <main className="flex min-h-dvh w-full items-center justify-center overflow-y-auto pl-[max(var(--layout-gutter),var(--safe-area-left))] pr-[max(var(--layout-gutter),var(--safe-area-right))] pt-[max(var(--layout-gutter),var(--safe-area-top))] pb-[max(var(--layout-gutter),var(--safe-area-bottom))]">
-      <div className="w-full max-w-[52rem]">
-          <div className="mb-3 flex items-center justify-between gap-3 px-1">
-            <Badge variant="default" className="bg-surface-strong shadow-control">
-              UI Preview
-            </Badge>
-            <span className="text-xs font-medium text-fg-muted">Mock data · moteur non branché</span>
+    <main className="flex min-h-dvh w-full items-center justify-center overflow-x-hidden overflow-y-auto pl-[max(var(--layout-gutter),var(--safe-area-left))] pr-[max(var(--layout-gutter),var(--safe-area-right))] pt-[max(var(--layout-gutter),var(--safe-area-top))] pb-[max(var(--layout-gutter),var(--safe-area-bottom))]">
+      <div className="w-full max-w-[65rem]">
+        <div className="mb-3 flex items-center justify-between gap-3 px-1">
+          <Badge variant="default" className="bg-surface-strong shadow-control">
+            UI Preview
+          </Badge>
+          <span className="text-xs font-medium text-fg-muted">
+            Mock event · résolution d20 en deux temps
+          </span>
+        </div>
+
+        <div className="relative mx-auto w-full max-w-[52rem]">
+          <div className="min-w-0">
+            <AnimatePresence mode="wait" initial={false}>
+              {outcome ? (
+                <motion.div
+                  key="outcome"
+                  initial={{ opacity: 0, y: 12, scale: 0.992 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.996 }}
+                  transition={PANEL_TRANSITION}
+                >
+                  <OutcomePanel outcome={outcome} onContinue={continueFromOutcome} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="event"
+                  className={pendingDice ? 'pointer-events-none select-none' : undefined}
+                  initial={{ opacity: 0, y: 12, scale: 0.992 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.996 }}
+                  transition={PANEL_TRANSITION}
+                >
+                  <EventPanel event={MOCK_EVENT} onChoice={selectChoice} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
-          <AnimatePresence mode="wait" initial={false}>
-            {outcome ? (
+          <AnimatePresence initial={false}>
+            {pendingDice && (
               <motion.div
-                key="outcome"
-                initial={{ opacity: 0, y: 12, scale: 0.992 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -8, scale: 0.996 }}
+                key={pendingDice.choice.id}
+                className="absolute bottom-0 left-[calc(100%+1rem)] z-10 hidden lg:block"
+                initial={{ opacity: 0, scale: 0.94, x: 10 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                exit={{ opacity: 0, scale: 0.96, x: 8 }}
                 transition={PANEL_TRANSITION}
               >
-                <OutcomePanel outcome={outcome} onContinue={() => setOutcome(null)} />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="event"
-                initial={{ opacity: 0, y: 12, scale: 0.992 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -8, scale: 0.996 }}
-                transition={PANEL_TRANSITION}
-              >
-                <EventPanel event={MOCK_EVENT} onChoice={selectChoice} />
+                <DicePanel
+                  status={pendingDice.status}
+                  modifier={pendingDice.modifier}
+                  statLabel={pendingDice.choice.dice?.statLabel}
+                  result={pendingDice.result}
+                  rollKey={pendingDice.rollKey}
+                  onRoll={rollPendingDice}
+                  onComplete={completeDiceRoll}
+                />
               </motion.div>
             )}
           </AnimatePresence>
+
+          <AnimatePresence initial={false}>
+            {pendingDice && (
+              <motion.div
+                key={`${pendingDice.choice.id}-compact`}
+                className="mt-4 flex justify-end lg:hidden"
+                initial={{ opacity: 0, scale: 0.94, y: 8 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: 6 }}
+                transition={PANEL_TRANSITION}
+              >
+                <DicePanel
+                  status={pendingDice.status}
+                  modifier={pendingDice.modifier}
+                  statLabel={pendingDice.choice.dice?.statLabel}
+                  result={pendingDice.result}
+                  rollKey={pendingDice.rollKey}
+                  onRoll={rollPendingDice}
+                  onComplete={completeDiceRoll}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </main>
   );

@@ -1,6 +1,7 @@
 export interface DiceChoicePreview {
   statLabel: string;
   successProbability: number;
+  modifierTotal?: number;
 }
 
 export interface EventChoiceViewModel {
