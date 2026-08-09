@@ -346,6 +346,14 @@ Event writing should be **short but embodied**. The player should feel that a sc
 
 Target an adventurous One Piece-like tonal range: light, strange, funny, warm, tense, occasionally tragic, and occasionally epic. Do not write every Event as maximal drama or prophecy.
 
+### 16.6 French voice
+
+For French source localization, **prefer singular informal address (`tu`, `te`, `toi`, `ton`, `ta`, `tes`)** in narrative text and Choices that address the player directly.
+
+Text that does not address the player directly remains naturally free. Dialogue spoken by characters to the player should also follow the character, relationship, situation, and social register: a character may therefore use either `tu` or `vous` when appropriate.
+
+Do not mechanically normalize pronouns or possessives solely to match the player's address form when their grammatical referent is different (for example, a shared relationship involving the player and another character).
+
 ## 17. Batch variety rules
 
 A batch should not collapse onto one repeated mechanical solution. During review, check distribution across different D20 Stats, deterministic vs Dice Choices, generic vs contextual Events, pure narrative vs mechanical Events, relationships, Traits, resources, careers, locations/services, Immediate chains, and Scheduled consequences.
