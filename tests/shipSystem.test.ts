@@ -12,11 +12,11 @@ const context = { sourceEventId: 'fixture', sourceChoiceId: 'choice' };
 
 describe('Ship System V1', () => {
   it('acquires a first named ship at max or authored damaged health and modifies HP within definition bounds', () => {
-    const withoutShip = { ...createInitialGameState(), ship: null };
-    const acquired = applyEffects(withoutShip, contentCatalog, [{ type: 'acquireShip', shipId: 'trade_cog', name: 'Golden Gull' }], context);
-    expect(acquired.ship).toMatchObject({ shipId: 'trade_cog', name: 'Golden Gull', health: 45, cargo: [] });
+    const withoutShip = { ...createInitialGameState(), locationId: 'loguetown', ship: null };
+    const acquired = applyEffects(withoutShip, contentCatalog, [{ type: 'acquireShip', shipId: 'merchant_ship', name: 'Golden Gull' }], context);
+    expect(acquired.ship).toMatchObject({ shipId: 'merchant_ship', name: 'Golden Gull', health: 42, cargo: [] });
 
-    const damaged = applyEffects(withoutShip, contentCatalog, [{ type: 'acquireShip', shipId: 'starter_sloop', name: 'Old Gull', health: 12 }], context);
+    const damaged = applyEffects(withoutShip, contentCatalog, [{ type: 'acquireShip', shipId: 'sloop', name: 'Old Gull', health: 12 }], context);
     expect(damaged.ship?.health).toBe(12);
     expect(applyEffects(damaged, contentCatalog, [{ type: 'modifyShipHealth', amount: 100 }], context).ship?.health).toBe(30);
     expect(applyEffects(damaged, contentCatalog, [{ type: 'modifyShipHealth', amount: -20 }], context).ship?.health).toBe(0);
@@ -40,23 +40,24 @@ describe('Ship System V1', () => {
   it('blocks acquisition when the authored ship cannot accommodate current NPC crew', () => {
     const state = createInitialGameState();
     for (const id of ['a', 'b', 'c', 'd']) state.npcs[id] = { ...createDefaultNpcState(), status: 'crew' };
-    expect(evaluateCondition({ type: 'canAcquireShip', shipId: 'starter_sloop' }, state, contentCatalog)).toBe(false);
-    const choice = { id: 'acquire', textKey: 'x', availableIf: { type: 'canAcquireShip', shipId: 'starter_sloop' } as const, resolution: { type: 'deterministic' as const, outcome: { id: 'x', textKey: 'x', effects: [] } } };
+    expect(evaluateCondition({ type: 'canAcquireShip', shipId: 'sloop' }, state, contentCatalog)).toBe(false);
+    const choice = { id: 'acquire', textKey: 'x', availableIf: { type: 'canAcquireShip', shipId: 'sloop' } as const, resolution: { type: 'deterministic' as const, outcome: { id: 'x', textKey: 'x', effects: [] } } };
     expect(getChoiceState(choice, state, contentCatalog)).toEqual({ visible: true, available: false });
-    expect(() => applyEffects(state, contentCatalog, [{ type: 'acquireShip', shipId: 'starter_sloop', name: 'Too Small' }], context)).toThrow(/cannot be acquired/);
+    expect(() => applyEffects(state, contentCatalog, [{ type: 'acquireShip', shipId: 'sloop', name: 'Too Small' }], context)).toThrow(/cannot be acquired/);
   });
 
   it('queues replacement, transfers cargo, and resolves abandon or location-gated sale through the Critical pipeline', () => {
     const state = createInitialGameState();
+    state.locationId = 'loguetown';
     state.ship!.cargo = [{ itemId: 'sealed_chart', quantity: 2 }];
-    const pending = applyEffects(state, contentCatalog, [{ type: 'acquireShip', shipId: 'trade_cog', name: 'New Dawn' }], context);
-    expect(pending.ship?.shipId).toBe('starter_sloop');
-    expect(pending.pendingShip?.shipId).toBe('trade_cog');
+    const pending = applyEffects(state, contentCatalog, [{ type: 'acquireShip', shipId: 'merchant_ship', name: 'New Dawn' }], context);
+    expect(pending.ship?.shipId).toBe('sloop');
+    expect(pending.pendingShip?.shipId).toBe('merchant_ship');
     expect(selectNextEvent(pending, contentCatalog).currentEventId).toBe('critical_ship_replacement');
 
     const atPort = selectNextEvent(pending, contentCatalog);
     const sold = resolveChoice(atPort, contentCatalog, 'critical_ship_replacement', 'sell_old_ship').state;
-    expect(sold).toMatchObject({ pendingShip: null, berries: 25, ship: { shipId: 'trade_cog', name: 'New Dawn' } });
+    expect(sold).toMatchObject({ pendingShip: null, berries: 25, ship: { shipId: 'merchant_ship', name: 'New Dawn' } });
     expect(sold.ship?.cargo).toEqual([{ itemId: 'sealed_chart', quantity: 2 }]);
 
     const atSea = { ...pending, locationId: 'open_sea', travelState: 'at_sea' as const };
@@ -64,7 +65,7 @@ describe('Ship System V1', () => {
     const event = contentCatalog.events.find(({ id }) => id === selected.currentEventId)!;
     expect(getChoiceState(event.choices.find(({ id }) => id === 'sell_old_ship')!, selected, contentCatalog).available).toBe(false);
     const abandoned = resolveChoice(selected, contentCatalog, 'critical_ship_replacement', 'abandon_old_ship').state;
-    expect(abandoned).toMatchObject({ pendingShip: null, berries: 0, ship: { shipId: 'trade_cog' } });
+    expect(abandoned).toMatchObject({ pendingShip: null, berries: 0, ship: { shipId: 'merchant_ship' } });
   });
 
   it('resolves destruction and shipless-at-sea states before any slot-consuming event while preserving crew', () => {

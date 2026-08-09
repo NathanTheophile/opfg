@@ -18,22 +18,22 @@ describe('Powers V1', () => {
 
   it('keeps the physical Fruit as an Item until explicit protected consumption', () => {
     const empty = createInitialGameState();
-    expect(() => apply(empty, [{ type: 'consumeDevilFruit', fruitId: 'flame_fruit' }])).toThrow('cannot be consumed');
-    const carrying = apply(empty, [{ type: 'addItem', itemId: 'flame_fruit_item', quantity: 2 }]);
+    expect(() => apply(empty, [{ type: 'consumeDevilFruit', fruitId: 'yuki_yuki' }])).toThrow('cannot be consumed');
+    const carrying = apply(empty, [{ type: 'addItem', itemId: 'yuki_yuki_fruit_item', quantity: 2 }]);
     expect(carrying.player.powers.devilFruitId).toBeNull();
-    expect(evaluateCondition({ type: 'canConsumeDevilFruit', fruitId: 'flame_fruit' }, carrying, catalog)).toBe(true);
-    const consumed = apply(carrying, [{ type: 'consumeDevilFruit', fruitId: 'flame_fruit' }]);
-    expect(consumed.player.inventory.stacks).toEqual([{ itemId: 'flame_fruit_item', quantity: 1 }]);
-    expect(consumed.player.powers.devilFruitId).toBe('flame_fruit');
+    expect(evaluateCondition({ type: 'canConsumeDevilFruit', fruitId: 'yuki_yuki' }, carrying, catalog)).toBe(true);
+    const consumed = apply(carrying, [{ type: 'consumeDevilFruit', fruitId: 'yuki_yuki' }]);
+    expect(consumed.player.inventory.stacks).toEqual([{ itemId: 'yuki_yuki_fruit_item', quantity: 1 }]);
+    expect(consumed.player.powers.devilFruitId).toBe('yuki_yuki');
     expect(consumed.player.powers.devilFruitAwakening).toBe(0);
-    expect(() => apply(consumed, [{ type: 'consumeDevilFruit', fruitId: 'falcon_fruit' }])).toThrow('cannot be consumed');
+    expect(() => apply(consumed, [{ type: 'consumeDevilFruit', fruitId: 'tori_tori_falcon' }])).toThrow('cannot be consumed');
     expect(evaluateCondition({ type: 'devilFruitTypeIs', fruitType: 'logia' }, consumed, catalog)).toBe(true);
-    expect(evaluateCondition({ type: 'devilFruitHasTag', tagId: 'fire' }, consumed, catalog)).toBe(true);
+    expect(evaluateCondition({ type: 'devilFruitHasTag', tagId: 'cold' }, consumed, catalog)).toBe(true);
   });
 
   it('increases Fruit Awakening monotonically and clamps it to 10', () => {
     let state = createInitialGameState();
-    state = apply(state, [{ type: 'addItem', itemId: 'flame_fruit_item', quantity: 1 }, { type: 'consumeDevilFruit', fruitId: 'flame_fruit' }]);
+    state = apply(state, [{ type: 'addItem', itemId: 'yuki_yuki_fruit_item', quantity: 1 }, { type: 'consumeDevilFruit', fruitId: 'yuki_yuki' }]);
     state = apply(state, [{ type: 'increaseDevilFruitAwakening', amount: 20 }]);
     expect(state.player.powers.devilFruitAwakening).toBe(10);
     expect(evaluateCondition({ type: 'devilFruitIsAwakened' }, state, catalog)).toBe(true);
@@ -69,7 +69,7 @@ describe('Powers V1', () => {
   it('persists Player and NPC Powers and migrates v12 defaults', () => {
     const state = createInitialGameState();
     state.player.powers.haki.conqueror = 2;
-    state.npcs.mira.powers.devilFruitId = 'falcon_fruit';
+    state.npcs.mira.powers.devilFruitId = 'tori_tori_falcon';
     expect(deserializeGameState(serializeGameState(state))).toEqual(state);
     const legacy = structuredClone(state) as unknown as Record<string, unknown>;
     legacy.version = 12;
@@ -84,17 +84,17 @@ describe('Powers V1', () => {
 
   it('keeps NPC Fruit assignment monotone and rejects replacing a different Fruit', () => {
     let state = createInitialGameState();
-    state = apply(state, [{ type: 'setNpcDevilFruit', npcId: 'mira', fruitId: 'flame_fruit' }]);
+    state = apply(state, [{ type: 'setNpcDevilFruit', npcId: 'mira', fruitId: 'yuki_yuki' }]);
     state = apply(state, [{ type: 'increaseNpcDevilFruitAwakening', npcId: 'mira', amount: 7 }]);
-    const repeated = apply(state, [{ type: 'setNpcDevilFruit', npcId: 'mira', fruitId: 'flame_fruit' }]);
-    expect(repeated.npcs.mira.powers).toMatchObject({ devilFruitId: 'flame_fruit', devilFruitAwakening: 7 });
-    expect(() => apply(repeated, [{ type: 'setNpcDevilFruit', npcId: 'mira', fruitId: 'falcon_fruit' }])).toThrow('already has a Devil Fruit');
+    const repeated = apply(state, [{ type: 'setNpcDevilFruit', npcId: 'mira', fruitId: 'yuki_yuki' }]);
+    expect(repeated.npcs.mira.powers).toMatchObject({ devilFruitId: 'yuki_yuki', devilFruitAwakening: 7 });
+    expect(() => apply(repeated, [{ type: 'setNpcDevilFruit', npcId: 'mira', fruitId: 'tori_tori_falcon' }])).toThrow('already has a Devil Fruit');
   });
 
   it('requires an NPC Fruit before evaluating its Awakening threshold', () => {
     const state = createInitialGameState();
     expect(evaluateCondition({ type: 'npcDevilFruitAwakeningAtLeast', npcId: 'mira', value: 0 }, state, catalog)).toBe(false);
-    state.npcs.mira.powers.devilFruitId = 'flame_fruit';
+    state.npcs.mira.powers.devilFruitId = 'yuki_yuki';
     expect(evaluateCondition({ type: 'npcDevilFruitAwakeningAtLeast', npcId: 'mira', value: 0 }, state, catalog)).toBe(true);
   });
 });

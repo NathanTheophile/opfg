@@ -2,7 +2,7 @@
 
 Implemented and verified:
 
-- Career foundation currently implemented on Save v14 / Content Schema v4: grouped career affiliation, non-negative unbounded runtime reputation and bounty, a preliminary Marine-rank registry, optional titles and localized Endings. Validated design now requires Reputation `0..100`, complete Marine/Revolutionary/Bounty Hunter ladders, persistent career history/maxBounty, deterministic Ending variants/final score, and parent NPC instantiation; this realignment is pending implementation;
+- Content authoring foundation implemented on Save v15 / Content Schema v5: generic Marine/Revolutionary/Bounty Hunter ranks, Reputation `0..100`, exact V1 Traits/Crew Roles/Ships, 60 runtime Four Blues Locations with controlled tags/services and ship markets, 20 playable plus 25 reference-only Devil Fruits, and persistent same-race Origins parents. Career history/maxBounty, Ending variants and final score remain intentionally out of scope;
 - Powers V1: shared Player/NPC PowerState, central Devil Fruit catalog and controlled tags, protected Item consumption, monotone Awakening, Event-awakened Haki with automatic post-awakening Player tiers, declarative Conditions/Effects, UI/localization, validator and Tool authoring support;
 - Content Contract v3 and save/GameState v13 (Powers migration defaults from v12);
 

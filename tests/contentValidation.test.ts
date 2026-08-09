@@ -19,7 +19,7 @@ function eventById(catalog: Record<string, any>, eventId: string): Record<string
 describe('validateContent', () => {
   it('validates Devil Fruit registries and Powers primitives', () => {
     const catalog = cloneCatalog();
-    catalog.devilFruits.push({ id: 'broken_fruit', nameKey: 'devilFruit.flame_fruit.name', type: 'mystery', itemId: 'missing_item', tags: ['unknown_tag'] });
+    catalog.devilFruits.push({ id: 'broken_fruit', nameKey: 'devilFruit.yuki_yuki.name', type: 'mystery', playableV1: true, itemId: 'missing_item', tags: ['unknown_tag'] });
     const event = eventById(catalog, 'departure');
     event.choices[0].availableIf = { type: 'devilFruitIs', fruitId: 'missing_fruit' };
     event.choices[0].resolution.outcome.effects = [
@@ -46,13 +46,13 @@ describe('validateContent', () => {
     });
   });
 
-  it('validates ShipDefinition references, Location sale capability, and stack quantities', () => {
+  it('validates ShipDefinition references, Location market capability, and stack quantities', () => {
     const catalog = cloneCatalog();
-    catalog.locations[0].allowsShipSale = 'yes';
+    catalog.locations[0].shipMarket = 'yes';
     eventById(catalog, 'wreck').choices[0].resolution.outcome.effects[0].quantity = 0;
     eventById(catalog, 'year_one_end').choices[0].availableIf = { type: 'canAcquireShip', shipId: 'missing_ship' };
     const errors = messages(catalog);
-    expect(errors).toContainEqual(expect.stringContaining('Location requires allowsShipSale'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid shipMarket'));
     expect(errors).toContainEqual(expect.stringContaining('Item quantity must be a positive integer'));
     expect(errors).toContainEqual(expect.stringContaining('Unknown ShipId "missing_ship"'));
   });

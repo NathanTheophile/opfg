@@ -403,7 +403,7 @@ Le Critical de remplacement propose les possibilités V1 suivantes pour l’anci
 - **vendre**, uniquement dans une Location explicitement compatible avec la vente de navires, contre des Berrys ; être simplement `on_land` ne suffit pas ;
 - **abandonner**, partout et sans compensation automatique, afin que le remplacement reste toujours résoluble.
 
-L’autorité design des marchés navals est désormais `shipMarket: 'none' | 'small_craft' | 'full'`, distinct de `allowsDocking`. Le booléen runtime actuel `allowsShipSale` est une dette de migration technique et ne constitue plus le modèle final. Les six châssis génériques et les règles de marché sont définis dans la [Content Bible](content/CONTENT_BIBLE.md) ; les navires canoniques nommés peuvent être mentionnés mais ne sont pas obtenables en V1.
+L’autorité design et runtime des marchés navals est `shipMarket: 'none' | 'small_craft' | 'full'`, distinct de `allowsDocking`. Les six châssis génériques et les règles de marché sont définis dans la [Content Bible](content/CONTENT_BIBLE.md) ; les navires canoniques nommés peuvent être mentionnés mais ne sont pas obtenables en V1.
 
 La cargaison est transférée automatiquement vers le nouveau bateau lorsqu’elle tient dans sa cale. Si elle contient plus de stacks distincts que la nouvelle capacité, le joueur devra à terme choisir les stacks abandonnés. Cette règle est verrouillée, mais aucune UI ni logique complexe de sélection n’est requise pour la jam puisque la cale initiale reste vide.
 

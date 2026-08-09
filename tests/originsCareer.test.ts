@@ -19,7 +19,7 @@ describe('complete pre-career pipeline', () => {
     while (state.careerPhase === 'origins') state = resolveFirst(state);
     expect(state.ageMonths).toBe(12);
     expect(state).toMatchObject({
-      locationId: 'east_blue_port',
+      locationId: 'foosha_village',
       player: {
         profile: {
           name: 'Luffy', raceId: 'human', familyStructureId: 'two_parents', affiliationId: 'civilian',

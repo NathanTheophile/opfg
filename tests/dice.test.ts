@@ -146,7 +146,7 @@ describe('DiceResolution integration', () => {
 
     const result = resolveChoice(state, contentCatalog, 'reefs', 'force_passage');
 
-    expect(result.state.locationId).toBe('outer_route');
+    expect(result.state.locationId).toBe('loguetown');
     expect(result.state.flags).toContain('reefs_crossed');
     expect(result.state.rngState).not.toBe(rngBeforeRoll);
     expect(result.dice).toMatchObject({ statId: 'navigation', statValue: 25, outcomeId: result.outcome.id });

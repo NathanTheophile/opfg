@@ -2,11 +2,15 @@ import fr from './locales/fr.json';
 import en from './locales/en.json';
 import { interpolate, extractPlaceholders, type InterpolationParams } from './interpolate';
 import type { LocalizationKey } from './keys';
+import { createCatalogDictionary } from './catalog';
 export const SOURCE_LOCALE = 'fr' as const;
 export const supportedLocales = ['fr', 'en'] as const;
 export type LocaleId = typeof supportedLocales[number];
 export type LocalizationDictionary = Record<string, string>;
-export const dictionaries: Record<LocaleId, LocalizationDictionary> = { fr, en };
+export const dictionaries: Record<LocaleId, LocalizationDictionary> = {
+  fr: { ...fr, ...createCatalogDictionary('fr') },
+  en: { ...en, ...createCatalogDictionary('en') },
+};
 export const LOCALE_STORAGE_KEY = 'jam-op-fan-game.locale';
 export interface LocaleStorage { getItem(key: string): string | null; setItem(key: string, value: string): void }
 export function detectLocale(language: string): LocaleId { return language.toLowerCase().startsWith('fr') ? 'fr' : 'en'; }

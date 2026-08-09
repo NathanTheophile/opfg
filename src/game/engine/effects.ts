@@ -108,7 +108,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       if (effect.disposition === 'destroy' && state.travelState !== 'on_land') throw new Error('A ship can only be destroyed on land during replacement.');
       if (effect.disposition === 'sell') {
         const location = catalog.locations.find(({ id }) => id === state.locationId);
-        if (!location?.allowsShipSale) throw new Error('Current Location does not allow ship sales.');
+        if (!location || location.shipMarket === 'none') throw new Error('Current Location does not allow ship sales.');
         const proceeds = effect.berries ?? 0;
         if (!Number.isInteger(proceeds) || proceeds < 0) throw new Error('Ship sale Berrys must be a non-negative integer.');
         state.berries += proceeds;
@@ -136,7 +136,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       return;
     case 'setBirthLocation': {
       const location = catalog.locations.find(({ id }) => id === effect.locationId);
-      if (!location || location.seaId === null || location.seaId !== state.player.profile.originSeaId) {
+      if (!location || !location.canBeBirthLocation || location.seaId !== state.player.profile.originSeaId) {
         throw new Error(`Birth Location "${effect.locationId}" is incompatible with the selected origin sea.`);
       }
       state.locationId = effect.locationId;
@@ -223,6 +223,15 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       if (!definition) throw new Error(`Unknown FamilyStructure "${effect.familyStructureId}".`);
       state.player.profile.familyStructureId = effect.familyStructureId;
       applyAttributeModifiers(state, definition.attributeModifiers);
+      if (effect.familyStructureId !== 'orphan') {
+        const parentCount = effect.familyStructureId === 'two_parents' ? 2 : 1;
+        for (let index = 1; index <= parentCount; index += 1) {
+          state.npcs[`player_parent_${index}`] = {
+            ...createDefaultNpcState(),
+            raceId: state.player.profile.raceId,
+          };
+        }
+      }
       return;
     }
     case 'setSocialClass': {
@@ -242,10 +251,11 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
     case 'setCareerAffiliation':
       if (!catalog.careerAffiliations.some(({ id }) => id === effect.affiliationId)) throw new Error(`Unknown Career affiliation "${effect.affiliationId}".`);
       state.player.career.affiliationId = effect.affiliationId;
+      if (state.player.career.rankId !== null && catalog.careerRanks.find(({ id }) => id === state.player.career.rankId)?.affiliationId !== effect.affiliationId) state.player.career.rankId = null;
       return;
     case 'modifyReputation':
       if (!Number.isInteger(effect.amount)) throw new Error('Reputation modification must be an integer.');
-      state.player.career.reputation = Math.max(0, state.player.career.reputation + effect.amount);
+      state.player.career.reputation = clamp(state.player.career.reputation + effect.amount, 0, 100);
       return;
     case 'setBounty':
       if (!Number.isInteger(effect.value) || effect.value < 0) throw new Error('Bounty must be a non-negative integer.');
@@ -255,10 +265,13 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       if (!Number.isInteger(effect.amount)) throw new Error('Bounty modification must be an integer.');
       state.player.career.bounty = Math.max(0, state.player.career.bounty + effect.amount);
       return;
-    case 'setMarineRank':
-      if (effect.rankId !== null && !catalog.marineRanks.some(({ id }) => id === effect.rankId)) throw new Error(`Unknown Marine rank "${effect.rankId}".`);
-      state.player.career.marineRankId = effect.rankId;
+    case 'setCareerRank': {
+      const rank = effect.rankId === null ? undefined : catalog.careerRanks.find(({ id }) => id === effect.rankId);
+      if (effect.rankId !== null && rank === undefined) throw new Error(`Unknown Career rank "${effect.rankId}".`);
+      if (rank !== undefined && rank.affiliationId !== state.player.career.affiliationId) throw new Error(`Career rank "${effect.rankId}" is incompatible with affiliation "${state.player.career.affiliationId}".`);
+      state.player.career.rankId = effect.rankId;
       return;
+    }
     case 'setCareerTitle':
       if (!catalog.careerTitles.some(({ id }) => id === effect.titleId)) throw new Error(`Unknown Career title "${effect.titleId}".`);
       state.player.career.titleId = effect.titleId;
@@ -276,6 +289,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
     case 'consumeDevilFruit': {
       if (!canConsumeDevilFruit(state, catalog, effect.fruitId)) throw new Error(`Devil Fruit "${effect.fruitId}" cannot be consumed.`);
       const fruit = catalog.devilFruits.find(({ id }) => id === effect.fruitId)!;
+      if (fruit.itemId === null) throw new Error(`Devil Fruit "${effect.fruitId}" is reference-only.`);
       removeStack(state.player.inventory.stacks, fruit.itemId, 1);
       state.player.powers.devilFruitId = fruit.id;
       state.player.powers.devilFruitAwakening = 0;

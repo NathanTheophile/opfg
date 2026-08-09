@@ -7,7 +7,7 @@ interface CareerStatusProps { state: GameState; catalog: ContentCatalog; transla
 export function CareerStatus({ state, catalog, translate }: CareerStatusProps) {
   const career = state.player.career;
   const affiliation = catalog.careerAffiliations.find(({ id }) => id === career.affiliationId);
-  const rank = catalog.marineRanks.find(({ id }) => id === career.marineRankId);
+  const rank = catalog.careerRanks.find(({ id }) => id === career.rankId);
   const title = catalog.careerTitles.find(({ id }) => id === career.titleId);
   const ending = catalog.endings.find(({ id }) => id === state.endingId);
   return <Panel variant="strong" className="mt-3 text-sm">

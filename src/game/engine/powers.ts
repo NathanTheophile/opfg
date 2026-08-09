@@ -27,6 +27,6 @@ export function synchronizePlayerHaki(state: GameState): void {
 
 export function canConsumeDevilFruit(state: GameState, catalog: ContentCatalog, fruitId: string): boolean {
   const fruit = catalog.devilFruits.find(({ id }) => id === fruitId);
-  return fruit !== undefined && state.player.powers.devilFruitId === null
+  return fruit !== undefined && fruit.playableV1 && fruit.itemId !== null && state.player.powers.devilFruitId === null
     && state.player.inventory.stacks.some(({ itemId, quantity }) => itemId === fruit.itemId && quantity > 0);
 }

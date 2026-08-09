@@ -32,7 +32,7 @@ describe('GameSession', () => {
     expect(session.gameState).toMatchObject({
       careerPhase: 'childhood',
       ageMonths: 12,
-      locationId: 'east_blue_port',
+      locationId: 'foosha_village',
       player: {
         profile: {
           name: 'SimPlayer', raceId: 'giant', familyStructureId: 'orphan', affiliationId: 'civilian',

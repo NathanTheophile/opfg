@@ -2,7 +2,7 @@ import type { CareerEndReason, CareerPhase, GameState, ItemStack, NpcState, NpcS
 import { createDefaultPowerState } from './powers';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 14;
+const CURRENT_SAVE_VERSION = 15;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
@@ -206,14 +206,36 @@ function migrateLegacySave(value: unknown): unknown {
       endingId: null,
     };
   }
+  if (isRecord(migrated) && migrated.version === 14 && isRecord(migrated.player)) {
+    const career = isRecord(migrated.player.career) ? migrated.player.career : {};
+    const npcs = isRecord(migrated.npcs) ? Object.fromEntries(Object.entries(migrated.npcs).map(([id, npc]) => [id, isRecord(npc) ? { ...npc, raceId: null } : npc])) : migrated.npcs;
+    const migrateShip = (ship: unknown): unknown => isRecord(ship)
+      ? { ...ship, shipId: ship.shipId === 'starter_sloop' ? 'sloop' : ship.shipId === 'trade_cog' ? 'merchant_ship' : ship.shipId }
+      : ship;
+    migrated = {
+      ...migrated,
+      version: 15,
+      locationId: migrated.locationId === 'starter_port' ? 'foosha_village' : migrated.locationId,
+      player: { ...migrated.player, career: { ...career, reputation: isNonNegativeInteger(career.reputation) ? Math.min(career.reputation, 100) : career.reputation, rankId: migrateMarineRankId(career.marineRankId) } },
+      ship: migrateShip(migrated.ship),
+      pendingShip: migrateShip(migrated.pendingShip),
+      npcs,
+    };
+  }
   return migrated;
+}
+
+function migrateMarineRankId(value: unknown): string | null {
+  if (value === null || value === undefined) return null;
+  const ids: Record<string, string> = { recruit: 'marine_recruit', sailor: 'marine_petty_officer', officer: 'marine_lieutenant', lieutenant: 'marine_commander', commander: 'marine_captain', captain: 'marine_commodore' };
+  return typeof value === 'string' ? ids[value] ?? value : null;
 }
 
 function readCareerState(value: unknown): GameState['player']['career'] | null {
   if (!isRecord(value)) return null;
-  if (!isCareerAffiliationId(value.affiliationId) || !isNonNegativeInteger(value.reputation) || !isNonNegativeInteger(value.bounty)) return null;
-  if (!isNullableString(value.marineRankId) || !isNullableString(value.titleId)) return null;
-  return { affiliationId: value.affiliationId, reputation: value.reputation, bounty: value.bounty, marineRankId: value.marineRankId, titleId: value.titleId };
+  if (!isCareerAffiliationId(value.affiliationId) || !isIntegerInRange(value.reputation, 0, 100) || !isNonNegativeInteger(value.bounty)) return null;
+  if (!isNullableString(value.rankId) || !isNullableString(value.titleId)) return null;
+  return { affiliationId: value.affiliationId, reputation: value.reputation, bounty: value.bounty, rankId: value.rankId, titleId: value.titleId };
 }
 
 function readInventory(value: unknown): GameState['player']['inventory'] | null {
@@ -254,7 +276,8 @@ function readNpcs(value: unknown): GameState['npcs'] | null {
     if (stats === null) return null;
     const powers = readPowerState(npc.powers);
     if (powers === null) return null;
-    npcs[npcId] = { status: npc.status, relationship: npc.relationship, stats, powers };
+    if (!isNullableString(npc.raceId)) return null;
+    npcs[npcId] = { status: npc.status, relationship: npc.relationship, raceId: npc.raceId, stats, powers };
   }
   return npcs;
 }

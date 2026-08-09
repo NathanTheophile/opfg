@@ -15,6 +15,8 @@ export function countCurrentCrew(state: GameState): number {
 export function canAcquireShip(state: GameState, catalog: ContentCatalog, shipId: ShipId, allowWithoutLeadership = false): boolean {
   const definition = catalog.ships.find(({ id }) => id === shipId);
   if (!definition || state.pendingShip !== null) return false;
+  const market = catalog.locations.find(({ id }) => id === state.locationId)?.shipMarket ?? 'none';
+  if (market === 'none' || (market === 'small_craft' && shipId !== 'dinghy' && shipId !== 'sloop')) return false;
   if (!state.isLeader && (!allowWithoutLeadership || state.ship !== null)) return false;
   if (countCurrentCrew(state) > definition.crewCapacity) return false;
   return (state.ship?.cargo.length ?? 0) + state.passengerNpcIds.length <= definition.cargoSlots;

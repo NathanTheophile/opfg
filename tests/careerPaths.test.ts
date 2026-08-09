@@ -18,7 +18,7 @@ describe('critical events', () => {
 
   it('resolves NPC death before ship destruction and persists each consequence', () => {
     const state = createInitialGameState();
-    state.careerPhase = 'active'; state.ageMonths = 180; state.ship = { shipId: 'starter_sloop', name: 'Wind Finch', health: 0, cargo: [] };
+    state.careerPhase = 'active'; state.ageMonths = 180; state.ship = { shipId: 'sloop', name: 'Wind Finch', health: 0, cargo: [] };
     state.npcs.mira = { status: 'crew', relationship: 0, powers: createDefaultPowerState(), stats: { health: 0, morale: 10, strength: 10, observation: 10, intelligence: 10, luck: 10, loyalty: 10, calm: 10 } };
     let selected = selectNextEvent(state, contentCatalog);
     expect(selected.currentEventId).toBe('critical_mira_death');
@@ -27,7 +27,7 @@ describe('critical events', () => {
     expect(selected.currentEventId).toBe('critical_ship_destroyed');
     selected = resolveChoice(selected, contentCatalog, 'critical_ship_destroyed', 'reach_shore').state;
     expect(selected.ship).toBeNull();
-    expect(selected.locationId).toBe('shipwreck_shore');
+    expect(selected.locationId).toBe('rare_animal_island');
     expect(selected.slotInMonth).toBe(0);
   });
 });

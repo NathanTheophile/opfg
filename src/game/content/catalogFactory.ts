@@ -1,5 +1,26 @@
-import { CONTENT_SCHEMA_VERSION, type ContentCatalog, type EventDefinition } from './schema';
-import { traitNameKey, traitDescriptionKey, itemNameKey, raceNameKey, seaNameKey, affiliationNameKey, crewRoleNameKey, npcNameKey, careerAffiliationNameKey, marineRankNameKey, careerTitleNameKey, careerTitleDescriptionKey, endingNameKey, endingDescriptionKey } from '../localization/keys';
+import locationsData from './data/locationsV1.json';
+import fruitsData from './data/devilFruitsV1.json';
+import { CONTENT_SCHEMA_VERSION, type ContentCatalog, type DevilFruitDefinition, type EventDefinition, type LocationDefinition } from './schema';
+import { affiliationNameKey, careerAffiliationNameKey, careerRankNameKey, careerTitleDescriptionKey, careerTitleNameKey, crewRoleNameKey, devilFruitNameKey, endingDescriptionKey, endingNameKey, itemNameKey, locationNameKey, npcNameKey, raceNameKey, seaNameKey, traitDescriptionKey, traitNameKey } from '../localization/keys';
+
+const oppositePairs = [
+  ['audacious', 'cautious'], ['merciful', 'ruthless'], ['generous', 'greedy'], ['disciplined', 'rebellious'], ['sociable', 'solitary'],
+  ['patient', 'impulsive'], ['honest', 'deceptive'], ['loyal', 'disloyal'], ['forgiving', 'vengeful'], ['trusting', 'suspicious'],
+] as const;
+const independentTraits = ['resilient', 'curious', 'ambitious', 'superstitious', 'competitive', 'protective', 'resourceful', 'proud'] as const;
+const rankLadders = {
+  marine: ['marine_recruit','marine_petty_officer','marine_lieutenant','marine_commander','marine_captain','marine_commodore','marine_rear_admiral','marine_vice_admiral','marine_admiral','marine_fleet_admiral'],
+  revolutionary: ['revolutionary_recruit','revolutionary_agent','revolutionary_operator','revolutionary_officer','revolutionary_regional_commander'],
+  bounty_hunter: ['bounty_hunter_novice','bounty_hunter_tracker','bounty_hunter_confirmed','bounty_hunter_elite','bounty_hunter_master'],
+} as const;
+
+const locations = locationsData.locations.map(({ id, seaId, type, parentLocationId, canBeBirthLocation, allowsDocking, shipMarket, services, tags, blocksScheduledEvents }) => ({
+  id, nameKey: locationNameKey(id), seaId, type, parentLocationId, canBeBirthLocation, allowsDocking, shipMarket, services, tags, blocksScheduledEvents,
+})) as LocationDefinition[];
+
+const devilFruits = fruitsData.fruits.map(({ id, type, playableV1, tags }) => ({
+  id, nameKey: devilFruitNameKey(id), type, playableV1, itemId: playableV1 ? `${id}_fruit_item` : null, tags,
+})) as DevilFruitDefinition[];
 
 export function createContentCatalog(events: EventDefinition[]): ContentCatalog {
   return {
@@ -13,10 +34,9 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
       { id: 'buccaneer', nameKey: raceNameKey('buccaneer'), initialHealth: 50, attributeModifiers: { strength: 4, agility: -3, observation: 1, intelligence: -1, navigation: -2, charisma: -1, luck: -2, morale: 4 } },
     ],
     seas: ['east_blue', 'west_blue', 'north_blue', 'south_blue'].map((id) => ({ id, nameKey: seaNameKey(id) })),
-    affiliations: ['civilian', 'marine', 'pirate', 'revolutionary', 'bandit', 'prisoner', 'slave', 'celestial_dragon', 'royal_family']
-      .map((id) => ({ id, nameKey: affiliationNameKey(id) })),
+    affiliations: ['civilian', 'marine', 'pirate', 'revolutionary', 'bandit', 'prisoner', 'slave', 'celestial_dragon', 'royal_family'].map((id) => ({ id, nameKey: affiliationNameKey(id) })),
     careerAffiliations: (['civilian', 'pirate', 'marine', 'revolutionary', 'bounty_hunter'] as const).map((id) => ({ id, nameKey: careerAffiliationNameKey(id) })),
-    marineRanks: ['recruit', 'sailor', 'officer', 'lieutenant', 'commander', 'captain'].map((id, sortOrder) => ({ id, nameKey: marineRankNameKey(id), affiliationId: 'marine', sortOrder })),
+    careerRanks: Object.entries(rankLadders).flatMap(([affiliationId, ranks]) => ranks.map((id, sortOrder) => ({ id, nameKey: careerRankNameKey(id), affiliationId: affiliationId as 'marine' | 'revolutionary' | 'bounty_hunter', sortOrder }))),
     careerTitles: ['rookie', 'veteran', 'legend'].map((id) => ({ id, nameKey: careerTitleNameKey(id), descriptionKey: careerTitleDescriptionKey(id) })),
     endings: [{ id: 'career_complete', nameKey: endingNameKey('career_complete'), descriptionKey: endingDescriptionKey('career_complete') }],
     familyStructures: [
@@ -29,44 +49,33 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
       { id: 'modest', nameKey: 'socialClass.modest.name', attributeModifiers: {} },
       { id: 'wealthy', nameKey: 'socialClass.wealthy.name', attributeModifiers: { luck: 3, observation: -3 } },
     ],
-    locations: [
-      { id: 'east_blue_port', seaId: 'east_blue', blocksScheduledEvents: false, allowsShipSale: true, allowsDocking: true },
-      { id: 'west_blue_port', seaId: 'west_blue', blocksScheduledEvents: false, allowsShipSale: true, allowsDocking: true },
-      { id: 'north_blue_port', seaId: 'north_blue', blocksScheduledEvents: false, allowsShipSale: true, allowsDocking: true },
-      { id: 'south_blue_port', seaId: 'south_blue', blocksScheduledEvents: false, allowsShipSale: true, allowsDocking: true },
-      { id: 'starter_port', seaId: 'east_blue', blocksScheduledEvents: false, allowsShipSale: true, allowsDocking: true },
-      { id: 'open_sea', seaId: null, blocksScheduledEvents: false, allowsShipSale: false, allowsDocking: false },
-      { id: 'outer_route', seaId: null, blocksScheduledEvents: false, allowsShipSale: false, allowsDocking: false },
-      { id: 'isolated_cove', seaId: null, blocksScheduledEvents: true, allowsShipSale: false, allowsDocking: true },
-      { id: 'shipwreck_shore', seaId: null, blocksScheduledEvents: false, allowsShipSale: false, allowsDocking: true },
-    ],
+    locations,
     traits: [
-      { id: 'audacious', nameKey: traitNameKey('audacious'), descriptionKey: traitDescriptionKey('audacious'), oppositeTraitId: 'cautious' },
-      { id: 'cautious', nameKey: traitNameKey('cautious'), descriptionKey: traitDescriptionKey('cautious'), oppositeTraitId: 'audacious' },
-      { id: 'resilient', nameKey: traitNameKey('resilient'), descriptionKey: traitDescriptionKey('resilient') },
+      ...oppositePairs.flatMap(([first, second]) => [
+        { id: first, nameKey: traitNameKey(first), descriptionKey: traitDescriptionKey(first), oppositeTraitId: second },
+        { id: second, nameKey: traitNameKey(second), descriptionKey: traitDescriptionKey(second), oppositeTraitId: first },
+      ]),
+      ...independentTraits.map((id) => ({ id, nameKey: traitNameKey(id), descriptionKey: traitDescriptionKey(id) })),
     ],
     items: [
       { id: 'sealed_chart', nameKey: itemNameKey('sealed_chart') },
       { id: 'mira_letter_of_passage', nameKey: itemNameKey('mira_letter_of_passage') },
-      { id: 'flame_fruit_item', nameKey: itemNameKey('flame_fruit_item') },
-      { id: 'falcon_fruit_item', nameKey: itemNameKey('falcon_fruit_item') },
+      ...devilFruits.filter(({ playableV1 }) => playableV1).map(({ itemId }) => ({ id: itemId!, nameKey: itemNameKey(itemId!) })),
     ],
-    devilFruits: [
-      { id: 'flame_fruit', nameKey: 'devilFruit.flame_fruit.name', type: 'logia', itemId: 'flame_fruit_item', tags: ['fire', 'intangibility', 'ranged', 'environmental'] },
-      { id: 'falcon_fruit', nameKey: 'devilFruit.falcon_fruit.name', type: 'zoan', itemId: 'falcon_fruit_item', tags: ['flight', 'mobility', 'transformation'] },
-    ],
+    devilFruits,
     ships: [
-      { id: 'starter_sloop', nameKey: 'ship.starter_sloop.name', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 },
-      { id: 'trade_cog', nameKey: 'ship.trade_cog.name', maxHealth: 45, crewCapacity: 5, cargoSlots: 6 },
+      { id: 'dinghy', nameKey: 'ship.dinghy.name', maxHealth: 18, crewCapacity: 1, cargoSlots: 1 },
+      { id: 'sloop', nameKey: 'ship.sloop.name', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 },
+      { id: 'caravel', nameKey: 'ship.caravel.name', maxHealth: 38, crewCapacity: 5, cargoSlots: 3 },
+      { id: 'brig', nameKey: 'ship.brig.name', maxHealth: 50, crewCapacity: 7, cargoSlots: 2 },
+      { id: 'merchant_ship', nameKey: 'ship.merchant_ship.name', maxHealth: 42, crewCapacity: 5, cargoSlots: 7 },
+      { id: 'galleon', nameKey: 'ship.galleon.name', maxHealth: 65, crewCapacity: 9, cargoSlots: 5 },
     ],
-    crewRoles: [
-      { id: 'navigator', nameKey: crewRoleNameKey('navigator') },
-      { id: 'medic', nameKey: crewRoleNameKey('medic') },
+    crewRoles: ['navigator','medic','cook','shipwright','helmsman','gunner','musician','scholar','fighter','quartermaster'].map((id) => ({ id, nameKey: crewRoleNameKey(id) })),
+    npcs: [
+      { id: 'mira', nameKey: npcNameKey('mira'), raceId: null, originSeaId: null, affiliationId: null, crewRoleId: 'navigator', initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } },
+      ...['player_parent_1', 'player_parent_2'].map((id) => ({ id, nameKey: npcNameKey(id), raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } })),
     ],
-    npcs: [{
-      id: 'mira', nameKey: npcNameKey('mira'), raceId: null, originSeaId: null, affiliationId: null, crewRoleId: 'navigator',
-      initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 },
-    }],
     events,
   };
 }

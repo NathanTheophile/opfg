@@ -16,7 +16,7 @@ export const toRuntimeCatalog = (project: AuthoringProject): ContentCatalog => (
   seas: structuredClone(project.registries.seas),
   affiliations: structuredClone(project.registries.affiliations),
   careerAffiliations: structuredClone(project.registries.careerAffiliations),
-  marineRanks: structuredClone(project.registries.marineRanks),
+  careerRanks: structuredClone(project.registries.careerRanks),
   careerTitles: structuredClone(project.registries.careerTitles),
   endings: structuredClone(project.registries.endings),
   familyStructures: structuredClone(project.registries.familyStructures),

@@ -5,16 +5,16 @@ const DEFAULT_SEED = 0x1a2b3c4d;
 
 export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
   return {
-    version: 14,
+    version: 15,
     rngState: seed >>> 0,
     careerPhase: 'origins',
     ageMonths: 0,
     slotInMonth: 0,
     travelState: 'on_land',
-    locationId: 'starter_port',
+    locationId: 'foosha_village',
     player: {
       profile: { name: null, raceId: null, originSeaId: null, affiliationId: null, familyStructureId: null, socialClassId: null },
-      career: { affiliationId: 'civilian', reputation: 0, bounty: 0, marineRankId: null, titleId: null },
+      career: { affiliationId: 'civilian', reputation: 0, bounty: 0, rankId: null, titleId: null },
       // Temporary, deliberately simple Slice 0 starting data.
       stats: {
         health: 35,
@@ -32,7 +32,7 @@ export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
       powers: { devilFruitId: null, devilFruitAwakening: 0, haki: { observation: 0, armament: 0, conqueror: 0 } },
     },
     ship: {
-      shipId: 'starter_sloop',
+      shipId: 'sloop',
       name: 'Wind Finch',
       health: 30,
       cargo: [],

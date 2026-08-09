@@ -60,6 +60,8 @@ export const createCondition = (type: Condition['type']): Condition => {
     case 'canRecruitNpc': return { type, npcId: '' };
     case 'isLeader': return { type };
     case 'locationIs': return { type, locationId: '' };
+    case 'locationHasTag': return { type, tagId: 'port' };
+    case 'locationHasService': return { type, serviceId: 'lodging' };
     case 'isAtSea': return { type };
     case 'isOnLand': return { type };
     case 'careerPhaseIs': return { type, phase: 'childhood' };
@@ -101,7 +103,7 @@ export const createCondition = (type: Condition['type']): Condition => {
     case 'npcHakiIsAwakened': return { type, npcId: '', hakiType: 'observation' };
     case 'careerAffiliationIs': return { type, affiliationId: 'civilian' };
     case 'reputationAtLeast': case 'reputationAtMost': case 'bountyAtLeast': return { type, value: 0 };
-    case 'marineRankIs': case 'marineRankAtLeast': return { type, rankId: '' };
+    case 'careerRankIs': case 'careerRankAtLeast': return { type, rankId: '' };
     case 'careerTitleIs': return { type, titleId: '' };
   }
 };
@@ -149,7 +151,7 @@ export const createEffect = (type: Effect['type']): Effect => {
     case 'setCareerAffiliation': return { type, affiliationId: 'civilian' };
     case 'modifyReputation': case 'modifyBounty': return { type, amount: 0 };
     case 'setBounty': return { type, value: 0 };
-    case 'setMarineRank': return { type, rankId: null };
+    case 'setCareerRank': return { type, rankId: null };
     case 'setCareerTitle': return { type, titleId: '' };
     case 'clearCareerTitle': return { type };
     case 'endCareerWithEnding': return { type, endingId: '' };

@@ -6,7 +6,7 @@ import { createInitialGameState } from '../src/game/model/initialState';
 
 const activeState = () => {
   const state = createInitialGameState(1);
-  state.careerPhase = 'active'; state.ageMonths = 180; state.slotInMonth = 0; state.locationId = 'starter_port'; state.travelState = 'on_land';
+  state.careerPhase = 'active'; state.ageMonths = 180; state.slotInMonth = 0; state.locationId = 'foosha_village'; state.travelState = 'on_land';
   return state;
 };
 
@@ -22,7 +22,7 @@ describe('monthly navigation', () => {
   it('offers docking at a port and blocks it where docking is forbidden', () => {
     const state = activeState(); state.travelState = 'at_sea';
     expect(getMonthlyNavigationOptions(state, contentCatalog)).toContainEqual({ id: 'dock', available: true });
-    state.locationId = 'open_sea';
+    state.locationId = 'arlong_park';
     expect(getMonthlyNavigationOptions(state, contentCatalog)).toContainEqual({ id: 'dock', available: false });
     expect(() => applyMonthlyNavigationChoice(state, contentCatalog, 'dock')).toThrow('not available');
   });

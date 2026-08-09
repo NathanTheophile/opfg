@@ -20,6 +20,8 @@ A batch must not silently create new persistent definitions. New Trait/NPC/Item/
 
 ## 3. Locations
 
+The authoritative V1 runtime subset is the 60-entry catalogue in `src/game/content/data/locationsV1.json`: 15 Locations per Blue, including at least eight Birth Locations, one full ship market, Marine presence and wilderness per Blue. `docs/content/locations/OPFG_LOCATIONS_CATALOG.json` remains the broader geographic reference and is not a runtime registry.
+
 ### Granularity
 
 Favor places where meaningful activities can happen:
@@ -92,6 +94,8 @@ Keep `blocksScheduledEvents` conservative; current special cases may include Imp
 ## 4. Devil Fruits
 
 ### V1 playable roster
+
+The integrated authoring registry is `src/game/content/data/devilFruitsV1.json`: 20 entries marked `playableV1` receive runtime Items, while 25 reference-only entries remain available for canon NPC/Event references without becoming consumables.
 
 - **20 playable canon Fruits** for launch.
 - Additional canon Fruits may appear in lore, NPC references or Event text and do not count toward the 20 playable roster.

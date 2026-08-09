@@ -26,7 +26,7 @@ describe('Crew System V1', () => {
     const lost = applyEffects(state, contentCatalog, [{ type: 'loseShip', locationId: 'shipwreck_shore', travelState: 'on_land', allowWithoutLeadership: true }], context);
     expect(lost.npcs.mira.status).toBe('crew');
     for (const id of ['a', 'b', 'c']) lost.npcs[id] = npc('crew');
-    expect(() => applyEffects(lost, contentCatalog, [{ type: 'acquireShip', shipId: 'starter_sloop', name: 'Too Small' }], context)).toThrow(/cannot be acquired/);
+    expect(() => applyEffects(lost, contentCatalog, [{ type: 'acquireShip', shipId: 'sloop', name: 'Too Small' }], context)).toThrow(/cannot be acquired/);
   });
 
   it('uses one cargo slot per passenger without consuming crew capacity', () => {
@@ -78,12 +78,12 @@ describe('Crew System V1', () => {
     expect(evaluateCondition({ type: 'isLeader' }, state, contentCatalog)).toBe(false);
     expect(() => applyEffects(state, contentCatalog, [{ type: 'setNpcStatus', npcId: 'mira', status: 'crew' }], context)).toThrow(/leadership/);
     expect(() => applyEffects(state, contentCatalog, [{ type: 'addCargoItem', itemId: 'sealed_chart', quantity: 1 }], context)).toThrow(/leadership/);
-    expect(() => applyEffects(state, contentCatalog, [{ type: 'acquireShip', shipId: 'trade_cog', name: 'Commandeered', allowWithoutLeadership: true }], context)).toThrow(/cannot be acquired/);
+    expect(() => applyEffects(state, contentCatalog, [{ type: 'acquireShip', shipId: 'merchant_ship', name: 'Commandeered', allowWithoutLeadership: true }], context)).toThrow(/cannot be acquired/);
     const marineTravel = applyEffects(state, contentCatalog, [{ type: 'moveToLocation', locationId: 'open_sea', travelState: 'at_sea' }], context);
-    expect(marineTravel).toMatchObject({ isLeader: false, locationId: 'open_sea', travelState: 'at_sea', ship: { shipId: 'starter_sloop' } });
+    expect(marineTravel).toMatchObject({ isLeader: false, locationId: 'open_sea', travelState: 'at_sea', ship: { shipId: 'sloop' } });
     const orderedRecruitment = applyEffects(state, contentCatalog, [{ type: 'setNpcStatus', npcId: 'mira', status: 'crew', allowWithoutLeadership: true }], context);
     expect(orderedRecruitment.npcs.mira.status).toBe('crew');
-    const transported = applyEffects({ ...state, ship: null }, contentCatalog, [{ type: 'acquireShip', shipId: 'starter_sloop', name: 'Marine Transport', allowWithoutLeadership: true }], context);
+    const transported = applyEffects({ ...state, ship: null }, contentCatalog, [{ type: 'acquireShip', shipId: 'sloop', name: 'Marine Transport', allowWithoutLeadership: true }], context);
     expect(transported).toMatchObject({ isLeader: false, ship: { name: 'Marine Transport' }, pendingShip: null });
   });
 });

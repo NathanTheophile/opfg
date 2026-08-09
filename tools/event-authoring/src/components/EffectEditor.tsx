@@ -6,7 +6,7 @@ export const EFFECT_TYPES: Effect['type'][] = [
   'setFlag','clearFlag','addItem','removeItem','addTrait','removeTrait','modifyStat','modifyHealth','acquireShip','modifyShipHealth','addCargoItem','removeCargoItem','resolveShipReplacement','modifyBerries','loseShip',
   'moveToLocation','setBirthLocation','setNpcStatus','setNpcPassenger','setLeadership','modifyNpcRelationship','modifyNpcStat','scheduleEvent','queueImmediateEvent','setCareerPhase','setRace',
   'setOriginSea','setAffiliation','setFamilyStructure','setSocialClass','endCareer','consumeDevilFruit','increaseDevilFruitAwakening','awakenHaki','raiseConquerorHakiTo','setNpcDevilFruit','increaseNpcDevilFruitAwakening','raiseNpcHakiTo',
-  'setCareerAffiliation','modifyReputation','setBounty','modifyBounty','setMarineRank','setCareerTitle','clearCareerTitle','endCareerWithEnding',
+  'setCareerAffiliation','modifyReputation','setBounty','modifyBounty','setCareerRank','setCareerTitle','clearCareerTitle','endCareerWithEnding',
 ];
 
 interface Props { value: Effect; onChange: (value: Effect) => void; onRemove: () => void; registries: GameRegistries; eventIds: string[]; scheduledEventIds: string[]; immediateEventIds: string[]; }
@@ -47,7 +47,7 @@ export default function EffectEditor({ value, onChange, onRemove, registries, ev
       case 'setCareerAffiliation': return <IdSelect value={value.affiliationId} options={registries.careerAffiliations} onChange={(affiliationId) => onChange({ ...value, affiliationId: affiliationId as typeof value.affiliationId })} />;
       case 'modifyReputation': case 'modifyBounty': return <NumberInput value={value.amount} onChange={(amount) => onChange({ ...value, amount })} />;
       case 'setBounty': return <NumberInput value={value.value} min={0} onChange={(next) => onChange({ ...value, value: next })} />;
-      case 'setMarineRank': return <IdSelect value={value.rankId ?? ''} options={registries.marineRanks} onChange={(rankId) => onChange({ ...value, rankId: rankId || null })} />;
+      case 'setCareerRank': return <IdSelect value={value.rankId ?? ''} options={registries.careerRanks} onChange={(rankId) => onChange({ ...value, rankId: rankId || null })} />;
       case 'setCareerTitle': return <IdSelect value={value.titleId} options={registries.careerTitles} onChange={(titleId) => onChange({ ...value, titleId })} />;
       case 'clearCareerTitle': return <span className="muted">No parameters</span>;
       case 'endCareerWithEnding': return <IdSelect value={value.endingId} options={registries.endings} onChange={(endingId) => onChange({ ...value, endingId })} />;

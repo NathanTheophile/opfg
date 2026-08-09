@@ -36,7 +36,7 @@ const localeFromFile = (name: string, path?: string): string => {
   return basename.replace(/\.json$/i, '').replace(/^locales[-_]/i, '').toLowerCase();
 };
 
-const emptyRegistries = (): GameRegistries => ({ races: [], seas: [], affiliations: [], careerAffiliations: [], marineRanks: [], careerTitles: [], endings: [], familyStructures: [], socialClasses: [], traits: [], items: [], devilFruits: [], ships: [], crewRoles: [], npcs: [], locations: [], flags: [] });
+const emptyRegistries = (): GameRegistries => ({ races: [], seas: [], affiliations: [], careerAffiliations: [], careerRanks: [], careerTitles: [], endings: [], familyStructures: [], socialClasses: [], traits: [], items: [], devilFruits: [], ships: [], crewRoles: [], npcs: [], locations: [], flags: [] });
 const blankProject = (): AuthoringProject => {
   const now = new Date().toISOString();
   return { authoringVersion: AUTHORING_VERSION, gameSchemaVersion: CONTENT_SCHEMA_VERSION, name: 'OPFG Events', sourceLocale: 'fr', supportedLocales: ['fr', 'en'], events: [], nodes: [], edges: [], registries: emptyRegistries(), localization: {}, metadata: { createdAt: now, updatedAt: now } };
@@ -53,8 +53,9 @@ const collectPositiveBadges = (condition?: Condition): string[] => {
 
 const collectRegistryKeys = (r: GameRegistries): string[] => [
   ...r.races.map((x) => x.nameKey), ...r.seas.map((x) => x.nameKey), ...r.affiliations.map((x) => x.nameKey),
-  ...r.careerAffiliations.map((x) => x.nameKey), ...r.marineRanks.map((x) => x.nameKey), ...r.careerTitles.flatMap((x) => [x.nameKey, x.descriptionKey]), ...r.endings.flatMap((x) => [x.nameKey, x.descriptionKey]),
+  ...r.careerAffiliations.map((x) => x.nameKey), ...r.careerRanks.map((x) => x.nameKey), ...r.careerTitles.flatMap((x) => [x.nameKey, x.descriptionKey]), ...r.endings.flatMap((x) => [x.nameKey, x.descriptionKey]),
   ...r.familyStructures.map((x) => x.nameKey), ...r.socialClasses.map((x) => x.nameKey),
+  ...r.locations.map((x) => x.nameKey), ...r.devilFruits.map((x) => x.nameKey),
   ...r.traits.flatMap((x) => [x.nameKey, x.descriptionKey]), ...r.items.map((x) => x.nameKey), ...r.ships.map((x) => x.nameKey), ...r.crewRoles.map((x) => x.nameKey), ...r.npcs.map((x) => x.nameKey),
 ];
 const collectProjectKeys = (project: AuthoringProject): string[] => [...new Set([...project.events.flatMap(collectEventLocalizationKeys), ...collectRegistryKeys(project.registries)])];
@@ -74,7 +75,7 @@ const catalogToProject = (catalog: ContentCatalog, dictionaries: Record<string, 
   const now = new Date().toISOString();
   const events = structuredClone(catalog.events);
   const registries: GameRegistries = {
-    races: structuredClone(catalog.races), seas: structuredClone(catalog.seas), affiliations: structuredClone(catalog.affiliations), careerAffiliations: structuredClone(catalog.careerAffiliations), marineRanks: structuredClone(catalog.marineRanks), careerTitles: structuredClone(catalog.careerTitles), endings: structuredClone(catalog.endings),
+    races: structuredClone(catalog.races), seas: structuredClone(catalog.seas), affiliations: structuredClone(catalog.affiliations), careerAffiliations: structuredClone(catalog.careerAffiliations), careerRanks: structuredClone(catalog.careerRanks), careerTitles: structuredClone(catalog.careerTitles), endings: structuredClone(catalog.endings),
     familyStructures: structuredClone(catalog.familyStructures), socialClasses: structuredClone(catalog.socialClasses),
     traits: structuredClone(catalog.traits), items: structuredClone(catalog.items), devilFruits: structuredClone(catalog.devilFruits), ships: structuredClone(catalog.ships), crewRoles: structuredClone(catalog.crewRoles), npcs: structuredClone(catalog.npcs),
     locations: structuredClone(catalog.locations), flags: collectFlagIds(events).map((id) => ({ id })),

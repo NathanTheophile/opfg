@@ -25,17 +25,23 @@ import type {
   DevilFruitTagId,
   HakiType,
   CareerAffiliationId,
-  MarineRankId,
+  CareerRankId,
   CareerTitleId,
   EndingId,
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 4;
+export const CONTENT_SCHEMA_VERSION = 5;
 
 export const DEVIL_FRUIT_TYPES = ['paramecia', 'zoan', 'logia'] as const;
 export type DevilFruitType = typeof DEVIL_FRUIT_TYPES[number];
 export const DEVIL_FRUIT_TAGS = ['flight', 'fire', 'cold', 'electricity', 'mobility', 'intangibility', 'transformation', 'enhanced_strength', 'healing', 'barrier', 'ranged', 'environmental'] as const satisfies readonly DevilFruitTagId[];
+export const LOCATION_SERVICES = ['food', 'lodging', 'general_goods', 'weapons', 'medical', 'trade', 'ship_repair', 'crew_recruitment', 'marine_services', 'black_market'] as const;
+export type LocationServiceId = typeof LOCATION_SERVICES[number];
+export const LOCATION_TAGS = ['capital','city','village','coastal','port','trade','shipyard','marine_presence','pirate_presence','revolutionary_presence','government','royal','wealthy','poor','industrial','agricultural','criminal','military','prison','research','medical','historic','religious','entertainment','touristic','dangerous','isolated','urban','rural','desert','forest','mountain','snow','tropical','wilderness','sky','underwater'] as const;
+export type LocationTagId = typeof LOCATION_TAGS[number];
+export type ShipMarket = 'none' | 'small_craft' | 'full';
+export type LocationType = 'city' | 'facility' | 'island' | 'kingdom' | 'marine_base' | 'pirate_haven' | 'port' | 'village' | 'wilderness';
 
 export type StatId = PlayerAttributeId;
 
@@ -54,6 +60,8 @@ export type Condition =
   | { type: 'canRecruitNpc'; npcId: NpcId }
   | { type: 'isLeader' }
   | { type: 'locationIs'; locationId: LocationId }
+  | { type: 'locationHasTag'; tagId: LocationTagId }
+  | { type: 'locationHasService'; serviceId: LocationServiceId }
   | { type: 'isAtSea' }
   | { type: 'isOnLand' }
   | { type: 'careerPhaseIs'; phase: CareerPhase }
@@ -99,8 +107,8 @@ export type Condition =
   | { type: 'reputationAtLeast'; value: number }
   | { type: 'reputationAtMost'; value: number }
   | { type: 'bountyAtLeast'; value: number }
-  | { type: 'marineRankIs'; rankId: MarineRankId }
-  | { type: 'marineRankAtLeast'; rankId: MarineRankId }
+  | { type: 'careerRankIs'; rankId: CareerRankId }
+  | { type: 'careerRankAtLeast'; rankId: CareerRankId }
   | { type: 'careerTitleIs'; titleId: CareerTitleId };
 
 export type Effect =
@@ -146,7 +154,7 @@ export type Effect =
   | { type: 'modifyReputation'; amount: number }
   | { type: 'setBounty'; value: number }
   | { type: 'modifyBounty'; amount: number }
-  | { type: 'setMarineRank'; rankId: MarineRankId | null }
+  | { type: 'setCareerRank'; rankId: CareerRankId | null }
   | { type: 'setCareerTitle'; titleId: CareerTitleId }
   | { type: 'clearCareerTitle' }
   | { type: 'endCareerWithEnding'; endingId: EndingId };
@@ -241,7 +249,8 @@ export interface DevilFruitDefinition {
   id: DevilFruitId;
   nameKey: LocalizationKey;
   type: DevilFruitType;
-  itemId: ItemId;
+  playableV1: boolean;
+  itemId: ItemId | null;
   tags: DevilFruitTagId[];
 }
 
@@ -270,9 +279,9 @@ export interface SeaDefinition { id: SeaId; nameKey: LocalizationKey }
 export interface AffiliationDefinition { id: AffiliationId; nameKey: LocalizationKey }
 export interface FamilyStructureDefinition { id: FamilyStructureId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
 export interface SocialClassDefinition { id: SocialClassId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
-export interface LocationDefinition { id: LocationId; seaId: SeaId | null; blocksScheduledEvents: boolean; allowsShipSale: boolean; allowsDocking: boolean }
+export interface LocationDefinition { id: LocationId; nameKey: LocalizationKey; seaId: SeaId; type: LocationType; parentLocationId: LocationId | null; canBeBirthLocation: boolean; blocksScheduledEvents: boolean; allowsDocking: boolean; shipMarket: ShipMarket; services: LocationServiceId[]; tags: LocationTagId[] }
 export interface CareerAffiliationDefinition { id: CareerAffiliationId; nameKey: LocalizationKey }
-export interface MarineRankDefinition { id: MarineRankId; nameKey: LocalizationKey; affiliationId: 'marine'; sortOrder: number }
+export interface CareerRankDefinition { id: CareerRankId; nameKey: LocalizationKey; affiliationId: Extract<CareerAffiliationId, 'marine' | 'revolutionary' | 'bounty_hunter'>; sortOrder: number }
 export interface CareerTitleDefinition { id: CareerTitleId; nameKey: LocalizationKey; descriptionKey: LocalizationKey }
 export interface EndingDefinition { id: EndingId; nameKey: LocalizationKey; descriptionKey: LocalizationKey }
 
@@ -282,7 +291,7 @@ export interface ContentCatalog {
   seas: SeaDefinition[];
   affiliations: AffiliationDefinition[];
   careerAffiliations: CareerAffiliationDefinition[];
-  marineRanks: MarineRankDefinition[];
+  careerRanks: CareerRankDefinition[];
   careerTitles: CareerTitleDefinition[];
   endings: EndingDefinition[];
   familyStructures: FamilyStructureDefinition[];

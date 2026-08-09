@@ -41,6 +41,10 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
       return state.isLeader;
     case 'locationIs':
       return state.locationId === condition.locationId;
+    case 'locationHasTag':
+      return catalog?.locations.find(({ id }) => id === state.locationId)?.tags.includes(condition.tagId) === true;
+    case 'locationHasService':
+      return catalog?.locations.find(({ id }) => id === state.locationId)?.services.includes(condition.serviceId) === true;
     case 'isAtSea':
       return state.travelState === 'at_sea';
     case 'isOnLand':
@@ -65,8 +69,10 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
       return state.ship !== null && catalog !== undefined && availableCargoSlots(state.ship, catalog, state.passengerNpcIds.length) >= condition.value;
     case 'canAcquireShip':
       return catalog !== undefined && canAcquireShip(state, catalog, condition.shipId);
-    case 'canSellShip':
-      return state.ship !== null && state.pendingShip !== null && catalog?.locations.find(({ id }) => id === state.locationId)?.allowsShipSale === true;
+    case 'canSellShip': {
+      const market = catalog?.locations.find(({ id }) => id === state.locationId)?.shipMarket;
+      return state.ship !== null && state.pendingShip !== null && market !== undefined && market !== 'none';
+    }
     case 'npcStatusIs':
       return state.npcs[condition.npcId]?.status === condition.status;
     case 'npcRelationshipAtLeast':
@@ -117,12 +123,15 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
     case 'reputationAtLeast': return state.player.career.reputation >= condition.value;
     case 'reputationAtMost': return state.player.career.reputation <= condition.value;
     case 'bountyAtLeast': return state.player.career.bounty >= condition.value;
-    case 'marineRankIs': return state.player.career.marineRankId === condition.rankId;
-    case 'marineRankAtLeast': {
-      if (state.player.career.affiliationId !== 'marine' || state.player.career.marineRankId === null || catalog === undefined) return false;
-      const current = catalog.marineRanks.find(({ id }) => id === state.player.career.marineRankId);
-      const required = catalog.marineRanks.find(({ id }) => id === condition.rankId);
-      return current !== undefined && required !== undefined && current.sortOrder >= required.sortOrder;
+    case 'careerRankIs': return state.player.career.rankId === condition.rankId;
+    case 'careerRankAtLeast': {
+      if (state.player.career.rankId === null || catalog === undefined) return false;
+      const current = catalog.careerRanks.find(({ id }) => id === state.player.career.rankId);
+      const required = catalog.careerRanks.find(({ id }) => id === condition.rankId);
+      return current !== undefined && required !== undefined
+        && current.affiliationId === state.player.career.affiliationId
+        && required.affiliationId === state.player.career.affiliationId
+        && current.sortOrder >= required.sortOrder;
     }
     case 'careerTitleIs': return state.player.career.titleId === condition.titleId;
   }

@@ -50,12 +50,12 @@ export function validateSingleEventShape(value: unknown): ShapeIssue[] {
     seas: [...references.seaIds].map((id) => ({ id, nameKey: `sea.${id}.name` })),
     affiliations: [...references.affiliationIds].map((id) => ({ id, nameKey: `affiliation.${id}.name` })),
     careerAffiliations: [{ id: 'civilian', nameKey: 'careerAffiliation.civilian.name' }],
-    marineRanks: [...references.marineRankIds].map((id) => ({ id, nameKey: `marineRank.${id}.name`, affiliationId: 'marine' as const, sortOrder: 0 })),
+    careerRanks: [...references.careerRankIds].map((id) => ({ id, nameKey: `careerRank.${id}.name`, affiliationId: 'marine' as const, sortOrder: 0 })),
     careerTitles: [...references.careerTitleIds].map((id) => ({ id, nameKey: `careerTitle.${id}.name`, descriptionKey: `careerTitle.${id}.description` })),
     endings: [...references.endingIds].map((id) => ({ id, nameKey: `ending.${id}.name`, descriptionKey: `ending.${id}.description` })),
     familyStructures: [...references.familyStructureIds].map((id) => ({ id, nameKey: `familyStructure.${id}.name`, attributeModifiers: {} })),
     socialClasses: [...references.socialClassIds].map((id) => ({ id, nameKey: `socialClass.${id}.name`, attributeModifiers: {} })),
-    locations: [...references.locationIds].map((id) => ({ id, seaId: null, blocksScheduledEvents: false, allowsShipSale: false, allowsDocking: false })),
+    locations: [...references.locationIds].map((id) => ({ id, nameKey: `location.${id}.name`, seaId: [...references.seaIds][0] ?? 'east_blue', type: 'island' as const, parentLocationId: null, canBeBirthLocation: false, blocksScheduledEvents: false, allowsDocking: false, shipMarket: 'none' as const, services: [], tags: [] })),
     traits: [...references.traitIds].map((id) => ({ id, nameKey: `trait.${id}.name`, descriptionKey: `trait.${id}.description` })),
     items: [...references.itemIds].map((id) => ({ id, nameKey: `item.${id}.name` })),
     devilFruits: [],
@@ -84,13 +84,13 @@ function collectReferences(value: unknown) {
     choicesByEvent: new Map<string, Set<string>>(), outcomesByEvent: new Map<string, Set<string>>(),
     traitIds: new Set<string>(), itemIds: new Set<string>(), shipIds: new Set<string>(), crewRoleIds: new Set<string>(), npcIds: new Set<string>(), locationIds: new Set<string>(),
     raceIds: new Set<string>(), seaIds: new Set<string>(), affiliationIds: new Set<string>(), familyStructureIds: new Set<string>(), socialClassIds: new Set<string>(),
-    marineRankIds: new Set<string>(), careerTitleIds: new Set<string>(), endingIds: new Set<string>(),
+    careerRankIds: new Set<string>(), careerTitleIds: new Set<string>(), endingIds: new Set<string>(),
   };
   walk(value, (record) => {
     add(record.traitId, result.traitIds); add(record.itemId, result.itemIds); add(record.shipId, result.shipIds); add(record.roleId, result.crewRoleIds); add(record.npcId, result.npcIds);
     add(record.locationId, result.locationIds); add(record.raceId, result.raceIds); add(record.seaId, result.seaIds);
     add(record.affiliationId, result.affiliationIds);
-    add(record.rankId, result.marineRankIds); add(record.titleId, result.careerTitleIds); add(record.endingId, result.endingIds);
+    add(record.rankId, result.careerRankIds); add(record.titleId, result.careerTitleIds); add(record.endingId, result.endingIds);
     add(record.familyStructureId, result.familyStructureIds); add(record.socialClassId, result.socialClassIds);
     if (typeof record.eventId === 'string') {
       result.eventIds.add(record.eventId);

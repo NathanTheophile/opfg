@@ -1,4 +1,4 @@
-import type { ChoiceId, CrewRoleId, EventId, ItemId, NpcId, OutcomeId, RaceId, SeaId, AffiliationId, ShipId, TraitId, CareerAffiliationId, MarineRankId, CareerTitleId, EndingId } from '../model/schema';
+import type { ChoiceId, CrewRoleId, EventId, ItemId, NpcId, OutcomeId, RaceId, SeaId, AffiliationId, ShipId, TraitId, CareerAffiliationId, CareerRankId, CareerTitleId, EndingId, LocationId, DevilFruitId } from '../model/schema';
 export type LocalizationKey = string;
 export const eventTitleKey = (id: EventId): LocalizationKey => `event.${id}.title`;
 export const eventTextKey = (id: EventId): LocalizationKey => `event.${id}.text`;
@@ -9,6 +9,8 @@ export const modifierLabelKey = (eventId: EventId, choiceId: ChoiceId, index: st
 export const traitNameKey = (id: TraitId): LocalizationKey => `trait.${id}.name`;
 export const traitDescriptionKey = (id: TraitId): LocalizationKey => `trait.${id}.description`;
 export const itemNameKey = (id: ItemId): LocalizationKey => `item.${id}.name`;
+export const locationNameKey = (id: LocationId): LocalizationKey => `location.${id}.name`;
+export const devilFruitNameKey = (id: DevilFruitId): LocalizationKey => `devilFruit.${id}.name`;
 export const shipNameKey = (id: ShipId): LocalizationKey => `ship.${id}.name`;
 export const crewRoleNameKey = (id: CrewRoleId): LocalizationKey => `crewRole.${id}.name`;
 export const raceNameKey = (id: RaceId): LocalizationKey => `race.${id}.name`;
@@ -16,7 +18,7 @@ export const seaNameKey = (id: SeaId): LocalizationKey => `sea.${id}.name`;
 export const affiliationNameKey = (id: AffiliationId): LocalizationKey => `affiliation.${id}.name`;
 export const npcNameKey = (id: NpcId): LocalizationKey => `npc.${id}.name`;
 export const careerAffiliationNameKey = (id: CareerAffiliationId): LocalizationKey => `careerAffiliation.${id}.name`;
-export const marineRankNameKey = (id: MarineRankId): LocalizationKey => `marineRank.${id}.name`;
+export const careerRankNameKey = (id: CareerRankId): LocalizationKey => `careerRank.${id}.name`;
 export const careerTitleNameKey = (id: CareerTitleId): LocalizationKey => `careerTitle.${id}.name`;
 export const careerTitleDescriptionKey = (id: CareerTitleId): LocalizationKey => `careerTitle.${id}.description`;
 export const endingNameKey = (id: EndingId): LocalizationKey => `ending.${id}.name`;

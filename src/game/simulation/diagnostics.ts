@@ -23,7 +23,7 @@ export function diagnoseContent(catalog: ContentCatalog): ContentDiagnostic[] {
   const readFlags = new Set<string>();
   const writtenFlags = new Set<string>();
   const referencedLocations = new Set<string>();
-  const reachableLocations = new Set<string>(['starter_port']);
+  const reachableLocations = new Set<string>(['foosha_village']);
   const referencedNpcs = new Set<string>();
 
   visit(catalog.events, (record) => {

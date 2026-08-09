@@ -1,13 +1,13 @@
 import { createCondition } from '../gameSchema/current/defaults';
-import { DEVIL_FRUIT_TAGS, DEVIL_FRUIT_TYPES, HAKI_TYPES, NPC_STAT_IDS, NPC_STATUSES, PLAYER_STAT_IDS, type Condition, type GameRegistries } from '../gameSchema/current/contract';
+import { DEVIL_FRUIT_TAGS, DEVIL_FRUIT_TYPES, HAKI_TYPES, LOCATION_SERVICES, LOCATION_TAGS, NPC_STAT_IDS, NPC_STATUSES, PLAYER_STAT_IDS, type Condition, type GameRegistries } from '../gameSchema/current/contract';
 import { IdSelect, NumberInput } from './EditorPrimitives';
 
 const TYPES: Condition['type'][] = [
-  'all','any','not','hasTrait','statAtLeast','hasFlag','hasItem','berriesAtLeast','hasCrew','crewSizeAtLeast','hasCrewRole','canRecruitNpc','isLeader','locationIs','isAtSea','isOnLand','careerPhaseIs',
+  'all','any','not','hasTrait','statAtLeast','hasFlag','hasItem','berriesAtLeast','hasCrew','crewSizeAtLeast','hasCrewRole','canRecruitNpc','isLeader','locationIs','locationHasTag','locationHasService','isAtSea','isOnLand','careerPhaseIs',
   'ageAtLeastMonths','ageAtMostMonths','hasShip','shipIs','shipHealthAtLeast','shipHealthAtMost','shipCrewCapacityAtLeast','shipCargoSpaceAtLeast','canAcquireShip','canSellShip','npcStatusIs','npcRelationshipAtLeast',
   'npcStatAtLeast','hasChosen','hasPlayed','hasOutcome','raceIs','originSeaIs','affiliationIs','familyStructureIs','socialClassIs',
   'hasDevilFruit','canConsumeDevilFruit','devilFruitIs','devilFruitTypeIs','devilFruitHasTag','devilFruitAwakeningAtLeast','devilFruitIsAwakened','hakiAtLeast','hakiIsAwakened','hakiSourceTotalAtLeast','npcHasDevilFruit','npcDevilFruitIs','npcDevilFruitTypeIs','npcDevilFruitHasTag','npcDevilFruitAwakeningAtLeast','npcHakiAtLeast','npcHakiIsAwakened',
-  'careerAffiliationIs','reputationAtLeast','reputationAtMost','bountyAtLeast','marineRankIs','marineRankAtLeast','careerTitleIs',
+  'careerAffiliationIs','reputationAtLeast','reputationAtMost','bountyAtLeast','careerRankIs','careerRankAtLeast','careerTitleIs',
 ];
 
 interface Props { value?: Condition; onChange: (value?: Condition) => void; registries: GameRegistries; eventIds: string[]; }
@@ -32,6 +32,8 @@ export default function ConditionEditor({ value, onChange, registries, eventIds 
       case 'familyStructureIs': return <IdSelect value={value.familyStructureId} options={registries.familyStructures} onChange={(familyStructureId) => onChange({ ...value, familyStructureId })} />;
       case 'socialClassIs': return <IdSelect value={value.socialClassId} options={registries.socialClasses} onChange={(socialClassId) => onChange({ ...value, socialClassId })} />;
       case 'locationIs': return <IdSelect value={value.locationId} options={registries.locations} onChange={(locationId) => onChange({ ...value, locationId })} />;
+      case 'locationHasTag': return <select value={value.tagId} onChange={(e) => onChange({ ...value, tagId: e.target.value as typeof value.tagId })}>{LOCATION_TAGS.map((id) => <option key={id}>{id}</option>)}</select>;
+      case 'locationHasService': return <select value={value.serviceId} onChange={(e) => onChange({ ...value, serviceId: e.target.value as typeof value.serviceId })}>{LOCATION_SERVICES.map((id) => <option key={id}>{id}</option>)}</select>;
       case 'isAtSea': case 'isOnLand': case 'hasShip': case 'canSellShip': case 'hasCrew': case 'isLeader': case 'hasDevilFruit': case 'devilFruitIsAwakened': return <span className="muted">No parameters</span>;
       case 'canConsumeDevilFruit': case 'devilFruitIs': return <IdSelect value={value.fruitId} options={registries.devilFruits} onChange={(fruitId) => onChange({ ...value, fruitId })} />;
       case 'devilFruitTypeIs': return <select value={value.fruitType} onChange={(e) => onChange({ ...value, fruitType: e.target.value as typeof value.fruitType })}>{DEVIL_FRUIT_TYPES.map((x) => <option key={x}>{x}</option>)}</select>;
@@ -49,7 +51,7 @@ export default function ConditionEditor({ value, onChange, registries, eventIds 
       case 'npcHakiIsAwakened': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={value.hakiType} onChange={(e) => onChange({ ...value, hakiType: e.target.value as typeof value.hakiType })}>{HAKI_TYPES.map((x) => <option key={x}>{x}</option>)}</select></div>;
       case 'careerAffiliationIs': return <IdSelect value={value.affiliationId} options={registries.careerAffiliations} onChange={(affiliationId) => onChange({ ...value, affiliationId: affiliationId as typeof value.affiliationId })} />;
       case 'reputationAtLeast': case 'reputationAtMost': case 'bountyAtLeast': return <NumberInput value={value.value} min={0} onChange={(next) => onChange({ ...value, value: next })} />;
-      case 'marineRankIs': case 'marineRankAtLeast': return <IdSelect value={value.rankId} options={registries.marineRanks} onChange={(rankId) => onChange({ ...value, rankId })} />;
+      case 'careerRankIs': case 'careerRankAtLeast': return <IdSelect value={value.rankId} options={registries.careerRanks} onChange={(rankId) => onChange({ ...value, rankId })} />;
       case 'careerTitleIs': return <IdSelect value={value.titleId} options={registries.careerTitles} onChange={(titleId) => onChange({ ...value, titleId })} />;
       case 'careerPhaseIs': return <select value={value.phase} onChange={(e) => onChange({ ...value, phase: e.target.value as typeof value.phase })}><option value="origins">origins</option><option value="childhood">childhood</option><option value="active">active</option></select>;
       case 'ageAtLeastMonths': case 'ageAtMostMonths': return <NumberInput value={value.value} min={0} onChange={(next) => onChange({ ...value, value: next })} />;

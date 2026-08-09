@@ -17,7 +17,9 @@ export type DevilFruitId = string;
 export type DevilFruitTagId = string;
 export type HakiType = 'observation' | 'armament' | 'conqueror';
 export type CareerAffiliationId = 'civilian' | 'pirate' | 'marine' | 'revolutionary' | 'bounty_hunter';
-export type MarineRankId = string;
+export type CareerRankId = string;
+/** @deprecated Use CareerRankId. */
+export type MarineRankId = CareerRankId;
 export type CareerTitleId = string;
 export type EndingId = string;
 
@@ -25,7 +27,7 @@ export interface CareerState {
   affiliationId: CareerAffiliationId;
   reputation: number;
   bounty: number;
-  marineRankId: MarineRankId | null;
+  rankId: CareerRankId | null;
   titleId: CareerTitleId | null;
 }
 
@@ -100,6 +102,7 @@ export interface NpcStats {
 export type NpcStatId = keyof NpcStats;
 
 export interface NpcState {
+  raceId: RaceId | null;
   status: NpcStatus;
   relationship: number;
   stats: NpcStats;

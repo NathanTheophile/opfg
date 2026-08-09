@@ -52,11 +52,11 @@ describe('Origins V1 rules', () => {
     const afterContext = applyEffects(initial, contentCatalog, [
       { type: 'setAffiliation', affiliationId: 'marine' },
       { type: 'setOriginSea', seaId: 'west_blue' },
-      { type: 'setBirthLocation', locationId: 'west_blue_port' },
+      { type: 'setBirthLocation', locationId: 'kano_happo_port' },
     ], context);
     expect(afterContext.player.stats).toEqual(initial.player.stats);
-    expect(afterContext).toMatchObject({ locationId: 'west_blue_port', player: { profile: { affiliationId: 'marine', originSeaId: 'west_blue' } } });
-    expect(() => applyEffects(initial, contentCatalog, [{ type: 'setOriginSea', seaId: 'west_blue' }, { type: 'setBirthLocation', locationId: 'east_blue_port' }], context)).toThrow(/incompatible/);
+    expect(afterContext).toMatchObject({ locationId: 'kano_happo_port', player: { profile: { affiliationId: 'marine', originSeaId: 'west_blue' } } });
+    expect(() => applyEffects(initial, contentCatalog, [{ type: 'setOriginSea', seaId: 'west_blue' }, { type: 'setBirthLocation', locationId: 'foosha_village' }], context)).toThrow(/incompatible/);
   });
 
   it('exposes new profile dimensions to Conditions and only the compatible birthplace Choice', () => {

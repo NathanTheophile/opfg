@@ -11,12 +11,12 @@ const catalog = createContentCatalog([]);
 describe('Career V1', () => {
   it('evaluates career conditions, including ordered Marine ranks', () => {
     const state = createInitialGameState();
-    state.player.career = { affiliationId: 'marine', reputation: 12, bounty: 40, marineRankId: 'lieutenant', titleId: 'veteran' };
+    state.player.career = { affiliationId: 'marine', reputation: 12, bounty: 40, rankId: 'marine_commander', titleId: 'veteran' };
     expect(evaluateCondition({ type: 'careerAffiliationIs', affiliationId: 'marine' }, state, catalog)).toBe(true);
     expect(evaluateCondition({ type: 'reputationAtLeast', value: 12 }, state, catalog)).toBe(true);
     expect(evaluateCondition({ type: 'reputationAtMost', value: 12 }, state, catalog)).toBe(true);
     expect(evaluateCondition({ type: 'bountyAtLeast', value: 40 }, state, catalog)).toBe(true);
-    expect(evaluateCondition({ type: 'marineRankAtLeast', rankId: 'officer' }, state, catalog)).toBe(true);
+    expect(evaluateCondition({ type: 'careerRankAtLeast', rankId: 'marine_lieutenant' }, state, catalog)).toBe(true);
     expect(evaluateCondition({ type: 'careerTitleIs', titleId: 'veteran' }, state, catalog)).toBe(true);
   });
 
@@ -25,13 +25,13 @@ describe('Career V1', () => {
     state.player.career.reputation = 3;
     state.player.career.bounty = 2;
     const next = applyEffects(state, catalog, [
-      { type: 'setCareerAffiliation', affiliationId: 'pirate' },
+      { type: 'setCareerAffiliation', affiliationId: 'revolutionary' },
       { type: 'modifyReputation', amount: -10 },
       { type: 'modifyBounty', amount: -10 },
-      { type: 'setMarineRank', rankId: 'recruit' },
+      { type: 'setCareerRank', rankId: 'revolutionary_recruit' },
       { type: 'setCareerTitle', titleId: 'rookie' },
     ] satisfies Effect[], { sourceEventId: 'x', sourceChoiceId: 'y' });
-    expect(next.player.career).toEqual({ affiliationId: 'pirate', reputation: 0, bounty: 0, marineRankId: 'recruit', titleId: 'rookie' });
+    expect(next.player.career).toEqual({ affiliationId: 'revolutionary', reputation: 0, bounty: 0, rankId: 'revolutionary_recruit', titleId: 'rookie' });
   });
 
   it('ends a career with a localized Ending reference', () => {
@@ -41,9 +41,9 @@ describe('Career V1', () => {
   });
 
   it('validates Career references and integer constraints', () => {
-    const event = { id: 'career', kind: 'normal', titleKey: 'fixture.childhood.title', textKey: 'fixture.childhood.text', eligibility: { type: 'marineRankIs', rankId: 'missing' }, choices: [{ id: 'go', textKey: 'fixture.childhood.choice', resolution: { type: 'deterministic', outcome: { id: 'done', textKey: 'fixture.childhood.outcome', effects: [{ type: 'setBounty', value: -1 }, { type: 'endCareerWithEnding', endingId: 'missing' }] } } }] };
+    const event = { id: 'career', kind: 'normal', titleKey: 'fixture.childhood.title', textKey: 'fixture.childhood.text', eligibility: { type: 'careerRankIs', rankId: 'missing' }, choices: [{ id: 'go', textKey: 'fixture.childhood.choice', resolution: { type: 'deterministic', outcome: { id: 'done', textKey: 'fixture.childhood.outcome', effects: [{ type: 'setBounty', value: -1 }, { type: 'endCareerWithEnding', endingId: 'missing' }] } } }] };
     const errors = validateContent({ ...catalog, events: [event] });
-    expect(errors.some(({ message }) => message.includes('MarineRankId'))).toBe(true);
+    expect(errors.some(({ message }) => message.includes('CareerRankId'))).toBe(true);
     expect(errors.some(({ message }) => message.includes('non-negative integer'))).toBe(true);
     expect(errors.some(({ message }) => message.includes('EndingId'))).toBe(true);
   });

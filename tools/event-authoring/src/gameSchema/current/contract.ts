@@ -28,7 +28,7 @@ export {
   type ShipDefinition,
   type StatId,
   type CareerAffiliationDefinition,
-  type MarineRankDefinition,
+  type CareerRankDefinition,
   type CareerTitleDefinition,
   type EndingDefinition,
   type TextChoiceInput,
@@ -97,7 +97,7 @@ export const NPC_STAT_IDS = [
 
 export const NPC_STATUSES = ['known', 'crew', 'departed', 'unavailable', 'dead'] as const satisfies readonly NpcStatus[];
 export const HAKI_TYPES = ['observation', 'armament', 'conqueror'] as const;
-export { DEVIL_FRUIT_TAGS, DEVIL_FRUIT_TYPES } from '../../../../../src/game/content/schema';
+export { DEVIL_FRUIT_TAGS, DEVIL_FRUIT_TYPES, LOCATION_SERVICES, LOCATION_TAGS } from '../../../../../src/game/content/schema';
 
 export type ConditionalModifier = ConditionalDiceModifier;
 export type TextInputDefinition = TextChoiceInput;
@@ -109,7 +109,7 @@ export interface GameRegistries {
   seas: SeaDefinition[];
   affiliations: AffiliationDefinition[];
   careerAffiliations: import('../../../../../src/game/content/schema').CareerAffiliationDefinition[];
-  marineRanks: import('../../../../../src/game/content/schema').MarineRankDefinition[];
+  careerRanks: import('../../../../../src/game/content/schema').CareerRankDefinition[];
   careerTitles: import('../../../../../src/game/content/schema').CareerTitleDefinition[];
   endings: import('../../../../../src/game/content/schema').EndingDefinition[];
   familyStructures: FamilyStructureDefinition[];
