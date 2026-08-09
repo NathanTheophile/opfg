@@ -1,5 +1,5 @@
 import { CONTENT_SCHEMA_VERSION, type ContentCatalog, type EventDefinition } from './schema';
-import { traitNameKey, traitDescriptionKey, itemNameKey, raceNameKey, seaNameKey, affiliationNameKey, npcNameKey } from '../localization/keys';
+import { traitNameKey, traitDescriptionKey, itemNameKey, raceNameKey, seaNameKey, affiliationNameKey, crewRoleNameKey, npcNameKey } from '../localization/keys';
 
 export function createContentCatalog(events: EventDefinition[]): ContentCatalog {
   return {
@@ -27,8 +27,12 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
       { id: 'starter_sloop', nameKey: 'ship.starter_sloop.name', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 },
       { id: 'trade_cog', nameKey: 'ship.trade_cog.name', maxHealth: 45, crewCapacity: 5, cargoSlots: 6 },
     ],
+    crewRoles: [
+      { id: 'navigator', nameKey: crewRoleNameKey('navigator') },
+      { id: 'medic', nameKey: crewRoleNameKey('medic') },
+    ],
     npcs: [{
-      id: 'mira', nameKey: npcNameKey('mira'), raceId: null, originSeaId: null, affiliationId: null,
+      id: 'mira', nameKey: npcNameKey('mira'), raceId: null, originSeaId: null, affiliationId: null, crewRoleId: 'navigator',
       initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 },
     }],
     events,

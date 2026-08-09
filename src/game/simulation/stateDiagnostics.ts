@@ -10,6 +10,11 @@ export function assertValidSimulationState(state: GameState, catalog: ContentCat
   if (state.pendingShip !== null && countCurrentCrew(state) > getShipDefinition(catalog, state.pendingShip.shipId).crewCapacity) {
     throw new Error(`Pending Ship "${state.pendingShip.shipId}" cannot accommodate the current crew.`);
   }
+  if (new Set(state.passengerNpcIds).size !== state.passengerNpcIds.length) throw new Error('Passenger list contains duplicate NPCs.');
+  for (const npcId of state.passengerNpcIds) {
+    const npc = state.npcs[npcId];
+    if (!npc || npc.status === 'crew' || npc.status === 'dead') throw new Error(`Invalid passenger NPC "${npcId}".`);
+  }
   if (state.careerStatus === 'active' && state.currentEventId === null && (state.pendingShip !== null || (state.ship === null && state.travelState === 'at_sea') || (state.ship?.health ?? 1) <= 0)) {
     throw new Error('Critical ship state was left unresolved by the content pipeline.');
   }
@@ -19,7 +24,7 @@ function validateShip(ship: ShipState | null, state: GameState, catalog: Content
   if (ship === null) return;
   const definition = getShipDefinition(catalog, ship.shipId);
   if (!Number.isFinite(ship.health) || ship.health < 0 || ship.health > definition.maxHealth) throw new Error(`${label} health is outside its ShipDefinition bounds.`);
-  validateStacks(ship.cargo, definition.cargoSlots, `${label} cargo`);
+  validateStacks(ship.cargo, definition.cargoSlots - state.passengerNpcIds.length, `${label} cargo`);
   if (label === 'active ship' && countCurrentCrew(state) > definition.crewCapacity) throw new Error(`Active Ship "${ship.shipId}" is over crew capacity.`);
 }
 

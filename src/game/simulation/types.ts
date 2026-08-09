@@ -19,6 +19,8 @@ export interface DeadEndSnapshot {
   slotInMonth: GameState['slotInMonth'];
   locationId: string;
   travelState: GameState['travelState'];
+  isLeader: boolean;
+  passengerNpcIds: NpcId[];
   traits: string[];
   flags: string[];
   items: string[];

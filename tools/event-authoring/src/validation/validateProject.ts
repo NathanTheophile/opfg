@@ -14,7 +14,7 @@ const ids = <T extends { id: string }>(values: T[]) => new Set(values.map((x) =>
 const collectRegistryKeys = (r: GameRegistries): Array<[string,string]> => [
   ...r.races.map((x) => [x.nameKey, 'Race'] as [string,string]), ...r.seas.map((x) => [x.nameKey, 'Sea'] as [string,string]),
   ...r.affiliations.map((x) => [x.nameKey, 'Affiliation'] as [string,string]), ...r.traits.flatMap((x) => [[x.nameKey, 'Trait'], [x.descriptionKey, 'Trait description']] as [string,string][]),
-  ...r.items.map((x) => [x.nameKey, 'Item'] as [string,string]), ...r.ships.map((x) => [x.nameKey, 'Ship'] as [string,string]), ...r.npcs.map((x) => [x.nameKey, 'NPC'] as [string,string]),
+  ...r.items.map((x) => [x.nameKey, 'Item'] as [string,string]), ...r.ships.map((x) => [x.nameKey, 'Ship'] as [string,string]), ...r.crewRoles.map((x) => [x.nameKey, 'Crew role'] as [string,string]), ...r.npcs.map((x) => [x.nameKey, 'NPC'] as [string,string]),
 ];
 
 const validateLocalizationKey = (project: AuthoringProject, key: string, label: string, issues: ValidationIssue[], eventId?: string) => {
@@ -53,6 +53,7 @@ const runtimeCatalog = (project: AuthoringProject) => ({
   traits: project.registries.traits,
   items: project.registries.items,
   ships: project.registries.ships,
+  crewRoles: project.registries.crewRoles,
   npcs: project.registries.npcs,
   events: project.events,
 });

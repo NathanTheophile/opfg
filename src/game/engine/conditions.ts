@@ -1,7 +1,7 @@
 import type { ChoiceDefinition } from '../content/schema';
 import type { Condition } from '../content/schema';
 import type { GameState } from '../model/schema';
-import { availableCargoSlots, canAcquireShip, countCurrentCrew, findShipDefinition } from './ship';
+import { availableCargoSlots, canAcquireShip, canRecruitNpc, countCurrentCrew, findShipDefinition } from './ship';
 
 export interface ChoiceState {
   visible: boolean;
@@ -28,6 +28,16 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
       return state.player.inventory.stacks.some(({ itemId }) => itemId === condition.itemId);
     case 'berriesAtLeast':
       return state.berries >= condition.value;
+    case 'hasCrew':
+      return countCurrentCrew(state) > 0;
+    case 'crewSizeAtLeast':
+      return countCurrentCrew(state) >= condition.value;
+    case 'hasCrewRole':
+      return catalog !== undefined && Object.entries(state.npcs).some(([npcId, npc]) => npc.status === 'crew' && catalog.npcs.find(({ id }) => id === npcId)?.crewRoleId === condition.roleId);
+    case 'canRecruitNpc':
+      return catalog !== undefined && canRecruitNpc(state, catalog, condition.npcId);
+    case 'isLeader':
+      return state.isLeader;
     case 'locationIs':
       return state.locationId === condition.locationId;
     case 'isAtSea':
@@ -51,7 +61,7 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
     case 'shipCrewCapacityAtLeast':
       return state.ship !== null && catalog !== undefined && findShipDefinition(catalog, state.ship.shipId).crewCapacity >= condition.value;
     case 'shipCargoSpaceAtLeast':
-      return state.ship !== null && catalog !== undefined && availableCargoSlots(state.ship, catalog) >= condition.value;
+      return state.ship !== null && catalog !== undefined && availableCargoSlots(state.ship, catalog, state.passengerNpcIds.length) >= condition.value;
     case 'canAcquireShip':
       return catalog !== undefined && canAcquireShip(state, catalog, condition.shipId);
     case 'canSellShip':

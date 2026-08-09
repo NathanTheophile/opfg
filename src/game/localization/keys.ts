@@ -1,4 +1,4 @@
-import type { ChoiceId, EventId, ItemId, NpcId, OutcomeId, RaceId, SeaId, AffiliationId, ShipId, TraitId } from '../model/schema';
+import type { ChoiceId, CrewRoleId, EventId, ItemId, NpcId, OutcomeId, RaceId, SeaId, AffiliationId, ShipId, TraitId } from '../model/schema';
 export type LocalizationKey = string;
 export const eventTitleKey = (id: EventId): LocalizationKey => `event.${id}.title`;
 export const eventTextKey = (id: EventId): LocalizationKey => `event.${id}.text`;
@@ -10,6 +10,7 @@ export const traitNameKey = (id: TraitId): LocalizationKey => `trait.${id}.name`
 export const traitDescriptionKey = (id: TraitId): LocalizationKey => `trait.${id}.description`;
 export const itemNameKey = (id: ItemId): LocalizationKey => `item.${id}.name`;
 export const shipNameKey = (id: ShipId): LocalizationKey => `ship.${id}.name`;
+export const crewRoleNameKey = (id: CrewRoleId): LocalizationKey => `crewRole.${id}.name`;
 export const raceNameKey = (id: RaceId): LocalizationKey => `race.${id}.name`;
 export const seaNameKey = (id: SeaId): LocalizationKey => `sea.${id}.name`;
 export const affiliationNameKey = (id: AffiliationId): LocalizationKey => `affiliation.${id}.name`;

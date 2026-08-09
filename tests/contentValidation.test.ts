@@ -38,6 +38,17 @@ describe('validateContent', () => {
     expect(errors).toContainEqual(expect.stringContaining('Unknown ShipId "missing_ship"'));
   });
 
+  it('validates CrewRole and recruitment references plus leadership override shape', () => {
+    const catalog = cloneCatalog();
+    catalog.npcs[0].crewRoleId = 'missing_role';
+    eventById(catalog, 'mira_castaway').choices[0].availableIf.npcId = 'missing_npc';
+    eventById(catalog, 'mira_castaway').choices[0].resolution.outcome.effects[0].allowWithoutLeadership = 'yes';
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('Unknown CrewRoleId "missing_role"'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown NpcId "missing_npc"'));
+    expect(errors).toContainEqual(expect.stringContaining('allowWithoutLeadership must be boolean'));
+  });
+
   it('validates identity registries, NPC profile references, and text input', () => {
     const catalog = cloneCatalog();
     catalog.npcs[0].raceId = 'missing_race';

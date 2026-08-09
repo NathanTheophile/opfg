@@ -219,7 +219,48 @@ Un NPC persistant possède actuellement :
 
 Le statut `dead` est prévu. Si un membre d’équipage ou NPC critique atteint `health <= 0`, un Critical Event NPC se déclenche. Son issue V1 est la mort définitive et le passage au statut `dead`. Cette mort peut rendre des Scheduled Events annulables via `cancelIf`.
 
-## 12. Navire
+### Relationship et loyalty
+
+`relationship` mesure la relation entre le NPC et le joueur et évolue selon ses actes. `loyalty` est une caractéristique intrinsèque distincte : fidélité, stabilité, opportunisme ou propension à trahir. Une bonne relation n’implique donc pas une forte loyauté. Aucun seuil de loyauté ne provoque automatiquement un départ ; seuls des Events explicitement authorés peuvent la tester ou la modifier et produire une conséquence.
+
+## 12. Crew System
+
+L’équipage est constitué uniquement de NPC persistants dont `status === 'crew'`. Il n’existe aucun membre générique ou anonyme. Le joueur ne consomme jamais de capacité : `crewCapacity: 5` autorise cinq NPC crew, plus le joueur. Les NPC connus, unavailable et les passagers ne comptent pas dans cette capacité.
+
+Un équipage peut exister sans bateau après un naufrage. Il n’est jamais réduit automatiquement lors d’une perte ou d’un changement de bateau, ni à cause d’une séparation géographique. Seuls une mort, un départ ou une autre conséquence d’Event explicitement authorée le réduisent.
+
+Un recrutement peut introduire un NPC ou recruter un NPC déjà connu. Il n’existe aucune formule globale : Conditions, Choices, DiceChecks, relation et statistiques portent la difficulté. Faute de place, le Choice peut rester visible mais indisponible, et le runtime interdit malgré tout le passage à `crew`. Un bateau trop petit pour le crew actuel ne peut pas être acquis. Hors présence d’un bateau contrôlé par le joueur, aucune limite globale supplémentaire de taille de crew n’est définie.
+
+Le joueur ne peut pas renvoyer librement un équipier depuis une UI générique. Départs, désertions, trahisons et renvois passent par le contenu. Un NPC blessé mais vivant reste crew. Aucune absence temporaire ne change automatiquement son statut ni ne libère sa place. Un Event peut toutefois authorer explicitement son passage à `unavailable`, par exemple lors d’une capture ; cette conséquence explicite le retire alors du crew.
+
+### Passagers temporaires
+
+Un passager est un NPC persistant temporairement transporté sans devenir membre du crew. Il ne consomme aucune `crewCapacity`, mais réserve exactement un slot de cale. Cette réservation est distincte des stacks d’Items. Aucun système plus fin de présence, séparation ou gestion tactique des passagers n’existe en V1.
+
+### Rôles
+
+Un NPC possède au maximum un rôle simple et narratif défini dans son `NpcDefinition`. Ce rôle fait partie de son identité authorée et ne change pas pendant la run V1. Plusieurs NPC peuvent partager le même rôle.
+
+Une Condition telle que `hasCrewRole(navigator)` peut tester qu’au moins un NPC actuellement crew possède ce rôle, afin d’ouvrir ou griser un Choice ou d’activer un modificateur explicitement authoré. Aucun rôle n’accorde de bonus permanent, bonus de bateau, compétence globale ou simulation autonome. Aucun rôle n’est universellement requis pour naviguer ; le contenu porte les risques liés à son absence.
+
+Il n’existe aucune statistique agrégée telle que `crewMorale`, `crewStrength` ou `crewLevel`. Les statistiques restent individuelles.
+
+### Leadership
+
+`isLeader` indique que le joueur possède l’autorité nécessaire pour gérer son crew et son navire. Ce concept est distinct de la présence d’un crew, de sa taille et de l’affiliation.
+
+Un joueur non-Leader peut voyager avec un crew ou sur un navire narrativement contrôlé par une organisation ou un NPC, notamment dans un contexte Marine. Il ne peut pas, par une action de gestion ordinaire :
+
+- recruter ou renvoyer son propre crew ;
+- acquérir ou remplacer volontairement le navire ;
+- vendre, détruire volontairement ou renommer le navire ;
+- gérer sa cale.
+
+Les Effects narratifs ou système peuvent explicitement contourner cette protection lorsque le contenu doit imposer une transition. Les déplacements et voyages restent possibles sans leadership.
+
+Le contrat de contenu doit supporter au minimum `hasCrew`, `crewSizeAtLeast`, `hasCrewRole` et `isLeader`, ainsi qu’un Effect de changement de leadership. `setNpcStatus` reste l’Effect unique pour recrutement, départ et mort ; le rôle n’est pas mutable et ne nécessite aucun `setNpcRole`.
+
+## 13. Navire
 
 Le joueur ne possède pas nécessairement de bateau : `ship == null` est un état valide. Lorsqu’un bateau existe, il s’agit d’une **instance persistante distincte** associée à un type de bateau authoré. Le contenu initial vise environ cinq types, sans imposer une progression strictement verticale entre eux.
 
@@ -251,16 +292,16 @@ Il n’existe aucune action UI générique permettant au joueur de détruire vol
 
 ### Équipage et capacité humaine
 
-La capacité humaine couvre les NPC membres d’équipage et pourra aussi couvrir de futurs passagers temporaires. Leur modèle exact n’est pas verrouillé et aucun nouveau statut NPC n’est décidé ici.
+La capacité humaine couvre uniquement les NPC membres d’équipage. Les passagers temporaires utilisent le modèle minimal défini dans la section 12 et réservent des slots de cale, sans consommer de capacité humaine.
 
 Un membre d’équipage ne disparaît jamais automatiquement lorsque le bateau est perdu ou remplacé, ni lorsque le groupe rejoint la terre. L’équipage ne diminue que par une conséquence explicitement authorée : Event, départ, mort ou autre résolution déclarée. Après un naufrage, le groupe peut donc rester ensemble sans bateau.
 
-Un recrutement doit pouvoir rendre un Choice indisponible lorsque la capacité applicable est insuffisante, tout en le laissant visible et grisé si le contenu le souhaite. Cette règle repose sur deux protections complémentaires :
+Un recrutement doit pouvoir rendre un Choice indisponible lorsque la capacité applicable est insuffisante, tout en le laissant visible et grisé si le contenu le souhaite. Seuls les NPC `crew` occupent cette capacité ; le joueur et les passagers n’y comptent pas. Cette règle repose sur deux protections complémentaires :
 
 - authoring/UI par Conditions déclaratives ;
 - invariant runtime empêchant un dépassement même si le contenu est incorrect.
 
-De même, un bateau trop petit pour accueillir l’équipage ou les occupants actuels selon les règles applicables ne peut pas être acquis. La question de savoir si le joueur compte lui-même dans cette capacité reste ouverte.
+De même, un bateau trop petit pour accueillir le crew actuel ne peut pas être acquis. Les passagers réservent séparément des slots de cale et doivent également tenir dans le nouveau bateau.
 
 ### Acquisition et remplacement
 
@@ -299,11 +340,11 @@ Le contrat déclaratif devra pouvoir exprimer au minimum les Conditions suivante
 
 Il devra également pouvoir exprimer au minimum les Effects `acquireShip`, `loseShip`, `modifyShipHealth`, `addCargoItem` et `removeCargoItem`. `acquireShip` autorise des HP initiaux authorés, avec le maximum par défaut. Le nom personnalisé pourra passer par l’input texte sans imposer un Effect générique dédié.
 
-## 13. Inventaires et Items
+## 14. Inventaires et Items
 
 Les possessions personnelles du joueur et la cale du bateau sont deux inventaires distincts.
 
-L’inventaire personnel possède par défaut **2 emplacements**. La cale possède un nombre fixe d’emplacements défini par le type de bateau. Les deux utilisent des stacks :
+L’inventaire personnel possède par défaut **2 emplacements**. La cale possède un nombre fixe d’emplacements défini par le type de bateau. Ses slots sont partagés entre stacks de cargaison et passagers temporaires. Les inventaires d’Items utilisent des stacks :
 
 ```text
 1 type d’Item distinct = 1 emplacement
@@ -314,19 +355,19 @@ Il n’existe en V1 ni poids, ni volume ou taille variable par Item, ni limite m
 
 La cale fait partie du modèle dès la première implémentation du Ship System afin d’éviter une migration structurelle ultérieure. Elle reste toutefois vide dans le contenu initial de jam : aucune boucle de cargaison, logistique ou crafting, ni gameplay actif de cale n’est requis maintenant. Elle peut seulement être exposée conceptuellement dans l’UI.
 
-## 14. Berrys
+## 15. Berrys
 
 Le joueur possède une quantité persistante de Berrys. Cette ressource existe en V1 afin que les Events puissent la tester, l’ajouter ou la retirer, notamment lors de la vente d’un bateau. Le contrat pourra donc fournir les concepts `berriesAtLeast` et `modifyBerries`.
 
 Cela ne définit pas une économie générale. Les shops génériques, prix dynamiques, salaires, consommation quotidienne, nourriture, entretien automatique et commerce détaillé restent hors scope. La formule exacte du prix de vente d’un bateau n’est pas verrouillée.
 
-## 15. Santé et mort du joueur
+## 16. Santé et mort du joueur
 
 Si `player.health <= 0`, le joueur meurt et la carrière prend immédiatement fin avec la raison `death`.
 
 Il n’existe en V1 ni jet de survie, ni résurrection, ni interception par objet, ni sauvetage automatique, ni seconde chance universelle. Des variantes textuelles contextuelles pourront être ajoutées sans modifier cette règle.
 
-## 16. Critical Events
+## 17. Critical Events
 
 Les Critical Events traitent un petit ensemble de leviers vérifiés **avant chaque slot** :
 
@@ -359,7 +400,7 @@ Ordre V1 des familles :
 
 Si le joueur et le navire atteignent zéro simultanément, le Critical Event joueur est traité en premier.
 
-## 17. Ordre global avant chaque slot
+## 18. Ordre global avant chaque slot
 
 1. boucle de Critical Events jusqu’à stabilité ;
 2. Scheduled Events dus et exécutables ;
@@ -371,13 +412,13 @@ Si le joueur et le navire atteignent zéro simultanément, le Critical Event jou
 | Scheduled | Non | Oui | Urgence, échéance, puis ID |
 | Normal | Non | Oui | Tirage uniforme parmi les éligibles |
 
-## 18. Géographie
+## 19. Géographie
 
 Le GameState distingue la Location actuelle et l’état `at_sea` / `on_land`. La géographie est une dimension majeure d’éligibilité : certains Events appartiennent à un lieu précis, à la mer ou à la terre.
 
 Le catalogue réel de mers, îles, ports et lieux n’est pas finalisé et n’est pas défini ici.
 
-## 19. Principes de contenu
+## 20. Principes de contenu
 
 Les Events doivent privilégier :
 
@@ -389,7 +430,7 @@ Les Events doivent privilégier :
 
 La variété provient du volume d’Events authorés, des Conditions, de l’historique, du profil, des lieux, Traits, NPC et conséquences Scheduled. Les Events sont écrits à l’avance et validés. Aucune IA runtime ne les génère.
 
-## 20. Non-objectifs V1 et systèmes non définis
+## 21. Non-objectifs V1 et systèmes non définis
 
 Ne sont pas considérés comme décidés :
 
@@ -411,21 +452,27 @@ Sont également explicitement hors scope V1 malgré les fondations du Ship Syste
 - économie générale au-delà des opérations de Berrys authorées par les Events ;
 - action UI générique de destruction volontaire du bateau.
 
+Sont hors scope Crew System V1 :
+
+- combat ou IA autonome de crew ;
+- bonus automatiques, skills, rôles multiples ou évolution des rôles ;
+- statistiques globales de crew et présence physique détaillée ;
+- UI complète de management du crew ou des passagers.
+
 Les sujets non décidés nécessitent une décision ultérieure explicite. Les exclusions Ship System ci-dessus sont, elles, verrouillées pour la V1.
 
-## 21. Questions Ship System encore ouvertes
+## 22. Questions Ship System encore ouvertes
 
 Les décisions suivantes ne sont pas verrouillées et ne doivent pas être déduites par l’implémentation :
 
-- le joueur compte-t-il lui-même dans `crewCapacity` ;
 - quelle formule détermine le prix de vente d’un bateau ;
 - existe-t-il une limite quantitative maximale par stack d’Items.
 
-## 22. Statut du batch de 30 Events
+## 23. Statut du batch de 30 Events
 
 Le batch précédemment généré est uniquement un test de génération en volume. Il ne constitue pas le contenu Game Design définitif et ne doit pas servir à équilibrer ou définir les règles. Il sera réévalué ou remplacé après stabilisation de la boucle de gameplay.
 
-## 23. Technical implications pending implementation
+## 24. Technical implications pending implementation
 
 Les décisions suivantes sont verrouillées mais pas nécessairement implémentées :
 
@@ -450,6 +497,10 @@ Les décisions suivantes sont verrouillées mais pas nécessairement implément�
 - inventaire personnel de 2 slots distinct de la cale ;
 - Items stackables avec quantités ;
 - Berrys persistants et opérations déclaratives minimales ;
-- Conditions et Effects Ship listés dans la section 12.
+- Conditions et Effects Ship listés dans la section 13 ;
+- crew composé exclusivement des NPC au statut `crew`, joueur exclu de la capacité ;
+- passagers persistants réservant chacun un slot de cale ;
+- rôle immuable par `NpcDefinition` et Conditions de rôle ;
+- leadership persistant et protection runtime des opérations de gestion.
 
 Cette liste prépare la prochaine passe technique ; elle ne décrit pas l’état actuel du code.

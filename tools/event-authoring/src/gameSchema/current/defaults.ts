@@ -54,6 +54,11 @@ export const createCondition = (type: Condition['type']): Condition => {
     case 'hasFlag': return { type, flagId: '' };
     case 'hasItem': return { type, itemId: '' };
     case 'berriesAtLeast': return { type, value: 0 };
+    case 'hasCrew': return { type };
+    case 'crewSizeAtLeast': return { type, value: 1 };
+    case 'hasCrewRole': return { type, roleId: '' };
+    case 'canRecruitNpc': return { type, npcId: '' };
+    case 'isLeader': return { type };
     case 'locationIs': return { type, locationId: '' };
     case 'isAtSea': return { type };
     case 'isOnLand': return { type };
@@ -98,6 +103,8 @@ export const createEffect = (type: Effect['type']): Effect => {
     case 'loseShip': return { type, locationId: '', travelState: 'on_land' };
     case 'moveToLocation': return { type, locationId: '', travelState: 'on_land' };
     case 'setNpcStatus': return { type, npcId: '', status: 'known' };
+    case 'setNpcPassenger': return { type, npcId: '', passenger: true };
+    case 'setLeadership': return { type, isLeader: true };
     case 'modifyNpcRelationship': return { type, npcId: '', amount: 0 };
     case 'modifyNpcStat': return { type, npcId: '', statId: 'loyalty', amount: 0 };
     case 'scheduleEvent': return { type, eventId: '', delayMonths: 0 };

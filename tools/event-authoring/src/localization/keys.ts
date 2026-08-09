@@ -11,6 +11,7 @@ export const traitNameKey = (id: string): LocalizationKey => `trait.${id}.name`;
 export const traitDescriptionKey = (id: string): LocalizationKey => `trait.${id}.description`;
 export const itemNameKey = (id: string): LocalizationKey => `item.${id}.name`;
 export const shipNameKey = (id: string): LocalizationKey => `ship.${id}.name`;
+export const crewRoleNameKey = (id: string): LocalizationKey => `crewRole.${id}.name`;
 export const raceNameKey = (id: string): LocalizationKey => `race.${id}.name`;
 export const seaNameKey = (id: string): LocalizationKey => `sea.${id}.name`;
 export const affiliationNameKey = (id: string): LocalizationKey => `affiliation.${id}.name`;

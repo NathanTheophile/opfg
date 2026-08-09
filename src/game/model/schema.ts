@@ -10,6 +10,7 @@ export type RaceId = string;
 export type SeaId = string;
 export type AffiliationId = string;
 export type ShipId = string;
+export type CrewRoleId = string;
 
 export interface ItemStack {
   itemId: ItemId;
@@ -105,6 +106,8 @@ export interface GameState {
   player: PlayerState;
   ship: ShipState | null;
   pendingShip: ShipState | null;
+  isLeader: boolean;
+  passengerNpcIds: NpcId[];
   berries: number;
   flags: FlagId[];
   npcs: Record<NpcId, NpcState>;

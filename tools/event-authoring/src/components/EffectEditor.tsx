@@ -4,12 +4,13 @@ import { IdSelect, NumberInput } from './EditorPrimitives';
 
 export const EFFECT_TYPES: Effect['type'][] = [
   'setFlag','clearFlag','addItem','removeItem','addTrait','removeTrait','modifyStat','acquireShip','modifyShipHealth','addCargoItem','removeCargoItem','resolveShipReplacement','modifyBerries','loseShip',
-  'moveToLocation','setNpcStatus','modifyNpcRelationship','modifyNpcStat','scheduleEvent','setCareerPhase','setRace',
+  'moveToLocation','setNpcStatus','setNpcPassenger','setLeadership','modifyNpcRelationship','modifyNpcStat','scheduleEvent','setCareerPhase','setRace',
   'setOriginSea','setAffiliation','endCareer',
 ];
 
 interface Props { value: Effect; onChange: (value: Effect) => void; onRemove: () => void; registries: GameRegistries; eventIds: string[]; scheduledEventIds: string[]; }
 export default function EffectEditor({ value, onChange, onRemove, registries, eventIds, scheduledEventIds }: Props) {
+  const supportsLeadershipOverride = ['acquireShip','loseShip','addCargoItem','removeCargoItem','resolveShipReplacement','setNpcStatus','setNpcPassenger'].includes(value.type);
   const params = (() => {
     switch (value.type) {
       case 'setFlag': case 'clearFlag': return <IdSelect value={value.flagId} options={registries.flags} onChange={(flagId) => onChange({ ...value, flagId })} />;
@@ -21,6 +22,8 @@ export default function EffectEditor({ value, onChange, onRemove, registries, ev
       case 'resolveShipReplacement': return <div className="inline-fields"><select value={value.disposition} onChange={(e) => onChange({ ...value, disposition: e.target.value as typeof value.disposition })}><option value="destroy">destroy</option><option value="sell">sell</option><option value="abandon">abandon</option></select>{value.disposition === 'sell' && <NumberInput value={value.berries ?? 0} min={0} onChange={(berries) => onChange({ ...value, berries })} />}</div>;
       case 'moveToLocation': case 'loseShip': return <div className="inline-fields"><IdSelect value={value.locationId} options={registries.locations} onChange={(locationId) => onChange({ ...value, locationId })} /><select value={value.travelState} onChange={(e) => onChange({ ...value, travelState: e.target.value as typeof value.travelState })}><option value="at_sea">at_sea</option><option value="on_land">on_land</option></select></div>;
       case 'setNpcStatus': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={value.status} onChange={(e) => onChange({ ...value, status: e.target.value as typeof value.status })}>{NPC_STATUSES.map((x) => <option key={x}>{x}</option>)}</select></div>;
+      case 'setNpcPassenger': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={String(value.passenger)} onChange={(e) => onChange({ ...value, passenger: e.target.value === 'true' })}><option value="true">passenger</option><option value="false">not passenger</option></select></div>;
+      case 'setLeadership': return <select value={String(value.isLeader)} onChange={(e) => onChange({ ...value, isLeader: e.target.value === 'true' })}><option value="true">leader</option><option value="false">not leader</option></select>;
       case 'modifyNpcRelationship': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><NumberInput value={value.amount} onChange={(amount) => onChange({ ...value, amount })} /></div>;
       case 'modifyNpcStat': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={value.statId} onChange={(e) => onChange({ ...value, statId: e.target.value as typeof value.statId })}>{NPC_STAT_IDS.map((id) => <option key={id}>{id}</option>)}</select><NumberInput value={value.amount} onChange={(amount) => onChange({ ...value, amount })} /></div>;
       case 'scheduleEvent': return <div className="inline-fields"><IdSelect value={value.eventId} options={scheduledEventIds.map((id) => ({ id }))} onChange={(eventId) => onChange({ ...value, eventId })} /><NumberInput value={value.delayMonths} min={0} onChange={(delayMonths) => onChange({ ...value, delayMonths })} /></div>;
@@ -31,5 +34,5 @@ export default function EffectEditor({ value, onChange, onRemove, registries, ev
       case 'endCareer': return <select value={value.reason} onChange={(e) => onChange({ ...value, reason: e.target.value as typeof value.reason })}><option value="death">death</option><option value="legacy">legacy</option></select>;
     }
   })();
-  return <div className="effect-row"><select value={value.type} onChange={(e) => onChange(createEffect(e.target.value as Effect['type']))}>{EFFECT_TYPES.map((type) => <option key={type}>{type}</option>)}</select><div className="effect-params">{params}</div><button className="icon danger" onClick={onRemove}>×</button></div>;
+  return <div className="effect-row"><select value={value.type} onChange={(e) => onChange(createEffect(e.target.value as Effect['type']))}>{EFFECT_TYPES.map((type) => <option key={type}>{type}</option>)}</select><div className="effect-params">{params}{supportsLeadershipOverride && <label className="checkbox-inline"><input type="checkbox" checked={'allowWithoutLeadership' in value && value.allowWithoutLeadership === true} onChange={(e) => onChange({ ...value, allowWithoutLeadership: e.target.checked || undefined } as Effect)} /> narrative leadership override</label>}</div><button className="icon danger" onClick={onRemove}>×</button></div>;
 }

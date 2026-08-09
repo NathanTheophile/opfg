@@ -1,5 +1,5 @@
 import { CONTENT_SCHEMA_VERSION, type EventDefinition, type GameRegistries } from '../gameSchema/current/contract';
-import { eventKeys, outcomeKey, choiceKey, raceNameKey, seaNameKey, affiliationNameKey, traitNameKey, traitDescriptionKey, itemNameKey, shipNameKey, npcNameKey, modifierLabelKey } from '../localization/keys';
+import { eventKeys, outcomeKey, choiceKey, raceNameKey, seaNameKey, affiliationNameKey, traitNameKey, traitDescriptionKey, itemNameKey, shipNameKey, crewRoleNameKey, npcNameKey, modifierLabelKey } from '../localization/keys';
 import { createEntry } from '../localization/store';
 import type { AuthoringProject } from './types';
 
@@ -24,7 +24,7 @@ export const createDemoProject = (): AuthoringProject => {
     races: [{ id: 'human', nameKey: raceNameKey('human') }], seas: [{ id: 'starter_sea', nameKey: seaNameKey('starter_sea') }], affiliations: [{ id: 'independent_family', nameKey: affiliationNameKey('independent_family') }],
     locations: [{ id: 'starter_port', blocksScheduledEvents: false, allowsShipSale: true }, { id: 'open_sea', blocksScheduledEvents: false, allowsShipSale: false }, { id: 'isolated_cove', blocksScheduledEvents: true, allowsShipSale: false }],
     traits: [{ id: 'audacious', nameKey: traitNameKey('audacious'), descriptionKey: traitDescriptionKey('audacious'), oppositeTraitId: 'cautious' }, { id: 'cautious', nameKey: traitNameKey('cautious'), descriptionKey: traitDescriptionKey('cautious'), oppositeTraitId: 'audacious' }],
-    items: [{ id: 'sealed_chart', nameKey: itemNameKey('sealed_chart') }], ships: [{ id: 'starter_sloop', nameKey: shipNameKey('starter_sloop'), maxHealth: 30, crewCapacity: 3, cargoSlots: 2 }], npcs: [{ id: 'mira', nameKey: npcNameKey('mira'), raceId: null, originSeaId: null, affiliationId: null, initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } }],
+    items: [{ id: 'sealed_chart', nameKey: itemNameKey('sealed_chart') }], ships: [{ id: 'starter_sloop', nameKey: shipNameKey('starter_sloop'), maxHealth: 30, crewCapacity: 3, cargoSlots: 2 }], crewRoles: [{ id: 'navigator', nameKey: crewRoleNameKey('navigator') }], npcs: [{ id: 'mira', nameKey: npcNameKey('mira'), raceId: null, originSeaId: null, affiliationId: null, crewRoleId: 'navigator', initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } }],
     flags: [{ id: 'storm_mastered' }],
   };
   const localization: AuthoringProject['localization'] = {};
@@ -33,12 +33,12 @@ export const createDemoProject = (): AuthoringProject => {
     [squall.titleKey]: 'Grain noir', [squall.textKey]: 'Le ciel se ferme.', [squall.choices[0].textKey]: 'Lire les courants', [modifierLabelKey('black_squall_demo','navigate',0)]: 'Navire endommagé',
     [scheduled.titleKey]: 'Un souvenir revient', [scheduled.textKey]: 'Une vieille promesse refait surface.', [scheduled.choices[0].textKey]: 'Se souvenir',
     [critical.titleKey]: 'La fin de Mira', [critical.textKey]: 'Mira ne répond plus.', [critical.choices[0].textKey]: 'Faire ses adieux',
-    [raceNameKey('human')]: 'Humain', [seaNameKey('starter_sea')]: 'Mer de départ', [affiliationNameKey('independent_family')]: 'Famille indépendante', [traitNameKey('audacious')]: 'Audacieux', [traitDescriptionKey('audacious')]: 'Prend des risques.', [traitNameKey('cautious')]: 'Prudent', [traitDescriptionKey('cautious')]: 'Évite les risques.', [itemNameKey('sealed_chart')]: 'Carte scellée', [shipNameKey('starter_sloop')]: 'Sloop de départ', [npcNameKey('mira')]: 'Mira',
+    [raceNameKey('human')]: 'Humain', [seaNameKey('starter_sea')]: 'Mer de départ', [affiliationNameKey('independent_family')]: 'Famille indépendante', [traitNameKey('audacious')]: 'Audacieux', [traitDescriptionKey('audacious')]: 'Prend des risques.', [traitNameKey('cautious')]: 'Prudent', [traitDescriptionKey('cautious')]: 'Évite les risques.', [itemNameKey('sealed_chart')]: 'Carte scellée', [shipNameKey('starter_sloop')]: 'Sloop de départ', [crewRoleNameKey('navigator')]: 'Navigateur', [npcNameKey('mira')]: 'Mira',
   };
   for (const event of events) for (const key of [event.titleKey,event.textKey,...event.choices.flatMap((choice) => [choice.textKey, ...(choice.resolution.type === 'deterministic' ? [choice.resolution.outcome.textKey] : [...(choice.resolution.modifiers ?? []).map((m) => m.displayLabelKey), ...Object.values(choice.resolution.outcomes).map((o) => o.textKey)])])]) localization[key] = createEntry(key, text[key] ?? 'Texte de démonstration');
   for (const [key, value] of Object.entries(text)) if (!localization[key]) localization[key] = createEntry(key, value);
   const now = new Date().toISOString();
-  return { authoringVersion: 5, gameSchemaVersion: CONTENT_SCHEMA_VERSION, name: 'OPFG Events Demo', sourceLocale: 'fr', supportedLocales: ['fr','en'], events, nodes: [
+  return { authoringVersion: 6, gameSchemaVersion: CONTENT_SCHEMA_VERSION, name: 'OPFG Events Demo', sourceLocale: 'fr', supportedLocales: ['fr','en'], events, nodes: [
     { eventId: departure.id, position: { x: 80, y: 100 }, notes: '', status: 'draft', contentFolder: 'active' },
     { eventId: squall.id, position: { x: 310, y: 100 }, notes: '', status: 'draft', contentFolder: 'active' },
     { eventId: scheduled.id, position: { x: 540, y: 100 }, notes: '', status: 'draft', contentFolder: 'scheduled' },

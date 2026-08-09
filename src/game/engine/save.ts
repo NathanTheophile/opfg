@@ -1,7 +1,7 @@
 import type { CareerEndReason, CareerPhase, GameState, ItemStack, NpcState, NpcStats, ShipState, TravelState } from '../model/schema';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 8;
+const CURRENT_SAVE_VERSION = 9;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
@@ -72,13 +72,14 @@ function readGameState(value: unknown): GameState | null {
   if (!(value.player.stats.awakening === null || isStatValue(value.player.stats.awakening))) return null;
   const ship = readShip(value.ship);
   const pendingShip = readShip(value.pendingShip);
-  if (ship === undefined || pendingShip === undefined || !isNonNegativeInteger(value.berries)) return null;
+  if (ship === undefined || pendingShip === undefined || typeof value.isLeader !== 'boolean' || !isUniqueStringArray(value.passengerNpcIds) || !isNonNegativeInteger(value.berries)) return null;
   if (!isStringArray(value.flags)) return null;
 
   const npcs = readNpcs(value.npcs);
   const history = readHistory(value.history);
   const scheduledEvents = readScheduledEvents(value.scheduledEvents);
   if (npcs === null || history === null || scheduledEvents === null) return null;
+  if (value.passengerNpcIds.some((npcId) => npcs[npcId] === undefined || npcs[npcId].status === 'crew' || npcs[npcId].status === 'dead')) return null;
   if (!(value.currentEventId === null || isString(value.currentEventId))) return null;
   if (!(value.careerStatus === 'active' || value.careerStatus === 'ended')) return null;
   if (!isCareerEndReason(value.careerEndReason)) return null;
@@ -112,6 +113,8 @@ function readGameState(value: unknown): GameState | null {
     },
     ship,
     pendingShip,
+    isLeader: value.isLeader,
+    passengerNpcIds: [...value.passengerNpcIds],
     berries: value.berries,
     flags: [...value.flags],
     npcs,
@@ -124,21 +127,26 @@ function readGameState(value: unknown): GameState | null {
 }
 
 function migrateLegacySave(value: unknown): unknown {
-  if (!isRecord(value) || value.version !== 7) return value;
-  if (!isRecord(value.player)) return value;
-  const legacyItems = isStringArray(value.items) ? value.items : [];
-  const legacyShip = isRecord(value.ship) && isIntegerInRange(value.ship.condition, 0, 3)
-    ? { shipId: 'starter_sloop', name: 'Wind Finch', health: value.ship.condition * 10, cargo: [] }
-    : value.ship === null ? null : value.ship;
-  const { items: _items, ...withoutItems } = value;
-  return {
-    ...withoutItems,
-    version: CURRENT_SAVE_VERSION,
-    player: { ...value.player, inventory: { capacity: 2, stacks: legacyItems.map((itemId) => ({ itemId, quantity: 1 })) } },
-    ship: legacyShip,
-    pendingShip: null,
-    berries: 0,
-  };
+  let migrated = value;
+  if (isRecord(migrated) && migrated.version === 7 && isRecord(migrated.player)) {
+    const legacyItems = isStringArray(migrated.items) ? migrated.items : [];
+    const legacyShip = isRecord(migrated.ship) && isIntegerInRange(migrated.ship.condition, 0, 3)
+      ? { shipId: 'starter_sloop', name: 'Wind Finch', health: migrated.ship.condition * 10, cargo: [] }
+      : migrated.ship === null ? null : migrated.ship;
+    const { items: _items, ...withoutItems } = migrated;
+    migrated = {
+      ...withoutItems,
+      version: 8,
+      player: { ...migrated.player, inventory: { capacity: 2, stacks: legacyItems.map((itemId) => ({ itemId, quantity: 1 })) } },
+      ship: legacyShip,
+      pendingShip: null,
+      berries: 0,
+    };
+  }
+  if (isRecord(migrated) && migrated.version === 8) {
+    migrated = { ...migrated, version: CURRENT_SAVE_VERSION, isLeader: true, passengerNpcIds: [] };
+  }
+  return migrated;
 }
 
 function readInventory(value: unknown): GameState['player']['inventory'] | null {
@@ -277,6 +285,10 @@ function isCareerEndReason(value: unknown): value is CareerEndReason | null {
 
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every(isString);
+}
+
+function isUniqueStringArray(value: unknown): value is string[] {
+  return isStringArray(value) && new Set(value).size === value.length;
 }
 
 function isFiniteNumber(value: unknown): value is number {

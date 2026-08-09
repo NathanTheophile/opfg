@@ -12,15 +12,23 @@ export function countCurrentCrew(state: GameState): number {
   return Object.values(state.npcs).filter(({ status }) => status === 'crew').length;
 }
 
-export function canAcquireShip(state: GameState, catalog: ContentCatalog, shipId: ShipId): boolean {
+export function canAcquireShip(state: GameState, catalog: ContentCatalog, shipId: ShipId, allowWithoutLeadership = false): boolean {
   const definition = catalog.ships.find(({ id }) => id === shipId);
   if (!definition || state.pendingShip !== null) return false;
+  if (!state.isLeader && (!allowWithoutLeadership || state.ship !== null)) return false;
   if (countCurrentCrew(state) > definition.crewCapacity) return false;
-  return (state.ship?.cargo.length ?? 0) <= definition.cargoSlots;
+  return (state.ship?.cargo.length ?? 0) + state.passengerNpcIds.length <= definition.cargoSlots;
 }
 
-export function availableCargoSlots(ship: ShipState, catalog: ContentCatalog): number {
-  return findShipDefinition(catalog, ship.shipId).cargoSlots - ship.cargo.length;
+export function availableCargoSlots(ship: ShipState, catalog: ContentCatalog, passengerCount = 0): number {
+  return findShipDefinition(catalog, ship.shipId).cargoSlots - ship.cargo.length - passengerCount;
+}
+
+export function canRecruitNpc(state: GameState, catalog: ContentCatalog, npcId: string, allowWithoutLeadership = false): boolean {
+  if (!state.isLeader && !allowWithoutLeadership) return false;
+  if (state.npcs[npcId]?.status === 'crew') return true;
+  if (state.ship === null) return true;
+  return countCurrentCrew(state) + 1 <= findShipDefinition(catalog, state.ship.shipId).crewCapacity;
 }
 
 export function addStack(stacks: ItemStack[], itemId: ItemId, quantity: number, capacity: number): void {

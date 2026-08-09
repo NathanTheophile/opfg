@@ -6,6 +6,7 @@ export {
   type Condition,
   type ConditionalDiceModifier,
   type ContentCatalog,
+  type CrewRoleDefinition,
   type CriticalTrigger,
   type DeterministicResolution,
   type DiceResolution,
@@ -32,6 +33,7 @@ export type {
   AffiliationId,
   CareerEndReason,
   CareerPhase,
+  CrewRoleId,
   ChoiceId,
   EventId,
   FlagId,
@@ -54,6 +56,7 @@ import { CONTENT_SCHEMA_VERSION } from '../../../../../src/game/content/schema';
 import type {
   AffiliationDefinition,
   ConditionalDiceModifier,
+  CrewRoleDefinition,
   ItemDefinition,
   LocationDefinition,
   NpcDefinition,
@@ -95,6 +98,7 @@ export interface GameRegistries {
   traits: TraitDefinition[];
   items: ItemDefinition[];
   ships: ShipDefinition[];
+  crewRoles: CrewRoleDefinition[];
   npcs: NpcDefinition[];
   flags: FlagDefinition[];
 }

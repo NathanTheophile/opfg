@@ -135,6 +135,8 @@ function createDeadEndSnapshot(seed: number, state: GameState): DeadEndSnapshot 
     slotInMonth: state.slotInMonth,
     locationId: state.locationId,
     travelState: state.travelState,
+    isLeader: state.isLeader,
+    passengerNpcIds: [...state.passengerNpcIds],
     traits: [...state.player.traits],
     flags: [...state.flags],
     items: state.player.inventory.stacks.map(({ itemId }) => itemId),

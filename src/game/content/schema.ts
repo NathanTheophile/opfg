@@ -18,6 +18,7 @@ import type {
   SeaId,
   AffiliationId,
   ShipId,
+  CrewRoleId,
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
@@ -34,6 +35,11 @@ export type Condition =
   | { type: 'hasFlag'; flagId: FlagId }
   | { type: 'hasItem'; itemId: ItemId }
   | { type: 'berriesAtLeast'; value: number }
+  | { type: 'hasCrew' }
+  | { type: 'crewSizeAtLeast'; value: number }
+  | { type: 'hasCrewRole'; roleId: CrewRoleId }
+  | { type: 'canRecruitNpc'; npcId: NpcId }
+  | { type: 'isLeader' }
   | { type: 'locationIs'; locationId: LocationId }
   | { type: 'isAtSea' }
   | { type: 'isOnLand' }
@@ -66,15 +72,17 @@ export type Effect =
   | { type: 'addTrait'; traitId: TraitId }
   | { type: 'removeTrait'; traitId: TraitId }
   | { type: 'modifyStat'; statId: StatId; amount: number }
-  | { type: 'acquireShip'; shipId: ShipId; name: string; health?: number }
-  | { type: 'loseShip'; locationId: LocationId; travelState: TravelState }
+  | { type: 'acquireShip'; shipId: ShipId; name: string; health?: number; allowWithoutLeadership?: boolean }
+  | { type: 'loseShip'; locationId: LocationId; travelState: TravelState; allowWithoutLeadership?: boolean }
   | { type: 'modifyShipHealth'; amount: number }
-  | { type: 'addCargoItem'; itemId: ItemId; quantity: number }
-  | { type: 'removeCargoItem'; itemId: ItemId; quantity: number }
-  | { type: 'resolveShipReplacement'; disposition: 'destroy' | 'sell' | 'abandon'; berries?: number }
+  | { type: 'addCargoItem'; itemId: ItemId; quantity: number; allowWithoutLeadership?: boolean }
+  | { type: 'removeCargoItem'; itemId: ItemId; quantity: number; allowWithoutLeadership?: boolean }
+  | { type: 'resolveShipReplacement'; disposition: 'destroy' | 'sell' | 'abandon'; berries?: number; allowWithoutLeadership?: boolean }
   | { type: 'modifyBerries'; amount: number }
   | { type: 'moveToLocation'; locationId: LocationId; travelState: TravelState }
-  | { type: 'setNpcStatus'; npcId: NpcId; status: NpcStatus }
+  | { type: 'setNpcStatus'; npcId: NpcId; status: NpcStatus; allowWithoutLeadership?: boolean }
+  | { type: 'setNpcPassenger'; npcId: NpcId; passenger: boolean; allowWithoutLeadership?: boolean }
+  | { type: 'setLeadership'; isLeader: boolean }
   | { type: 'modifyNpcRelationship'; npcId: NpcId; amount: number }
   | { type: 'modifyNpcStat'; npcId: NpcId; statId: NpcStatId; amount: number }
   | { type: 'scheduleEvent'; eventId: EventId; delayMonths: number }
@@ -183,8 +191,11 @@ export interface NpcDefinition {
   raceId: RaceId | null;
   originSeaId: SeaId | null;
   affiliationId: AffiliationId | null;
+  crewRoleId: CrewRoleId | null;
   initialStats: NpcStats;
 }
+
+export interface CrewRoleDefinition { id: CrewRoleId; nameKey: LocalizationKey }
 
 export interface RaceDefinition { id: RaceId; nameKey: LocalizationKey }
 export interface SeaDefinition { id: SeaId; nameKey: LocalizationKey }
@@ -200,6 +211,7 @@ export interface ContentCatalog {
   traits: TraitDefinition[];
   items: ItemDefinition[];
   ships: ShipDefinition[];
+  crewRoles: CrewRoleDefinition[];
   npcs: NpcDefinition[];
   events: EventDefinition[];
 }

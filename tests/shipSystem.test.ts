@@ -43,7 +43,7 @@ describe('Ship System V1', () => {
     expect(evaluateCondition({ type: 'canAcquireShip', shipId: 'starter_sloop' }, state, contentCatalog)).toBe(false);
     const choice = { id: 'acquire', textKey: 'x', availableIf: { type: 'canAcquireShip', shipId: 'starter_sloop' } as const, resolution: { type: 'deterministic' as const, outcome: { id: 'x', textKey: 'x', effects: [] } } };
     expect(getChoiceState(choice, state, contentCatalog)).toEqual({ visible: true, available: false });
-    expect(() => applyEffects(state, contentCatalog, [{ type: 'acquireShip', shipId: 'starter_sloop', name: 'Too Small' }], context)).toThrow(/accommodate/);
+    expect(() => applyEffects(state, contentCatalog, [{ type: 'acquireShip', shipId: 'starter_sloop', name: 'Too Small' }], context)).toThrow(/cannot be acquired/);
   });
 
   it('queues replacement, transfers cargo, and resolves abandon or location-gated sale through the Critical pipeline', () => {

@@ -1,7 +1,7 @@
 import type { ContentCatalog, Effect } from '../content/schema';
 import type { ChoiceId, EventId, GameState, NpcState } from '../model/schema';
 import { createDefaultNpcState } from '../model/npcState';
-import { addStack, canAcquireShip, cloneInventory, cloneShip, findShipDefinition, removeStack } from './ship';
+import { addStack, canAcquireShip, canRecruitNpc, cloneInventory, cloneShip, findShipDefinition, removeStack } from './ship';
 
 export interface EffectContext {
   sourceEventId: EventId;
@@ -20,6 +20,7 @@ export function applyEffects(state: GameState, catalog: ContentCatalog, effects:
     },
     ship: cloneShip(state.ship),
     pendingShip: cloneShip(state.pendingShip),
+    passengerNpcIds: [...state.passengerNpcIds],
     flags: [...state.flags],
     berries: state.berries,
     npcs: Object.fromEntries(
@@ -63,7 +64,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       return;
     }
     case 'acquireShip': {
-      if (!canAcquireShip(state, catalog, effect.shipId)) throw new Error(`Ship "${effect.shipId}" cannot accommodate the current crew or cargo.`);
+      if (!canAcquireShip(state, catalog, effect.shipId, effect.allowWithoutLeadership === true)) throw new Error(`Ship "${effect.shipId}" cannot be acquired with the current leadership, crew, passengers, or cargo.`);
       if (effect.name.trim().length === 0) throw new Error('Acquired ship requires a name.');
       const definition = findShipDefinition(catalog, effect.shipId);
       const health = effect.health ?? definition.maxHealth;
@@ -80,15 +81,18 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       return;
     }
     case 'addCargoItem': {
+      requireLeadership(state, effect.allowWithoutLeadership);
       if (state.ship === null) throw new Error('Cannot add cargo without a ship.');
-      addStack(state.ship.cargo, effect.itemId, effect.quantity, findShipDefinition(catalog, state.ship.shipId).cargoSlots);
+      addStack(state.ship.cargo, effect.itemId, effect.quantity, findShipDefinition(catalog, state.ship.shipId).cargoSlots - state.passengerNpcIds.length);
       return;
     }
     case 'removeCargoItem':
+      requireLeadership(state, effect.allowWithoutLeadership);
       if (state.ship === null) throw new Error('Cannot remove cargo without a ship.');
       removeStack(state.ship.cargo, effect.itemId, effect.quantity);
       return;
     case 'resolveShipReplacement': {
+      requireLeadership(state, effect.allowWithoutLeadership);
       if (state.ship === null || state.pendingShip === null) throw new Error('No pending ship replacement to resolve.');
       if (effect.disposition === 'destroy' && state.travelState !== 'on_land') throw new Error('A ship can only be destroyed on land during replacement.');
       if (effect.disposition === 'sell') {
@@ -109,6 +113,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       return;
     }
     case 'loseShip':
+      requireLeadership(state, effect.allowWithoutLeadership);
       state.ship = state.pendingShip;
       state.pendingShip = null;
       state.locationId = effect.locationId;
@@ -118,8 +123,31 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       state.locationId = effect.locationId;
       state.travelState = effect.travelState;
       return;
-    case 'setNpcStatus':
-      state.npcs[effect.npcId] = { ...getNpcState(state, effect.npcId), status: effect.status };
+    case 'setNpcStatus': {
+      const npc = getNpcState(state, effect.npcId);
+      const changesCrew = npc.status === 'crew' || effect.status === 'crew';
+      if (changesCrew && effect.status !== 'dead') requireLeadership(state, effect.allowWithoutLeadership);
+      if (effect.status === 'crew' && npc.status !== 'crew' && !canRecruitNpc(state, catalog, effect.npcId, effect.allowWithoutLeadership === true)) throw new Error(`Cannot recruit NPC "${effect.npcId}" without leadership or free crew capacity.`);
+      if (effect.status === 'crew') state.passengerNpcIds = state.passengerNpcIds.filter((npcId) => npcId !== effect.npcId);
+      state.npcs[effect.npcId] = { ...npc, status: effect.status };
+      return;
+    }
+    case 'setNpcPassenger': {
+      requireLeadership(state, effect.allowWithoutLeadership);
+      const npc = getNpcState(state, effect.npcId);
+      if (effect.passenger) {
+        if (npc.status === 'crew' || npc.status === 'dead') throw new Error('Crew or dead NPCs cannot be passengers.');
+        if (state.ship === null) throw new Error('Cannot add a passenger without a ship.');
+        if (!state.passengerNpcIds.includes(effect.npcId)) {
+          const cargoSlots = findShipDefinition(catalog, state.ship.shipId).cargoSlots;
+          if (state.ship.cargo.length + state.passengerNpcIds.length >= cargoSlots) throw new Error('No free cargo slot for a passenger.');
+          state.passengerNpcIds.push(effect.npcId);
+        }
+      } else state.passengerNpcIds = state.passengerNpcIds.filter((npcId) => npcId !== effect.npcId);
+      return;
+    }
+    case 'setLeadership':
+      state.isLeader = effect.isLeader;
       return;
     case 'modifyNpcRelationship': {
       const npc = getNpcState(state, effect.npcId);
@@ -173,4 +201,8 @@ function getNpcState(state: GameState, npcId: string): NpcState {
 
 function clamp(value: number, minimum: number, maximum: number): number {
   return Math.min(Math.max(value, minimum), maximum);
+}
+
+function requireLeadership(state: GameState, allowWithoutLeadership?: boolean): void {
+  if (!state.isLeader && allowWithoutLeadership !== true) throw new Error('This crew or ship management operation requires leadership.');
 }

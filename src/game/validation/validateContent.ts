@@ -35,6 +35,11 @@ const CONDITION_TYPES = new Set([
   'hasFlag',
   'hasItem',
   'berriesAtLeast',
+  'hasCrew',
+  'crewSizeAtLeast',
+  'hasCrewRole',
+  'canRecruitNpc',
+  'isLeader',
   'locationIs',
   'isAtSea',
   'isOnLand',
@@ -76,6 +81,8 @@ const EFFECT_TYPES = new Set([
   'moveToLocation',
   'loseShip',
   'setNpcStatus',
+  'setNpcPassenger',
+  'setLeadership',
   'modifyNpcRelationship',
   'modifyNpcStat',
   'scheduleEvent',
@@ -99,6 +106,8 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   const itemIds = collectIds(readRecords(catalog.items, 'items', errors), 'items', errors);
   const ships = readRecords(catalog.ships, 'ships', errors);
   const shipIds = collectIds(ships, 'ships', errors);
+  const crewRoles = readRecords(catalog.crewRoles, 'crewRoles', errors);
+  const crewRoleIds = collectIds(crewRoles, 'crewRoles', errors);
   const npcs = readRecords(catalog.npcs, 'npcs', errors);
   const npcIds = collectIds(npcs, 'npcs', errors);
   const races = readRecords(catalog.races, 'races', errors);
@@ -126,10 +135,11 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   }
 
   validateTraitOpposites(traits, traitIds, errors);
-  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, shipIds, npcIds, raceIds, seaIds, affiliationIds, locationIds, scheduledEventIds };
+  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, shipIds, crewRoleIds, npcIds, raceIds, seaIds, affiliationIds, locationIds, scheduledEventIds };
   validateNamedDefinitions(races, 'races', errors);
   validateNamedDefinitions(seas, 'seas', errors);
   validateNamedDefinitions(affiliations, 'affiliations', errors);
+  validateNamedDefinitions(crewRoles, 'crewRoles', errors);
   locations.forEach((location, index) => {
     if (typeof location.blocksScheduledEvents !== 'boolean') errors.push({ path: `locations[${index}].blocksScheduledEvents`, message: 'Location requires blocksScheduledEvents.' });
     if (typeof location.allowsShipSale !== 'boolean') errors.push({ path: `locations[${index}].allowsShipSale`, message: 'Location requires allowsShipSale.' });
@@ -163,6 +173,7 @@ interface References {
   traitIds: Set<string>;
   itemIds: Set<string>;
   shipIds: Set<string>;
+  crewRoleIds: Set<string>;
   npcIds: Set<string>;
   raceIds: Set<string>;
   seaIds: Set<string>;
@@ -253,6 +264,8 @@ function validateCondition(
   if (type === 'hasTrait') validateReference(value.traitId, references.traitIds, 'TraitId', path, errors);
   if (type === 'hasItem') validateReference(value.itemId, references.itemIds, 'ItemId', path, errors);
   if (type === 'shipIs' || type === 'canAcquireShip') validateReference(value.shipId, references.shipIds, 'ShipId', path, errors);
+  if (type === 'hasCrewRole') validateReference(value.roleId, references.crewRoleIds, 'CrewRoleId', path, errors);
+  if (type === 'canRecruitNpc') validateReference(value.npcId, references.npcIds, 'NpcId', path, errors);
   if (type === 'locationIs') validateReference(value.locationId, references.locationIds, 'LocationId', path, errors);
   if (type === 'npcStatusIs' || type === 'npcRelationshipAtLeast' || type === 'npcStatAtLeast') {
     validateReference(value.npcId, references.npcIds, 'NpcId', path, errors);
@@ -270,7 +283,7 @@ function validateCondition(
   if ((type === 'ageAtLeastMonths' || type === 'ageAtMostMonths') && !isNonNegativeNumber(value.value)) {
     errors.push({ path, message: `${type} requires a non-negative number.` });
   }
-  if (['berriesAtLeast', 'shipHealthAtLeast', 'shipHealthAtMost', 'shipCrewCapacityAtLeast', 'shipCargoSpaceAtLeast'].includes(type) && !isNonNegativeNumber(value.value)) {
+  if (['berriesAtLeast', 'crewSizeAtLeast', 'shipHealthAtLeast', 'shipHealthAtMost', 'shipCrewCapacityAtLeast', 'shipCargoSpaceAtLeast'].includes(type) && !isNonNegativeNumber(value.value)) {
     errors.push({ path, message: `${type} requires a non-negative number.` });
   }
   if (type === 'hasChosen') {
@@ -415,9 +428,12 @@ function validateEffect(
   if (type === 'addTrait' || type === 'removeTrait') {
     validateReference(effect.traitId, references.traitIds, 'TraitId', path, errors);
   }
-  if (type === 'setNpcStatus' || type === 'modifyNpcRelationship' || type === 'modifyNpcStat') {
+  if (type === 'setNpcStatus' || type === 'setNpcPassenger' || type === 'modifyNpcRelationship' || type === 'modifyNpcStat') {
     validateReference(effect.npcId, references.npcIds, 'NpcId', path, errors);
   }
+  if (type === 'setNpcPassenger' && typeof effect.passenger !== 'boolean') errors.push({ path, message: 'setNpcPassenger requires a boolean passenger field.' });
+  if (type === 'setLeadership' && typeof effect.isLeader !== 'boolean') errors.push({ path, message: 'setLeadership requires a boolean isLeader field.' });
+  if (['acquireShip', 'loseShip', 'addCargoItem', 'removeCargoItem', 'resolveShipReplacement', 'setNpcStatus', 'setNpcPassenger'].includes(type) && effect.allowWithoutLeadership !== undefined && typeof effect.allowWithoutLeadership !== 'boolean') errors.push({ path, message: 'allowWithoutLeadership must be boolean when provided.' });
   if (type === 'modifyNpcStat') {
     validateNpcStat(effect.statId, path, errors);
     if (typeof effect.amount !== 'number' || !Number.isFinite(effect.amount)) {
@@ -535,6 +551,7 @@ function validateNpcDefinitions(npcs: UnknownRecord[], references: References, e
     validateNullableReference(npc.raceId, references.raceIds, 'RaceId', `${path}.raceId`, errors);
     validateNullableReference(npc.originSeaId, references.seaIds, 'SeaId', `${path}.originSeaId`, errors);
     validateNullableReference(npc.affiliationId, references.affiliationIds, 'AffiliationId', `${path}.affiliationId`, errors);
+    validateNullableReference(npc.crewRoleId, references.crewRoleIds, 'CrewRoleId', `${path}.crewRoleId`, errors);
     if (!isRecord(npc.initialStats)) {
       errors.push({ path: `${path}.initialStats`, message: 'NPC initialStats must be an object.' });
       return;
