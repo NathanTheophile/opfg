@@ -1,5 +1,6 @@
 import type { ContentCatalog } from '../content/schema';
 import type { GameState } from '../model/schema';
+import { findDockableAccess } from './locations';
 
 export type MonthlyNavigationChoice = 'stay' | 'goToSea' | 'dock';
 
@@ -23,7 +24,7 @@ export function getMonthlyNavigationOptions(state: GameState, catalog: ContentCa
   if (!needsMonthlyNavigationDecision(state)) return [];
   if (state.travelState === 'on_land') return [
     { id: 'stay', available: true },
-    { id: 'goToSea', available: true },
+    { id: 'goToSea', available: findDockableAccess(catalog, state.locationId) !== undefined },
   ];
   const location = catalog.locations.find(({ id }) => id === state.locationId);
   return [

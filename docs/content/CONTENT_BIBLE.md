@@ -20,7 +20,7 @@ A batch must not silently create new persistent definitions. New Trait/NPC/Item/
 
 ## 3. Locations
 
-The authoritative V1 runtime subset is the 60-entry catalogue in `src/game/content/data/locationsV1.json`: 15 Locations per Blue, including at least eight Birth Locations, one full ship market, Marine presence and wilderness per Blue. `docs/content/locations/OPFG_LOCATIONS_CATALOG.json` remains the broader geographic reference and is not a runtime registry.
+The authoritative V1 runtime catalogue is the 188-entry World V1 in `docs/content/locations/OPFG_WORLD_V1.json`, integrated through `src/game/content/data/locationsV1.json`: 20 Locations and exactly eight Birth Locations per Blue, plus 108 runtime Locations outside the Blues. Egghead and the other explicit reference-only entries are not runtime Locations.
 
 ### Granularity
 

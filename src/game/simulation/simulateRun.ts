@@ -72,6 +72,7 @@ export function simulateRun(options: SimulateRunOptions): SimulationRunResult {
         const choiceState = getChoiceState(choice, state, options.catalog);
         return choiceState.visible && choiceState.available;
       });
+      if (availableChoices.length === 0) throw new Error(`Event "${event.id}" has no available Choice at Location "${state.locationId}".`);
       const selection = policy.choose(availableChoices, policyRngState);
       policyRngState = selection.nextRngState;
       const result = resolveChoice(
@@ -135,6 +136,11 @@ export function simulateRun(options: SimulateRunOptions): SimulationRunResult {
     scheduledEvents: resolvedEvents.filter(({ kind }) => kind === 'scheduled').length,
     criticalEvents: resolvedEvents.filter(({ kind }) => kind === 'critical').length,
     immediateEvents: resolvedEvents.filter(({ kind }) => kind === 'immediate').length,
+    fallbackEvents: {
+      land: resolvedEvents.filter(({ eventId }) => eventId === 'dead_end_on_land').length,
+      sea: resolvedEvents.filter(({ eventId }) => eventId === 'dead_end_at_sea').length,
+      total: resolvedEvents.filter(({ eventId }) => eventId === 'dead_end_on_land' || eventId === 'dead_end_at_sea').length,
+    },
     maximumImmediateChainLength,
     immediateGuardTriggered,
     diceChecks,

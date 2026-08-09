@@ -50,6 +50,8 @@ const CONDITION_TYPES = new Set([
   'locationIs',
   'locationHasTag',
   'locationHasService',
+  'locationWithin',
+  'currentSeaIs',
   'isAtSea',
   'isOnLand',
   'careerPhaseIs',
@@ -108,6 +110,7 @@ const EFFECT_TYPES = new Set([
   'setAffiliation',
   'setFamilyStructure',
   'setSocialClass',
+  'recoverTravel',
   'endCareer',
   'consumeDevilFruit','increaseDevilFruitAwakening','awakenHaki','raiseConquerorHakiTo','setNpcDevilFruit','increaseNpcDevilFruitAwakening','raiseNpcHakiTo',
   'setCareerAffiliation','modifyReputation','setBounty','modifyBounty','setCareerRank','setCareerTitle','clearCareerTitle','endCareerWithEnding',
@@ -203,7 +206,10 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
     const path = `locations[${index}]`;
     validateReference(location.seaId, seaIds, 'SeaId', `${path}.seaId`, errors);
     if (!stringValue(location.nameKey)) errors.push({ path: `${path}.nameKey`, message: 'Location requires nameKey.' });
-    if (!(location.parentLocationId === null || stringValue(location.parentLocationId))) errors.push({ path: `${path}.parentLocationId`, message: 'parentLocationId must be a string or null.' });
+    if (location.parentLocationId !== null) {
+      validateReference(location.parentLocationId, locationIds, 'LocationId', `${path}.parentLocationId`, errors);
+      if (location.parentLocationId === location.id) errors.push({ path: `${path}.parentLocationId`, message: 'Location cannot be its own parent.' });
+    }
     if (!LOCATION_TYPES.has(String(location.type))) errors.push({ path: `${path}.type`, message: `Invalid Location type "${String(location.type)}".` });
     if (!SHIP_MARKETS.has(String(location.shipMarket))) errors.push({ path: `${path}.shipMarket`, message: `Invalid shipMarket "${String(location.shipMarket)}".` });
     validateStringEnumArray(location.services, VALID_LOCATION_SERVICES, `${path}.services`, 'Location service', errors);
@@ -212,6 +218,7 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
     if (typeof location.blocksScheduledEvents !== 'boolean') errors.push({ path: `locations[${index}].blocksScheduledEvents`, message: 'Location requires blocksScheduledEvents.' });
     if (typeof location.allowsDocking !== 'boolean') errors.push({ path: `locations[${index}].allowsDocking`, message: 'Location requires allowsDocking.' });
   });
+  validateLocationParentCycles(locations, errors);
   races.forEach((race, index) => validateOriginModifierDefinition(race, `races[${index}]`, true, errors));
   familyStructures.forEach((definition, index) => validateOriginModifierDefinition(definition, `familyStructures[${index}]`, false, errors));
   socialClasses.forEach((definition, index) => validateOriginModifierDefinition(definition, `socialClasses[${index}]`, false, errors));
@@ -348,7 +355,8 @@ function validateCondition(
   if (type === 'shipIs' || type === 'canAcquireShip') validateReference(value.shipId, references.shipIds, 'ShipId', path, errors);
   if (type === 'hasCrewRole') validateReference(value.roleId, references.crewRoleIds, 'CrewRoleId', path, errors);
   if (type === 'canRecruitNpc') validateReference(value.npcId, references.npcIds, 'NpcId', path, errors);
-  if (type === 'locationIs') validateReference(value.locationId, references.locationIds, 'LocationId', path, errors);
+  if (type === 'locationIs' || type === 'locationWithin') validateReference(value.locationId, references.locationIds, 'LocationId', path, errors);
+  if (type === 'currentSeaIs') validateReference(value.seaId, references.seaIds, 'SeaId', path, errors);
   if (type === 'locationHasTag' && !VALID_LOCATION_TAGS.has(String(value.tagId) as never)) errors.push({ path, message: `Unknown Location tag "${String(value.tagId)}".` });
   if (type === 'locationHasService' && !VALID_LOCATION_SERVICES.has(String(value.serviceId) as never)) errors.push({ path, message: `Unknown Location service "${String(value.serviceId)}".` });
   if (type === 'npcStatusIs' || type === 'npcRelationshipAtLeast' || type === 'npcStatAtLeast') {
@@ -557,6 +565,7 @@ function validateEffect(
   if (type === 'setAffiliation') validateReference(effect.affiliationId, references.affiliationIds, 'AffiliationId', path, errors);
   if (type === 'setFamilyStructure') validateReference(effect.familyStructureId, references.familyStructureIds, 'FamilyStructureId', path, errors);
   if (type === 'setSocialClass') validateReference(effect.socialClassId, references.socialClassIds, 'SocialClassId', path, errors);
+  if (type === 'recoverTravel' && !['land', 'sea'].includes(String(effect.mode))) errors.push({ path, message: 'recoverTravel mode must be land or sea.' });
   if (type === 'endCareer' && !['death', 'legacy'].includes(String(effect.reason))) {
     errors.push({ path, message: `Invalid CareerEndReason "${String(effect.reason)}".` });
   }
@@ -690,6 +699,27 @@ function validateTraitOpposites(
       errors.push({ path, message: `Opposite Trait relationship "${id}" / "${oppositeId}" must be symmetric.` });
     }
   });
+}
+
+function validateLocationParentCycles(locations: UnknownRecord[], errors: ContentValidationError[]): void {
+  const parents = new Map<string, string>();
+  locations.forEach((location) => {
+    const id = stringValue(location.id);
+    const parentId = stringValue(location.parentLocationId);
+    if (id && parentId) parents.set(id, parentId);
+  });
+  for (const id of parents.keys()) {
+    const seen = new Set<string>();
+    let current: string | undefined = id;
+    while (current && parents.has(current)) {
+      if (seen.has(current)) {
+        errors.push({ path: 'locations', message: `Location parent cycle detected from "${id}".` });
+        break;
+      }
+      seen.add(current);
+      current = parents.get(current);
+    }
+  }
 }
 
 function validateNpcDefinitions(npcs: UnknownRecord[], references: References, errors: ContentValidationError[]): void {

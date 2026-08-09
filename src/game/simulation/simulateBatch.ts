@@ -45,6 +45,7 @@ export interface SimulationBatchResult {
     pendingScheduled: number;
     dueScheduledPending: number;
     possibleCriticalLoops: number;
+    fallbackEvents: { land: number; sea: number; total: number };
   };
   dice: Record<DiceResult, number> & { total: number };
   events: EventMetric[];
@@ -120,6 +121,11 @@ export function simulateBatch(options: SimulateBatchOptions): SimulationBatchRes
       pendingScheduled: runResults.reduce((sum, result) => sum + result.pendingScheduled.due.length + result.pendingScheduled.notDue.length, 0),
       dueScheduledPending: runResults.reduce((sum, result) => sum + result.pendingScheduled.due.length, 0),
       possibleCriticalLoops: runResults.filter(({ possibleCriticalLoop }) => possibleCriticalLoop).length,
+      fallbackEvents: {
+        land: runResults.reduce((sum, result) => sum + result.fallbackEvents.land, 0),
+        sea: runResults.reduce((sum, result) => sum + result.fallbackEvents.sea, 0),
+        total: runResults.reduce((sum, result) => sum + result.fallbackEvents.total, 0),
+      },
     },
     dice,
     events: [...eventCounters.values()].map(({ event, times, runs }) => ({

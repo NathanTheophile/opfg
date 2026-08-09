@@ -4,7 +4,7 @@ The repository keeps four responsibilities separate: locale-neutral Content, pur
 
 Powers V1 uses a JSON-compatible `PowerState` shared by Player and NPC. GameState/save v15 persists the owned Devil Fruit, its monotone Awakening (`0..10`), three Haki levels (`0..5`), the grouped `player.career` state and optional `endingId`. Fruit and Career definitions live in Content Schema v5. `src/game/engine/powers.ts` owns consumption eligibility and Player Haki threshold synchronization; React only presents the resulting state.
 
-Content Schema v5 exposes the complete generic Career Rank ladders, Reputation clamped to `0..100`, persistent same-race Origins parents, the curated 60-Location Four Blues runtime subset, controlled Location tags/services, `shipMarket`, and the 45-Fruit authoring registry. Only the 20 `playableV1` Fruits own consumable Items; reference-only Fruits remain usable for semantic NPC/event references.
+Content Schema v5 exposes the complete generic Career Rank ladders, Reputation clamped to `0..100`, persistent same-race Origins parents, the authoritative 188-Location World V1 runtime catalogue, controlled Location tags/services, `shipMarket`, and the 45-Fruit authoring registry. Only the 20 `playableV1` Fruits own consumable Items; reference-only Fruits remain usable for semantic NPC/event references.
 
 ## Runtime state and time
 
@@ -31,6 +31,8 @@ Scheduled selection never consumes RNG. A scheduled occurrence remains pending w
 `EventDefinition` is a discriminated union of `normal`, `immediate`, `scheduled`, and `critical`. Priority belongs only to scheduled definitions. Immediate definitions are explicit continuations queued by Effects; they never enter Normal selection and defer root-slot finalization until the chain is empty. Locations declare whether normal scheduled reach is blocked, whether ship sales are allowed, and whether docking is possible. Outcomes contain localization, identity, and effects only; phase rules own time advancement.
 
 At an Active month boundary the engine may expose a monthly navigation decision before Event selection. This session prompt is derived from persisted GameState and is not an authored Event. The selection order is Critical, pending navigation when applicable, Immediate, Scheduled, then Normal; an already-started Immediate chain always completes before the next month prompt.
+
+Locations may form an acyclic parent hierarchy. Conditions can query the current sea or ancestor containment, and land departure resolves dock access through the current Location or its ancestors. If the Active Normal pool is empty, two excluded repeatable system Events recover land/sea travel; they add no persistent route state and are counted by simulation diagnostics.
 
 Each Event is stored as one JSON file under `src/game/content/events/**`, named after its `EventId`. `eventCatalog.ts` discovers these files recursively with an eager Vite glob, verifies filename/ID agreement, and sorts the resulting catalogue lexically by Event ID. Consequently, adding an Event requires no TypeScript import or manifest edit, while seeded selection receives a stable ordering on every machine and build.
 

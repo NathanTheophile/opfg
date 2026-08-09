@@ -60,6 +60,8 @@ export const createCondition = (type: Condition['type']): Condition => {
     case 'canRecruitNpc': return { type, npcId: '' };
     case 'isLeader': return { type };
     case 'locationIs': return { type, locationId: '' };
+    case 'locationWithin': return { type, locationId: '' };
+    case 'currentSeaIs': return { type, seaId: '' };
     case 'locationHasTag': return { type, tagId: 'port' };
     case 'locationHasService': return { type, serviceId: 'lodging' };
     case 'isAtSea': return { type };
@@ -126,6 +128,7 @@ export const createEffect = (type: Effect['type']): Effect => {
     case 'modifyBerries': return { type, amount: 0 };
     case 'loseShip': return { type, locationId: '', travelState: 'on_land' };
     case 'moveToLocation': return { type, locationId: '', travelState: 'on_land' };
+    case 'recoverTravel': return { type, mode: 'land' };
     case 'setBirthLocation': return { type, locationId: '' };
     case 'setNpcStatus': return { type, npcId: '', status: 'known' };
     case 'setNpcPassenger': return { type, npcId: '', passenger: true };

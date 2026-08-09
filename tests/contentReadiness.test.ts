@@ -17,11 +17,11 @@ describe('Content Authoring Readiness V1', () => {
     expect(contentCatalog.careerRanks.filter(({ affiliationId }) => affiliationId === 'marine')).toHaveLength(10);
     expect(contentCatalog.careerRanks.filter(({ affiliationId }) => affiliationId === 'revolutionary')).toHaveLength(5);
     expect(contentCatalog.careerRanks.filter(({ affiliationId }) => affiliationId === 'bounty_hunter')).toHaveLength(5);
-    expect(contentCatalog.locations).toHaveLength(60);
-    expect(contentCatalog.locations.filter(({ seaId }) => seaId === 'east_blue')).toHaveLength(15);
-    expect(contentCatalog.locations.filter(({ seaId }) => seaId === 'west_blue')).toHaveLength(15);
-    expect(contentCatalog.locations.filter(({ seaId }) => seaId === 'north_blue')).toHaveLength(15);
-    expect(contentCatalog.locations.filter(({ seaId }) => seaId === 'south_blue')).toHaveLength(15);
+    expect(contentCatalog.locations).toHaveLength(188);
+    expect(contentCatalog.locations.filter(({ seaId }) => seaId === 'east_blue')).toHaveLength(20);
+    expect(contentCatalog.locations.filter(({ seaId }) => seaId === 'west_blue')).toHaveLength(20);
+    expect(contentCatalog.locations.filter(({ seaId }) => seaId === 'north_blue')).toHaveLength(20);
+    expect(contentCatalog.locations.filter(({ seaId }) => seaId === 'south_blue')).toHaveLength(20);
     expect(contentCatalog.devilFruits).toHaveLength(45);
     expect(contentCatalog.devilFruits.filter(({ playableV1 }) => playableV1)).toHaveLength(20);
     expect(contentCatalog.devilFruits.filter(({ playableV1 }) => !playableV1)).toHaveLength(25);

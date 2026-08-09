@@ -33,7 +33,7 @@ export function diagnoseContent(catalog: ContentCatalog): ContentDiagnostic[] {
     if (type === 'addItem') addString(record.itemId, grantedItems);
     if (type === 'hasFlag') addString(record.flagId, readFlags);
     if (type === 'setFlag' || type === 'clearFlag') addString(record.flagId, writtenFlags);
-    if (type === 'locationIs') addString(record.locationId, referencedLocations);
+    if (type === 'locationIs' || type === 'locationWithin') addString(record.locationId, referencedLocations);
     if (type === 'moveToLocation' || type === 'loseShip' || type === 'setBirthLocation') addString(record.locationId, reachableLocations);
     if (typeof record.npcId === 'string') referencedNpcs.add(record.npcId);
   });

@@ -30,6 +30,8 @@ const ships: Record<string, [string, string]> = { dinghy: ['Chaloupe', 'Dinghy']
 export function createCatalogDictionary(locale: 'fr' | 'en'): Record<string, string> {
   const language = locale === 'fr' ? 0 : 1;
   const dictionary: Record<string, string> = {};
+  const seas: Record<string, [string, string]> = { grand_line_paradise: ['Grand Line — Paradis', 'Grand Line — Paradise'], new_world: ['Nouveau Monde', 'New World'], sky: ['Ciel', 'Sky'], underwater: ['Sous-marin', 'Underwater'], calm_belt: ['Calm Belt', 'Calm Belt'], red_line: ['Red Line', 'Red Line'] };
+  for (const [id, names] of Object.entries(seas)) dictionary[`sea.${id}.name`] = names[language];
   for (const [id, names] of Object.entries(traitNames)) {
     dictionary[`trait.${id}.name`] = names[language];
     dictionary[`trait.${id}.description`] = traitMeanings[id][language];
@@ -37,12 +39,23 @@ export function createCatalogDictionary(locale: 'fr' | 'en'): Record<string, str
   for (const [id, names] of Object.entries(ranks)) dictionary[`careerRank.${id}.name`] = names[language];
   for (const [id, names] of Object.entries(roles)) dictionary[`crewRole.${id}.name`] = names[language];
   for (const [id, names] of Object.entries(ships)) dictionary[`ship.${id}.name`] = names[language];
-  for (const { id, name } of locations.locations) dictionary[`location.${id}.name`] = name;
+  for (const { id, name } of [...locations.blueLocations, ...locations.outsideBlueLocations]) dictionary[`location.${id}.name`] = name;
   for (const { id, displayName, playableV1 } of fruits.fruits) {
     dictionary[`devilFruit.${id}.name`] = displayName;
     if (playableV1) dictionary[`item.${id}_fruit_item.name`] = displayName;
   }
   dictionary['npc.player_parent_1.name'] = locale === 'fr' ? 'Parent 1' : 'Parent 1';
   dictionary['npc.player_parent_2.name'] = locale === 'fr' ? 'Parent 2' : 'Parent 2';
+  Object.assign(dictionary, locale === 'fr' ? {
+    'event.dead_end_on_land.title': 'Le large appelle', 'event.dead_end_on_land.text': 'Aucune nouvelle piste ne se présente ici, mais la mer reste ouverte.',
+    'event.dead_end_on_land.choice.resume_voyage.text': 'Reprendre la mer', 'event.dead_end_on_land.choice.resume_voyage.outcome.back_at_sea.text': 'Vous gagnez le point d’accès maritime le plus proche et larguez les amarres.',
+    'event.dead_end_at_sea.title': 'Une côte à l’horizon', 'event.dead_end_at_sea.text': 'Les courants finissent par révéler une continuation sûre.',
+    'event.dead_end_at_sea.choice.follow_currents.text': 'Suivre les courants', 'event.dead_end_at_sea.choice.follow_currents.outcome.safe_landfall.text': 'Vous atteignez une destination où poursuivre votre histoire.',
+  } : {
+    'event.dead_end_on_land.title': 'The Open Sea Calls', 'event.dead_end_on_land.text': 'No new lead presents itself here, but the sea remains open.',
+    'event.dead_end_on_land.choice.resume_voyage.text': 'Return to sea', 'event.dead_end_on_land.choice.resume_voyage.outcome.back_at_sea.text': 'You reach the nearest maritime access and cast off.',
+    'event.dead_end_at_sea.title': 'Land on the Horizon', 'event.dead_end_at_sea.text': 'The currents eventually reveal a safe continuation.',
+    'event.dead_end_at_sea.choice.follow_currents.text': 'Follow the currents', 'event.dead_end_at_sea.choice.follow_currents.outcome.safe_landfall.text': 'You reach a destination where your story can continue.',
+  });
   return dictionary;
 }

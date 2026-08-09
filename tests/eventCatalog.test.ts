@@ -7,7 +7,7 @@ import { validateContent } from '../src/game/validation/validateContent';
 describe('eventCatalog', () => {
   it('discovers the complete catalog once and in stable lexical order', () => {
     const ids = eventCatalog.map(({ id }) => id);
-    expect(ids).toHaveLength(48);
+    expect(ids).toHaveLength(50);
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids).toEqual([...ids].sort());
     expect(ids).toEqual(expect.arrayContaining([

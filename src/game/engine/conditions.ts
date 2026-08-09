@@ -3,6 +3,7 @@ import type { Condition } from '../content/schema';
 import type { GameState } from '../model/schema';
 import { availableCargoSlots, canAcquireShip, canRecruitNpc, countCurrentCrew, findShipDefinition } from './ship';
 import { canConsumeDevilFruit, playerHakiSourceTotal } from './powers';
+import { isLocationWithin } from './locations';
 
 export interface ChoiceState {
   visible: boolean;
@@ -45,6 +46,10 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
       return catalog?.locations.find(({ id }) => id === state.locationId)?.tags.includes(condition.tagId) === true;
     case 'locationHasService':
       return catalog?.locations.find(({ id }) => id === state.locationId)?.services.includes(condition.serviceId) === true;
+    case 'locationWithin':
+      return catalog !== undefined && isLocationWithin(catalog, state.locationId, condition.locationId);
+    case 'currentSeaIs':
+      return catalog?.locations.find(({ id }) => id === state.locationId)?.seaId === condition.seaId;
     case 'isAtSea':
       return state.travelState === 'at_sea';
     case 'isOnLand':

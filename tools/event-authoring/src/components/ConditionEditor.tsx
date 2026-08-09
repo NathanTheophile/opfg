@@ -3,7 +3,7 @@ import { DEVIL_FRUIT_TAGS, DEVIL_FRUIT_TYPES, HAKI_TYPES, LOCATION_SERVICES, LOC
 import { IdSelect, NumberInput } from './EditorPrimitives';
 
 const TYPES: Condition['type'][] = [
-  'all','any','not','hasTrait','statAtLeast','hasFlag','hasItem','berriesAtLeast','hasCrew','crewSizeAtLeast','hasCrewRole','canRecruitNpc','isLeader','locationIs','locationHasTag','locationHasService','isAtSea','isOnLand','careerPhaseIs',
+  'all','any','not','hasTrait','statAtLeast','hasFlag','hasItem','berriesAtLeast','hasCrew','crewSizeAtLeast','hasCrewRole','canRecruitNpc','isLeader','locationIs','locationWithin','currentSeaIs','locationHasTag','locationHasService','isAtSea','isOnLand','careerPhaseIs',
   'ageAtLeastMonths','ageAtMostMonths','hasShip','shipIs','shipHealthAtLeast','shipHealthAtMost','shipCrewCapacityAtLeast','shipCargoSpaceAtLeast','canAcquireShip','canSellShip','npcStatusIs','npcRelationshipAtLeast',
   'npcStatAtLeast','hasChosen','hasPlayed','hasOutcome','raceIs','originSeaIs','affiliationIs','familyStructureIs','socialClassIs',
   'hasDevilFruit','canConsumeDevilFruit','devilFruitIs','devilFruitTypeIs','devilFruitHasTag','devilFruitAwakeningAtLeast','devilFruitIsAwakened','hakiAtLeast','hakiIsAwakened','hakiSourceTotalAtLeast','npcHasDevilFruit','npcDevilFruitIs','npcDevilFruitTypeIs','npcDevilFruitHasTag','npcDevilFruitAwakeningAtLeast','npcHakiAtLeast','npcHakiIsAwakened',
@@ -31,7 +31,8 @@ export default function ConditionEditor({ value, onChange, registries, eventIds 
       case 'affiliationIs': return <IdSelect value={value.affiliationId} options={registries.affiliations} onChange={(affiliationId) => onChange({ ...value, affiliationId })} />;
       case 'familyStructureIs': return <IdSelect value={value.familyStructureId} options={registries.familyStructures} onChange={(familyStructureId) => onChange({ ...value, familyStructureId })} />;
       case 'socialClassIs': return <IdSelect value={value.socialClassId} options={registries.socialClasses} onChange={(socialClassId) => onChange({ ...value, socialClassId })} />;
-      case 'locationIs': return <IdSelect value={value.locationId} options={registries.locations} onChange={(locationId) => onChange({ ...value, locationId })} />;
+      case 'locationIs': case 'locationWithin': return <IdSelect value={value.locationId} options={registries.locations} onChange={(locationId) => onChange({ ...value, locationId })} />;
+      case 'currentSeaIs': return <IdSelect value={value.seaId} options={registries.seas} onChange={(seaId) => onChange({ ...value, seaId })} />;
       case 'locationHasTag': return <select value={value.tagId} onChange={(e) => onChange({ ...value, tagId: e.target.value as typeof value.tagId })}>{LOCATION_TAGS.map((id) => <option key={id}>{id}</option>)}</select>;
       case 'locationHasService': return <select value={value.serviceId} onChange={(e) => onChange({ ...value, serviceId: e.target.value as typeof value.serviceId })}>{LOCATION_SERVICES.map((id) => <option key={id}>{id}</option>)}</select>;
       case 'isAtSea': case 'isOnLand': case 'hasShip': case 'canSellShip': case 'hasCrew': case 'isLeader': case 'hasDevilFruit': case 'devilFruitIsAwakened': return <span className="muted">No parameters</span>;

@@ -5,6 +5,9 @@ import { evaluateCondition } from './conditions';
 import { nextRandom } from './rng';
 import { needsMonthlyNavigationDecision } from './navigation';
 import { finalizePendingSlot } from './time';
+import { findDockableAccess } from './locations';
+
+export const FALLBACK_EVENT_IDS = ['dead_end_on_land', 'dead_end_at_sea'] as const;
 
 export function selectNextEvent(state: GameState, catalog: ContentCatalog): GameState {
   if (state.careerStatus !== 'active') return { ...state, currentEventId: null };
@@ -30,9 +33,15 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
 
   const played = new Set(state.history.map(({ eventId }) => eventId));
   const candidates = catalog.events.filter((event) =>
-    event.kind === 'normal' && !played.has(event.id) && isEligible(event, state, catalog),
+    event.kind === 'normal' && !FALLBACK_EVENT_IDS.includes(event.id as typeof FALLBACK_EVENT_IDS[number]) && !played.has(event.id) && isEligible(event, state, catalog),
   );
-  if (candidates.length === 0) return { ...state, scheduledEvents: scheduled.entries, currentEventId: null };
+  if (candidates.length === 0) {
+    if (state.careerPhase !== 'active') return { ...state, scheduledEvents: scheduled.entries, currentEventId: null };
+    const fallbackId = state.travelState === 'at_sea' ? 'dead_end_at_sea' : 'dead_end_on_land';
+    const fallback = catalog.events.find((event) => event.id === fallbackId && event.kind === 'normal');
+    const accessible = state.travelState === 'at_sea' || findDockableAccess(catalog, state.locationId) !== undefined;
+    return { ...state, scheduledEvents: scheduled.entries, currentEventId: fallback && accessible ? fallback.id : null };
+  }
   if (candidates.length === 1) return { ...state, scheduledEvents: scheduled.entries, currentEventId: candidates[0].id };
   const random = nextRandom(state.rngState);
   return {

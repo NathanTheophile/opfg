@@ -85,7 +85,7 @@ Le niveau social reste persistant et testable. Il n’accorde aucun Berry initia
 
 ### Mer et lieu de naissance
 
-Les mers V1 sont `east_blue`, `west_blue`, `north_blue` et `south_blue`. La mer ne modifie aucune stat et n’accorde aucun Trait caché. Le lieu de naissance est une vraie Location du catalogue rattachée à la mer choisie ; il devient la `locationId` du joueur sans modifier ses statistiques.
+Les quatre mers sélectionnables dans Origins sont `east_blue`, `west_blue`, `north_blue` et `south_blue`. Le runtime World V1 contient aussi `grand_line_paradise`, `new_world`, `sky`, `underwater`, `calm_belt` et `red_line`, sans les proposer comme origines. La mer ne modifie aucune stat et n’accorde aucun Trait caché. Le lieu de naissance est une vraie Location du catalogue rattachée à la mer choisie ; il devient la `locationId` du joueur sans modifier ses statistiques.
 
 ## 3. Statistiques du joueur
 
@@ -191,7 +191,7 @@ Un Immediate se distingue d’un Scheduled : l’Immediate continue la scène ac
 2. exclure ceux déjà joués ;
 3. tirer uniformément parmi les Events restants.
 
-Tous les Events normaux sont **one-shot en V1**. Il n’existe ni `repeatable`, ni cooldown, ni compteur de répétition. Deux situations proches nécessitent deux Events distincts.
+Tous les Events normaux authorés sont **one-shot en V1**. Il n’existe ni `repeatable`, ni cooldown, ni compteur de répétition. Deux situations proches nécessitent deux Events distincts. Les deux Events système Active `dead_end_on_land` et `dead_end_at_sea` sont les seules exceptions répétables : ils rétablissent un contexte navigable quand le contenu normal est épuisé et restent un signal diagnostique de contenu manquant.
 
 Il n’existe aucun poids de rareté (`weight`, common/uncommon/rare ou probabilité individuelle cachée). La rareté découle uniquement des Conditions d’éligibilité : âge, géographie, voyage, profil, statistiques, Traits, historique, flags, items, NPC et autres Conditions déclaratives supportées. Une fois éligibles, les Events ont la même probabilité.
 

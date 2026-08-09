@@ -39,6 +39,7 @@ export interface SimulationRunResult {
   scheduledEvents: number;
   criticalEvents: number;
   immediateEvents: number;
+  fallbackEvents: { land: number; sea: number; total: number };
   maximumImmediateChainLength: number;
   immediateGuardTriggered: boolean;
   diceChecks: Record<DiceResult, number> & { total: number };

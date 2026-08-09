@@ -14,9 +14,10 @@ const rankLadders = {
   bounty_hunter: ['bounty_hunter_novice','bounty_hunter_tracker','bounty_hunter_confirmed','bounty_hunter_elite','bounty_hunter_master'],
 } as const;
 
-const locations = locationsData.locations.map(({ id, seaId, type, parentLocationId, canBeBirthLocation, allowsDocking, shipMarket, services, tags, blocksScheduledEvents }) => ({
-  id, nameKey: locationNameKey(id), seaId, type, parentLocationId, canBeBirthLocation, allowsDocking, shipMarket, services, tags, blocksScheduledEvents,
-})) as LocationDefinition[];
+const locations = [...locationsData.blueLocations.map((location) => ({ ...location, seaId: location.seaId, canBeBirthLocation: location.canBeBirthLocation, blocksScheduledEvents: location.blocksScheduledEvents })), ...locationsData.outsideBlueLocations.map((location) => ({ ...location, seaId: location.zone, canBeBirthLocation: false, blocksScheduledEvents: false }))]
+  .map(({ id, seaId, type, parentLocationId, canBeBirthLocation, allowsDocking, shipMarket, services, tags, blocksScheduledEvents }) => ({
+    id, nameKey: locationNameKey(id), seaId, type, parentLocationId, canBeBirthLocation, allowsDocking, shipMarket, services, tags, blocksScheduledEvents,
+  })) as LocationDefinition[];
 
 const devilFruits = fruitsData.fruits.map(({ id, type, playableV1, tags }) => ({
   id, nameKey: devilFruitNameKey(id), type, playableV1, itemId: playableV1 ? `${id}_fruit_item` : null, tags,
@@ -33,7 +34,7 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
       { id: 'longarm', nameKey: raceNameKey('longarm'), initialHealth: 40, attributeModifiers: { strength: 2, agility: 4, observation: 3, intelligence: 1, navigation: -3, charisma: -2, luck: -2, morale: -3 } },
       { id: 'buccaneer', nameKey: raceNameKey('buccaneer'), initialHealth: 50, attributeModifiers: { strength: 4, agility: -3, observation: 1, intelligence: -1, navigation: -2, charisma: -1, luck: -2, morale: 4 } },
     ],
-    seas: ['east_blue', 'west_blue', 'north_blue', 'south_blue'].map((id) => ({ id, nameKey: seaNameKey(id) })),
+    seas: ['east_blue', 'west_blue', 'north_blue', 'south_blue', 'grand_line_paradise', 'new_world', 'sky', 'underwater', 'calm_belt', 'red_line'].map((id) => ({ id, nameKey: seaNameKey(id) })),
     affiliations: ['civilian', 'marine', 'pirate', 'revolutionary', 'bandit', 'prisoner', 'slave', 'celestial_dragon', 'royal_family'].map((id) => ({ id, nameKey: affiliationNameKey(id) })),
     careerAffiliations: (['civilian', 'pirate', 'marine', 'revolutionary', 'bounty_hunter'] as const).map((id) => ({ id, nameKey: careerAffiliationNameKey(id) })),
     careerRanks: Object.entries(rankLadders).flatMap(([affiliationId, ranks]) => ranks.map((id, sortOrder) => ({ id, nameKey: careerRankNameKey(id), affiliationId: affiliationId as 'marine' | 'revolutionary' | 'bounty_hunter', sortOrder }))),

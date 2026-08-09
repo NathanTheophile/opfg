@@ -31,7 +31,7 @@ const exhaustiveEvent = (project: AuthoringProject): EventDefinition => {
   event.eligibility = { type: 'all', conditions: [
     { type: 'hasTrait', traitId: 'audacious' }, { type: 'statAtLeast', statId: 'strength', value: 20 },
     { type: 'hasFlag', flagId: 'storm_mastered' }, { type: 'hasItem', itemId: 'sealed_chart' },
-    { type: 'locationIs', locationId: 'starter_port' }, { type: 'locationHasTag', tagId: 'port' }, { type: 'locationHasService', serviceId: 'trade' }, { type: 'isAtSea' }, { type: 'isOnLand' },
+    { type: 'locationIs', locationId: 'starter_port' }, { type: 'locationWithin', locationId: 'starter_port' }, { type: 'currentSeaIs', seaId: 'starter_sea' }, { type: 'locationHasTag', tagId: 'port' }, { type: 'locationHasService', serviceId: 'trade' }, { type: 'isAtSea' }, { type: 'isOnLand' },
     { type: 'careerPhaseIs', phase: 'active' }, { type: 'ageAtLeastMonths', value: 12 }, { type: 'ageAtMostMonths', value: 180 },
     { type: 'berriesAtLeast', value: 0 }, { type: 'hasCrew' }, { type: 'crewSizeAtLeast', value: 1 }, { type: 'hasCrewRole', roleId: 'navigator' }, { type: 'canRecruitNpc', npcId: 'mira' }, { type: 'isLeader' }, { type: 'hasShip' }, { type: 'shipIs', shipId: 'sloop' }, { type: 'shipHealthAtLeast', value: 1 }, { type: 'shipHealthAtMost', value: 50 },
     { type: 'shipCrewCapacityAtLeast', value: 1 }, { type: 'shipCargoSpaceAtLeast', value: 1 }, { type: 'canAcquireShip', shipId: 'sloop' }, { type: 'canSellShip' },
@@ -51,7 +51,7 @@ const exhaustiveEvent = (project: AuthoringProject): EventDefinition => {
     { type: 'modifyStat', statId: 'morale', amount: 1 }, { type: 'modifyHealth', amount: 10 }, { type: 'acquireShip', shipId: 'sloop', name: 'Tool Ship', health: 20 }, { type: 'modifyShipHealth', amount: -1 },
     { type: 'addCargoItem', itemId: 'sealed_chart', quantity: 2 }, { type: 'removeCargoItem', itemId: 'sealed_chart', quantity: 1 },
     { type: 'resolveShipReplacement', disposition: 'sell', berries: 10 }, { type: 'modifyBerries', amount: 5 },
-    { type: 'loseShip', locationId: 'starter_port', travelState: 'on_land' }, { type: 'moveToLocation', locationId: 'open_sea', travelState: 'at_sea' },
+    { type: 'loseShip', locationId: 'starter_port', travelState: 'on_land' }, { type: 'moveToLocation', locationId: 'open_sea', travelState: 'at_sea' }, { type: 'recoverTravel', mode: 'land' },
     { type: 'setNpcStatus', npcId: 'mira', status: 'dead' }, { type: 'setNpcPassenger', npcId: 'mira', passenger: true, allowWithoutLeadership: true }, { type: 'setLeadership', isLeader: false }, { type: 'modifyNpcRelationship', npcId: 'mira', amount: 1 },
     { type: 'modifyNpcStat', npcId: 'mira', statId: 'calm', amount: 1 }, { type: 'scheduleEvent', eventId: 'memory_returns', delayMonths: 6 },
     { type: 'setCareerPhase', phase: 'active' }, { type: 'setRace', raceId: 'human' }, { type: 'setOriginSea', seaId: 'starter_sea' },

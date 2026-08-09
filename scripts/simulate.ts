@@ -45,6 +45,7 @@ row('Average Immediate/slot', batch.summary.averageImmediatePerSlot.toFixed(3));
 row('Max Immediate chain', batch.summary.maximumImmediateChainLength);
 row('Immediate guards', batch.summary.immediateGuardsTriggered);
 row('Events at sea / land', `${batch.summary.eventsAtSea} / ${batch.summary.eventsOnLand}`);
+row('Fallbacks land / sea', `${batch.summary.fallbackEvents.land} / ${batch.summary.fallbackEvents.sea}`);
 console.log('');
 row('Player deaths', batch.summary.playerDeaths);
 row('NPC deaths', batch.summary.npcDeaths);

@@ -3,6 +3,7 @@ import type { ChoiceId, EventId, GameState, NpcState } from '../model/schema';
 import { createDefaultNpcState } from '../model/npcState';
 import { addStack, canAcquireShip, canRecruitNpc, cloneInventory, cloneShip, findShipDefinition, removeStack } from './ship';
 import { canConsumeDevilFruit, createDefaultPowerState, playerHakiSourceTotal, synchronizePlayerHaki } from './powers';
+import { recoverTravel } from './locations';
 
 export interface EffectContext {
   sourceEventId: EventId;
@@ -143,6 +144,9 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       state.travelState = 'on_land';
       return;
     }
+    case 'recoverTravel':
+      recoverTravel(state, catalog, effect.mode);
+      return;
     case 'setNpcStatus': {
       const npc = getNpcState(state, effect.npcId);
       const changesCrew = npc.status === 'crew' || effect.status === 'crew';

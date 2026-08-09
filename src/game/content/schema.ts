@@ -62,6 +62,8 @@ export type Condition =
   | { type: 'locationIs'; locationId: LocationId }
   | { type: 'locationHasTag'; tagId: LocationTagId }
   | { type: 'locationHasService'; serviceId: LocationServiceId }
+  | { type: 'locationWithin'; locationId: LocationId }
+  | { type: 'currentSeaIs'; seaId: SeaId }
   | { type: 'isAtSea' }
   | { type: 'isOnLand' }
   | { type: 'careerPhaseIs'; phase: CareerPhase }
@@ -129,6 +131,7 @@ export type Effect =
   | { type: 'modifyBerries'; amount: number }
   | { type: 'moveToLocation'; locationId: LocationId; travelState: TravelState }
   | { type: 'setBirthLocation'; locationId: LocationId }
+  | { type: 'recoverTravel'; mode: 'land' | 'sea' }
   | { type: 'setNpcStatus'; npcId: NpcId; status: NpcStatus; allowWithoutLeadership?: boolean }
   | { type: 'setNpcPassenger'; npcId: NpcId; passenger: boolean; allowWithoutLeadership?: boolean }
   | { type: 'setLeadership'; isLeader: boolean }
