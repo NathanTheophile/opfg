@@ -111,14 +111,6 @@ describe('vNext roll evaluation', () => {
     expect(() => evaluateDiceRoll(conflicting, state, 10)).toThrow('conflicting DiceResults');
   });
 
-  it('rejects inactive awakening except for the absolute raw 1 rule', () => {
-    const state = createInitialGameState();
-    const check = resolution({ statId: 'awakening' });
-
-    expect(() => evaluateDiceRoll(check, state, 2)).toThrow('Cannot use inactive stat "awakening"');
-    expect(evaluateDiceRoll(check, state, 1).result).toBe('criticalFailure');
-    expect(getDicePreview(check, state)).toEqual({ available: false, statId: 'awakening' });
-  });
 });
 
 describe('probability preview', () => {

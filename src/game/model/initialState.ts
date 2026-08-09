@@ -5,7 +5,7 @@ const DEFAULT_SEED = 0x1a2b3c4d;
 
 export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
   return {
-    version: 12,
+    version: 13,
     rngState: seed >>> 0,
     careerPhase: 'origins',
     ageMonths: 0,
@@ -25,10 +25,10 @@ export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
         navigation: 25,
         charisma: 25,
         luck: 25,
-        awakening: null,
       },
       traits: [],
       inventory: { capacity: 2, stacks: [] },
+      powers: { devilFruitId: null, devilFruitAwakening: 0, haki: { observation: 0, armament: 0, conqueror: 0 } },
     },
     ship: {
       shipId: 'starter_sloop',

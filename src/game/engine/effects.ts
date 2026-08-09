@@ -2,6 +2,7 @@ import type { ContentCatalog, Effect } from '../content/schema';
 import type { ChoiceId, EventId, GameState, NpcState } from '../model/schema';
 import { createDefaultNpcState } from '../model/npcState';
 import { addStack, canAcquireShip, canRecruitNpc, cloneInventory, cloneShip, findShipDefinition, removeStack } from './ship';
+import { canConsumeDevilFruit, createDefaultPowerState, playerHakiSourceTotal, synchronizePlayerHaki } from './powers';
 
 export interface EffectContext {
   sourceEventId: EventId;
@@ -17,6 +18,7 @@ export function applyEffects(state: GameState, catalog: ContentCatalog, effects:
       stats: { ...state.player.stats },
       traits: [...state.player.traits],
       inventory: cloneInventory(state.player.inventory),
+      powers: { ...state.player.powers, haki: { ...state.player.powers.haki } },
     },
     ship: cloneShip(state.ship),
     pendingShip: cloneShip(state.pendingShip),
@@ -24,7 +26,10 @@ export function applyEffects(state: GameState, catalog: ContentCatalog, effects:
     flags: [...state.flags],
     berries: state.berries,
     npcs: Object.fromEntries(
-      Object.entries(state.npcs).map(([npcId, npc]) => [npcId, { ...npc, stats: { ...npc.stats } }]),
+      Object.entries(state.npcs).map(([npcId, npc]) => {
+        const powers = npc.powers ?? createDefaultPowerState();
+        return [npcId, { ...npc, stats: { ...npc.stats }, powers: { ...powers, haki: { ...powers.haki } } }];
+      }),
     ),
     history: [...state.history],
     scheduledEvents: [...state.scheduledEvents],
@@ -32,6 +37,7 @@ export function applyEffects(state: GameState, catalog: ContentCatalog, effects:
   };
 
   for (const effect of effects) applyEffect(next, catalog, effect, context);
+  synchronizePlayerHaki(next);
   return next;
 }
 
@@ -230,6 +236,48 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       state.careerStatus = 'ended';
       state.careerEndReason = effect.reason;
       state.currentEventId = null;
+      return;
+    case 'consumeDevilFruit': {
+      if (!canConsumeDevilFruit(state, catalog, effect.fruitId)) throw new Error(`Devil Fruit "${effect.fruitId}" cannot be consumed.`);
+      const fruit = catalog.devilFruits.find(({ id }) => id === effect.fruitId)!;
+      removeStack(state.player.inventory.stacks, fruit.itemId, 1);
+      state.player.powers.devilFruitId = fruit.id;
+      state.player.powers.devilFruitAwakening = 0;
+      return;
+    }
+    case 'increaseDevilFruitAwakening':
+      if (state.player.powers.devilFruitId === null) throw new Error('Cannot increase Devil Fruit Awakening without a Devil Fruit.');
+      if (!Number.isInteger(effect.amount) || effect.amount <= 0) throw new Error('Devil Fruit Awakening increase must be a positive integer.');
+      state.player.powers.devilFruitAwakening = clamp(state.player.powers.devilFruitAwakening + effect.amount, 0, 10);
+      return;
+    case 'awakenHaki':
+      if (state.player.powers.haki[effect.hakiType] !== 0) throw new Error(`${effect.hakiType} Haki is already awakened.`);
+      if (effect.hakiType !== 'conqueror' && playerHakiSourceTotal(state, effect.hakiType) < 75) throw new Error(`${effect.hakiType} Haki requires a source total of 75.`);
+      state.player.powers.haki[effect.hakiType] = 1;
+      return;
+    case 'raiseConquerorHakiTo':
+      if (!Number.isInteger(effect.level) || effect.level < 1 || effect.level > 5 || effect.level < state.player.powers.haki.conqueror) throw new Error('Conqueror Haki level must increase monotonically within 1..5.');
+      state.player.powers.haki.conqueror = effect.level;
+      return;
+    case 'setNpcDevilFruit': {
+      const npc = getNpcState(state, effect.npcId);
+      if (!catalog.devilFruits.some(({ id }) => id === effect.fruitId)) throw new Error(`Unknown Devil Fruit "${effect.fruitId}".`);
+      if (npc.powers.devilFruitId !== null && npc.powers.devilFruitId !== effect.fruitId) throw new Error(`NPC "${effect.npcId}" already has a Devil Fruit.`);
+      npc.powers.devilFruitId = effect.fruitId; npc.powers.devilFruitAwakening = 0; state.npcs[effect.npcId] = npc;
+      return;
+    }
+    case 'increaseNpcDevilFruitAwakening': {
+      const npc = getNpcState(state, effect.npcId);
+      if (npc.powers.devilFruitId === null || !Number.isInteger(effect.amount) || effect.amount <= 0) throw new Error('NPC Devil Fruit Awakening increase requires a Fruit and a positive integer.');
+      npc.powers.devilFruitAwakening = clamp(npc.powers.devilFruitAwakening + effect.amount, 0, 10); state.npcs[effect.npcId] = npc;
+      return;
+    }
+    case 'raiseNpcHakiTo': {
+      const npc = getNpcState(state, effect.npcId); const current = npc.powers.haki[effect.hakiType];
+      if (!Number.isInteger(effect.level) || effect.level < 1 || effect.level > 5 || effect.level < current) throw new Error('NPC Haki level must increase monotonically within 1..5.');
+      npc.powers.haki[effect.hakiType] = effect.level; state.npcs[effect.npcId] = npc;
+      return;
+    }
   }
 }
 

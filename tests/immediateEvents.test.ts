@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 import type { ContentCatalog, Effect, EventDefinition } from '../src/game/content/schema';
 import { selectNextEvent } from '../src/game/engine/events';
 import { resolveChoice } from '../src/game/engine/resolution';
@@ -9,7 +9,7 @@ const choice = (effects: Effect[] = []) => [{ id: 'go', textKey: 'fixture.childh
 const event = (id: string, kind: 'normal' | 'immediate', effects: Effect[] = []): EventDefinition => ({ id, kind, titleKey: 'fixture.childhood.title', textKey: 'fixture.childhood.text', choices: choice(effects) });
 const critical: EventDefinition = { id: 'ship_critical', kind: 'critical', trigger: { type: 'shipDestroyed' }, titleKey: 'fixture.childhood.title', textKey: 'fixture.childhood.text', choices: choice([{ type: 'loseShip', locationId: 'starter_port', travelState: 'on_land' }]) };
 const scheduled: EventDefinition = { id: 'later', kind: 'scheduled', priority: 100, titleKey: 'fixture.childhood.title', textKey: 'fixture.childhood.text', choices: choice() };
-const catalog = (events: EventDefinition[]): ContentCatalog => ({ schemaVersion: 2, races: [], seas: [], affiliations: [], familyStructures: [], socialClasses: [], traits: [], items: [], ships: [{ id: 'starter_sloop', nameKey: 'x', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 }], crewRoles: [], npcs: [], locations: [{ id: 'starter_port', seaId: null, blocksScheduledEvents: false, allowsShipSale: true, allowsDocking: true }], events });
+const catalog = (events: EventDefinition[]): ContentCatalog => ({ schemaVersion: 3, races: [], seas: [], affiliations: [], familyStructures: [], socialClasses: [], traits: [], items: [], devilFruits: [], ships: [{ id: 'starter_sloop', nameKey: 'x', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 }], crewRoles: [], npcs: [], locations: [{ id: 'starter_port', seaId: null, blocksScheduledEvents: false, allowsShipSale: true, allowsDocking: true }], events });
 const activeState = (slotInMonth: 0 | 1 = 0) => {
   const state = createInitialGameState(1);
   state.careerPhase = 'active'; state.ageMonths = 180; state.slotInMonth = slotInMonth; state.navigationDecisionAgeMonths = 180;

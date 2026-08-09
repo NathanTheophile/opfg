@@ -14,7 +14,7 @@ import {
   Sparkles,
   type LucideIcon,
 } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Panel } from '@/components/ui';
 import { ContextTooltip } from './ContextTooltip';
 import {
@@ -24,7 +24,10 @@ import {
 } from './context-tooltip-copy';
 import { statToDiceModifier } from '@/game/engine/dice';
 import type { GameState } from '@/game/model/schema';
+import healthMeatIcon from './assets/stat-icons/health-meat.svg';
+import observationEyeballIcon from './assets/stat-icons/observation-eyeball.svg';
 import './player-stats-rail.css';
+import './custom-stat-icons.css';
 
 type PlayerStatId = keyof GameState['player']['stats'];
 
@@ -40,7 +43,6 @@ const STAT_IDS: PlayerStatId[] = [
   'navigation',
   'charisma',
   'luck',
-  'awakening',
 ];
 
 const STAT_ICONS: Record<PlayerStatId, LucideIcon> = {
@@ -53,8 +55,46 @@ const STAT_ICONS: Record<PlayerStatId, LucideIcon> = {
   navigation: Compass,
   charisma: MessageCircle,
   luck: Clover,
-  awakening: Sparkles,
 };
+
+const CUSTOM_STAT_ICONS: Partial<Record<PlayerStatId, string>> = {
+  health: healthMeatIcon,
+  observation: observationEyeballIcon,
+};
+
+function StatGlyph({
+  statId,
+  Icon,
+  watermark = false,
+}: {
+  statId: PlayerStatId;
+  Icon: LucideIcon;
+  watermark?: boolean;
+}) {
+  const customIcon = CUSTOM_STAT_ICONS[statId];
+
+  if (customIcon) {
+    return (
+      <span
+        className={
+          watermark
+            ? 'opfg-custom-stat-glyph opfg-custom-stat-glyph--watermark'
+            : 'opfg-custom-stat-glyph'
+        }
+        style={{
+          '--opfg-custom-stat-mask': `url("${customIcon}")`,
+        } as CSSProperties}
+        aria-hidden="true"
+      />
+    );
+  }
+
+  return watermark ? (
+    <Icon />
+  ) : (
+    <Icon className="size-[1.05rem]" />
+  );
+}
 
 function signed(value: number): string {
   return value > 0 ? `+${value}` : String(value);
@@ -188,7 +228,11 @@ export function PlayerStatsRail({
                   className="opfg-player-stat__watermark"
                   aria-hidden="true"
                 >
-                  <Icon />
+                  <StatGlyph
+                    statId={id}
+                    Icon={Icon}
+                    watermark
+                  />
                 </span>
 
                 <ContextTooltip
@@ -200,9 +244,9 @@ export function PlayerStatsRail({
                   side="right"
                   focusable
                 >
-                  <Icon
-                    className="size-[1.05rem]"
-                    aria-hidden="true"
+                  <StatGlyph
+                    statId={id}
+                    Icon={Icon}
                   />
                 </ContextTooltip>
 

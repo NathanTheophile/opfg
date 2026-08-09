@@ -1,7 +1,8 @@
-import type { CareerEndReason, CareerPhase, GameState, ItemStack, NpcState, NpcStats, ShipState, TravelState } from '../model/schema';
+import type { CareerEndReason, CareerPhase, GameState, ItemStack, NpcState, NpcStats, PowerState, ShipState, TravelState } from '../model/schema';
+import { createDefaultPowerState } from './powers';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 12;
+const CURRENT_SAVE_VERSION = 13;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
@@ -70,7 +71,8 @@ function readGameState(value: unknown): GameState | null {
   if (!isStatValue(value.player.stats.navigation)) return null;
   if (!isStatValue(value.player.stats.charisma)) return null;
   if (!isStatValue(value.player.stats.luck)) return null;
-  if (!(value.player.stats.awakening === null || isStatValue(value.player.stats.awakening))) return null;
+  const playerPowers = readPowerState(value.player.powers);
+  if (playerPowers === null) return null;
   const ship = readShip(value.ship);
   const pendingShip = readShip(value.pendingShip);
   if (ship === undefined || pendingShip === undefined || typeof value.isLeader !== 'boolean' || !isUniqueStringArray(value.passengerNpcIds) || !isNonNegativeInteger(value.berries)) return null;
@@ -111,10 +113,10 @@ function readGameState(value: unknown): GameState | null {
         navigation: value.player.stats.navigation,
         charisma: value.player.stats.charisma,
         luck: value.player.stats.luck,
-        awakening: value.player.stats.awakening,
       },
       traits: [...value.player.traits],
       inventory,
+      powers: playerPowers,
     },
     ship,
     pendingShip,
@@ -182,6 +184,13 @@ function migrateLegacySave(value: unknown): unknown {
       navigationDecisionAgeMonths: null,
     };
   }
+  if (isRecord(migrated) && migrated.version === 12 && isRecord(migrated.player)) {
+    const player = migrated.player;
+    const stats = isRecord(player.stats) ? { ...player.stats } : player.stats;
+    if (isRecord(stats)) delete stats.awakening;
+    const npcs = isRecord(migrated.npcs) ? Object.fromEntries(Object.entries(migrated.npcs).map(([id, npc]) => [id, isRecord(npc) ? { ...npc, powers: createDefaultPowerState() } : npc])) : migrated.npcs;
+    migrated = { ...migrated, version: CURRENT_SAVE_VERSION, player: { ...player, stats, powers: createDefaultPowerState() }, npcs };
+  }
   return migrated;
 }
 
@@ -221,9 +230,19 @@ function readNpcs(value: unknown): GameState['npcs'] | null {
     if (!isFiniteNumber(npc.relationship) || npc.relationship < -100 || npc.relationship > 100) return null;
     const stats = readNpcStats(npc.stats);
     if (stats === null) return null;
-    npcs[npcId] = { status: npc.status, relationship: npc.relationship, stats };
+    const powers = readPowerState(npc.powers);
+    if (powers === null) return null;
+    npcs[npcId] = { status: npc.status, relationship: npc.relationship, stats, powers };
   }
   return npcs;
+}
+
+function readPowerState(value: unknown): PowerState | null {
+  if (!isRecord(value) || !isNullableString(value.devilFruitId)) return null;
+  if (!isIntegerInRange(value.devilFruitAwakening, 0, 10) || !isRecord(value.haki)) return null;
+  if (!isIntegerInRange(value.haki.observation, 0, 5) || !isIntegerInRange(value.haki.armament, 0, 5) || !isIntegerInRange(value.haki.conqueror, 0, 5)) return null;
+  if (value.devilFruitId === null && value.devilFruitAwakening !== 0) return null;
+  return { devilFruitId: value.devilFruitId, devilFruitAwakening: value.devilFruitAwakening, haki: { observation: value.haki.observation, armament: value.haki.armament, conqueror: value.haki.conqueror } };
 }
 
 function readNpcStats(value: unknown): NpcStats | null {

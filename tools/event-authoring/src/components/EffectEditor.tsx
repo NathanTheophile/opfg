@@ -1,11 +1,11 @@
 import { createEffect } from '../gameSchema/current/defaults';
-import { NPC_STAT_IDS, NPC_STATUSES, PLAYER_STAT_IDS, type Effect, type GameRegistries } from '../gameSchema/current/contract';
+import { HAKI_TYPES, NPC_STAT_IDS, NPC_STATUSES, PLAYER_STAT_IDS, type Effect, type GameRegistries } from '../gameSchema/current/contract';
 import { IdSelect, NumberInput } from './EditorPrimitives';
 
 export const EFFECT_TYPES: Effect['type'][] = [
   'setFlag','clearFlag','addItem','removeItem','addTrait','removeTrait','modifyStat','modifyHealth','acquireShip','modifyShipHealth','addCargoItem','removeCargoItem','resolveShipReplacement','modifyBerries','loseShip',
   'moveToLocation','setBirthLocation','setNpcStatus','setNpcPassenger','setLeadership','modifyNpcRelationship','modifyNpcStat','scheduleEvent','queueImmediateEvent','setCareerPhase','setRace',
-  'setOriginSea','setAffiliation','setFamilyStructure','setSocialClass','endCareer',
+  'setOriginSea','setAffiliation','setFamilyStructure','setSocialClass','endCareer','consumeDevilFruit','increaseDevilFruitAwakening','awakenHaki','raiseConquerorHakiTo','setNpcDevilFruit','increaseNpcDevilFruitAwakening','raiseNpcHakiTo',
 ];
 
 interface Props { value: Effect; onChange: (value: Effect) => void; onRemove: () => void; registries: GameRegistries; eventIds: string[]; scheduledEventIds: string[]; immediateEventIds: string[]; }
@@ -35,6 +35,13 @@ export default function EffectEditor({ value, onChange, onRemove, registries, ev
       case 'setAffiliation': return <IdSelect value={value.affiliationId} options={registries.affiliations} onChange={(affiliationId) => onChange({ ...value, affiliationId })} />;
       case 'setFamilyStructure': return <IdSelect value={value.familyStructureId} options={registries.familyStructures} onChange={(familyStructureId) => onChange({ ...value, familyStructureId })} />;
       case 'setSocialClass': return <IdSelect value={value.socialClassId} options={registries.socialClasses} onChange={(socialClassId) => onChange({ ...value, socialClassId })} />;
+      case 'consumeDevilFruit': return <IdSelect value={value.fruitId} options={registries.devilFruits} onChange={(fruitId) => onChange({ ...value, fruitId })} />;
+      case 'increaseDevilFruitAwakening': return <NumberInput value={value.amount} min={1} onChange={(amount) => onChange({ ...value, amount })} />;
+      case 'awakenHaki': return <select value={value.hakiType} onChange={(e) => onChange({ ...value, hakiType: e.target.value as typeof value.hakiType })}>{HAKI_TYPES.map((x) => <option key={x}>{x}</option>)}</select>;
+      case 'raiseConquerorHakiTo': return <NumberInput value={value.level} min={1} onChange={(level) => onChange({ ...value, level })} />;
+      case 'setNpcDevilFruit': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><IdSelect value={value.fruitId} options={registries.devilFruits} onChange={(fruitId) => onChange({ ...value, fruitId })} /></div>;
+      case 'increaseNpcDevilFruitAwakening': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><NumberInput value={value.amount} min={1} onChange={(amount) => onChange({ ...value, amount })} /></div>;
+      case 'raiseNpcHakiTo': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={value.hakiType} onChange={(e) => onChange({ ...value, hakiType: e.target.value as typeof value.hakiType })}>{HAKI_TYPES.map((x) => <option key={x}>{x}</option>)}</select><NumberInput value={value.level} min={1} onChange={(level) => onChange({ ...value, level })} /></div>;
       case 'endCareer': return <select value={value.reason} onChange={(e) => onChange({ ...value, reason: e.target.value as typeof value.reason })}><option value="death">death</option><option value="legacy">legacy</option></select>;
     }
   })();

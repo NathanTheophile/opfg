@@ -21,10 +21,17 @@ import type {
   SocialClassId,
   ShipId,
   CrewRoleId,
+  DevilFruitId,
+  DevilFruitTagId,
+  HakiType,
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 2;
+export const CONTENT_SCHEMA_VERSION = 3;
+
+export const DEVIL_FRUIT_TYPES = ['paramecia', 'zoan', 'logia'] as const;
+export type DevilFruitType = typeof DEVIL_FRUIT_TYPES[number];
+export const DEVIL_FRUIT_TAGS = ['flight', 'fire', 'cold', 'electricity', 'mobility', 'intangibility', 'transformation', 'enhanced_strength', 'healing', 'barrier', 'ranged', 'environmental'] as const satisfies readonly DevilFruitTagId[];
 
 export type StatId = PlayerAttributeId;
 
@@ -66,7 +73,24 @@ export type Condition =
   | { type: 'originSeaIs'; seaId: SeaId }
   | { type: 'affiliationIs'; affiliationId: AffiliationId }
   | { type: 'familyStructureIs'; familyStructureId: FamilyStructureId }
-  | { type: 'socialClassIs'; socialClassId: SocialClassId };
+  | { type: 'socialClassIs'; socialClassId: SocialClassId }
+  | { type: 'hasDevilFruit' }
+  | { type: 'canConsumeDevilFruit'; fruitId: DevilFruitId }
+  | { type: 'devilFruitIs'; fruitId: DevilFruitId }
+  | { type: 'devilFruitTypeIs'; fruitType: DevilFruitType }
+  | { type: 'devilFruitHasTag'; tagId: DevilFruitTagId }
+  | { type: 'devilFruitAwakeningAtLeast'; value: number }
+  | { type: 'devilFruitIsAwakened' }
+  | { type: 'hakiAtLeast'; hakiType: HakiType; level: number }
+  | { type: 'hakiIsAwakened'; hakiType: HakiType }
+  | { type: 'hakiSourceTotalAtLeast'; hakiType: 'observation' | 'armament'; value: number }
+  | { type: 'npcHasDevilFruit'; npcId: NpcId }
+  | { type: 'npcDevilFruitIs'; npcId: NpcId; fruitId: DevilFruitId }
+  | { type: 'npcDevilFruitTypeIs'; npcId: NpcId; fruitType: DevilFruitType }
+  | { type: 'npcDevilFruitHasTag'; npcId: NpcId; tagId: DevilFruitTagId }
+  | { type: 'npcDevilFruitAwakeningAtLeast'; npcId: NpcId; value: number }
+  | { type: 'npcHakiAtLeast'; npcId: NpcId; hakiType: HakiType; level: number }
+  | { type: 'npcHakiIsAwakened'; npcId: NpcId; hakiType: HakiType };
 
 export type Effect =
   | { type: 'setFlag'; flagId: FlagId }
@@ -99,7 +123,14 @@ export type Effect =
   | { type: 'setAffiliation'; affiliationId: AffiliationId }
   | { type: 'setFamilyStructure'; familyStructureId: FamilyStructureId }
   | { type: 'setSocialClass'; socialClassId: SocialClassId }
-  | { type: 'endCareer'; reason: CareerEndReason };
+  | { type: 'endCareer'; reason: CareerEndReason }
+  | { type: 'consumeDevilFruit'; fruitId: DevilFruitId }
+  | { type: 'increaseDevilFruitAwakening'; amount: number }
+  | { type: 'awakenHaki'; hakiType: HakiType }
+  | { type: 'raiseConquerorHakiTo'; level: number }
+  | { type: 'setNpcDevilFruit'; npcId: NpcId; fruitId: DevilFruitId }
+  | { type: 'increaseNpcDevilFruitAwakening'; npcId: NpcId; amount: number }
+  | { type: 'raiseNpcHakiTo'; npcId: NpcId; hakiType: HakiType; level: number };
 
 export interface Outcome {
   id: OutcomeId;
@@ -187,6 +218,14 @@ export interface ItemDefinition {
   nameKey: LocalizationKey;
 }
 
+export interface DevilFruitDefinition {
+  id: DevilFruitId;
+  nameKey: LocalizationKey;
+  type: DevilFruitType;
+  itemId: ItemId;
+  tags: DevilFruitTagId[];
+}
+
 export interface ShipDefinition {
   id: ShipId;
   nameKey: LocalizationKey;
@@ -224,6 +263,7 @@ export interface ContentCatalog {
   locations: LocationDefinition[];
   traits: TraitDefinition[];
   items: ItemDefinition[];
+  devilFruits: DevilFruitDefinition[];
   ships: ShipDefinition[];
   crewRoles: CrewRoleDefinition[];
   npcs: NpcDefinition[];

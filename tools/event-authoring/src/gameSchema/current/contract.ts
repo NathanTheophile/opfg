@@ -15,6 +15,7 @@ export {
   type EventDefinition,
   type FamilyStructureDefinition,
   type ItemDefinition,
+  type DevilFruitDefinition,
   type LocationDefinition,
   type NpcDefinition,
   type Outcome,
@@ -63,6 +64,7 @@ import type {
   ConditionalDiceModifier,
   CrewRoleDefinition,
   ItemDefinition,
+  DevilFruitDefinition,
   LocationDefinition,
   NpcDefinition,
   RaceDefinition,
@@ -90,6 +92,8 @@ export const NPC_STAT_IDS = [
 ] as const satisfies readonly NpcStatId[];
 
 export const NPC_STATUSES = ['known', 'crew', 'departed', 'unavailable', 'dead'] as const satisfies readonly NpcStatus[];
+export const HAKI_TYPES = ['observation', 'armament', 'conqueror'] as const;
+export { DEVIL_FRUIT_TAGS, DEVIL_FRUIT_TYPES } from '../../../../../src/game/content/schema';
 
 export type ConditionalModifier = ConditionalDiceModifier;
 export type TextInputDefinition = TextChoiceInput;
@@ -105,6 +109,7 @@ export interface GameRegistries {
   locations: LocationDefinition[];
   traits: TraitDefinition[];
   items: ItemDefinition[];
+  devilFruits: DevilFruitDefinition[];
   ships: ShipDefinition[];
   crewRoles: CrewRoleDefinition[];
   npcs: NpcDefinition[];

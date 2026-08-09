@@ -1,8 +1,9 @@
-import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 import { contentCatalog } from '../src/game/content/definitions';
 import { selectNextEvent } from '../src/game/engine/events';
 import { resolveChoice } from '../src/game/engine/resolution';
 import { createInitialGameState } from '../src/game/model/initialState';
+import { createDefaultPowerState } from '../src/game/engine/powers';
 
 describe('critical events', () => {
   it('preempts scheduled and normal events without consuming a slot when the player dies', () => {
@@ -18,7 +19,7 @@ describe('critical events', () => {
   it('resolves NPC death before ship destruction and persists each consequence', () => {
     const state = createInitialGameState();
     state.careerPhase = 'active'; state.ageMonths = 180; state.ship = { shipId: 'starter_sloop', name: 'Wind Finch', health: 0, cargo: [] };
-    state.npcs.mira = { status: 'crew', relationship: 0, stats: { health: 0, morale: 10, strength: 10, observation: 10, intelligence: 10, luck: 10, loyalty: 10, calm: 10 } };
+    state.npcs.mira = { status: 'crew', relationship: 0, powers: createDefaultPowerState(), stats: { health: 0, morale: 10, strength: 10, observation: 10, intelligence: 10, luck: 10, loyalty: 10, calm: 10 } };
     let selected = selectNextEvent(state, contentCatalog);
     expect(selected.currentEventId).toBe('critical_mira_death');
     selected = resolveChoice(selected, contentCatalog, 'critical_mira_death', 'mourn_mira').state;

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 import type { ContentCatalog, EventDefinition } from '../src/game/content/schema';
 import { selectNextEvent } from '../src/game/engine/events';
 import { resolveChoice } from '../src/game/engine/resolution';
@@ -8,7 +8,7 @@ const outcome = { id: 'done', textKey: 'fixture.childhood.outcome' as const, eff
 const choice = [{ id: 'go', textKey: 'fixture.childhood.choice' as const, resolution: { type: 'deterministic' as const, outcome } }];
 const scheduled = (id: string, priority: 50|100|200|300, extra: Partial<Extract<EventDefinition,{kind:'scheduled'}>> = {}): EventDefinition => ({ id, kind: 'scheduled', priority, titleKey: 'fixture.childhood.title', textKey: 'fixture.childhood.text', choices: choice, ...extra });
 const normal: EventDefinition = { id: 'normal', kind: 'normal', titleKey: 'fixture.childhood.title', textKey: 'fixture.childhood.text', choices: choice };
-const catalog = (events: EventDefinition[]): ContentCatalog => ({ schemaVersion: 2, races: [], seas: [], affiliations: [], familyStructures: [], socialClasses: [], traits: [], items: [], ships: [{ id: 'starter_sloop', nameKey: 'x', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 }], crewRoles: [], npcs: [], locations: [{ id: 'starter_port', seaId: null, blocksScheduledEvents: false, allowsShipSale: true }, { id: 'blocked', seaId: null, blocksScheduledEvents: true, allowsShipSale: false }], events });
+const catalog = (events: EventDefinition[]): ContentCatalog => ({ schemaVersion: 3, races: [], seas: [], affiliations: [], familyStructures: [], socialClasses: [], traits: [], items: [], devilFruits: [], ships: [{ id: 'starter_sloop', nameKey: 'x', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 }], crewRoles: [], npcs: [], locations: [{ id: 'starter_port', seaId: null, blocksScheduledEvents: false, allowsShipSale: true }, { id: 'blocked', seaId: null, blocksScheduledEvents: true, allowsShipSale: false }], events });
 
 describe('scheduled events v2', () => {
   it('uses due age, conventional priority, then deterministic tie-breaks without RNG', () => {

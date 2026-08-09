@@ -1,0 +1,62 @@
+.opfg-custom-stat-glyph {
+  display: block;
+  width: 1.62rem;
+  height: 1.62rem;
+  flex: 0 0 auto;
+  background: currentColor;
+  -webkit-mask-image: var(--opfg-custom-stat-mask);
+  mask-image: var(--opfg-custom-stat-mask);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+/*
+ * The old watermark rule targets SVG directly. The custom filled glyph gets
+ * its own larger treatment so it occupies roughly the same visual mass.
+ */
+.opfg-player-stat__watermark .opfg-custom-stat-glyph--watermark {
+  position: absolute;
+  top: 50%;
+  left: -0.78rem;
+  width: 6.45rem;
+  height: 6.45rem;
+  transform: translateY(-50%) rotate(-4deg);
+  background: currentColor;
+}
+
+/* Filled silhouettes read a little heavier than Lucide strokes. */
+.opfg-player-stat[data-stat="health"] .opfg-custom-stat-glyph,
+.opfg-player-stat[data-stat="observation"] .opfg-custom-stat-glyph {
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.22));
+}
+
+/*
+ * Health/meat benefits from a touch more width visually.
+ * Observation/eyeball stays almost perfectly square.
+ */
+.opfg-player-stat[data-stat="health"]
+  .opfg-player-stat__icon
+  .opfg-custom-stat-glyph {
+  width: 1.72rem;
+  height: 1.72rem;
+}
+
+.opfg-player-stat[data-stat="health"]
+  .opfg-player-stat__watermark
+  .opfg-custom-stat-glyph--watermark {
+  left: -0.86rem;
+  width: 6.7rem;
+  height: 6.7rem;
+}
+
+.opfg-player-stat[data-stat="observation"]
+  .opfg-player-stat__watermark
+  .opfg-custom-stat-glyph--watermark {
+  left: -0.7rem;
+  width: 6.25rem;
+  height: 6.25rem;
+}

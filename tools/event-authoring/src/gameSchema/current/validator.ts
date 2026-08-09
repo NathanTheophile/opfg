@@ -1,4 +1,4 @@
-import type { ChoiceDefinition, ContentCatalog, EventDefinition } from './contract';
+import { CONTENT_SCHEMA_VERSION, type ChoiceDefinition, type ContentCatalog, type EventDefinition } from './contract';
 import {
   validateContent as validateCanonicalContent,
   type ContentValidationError,
@@ -45,7 +45,7 @@ export function validateSingleEventShape(value: unknown): ShapeIssue[] {
         : { ...base, kind: 'normal' };
     });
   const catalog: ContentCatalog = {
-    schemaVersion: 2,
+    schemaVersion: CONTENT_SCHEMA_VERSION,
     races: [...references.raceIds].map((id) => ({ id, nameKey: `race.${id}.name`, initialHealth: 35, attributeModifiers: {} })),
     seas: [...references.seaIds].map((id) => ({ id, nameKey: `sea.${id}.name` })),
     affiliations: [...references.affiliationIds].map((id) => ({ id, nameKey: `affiliation.${id}.name` })),
@@ -54,6 +54,7 @@ export function validateSingleEventShape(value: unknown): ShapeIssue[] {
     locations: [...references.locationIds].map((id) => ({ id, seaId: null, blocksScheduledEvents: false, allowsShipSale: false, allowsDocking: false })),
     traits: [...references.traitIds].map((id) => ({ id, nameKey: `trait.${id}.name`, descriptionKey: `trait.${id}.description` })),
     items: [...references.itemIds].map((id) => ({ id, nameKey: `item.${id}.name` })),
+    devilFruits: [],
     ships: [...references.shipIds].map((id) => ({ id, nameKey: `ship.${id}.name`, maxHealth: 1, crewCapacity: 0, cargoSlots: 0 })),
     crewRoles: [...references.crewRoleIds].map((id) => ({ id, nameKey: `crewRole.${id}.name` })),
     npcs: [...references.npcIds].map((id) => ({

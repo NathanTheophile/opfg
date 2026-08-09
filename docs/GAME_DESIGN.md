@@ -76,11 +76,10 @@ Les mers V1 sont `east_blue`, `west_blue`, `north_blue` et `south_blue`. La mer 
 | Navigation | `navigation` |
 | Charisme | `charisma` |
 | Chance | `luck` |
-| Éveil | `awakening` |
 
 `health` est une réserve de points de vie non plafonnée. Elle peut dépasser 50, n’est jamais clampée entre 0 et 50, ne produit aucun modificateur D20 et ne peut jamais servir de `statId` à un DiceCheck. `health <= 0` conserve la règle de mort Critical existante.
 
-Les attributs D20 V1 sont `morale`, `strength`, `agility`, `observation`, `intelligence`, `navigation`, `charisma` et `luck`. Leur plage est `0–50` et leur base neutre avant Origins est `25`. `awakening` reste séparé, `null` et inaccessible tant que son système n’est pas activé.
+Les attributs D20 V1 sont `morale`, `strength`, `agility`, `observation`, `intelligence`, `navigation`, `charisma` et `luck`. Leur plage est `0–50` et leur base neutre avant Origins est `25`. L’Éveil d’un Fruit du Démon appartient exclusivement au PowerState et n’est pas une statistique D20.
 
 Agilité couvre déplacement, esquive, fuite, équilibre, escalade, acrobaties et précision corporelle ou manuelle lorsque nécessaire. Aucune statistique `dexterity` ou « adresse » distincte n’existe. Observation conserve son nom.
 
@@ -247,6 +246,16 @@ Un DiceCheck combine :
 Un 1 naturel est immédiatement un échec critique. Un total supérieur ou égal à 20 est un succès critique. Les interactions secrètes de Traits ne s’appliquent que si le DiceCheck les configure explicitement.
 
 Une future animation 3D du d20 sera purement visuelle : le moteur détermine toujours le résultat avant l’animation.
+
+## 10 bis. Powers V1
+
+Les Fruits du Démon appartiennent à un catalogue central. Chaque définition possède un type `paramecia`, `zoan` ou `logia`, un vocabulaire fini de tags narratifs et référence l’Item qui représente physiquement le Fruit. Trouver ou transporter cet Item ne donne aucun pouvoir : le Player, limité à un seul Fruit, doit le consommer explicitement. La consommation retire un exemplaire de l’Item et initialise son Éveil à `0`.
+
+L’Éveil d’un Fruit est une progression persistante et monotone de `0` à `10`. Le niveau `10` signifie que le Fruit est éveillé ; aucun booléen redondant n’est stocké. Les Conditions peuvent tester le Fruit exact, son type, ses tags et son Éveil. La faiblesse à la mer n’applique aucun effet universel : les Events et Critical Events en déterminent toujours explicitement les conséquences. Il n’existe ni techniques, ni cooldowns, ni système de combat ou bonus D20 automatique attaché aux Fruits.
+
+Les trois formes de Haki — Observation, Armement et Conquérant — sont des maîtrises persistantes et monotones de `0` à `5`. Le niveau initial `0 → 1` exige toujours un Effect d’Event explicite. Pour le Haki de l’Observation, cet éveil exige `Observation + Intelligence >= 75`; pour l’Armement, `Strength + Agility >= 75`. Une fois éveillé, le moteur acquiert automatiquement et sans perte les niveaux permis par les paliers `75 / 80 / 85 / 90 / 95`, même si les Stats diminuent ensuite.
+
+Le Haki du Conquérant existe dès V1, mais ses conditions d’éveil et de progression restent entièrement Event-driven : aucun potentiel, tirage caché ou couple de Stats ne lui est associé. Le Haki autorise des Choices et Events ; un éventuel modifier D20 reste explicitement authoré dans le DiceCheck concerné. Les NPC peuvent posséder les mêmes Fruits, niveaux d’Éveil et formes de Haki via le même PowerState, avec une progression Event-driven.
 
 ## 11. NPC
 

@@ -84,6 +84,21 @@ export const createCondition = (type: Condition['type']): Condition => {
     case 'affiliationIs': return { type, affiliationId: '' };
     case 'familyStructureIs': return { type, familyStructureId: '' };
     case 'socialClassIs': return { type, socialClassId: '' };
+    case 'hasDevilFruit': case 'devilFruitIsAwakened': return { type };
+    case 'canConsumeDevilFruit': case 'devilFruitIs': return { type, fruitId: '' };
+    case 'devilFruitTypeIs': return { type, fruitType: 'paramecia' };
+    case 'devilFruitHasTag': return { type, tagId: 'mobility' };
+    case 'devilFruitAwakeningAtLeast': return { type, value: 1 };
+    case 'hakiAtLeast': return { type, hakiType: 'observation', level: 1 };
+    case 'hakiIsAwakened': return { type, hakiType: 'observation' };
+    case 'hakiSourceTotalAtLeast': return { type, hakiType: 'observation', value: 75 };
+    case 'npcHasDevilFruit': return { type, npcId: '' };
+    case 'npcDevilFruitIs': return { type, npcId: '', fruitId: '' };
+    case 'npcDevilFruitTypeIs': return { type, npcId: '', fruitType: 'paramecia' };
+    case 'npcDevilFruitHasTag': return { type, npcId: '', tagId: 'mobility' };
+    case 'npcDevilFruitAwakeningAtLeast': return { type, npcId: '', value: 1 };
+    case 'npcHakiAtLeast': return { type, npcId: '', hakiType: 'observation', level: 1 };
+    case 'npcHakiIsAwakened': return { type, npcId: '', hakiType: 'observation' };
   }
 };
 
@@ -120,5 +135,12 @@ export const createEffect = (type: Effect['type']): Effect => {
     case 'setFamilyStructure': return { type, familyStructureId: '' };
     case 'setSocialClass': return { type, socialClassId: '' };
     case 'endCareer': return { type, reason: 'death' };
+    case 'consumeDevilFruit': return { type, fruitId: '' };
+    case 'increaseDevilFruitAwakening': return { type, amount: 1 };
+    case 'awakenHaki': return { type, hakiType: 'observation' };
+    case 'raiseConquerorHakiTo': return { type, level: 1 };
+    case 'setNpcDevilFruit': return { type, npcId: '', fruitId: '' };
+    case 'increaseNpcDevilFruitAwakening': return { type, npcId: '', amount: 1 };
+    case 'raiseNpcHakiTo': return { type, npcId: '', hakiType: 'observation', level: 1 };
   }
 };

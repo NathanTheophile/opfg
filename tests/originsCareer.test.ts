@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 import { contentCatalog } from '../src/game/content/definitions';
 import { selectNextEvent } from '../src/game/engine/events';
 import { resolveChoice } from '../src/game/engine/resolution';
@@ -25,7 +25,7 @@ describe('complete pre-career pipeline', () => {
           name: 'Luffy', raceId: 'human', familyStructureId: 'two_parents', affiliationId: 'civilian',
           socialClassId: 'poor', originSeaId: 'east_blue',
         },
-        stats: { health: 35, morale: 25, strength: 25, agility: 23, observation: 28, intelligence: 26, navigation: 25, charisma: 27, luck: 23, awakening: null },
+        stats: { health: 35, morale: 25, strength: 25, agility: 23, observation: 28, intelligence: 26, navigation: 25, charisma: 27, luck: 23 },
       },
     });
     const historyAtChildhood = state.history.length;

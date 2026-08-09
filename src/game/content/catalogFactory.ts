@@ -44,6 +44,12 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
     items: [
       { id: 'sealed_chart', nameKey: itemNameKey('sealed_chart') },
       { id: 'mira_letter_of_passage', nameKey: itemNameKey('mira_letter_of_passage') },
+      { id: 'flame_fruit_item', nameKey: itemNameKey('flame_fruit_item') },
+      { id: 'falcon_fruit_item', nameKey: itemNameKey('falcon_fruit_item') },
+    ],
+    devilFruits: [
+      { id: 'flame_fruit', nameKey: 'devilFruit.flame_fruit.name', type: 'logia', itemId: 'flame_fruit_item', tags: ['fire', 'intangibility', 'ranged', 'environmental'] },
+      { id: 'falcon_fruit', nameKey: 'devilFruit.falcon_fruit.name', type: 'zoan', itemId: 'falcon_fruit_item', tags: ['flight', 'mobility', 'transformation'] },
     ],
     ships: [
       { id: 'starter_sloop', nameKey: 'ship.starter_sloop.name', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 },

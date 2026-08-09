@@ -13,6 +13,15 @@ export type FamilyStructureId = string;
 export type SocialClassId = string;
 export type ShipId = string;
 export type CrewRoleId = string;
+export type DevilFruitId = string;
+export type DevilFruitTagId = string;
+export type HakiType = 'observation' | 'armament' | 'conqueror';
+
+export interface PowerState {
+  devilFruitId: DevilFruitId | null;
+  devilFruitAwakening: number;
+  haki: Record<HakiType, number>;
+}
 
 export interface ItemStack {
   itemId: ItemId;
@@ -43,16 +52,16 @@ export interface PlayerStats {
   navigation: number;
   charisma: number;
   luck: number;
-  awakening: number | null;
 }
 
-export type PlayerAttributeId = Exclude<keyof PlayerStats, 'health' | 'awakening'>;
+export type PlayerAttributeId = Exclude<keyof PlayerStats, 'health'>;
 
 export interface PlayerState {
   profile: PlayerProfile;
   stats: PlayerStats;
   traits: TraitId[];
   inventory: InventoryState;
+  powers: PowerState;
 }
 
 export interface ShipState {
@@ -81,6 +90,7 @@ export interface NpcState {
   status: NpcStatus;
   relationship: number;
   stats: NpcStats;
+  powers: PowerState;
 }
 
 export interface HistoryEntry {

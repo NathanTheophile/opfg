@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 import { contentCatalog } from '../src/game/content/definitions';
 import { resolveChoice } from '../src/game/engine/resolution';
 import { createInitialGameState } from '../src/game/model/initialState';
@@ -40,7 +40,7 @@ describe('GameSession', () => {
         },
         stats: {
           health: 60, morale: 26, strength: 31, agility: 21, observation: 29,
-          intelligence: 23, navigation: 21, charisma: 23, luck: 20, awakening: null,
+          intelligence: 23, navigation: 21, charisma: 23, luck: 20,
         },
       },
     });

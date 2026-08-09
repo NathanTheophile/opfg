@@ -36,7 +36,7 @@ const localeFromFile = (name: string, path?: string): string => {
   return basename.replace(/\.json$/i, '').replace(/^locales[-_]/i, '').toLowerCase();
 };
 
-const emptyRegistries = (): GameRegistries => ({ races: [], seas: [], affiliations: [], familyStructures: [], socialClasses: [], traits: [], items: [], ships: [], crewRoles: [], npcs: [], locations: [], flags: [] });
+const emptyRegistries = (): GameRegistries => ({ races: [], seas: [], affiliations: [], familyStructures: [], socialClasses: [], traits: [], items: [], devilFruits: [], ships: [], crewRoles: [], npcs: [], locations: [], flags: [] });
 const blankProject = (): AuthoringProject => {
   const now = new Date().toISOString();
   return { authoringVersion: AUTHORING_VERSION, gameSchemaVersion: CONTENT_SCHEMA_VERSION, name: 'OPFG Events', sourceLocale: 'fr', supportedLocales: ['fr', 'en'], events: [], nodes: [], edges: [], registries: emptyRegistries(), localization: {}, metadata: { createdAt: now, updatedAt: now } };
@@ -75,7 +75,7 @@ const catalogToProject = (catalog: ContentCatalog, dictionaries: Record<string, 
   const registries: GameRegistries = {
     races: structuredClone(catalog.races), seas: structuredClone(catalog.seas), affiliations: structuredClone(catalog.affiliations),
     familyStructures: structuredClone(catalog.familyStructures), socialClasses: structuredClone(catalog.socialClasses),
-    traits: structuredClone(catalog.traits), items: structuredClone(catalog.items), ships: structuredClone(catalog.ships), crewRoles: structuredClone(catalog.crewRoles), npcs: structuredClone(catalog.npcs),
+    traits: structuredClone(catalog.traits), items: structuredClone(catalog.items), devilFruits: structuredClone(catalog.devilFruits), ships: structuredClone(catalog.ships), crewRoles: structuredClone(catalog.crewRoles), npcs: structuredClone(catalog.npcs),
     locations: structuredClone(catalog.locations), flags: collectFlagIds(events).map((id) => ({ id })),
   };
   const temp: AuthoringProject = {

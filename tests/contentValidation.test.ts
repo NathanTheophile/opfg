@@ -17,6 +17,25 @@ function eventById(catalog: Record<string, any>, eventId: string): Record<string
 }
 
 describe('validateContent', () => {
+  it('validates Devil Fruit registries and Powers primitives', () => {
+    const catalog = cloneCatalog();
+    catalog.devilFruits.push({ id: 'broken_fruit', nameKey: 'devilFruit.flame_fruit.name', type: 'mystery', itemId: 'missing_item', tags: ['unknown_tag'] });
+    const event = eventById(catalog, 'departure');
+    event.choices[0].availableIf = { type: 'devilFruitIs', fruitId: 'missing_fruit' };
+    event.choices[0].resolution.outcome.effects = [
+      { type: 'increaseDevilFruitAwakening', amount: -1 },
+      { type: 'raiseConquerorHakiTo', level: 6 },
+    ];
+    const errors = messages(catalog);
+    expect(errors).toEqual(expect.arrayContaining([
+      expect.stringContaining('Unknown ItemId "missing_item"'),
+      expect.stringContaining('Invalid Devil Fruit type'),
+      expect.stringContaining('Unknown Devil Fruit tag'),
+      expect.stringContaining('Unknown DevilFruitId "missing_fruit"'),
+      expect.stringContaining('Awakening increase must be a positive integer'),
+      expect.stringContaining('Conqueror Haki level must be an integer from 1 to 5'),
+    ]));
+  });
   it('accepts the playable catalog', () => {
     expect(validateContent(contentCatalog)).toEqual([]);
     expect(contentCatalog.traits).toContainEqual({

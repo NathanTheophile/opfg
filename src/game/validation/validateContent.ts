@@ -25,6 +25,9 @@ const NPC_STAT_IDS = new Set([
   'loyalty',
   'calm',
 ]);
+const HAKI_TYPES = new Set(['observation', 'armament', 'conqueror']);
+const FRUIT_TYPES = new Set(['paramecia', 'zoan', 'logia']);
+const FRUIT_TAGS = new Set(['flight', 'fire', 'cold', 'electricity', 'mobility', 'intangibility', 'transformation', 'enhanced_strength', 'healing', 'barrier', 'ranged', 'environmental']);
 const CONDITION_TYPES = new Set([
   'all',
   'any',
@@ -64,6 +67,7 @@ const CONDITION_TYPES = new Set([
   'affiliationIs',
   'familyStructureIs',
   'socialClassIs',
+  'hasDevilFruit','canConsumeDevilFruit','devilFruitIs','devilFruitTypeIs','devilFruitHasTag','devilFruitAwakeningAtLeast','devilFruitIsAwakened','hakiAtLeast','hakiIsAwakened','hakiSourceTotalAtLeast','npcHasDevilFruit','npcDevilFruitIs','npcDevilFruitTypeIs','npcDevilFruitHasTag','npcDevilFruitAwakeningAtLeast','npcHakiAtLeast','npcHakiIsAwakened',
 ]);
 const EFFECT_TYPES = new Set([
   'setFlag',
@@ -97,6 +101,7 @@ const EFFECT_TYPES = new Set([
   'setFamilyStructure',
   'setSocialClass',
   'endCareer',
+  'consumeDevilFruit','increaseDevilFruitAwakening','awakenHaki','raiseConquerorHakiTo','setNpcDevilFruit','increaseNpcDevilFruitAwakening','raiseNpcHakiTo',
 ]);
 
 export function validateContent(catalog: unknown, sourceDictionary: LocalizationDictionary = dictionaries[SOURCE_LOCALE]): ContentValidationError[] {
@@ -110,6 +115,8 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   const traits = readRecords(catalog.traits, 'traits', errors);
   const traitIds = collectIds(traits, 'traits', errors);
   const itemIds = collectIds(readRecords(catalog.items, 'items', errors), 'items', errors);
+  const devilFruits = readRecords(catalog.devilFruits, 'devilFruits', errors);
+  const devilFruitIds = collectIds(devilFruits, 'devilFruits', errors);
   const ships = readRecords(catalog.ships, 'ships', errors);
   const shipIds = collectIds(ships, 'ships', errors);
   const crewRoles = readRecords(catalog.crewRoles, 'crewRoles', errors);
@@ -147,7 +154,14 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   }
 
   validateTraitOpposites(traits, traitIds, errors);
-  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, shipIds, crewRoleIds, npcIds, raceIds, seaIds, affiliationIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds, immediateEventIds };
+  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, devilFruitIds, shipIds, crewRoleIds, npcIds, raceIds, seaIds, affiliationIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds, immediateEventIds };
+  devilFruits.forEach((fruit, index) => {
+    const path = `devilFruits[${index}]`;
+    validateReference(fruit.itemId, itemIds, 'ItemId', `${path}.itemId`, errors);
+    if (!FRUIT_TYPES.has(String(fruit.type))) errors.push({ path: `${path}.type`, message: `Invalid Devil Fruit type "${String(fruit.type)}".` });
+    if (!Array.isArray(fruit.tags)) errors.push({ path: `${path}.tags`, message: 'Devil Fruit tags must be an array.' });
+    else fruit.tags.forEach((tag, tagIndex) => { if (!FRUIT_TAGS.has(String(tag))) errors.push({ path: `${path}.tags[${tagIndex}]`, message: `Unknown Devil Fruit tag "${String(tag)}".` }); });
+  });
   validateNamedDefinitions(races, 'races', errors);
   validateNamedDefinitions(seas, 'seas', errors);
   validateNamedDefinitions(affiliations, 'affiliations', errors);
@@ -192,6 +206,7 @@ interface References {
   outcomesByEvent: Map<string, Set<string>>;
   traitIds: Set<string>;
   itemIds: Set<string>;
+  devilFruitIds: Set<string>;
   shipIds: Set<string>;
   crewRoleIds: Set<string>;
   npcIds: Set<string>;
@@ -331,6 +346,14 @@ function validateCondition(
   if (type === 'affiliationIs') validateReference(value.affiliationId, references.affiliationIds, 'AffiliationId', path, errors);
   if (type === 'familyStructureIs') validateReference(value.familyStructureId, references.familyStructureIds, 'FamilyStructureId', path, errors);
   if (type === 'socialClassIs') validateReference(value.socialClassId, references.socialClassIds, 'SocialClassId', path, errors);
+  if (type === 'canConsumeDevilFruit' || type === 'devilFruitIs' || type === 'npcDevilFruitIs') validateReference(value.fruitId, references.devilFruitIds, 'DevilFruitId', path, errors);
+  if (type === 'devilFruitTypeIs' || type === 'npcDevilFruitTypeIs') { if (!FRUIT_TYPES.has(String(value.fruitType))) errors.push({ path, message: 'Invalid Devil Fruit type.' }); }
+  if (type === 'devilFruitHasTag' || type === 'npcDevilFruitHasTag') { if (!FRUIT_TAGS.has(String(value.tagId))) errors.push({ path, message: 'Unknown Devil Fruit tag.' }); }
+  if (type.startsWith('npc')) validateReference(value.npcId, references.npcIds, 'NpcId', path, errors);
+  if (type === 'devilFruitAwakeningAtLeast' || type === 'npcDevilFruitAwakeningAtLeast') { if (!isIntegerInRange(value.value, 0, 10)) errors.push({ path, message: 'Devil Fruit Awakening threshold must be an integer from 0 to 10.' }); }
+  if (type === 'hakiAtLeast' || type === 'npcHakiAtLeast') { if (!HAKI_TYPES.has(String(value.hakiType)) || !isIntegerInRange(value.level, 0, 5)) errors.push({ path, message: 'Haki condition requires a valid type and level from 0 to 5.' }); }
+  if (type === 'hakiIsAwakened' || type === 'npcHakiIsAwakened') { if (!HAKI_TYPES.has(String(value.hakiType))) errors.push({ path, message: 'Unknown Haki type.' }); }
+  if (type === 'hakiSourceTotalAtLeast' && (!['observation', 'armament'].includes(String(value.hakiType)) || !isNumberInRange(value.value, 0, 100))) errors.push({ path, message: 'Haki source threshold requires observation/armament and a value from 0 to 100.' });
 }
 
 function validateResolution(
@@ -494,6 +517,12 @@ function validateEffect(
     if (!Number.isInteger(effect.delayMonths) || (effect.delayMonths as number) < 0) errors.push({ path, message: 'scheduleEvent delayMonths must be a non-negative integer.' });
   }
   if (type === 'queueImmediateEvent') validateReference(effect.eventId, references.immediateEventIds, 'Immediate EventId', path, errors);
+  if (type === 'consumeDevilFruit' || type === 'setNpcDevilFruit') validateReference(effect.fruitId, references.devilFruitIds, 'DevilFruitId', path, errors);
+  if (type === 'setNpcDevilFruit' || type === 'increaseNpcDevilFruitAwakening' || type === 'raiseNpcHakiTo') validateReference(effect.npcId, references.npcIds, 'NpcId', path, errors);
+  if (type === 'increaseDevilFruitAwakening' || type === 'increaseNpcDevilFruitAwakening') { if (!Number.isInteger(effect.amount) || (effect.amount as number) <= 0) errors.push({ path, message: 'Awakening increase must be a positive integer.' }); }
+  if (type === 'awakenHaki' && !HAKI_TYPES.has(String(effect.hakiType))) errors.push({ path, message: 'Unknown Haki type.' });
+  if (type === 'raiseConquerorHakiTo' && !isIntegerInRange(effect.level, 1, 5)) errors.push({ path, message: 'Conqueror Haki level must be an integer from 1 to 5.' });
+  if (type === 'raiseNpcHakiTo' && (!HAKI_TYPES.has(String(effect.hakiType)) || !isIntegerInRange(effect.level, 1, 5))) errors.push({ path, message: 'NPC Haki requires a valid type and level from 1 to 5.' });
 }
 
 function validateImmediateCycles(events: UnknownRecord[], errors: ContentValidationError[]): void {
@@ -704,6 +733,10 @@ function isNonNegativeNumber(value: unknown): value is number {
 
 function isNumberInRange(value: unknown, minimum: number, maximum: number): value is number {
   return typeof value === 'number' && Number.isFinite(value) && value >= minimum && value <= maximum;
+}
+
+function isIntegerInRange(value: unknown, minimum: number, maximum: number): value is number {
+  return Number.isInteger(value) && (value as number) >= minimum && (value as number) <= maximum;
 }
 import { CONTENT_SCHEMA_VERSION } from '../content/schema';
 import { dictionaries, SOURCE_LOCALE, type LocalizationDictionary } from '../localization';

@@ -1,4 +1,4 @@
-import {
+﻿import {
   Brain,
   Clover,
   Compass,
@@ -32,8 +32,7 @@ type ChoiceStatId =
   | 'intelligence'
   | 'navigation'
   | 'charisma'
-  | 'luck'
-  | 'awakening';
+  | 'luck';
 
 interface ChoiceStatMeta {
   icon: LucideIcon;
@@ -59,7 +58,6 @@ const STAT_META: Record<ChoiceStatId, ChoiceStatMeta> = {
   navigation: { icon: Compass, localizationKey: 'stat.navigation' },
   charisma: { icon: MessageCircle, localizationKey: 'stat.charisma' },
   luck: { icon: Clover, localizationKey: 'stat.luck' },
-  awakening: { icon: Sparkles, localizationKey: 'stat.awakening' },
 };
 
 const STAT_IDS = Object.keys(STAT_META) as ChoiceStatId[];
@@ -173,7 +171,7 @@ export function ChoiceButton({ choice, onSelect }: ChoiceButtonProps) {
       {choice.dice && (
         <Badge variant="gold" className="shrink-0 gap-1.5">
           <Dices className="size-3.5" aria-hidden="true" />
-          {choice.dice.statLabel} · {probability}
+          {choice.dice.statLabel} Â· {probability}
         </Badge>
       )}
     </Button>

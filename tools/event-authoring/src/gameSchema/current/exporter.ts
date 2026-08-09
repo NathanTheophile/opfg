@@ -20,6 +20,7 @@ export const toRuntimeCatalog = (project: AuthoringProject): ContentCatalog => (
   locations: structuredClone(project.registries.locations),
   traits: structuredClone(project.registries.traits),
   items: structuredClone(project.registries.items),
+  devilFruits: structuredClone(project.registries.devilFruits),
   ships: structuredClone(project.registries.ships),
   crewRoles: structuredClone(project.registries.crewRoles),
   npcs: structuredClone(project.registries.npcs),

@@ -2,6 +2,7 @@ import type { ChoiceDefinition } from '../content/schema';
 import type { Condition } from '../content/schema';
 import type { GameState } from '../model/schema';
 import { availableCargoSlots, canAcquireShip, canRecruitNpc, countCurrentCrew, findShipDefinition } from './ship';
+import { canConsumeDevilFruit, playerHakiSourceTotal } from './powers';
 
 export interface ChoiceState {
   visible: boolean;
@@ -92,6 +93,23 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
       return state.player.profile.familyStructureId !== null && state.player.profile.familyStructureId === condition.familyStructureId;
     case 'socialClassIs':
       return state.player.profile.socialClassId !== null && state.player.profile.socialClassId === condition.socialClassId;
+    case 'hasDevilFruit': return state.player.powers.devilFruitId !== null;
+    case 'canConsumeDevilFruit': return catalog !== undefined && canConsumeDevilFruit(state, catalog, condition.fruitId);
+    case 'devilFruitIs': return state.player.powers.devilFruitId === condition.fruitId;
+    case 'devilFruitTypeIs': return catalog?.devilFruits.find(({ id }) => id === state.player.powers.devilFruitId)?.type === condition.fruitType;
+    case 'devilFruitHasTag': return catalog?.devilFruits.find(({ id }) => id === state.player.powers.devilFruitId)?.tags.includes(condition.tagId) === true;
+    case 'devilFruitAwakeningAtLeast': return state.player.powers.devilFruitId !== null && state.player.powers.devilFruitAwakening >= condition.value;
+    case 'devilFruitIsAwakened': return state.player.powers.devilFruitId !== null && state.player.powers.devilFruitAwakening >= 10;
+    case 'hakiAtLeast': return state.player.powers.haki[condition.hakiType] >= condition.level;
+    case 'hakiIsAwakened': return state.player.powers.haki[condition.hakiType] > 0;
+    case 'hakiSourceTotalAtLeast': return playerHakiSourceTotal(state, condition.hakiType) >= condition.value;
+    case 'npcHasDevilFruit': return state.npcs[condition.npcId]?.powers.devilFruitId !== null && state.npcs[condition.npcId]?.powers.devilFruitId !== undefined;
+    case 'npcDevilFruitIs': return state.npcs[condition.npcId]?.powers.devilFruitId === condition.fruitId;
+    case 'npcDevilFruitTypeIs': return catalog?.devilFruits.find(({ id }) => id === state.npcs[condition.npcId]?.powers.devilFruitId)?.type === condition.fruitType;
+    case 'npcDevilFruitHasTag': return catalog?.devilFruits.find(({ id }) => id === state.npcs[condition.npcId]?.powers.devilFruitId)?.tags.includes(condition.tagId) === true;
+    case 'npcDevilFruitAwakeningAtLeast': return (state.npcs[condition.npcId]?.powers.devilFruitAwakening ?? -1) >= condition.value;
+    case 'npcHakiAtLeast': return (state.npcs[condition.npcId]?.powers.haki[condition.hakiType] ?? -1) >= condition.level;
+    case 'npcHakiIsAwakened': return (state.npcs[condition.npcId]?.powers.haki[condition.hakiType] ?? 0) > 0;
   }
 }
 

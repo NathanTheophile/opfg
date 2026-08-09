@@ -1,11 +1,12 @@
 import { createCondition } from '../gameSchema/current/defaults';
-import { NPC_STAT_IDS, NPC_STATUSES, PLAYER_STAT_IDS, type Condition, type GameRegistries } from '../gameSchema/current/contract';
+import { DEVIL_FRUIT_TAGS, DEVIL_FRUIT_TYPES, HAKI_TYPES, NPC_STAT_IDS, NPC_STATUSES, PLAYER_STAT_IDS, type Condition, type GameRegistries } from '../gameSchema/current/contract';
 import { IdSelect, NumberInput } from './EditorPrimitives';
 
 const TYPES: Condition['type'][] = [
   'all','any','not','hasTrait','statAtLeast','hasFlag','hasItem','berriesAtLeast','hasCrew','crewSizeAtLeast','hasCrewRole','canRecruitNpc','isLeader','locationIs','isAtSea','isOnLand','careerPhaseIs',
   'ageAtLeastMonths','ageAtMostMonths','hasShip','shipIs','shipHealthAtLeast','shipHealthAtMost','shipCrewCapacityAtLeast','shipCargoSpaceAtLeast','canAcquireShip','canSellShip','npcStatusIs','npcRelationshipAtLeast',
   'npcStatAtLeast','hasChosen','hasPlayed','hasOutcome','raceIs','originSeaIs','affiliationIs','familyStructureIs','socialClassIs',
+  'hasDevilFruit','canConsumeDevilFruit','devilFruitIs','devilFruitTypeIs','devilFruitHasTag','devilFruitAwakeningAtLeast','devilFruitIsAwakened','hakiAtLeast','hakiIsAwakened','hakiSourceTotalAtLeast','npcHasDevilFruit','npcDevilFruitIs','npcDevilFruitTypeIs','npcDevilFruitHasTag','npcDevilFruitAwakeningAtLeast','npcHakiAtLeast','npcHakiIsAwakened',
 ];
 
 interface Props { value?: Condition; onChange: (value?: Condition) => void; registries: GameRegistries; eventIds: string[]; }
@@ -30,7 +31,21 @@ export default function ConditionEditor({ value, onChange, registries, eventIds 
       case 'familyStructureIs': return <IdSelect value={value.familyStructureId} options={registries.familyStructures} onChange={(familyStructureId) => onChange({ ...value, familyStructureId })} />;
       case 'socialClassIs': return <IdSelect value={value.socialClassId} options={registries.socialClasses} onChange={(socialClassId) => onChange({ ...value, socialClassId })} />;
       case 'locationIs': return <IdSelect value={value.locationId} options={registries.locations} onChange={(locationId) => onChange({ ...value, locationId })} />;
-      case 'isAtSea': case 'isOnLand': case 'hasShip': case 'canSellShip': case 'hasCrew': case 'isLeader': return <span className="muted">No parameters</span>;
+      case 'isAtSea': case 'isOnLand': case 'hasShip': case 'canSellShip': case 'hasCrew': case 'isLeader': case 'hasDevilFruit': case 'devilFruitIsAwakened': return <span className="muted">No parameters</span>;
+      case 'canConsumeDevilFruit': case 'devilFruitIs': return <IdSelect value={value.fruitId} options={registries.devilFruits} onChange={(fruitId) => onChange({ ...value, fruitId })} />;
+      case 'devilFruitTypeIs': return <select value={value.fruitType} onChange={(e) => onChange({ ...value, fruitType: e.target.value as typeof value.fruitType })}>{DEVIL_FRUIT_TYPES.map((x) => <option key={x}>{x}</option>)}</select>;
+      case 'devilFruitHasTag': return <select value={value.tagId} onChange={(e) => onChange({ ...value, tagId: e.target.value })}>{DEVIL_FRUIT_TAGS.map((x) => <option key={x}>{x}</option>)}</select>;
+      case 'devilFruitAwakeningAtLeast': return <NumberInput value={value.value} min={0} onChange={(next) => onChange({ ...value, value: next })} />;
+      case 'hakiAtLeast': return <div className="inline-fields"><select value={value.hakiType} onChange={(e) => onChange({ ...value, hakiType: e.target.value as typeof value.hakiType })}>{HAKI_TYPES.map((x) => <option key={x}>{x}</option>)}</select><NumberInput value={value.level} min={0} onChange={(level) => onChange({ ...value, level })} /></div>;
+      case 'hakiIsAwakened': return <select value={value.hakiType} onChange={(e) => onChange({ ...value, hakiType: e.target.value as typeof value.hakiType })}>{HAKI_TYPES.map((x) => <option key={x}>{x}</option>)}</select>;
+      case 'hakiSourceTotalAtLeast': return <div className="inline-fields"><select value={value.hakiType} onChange={(e) => onChange({ ...value, hakiType: e.target.value as typeof value.hakiType })}><option>observation</option><option>armament</option></select><NumberInput value={value.value} min={0} onChange={(next) => onChange({ ...value, value: next })} /></div>;
+      case 'npcHasDevilFruit': return <IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} />;
+      case 'npcDevilFruitIs': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><IdSelect value={value.fruitId} options={registries.devilFruits} onChange={(fruitId) => onChange({ ...value, fruitId })} /></div>;
+      case 'npcDevilFruitTypeIs': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={value.fruitType} onChange={(e) => onChange({ ...value, fruitType: e.target.value as typeof value.fruitType })}>{DEVIL_FRUIT_TYPES.map((x) => <option key={x}>{x}</option>)}</select></div>;
+      case 'npcDevilFruitHasTag': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={value.tagId} onChange={(e) => onChange({ ...value, tagId: e.target.value })}>{DEVIL_FRUIT_TAGS.map((x) => <option key={x}>{x}</option>)}</select></div>;
+      case 'npcDevilFruitAwakeningAtLeast': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><NumberInput value={value.value} min={0} onChange={(next) => onChange({ ...value, value: next })} /></div>;
+      case 'npcHakiAtLeast': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={value.hakiType} onChange={(e) => onChange({ ...value, hakiType: e.target.value as typeof value.hakiType })}>{HAKI_TYPES.map((x) => <option key={x}>{x}</option>)}</select><NumberInput value={value.level} min={0} onChange={(level) => onChange({ ...value, level })} /></div>;
+      case 'npcHakiIsAwakened': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={value.hakiType} onChange={(e) => onChange({ ...value, hakiType: e.target.value as typeof value.hakiType })}>{HAKI_TYPES.map((x) => <option key={x}>{x}</option>)}</select></div>;
       case 'careerPhaseIs': return <select value={value.phase} onChange={(e) => onChange({ ...value, phase: e.target.value as typeof value.phase })}><option value="origins">origins</option><option value="childhood">childhood</option><option value="active">active</option></select>;
       case 'ageAtLeastMonths': case 'ageAtMostMonths': return <NumberInput value={value.value} min={0} onChange={(next) => onChange({ ...value, value: next })} />;
       case 'berriesAtLeast': case 'crewSizeAtLeast': case 'shipHealthAtLeast': case 'shipHealthAtMost': case 'shipCrewCapacityAtLeast': case 'shipCargoSpaceAtLeast': return <NumberInput value={value.value} min={0} onChange={(next) => onChange({ ...value, value: next })} />;

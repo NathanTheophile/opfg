@@ -1,10 +1,12 @@
-# Architecture
+﻿# Architecture
 
 The repository keeps four responsibilities separate: locale-neutral Content, pure Engine rules, JSON-compatible GameState, and React presentation. Engine APIs receive `ContentCatalog` explicitly; there is no content singleton or React dependency.
 
+Powers V1 uses a JSON-compatible `PowerState` shared by Player and NPC. GameState/save v13 persists the owned Devil Fruit, its monotone Awakening (`0..10`) and three Haki levels (`0..5`). Fruit definitions and their physical Item references live in Content Schema v3. `src/game/engine/powers.ts` owns consumption eligibility and Player Haki threshold synchronization; React only presents the resulting state.
+
 ## Runtime state and time
 
-Save v11 stores one clock, `ageMonths`, plus `slotInMonth: 0 | 1`. Origins ends at age 12. Childhood consumes eight annual slots followed by twelve half-year slots and enters Active at age 180. Outside Active the slot is always zero. In Active, slot zero becomes one without changing age; consuming slot one resets it and increments age by one month. Saves v7 à v10 sont migrées au chargement vers v11. La migration v9 initialise `agility` à 25 ; la migration v10 ajoute `familyStructureId` et `socialClassId` avec la valeur `null`.
+Save v13 stores one clock, `ageMonths`, plus `slotInMonth: 0 | 1`. Origins ends at age 12. Childhood consumes eight annual slots followed by twelve half-year slots and enters Active at age 180. Outside Active the slot is always zero. In Active, slot zero becomes one without changing age; consuming slot one resets it and increments age by one month. Saves v7 Ã  v10 sont migrÃ©es au chargement vers v13. La migration v9 initialise `agility` Ã  25 ; la migration v10 ajoute `familyStructureId` et `socialClassId` avec la valeur `null`.
 
 The player owns a two-slot stack inventory and persistent Berrys. A nullable active `ship` is a named instance referencing an authored `ShipDefinition`; it owns current HP and cargo stacks. `pendingShip` exists only during deterministic Critical replacement. Ship type registries own maximum HP, NPC crew capacity, and cargo slots.
 
@@ -22,7 +24,7 @@ Each selection restarts from the current state:
 
 Scheduled selection never consumes RNG. A scheduled occurrence remains pending while ineligible or blocked by a location, and only the resolved occurrence is removed. Normal and scheduled events consume phase slots; critical events do not.
 
-## Content Contract v2
+## Content Contract v3
 
 `EventDefinition` is a discriminated union of `normal`, `immediate`, `scheduled`, and `critical`. Priority belongs only to scheduled definitions. Immediate definitions are explicit continuations queued by Effects; they never enter Normal selection and defer root-slot finalization until the chain is empty. Locations declare whether normal scheduled reach is blocked, whether ship sales are allowed, and whether docking is possible. Outcomes contain localization, identity, and effects only; phase rules own time advancement.
 

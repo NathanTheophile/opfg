@@ -5,6 +5,7 @@ import { migrateAuthoringV4ToV5 } from '../../authoring/migrations/v4-to-v5';
 import { migrateAuthoringV5ToV6 } from '../../authoring/migrations/v5-to-v6';
 import { migrateAuthoringV6ToV7 } from '../../authoring/migrations/v6-to-v7';
 import { migrateAuthoringV7ToV8 } from '../../authoring/migrations/v7-to-v8';
+import { migrateAuthoringV8ToV9 } from '../../authoring/migrations/v8-to-v9';
 import { AUTHORING_VERSION, type AuthoringProject } from '../../authoring/types';
 import { CONTENT_SCHEMA_VERSION } from '../current/contract';
 import { validateEventDefinitionsShape } from '../current/validator';
@@ -24,6 +25,7 @@ export const migrateImportedProject = (input: unknown): MigrationResult => {
     if (authoringVersion === 5) { raw = migrateAuthoringV5ToV6(raw); authoringVersion = 6; migrated = true; continue; }
     if (authoringVersion === 6) { raw = migrateAuthoringV6ToV7(raw); authoringVersion = 7; migrated = true; continue; }
     if (authoringVersion === 7) { raw = migrateAuthoringV7ToV8(raw); authoringVersion = 8; migrated = true; continue; }
+    if (authoringVersion === 8) { raw = migrateAuthoringV8ToV9(raw); authoringVersion = 9; migrated = true; continue; }
     throw new Error(`No migration registered from authoringVersion ${authoringVersion}.`);
   }
   if (authoringVersion > AUTHORING_VERSION) throw new Error(`Project uses newer authoringVersion ${authoringVersion}; editor supports ${AUTHORING_VERSION}.`);

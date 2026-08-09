@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+﻿import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Badge, Button, Panel } from '@/components/ui';
 import type { ChoiceDefinition, ContentCatalog, DiceResult, StatId } from '@/game/content/schema';
@@ -15,6 +15,7 @@ import { CrewRail } from './CrewRail';
 import { EventPanel } from './EventPanel';
 import { OutcomePanel } from './OutcomePanel';
 import { NavigationPanel } from './NavigationPanel';
+import { PowerStatus } from './PowerStatus';
 import type { EventChoiceViewModel, EventViewModel, OutcomeEffectViewModel, OutcomeViewModel } from './types';
 import './event-preview.css';
 
@@ -85,7 +86,7 @@ export function EventPreview({ catalog, storage }: EventPreviewProps) {
         textInput: choice.input ? { minLength: choice.input.minLength, maxLength: choice.input.maxLength, placeholder: choice.input.placeholderKey ? translate(choice.input.placeholderKey) : undefined } : undefined,
         dice: preview?.available ? { statLabel: translate(STAT_KEYS[preview.statId]), successProbability: preview.successProbability, modifierTotal: preview.knownModifierTotal + preview.statModifier } : undefined }];
     });
-    return { eyebrow: `${translate(`phase.${state.careerPhase}`)}${sea ? ` · ${translate(sea.nameKey)}` : ''}`, title: translate(session.currentEvent.titleKey), body: translate(session.currentEvent.textKey), choices };
+    return { eyebrow: `${translate(`phase.${state.careerPhase}`)}${sea ? ` Â· ${translate(sea.nameKey)}` : ''}`, title: translate(session.currentEvent.titleKey), body: translate(session.currentEvent.textKey), choices };
   }, [catalog, locale, session.currentEvent, session.gameState]);
 
   const outcomeView = useMemo<OutcomeViewModel | null>(() => {
@@ -119,11 +120,12 @@ export function EventPreview({ catalog, storage }: EventPreviewProps) {
     <div className="mx-auto w-full max-w-[78rem]">
       <div className="mb-3 flex items-center justify-between gap-3 px-1"><div className="flex gap-2">{supportedLocales.map((id) => <button key={id} className="text-xs text-fg-muted" disabled={locale === id} onClick={() => changeLocale(id)}>{id.toUpperCase()}</button>)}</div><button className="text-xs text-fg-muted" onClick={() => session.restartRun()}>Restart Run</button></div>
       <TopWorldHud state={state} catalog={catalog} translate={translate} />
+      <PowerStatus state={state} catalog={catalog} translate={translate} />
       <div className="relative mx-auto mt-4 w-full max-w-[52rem]">
-        <div className="absolute right-[calc(100%+1rem)] top-0 z-10 hidden w-[14rem] justify-end xl:flex"><PlayerStatsRail state={state} previousState={session.previousState} statLabel={(id) => translate(STAT_KEYS[id])} traitLabel={(id) => { const trait = catalog.traits.find((entry) => entry.id === id); return trait ? translate(trait.nameKey) : id; }} devilFruitLabel={state.player.powers.devilFruitId === null ? translate('power.devilFruit.none') : translate(catalog.devilFruits.find(({ id }) => id === state.player.powers.devilFruitId)?.nameKey ?? state.player.powers.devilFruitId)} translate={translate} /></div>
+        <div className="absolute right-[calc(100%+1rem)] top-0 z-10 hidden w-[14rem] justify-end xl:flex"><PlayerStatsRail state={state} previousState={session.previousState} statLabel={(id) => translate(STAT_KEYS[id])} traitLabel={(id) => { const trait = catalog.traits.find((entry) => entry.id === id); return trait ? translate(trait.nameKey) : id; }} /></div>
         <div className="absolute left-[calc(100%+1rem)] top-0 z-10 hidden xl:block"><CrewRail state={state} catalog={catalog} translate={translate} statLabel={(id) => translate(NPC_STAT_KEYS[id])} /></div>
         <AnimatePresence mode="wait" initial={false}>{showOutcome && outcomeView ? <motion.div key="outcome" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={PANEL_TRANSITION}><OutcomePanel outcome={outcomeView} onContinue={continueFromOutcome} /></motion.div> : <motion.div key={session.navigationOptions.length > 0 ? 'navigation' : session.currentEvent?.id ?? 'no-event'} className={pendingDice ? 'pointer-events-none select-none' : ''} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={PANEL_TRANSITION}>{session.navigationOptions.length > 0 ? <NavigationPanel travelState={state.travelState} options={session.navigationOptions} translate={translate} onChoice={session.chooseNavigation} /> : eventView ? <EventPanel event={eventView} onChoice={selectChoice} error={inputError} /> : <Panel variant="strong" className="text-center">{state.careerStatus === 'ended' ? translate('ui.careerComplete') : translate('ui.noEvent')}</Panel>}</motion.div>}</AnimatePresence>
-        <div className="mt-4 grid gap-3 xl:hidden"><PlayerStatsRail state={state} previousState={session.previousState} statLabel={(id) => translate(STAT_KEYS[id])} traitLabel={(id) => id} devilFruitLabel={state.player.powers.devilFruitId === null ? translate('power.devilFruit.none') : translate(catalog.devilFruits.find(({ id }) => id === state.player.powers.devilFruitId)?.nameKey ?? state.player.powers.devilFruitId)} translate={translate} /><CrewRail state={state} catalog={catalog} translate={translate} statLabel={(id) => translate(NPC_STAT_KEYS[id])} /></div>
+        <div className="mt-4 grid gap-3 xl:hidden"><PlayerStatsRail state={state} previousState={session.previousState} statLabel={(id) => translate(STAT_KEYS[id])} traitLabel={(id) => id} /><CrewRail state={state} catalog={catalog} translate={translate} statLabel={(id) => translate(NPC_STAT_KEYS[id])} /></div>
       </div>
     </div>
     <DiceTableStage visible={pendingDice !== null} status={pendingDice?.status ?? 'armed'} modifier={pendingDice?.dice.modifierTotal ?? 0} statLabel={pendingDice ? translate(STAT_KEYS[pendingDice.dice.statId]) : undefined} result={pendingDice?.dice.rawRoll} total={pendingDice?.dice.total} rollKey={pendingDice ? `${pendingDice.dice.rawRoll}-${state.rngState}` : undefined} onRoll={rollPendingDice} onComplete={completeDiceRoll} />
