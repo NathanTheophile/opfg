@@ -1,13 +1,16 @@
+import { useState } from 'react';
 import { Panel, PanelBody, PanelHeader, PanelTitle } from '@/components/ui';
 import { ChoiceButton } from './ChoiceButton';
 import type { EventChoiceViewModel, EventViewModel } from './types';
 
 export interface EventPanelProps {
   event: EventViewModel;
-  onChoice: (choice: EventChoiceViewModel) => void;
+  onChoice: (choice: EventChoiceViewModel, input?: string) => void;
+  error?: string | null;
 }
 
-export function EventPanel({ event, onChoice }: EventPanelProps) {
+export function EventPanel({ event, onChoice, error }: EventPanelProps) {
+  const [inputs, setInputs] = useState<Record<string, string>>({});
   return (
     <Panel
       variant="strong"
@@ -31,9 +34,11 @@ export function EventPanel({ event, onChoice }: EventPanelProps) {
 
       <div className="border-t border-[var(--border-subtle)] bg-black/[0.08] px-3 py-3 md:px-4 md:py-4">
         <div className="flex flex-col gap-2.5">
-          {event.choices.map((choice) => (
-            <ChoiceButton key={choice.id} choice={choice} onSelect={onChoice} />
-          ))}
+          {error && <p role="alert" className="text-sm text-red-300">{error}</p>}
+          {event.choices.map((choice) => <div key={choice.id} className="flex flex-col gap-2">
+            {choice.textInput && <input className="rounded-lg border border-[var(--border-subtle)] bg-black/20 px-4 py-3 text-fg" value={inputs[choice.id] ?? ''} minLength={choice.textInput.minLength} maxLength={choice.textInput.maxLength} placeholder={choice.textInput.placeholder} onChange={(event) => setInputs((current) => ({ ...current, [choice.id]: event.target.value }))} />}
+            <ChoiceButton choice={choice} onSelect={(selected) => onChoice(selected, selected.textInput ? inputs[selected.id] ?? '' : undefined)} />
+          </div>)}
         </div>
       </div>
     </Panel>

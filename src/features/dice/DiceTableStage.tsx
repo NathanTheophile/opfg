@@ -15,6 +15,7 @@ export interface DiceTableStageProps {
   modifier: number;
   statLabel?: string;
   result?: number;
+  total?: number;
   rollKey?: string | number;
   onRoll?: () => void;
   onComplete?: () => void;
@@ -50,6 +51,7 @@ export function DiceTableStage({
   modifier,
   statLabel,
   result,
+  total,
   rollKey,
   onRoll,
   onComplete,
@@ -94,6 +96,7 @@ export function DiceTableStage({
               aria-live="assertive"
             >
               <span>{RESULT_LABELS[status]}</span>
+              {total !== undefined && <small>Total {total}</small>}
             </div>
           )}
         </div>

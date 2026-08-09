@@ -32,6 +32,12 @@ export function OutcomePanel({ outcome, onContinue }: OutcomePanelProps) {
         <p className="max-w-[68ch] text-[0.98rem] leading-7 text-fg-secondary md:text-base md:leading-7">
           {outcome.body}
         </p>
+        {outcome.dice && <div className="mt-4 flex flex-wrap gap-2" aria-label="Résultat du DiceCheck">
+          <Badge variant="gold">{outcome.dice.statLabel} {outcome.dice.modifier >= 0 ? '+' : ''}{outcome.dice.modifier}</Badge>
+          <Badge variant="default">d20 : {outcome.dice.rawRoll}</Badge>
+          <Badge variant="default">Total : {outcome.dice.total}</Badge>
+          <Badge variant={outcome.dice.resultLabel.includes('critique') ? 'critical' : 'default'}>{outcome.dice.resultLabel}</Badge>
+        </div>}
 
         {outcome.effects && outcome.effects.length > 0 && (
           <div className="mt-5 flex flex-wrap gap-2" aria-label="Effets de la conséquence">

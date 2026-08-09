@@ -10,6 +10,8 @@ export interface EventChoiceViewModel {
   disabled?: boolean;
   requirement?: string;
   dice?: DiceChoicePreview;
+  statChanges?: string[];
+  textInput?: { minLength: number; maxLength: number; placeholder?: string };
 }
 
 export interface EventViewModel {
@@ -31,4 +33,5 @@ export interface OutcomeViewModel {
   title?: string;
   body: string;
   effects?: OutcomeEffectViewModel[];
+  dice?: { statLabel: string; rawRoll: number; modifier: number; total: number; resultLabel: string };
 }

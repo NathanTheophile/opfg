@@ -25,6 +25,9 @@ export function ChoiceButton({ choice, onSelect }: ChoiceButtonProps) {
             {choice.requirement}
           </span>
         )}
+        {choice.statChanges && choice.statChanges.length > 0 && (
+          <span className="mt-1 block text-xs font-semibold text-gold">{choice.statChanges.join(' / ')}</span>
+        )}
       </span>
 
       {choice.dice && (
