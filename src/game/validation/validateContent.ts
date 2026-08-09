@@ -6,7 +6,6 @@ export interface ContentValidationError {
 type UnknownRecord = Record<string, unknown>;
 
 const STAT_IDS = new Set([
-  'health',
   'morale',
   'strength',
   'agility',
@@ -15,7 +14,6 @@ const STAT_IDS = new Set([
   'navigation',
   'charisma',
   'luck',
-  'awakening',
 ]);
 const NPC_STAT_IDS = new Set([
   'health',
@@ -64,6 +62,8 @@ const CONDITION_TYPES = new Set([
   'raceIs',
   'originSeaIs',
   'affiliationIs',
+  'familyStructureIs',
+  'socialClassIs',
 ]);
 const EFFECT_TYPES = new Set([
   'setFlag',
@@ -73,6 +73,7 @@ const EFFECT_TYPES = new Set([
   'addTrait',
   'removeTrait',
   'modifyStat',
+  'modifyHealth',
   'acquireShip',
   'modifyShipHealth',
   'addCargoItem',
@@ -80,6 +81,7 @@ const EFFECT_TYPES = new Set([
   'resolveShipReplacement',
   'modifyBerries',
   'moveToLocation',
+  'setBirthLocation',
   'loseShip',
   'setNpcStatus',
   'setNpcPassenger',
@@ -91,6 +93,8 @@ const EFFECT_TYPES = new Set([
   'setRace',
   'setOriginSea',
   'setAffiliation',
+  'setFamilyStructure',
+  'setSocialClass',
   'endCareer',
 ]);
 
@@ -117,6 +121,10 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   const seaIds = collectIds(seas, 'seas', errors);
   const affiliations = readRecords(catalog.affiliations, 'affiliations', errors);
   const affiliationIds = collectIds(affiliations, 'affiliations', errors);
+  const familyStructures = readRecords(catalog.familyStructures, 'familyStructures', errors);
+  const familyStructureIds = collectIds(familyStructures, 'familyStructures', errors);
+  const socialClasses = readRecords(catalog.socialClasses, 'socialClasses', errors);
+  const socialClassIds = collectIds(socialClasses, 'socialClasses', errors);
   const locations = readRecords(catalog.locations, 'locations', errors);
   const locationIds = collectIds(locations, 'locations', errors);
   const choicesByEvent = new Map<string, Set<string>>();
@@ -136,15 +144,21 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   }
 
   validateTraitOpposites(traits, traitIds, errors);
-  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, shipIds, crewRoleIds, npcIds, raceIds, seaIds, affiliationIds, locationIds, scheduledEventIds };
+  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, shipIds, crewRoleIds, npcIds, raceIds, seaIds, affiliationIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds };
   validateNamedDefinitions(races, 'races', errors);
   validateNamedDefinitions(seas, 'seas', errors);
   validateNamedDefinitions(affiliations, 'affiliations', errors);
+  validateNamedDefinitions(familyStructures, 'familyStructures', errors);
+  validateNamedDefinitions(socialClasses, 'socialClasses', errors);
   validateNamedDefinitions(crewRoles, 'crewRoles', errors);
   locations.forEach((location, index) => {
+    validateNullableReference(location.seaId, seaIds, 'SeaId', `locations[${index}].seaId`, errors);
     if (typeof location.blocksScheduledEvents !== 'boolean') errors.push({ path: `locations[${index}].blocksScheduledEvents`, message: 'Location requires blocksScheduledEvents.' });
     if (typeof location.allowsShipSale !== 'boolean') errors.push({ path: `locations[${index}].allowsShipSale`, message: 'Location requires allowsShipSale.' });
   });
+  races.forEach((race, index) => validateOriginModifierDefinition(race, `races[${index}]`, true, errors));
+  familyStructures.forEach((definition, index) => validateOriginModifierDefinition(definition, `familyStructures[${index}]`, false, errors));
+  socialClasses.forEach((definition, index) => validateOriginModifierDefinition(definition, `socialClasses[${index}]`, false, errors));
   ships.forEach((ship, index) => {
     const path = `ships[${index}]`;
     if (!stringValue(ship.nameKey)) errors.push({ path: `${path}.nameKey`, message: 'Ship requires nameKey.' });
@@ -179,6 +193,8 @@ interface References {
   raceIds: Set<string>;
   seaIds: Set<string>;
   affiliationIds: Set<string>;
+  familyStructureIds: Set<string>;
+  socialClassIds: Set<string>;
   locationIds: Set<string>;
   scheduledEventIds: Set<string>;
 }
@@ -305,6 +321,8 @@ function validateCondition(
   if (type === 'raceIs') validateReference(value.raceId, references.raceIds, 'RaceId', path, errors);
   if (type === 'originSeaIs') validateReference(value.seaId, references.seaIds, 'SeaId', path, errors);
   if (type === 'affiliationIs') validateReference(value.affiliationId, references.affiliationIds, 'AffiliationId', path, errors);
+  if (type === 'familyStructureIs') validateReference(value.familyStructureId, references.familyStructureIds, 'FamilyStructureId', path, errors);
+  if (type === 'socialClassIs') validateReference(value.socialClassId, references.socialClassIds, 'SocialClassId', path, errors);
 }
 
 function validateResolution(
@@ -442,7 +460,7 @@ function validateEffect(
     }
   }
   if (type === 'modifyStat') validateStat(effect.statId, path, errors);
-  if (['modifyStat', 'modifyShipHealth', 'modifyBerries', 'modifyNpcRelationship'].includes(type) && (typeof effect.amount !== 'number' || !Number.isFinite(effect.amount))) errors.push({ path, message: `${type} amount must be finite.` });
+  if (['modifyStat', 'modifyHealth', 'modifyShipHealth', 'modifyBerries', 'modifyNpcRelationship'].includes(type) && (typeof effect.amount !== 'number' || !Number.isFinite(effect.amount))) errors.push({ path, message: `${type} amount must be finite.` });
   if (type === 'resolveShipReplacement') {
     if (!['destroy', 'sell', 'abandon'].includes(String(effect.disposition))) errors.push({ path, message: 'Invalid ship replacement disposition.' });
     if (effect.berries !== undefined && (!Number.isInteger(effect.berries) || (effect.berries as number) < 0)) errors.push({ path, message: 'Replacement sale Berrys must be a non-negative integer.' });
@@ -451,13 +469,15 @@ function validateEffect(
   if ((type === 'moveToLocation' || type === 'loseShip') && !['at_sea', 'on_land'].includes(String(effect.travelState))) {
     errors.push({ path, message: `Invalid TravelState "${String(effect.travelState)}".` });
   }
-  if (type === 'moveToLocation' || type === 'loseShip') validateReference(effect.locationId, references.locationIds, 'LocationId', path, errors);
+  if (type === 'moveToLocation' || type === 'loseShip' || type === 'setBirthLocation') validateReference(effect.locationId, references.locationIds, 'LocationId', path, errors);
   if (type === 'setCareerPhase' && !['origins', 'childhood', 'active'].includes(String(effect.phase))) {
     errors.push({ path, message: `Invalid CareerPhase "${String(effect.phase)}".` });
   }
   if (type === 'setRace') validateReference(effect.raceId, references.raceIds, 'RaceId', path, errors);
   if (type === 'setOriginSea') validateReference(effect.seaId, references.seaIds, 'SeaId', path, errors);
   if (type === 'setAffiliation') validateReference(effect.affiliationId, references.affiliationIds, 'AffiliationId', path, errors);
+  if (type === 'setFamilyStructure') validateReference(effect.familyStructureId, references.familyStructureIds, 'FamilyStructureId', path, errors);
+  if (type === 'setSocialClass') validateReference(effect.socialClassId, references.socialClassIds, 'SocialClassId', path, errors);
   if (type === 'endCareer' && !['death', 'legacy'].includes(String(effect.reason))) {
     errors.push({ path, message: `Invalid CareerEndReason "${String(effect.reason)}".` });
   }
@@ -569,6 +589,20 @@ function validateNamedDefinitions(definitions: UnknownRecord[], path: string, er
   definitions.forEach((definition, index) => {
     if (!stringValue(definition.nameKey)) errors.push({ path: `${path}[${index}].nameKey`, message: 'Definition nameKey must be a non-empty string.' });
   });
+}
+
+function validateOriginModifierDefinition(definition: UnknownRecord, path: string, requiresHealth: boolean, errors: ContentValidationError[]): void {
+  if (requiresHealth && (!isNonNegativeNumber(definition.initialHealth) || definition.initialHealth === 0)) {
+    errors.push({ path: `${path}.initialHealth`, message: 'Race initialHealth must be greater than zero.' });
+  }
+  if (!isRecord(definition.attributeModifiers)) {
+    errors.push({ path: `${path}.attributeModifiers`, message: 'attributeModifiers must be an object.' });
+    return;
+  }
+  for (const [statId, amount] of Object.entries(definition.attributeModifiers)) {
+    validateStat(statId, `${path}.attributeModifiers.${statId}`, errors);
+    if (typeof amount !== 'number' || !Number.isFinite(amount)) errors.push({ path: `${path}.attributeModifiers.${statId}`, message: 'Attribute modifier must be finite.' });
+  }
 }
 
 function validateNullableReference(value: unknown, ids: Set<string>, label: string, path: string, errors: ContentValidationError[]): void {

@@ -20,20 +20,48 @@ Le personnage peut mourir. D’autres formes de fin ou de legacy pourront existe
 
 ## 2. Origins
 
-Les Origins forment une **séquence fixe de questions à réponses fixes**. Elles construisent progressivement le profil du personnage :
+Origins représente la naissance et l’environnement initial. C’est une séquence fixe de questions à réponses fixes : **Nom → Race → Structure familiale → Affiliation familiale → Niveau social → Mer d’origine → Lieu de naissance**. Il n’existe aucun Event « année 0 ».
 
-- nom ;
-- race ;
-- mer d’origine ;
-- affiliation familiale héritée des parents ;
-- background familial et environnement de naissance ;
-- autres paramètres qui seront définis ultérieurement.
+Origins est la seule phase qui affiche systématiquement les conséquences de statistiques avant chaque Choice. À partir de Childhood, le texte peut donner des indices, mais aucune UI globale ne révèle automatiquement les effets mécaniques.
 
-L’affiliation du profil désigne l’origine familiale, pas nécessairement une future affiliation active. Une éventuelle distinction avec une affiliation actuelle sera conçue plus tard.
+Tous les attributs D20 commencent à `25`. La race fixe directement la Santé initiale et applique ses modificateurs. Structure familiale et niveau social appliquent ensuite leurs modificateurs une seule fois. Affiliation, mer et lieu de naissance ne modifient aucune statistique.
 
-Les réponses peuvent appliquer des bonus ou malus de statistiques. Ces conséquences sont **toujours visibles avant le choix**, afin que le joueur puisse orienter volontairement son build, par exemple `+2 Observation / -1 Force`.
+### Races V1
 
-La valeur de référence initiale est `25`, mais les Origins peuvent déjà différencier le profil. Aucun budget universel rigide de bonus ou malus n’est fixé à ce stade.
+| Race | Santé | Modificateurs d’attributs |
+| --- | ---: | --- |
+| Humain (`human`) | 35 | Observation +1, Intelligence +1, Charisme +1, Chance +1, Moral -2 |
+| Homme-poisson (`fishman`) | 45 | Force +4, Agilité +1, Observation +2, Intelligence -2, Navigation +3, Charisme -3, Chance -2, Moral -3 |
+| Mink (`mink`) | 35 | Force -1, Agilité +4, Observation +4, Intelligence -2, Navigation -3, Charisme +1, Chance -2, Moral -1 |
+| Géant (`giant`) | 60 | Force +6, Agilité -6, Observation -2, Intelligence -2, Navigation -4, Charisme -1, Chance -2, Moral +5 |
+| Long-bras (`longarm`) | 40 | Force +2, Agilité +4, Observation +3, Intelligence +1, Navigation -3, Charisme -2, Chance -2, Moral -3 |
+| Boucanier (`buccaneer`) | 50 | Force +4, Agilité -3, Observation +1, Intelligence -1, Navigation -2, Charisme -1, Chance -2, Moral +4 |
+
+La race crée un archétype sans RaceSystem dédié. Le contenu utilise `raceIs` pour les situations exclusives, aquatiques ou morphologiques. Il n’existe pas de sous-races. Peuple du Ciel, Lunarien et Tontatta sont réservés pour plus tard.
+
+### Structure familiale
+
+- Deux parents (`two_parents`) : Moral +2, Charisme +1, Observation -1, Agilité -2.
+- Parent seul (`single_parent`) : Intelligence +2, Observation +1, Moral -2, Chance -1.
+- Orphelin (`orphan`) : Observation +3, Agilité +2, Moral -4, Charisme -1.
+
+La structure reste persistante et testable par les Events. Les parents ne deviennent pas automatiquement des NPC.
+
+### Affiliation familiale
+
+Les affiliations V1 sont `civilian`, `marine`, `pirate`, `revolutionary`, `bandit`, `prisoner`, `slave`, `celestial_dragon` et `royal_family`. Elles ne modifient aucune stat. `player.profile.affiliationId` désigne exclusivement l’affiliation familiale héritée, pas une affiliation de carrière Active.
+
+### Niveau social
+
+- Pauvre (`poor`) : Observation +3, Chance -3.
+- Modeste (`modest`) : aucun modificateur.
+- Aisé (`wealthy`) : Chance +3, Observation -3.
+
+Le niveau social reste persistant et testable. Il n’accorde aucun Berry initial.
+
+### Mer et lieu de naissance
+
+Les mers V1 sont `east_blue`, `west_blue`, `north_blue` et `south_blue`. La mer ne modifie aucune stat et n’accorde aucun Trait caché. Le lieu de naissance est une vraie Location du catalogue rattachée à la mer choisie ; il devient la `locationId` du joueur sans modifier ses statistiques.
 
 ## 3. Statistiques du joueur
 
@@ -50,7 +78,11 @@ La valeur de référence initiale est `25`, mais les Origins peuvent déjà diff
 | Chance | `luck` |
 | Éveil | `awakening` |
 
-La plage normale est `0–50`. `awakening` reste `null` et inaccessible tant que son système n’est pas activé. La valeur technique de départ actuelle est `25`, avant modifications des Origins. `agility` suit le même tableau de modificateurs D20 que les autres statistiques et sert notamment aux actions de mobilité, esquive, fuite, équilibre, escalade, acrobaties et précision corporelle. Aucune statistique `dexterity` ou « adresse » distincte n’est créée à ce stade ; Observation conserve son nom et son rôle.
+`health` est une réserve de points de vie non plafonnée. Elle peut dépasser 50, n’est jamais clampée entre 0 et 50, ne produit aucun modificateur D20 et ne peut jamais servir de `statId` à un DiceCheck. `health <= 0` conserve la règle de mort Critical existante.
+
+Les attributs D20 V1 sont `morale`, `strength`, `agility`, `observation`, `intelligence`, `navigation`, `charisma` et `luck`. Leur plage est `0–50` et leur base neutre avant Origins est `25`. `awakening` reste séparé, `null` et inaccessible tant que son système n’est pas activé.
+
+Agilité couvre déplacement, esquive, fuite, équilibre, escalade, acrobaties et précision corporelle ou manuelle lorsque nécessaire. Aucune statistique `dexterity` ou « adresse » distincte n’existe. Observation conserve son nom.
 
 ### Modificateur D20 dérivé
 
@@ -364,7 +396,7 @@ Cela ne définit pas une économie générale. Les shops génériques, prix dyna
 
 ## 16. Santé et mort du joueur
 
-Si `player.health <= 0`, le joueur meurt et la carrière prend immédiatement fin avec la raison `death`.
+Si `player.stats.health <= 0`, le joueur meurt et la carrière prend immédiatement fin avec la raison `death`.
 
 Il n’existe en V1 ni jet de survie, ni résurrection, ni interception par objet, ni sauvetage automatique, ni seconde chance universelle. Des variantes textuelles contextuelles pourront être ajoutées sans modifier cette règle.
 

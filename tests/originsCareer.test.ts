@@ -16,6 +16,16 @@ describe('complete pre-career pipeline', () => {
     let state = selectNextEvent(createInitialGameState(42), contentCatalog);
     while (state.careerPhase === 'origins') state = resolveFirst(state);
     expect(state.ageMonths).toBe(12);
+    expect(state).toMatchObject({
+      locationId: 'east_blue_port',
+      player: {
+        profile: {
+          name: 'Luffy', raceId: 'human', familyStructureId: 'two_parents', affiliationId: 'civilian',
+          socialClassId: 'poor', originSeaId: 'east_blue',
+        },
+        stats: { health: 35, morale: 25, strength: 25, agility: 23, observation: 28, intelligence: 26, navigation: 25, charisma: 27, luck: 23, awakening: null },
+      },
+    });
     const historyAtChildhood = state.history.length;
     while (state.careerPhase === 'childhood') state = resolveFirst(state);
     expect(state.history.length - historyAtChildhood).toBe(20);

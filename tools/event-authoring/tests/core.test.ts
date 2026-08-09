@@ -40,6 +40,7 @@ const exhaustiveEvent = (project: AuthoringProject): EventDefinition => {
     { type: 'hasChosen', eventId: 'departure', choiceId: 'set_sail' }, { type: 'hasPlayed', eventId: 'departure' },
     { type: 'hasOutcome', eventId: 'departure', outcomeId: 'departed' }, { type: 'raceIs', raceId: 'human' },
     { type: 'originSeaIs', seaId: 'starter_sea' }, { type: 'affiliationIs', affiliationId: 'independent_family' },
+    { type: 'familyStructureIs', familyStructureId: 'two_parents' }, { type: 'socialClassIs', socialClassId: 'modest' },
   ] };
   event.choices[0].id = 'resolve';
   event.choices[0].textKey = 'event.contract_exhaustive.choice.resolve.text';
@@ -47,14 +48,14 @@ const exhaustiveEvent = (project: AuthoringProject): EventDefinition => {
     { type: 'setFlag', flagId: 'storm_mastered' }, { type: 'clearFlag', flagId: 'storm_mastered' },
     { type: 'addItem', itemId: 'sealed_chart', quantity: 1 }, { type: 'removeItem', itemId: 'sealed_chart', quantity: 1 },
     { type: 'addTrait', traitId: 'audacious' }, { type: 'removeTrait', traitId: 'cautious' },
-    { type: 'modifyStat', statId: 'morale', amount: 1 }, { type: 'acquireShip', shipId: 'starter_sloop', name: 'Tool Ship', health: 20 }, { type: 'modifyShipHealth', amount: -1 },
+    { type: 'modifyStat', statId: 'morale', amount: 1 }, { type: 'modifyHealth', amount: 10 }, { type: 'acquireShip', shipId: 'starter_sloop', name: 'Tool Ship', health: 20 }, { type: 'modifyShipHealth', amount: -1 },
     { type: 'addCargoItem', itemId: 'sealed_chart', quantity: 2 }, { type: 'removeCargoItem', itemId: 'sealed_chart', quantity: 1 },
     { type: 'resolveShipReplacement', disposition: 'sell', berries: 10 }, { type: 'modifyBerries', amount: 5 },
     { type: 'loseShip', locationId: 'starter_port', travelState: 'on_land' }, { type: 'moveToLocation', locationId: 'open_sea', travelState: 'at_sea' },
     { type: 'setNpcStatus', npcId: 'mira', status: 'dead' }, { type: 'setNpcPassenger', npcId: 'mira', passenger: true, allowWithoutLeadership: true }, { type: 'setLeadership', isLeader: false }, { type: 'modifyNpcRelationship', npcId: 'mira', amount: 1 },
     { type: 'modifyNpcStat', npcId: 'mira', statId: 'calm', amount: 1 }, { type: 'scheduleEvent', eventId: 'memory_returns', delayMonths: 6 },
     { type: 'setCareerPhase', phase: 'active' }, { type: 'setRace', raceId: 'human' }, { type: 'setOriginSea', seaId: 'starter_sea' },
-    { type: 'setAffiliation', affiliationId: 'independent_family' }, { type: 'endCareer', reason: 'legacy' },
+    { type: 'setAffiliation', affiliationId: 'independent_family' }, { type: 'setFamilyStructure', familyStructureId: 'two_parents' }, { type: 'setSocialClass', socialClassId: 'modest' }, { type: 'setBirthLocation', locationId: 'starter_port' }, { type: 'endCareer', reason: 'legacy' },
   ] };
   return event;
 };
@@ -208,7 +209,7 @@ describe('v0.3 project migration and validation', () => {
     };
     const result = migrateImportedProject(legacy);
     const event = result.project.events[0] as any;
-    expect(result.project.authoringVersion).toBe(6);
+    expect(result.project.authoringVersion).toBe(7);
     expect(result.project.registries.ships).toEqual([]);
     expect(result.project.registries.crewRoles).toEqual([]);
     expect(result.project.registries.locations[0]).toHaveProperty('allowsShipSale', false);

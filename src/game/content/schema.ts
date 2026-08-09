@@ -11,12 +11,14 @@ import type {
   NpcStats,
   NpcStatus,
   OutcomeId,
-  PlayerStats,
+  PlayerAttributeId,
   TraitId,
   TravelState,
   RaceId,
   SeaId,
   AffiliationId,
+  FamilyStructureId,
+  SocialClassId,
   ShipId,
   CrewRoleId,
 } from '../model/schema';
@@ -24,7 +26,7 @@ import type { LocalizationKey } from '../localization/keys';
 
 export const CONTENT_SCHEMA_VERSION = 2;
 
-export type StatId = keyof PlayerStats;
+export type StatId = PlayerAttributeId;
 
 export type Condition =
   | { type: 'all'; conditions: Condition[] }
@@ -62,7 +64,9 @@ export type Condition =
   | { type: 'hasOutcome'; eventId: EventId; outcomeId: OutcomeId }
   | { type: 'raceIs'; raceId: RaceId }
   | { type: 'originSeaIs'; seaId: SeaId }
-  | { type: 'affiliationIs'; affiliationId: AffiliationId };
+  | { type: 'affiliationIs'; affiliationId: AffiliationId }
+  | { type: 'familyStructureIs'; familyStructureId: FamilyStructureId }
+  | { type: 'socialClassIs'; socialClassId: SocialClassId };
 
 export type Effect =
   | { type: 'setFlag'; flagId: FlagId }
@@ -72,6 +76,7 @@ export type Effect =
   | { type: 'addTrait'; traitId: TraitId }
   | { type: 'removeTrait'; traitId: TraitId }
   | { type: 'modifyStat'; statId: StatId; amount: number }
+  | { type: 'modifyHealth'; amount: number }
   | { type: 'acquireShip'; shipId: ShipId; name: string; health?: number; allowWithoutLeadership?: boolean }
   | { type: 'loseShip'; locationId: LocationId; travelState: TravelState; allowWithoutLeadership?: boolean }
   | { type: 'modifyShipHealth'; amount: number }
@@ -80,6 +85,7 @@ export type Effect =
   | { type: 'resolveShipReplacement'; disposition: 'destroy' | 'sell' | 'abandon'; berries?: number; allowWithoutLeadership?: boolean }
   | { type: 'modifyBerries'; amount: number }
   | { type: 'moveToLocation'; locationId: LocationId; travelState: TravelState }
+  | { type: 'setBirthLocation'; locationId: LocationId }
   | { type: 'setNpcStatus'; npcId: NpcId; status: NpcStatus; allowWithoutLeadership?: boolean }
   | { type: 'setNpcPassenger'; npcId: NpcId; passenger: boolean; allowWithoutLeadership?: boolean }
   | { type: 'setLeadership'; isLeader: boolean }
@@ -90,6 +96,8 @@ export type Effect =
   | { type: 'setRace'; raceId: RaceId }
   | { type: 'setOriginSea'; seaId: SeaId }
   | { type: 'setAffiliation'; affiliationId: AffiliationId }
+  | { type: 'setFamilyStructure'; familyStructureId: FamilyStructureId }
+  | { type: 'setSocialClass'; socialClassId: SocialClassId }
   | { type: 'endCareer'; reason: CareerEndReason };
 
 export interface Outcome {
@@ -197,16 +205,20 @@ export interface NpcDefinition {
 
 export interface CrewRoleDefinition { id: CrewRoleId; nameKey: LocalizationKey }
 
-export interface RaceDefinition { id: RaceId; nameKey: LocalizationKey }
+export interface RaceDefinition { id: RaceId; nameKey: LocalizationKey; initialHealth: number; attributeModifiers: Partial<Record<StatId, number>> }
 export interface SeaDefinition { id: SeaId; nameKey: LocalizationKey }
 export interface AffiliationDefinition { id: AffiliationId; nameKey: LocalizationKey }
-export interface LocationDefinition { id: LocationId; blocksScheduledEvents: boolean; allowsShipSale: boolean }
+export interface FamilyStructureDefinition { id: FamilyStructureId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
+export interface SocialClassDefinition { id: SocialClassId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
+export interface LocationDefinition { id: LocationId; seaId: SeaId | null; blocksScheduledEvents: boolean; allowsShipSale: boolean }
 
 export interface ContentCatalog {
   schemaVersion: number;
   races: RaceDefinition[];
   seas: SeaDefinition[];
   affiliations: AffiliationDefinition[];
+  familyStructures: FamilyStructureDefinition[];
+  socialClasses: SocialClassDefinition[];
   locations: LocationDefinition[];
   traits: TraitDefinition[];
   items: ItemDefinition[];

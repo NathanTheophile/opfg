@@ -34,7 +34,7 @@ export function diagnoseContent(catalog: ContentCatalog): ContentDiagnostic[] {
     if (type === 'hasFlag') addString(record.flagId, readFlags);
     if (type === 'setFlag' || type === 'clearFlag') addString(record.flagId, writtenFlags);
     if (type === 'locationIs') addString(record.locationId, referencedLocations);
-    if (type === 'moveToLocation' || type === 'loseShip') addString(record.locationId, reachableLocations);
+    if (type === 'moveToLocation' || type === 'loseShip' || type === 'setBirthLocation') addString(record.locationId, reachableLocations);
     if (typeof record.npcId === 'string') referencedNpcs.add(record.npcId);
   });
 

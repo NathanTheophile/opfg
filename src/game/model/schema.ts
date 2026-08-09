@@ -9,6 +9,8 @@ export type NpcId = string;
 export type RaceId = string;
 export type SeaId = string;
 export type AffiliationId = string;
+export type FamilyStructureId = string;
+export type SocialClassId = string;
 export type ShipId = string;
 export type CrewRoleId = string;
 
@@ -27,6 +29,8 @@ export interface PlayerProfile {
   raceId: RaceId | null;
   originSeaId: SeaId | null;
   affiliationId: AffiliationId | null;
+  familyStructureId: FamilyStructureId | null;
+  socialClassId: SocialClassId | null;
 }
 
 export interface PlayerStats {
@@ -41,6 +45,8 @@ export interface PlayerStats {
   luck: number;
   awakening: number | null;
 }
+
+export type PlayerAttributeId = Exclude<keyof PlayerStats, 'health' | 'awakening'>;
 
 export interface PlayerState {
   profile: PlayerProfile;

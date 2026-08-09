@@ -63,6 +63,9 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       state.player.stats[effect.statId] = clamp(currentValue + effect.amount, 0, 50);
       return;
     }
+    case 'modifyHealth':
+      state.player.stats.health += effect.amount;
+      return;
     case 'acquireShip': {
       if (!canAcquireShip(state, catalog, effect.shipId, effect.allowWithoutLeadership === true)) throw new Error(`Ship "${effect.shipId}" cannot be acquired with the current leadership, crew, passengers, or cargo.`);
       if (effect.name.trim().length === 0) throw new Error('Acquired ship requires a name.');
@@ -123,6 +126,15 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       state.locationId = effect.locationId;
       state.travelState = effect.travelState;
       return;
+    case 'setBirthLocation': {
+      const location = catalog.locations.find(({ id }) => id === effect.locationId);
+      if (!location || location.seaId === null || location.seaId !== state.player.profile.originSeaId) {
+        throw new Error(`Birth Location "${effect.locationId}" is incompatible with the selected origin sea.`);
+      }
+      state.locationId = effect.locationId;
+      state.travelState = 'on_land';
+      return;
+    }
     case 'setNpcStatus': {
       const npc = getNpcState(state, effect.npcId);
       const changesCrew = npc.status === 'crew' || effect.status === 'crew';
@@ -179,19 +191,47 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
     case 'setCareerPhase':
       state.careerPhase = effect.phase;
       return;
-    case 'setRace':
+    case 'setRace': {
+      if (state.player.profile.raceId !== null) throw new Error('Race can only be set once.');
+      const race = catalog.races.find(({ id }) => id === effect.raceId);
+      if (!race) throw new Error(`Unknown Race "${effect.raceId}".`);
       state.player.profile.raceId = effect.raceId;
+      state.player.stats.health = race.initialHealth;
+      applyAttributeModifiers(state, race.attributeModifiers);
       return;
+    }
     case 'setOriginSea':
       state.player.profile.originSeaId = effect.seaId;
       return;
     case 'setAffiliation':
       state.player.profile.affiliationId = effect.affiliationId;
       return;
+    case 'setFamilyStructure': {
+      if (state.player.profile.familyStructureId !== null) throw new Error('Family structure can only be set once.');
+      const definition = catalog.familyStructures.find(({ id }) => id === effect.familyStructureId);
+      if (!definition) throw new Error(`Unknown FamilyStructure "${effect.familyStructureId}".`);
+      state.player.profile.familyStructureId = effect.familyStructureId;
+      applyAttributeModifiers(state, definition.attributeModifiers);
+      return;
+    }
+    case 'setSocialClass': {
+      if (state.player.profile.socialClassId !== null) throw new Error('Social class can only be set once.');
+      const definition = catalog.socialClasses.find(({ id }) => id === effect.socialClassId);
+      if (!definition) throw new Error(`Unknown SocialClass "${effect.socialClassId}".`);
+      state.player.profile.socialClassId = effect.socialClassId;
+      applyAttributeModifiers(state, definition.attributeModifiers);
+      return;
+    }
     case 'endCareer':
       state.careerStatus = 'ended';
       state.careerEndReason = effect.reason;
       state.currentEventId = null;
+  }
+}
+
+function applyAttributeModifiers(state: GameState, modifiers: Partial<Record<import('../content/schema').StatId, number>>): void {
+  for (const [statId, amount] of Object.entries(modifiers) as [import('../content/schema').StatId, number][]) {
+    state.player.stats[statId] = clamp(state.player.stats[statId] + amount, 0, 50);
   }
 }
 

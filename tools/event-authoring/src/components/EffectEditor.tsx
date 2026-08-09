@@ -3,9 +3,9 @@ import { NPC_STAT_IDS, NPC_STATUSES, PLAYER_STAT_IDS, type Effect, type GameRegi
 import { IdSelect, NumberInput } from './EditorPrimitives';
 
 export const EFFECT_TYPES: Effect['type'][] = [
-  'setFlag','clearFlag','addItem','removeItem','addTrait','removeTrait','modifyStat','acquireShip','modifyShipHealth','addCargoItem','removeCargoItem','resolveShipReplacement','modifyBerries','loseShip',
-  'moveToLocation','setNpcStatus','setNpcPassenger','setLeadership','modifyNpcRelationship','modifyNpcStat','scheduleEvent','setCareerPhase','setRace',
-  'setOriginSea','setAffiliation','endCareer',
+  'setFlag','clearFlag','addItem','removeItem','addTrait','removeTrait','modifyStat','modifyHealth','acquireShip','modifyShipHealth','addCargoItem','removeCargoItem','resolveShipReplacement','modifyBerries','loseShip',
+  'moveToLocation','setBirthLocation','setNpcStatus','setNpcPassenger','setLeadership','modifyNpcRelationship','modifyNpcStat','scheduleEvent','setCareerPhase','setRace',
+  'setOriginSea','setAffiliation','setFamilyStructure','setSocialClass','endCareer',
 ];
 
 interface Props { value: Effect; onChange: (value: Effect) => void; onRemove: () => void; registries: GameRegistries; eventIds: string[]; scheduledEventIds: string[]; }
@@ -17,10 +17,11 @@ export default function EffectEditor({ value, onChange, onRemove, registries, ev
       case 'addItem': case 'removeItem': case 'addCargoItem': case 'removeCargoItem': return <div className="inline-fields"><IdSelect value={value.itemId} options={registries.items} onChange={(itemId) => onChange({ ...value, itemId })} /><NumberInput value={value.quantity} min={1} onChange={(quantity) => onChange({ ...value, quantity })} /></div>;
       case 'addTrait': case 'removeTrait': return <IdSelect value={value.traitId} options={registries.traits} onChange={(traitId) => onChange({ ...value, traitId })} />;
       case 'modifyStat': return <div className="inline-fields"><select value={value.statId} onChange={(e) => onChange({ ...value, statId: e.target.value as typeof value.statId })}>{PLAYER_STAT_IDS.map((id) => <option key={id}>{id}</option>)}</select><NumberInput value={value.amount} onChange={(amount) => onChange({ ...value, amount })} /></div>;
-      case 'modifyShipHealth': case 'modifyBerries': return <NumberInput value={value.amount} onChange={(amount) => onChange({ ...value, amount })} />;
+      case 'modifyHealth': case 'modifyShipHealth': case 'modifyBerries': return <NumberInput value={value.amount} onChange={(amount) => onChange({ ...value, amount })} />;
       case 'acquireShip': return <div className="inline-fields"><IdSelect value={value.shipId} options={registries.ships} onChange={(shipId) => onChange({ ...value, shipId })} /><input value={value.name} placeholder="ship name" onChange={(e) => onChange({ ...value, name: e.target.value })} /><NumberInput value={value.health ?? 0} min={0} onChange={(health) => onChange({ ...value, health: health || undefined })} /></div>;
       case 'resolveShipReplacement': return <div className="inline-fields"><select value={value.disposition} onChange={(e) => onChange({ ...value, disposition: e.target.value as typeof value.disposition })}><option value="destroy">destroy</option><option value="sell">sell</option><option value="abandon">abandon</option></select>{value.disposition === 'sell' && <NumberInput value={value.berries ?? 0} min={0} onChange={(berries) => onChange({ ...value, berries })} />}</div>;
       case 'moveToLocation': case 'loseShip': return <div className="inline-fields"><IdSelect value={value.locationId} options={registries.locations} onChange={(locationId) => onChange({ ...value, locationId })} /><select value={value.travelState} onChange={(e) => onChange({ ...value, travelState: e.target.value as typeof value.travelState })}><option value="at_sea">at_sea</option><option value="on_land">on_land</option></select></div>;
+      case 'setBirthLocation': return <IdSelect value={value.locationId} options={registries.locations} onChange={(locationId) => onChange({ ...value, locationId })} />;
       case 'setNpcStatus': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={value.status} onChange={(e) => onChange({ ...value, status: e.target.value as typeof value.status })}>{NPC_STATUSES.map((x) => <option key={x}>{x}</option>)}</select></div>;
       case 'setNpcPassenger': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={String(value.passenger)} onChange={(e) => onChange({ ...value, passenger: e.target.value === 'true' })}><option value="true">passenger</option><option value="false">not passenger</option></select></div>;
       case 'setLeadership': return <select value={String(value.isLeader)} onChange={(e) => onChange({ ...value, isLeader: e.target.value === 'true' })}><option value="true">leader</option><option value="false">not leader</option></select>;
@@ -31,6 +32,8 @@ export default function EffectEditor({ value, onChange, onRemove, registries, ev
       case 'setRace': return <IdSelect value={value.raceId} options={registries.races} onChange={(raceId) => onChange({ ...value, raceId })} />;
       case 'setOriginSea': return <IdSelect value={value.seaId} options={registries.seas} onChange={(seaId) => onChange({ ...value, seaId })} />;
       case 'setAffiliation': return <IdSelect value={value.affiliationId} options={registries.affiliations} onChange={(affiliationId) => onChange({ ...value, affiliationId })} />;
+      case 'setFamilyStructure': return <IdSelect value={value.familyStructureId} options={registries.familyStructures} onChange={(familyStructureId) => onChange({ ...value, familyStructureId })} />;
+      case 'setSocialClass': return <IdSelect value={value.socialClassId} options={registries.socialClasses} onChange={(socialClassId) => onChange({ ...value, socialClassId })} />;
       case 'endCareer': return <select value={value.reason} onChange={(e) => onChange({ ...value, reason: e.target.value as typeof value.reason })}><option value="death">death</option><option value="legacy">legacy</option></select>;
     }
   })();

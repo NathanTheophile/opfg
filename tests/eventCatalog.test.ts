@@ -7,11 +7,14 @@ import { validateContent } from '../src/game/validation/validateContent';
 describe('eventCatalog', () => {
   it('discovers the complete catalog once and in stable lexical order', () => {
     const ids = eventCatalog.map(({ id }) => id);
-    expect(ids).toHaveLength(46);
+    expect(ids).toHaveLength(48);
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids).toEqual([...ids].sort());
     expect(ids).toEqual(expect.arrayContaining([
       'origin_name',
+      'origin_family_structure',
+      'origin_social_class',
+      'origin_birthplace',
       'departure',
       'childhood_memory',
       'mira_returns_favor',

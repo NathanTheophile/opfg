@@ -44,10 +44,12 @@ export function validateSingleEventShape(value: unknown): ShapeIssue[] {
     });
   const catalog: ContentCatalog = {
     schemaVersion: 2,
-    races: [...references.raceIds].map((id) => ({ id, nameKey: `race.${id}.name` })),
+    races: [...references.raceIds].map((id) => ({ id, nameKey: `race.${id}.name`, initialHealth: 35, attributeModifiers: {} })),
     seas: [...references.seaIds].map((id) => ({ id, nameKey: `sea.${id}.name` })),
     affiliations: [...references.affiliationIds].map((id) => ({ id, nameKey: `affiliation.${id}.name` })),
-    locations: [...references.locationIds].map((id) => ({ id, blocksScheduledEvents: false, allowsShipSale: false })),
+    familyStructures: [...references.familyStructureIds].map((id) => ({ id, nameKey: `familyStructure.${id}.name`, attributeModifiers: {} })),
+    socialClasses: [...references.socialClassIds].map((id) => ({ id, nameKey: `socialClass.${id}.name`, attributeModifiers: {} })),
+    locations: [...references.locationIds].map((id) => ({ id, seaId: null, blocksScheduledEvents: false, allowsShipSale: false })),
     traits: [...references.traitIds].map((id) => ({ id, nameKey: `trait.${id}.name`, descriptionKey: `trait.${id}.description` })),
     items: [...references.itemIds].map((id) => ({ id, nameKey: `item.${id}.name` })),
     ships: [...references.shipIds].map((id) => ({ id, nameKey: `ship.${id}.name`, maxHealth: 1, crewCapacity: 0, cargoSlots: 0 })),
@@ -74,12 +76,13 @@ function collectReferences(value: unknown) {
     eventIds: new Set<string>(), scheduledEventIds: new Set<string>(),
     choicesByEvent: new Map<string, Set<string>>(), outcomesByEvent: new Map<string, Set<string>>(),
     traitIds: new Set<string>(), itemIds: new Set<string>(), shipIds: new Set<string>(), crewRoleIds: new Set<string>(), npcIds: new Set<string>(), locationIds: new Set<string>(),
-    raceIds: new Set<string>(), seaIds: new Set<string>(), affiliationIds: new Set<string>(),
+    raceIds: new Set<string>(), seaIds: new Set<string>(), affiliationIds: new Set<string>(), familyStructureIds: new Set<string>(), socialClassIds: new Set<string>(),
   };
   walk(value, (record) => {
     add(record.traitId, result.traitIds); add(record.itemId, result.itemIds); add(record.shipId, result.shipIds); add(record.roleId, result.crewRoleIds); add(record.npcId, result.npcIds);
     add(record.locationId, result.locationIds); add(record.raceId, result.raceIds); add(record.seaId, result.seaIds);
     add(record.affiliationId, result.affiliationIds);
+    add(record.familyStructureId, result.familyStructureIds); add(record.socialClassId, result.socialClassIds);
     if (typeof record.eventId === 'string') {
       result.eventIds.add(record.eventId);
       if (record.type === 'scheduleEvent') result.scheduledEventIds.add(record.eventId);

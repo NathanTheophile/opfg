@@ -15,6 +15,8 @@ export const toRuntimeCatalog = (project: AuthoringProject): ContentCatalog => (
   races: structuredClone(project.registries.races),
   seas: structuredClone(project.registries.seas),
   affiliations: structuredClone(project.registries.affiliations),
+  familyStructures: structuredClone(project.registries.familyStructures),
+  socialClasses: structuredClone(project.registries.socialClasses),
   locations: structuredClone(project.registries.locations),
   traits: structuredClone(project.registries.traits),
   items: structuredClone(project.registries.items),

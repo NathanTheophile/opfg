@@ -82,6 +82,8 @@ export const createCondition = (type: Condition['type']): Condition => {
     case 'raceIs': return { type, raceId: '' };
     case 'originSeaIs': return { type, seaId: '' };
     case 'affiliationIs': return { type, affiliationId: '' };
+    case 'familyStructureIs': return { type, familyStructureId: '' };
+    case 'socialClassIs': return { type, socialClassId: '' };
   }
 };
 
@@ -94,6 +96,7 @@ export const createEffect = (type: Effect['type']): Effect => {
     case 'addTrait': return { type, traitId: '' };
     case 'removeTrait': return { type, traitId: '' };
     case 'modifyStat': return { type, statId: 'luck', amount: 0 };
+    case 'modifyHealth': return { type, amount: 0 };
     case 'acquireShip': return { type, shipId: '', name: '' };
     case 'modifyShipHealth': return { type, amount: 0 };
     case 'addCargoItem': return { type, itemId: '', quantity: 1 };
@@ -102,6 +105,7 @@ export const createEffect = (type: Effect['type']): Effect => {
     case 'modifyBerries': return { type, amount: 0 };
     case 'loseShip': return { type, locationId: '', travelState: 'on_land' };
     case 'moveToLocation': return { type, locationId: '', travelState: 'on_land' };
+    case 'setBirthLocation': return { type, locationId: '' };
     case 'setNpcStatus': return { type, npcId: '', status: 'known' };
     case 'setNpcPassenger': return { type, npcId: '', passenger: true };
     case 'setLeadership': return { type, isLeader: true };
@@ -112,6 +116,8 @@ export const createEffect = (type: Effect['type']): Effect => {
     case 'setRace': return { type, raceId: '' };
     case 'setOriginSea': return { type, seaId: '' };
     case 'setAffiliation': return { type, affiliationId: '' };
+    case 'setFamilyStructure': return { type, familyStructureId: '' };
+    case 'setSocialClass': return { type, socialClassId: '' };
     case 'endCareer': return { type, reason: 'death' };
   }
 };

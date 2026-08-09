@@ -5,7 +5,7 @@ import { IdSelect, NumberInput } from './EditorPrimitives';
 const TYPES: Condition['type'][] = [
   'all','any','not','hasTrait','statAtLeast','hasFlag','hasItem','berriesAtLeast','hasCrew','crewSizeAtLeast','hasCrewRole','canRecruitNpc','isLeader','locationIs','isAtSea','isOnLand','careerPhaseIs',
   'ageAtLeastMonths','ageAtMostMonths','hasShip','shipIs','shipHealthAtLeast','shipHealthAtMost','shipCrewCapacityAtLeast','shipCargoSpaceAtLeast','canAcquireShip','canSellShip','npcStatusIs','npcRelationshipAtLeast',
-  'npcStatAtLeast','hasChosen','hasPlayed','hasOutcome','raceIs','originSeaIs','affiliationIs',
+  'npcStatAtLeast','hasChosen','hasPlayed','hasOutcome','raceIs','originSeaIs','affiliationIs','familyStructureIs','socialClassIs',
 ];
 
 interface Props { value?: Condition; onChange: (value?: Condition) => void; registries: GameRegistries; eventIds: string[]; }
@@ -27,6 +27,8 @@ export default function ConditionEditor({ value, onChange, registries, eventIds 
       case 'raceIs': return <IdSelect value={value.raceId} options={registries.races} onChange={(raceId) => onChange({ ...value, raceId })} />;
       case 'originSeaIs': return <IdSelect value={value.seaId} options={registries.seas} onChange={(seaId) => onChange({ ...value, seaId })} />;
       case 'affiliationIs': return <IdSelect value={value.affiliationId} options={registries.affiliations} onChange={(affiliationId) => onChange({ ...value, affiliationId })} />;
+      case 'familyStructureIs': return <IdSelect value={value.familyStructureId} options={registries.familyStructures} onChange={(familyStructureId) => onChange({ ...value, familyStructureId })} />;
+      case 'socialClassIs': return <IdSelect value={value.socialClassId} options={registries.socialClasses} onChange={(socialClassId) => onChange({ ...value, socialClassId })} />;
       case 'locationIs': return <IdSelect value={value.locationId} options={registries.locations} onChange={(locationId) => onChange({ ...value, locationId })} />;
       case 'isAtSea': case 'isOnLand': case 'hasShip': case 'canSellShip': case 'hasCrew': case 'isLeader': return <span className="muted">No parameters</span>;
       case 'careerPhaseIs': return <select value={value.phase} onChange={(e) => onChange({ ...value, phase: e.target.value as typeof value.phase })}><option value="origins">origins</option><option value="childhood">childhood</option><option value="active">active</option></select>;

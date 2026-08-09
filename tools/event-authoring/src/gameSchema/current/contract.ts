@@ -13,6 +13,7 @@ export {
   type DiceResult,
   type Effect,
   type EventDefinition,
+  type FamilyStructureDefinition,
   type ItemDefinition,
   type LocationDefinition,
   type NpcDefinition,
@@ -22,6 +23,7 @@ export {
   type ScheduledPriority,
   type ScheduledReach,
   type SeaDefinition,
+  type SocialClassDefinition,
   type ShipDefinition,
   type StatId,
   type TextChoiceInput,
@@ -31,6 +33,7 @@ export {
 
 export type {
   AffiliationId,
+  FamilyStructureId,
   CareerEndReason,
   CareerPhase,
   CrewRoleId,
@@ -46,6 +49,7 @@ export type {
   OutcomeId,
   RaceId,
   SeaId,
+  SocialClassId,
   ShipId,
   TraitId,
   TravelState,
@@ -55,6 +59,7 @@ export type { LocalizationKey } from '../../../../../src/game/localization/keys'
 import { CONTENT_SCHEMA_VERSION } from '../../../../../src/game/content/schema';
 import type {
   AffiliationDefinition,
+  FamilyStructureDefinition,
   ConditionalDiceModifier,
   CrewRoleDefinition,
   ItemDefinition,
@@ -62,6 +67,7 @@ import type {
   NpcDefinition,
   RaceDefinition,
   SeaDefinition,
+  SocialClassDefinition,
   ShipDefinition,
   StatId,
   TextChoiceInput,
@@ -73,8 +79,8 @@ export const GAME_SCHEMA_VERSION = CONTENT_SCHEMA_VERSION;
 
 /** Editor option lists derived from the canonical key unions. */
 export const PLAYER_STAT_IDS = [
-  'health', 'morale', 'strength', 'agility', 'observation', 'intelligence',
-  'navigation', 'charisma', 'luck', 'awakening',
+  'morale', 'strength', 'agility', 'observation', 'intelligence',
+  'navigation', 'charisma', 'luck',
 ] as const satisfies readonly StatId[];
 export type PlayerStatId = StatId;
 
@@ -94,6 +100,8 @@ export interface GameRegistries {
   races: RaceDefinition[];
   seas: SeaDefinition[];
   affiliations: AffiliationDefinition[];
+  familyStructures: FamilyStructureDefinition[];
+  socialClasses: SocialClassDefinition[];
   locations: LocationDefinition[];
   traits: TraitDefinition[];
   items: ItemDefinition[];

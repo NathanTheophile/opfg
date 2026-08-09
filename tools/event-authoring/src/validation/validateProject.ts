@@ -14,6 +14,7 @@ const ids = <T extends { id: string }>(values: T[]) => new Set(values.map((x) =>
 const collectRegistryKeys = (r: GameRegistries): Array<[string,string]> => [
   ...r.races.map((x) => [x.nameKey, 'Race'] as [string,string]), ...r.seas.map((x) => [x.nameKey, 'Sea'] as [string,string]),
   ...r.affiliations.map((x) => [x.nameKey, 'Affiliation'] as [string,string]), ...r.traits.flatMap((x) => [[x.nameKey, 'Trait'], [x.descriptionKey, 'Trait description']] as [string,string][]),
+  ...r.familyStructures.map((x) => [x.nameKey, 'Family structure'] as [string,string]), ...r.socialClasses.map((x) => [x.nameKey, 'Social class'] as [string,string]),
   ...r.items.map((x) => [x.nameKey, 'Item'] as [string,string]), ...r.ships.map((x) => [x.nameKey, 'Ship'] as [string,string]), ...r.crewRoles.map((x) => [x.nameKey, 'Crew role'] as [string,string]), ...r.npcs.map((x) => [x.nameKey, 'NPC'] as [string,string]),
 ];
 
@@ -49,6 +50,8 @@ const runtimeCatalog = (project: AuthoringProject) => ({
   races: project.registries.races,
   seas: project.registries.seas,
   affiliations: project.registries.affiliations,
+  familyStructures: project.registries.familyStructures,
+  socialClasses: project.registries.socialClasses,
   locations: project.registries.locations,
   traits: project.registries.traits,
   items: project.registries.items,

@@ -8,7 +8,7 @@ import type { ChoiceResolutionResult } from '../game/engine/resolution';
 import { clearGameState, loadGameState, saveGameState } from '../game/engine/save';
 import { createInitialGameState } from '../game/model/initialState';
 import type { GameState, NpcStatId } from '../game/model/schema';
-import type { DiceResult, StatId } from '../game/content/schema';
+import type { ChoiceDefinition, ContentCatalog, DiceResult, StatId } from '../game/content/schema';
 import { assertValidContent } from '../game/validation/validateContent';
 import { loadLocale, saveLocale, supportedLocales, t, type LocaleId } from '../game/localization';
 
@@ -16,7 +16,7 @@ assertValidContent(contentCatalog);
 
 let fallbackSeed = Date.now() >>> 0;
 
-const STAT_LABEL_KEYS: Record<StatId, string> = {
+const STAT_LABEL_KEYS: Record<keyof GameState['player']['stats'], string> = {
   health: 'stat.health', morale: 'stat.morale', strength: 'stat.strength', agility: 'stat.agility', observation: 'stat.observation',
   intelligence: 'stat.intelligence', navigation: 'stat.navigation', charisma: 'stat.charisma', luck: 'stat.luck', awakening: 'stat.awakening',
 };
@@ -31,6 +31,32 @@ const NPC_STAT_LABEL_KEYS: Record<NpcStatId, string> = {
 };
 
 const NPC_STAT_IDS = Object.keys(NPC_STAT_LABEL_KEYS) as NpcStatId[];
+
+interface OriginStatPreview { statId: keyof GameState['player']['stats']; value: number; absolute?: boolean }
+
+function getOriginStatPreview(choice: ChoiceDefinition, catalog: ContentCatalog): OriginStatPreview[] {
+  if (choice.resolution.type !== 'deterministic') return [];
+  return choice.resolution.outcome.effects.flatMap((effect): OriginStatPreview[] => {
+    if (effect.type === 'modifyStat') return [{ statId: effect.statId, value: effect.amount }];
+    if (effect.type === 'modifyHealth') return [{ statId: 'health', value: effect.amount }];
+    if (effect.type === 'setRace') {
+      const definition = catalog.races.find(({ id }) => id === effect.raceId);
+      return definition === undefined ? [] : [
+        { statId: 'health', value: definition.initialHealth, absolute: true },
+        ...Object.entries(definition.attributeModifiers).map(([statId, value]) => ({ statId: statId as StatId, value })),
+      ];
+    }
+    if (effect.type === 'setFamilyStructure') {
+      const modifiers = catalog.familyStructures.find(({ id }) => id === effect.familyStructureId)?.attributeModifiers ?? {};
+      return Object.entries(modifiers).map(([statId, value]) => ({ statId: statId as StatId, value }));
+    }
+    if (effect.type === 'setSocialClass') {
+      const modifiers = catalog.socialClasses.find(({ id }) => id === effect.socialClassId)?.attributeModifiers ?? {};
+      return Object.entries(modifiers).map(([statId, value]) => ({ statId: statId as StatId, value }));
+    }
+    return [];
+  });
+}
 
 function generateCareerSeed(): number {
   if (globalThis.crypto?.getRandomValues) {
@@ -128,8 +154,10 @@ export function App() {
         <p>{translate('ui.field.race')}: {gameState.player.profile.raceId ? translate(contentCatalog.races.find(({ id }) => id === gameState.player.profile.raceId)?.nameKey ?? '') : '—'}</p>
         <p>{translate('ui.field.originSea')}: {gameState.player.profile.originSeaId ? translate(contentCatalog.seas.find(({ id }) => id === gameState.player.profile.originSeaId)?.nameKey ?? '') : '—'}</p>
         <p>{translate('ui.field.affiliation')}: {gameState.player.profile.affiliationId ? translate(contentCatalog.affiliations.find(({ id }) => id === gameState.player.profile.affiliationId)?.nameKey ?? '') : '—'}</p>
+        <p>Structure familiale: {gameState.player.profile.familyStructureId ? translate(contentCatalog.familyStructures.find(({ id }) => id === gameState.player.profile.familyStructureId)?.nameKey ?? '') : '—'}</p>
+        <p>Niveau social: {gameState.player.profile.socialClassId ? translate(contentCatalog.socialClasses.find(({ id }) => id === gameState.player.profile.socialClassId)?.nameKey ?? '') : '—'}</p>
         <h3>{translate('ui.profile.stats')}</h3>
-        {(Object.keys(STAT_LABEL_KEYS) as StatId[]).map((statId) => <p key={statId}>{translate(STAT_LABEL_KEYS[statId])}: {gameState.player.stats[statId] ?? '—'}</p>)}
+        {(Object.keys(STAT_LABEL_KEYS) as (keyof GameState['player']['stats'])[]).map((statId) => <p key={statId}>{translate(STAT_LABEL_KEYS[statId])}: {gameState.player.stats[statId] ?? '—'}</p>)}
         <h3>{translate('ui.profile.traits')}</h3>
         {gameState.player.traits.length === 0 ? (
           <p>{translate('ui.profile.none')}</p>
@@ -181,6 +209,7 @@ export function App() {
                 : preview.available
                   ? `[${translate(STAT_LABEL_KEYS[preview.statId])} — ${Math.round(preview.successProbability * 100)} %] `
                   : `[${translate(STAT_LABEL_KEYS[preview.statId])} — ${translate('ui.inactive')}] `;
+              const originStatPreview = gameState.careerPhase === 'origins' ? getOriginStatPreview(choice, contentCatalog) : [];
 
               return (
                 <div key={choice.id}>
@@ -202,6 +231,7 @@ export function App() {
                   >
                     {dicePrefix}{translate(choice.textKey)}
                   </button>
+                  {originStatPreview.length > 0 && <p>{originStatPreview.map(({ statId, value, absolute }) => `${translate(STAT_LABEL_KEYS[statId])} ${absolute ? value : `${value >= 0 ? '+' : ''}${value}`}`).join(' / ')}</p>}
                 </div>
               );
             })}

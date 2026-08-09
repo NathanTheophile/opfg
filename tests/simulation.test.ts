@@ -8,9 +8,9 @@ import { createInitialGameState } from '../src/game/model/initialState';
 
 const baseCatalog = (events: EventDefinition[], extra: Partial<ContentCatalog> = {}): ContentCatalog => ({
   schemaVersion: 2,
-  races: [], seas: [], affiliations: [], traits: [], items: [], npcs: [],
+  races: [], seas: [], affiliations: [], familyStructures: [], socialClasses: [], traits: [], items: [], crewRoles: [], npcs: [],
   ships: [{ id: 'starter_sloop', nameKey: 'x', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 }],
-  locations: [{ id: 'starter_port', blocksScheduledEvents: false, allowsShipSale: true }],
+  locations: [{ id: 'starter_port', seaId: null, blocksScheduledEvents: false, allowsShipSale: true }],
   events,
   ...extra,
 });

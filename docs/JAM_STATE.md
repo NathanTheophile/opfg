@@ -4,7 +4,7 @@ Implemented and verified:
 
 - Content Contract v2 with Normal, Scheduled, and Critical event variants;
 - one JSON file per Event, recursively auto-discovered and deterministically sorted by Event ID;
-- save/GameState v10 with v7/v8/v9 migration, player `agility`, leadership, passengers, `ageMonths`, Active `slotInMonth`, stack inventory, Berrys, persistent nullable ship instances, pending replacement, and NPC `dead` status;
+- save/GameState v11 with v7-v10 migration, unbounded player health, D20-only attribute IDs, complete Origins profile, leadership, passengers, `ageMonths`, Active `slotInMonth`, stack inventory, Berrys, persistent nullable ship instances, pending replacement, and NPC `dead` status;
 - seeded uniform normal selection and deterministic scheduled ordering;
 - scheduled location reach, cancellation, and fallback;
 - runtime enforcement of symmetric opposite traits;

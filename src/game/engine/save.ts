@@ -1,7 +1,7 @@
 import type { CareerEndReason, CareerPhase, GameState, ItemStack, NpcState, NpcStats, ShipState, TravelState } from '../model/schema';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 10;
+const CURRENT_SAVE_VERSION = 11;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
@@ -61,7 +61,7 @@ function readGameState(value: unknown): GameState | null {
   if (inventory === null || inventory.capacity !== 2) return null;
   const profile = readPlayerProfile(value.player.profile);
   if (profile === null) return null;
-  if (!isStatValue(value.player.stats.health)) return null;
+  if (!isFiniteNumber(value.player.stats.health)) return null;
   if (!isStatValue(value.player.stats.morale)) return null;
   if (!isStatValue(value.player.stats.strength)) return null;
   if (!isStatValue(value.player.stats.agility)) return null;
@@ -151,8 +151,18 @@ function migrateLegacySave(value: unknown): unknown {
   if (isRecord(migrated) && migrated.version === 9 && isRecord(migrated.player) && isRecord(migrated.player.stats)) {
     migrated = {
       ...migrated,
-      version: CURRENT_SAVE_VERSION,
+      version: 10,
       player: { ...migrated.player, stats: { ...migrated.player.stats, agility: 25 } },
+    };
+  }
+  if (isRecord(migrated) && migrated.version === 10 && isRecord(migrated.player) && isRecord(migrated.player.profile)) {
+    migrated = {
+      ...migrated,
+      version: CURRENT_SAVE_VERSION,
+      player: {
+        ...migrated.player,
+        profile: { ...migrated.player.profile, familyStructureId: null, socialClassId: null },
+      },
     };
   }
   return migrated;
@@ -238,11 +248,14 @@ function readPlayerProfile(value: unknown): GameState['player']['profile'] | nul
   if (!isRecord(value)) return null;
   if (!(value.name === null || (typeof value.name === 'string' && value.name.trim().length > 0))) return null;
   if (!isNullableString(value.raceId) || !isNullableString(value.originSeaId) || !isNullableString(value.affiliationId)) return null;
+  if (!isNullableString(value.familyStructureId) || !isNullableString(value.socialClassId)) return null;
   return {
     name: value.name === null ? null : value.name.trim(),
     raceId: value.raceId,
     originSeaId: value.originSeaId,
     affiliationId: value.affiliationId,
+    familyStructureId: value.familyStructureId,
+    socialClassId: value.socialClassId,
   };
 }
 

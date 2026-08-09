@@ -88,6 +88,10 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
       return state.player.profile.originSeaId !== null && state.player.profile.originSeaId === condition.seaId;
     case 'affiliationIs':
       return state.player.profile.affiliationId !== null && state.player.profile.affiliationId === condition.affiliationId;
+    case 'familyStructureIs':
+      return state.player.profile.familyStructureId !== null && state.player.profile.familyStructureId === condition.familyStructureId;
+    case 'socialClassIs':
+      return state.player.profile.socialClassId !== null && state.player.profile.socialClassId === condition.socialClassId;
   }
 }
 

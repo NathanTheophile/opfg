@@ -53,7 +53,7 @@ describe('validateContent', () => {
     const catalog = cloneCatalog();
     catalog.npcs[0].raceId = 'missing_race';
     eventById(catalog, 'origin_race').choices[0].resolution.outcome.effects[0].raceId = 'missing_race';
-    eventById(catalog, 'childhood_middle').eligibility.conditions[3].seaId = 'missing_sea';
+    eventById(catalog, 'childhood_middle').eligibility.conditions[3].conditions[0].seaId = 'missing_sea';
     eventById(catalog, 'origin_name').choices[0].input.target = 'unknown';
     const errors = messages(catalog);
     expect(errors).toContainEqual(expect.stringContaining('Unknown RaceId "missing_race"'));
@@ -207,11 +207,13 @@ describe('validateContent', () => {
     eventById(catalog, 'origin_race').eligibility = { type: 'customScript' };
     eventById(catalog, 'origin_to_childhood').choices[0].resolution.outcome.effects[0] = { type: 'customEffect' };
     eventById(catalog, 'reefs').choices.find((choice: Record<string, any>) => choice.id === 'read_currents').availableIf.statId = 'legacy_stat';
+    eventById(catalog, 'black_squall').choices[0].resolution.statId = 'health';
 
     const errors = messages(catalog);
     expect(errors).toContainEqual(expect.stringContaining('Unknown Condition type "customScript"'));
     expect(errors).toContainEqual(expect.stringContaining('Unknown Effect type "customEffect"'));
     expect(errors).toContainEqual(expect.stringContaining('Invalid StatId "legacy_stat"'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid StatId "health"'));
   });
 
   it('rejects scheduling a normal event and accepts a scheduled target', () => {
