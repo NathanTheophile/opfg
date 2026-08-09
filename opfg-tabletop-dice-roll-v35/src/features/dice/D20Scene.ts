@@ -24,8 +24,6 @@ const FACE_INSET = 0.875;
 const LABEL_INSET = 0.57;
 const FINAL_POSITION = new THREE.Vector3(0, 0.03, 0);
 const TABLE_REST_SCALE = 0.38;
-const WORLD_UP = new THREE.Vector3(0, 1, 0);
-const ROTATION_SAMPLE_COUNT = 480;
 const TABLE_PLANE_Y = FINAL_POSITION.y - RADIUS * TABLE_REST_SCALE;
 const LABEL_COLOR = new THREE.Color(0xf0ede5);
 const LABEL_HIGHLIGHT = new THREE.Color(0xffffff);
@@ -66,7 +64,9 @@ interface RollAnimation {
   impactAt: number;
   settleAt: number;
   target: THREE.Quaternion;
-  orientationSamples: THREE.Quaternion[];
+  currentQuaternion: THREE.Quaternion;
+  previousPosition: THREE.Vector3;
+  correctionStart?: THREE.Quaternion;
 }
 
 export interface D20SceneOptions {
@@ -195,6 +195,17 @@ export class D20Scene {
     const impactAt = flightMs / durationMs;
     const settleAt = (flightMs + rollMs) / durationMs;
 
+    // Start from a seeded arbitrary orientation. From this point forward,
+    // quaternion motion is integrated from the real frame-to-frame movement.
+    const currentQuaternion = new THREE.Quaternion().setFromEuler(
+      new THREE.Euler(
+        rng() * TAU,
+        rng() * TAU,
+        rng() * TAU,
+        'XYZ',
+      ),
+    );
+
     const animation: RollAnimation = {
       startedAt: performance.now(),
       durationMs,
@@ -213,18 +224,12 @@ export class D20Scene {
       impactAt,
       settleAt,
       target,
-      orientationSamples: [],
+      currentQuaternion,
+      previousPosition: startPosition.clone(),
     };
 
-    // Build ABSOLUTE orientation samples anchored on the final target.
-    //
-    // The last sample is literally `target`. Every previous sample is solved
-    // backwards while preserving the exact same incremental rolling delta
-    // between adjacent samples. There is therefore no final correction phase.
-    animation.orientationSamples = this.buildOrientationSamples(animation);
-
     this.die.position.copy(startPosition);
-    this.die.quaternion.copy(animation.orientationSamples[0]);
+    this.die.quaternion.copy(animation.currentQuaternion);
     this.die.scale.setScalar(animation.startScale);
     this.animation = animation;
     this.rafId = requestAnimationFrame(this.tick);
@@ -261,9 +266,7 @@ export class D20Scene {
 
     if (p >= 1) {
       this.die.position.copy(FINAL_POSITION);
-      // Do NOT overwrite quaternion here. updateRotation(p=1) has already
-      // selected orientationSamples[last], which is exactly the target.
-      // Keeping this untouched makes a corrective final snap impossible.
+      this.die.quaternion.copy(animation.target);
       this.die.scale.setScalar(TABLE_REST_SCALE);
       this.highlightResult(animation.result, 1);
       this.revealLight.intensity = 2.4;
@@ -413,168 +416,89 @@ export class D20Scene {
   }
 
   private updateRotation(animation: RollAnimation, p: number): void {
-    const samplePosition =
-      THREE.MathUtils.clamp(p, 0, 1) * ROTATION_SAMPLE_COUNT;
-    const sampleIndex = Math.min(
-      ROTATION_SAMPLE_COUNT - 1,
-      Math.floor(samplePosition),
-    );
-    const local = samplePosition - sampleIndex;
+    // Final face correction only begins once the die is already moving very
+    // slowly. Before that point, orientation is driven entirely by real movement.
+    const correctionAt = 0.91;
 
-    const from =
-      animation.orientationSamples[sampleIndex];
-    const to =
-      animation.orientationSamples[
-        Math.min(sampleIndex + 1, ROTATION_SAMPLE_COUNT)
-      ];
-
-    // Adjacent samples differ only by the small physical rolling increment.
-    // With 480 samples this interpolation stays well below the quaternion
-    // shortest-path ambiguity threshold and preserves the intended roll sense.
-    this.die.quaternion
-      .copy(from)
-      .slerp(to, local)
-      .normalize();
-  }
-
-  private buildOrientationSamples(
-    animation: RollAnimation,
-  ): THREE.Quaternion[] {
-    // First build the incremental world-space rolling delta for every sample.
-    const stepDeltas: THREE.Quaternion[] = [
-      new THREE.Quaternion(),
-    ];
-
-    let previous = this.getPlanarPositionAt(animation, 0);
-
-    for (let i = 1; i <= ROTATION_SAMPLE_COUNT; i += 1) {
-      const p = i / ROTATION_SAMPLE_COUNT;
-      const current = this.getPlanarPositionAt(animation, p);
-      const delta = current.clone().sub(previous);
-      delta.y = 0;
-
-      const travelled = delta.length();
-      const step = new THREE.Quaternion();
-
-      if (travelled > 1e-8) {
-        const forward = delta.multiplyScalar(1 / travelled);
-
-        // Sole rolling axis:
-        // current horizontal forward × world-up.
-        //
-        // This axis is always horizontal, perpendicular to current movement,
-        // and follows any gentle curvature of the trajectory.
-        const rollAxis = forward
-          .clone()
-          .cross(WORLD_UP)
-          .normalize();
-
-        const speedRatio = this.getCurrentSpeedRatio(animation, p);
-        const initialSpinBoost =
-          1.08 + 1.85 * Math.pow(speedRatio, 1.15);
-
-        const angle =
-          -(
-            (travelled / animation.effectiveRollingRadius) *
-            initialSpinBoost
-          );
-
-        step.setFromAxisAngle(rollAxis, angle).normalize();
+    if (p >= correctionAt) {
+      if (!animation.correctionStart) {
+        animation.correctionStart = animation.currentQuaternion.clone();
       }
 
-      stepDeltas.push(step);
-      previous = current;
-    }
-
-    // Solve ABSOLUTE orientations backwards from the exact final target.
-    //
-    // Forward rolling relation:
-    //   Q[i] = step[i] * Q[i - 1]
-    //
-    // Therefore backwards:
-    //   Q[i - 1] = inverse(step[i]) * Q[i]
-    //
-    // This preserves every rolling increment exactly while guaranteeing:
-    //   Q[last] === target
-    const orientations: THREE.Quaternion[] =
-      new Array(ROTATION_SAMPLE_COUNT + 1);
-
-    orientations[ROTATION_SAMPLE_COUNT] =
-      animation.target.clone().normalize();
-
-    for (let i = ROTATION_SAMPLE_COUNT; i >= 1; i -= 1) {
-      orientations[i - 1] = stepDeltas[i]
-        .clone()
-        .invert()
-        .multiply(orientations[i])
-        .normalize();
-    }
-
-    return orientations;
-  }
-
-  private getPlanarPositionAt(
-    animation: RollAnimation,
-    p: number,
-  ): THREE.Vector3 {
-    const clamped = THREE.MathUtils.clamp(p, 0, 1);
-
-    if (clamped < animation.impactAt) {
       const u = THREE.MathUtils.clamp(
-        clamped / animation.impactAt,
+        (p - correctionAt) / (1 - correctionAt),
         0,
         1,
       );
-      const travel = easeInOutQuad(u);
+      const correction = smootherstep(u);
 
-      return new THREE.Vector3(
-        THREE.MathUtils.lerp(
-          animation.startPosition.x,
-          animation.impactPosition.x,
-          travel,
-        ),
-        0,
-        THREE.MathUtils.lerp(
-          animation.startPosition.z,
-          animation.impactPosition.z,
-          travel,
-        ),
+      this.die.quaternion.copy(
+        animation.correctionStart
+          .clone()
+          .slerp(animation.target, correction),
       );
+      return;
     }
 
-    if (clamped < animation.settleAt) {
-      const u = THREE.MathUtils.clamp(
-        (clamped - animation.impactAt) /
-          (animation.settleAt - animation.impactAt),
+    const currentPosition = this.die.position;
+    const delta = currentPosition.clone().sub(animation.previousPosition);
+    const planarDelta = new THREE.Vector3(delta.x, 0, delta.z);
+    const travelled = planarDelta.length();
+
+    if (travelled > 1e-6) {
+      const direction = planarDelta.multiplyScalar(1 / travelled);
+
+      // Rolling axis = horizontal axis perpendicular to CURRENT forward vector.
+      // If the path bends, this axis bends with it frame by frame.
+      const rollAxis = new THREE.Vector3(
+        -direction.z,
         0,
-        1,
+        direction.x,
+      ).normalize();
+
+      const speedRatio = this.getCurrentSpeedRatio(animation, p);
+
+      // A fast throw spins aggressively at first, then the multiplier decays
+      // together with linear speed. Distance-per-frame is already proportional
+      // to velocity, so angular velocity naturally falls toward zero.
+      const initialSpinBoost =
+        1.08 + 1.85 * Math.pow(speedRatio, 1.15);
+
+      const angle =
+        (travelled / animation.effectiveRollingRadius) *
+        initialSpinBoost;
+
+      const rollDelta = new THREE.Quaternion().setFromAxisAngle(
+        rollAxis,
+        angle,
       );
-      const progress = this.getRollProgress(animation, u);
-      const planar = this.getRollingPlanarPosition(animation, progress);
-      planar.y = 0;
-      return planar;
+
+      // World-space rolling rotation.
+      animation.currentQuaternion.premultiply(rollDelta);
+
+      // Very small speed-dependent yaw irregularity keeps a faceted d20 from
+      // reading as a mathematically perfect wheel.
+      const yawAngle =
+        Math.sin(
+          animation.wobblePhase +
+          (performance.now() - animation.startedAt) * 0.012,
+        ) *
+        0.008 *
+        speedRatio;
+
+      if (Math.abs(yawAngle) > 1e-6) {
+        const yawDelta = new THREE.Quaternion().setFromAxisAngle(
+          new THREE.Vector3(0, 1, 0),
+          yawAngle,
+        );
+        animation.currentQuaternion.premultiply(yawDelta);
+      }
+
+      animation.currentQuaternion.normalize();
     }
 
-    const u = THREE.MathUtils.clamp(
-      (clamped - animation.settleAt) /
-        (1 - animation.settleAt),
-      0,
-      1,
-    );
-    const settleProgress = deceleratingProgress(u, 2.65);
-    const rollEnd = animation.impactPosition
-      .clone()
-      .addScaledVector(
-        animation.rollDirection,
-        animation.rollDistance,
-      );
-
-    return rollEnd
-      .addScaledVector(
-        animation.rollDirection,
-        animation.settleDistance * settleProgress,
-      )
-      .setY(0);
+    animation.previousPosition.copy(currentPosition);
+    this.die.quaternion.copy(animation.currentQuaternion);
   }
 
   private updateReveal(animation: RollAnimation, p: number): void {

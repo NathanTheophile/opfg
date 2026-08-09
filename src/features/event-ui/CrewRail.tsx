@@ -147,7 +147,7 @@ export function CrewRail() {
                 data-tooltip={member.role}
                 aria-label={member.role}
               >
-                <RoleIcon className="size-[1.05rem]" aria-hidden="true" />
+                <RoleIcon className="size-[1.05rem]" aria-hidden={true} />
               </span>
 
               <strong className="opfg-crew-member__name">{member.name}</strong>
@@ -169,7 +169,7 @@ export function CrewRail() {
                     data-stat={stat.id}
                     data-tooltip={stat.label}
                   >
-                    <StatIcon className="size-3" aria-hidden="true" />
+                    <StatIcon className="size-3" aria-hidden={true} />
                     <b>{stat.value}</b>
                   </span>
                 );

@@ -7,6 +7,7 @@ import {
   Compass,
   Dumbbell,
   Eye,
+  Footprints,
   Flame,
   Handshake,
   Heart,
@@ -43,6 +44,7 @@ const MOCK_STATS: StatPreview[] = [
   { id: 'health', label: 'Santé', value: 32, icon: Heart },
   { id: 'morale', label: 'Moral', value: 26, icon: Smile },
   { id: 'strength', label: 'Force', value: 24, icon: Dumbbell },
+  { id: 'agility', label: 'Agilité', value: 25, icon: Footprints },
   { id: 'observation', label: 'Observation', value: 34, icon: Eye },
   { id: 'intelligence', label: 'Intelligence', value: 22, icon: Brain },
   { id: 'navigation', label: 'Navigation', value: 28, icon: Compass },
@@ -64,8 +66,8 @@ const MOCK_TRAITS: TraitPreview[] = [
 
 function statToPreviewModifier(value: number): number {
   if (value >= 20 && value <= 30) return 0;
-  if (value > 30) return Math.min(4, Math.ceil((value - 30) / 5));
-  return -Math.min(4, Math.ceil((20 - value) / 5));
+  if (value > 30) return Math.ceil((value - 30) / 4);
+  return -Math.ceil((20 - value) / 4);
 }
 
 function formatModifier(value: number): string {
@@ -89,7 +91,7 @@ export function PlayerStatsRail() {
         <div className="opfg-player-stats-rail__list">
           {MOCK_STATS.map((stat) => {
             const Icon = stat.icon;
-            const modifier = statToPreviewModifier(stat.value);
+            const modifier = stat.id === 'health' ? null : statToPreviewModifier(stat.value);
 
             return (
               <div
@@ -110,7 +112,7 @@ export function PlayerStatsRail() {
 
                 <strong className="opfg-player-stat__value">{stat.value}</strong>
 
-                <div
+                {modifier !== null && <div
                   className="opfg-player-stat__bonus-scale"
                   data-tooltip={`Bonus de jet : ${formatModifier(modifier)}`}
                   aria-label={`${stat.label}, bonus de jet ${formatModifier(modifier)}`}
@@ -131,14 +133,14 @@ export function PlayerStatsRail() {
                     style={{ left: `${Math.max(0, Math.min(100, stat.value * 2))}%` }}
                     aria-hidden="true"
                   />
-                </div>
+                </div>}
 
                 <span
                   className="opfg-player-stat__modifier"
-                  data-modifier={modifier > 0 ? 'positive' : modifier < 0 ? 'negative' : 'neutral'}
-                  aria-label={modifier === 0 ? `${stat.label}, aucun bonus de jet` : `${stat.label}, bonus de jet ${formatModifier(modifier)}`}
+                  data-modifier={modifier === null ? 'neutral' : modifier > 0 ? 'positive' : modifier < 0 ? 'negative' : 'neutral'}
+                  aria-label={modifier === null ? `${stat.label}, points de vie` : modifier === 0 ? `${stat.label}, aucun bonus de jet` : `${stat.label}, bonus de jet ${formatModifier(modifier)}`}
                 >
-                  {modifier === 0 ? '' : formatModifier(modifier)}
+                  {modifier === null || modifier === 0 ? '' : formatModifier(modifier)}
                 </span>
               </div>
             );
@@ -155,7 +157,7 @@ export function PlayerStatsRail() {
                   className="opfg-player-trait"
                   data-tooltip={trait.label}
                 >
-                  <Icon className="size-4" aria-hidden="true" />
+                  <Icon className="size-4" aria-hidden={true} />
                 </span>
               );
             })}
@@ -177,7 +179,7 @@ export function PlayerStatsRail() {
                   className="opfg-player-trait"
                   data-tooltip={trait.label}
                 >
-                  <Icon className="size-4" aria-hidden="true" />
+                  <Icon className="size-4" aria-hidden={true} />
                 </span>
               );
             })}

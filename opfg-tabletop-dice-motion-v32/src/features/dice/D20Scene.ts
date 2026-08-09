@@ -24,8 +24,6 @@ const FACE_INSET = 0.875;
 const LABEL_INSET = 0.57;
 const FINAL_POSITION = new THREE.Vector3(0, 0.03, 0);
 const TABLE_REST_SCALE = 0.38;
-const WORLD_UP = new THREE.Vector3(0, 1, 0);
-const ROTATION_SAMPLE_COUNT = 480;
 const TABLE_PLANE_Y = FINAL_POSITION.y - RADIUS * TABLE_REST_SCALE;
 const LABEL_COLOR = new THREE.Color(0xf0ede5);
 const LABEL_HIGHLIGHT = new THREE.Color(0xffffff);
@@ -54,19 +52,19 @@ interface RollAnimation {
   result: number;
   startPosition: THREE.Vector3;
   impactPosition: THREE.Vector3;
-  rollDirection: THREE.Vector3;
-  rollDistance: number;
-  settleDistance: number;
-  curveOffset: number;
-  speedExponent: number;
-  wobblePhase: number;
+  spinAxisA: THREE.Vector3;
+  spinAxisB: THREE.Vector3;
+  spinTurnsA: number;
+  spinTurnsB: number;
+  bounceCount: number;
+  bounceHeight: number;
+  lateralTravel: number;
+  depthTravel: number;
   startScale: number;
-  contactScale: number;
-  effectiveRollingRadius: number;
+  impactScale: number;
   impactAt: number;
   settleAt: number;
   target: THREE.Quaternion;
-  orientationSamples: THREE.Quaternion[];
 }
 
 export interface D20SceneOptions {
@@ -148,83 +146,74 @@ export class D20Scene {
     this.resetLabelColors();
     this.revealLight.intensity = 0;
 
-    // One short airborne entry followed by a longer monotonic table roll.
-    // The die starts much farther from its final resting point so it visibly
-    // crosses the tabletop instead of stopping after a short central drift.
+    // The tabletop version needs a much broader screen-space throw than the old
+    // contained panel animation. Start near one side and cross a large portion of
+    // the transparent stage before the first table contact. Z also changes so the
+    // perspective and the authored scale animation reinforce the same "falling" cue.
     const startPosition = new THREE.Vector3(
-      side * range(rng, 2.45, 2.72),
-      range(rng, 0.4, 0.52),
-      range(rng, 0.42, 0.68),
+      side * range(rng, 2.15, 2.55),
+      range(rng, 0.72, 1.02),
+      range(rng, 0.82, 1.12),
     );
 
-    const contactScale = range(rng, 0.372, 0.392);
     const impactPosition = new THREE.Vector3(
-      side * range(rng, 1.68, 1.92),
-      TABLE_PLANE_Y + RADIUS * contactScale,
-      range(rng, 0.1, 0.24),
+      -side * range(rng, 0.62, 0.96),
+      -0.055,
+      range(rng, -0.42, -0.22),
     );
 
-    const planarToFinal = FINAL_POSITION.clone().sub(impactPosition);
-    planarToFinal.y = 0;
+    // Two coherent tumble axes produce a readable roll instead of three competing XYZ spins.
+    const spinAxisA = new THREE.Vector3(
+      range(rng, 0.65, 1),
+      side * range(rng, 0.3, 0.7),
+      range(rng, -0.12, 0.12),
+    ).normalize();
 
-    const totalPlanarDistance = Math.max(0.001, planarToFinal.length());
-    const rollDirection = planarToFinal.clone().normalize();
+    const spinAxisB = new THREE.Vector3(
+      side * range(rng, -0.35, 0.35),
+      range(rng, 0.55, 0.9),
+      range(rng, 0.3, 0.55),
+    ).normalize();
 
-    // A small final section continues in the exact same direction. There is
-    // never a backwards correction toward FINAL_POSITION.
-    const settleDistance = Math.min(
-      range(rng, 0.11, 0.17),
-      totalPlanarDistance * 0.14,
-    );
-    const rollDistance = Math.max(0.001, totalPlanarDistance - settleDistance);
+    // Cosmetic only: the visual seed chooses one to three rebounds.
+    // Gameplay still owns the result; the animation merely presents it.
+    const bounceCount = 2 + Math.floor(rng() * 2);
+    // Hit the table sooner, then leave enough air-time between contacts for the
+    // rebounds to read as actual bounces instead of a settle vibration.
+    const flightMs = range(rng, 520, 620);
+    const bounceMs = range(rng, 310, 380);
+    const settleMs = range(rng, 360, 430);
+    const durationMs = flightMs + bounceMs * bounceCount + settleMs;
 
-    // The curve is still only perpendicular to the main direction, so forward
-    // progress remains strictly monotonic.
-    const curveOffset = range(rng, 0.08, 0.17) * (rng() > 0.5 ? 1 : -1);
-
-    // Strictly decreasing speed.
-    const speedExponent = range(rng, 1.9, 2.25);
-
-    const effectiveRollingRadius =
-      RADIUS * TABLE_REST_SCALE * range(rng, 0.72, 0.82);
-
-    const flightMs = range(rng, 260, 330);
-    const rollMs = range(rng, 1480, 1720);
-    const settleMs = range(rng, 220, 280);
-    const durationMs = flightMs + rollMs + settleMs;
     const impactAt = flightMs / durationMs;
-    const settleAt = (flightMs + rollMs) / durationMs;
+    const settleAt = (flightMs + bounceMs * bounceCount) / durationMs;
 
+    // The result is known before the visual roll starts, so the entire angular path
+    // is planned from the final orientation. These residual turns are present at
+    // frame zero and continuously decay to identity. There is no late correction.
     const animation: RollAnimation = {
       startedAt: performance.now(),
       durationMs,
       result,
       startPosition,
       impactPosition,
-      rollDirection,
-      rollDistance,
-      settleDistance,
-      curveOffset,
-      speedExponent,
-      wobblePhase: rng() * TAU,
-      startScale: range(rng, 0.42, 0.452),
-      contactScale,
-      effectiveRollingRadius,
+      spinAxisA,
+      spinAxisB,
+      spinTurnsA: range(rng, 3.75, 5.15) * side,
+      spinTurnsB: range(rng, 1.35, 2.35) * (rng() > 0.5 ? 1 : -1),
+      bounceCount,
+      bounceHeight: range(rng, 0.14, 0.2),
+      lateralTravel: range(rng, 0.52, 0.72),
+      depthTravel: range(rng, 0.26, 0.42),
+      startScale: range(rng, 0.42, 0.47),
+      impactScale: range(rng, 0.29, 0.33),
       impactAt,
       settleAt,
       target,
-      orientationSamples: [],
     };
 
-    // Build ABSOLUTE orientation samples anchored on the final target.
-    //
-    // The last sample is literally `target`. Every previous sample is solved
-    // backwards while preserving the exact same incremental rolling delta
-    // between adjacent samples. There is therefore no final correction phase.
-    animation.orientationSamples = this.buildOrientationSamples(animation);
-
     this.die.position.copy(startPosition);
-    this.die.quaternion.copy(animation.orientationSamples[0]);
+    this.die.quaternion.copy(this.getPlannedQuaternion(animation, 0));
     this.die.scale.setScalar(animation.startScale);
     this.animation = animation;
     this.rafId = requestAnimationFrame(this.tick);
@@ -261,9 +250,7 @@ export class D20Scene {
 
     if (p >= 1) {
       this.die.position.copy(FINAL_POSITION);
-      // Do NOT overwrite quaternion here. updateRotation(p=1) has already
-      // selected orientationSamples[last], which is exactly the target.
-      // Keeping this untouched makes a corrective final snap impossible.
+      this.die.quaternion.copy(animation.target);
       this.die.scale.setScalar(TABLE_REST_SCALE);
       this.highlightResult(animation.result, 1);
       this.revealLight.intensity = 2.4;
@@ -281,300 +268,159 @@ export class D20Scene {
     const {
       impactAt,
       settleAt,
+      bounceCount,
       impactPosition,
+      lateralTravel,
+      depthTravel,
       startScale,
-      contactScale,
+      impactScale,
     } = animation;
+    const side = Math.sign(animation.startPosition.x) || 1;
 
     if (p < impactAt) {
-      const u = THREE.MathUtils.clamp(p / impactAt, 0, 1);
+      const u = p / impactAt;
       const travel = easeInOutQuad(u);
-      const scale = THREE.MathUtils.lerp(
-        startScale,
-        contactScale,
-        smootherstep(u),
-      );
+      const arc = Math.sin(u * Math.PI) * 0.52;
 
-      const contactY = TABLE_PLANE_Y + RADIUS * scale;
-      const arc = Math.sin(u * Math.PI) * 0.065;
+      // Broad diagonal throw across the tabletop. The die moves away from the
+      // camera while it drops, so both position and apparent size communicate
+      // the same descent instead of looking like a spinner fixed in one spot.
+      const fallScale = THREE.MathUtils.lerp(startScale, impactScale, smootherstep(u));
+      const airPulse = Math.sin(u * Math.PI) * 0.008;
+      const apparentScale = fallScale + airPulse;
+      const impactContactY = TABLE_PLANE_Y + RADIUS * impactScale;
 
       this.die.position.set(
         THREE.MathUtils.lerp(animation.startPosition.x, impactPosition.x, travel),
-        THREE.MathUtils.lerp(animation.startPosition.y, contactY, u) + arc,
+        THREE.MathUtils.lerp(animation.startPosition.y, impactContactY, u) + arc,
         THREE.MathUtils.lerp(animation.startPosition.z, impactPosition.z, travel),
       );
-      this.die.scale.setScalar(scale);
+
+      // Perspective scale is now deliberately moderate: the die still reads as
+      // falling away from the camera, but the contact size is close enough to the
+      // rest size that the first bounce does not look rubbery.
+      this.die.scale.setScalar(apparentScale);
       return;
     }
 
     if (p < settleAt) {
-      const u = THREE.MathUtils.clamp(
+      const bounceProgress = THREE.MathUtils.clamp(
         (p - impactAt) / (settleAt - impactAt),
         0,
         1,
       );
+      const bounceFloat = Math.min(bounceProgress * bounceCount, bounceCount - 1e-6);
+      const bounceIndex = Math.floor(bounceFloat);
+      const local = bounceFloat - bounceIndex;
+      const energy = 0.66 ** bounceIndex;
+      const height = animation.bounceHeight * energy;
+      const bounce = Math.sin(local * Math.PI) * height;
 
-      const progress = this.getRollProgress(animation, u);
-      const planar = this.getRollingPlanarPosition(animation, progress);
+      // Keep rolling across the table between contacts instead of converging to
+      // the centre immediately. The damped sine adds visible lateral travel while
+      // the base path still guarantees a clean final rest position.
+      const travel = easeOutQuad(bounceProgress);
+      const lateralWave =
+        Math.sin(bounceProgress * Math.PI * (bounceCount + 0.45)) *
+        side *
+        lateralTravel *
+        (1 - bounceProgress);
+      const depthWave =
+        Math.sin(bounceProgress * Math.PI * (bounceCount * 0.8 + 0.7)) *
+        depthTravel *
+        (1 - bounceProgress);
 
-      // Edge chatter is tied to the remaining speed and angular travel, so it
-      // naturally vanishes as the die slows. It never creates a visible bounce.
-      const speedRatio = this.getRollSpeedRatio(animation, u);
-      const travelled =
-        animation.rollDistance * progress;
-      const chatterPhase =
-        (travelled / animation.effectiveRollingRadius) * 2.15 +
-        animation.wobblePhase;
-      const chatter =
-        Math.abs(Math.sin(chatterPhase)) * 0.0045 * speedRatio;
-
-      const scale = THREE.MathUtils.lerp(
-        contactScale,
+      // Each contact sits on the same virtual tabletop regardless of scale.
+      // That prevents a smaller die from hovering above the old scale(1) floor.
+      const baseScale = THREE.MathUtils.lerp(
+        impactScale,
         TABLE_REST_SCALE,
-        progress,
+        easeOutCubic(bounceProgress),
       );
-      const contactY = TABLE_PLANE_Y + RADIUS * scale;
+      const perspectiveBounce = Math.sin(local * Math.PI) * 0.035 * energy;
+      const apparentScale = baseScale + perspectiveBounce;
+      const contactY = TABLE_PLANE_Y + RADIUS * apparentScale;
 
-      this.die.position.set(planar.x, contactY + chatter, planar.z);
-      this.die.scale.setScalar(scale);
+      this.die.position.set(
+        THREE.MathUtils.lerp(impactPosition.x, FINAL_POSITION.x, travel) + lateralWave,
+        contactY + bounce,
+        THREE.MathUtils.lerp(impactPosition.z, FINAL_POSITION.z, travel) + depthWave,
+      );
+
+      // Contact deformation is now extremely restrained. The visible bounce comes
+      // primarily from position, not from turning the d20 into a rubber ball.
+      const contact = Math.exp(-local * 20) * energy;
+      const stretch = Math.sin(local * Math.PI) * 0.006 * energy;
+      this.die.scale.set(
+        apparentScale * (1 + contact * 0.018 - stretch),
+        apparentScale * (1 - contact * 0.026 + stretch * 1.2),
+        apparentScale * (1 + contact * 0.018 - stretch),
+      );
       return;
     }
 
     const u = THREE.MathUtils.clamp((p - settleAt) / (1 - settleAt), 0, 1);
-    const settleProgress = deceleratingProgress(u, 2.65);
-    const rollEnd = animation.impactPosition
-      .clone()
-      .addScaledVector(animation.rollDirection, animation.rollDistance);
+    const settleTravel = easeOutCubic(u);
+    const settleBob = Math.sin(u * Math.PI) * 0.01 * (1 - u);
+    const settleDrift = Math.sin(u * Math.PI * 1.5) * side * 0.04 * (1 - u);
 
-    this.die.position.copy(
-      rollEnd.addScaledVector(
-        animation.rollDirection,
-        animation.settleDistance * settleProgress,
-      ),
+    this.die.position.set(
+      FINAL_POSITION.x + settleDrift * (1 - settleTravel * 0.35),
+      FINAL_POSITION.y + settleBob,
+      FINAL_POSITION.z,
     );
-    this.die.position.y = TABLE_PLANE_Y + RADIUS * TABLE_REST_SCALE;
-    this.die.scale.setScalar(TABLE_REST_SCALE);
-  }
 
-  private getRollProgress(animation: RollAnimation, u: number): number {
-    return deceleratingProgress(u, animation.speedExponent);
-  }
-
-  private getRollSpeedRatio(animation: RollAnimation, u: number): number {
-    const clamped = THREE.MathUtils.clamp(u, 0, 1);
-    // Normalized derivative of 1-(1-u)^n.
-    return (1 - clamped) ** (animation.speedExponent - 1);
-  }
-
-  private getRollingPlanarPosition(
-    animation: RollAnimation,
-    progress: number,
-  ): THREE.Vector3 {
-    const clamped = THREE.MathUtils.clamp(progress, 0, 1);
-    const forward = animation.rollDirection;
-    const perpendicular = new THREE.Vector3(-forward.z, 0, forward.x);
-
-    const forwardDistance = animation.rollDistance * clamped;
-
-    // A single smooth bow: zero at both endpoints. Its derivative can steer
-    // sideways, but projection onto `forward` is always +forwardDistance, so
-    // the die can never travel backward along its launch direction.
-    const sideOffset =
-      Math.sin(clamped * Math.PI) *
-      animation.curveOffset *
-      (1 - clamped * 0.18);
-
-    return animation.impactPosition
-      .clone()
-      .addScaledVector(forward, forwardDistance)
-      .addScaledVector(perpendicular, sideOffset);
-  }
-
-
-  private getCurrentSpeedRatio(animation: RollAnimation, p: number): number {
-    if (p < animation.impactAt) return 1;
-
-    if (p < animation.settleAt) {
-      const u = THREE.MathUtils.clamp(
-        (p - animation.impactAt) /
-          (animation.settleAt - animation.impactAt),
-        0,
-        1,
-      );
-      return this.getRollSpeedRatio(animation, u);
-    }
-
-    const u = THREE.MathUtils.clamp(
-      (p - animation.settleAt) / (1 - animation.settleAt),
-      0,
-      1,
+    const overshoot = Math.sin(u * Math.PI) * 0.005 * (1 - u);
+    this.die.scale.set(
+      TABLE_REST_SCALE - overshoot,
+      TABLE_REST_SCALE + overshoot * 1.35,
+      TABLE_REST_SCALE - overshoot,
     );
-    return (1 - u) ** 1.65;
   }
 
   private updateRotation(animation: RollAnimation, p: number): void {
-    const samplePosition =
-      THREE.MathUtils.clamp(p, 0, 1) * ROTATION_SAMPLE_COUNT;
-    const sampleIndex = Math.min(
-      ROTATION_SAMPLE_COUNT - 1,
-      Math.floor(samplePosition),
-    );
-    const local = samplePosition - sampleIndex;
-
-    const from =
-      animation.orientationSamples[sampleIndex];
-    const to =
-      animation.orientationSamples[
-        Math.min(sampleIndex + 1, ROTATION_SAMPLE_COUNT)
-      ];
-
-    // Adjacent samples differ only by the small physical rolling increment.
-    // With 480 samples this interpolation stays well below the quaternion
-    // shortest-path ambiguity threshold and preserves the intended roll sense.
-    this.die.quaternion
-      .copy(from)
-      .slerp(to, local)
-      .normalize();
+    this.die.quaternion.copy(this.getPlannedQuaternion(animation, p));
   }
 
-  private buildOrientationSamples(
-    animation: RollAnimation,
-  ): THREE.Quaternion[] {
-    // First build the incremental world-space rolling delta for every sample.
-    const stepDeltas: THREE.Quaternion[] = [
-      new THREE.Quaternion(),
-    ];
+  private getPlannedQuaternion(animation: RollAnimation, p: number): THREE.Quaternion {
+    const progress = this.getAngularProgress(animation, p);
+    const remaining = 1 - progress;
 
-    let previous = this.getPlanarPositionAt(animation, 0);
+    // Both residual rotations are defined relative to the already-known final
+    // orientation. At p = 1 their angles are exactly zero, so q == target by
+    // construction rather than through a correction/slerp phase.
+    const residualA = new THREE.Quaternion().setFromAxisAngle(
+      animation.spinAxisA,
+      animation.spinTurnsA * TAU * remaining,
+    );
+    const residualB = new THREE.Quaternion().setFromAxisAngle(
+      animation.spinAxisB,
+      animation.spinTurnsB * TAU * remaining,
+    );
 
-    for (let i = 1; i <= ROTATION_SAMPLE_COUNT; i += 1) {
-      const p = i / ROTATION_SAMPLE_COUNT;
-      const current = this.getPlanarPositionAt(animation, p);
-      const delta = current.clone().sub(previous);
-      delta.y = 0;
-
-      const travelled = delta.length();
-      const step = new THREE.Quaternion();
-
-      if (travelled > 1e-8) {
-        const forward = delta.multiplyScalar(1 / travelled);
-
-        // Sole rolling axis:
-        // current horizontal forward × world-up.
-        //
-        // This axis is always horizontal, perpendicular to current movement,
-        // and follows any gentle curvature of the trajectory.
-        const rollAxis = forward
-          .clone()
-          .cross(WORLD_UP)
-          .normalize();
-
-        const speedRatio = this.getCurrentSpeedRatio(animation, p);
-        const initialSpinBoost =
-          1.08 + 1.85 * Math.pow(speedRatio, 1.15);
-
-        const angle =
-          -(
-            (travelled / animation.effectiveRollingRadius) *
-            initialSpinBoost
-          );
-
-        step.setFromAxisAngle(rollAxis, angle).normalize();
-      }
-
-      stepDeltas.push(step);
-      previous = current;
-    }
-
-    // Solve ABSOLUTE orientations backwards from the exact final target.
-    //
-    // Forward rolling relation:
-    //   Q[i] = step[i] * Q[i - 1]
-    //
-    // Therefore backwards:
-    //   Q[i - 1] = inverse(step[i]) * Q[i]
-    //
-    // This preserves every rolling increment exactly while guaranteeing:
-    //   Q[last] === target
-    const orientations: THREE.Quaternion[] =
-      new Array(ROTATION_SAMPLE_COUNT + 1);
-
-    orientations[ROTATION_SAMPLE_COUNT] =
-      animation.target.clone().normalize();
-
-    for (let i = ROTATION_SAMPLE_COUNT; i >= 1; i -= 1) {
-      orientations[i - 1] = stepDeltas[i]
-        .clone()
-        .invert()
-        .multiply(orientations[i])
-        .normalize();
-    }
-
-    return orientations;
+    return animation.target.clone().multiply(residualA).multiply(residualB).normalize();
   }
 
-  private getPlanarPositionAt(
-    animation: RollAnimation,
-    p: number,
-  ): THREE.Vector3 {
-    const clamped = THREE.MathUtils.clamp(p, 0, 1);
+  private getAngularProgress(animation: RollAnimation, p: number): number {
+    const { impactAt, settleAt } = animation;
 
-    if (clamped < animation.impactAt) {
-      const u = THREE.MathUtils.clamp(
-        clamped / animation.impactAt,
-        0,
-        1,
-      );
-      const travel = easeInOutQuad(u);
-
-      return new THREE.Vector3(
-        THREE.MathUtils.lerp(
-          animation.startPosition.x,
-          animation.impactPosition.x,
-          travel,
-        ),
-        0,
-        THREE.MathUtils.lerp(
-          animation.startPosition.z,
-          animation.impactPosition.z,
-          travel,
-        ),
-      );
+    if (p < impactAt) {
+      const u = THREE.MathUtils.clamp(p / impactAt, 0, 1);
+      // Most of the angular energy is carried by the initial throw.
+      return THREE.MathUtils.lerp(0, 0.58, easeOutQuad(u));
     }
 
-    if (clamped < animation.settleAt) {
-      const u = THREE.MathUtils.clamp(
-        (clamped - animation.impactAt) /
-          (animation.settleAt - animation.impactAt),
-        0,
-        1,
-      );
-      const progress = this.getRollProgress(animation, u);
-      const planar = this.getRollingPlanarPosition(animation, progress);
-      planar.y = 0;
-      return planar;
+    if (p < settleAt) {
+      const u = THREE.MathUtils.clamp((p - impactAt) / (settleAt - impactAt), 0, 1);
+      // The requested orientation is reached AT the final ground contact, not
+      // afterwards. easeOutCubic makes the angular velocity collapse before
+      // that contact, so the last face reads as a natural landing.
+      return THREE.MathUtils.lerp(0.58, 1, easeOutCubic(u));
     }
 
-    const u = THREE.MathUtils.clamp(
-      (clamped - animation.settleAt) /
-        (1 - animation.settleAt),
-      0,
-      1,
-    );
-    const settleProgress = deceleratingProgress(u, 2.65);
-    const rollEnd = animation.impactPosition
-      .clone()
-      .addScaledVector(
-        animation.rollDirection,
-        animation.rollDistance,
-      );
-
-    return rollEnd
-      .addScaledVector(
-        animation.rollDirection,
-        animation.settleDistance * settleProgress,
-      )
-      .setY(0);
+    // Once the last rebound has touched down, rotation is locked. The remaining
+    // settle animation may move/scale the die but can never rotate it into place.
+    return 1;
   }
 
   private updateReveal(animation: RollAnimation, p: number): void {
@@ -1020,11 +866,6 @@ function range(rng: () => number, min: number, max: number): number {
 
 function easeOutQuad(t: number): number {
   return 1 - (1 - t) * (1 - t);
-}
-
-function deceleratingProgress(t: number, exponent: number): number {
-  const clamped = THREE.MathUtils.clamp(t, 0, 1);
-  return 1 - (1 - clamped) ** exponent;
 }
 
 function easeOutCubic(t: number): number {

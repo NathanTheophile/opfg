@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Badge } from '@/components/ui';
 import { rollD20 } from '@/game/engine/dice';
-import { DicePanel, type DicePanelStatus } from '@/features/dice/DicePanel';
+import { DiceTableStage, type DiceTableStageStatus } from '@/features/dice/DiceTableStage';
 import { PlayerStatsRail } from './PlayerStatsRail';
 import { TopWorldHud } from './TopWorldHud';
 import { CrewRail } from './CrewRail';
@@ -74,13 +74,13 @@ const PANEL_TRANSITION = { duration: 0.28, ease: PANEL_EASE };
 const RESULT_HOLD_MS = 820;
 
 type ResolvedDiceStatus = Extract<
-  DicePanelStatus,
+  DiceTableStageStatus,
   'success' | 'failure' | 'criticalSuccess' | 'criticalFailure'
 >;
 
 interface PendingDice {
   choice: EventChoiceViewModel;
-  status: DicePanelStatus;
+  status: DiceTableStageStatus;
   modifier: number;
   result?: number;
   rollKey?: number;
@@ -129,6 +129,9 @@ export function EventPreview() {
   const [previewRngState, setPreviewRngState] = useState(0x0f6a2d91);
   const [pendingDice, setPendingDice] = useState<PendingDice | null>(null);
   const resolutionTimerRef = useRef<number | null>(null);
+  const eventMeasureRef = useRef<HTMLDivElement | null>(null);
+  const [eventExpandedHeight, setEventExpandedHeight] = useState<number | null>(null);
+  const [eventHeaderHeight, setEventHeaderHeight] = useState(104);
 
   useEffect(() => {
     return () => {
@@ -136,6 +139,34 @@ export function EventPreview() {
         window.clearTimeout(resolutionTimerRef.current);
       }
     };
+  }, []);
+
+  useLayoutEffect(() => {
+    const node = eventMeasureRef.current;
+    if (!node) return;
+
+    const measure = () => {
+      const fullHeight = Math.ceil(node.getBoundingClientRect().height);
+      if (fullHeight > 0) setEventExpandedHeight(fullHeight);
+
+      const panel = node.querySelector(':scope > section');
+      const header = panel?.firstElementChild as HTMLElement | null;
+      const divider = header?.nextElementSibling as HTMLElement | null;
+
+      if (header) {
+        const measuredHeaderHeight =
+          Math.ceil(header.getBoundingClientRect().height) +
+          Math.ceil(divider?.getBoundingClientRect().height ?? 1);
+
+        setEventHeaderHeight(Math.max(72, measuredHeaderHeight));
+      }
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+
+    return () => observer.disconnect();
   }, []);
 
   const selectChoice = (choice: EventChoiceViewModel) => {
@@ -240,13 +271,30 @@ export function EventPreview() {
               ) : (
                 <motion.div
                   key="event"
-                  className={pendingDice ? 'pointer-events-none select-none' : undefined}
+                  className={`relative rounded-[var(--radius-panel)] ${
+                    pendingDice ? 'pointer-events-none select-none' : ''
+                  }`}
                   initial={{ opacity: 0, y: 12, scale: 0.992 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    height: pendingDice
+                      ? eventHeaderHeight
+                      : eventExpandedHeight ?? 'auto',
+                  }}
                   exit={{ opacity: 0, y: -8, scale: 0.996 }}
-                  transition={PANEL_TRANSITION}
+                  transition={{
+                    opacity: PANEL_TRANSITION,
+                    y: PANEL_TRANSITION,
+                    scale: PANEL_TRANSITION,
+                    height: { duration: 0.42, ease: PANEL_EASE },
+                  }}
+                  style={{ overflow: 'hidden' }}
                 >
-                  <EventPanel event={MOCK_EVENT} onChoice={selectChoice} />
+                  <div ref={eventMeasureRef}>
+                    <EventPanel event={MOCK_EVENT} onChoice={selectChoice} />
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -260,36 +308,16 @@ export function EventPreview() {
         </div>
       </div>
 
-      <motion.div
-        className={`fixed inset-0 z-[80] flex items-center justify-center p-4 ${
-          showDice ? 'pointer-events-none visible' : 'pointer-events-none invisible'
-        }`}
-        aria-hidden={!showDice}
-        initial={false}
-        animate={{ opacity: showDice ? 1 : 0 }}
-        transition={{ duration: 0.16 }}
-      >
-        <motion.div
-          className={showDice ? 'pointer-events-auto' : 'pointer-events-none'}
-          initial={false}
-          animate={{
-            opacity: showDice ? 1 : 0,
-            scale: showDice ? 1 : 0.94,
-            y: showDice ? 0 : 8,
-          }}
-          transition={PANEL_TRANSITION}
-        >
-          <DicePanel
-            status={pendingDice?.status ?? 'armed'}
-            modifier={pendingDice?.modifier ?? 0}
-            statLabel={pendingDice?.choice.dice?.statLabel}
-            result={pendingDice?.result}
-            rollKey={pendingDice?.rollKey}
-            onRoll={rollPendingDice}
-            onComplete={completeDiceRoll}
-          />
-        </motion.div>
-      </motion.div>
+      <DiceTableStage
+        visible={showDice}
+        status={pendingDice?.status ?? 'armed'}
+        modifier={pendingDice?.modifier ?? 0}
+        statLabel={pendingDice?.choice.dice?.statLabel}
+        result={pendingDice?.result}
+        rollKey={pendingDice?.rollKey}
+        onRoll={rollPendingDice}
+        onComplete={completeDiceRoll}
+      />
     </main>
   );
 }
