@@ -217,12 +217,34 @@ export function EventPreview() {
         <TopWorldHud />
 
         <div className="relative mx-auto mt-4 w-full max-w-[52rem]">
-          <div className="absolute right-[calc(100%+1rem)] top-0 z-10 hidden w-[14rem] justify-end xl:flex">
+          <div className="absolute right-[calc(100%+1rem)] top-0 z-10 hidden xl:block">
             <PlayerStatsRail />
           </div>
 
-          <div className="absolute left-[calc(100%+1rem)] top-0 z-10 hidden xl:block">
+          <div className="absolute left-[calc(100%+1rem)] top-0 z-10 hidden xl:grid gap-4">
             <CrewRail />
+
+            <AnimatePresence initial={false}>
+              {pendingDice && (
+                <motion.div
+                  key={pendingDice.choice.id}
+                  initial={{ opacity: 0, scale: 0.94, y: 8 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.96, y: 6 }}
+                  transition={PANEL_TRANSITION}
+                >
+                  <DicePanel
+                    status={pendingDice.status}
+                    modifier={pendingDice.modifier}
+                    statLabel={pendingDice.choice.dice?.statLabel}
+                    result={pendingDice.result}
+                    rollKey={pendingDice.rollKey}
+                    onRoll={rollPendingDice}
+                    onComplete={completeDiceRoll}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <div className="min-w-0">
@@ -257,39 +279,30 @@ export function EventPreview() {
             <CrewRail />
           </div>
 
+          <AnimatePresence initial={false}>
+            {pendingDice && (
+              <motion.div
+                key={`${pendingDice.choice.id}-compact`}
+                className="mt-4 flex justify-end xl:hidden"
+                initial={{ opacity: 0, scale: 0.94, y: 8 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: 6 }}
+                transition={PANEL_TRANSITION}
+              >
+                <DicePanel
+                  status={pendingDice.status}
+                  modifier={pendingDice.modifier}
+                  statLabel={pendingDice.choice.dice?.statLabel}
+                  result={pendingDice.result}
+                  rollKey={pendingDice.rollKey}
+                  onRoll={rollPendingDice}
+                  onComplete={completeDiceRoll}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
-
-      <motion.div
-        className={`fixed inset-0 z-[80] flex items-center justify-center p-4 ${
-          showDice ? 'pointer-events-none visible' : 'pointer-events-none invisible'
-        }`}
-        aria-hidden={!showDice}
-        initial={false}
-        animate={{ opacity: showDice ? 1 : 0 }}
-        transition={{ duration: 0.16 }}
-      >
-        <motion.div
-          className={showDice ? 'pointer-events-auto' : 'pointer-events-none'}
-          initial={false}
-          animate={{
-            opacity: showDice ? 1 : 0,
-            scale: showDice ? 1 : 0.94,
-            y: showDice ? 0 : 8,
-          }}
-          transition={PANEL_TRANSITION}
-        >
-          <DicePanel
-            status={pendingDice?.status ?? 'armed'}
-            modifier={pendingDice?.modifier ?? 0}
-            statLabel={pendingDice?.choice.dice?.statLabel}
-            result={pendingDice?.result}
-            rollKey={pendingDice?.rollKey}
-            onRoll={rollPendingDice}
-            onComplete={completeDiceRoll}
-          />
-        </motion.div>
-      </motion.div>
     </main>
   );
 }

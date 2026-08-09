@@ -137,6 +137,14 @@ describe('probability preview', () => {
 });
 
 describe('DiceResolution integration', () => {
+  it('uses agility without special-case handling', () => {
+    const state = createInitialGameState();
+    state.player.stats.agility = 35;
+    expect(evaluateDiceRoll(resolution({ statId: 'agility' }), state, 12)).toMatchObject({
+      statId: 'agility', statValue: 35, statModifier: 2,
+    });
+  });
+
   it('applies one of four Outcomes and exposes transient diagnostics', () => {
     const state = createInitialGameState(123);
     state.currentEventId = 'reefs';

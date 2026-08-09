@@ -1,0 +1,200 @@
+.opfg-top-world-hud {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(14rem, 0.78fr) 1px minmax(0, 1fr);
+  min-height: 6.4rem;
+  overflow: visible;
+  box-shadow: var(--shadow-overlay);
+}
+
+.opfg-top-world-hud__section {
+  min-width: 0;
+  padding: 1rem 1.25rem;
+}
+
+.opfg-top-world-hud__divider {
+  align-self: stretch;
+  background: var(--border-subtle);
+}
+
+.opfg-top-world-hud__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.42rem;
+  color: var(--gold);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.opfg-top-world-hud__primary {
+  margin-top: 0.32rem;
+  overflow: hidden;
+  color: var(--text-primary);
+  font-size: 1.08rem;
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.opfg-top-world-hud__secondary {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.9rem;
+  margin-top: 0.38rem;
+  color: var(--text-muted);
+  font-size: 0.73rem;
+  font-weight: 600;
+}
+
+.opfg-top-world-hud__secondary span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  min-width: 0;
+}
+
+.opfg-top-world-hud__time {
+  position: relative;
+  padding-top: 1.45rem;
+  text-align: center;
+}
+
+.opfg-top-world-hud__time .opfg-top-world-hud__eyebrow,
+.opfg-top-world-hud__time .opfg-top-world-hud__secondary {
+  justify-content: center;
+}
+
+.opfg-top-world-hud__character-name {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  max-width: calc(100% - 1.5rem);
+  padding: 0.08rem 0.9rem 0.14rem;
+  color: var(--gold);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.05rem, 1.4vw, 1.35rem);
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  line-height: 1;
+  text-shadow:
+    0 2px 10px oklch(0 0 0 / 54%),
+    0 0 18px oklch(0.68 0.13 74 / 18%);
+  white-space: nowrap;
+}
+
+.opfg-top-world-hud__character-name::before,
+.opfg-top-world-hud__character-name::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 1.2rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor);
+  opacity: 0.6;
+}
+
+.opfg-top-world-hud__character-name::before {
+  right: 100%;
+  margin-right: 0.15rem;
+}
+
+.opfg-top-world-hud__character-name::after {
+  left: 100%;
+  margin-left: 0.15rem;
+  transform: scaleX(-1);
+}
+
+.opfg-top-world-hud__ship {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 0.75rem;
+  align-items: center;
+  padding-bottom: 1.2rem;
+}
+
+.opfg-top-world-hud__ship-icon {
+  display: grid;
+  width: 2.6rem;
+  height: 2.6rem;
+  place-items: center;
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--gold);
+  box-shadow: var(--shadow-control);
+}
+
+.opfg-top-world-hud__ship-copy {
+  min-width: 0;
+}
+
+.opfg-top-world-hud__ship-condition {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 0.72rem;
+  left: 4.6rem;
+  height: 0.22rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-soft);
+}
+
+.opfg-top-world-hud__ship-condition span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--gold);
+  opacity: 0.78;
+}
+
+@media (max-width: 64rem) {
+  .opfg-top-world-hud {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .opfg-top-world-hud__divider {
+    display: none;
+  }
+
+  .opfg-top-world-hud__ship {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--border-subtle);
+  }
+}
+
+@media (max-width: 40rem) {
+  .opfg-top-world-hud {
+    grid-template-columns: 1fr;
+  }
+
+  .opfg-top-world-hud__section {
+    padding: 0.8rem 1rem;
+  }
+
+  .opfg-top-world-hud__time {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 1.1rem;
+    text-align: left;
+  }
+
+  .opfg-top-world-hud__time .opfg-top-world-hud__eyebrow,
+  .opfg-top-world-hud__time .opfg-top-world-hud__secondary {
+    justify-content: flex-start;
+  }
+
+  .opfg-top-world-hud__character-name {
+    left: 1rem;
+    transform: translateY(-55%);
+  }
+
+  .opfg-top-world-hud__ship {
+    grid-column: auto;
+  }
+}

@@ -14,17 +14,17 @@ export function EventPanel({ event, onChoice }: EventPanelProps) {
       padding="none"
       className="w-full overflow-hidden shadow-overlay"
     >
-      <PanelHeader className="mb-0 px-5 pb-4 pt-5 md:px-7 md:pb-5 md:pt-6">
+      <PanelHeader className="mb-0 bg-gradient-to-b from-black/[0.38] to-black/[0.24] px-5 pb-3 pt-3 md:px-7 md:pb-3 md:pt-4">
         {event.eyebrow && (
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold">{event.eyebrow}</p>
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-gold">{event.eyebrow}</p>
         )}
-        <PanelTitle className="text-2xl md:text-[1.75rem]">{event.title}</PanelTitle>
+        <PanelTitle className="text-xl md:text-2xl">{event.title}</PanelTitle>
       </PanelHeader>
 
       <div className="h-px bg-[var(--border-subtle)]" />
 
-      <PanelBody className="px-5 py-5 md:px-7 md:py-6">
-        <p className="max-w-[68ch] text-[0.98rem] leading-7 text-fg-secondary md:text-base md:leading-7">
+      <PanelBody className="px-5 pb-4 pt-3 md:px-7 md:pb-5 md:pt-4">
+        <p className="max-w-[68ch] text-sm leading-6 text-fg-secondary md:text-[0.94rem] md:leading-6">
           {event.body}
         </p>
       </PanelBody>

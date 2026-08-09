@@ -1,0 +1,153 @@
+.opfg-player-stats-module {
+  width: 4.75rem;
+  display: grid;
+  gap: 0.42rem;
+  transition: width 220ms var(--ease-standard);
+}
+
+.opfg-player-stats-module.is-expanded {
+  width: 12.5rem;
+}
+
+.opfg-player-stats-header {
+  display: flex;
+  width: 100%;
+  min-height: 2.65rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.42rem 0.62rem;
+  background: linear-gradient(rgb(0 0 0 / 35%), rgb(0 0 0 / 35%)), var(--surface);
+  box-shadow: var(--shadow-control);
+  color: var(--gold);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.opfg-player-stats-rail {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  transition: box-shadow 220ms var(--ease-standard);
+}
+
+.opfg-player-stats-rail__toggle {
+  position: absolute;
+  z-index: 4;
+  top: -0.72rem;
+  right: -0.72rem;
+  display: grid;
+  width: 1.6rem;
+  height: 1.6rem;
+  place-items: center;
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  background: var(--surface-strong);
+  color: var(--text-muted);
+  box-shadow: var(--shadow-control);
+  cursor: pointer;
+  transition:
+    color 160ms var(--ease-standard),
+    border-color 160ms var(--ease-standard),
+    transform 160ms var(--ease-standard);
+}
+
+.opfg-player-stats-rail__toggle:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+  transform: scale(1.06);
+}
+
+.opfg-player-stats-rail__list {
+  display: grid;
+  padding: 0.8rem 0.45rem 0.65rem;
+}
+
+.opfg-player-stat {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.35rem minmax(1.75rem, 1fr);
+  min-height: 2.45rem;
+  align-items: center;
+  column-gap: 0.35rem;
+  border-radius: var(--radius-control);
+  padding: 0.25rem 0.3rem;
+  color: var(--text-secondary);
+  transition:
+    background-color 150ms var(--ease-standard),
+    color 150ms var(--ease-standard);
+}
+
+.opfg-player-stats-module.is-expanded .opfg-player-stat {
+  grid-template-columns: 1.5rem minmax(0, 1fr) minmax(1.9rem, auto);
+  column-gap: 0.45rem;
+}
+
+.opfg-player-stat:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.opfg-player-stat__icon {
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+}
+
+.opfg-player-stat__label {
+  display: none;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.opfg-player-stats-module.is-expanded .opfg-player-stat__label {
+  display: block;
+}
+
+.opfg-player-stat__value {
+  justify-self: end;
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tooltip only while compact. */
+.opfg-player-stats-module:not(.is-expanded) .opfg-player-stat::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  z-index: 20;
+  left: calc(100% + 0.65rem);
+  top: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-0.25rem, -50%);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+  padding: 0.36rem 0.52rem;
+  background: var(--surface-strong);
+  box-shadow: var(--shadow-control);
+  color: var(--text-primary);
+  font-size: 0.72rem;
+  font-weight: 650;
+  white-space: nowrap;
+  transition:
+    opacity 120ms var(--ease-standard),
+    transform 120ms var(--ease-standard);
+}
+
+.opfg-player-stats-module:not(.is-expanded) .opfg-player-stat:hover::after {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-player-stats-module,
+  .opfg-player-stats-rail,
+  .opfg-player-stat,
+  .opfg-player-stats-rail__toggle,
+  .opfg-player-stats-module:not(.is-expanded) .opfg-player-stat::after {
+    transition: none;
+  }
+}

@@ -17,7 +17,7 @@ assertValidContent(contentCatalog);
 let fallbackSeed = Date.now() >>> 0;
 
 const STAT_LABEL_KEYS: Record<StatId, string> = {
-  health: 'stat.health', morale: 'stat.morale', strength: 'stat.strength', observation: 'stat.observation',
+  health: 'stat.health', morale: 'stat.morale', strength: 'stat.strength', agility: 'stat.agility', observation: 'stat.observation',
   intelligence: 'stat.intelligence', navigation: 'stat.navigation', charisma: 'stat.charisma', luck: 'stat.luck', awakening: 'stat.awakening',
 };
 

@@ -42,6 +42,7 @@ La valeur de référence initiale est `25`, mais les Origins peuvent déjà diff
 | Santé | `health` |
 | Moral | `morale` |
 | Force | `strength` |
+| Agilité | `agility` |
 | Observation | `observation` |
 | Intelligence | `intelligence` |
 | Navigation | `navigation` |
@@ -49,7 +50,7 @@ La valeur de référence initiale est `25`, mais les Origins peuvent déjà diff
 | Chance | `luck` |
 | Éveil | `awakening` |
 
-La plage normale est `0–50`. `awakening` reste `null` et inaccessible tant que son système n’est pas activé. La valeur technique de départ actuelle est `25`, avant modifications des Origins.
+La plage normale est `0–50`. `awakening` reste `null` et inaccessible tant que son système n’est pas activé. La valeur technique de départ actuelle est `25`, avant modifications des Origins. `agility` suit le même tableau de modificateurs D20 que les autres statistiques et sert notamment aux actions de mobilité, esquive, fuite, équilibre, escalade, acrobaties et précision corporelle. Aucune statistique `dexterity` ou « adresse » distincte n’est créée à ce stade ; Observation conserve son nom et son rôle.
 
 ### Modificateur D20 dérivé
 

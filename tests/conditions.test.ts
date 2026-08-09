@@ -19,4 +19,10 @@ describe('conditions v2', () => {
     expect(evaluateCondition({ type: 'shipHealthAtLeast', value: 0 }, state)).toBe(false);
     expect(evaluateCondition({ type: 'shipHealthAtMost', value: 30 }, state)).toBe(false);
   });
+
+  it('supports agility as a regular player stat', () => {
+    const state = createInitialGameState();
+    state.player.stats.agility = 30;
+    expect(evaluateCondition({ type: 'statAtLeast', statId: 'agility', value: 30 }, state)).toBe(true);
+  });
 });
