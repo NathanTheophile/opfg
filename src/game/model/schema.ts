@@ -33,6 +33,7 @@ export interface PlayerStats {
   health: number;
   morale: number;
   strength: number;
+  agility: number;
   observation: number;
   intelligence: number;
   navigation: number;

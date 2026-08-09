@@ -1,7 +1,7 @@
 import type { CareerEndReason, CareerPhase, GameState, ItemStack, NpcState, NpcStats, ShipState, TravelState } from '../model/schema';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 9;
+const CURRENT_SAVE_VERSION = 10;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
@@ -64,6 +64,7 @@ function readGameState(value: unknown): GameState | null {
   if (!isStatValue(value.player.stats.health)) return null;
   if (!isStatValue(value.player.stats.morale)) return null;
   if (!isStatValue(value.player.stats.strength)) return null;
+  if (!isStatValue(value.player.stats.agility)) return null;
   if (!isStatValue(value.player.stats.observation)) return null;
   if (!isStatValue(value.player.stats.intelligence)) return null;
   if (!isStatValue(value.player.stats.navigation)) return null;
@@ -101,6 +102,7 @@ function readGameState(value: unknown): GameState | null {
         health: value.player.stats.health,
         morale: value.player.stats.morale,
         strength: value.player.stats.strength,
+        agility: value.player.stats.agility,
         observation: value.player.stats.observation,
         intelligence: value.player.stats.intelligence,
         navigation: value.player.stats.navigation,
@@ -144,7 +146,14 @@ function migrateLegacySave(value: unknown): unknown {
     };
   }
   if (isRecord(migrated) && migrated.version === 8) {
-    migrated = { ...migrated, version: CURRENT_SAVE_VERSION, isLeader: true, passengerNpcIds: [] };
+    migrated = { ...migrated, version: 9, isLeader: true, passengerNpcIds: [] };
+  }
+  if (isRecord(migrated) && migrated.version === 9 && isRecord(migrated.player) && isRecord(migrated.player.stats)) {
+    migrated = {
+      ...migrated,
+      version: CURRENT_SAVE_VERSION,
+      player: { ...migrated.player, stats: { ...migrated.player.stats, agility: 25 } },
+    };
   }
   return migrated;
 }

@@ -9,6 +9,7 @@ const STAT_IDS = new Set([
   'health',
   'morale',
   'strength',
+  'agility',
   'observation',
   'intelligence',
   'navigation',

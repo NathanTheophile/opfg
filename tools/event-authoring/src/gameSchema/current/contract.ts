@@ -73,7 +73,7 @@ export const GAME_SCHEMA_VERSION = CONTENT_SCHEMA_VERSION;
 
 /** Editor option lists derived from the canonical key unions. */
 export const PLAYER_STAT_IDS = [
-  'health', 'morale', 'strength', 'observation', 'intelligence',
+  'health', 'morale', 'strength', 'agility', 'observation', 'intelligence',
   'navigation', 'charisma', 'luck', 'awakening',
 ] as const satisfies readonly StatId[];
 export type PlayerStatId = StatId;

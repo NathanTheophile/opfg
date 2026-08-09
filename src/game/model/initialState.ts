@@ -5,7 +5,7 @@ const DEFAULT_SEED = 0x1a2b3c4d;
 
 export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
   return {
-    version: 9,
+    version: 10,
     rngState: seed >>> 0,
     careerPhase: 'origins',
     ageMonths: 0,
@@ -19,6 +19,7 @@ export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
         health: 25,
         morale: 25,
         strength: 25,
+        agility: 25,
         observation: 25,
         intelligence: 25,
         navigation: 25,
