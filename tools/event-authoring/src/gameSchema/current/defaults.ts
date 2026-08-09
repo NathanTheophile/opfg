@@ -99,6 +99,10 @@ export const createCondition = (type: Condition['type']): Condition => {
     case 'npcDevilFruitAwakeningAtLeast': return { type, npcId: '', value: 1 };
     case 'npcHakiAtLeast': return { type, npcId: '', hakiType: 'observation', level: 1 };
     case 'npcHakiIsAwakened': return { type, npcId: '', hakiType: 'observation' };
+    case 'careerAffiliationIs': return { type, affiliationId: 'civilian' };
+    case 'reputationAtLeast': case 'reputationAtMost': case 'bountyAtLeast': return { type, value: 0 };
+    case 'marineRankIs': case 'marineRankAtLeast': return { type, rankId: '' };
+    case 'careerTitleIs': return { type, titleId: '' };
   }
 };
 
@@ -142,5 +146,12 @@ export const createEffect = (type: Effect['type']): Effect => {
     case 'setNpcDevilFruit': return { type, npcId: '', fruitId: '' };
     case 'increaseNpcDevilFruitAwakening': return { type, npcId: '', amount: 1 };
     case 'raiseNpcHakiTo': return { type, npcId: '', hakiType: 'observation', level: 1 };
+    case 'setCareerAffiliation': return { type, affiliationId: 'civilian' };
+    case 'modifyReputation': case 'modifyBounty': return { type, amount: 0 };
+    case 'setBounty': return { type, value: 0 };
+    case 'setMarineRank': return { type, rankId: null };
+    case 'setCareerTitle': return { type, titleId: '' };
+    case 'clearCareerTitle': return { type };
+    case 'endCareerWithEnding': return { type, endingId: '' };
   }
 };

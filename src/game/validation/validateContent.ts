@@ -28,6 +28,7 @@ const NPC_STAT_IDS = new Set([
 const HAKI_TYPES = new Set(['observation', 'armament', 'conqueror']);
 const FRUIT_TYPES = new Set(['paramecia', 'zoan', 'logia']);
 const FRUIT_TAGS = new Set(['flight', 'fire', 'cold', 'electricity', 'mobility', 'intangibility', 'transformation', 'enhanced_strength', 'healing', 'barrier', 'ranged', 'environmental']);
+const CAREER_AFFILIATION_IDS = new Set(['civilian', 'pirate', 'marine', 'revolutionary', 'bounty_hunter']);
 const CONDITION_TYPES = new Set([
   'all',
   'any',
@@ -68,6 +69,7 @@ const CONDITION_TYPES = new Set([
   'familyStructureIs',
   'socialClassIs',
   'hasDevilFruit','canConsumeDevilFruit','devilFruitIs','devilFruitTypeIs','devilFruitHasTag','devilFruitAwakeningAtLeast','devilFruitIsAwakened','hakiAtLeast','hakiIsAwakened','hakiSourceTotalAtLeast','npcHasDevilFruit','npcDevilFruitIs','npcDevilFruitTypeIs','npcDevilFruitHasTag','npcDevilFruitAwakeningAtLeast','npcHakiAtLeast','npcHakiIsAwakened',
+  'careerAffiliationIs','reputationAtLeast','reputationAtMost','bountyAtLeast','marineRankIs','marineRankAtLeast','careerTitleIs',
 ]);
 const EFFECT_TYPES = new Set([
   'setFlag',
@@ -102,6 +104,7 @@ const EFFECT_TYPES = new Set([
   'setSocialClass',
   'endCareer',
   'consumeDevilFruit','increaseDevilFruitAwakening','awakenHaki','raiseConquerorHakiTo','setNpcDevilFruit','increaseNpcDevilFruitAwakening','raiseNpcHakiTo',
+  'setCareerAffiliation','modifyReputation','setBounty','modifyBounty','setMarineRank','setCareerTitle','clearCareerTitle','endCareerWithEnding',
 ]);
 
 export function validateContent(catalog: unknown, sourceDictionary: LocalizationDictionary = dictionaries[SOURCE_LOCALE]): ContentValidationError[] {
@@ -129,6 +132,14 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   const seaIds = collectIds(seas, 'seas', errors);
   const affiliations = readRecords(catalog.affiliations, 'affiliations', errors);
   const affiliationIds = collectIds(affiliations, 'affiliations', errors);
+  const careerAffiliations = readRecords(catalog.careerAffiliations, 'careerAffiliations', errors);
+  const careerAffiliationIds = collectIds(careerAffiliations, 'careerAffiliations', errors);
+  const marineRanks = readRecords(catalog.marineRanks, 'marineRanks', errors);
+  const marineRankIds = collectIds(marineRanks, 'marineRanks', errors);
+  const careerTitles = readRecords(catalog.careerTitles, 'careerTitles', errors);
+  const careerTitleIds = collectIds(careerTitles, 'careerTitles', errors);
+  const endings = readRecords(catalog.endings, 'endings', errors);
+  const endingIds = collectIds(endings, 'endings', errors);
   const familyStructures = readRecords(catalog.familyStructures, 'familyStructures', errors);
   const familyStructureIds = collectIds(familyStructures, 'familyStructures', errors);
   const socialClasses = readRecords(catalog.socialClasses, 'socialClasses', errors);
@@ -154,7 +165,7 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   }
 
   validateTraitOpposites(traits, traitIds, errors);
-  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, devilFruitIds, shipIds, crewRoleIds, npcIds, raceIds, seaIds, affiliationIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds, immediateEventIds };
+  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, devilFruitIds, shipIds, crewRoleIds, npcIds, raceIds, seaIds, affiliationIds, careerAffiliationIds, marineRankIds, careerTitleIds, endingIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds, immediateEventIds };
   devilFruits.forEach((fruit, index) => {
     const path = `devilFruits[${index}]`;
     validateReference(fruit.itemId, itemIds, 'ItemId', `${path}.itemId`, errors);
@@ -165,6 +176,18 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   validateNamedDefinitions(races, 'races', errors);
   validateNamedDefinitions(seas, 'seas', errors);
   validateNamedDefinitions(affiliations, 'affiliations', errors);
+  validateNamedDefinitions(careerAffiliations, 'careerAffiliations', errors);
+  validateNamedDefinitions(marineRanks, 'marineRanks', errors);
+  validateNamedDefinitions(careerTitles, 'careerTitles', errors);
+  validateNamedDefinitions(endings, 'endings', errors);
+  careerAffiliations.forEach((definition, index) => { if (!CAREER_AFFILIATION_IDS.has(String(definition.id))) errors.push({ path: `careerAffiliations[${index}].id`, message: `Invalid CareerAffiliationId "${String(definition.id)}".` }); });
+  [...careerTitles.map((definition, index) => [definition, `careerTitles[${index}]`] as const), ...endings.map((definition, index) => [definition, `endings[${index}]`] as const)]
+    .forEach(([definition, path]) => { if (!stringValue(definition.descriptionKey)) errors.push({ path: `${path}.descriptionKey`, message: 'Definition descriptionKey must be a non-empty string.' }); });
+  marineRanks.forEach((rank, index) => {
+    const path = `marineRanks[${index}]`;
+    if (rank.affiliationId !== 'marine') errors.push({ path: `${path}.affiliationId`, message: 'Marine rank affiliationId must be "marine".' });
+    if (!Number.isInteger(rank.sortOrder) || (rank.sortOrder as number) < 0) errors.push({ path: `${path}.sortOrder`, message: 'Marine rank sortOrder must be a non-negative integer.' });
+  });
   validateNamedDefinitions(familyStructures, 'familyStructures', errors);
   validateNamedDefinitions(socialClasses, 'socialClasses', errors);
   validateNamedDefinitions(crewRoles, 'crewRoles', errors);
@@ -213,6 +236,10 @@ interface References {
   raceIds: Set<string>;
   seaIds: Set<string>;
   affiliationIds: Set<string>;
+  careerAffiliationIds: Set<string>;
+  marineRankIds: Set<string>;
+  careerTitleIds: Set<string>;
+  endingIds: Set<string>;
   familyStructureIds: Set<string>;
   socialClassIds: Set<string>;
   locationIds: Set<string>;
@@ -354,6 +381,10 @@ function validateCondition(
   if (type === 'hakiAtLeast' || type === 'npcHakiAtLeast') { if (!HAKI_TYPES.has(String(value.hakiType)) || !isIntegerInRange(value.level, 0, 5)) errors.push({ path, message: 'Haki condition requires a valid type and level from 0 to 5.' }); }
   if (type === 'hakiIsAwakened' || type === 'npcHakiIsAwakened') { if (!HAKI_TYPES.has(String(value.hakiType))) errors.push({ path, message: 'Unknown Haki type.' }); }
   if (type === 'hakiSourceTotalAtLeast' && (!['observation', 'armament'].includes(String(value.hakiType)) || !isNumberInRange(value.value, 0, 100))) errors.push({ path, message: 'Haki source threshold requires observation/armament and a value from 0 to 100.' });
+  if (type === 'careerAffiliationIs') validateReference(value.affiliationId, references.careerAffiliationIds, 'CareerAffiliationId', path, errors);
+  if (type === 'marineRankIs' || type === 'marineRankAtLeast') validateReference(value.rankId, references.marineRankIds, 'MarineRankId', path, errors);
+  if (type === 'careerTitleIs') validateReference(value.titleId, references.careerTitleIds, 'CareerTitleId', path, errors);
+  if (['reputationAtLeast', 'reputationAtMost', 'bountyAtLeast'].includes(type) && (!Number.isInteger(value.value) || (value.value as number) < 0)) errors.push({ path, message: `${type} value must be a non-negative integer.` });
 }
 
 function validateResolution(
@@ -523,6 +554,12 @@ function validateEffect(
   if (type === 'awakenHaki' && !HAKI_TYPES.has(String(effect.hakiType))) errors.push({ path, message: 'Unknown Haki type.' });
   if (type === 'raiseConquerorHakiTo' && !isIntegerInRange(effect.level, 1, 5)) errors.push({ path, message: 'Conqueror Haki level must be an integer from 1 to 5.' });
   if (type === 'raiseNpcHakiTo' && (!HAKI_TYPES.has(String(effect.hakiType)) || !isIntegerInRange(effect.level, 1, 5))) errors.push({ path, message: 'NPC Haki requires a valid type and level from 1 to 5.' });
+  if (type === 'setCareerAffiliation') validateReference(effect.affiliationId, references.careerAffiliationIds, 'CareerAffiliationId', path, errors);
+  if (type === 'setMarineRank' && effect.rankId !== null) validateReference(effect.rankId, references.marineRankIds, 'MarineRankId', path, errors);
+  if (type === 'setCareerTitle') validateReference(effect.titleId, references.careerTitleIds, 'CareerTitleId', path, errors);
+  if (type === 'endCareerWithEnding') validateReference(effect.endingId, references.endingIds, 'EndingId', path, errors);
+  if (['modifyReputation', 'modifyBounty'].includes(type) && !Number.isInteger(effect.amount)) errors.push({ path, message: `${type} amount must be an integer.` });
+  if (type === 'setBounty' && (!Number.isInteger(effect.value) || (effect.value as number) < 0)) errors.push({ path, message: 'setBounty value must be a non-negative integer.' });
 }
 
 function validateImmediateCycles(events: UnknownRecord[], errors: ContentValidationError[]): void {

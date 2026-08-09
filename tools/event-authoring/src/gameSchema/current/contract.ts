@@ -27,6 +27,10 @@ export {
   type SocialClassDefinition,
   type ShipDefinition,
   type StatId,
+  type CareerAffiliationDefinition,
+  type MarineRankDefinition,
+  type CareerTitleDefinition,
+  type EndingDefinition,
   type TextChoiceInput,
   type TraitDefinition,
   type TraitResultOverride,
@@ -104,6 +108,10 @@ export interface GameRegistries {
   races: RaceDefinition[];
   seas: SeaDefinition[];
   affiliations: AffiliationDefinition[];
+  careerAffiliations: import('../../../../../src/game/content/schema').CareerAffiliationDefinition[];
+  marineRanks: import('../../../../../src/game/content/schema').MarineRankDefinition[];
+  careerTitles: import('../../../../../src/game/content/schema').CareerTitleDefinition[];
+  endings: import('../../../../../src/game/content/schema').EndingDefinition[];
   familyStructures: FamilyStructureDefinition[];
   socialClasses: SocialClassDefinition[];
   locations: LocationDefinition[];

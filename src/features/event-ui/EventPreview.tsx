@@ -16,6 +16,7 @@ import { EventPanel } from './EventPanel';
 import { OutcomePanel } from './OutcomePanel';
 import { NavigationPanel } from './NavigationPanel';
 import { PowerStatus } from './PowerStatus';
+import { CareerStatus } from './CareerStatus';
 import type { EventChoiceViewModel, EventViewModel, OutcomeEffectViewModel, OutcomeViewModel } from './types';
 import './event-preview.css';
 
@@ -121,6 +122,7 @@ export function EventPreview({ catalog, storage }: EventPreviewProps) {
       <div className="mb-3 flex items-center justify-between gap-3 px-1"><div className="flex gap-2">{supportedLocales.map((id) => <button key={id} className="text-xs text-fg-muted" disabled={locale === id} onClick={() => changeLocale(id)}>{id.toUpperCase()}</button>)}</div><button className="text-xs text-fg-muted" onClick={() => session.restartRun()}>Restart Run</button></div>
       <TopWorldHud state={state} catalog={catalog} translate={translate} />
       <PowerStatus state={state} catalog={catalog} translate={translate} />
+      <CareerStatus state={state} catalog={catalog} translate={translate} />
       <div className="relative mx-auto mt-4 w-full max-w-[52rem]">
         <div className="absolute right-[calc(100%+1rem)] top-0 z-10 hidden w-[14rem] justify-end xl:flex"><PlayerStatsRail state={state} previousState={session.previousState} statLabel={(id) => translate(STAT_KEYS[id])} traitLabel={(id) => { const trait = catalog.traits.find((entry) => entry.id === id); return trait ? translate(trait.nameKey) : id; }} /></div>
         <div className="absolute left-[calc(100%+1rem)] top-0 z-10 hidden xl:block"><CrewRail state={state} catalog={catalog} translate={translate} statLabel={(id) => translate(NPC_STAT_KEYS[id])} /></div>

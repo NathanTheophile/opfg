@@ -6,6 +6,7 @@ export const EFFECT_TYPES: Effect['type'][] = [
   'setFlag','clearFlag','addItem','removeItem','addTrait','removeTrait','modifyStat','modifyHealth','acquireShip','modifyShipHealth','addCargoItem','removeCargoItem','resolveShipReplacement','modifyBerries','loseShip',
   'moveToLocation','setBirthLocation','setNpcStatus','setNpcPassenger','setLeadership','modifyNpcRelationship','modifyNpcStat','scheduleEvent','queueImmediateEvent','setCareerPhase','setRace',
   'setOriginSea','setAffiliation','setFamilyStructure','setSocialClass','endCareer','consumeDevilFruit','increaseDevilFruitAwakening','awakenHaki','raiseConquerorHakiTo','setNpcDevilFruit','increaseNpcDevilFruitAwakening','raiseNpcHakiTo',
+  'setCareerAffiliation','modifyReputation','setBounty','modifyBounty','setMarineRank','setCareerTitle','clearCareerTitle','endCareerWithEnding',
 ];
 
 interface Props { value: Effect; onChange: (value: Effect) => void; onRemove: () => void; registries: GameRegistries; eventIds: string[]; scheduledEventIds: string[]; immediateEventIds: string[]; }
@@ -43,6 +44,13 @@ export default function EffectEditor({ value, onChange, onRemove, registries, ev
       case 'increaseNpcDevilFruitAwakening': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><NumberInput value={value.amount} min={1} onChange={(amount) => onChange({ ...value, amount })} /></div>;
       case 'raiseNpcHakiTo': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={value.hakiType} onChange={(e) => onChange({ ...value, hakiType: e.target.value as typeof value.hakiType })}>{HAKI_TYPES.map((x) => <option key={x}>{x}</option>)}</select><NumberInput value={value.level} min={1} onChange={(level) => onChange({ ...value, level })} /></div>;
       case 'endCareer': return <select value={value.reason} onChange={(e) => onChange({ ...value, reason: e.target.value as typeof value.reason })}><option value="death">death</option><option value="legacy">legacy</option></select>;
+      case 'setCareerAffiliation': return <IdSelect value={value.affiliationId} options={registries.careerAffiliations} onChange={(affiliationId) => onChange({ ...value, affiliationId: affiliationId as typeof value.affiliationId })} />;
+      case 'modifyReputation': case 'modifyBounty': return <NumberInput value={value.amount} onChange={(amount) => onChange({ ...value, amount })} />;
+      case 'setBounty': return <NumberInput value={value.value} min={0} onChange={(next) => onChange({ ...value, value: next })} />;
+      case 'setMarineRank': return <IdSelect value={value.rankId ?? ''} options={registries.marineRanks} onChange={(rankId) => onChange({ ...value, rankId: rankId || null })} />;
+      case 'setCareerTitle': return <IdSelect value={value.titleId} options={registries.careerTitles} onChange={(titleId) => onChange({ ...value, titleId })} />;
+      case 'clearCareerTitle': return <span className="muted">No parameters</span>;
+      case 'endCareerWithEnding': return <IdSelect value={value.endingId} options={registries.endings} onChange={(endingId) => onChange({ ...value, endingId })} />;
     }
   })();
   return <div className="effect-row"><select value={value.type} onChange={(e) => onChange(createEffect(e.target.value as Effect['type']))}>{EFFECT_TYPES.map((type) => <option key={type}>{type}</option>)}</select><div className="effect-params">{params}{supportsLeadershipOverride && <label className="checkbox-inline"><input type="checkbox" checked={'allowWithoutLeadership' in value && value.allowWithoutLeadership === true} onChange={(e) => onChange({ ...value, allowWithoutLeadership: e.target.checked || undefined } as Effect)} /> narrative leadership override</label>}</div><button className="icon danger" onClick={onRemove}>×</button></div>;

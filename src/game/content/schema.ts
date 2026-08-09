@@ -24,10 +24,14 @@ import type {
   DevilFruitId,
   DevilFruitTagId,
   HakiType,
+  CareerAffiliationId,
+  MarineRankId,
+  CareerTitleId,
+  EndingId,
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 3;
+export const CONTENT_SCHEMA_VERSION = 4;
 
 export const DEVIL_FRUIT_TYPES = ['paramecia', 'zoan', 'logia'] as const;
 export type DevilFruitType = typeof DEVIL_FRUIT_TYPES[number];
@@ -90,7 +94,14 @@ export type Condition =
   | { type: 'npcDevilFruitHasTag'; npcId: NpcId; tagId: DevilFruitTagId }
   | { type: 'npcDevilFruitAwakeningAtLeast'; npcId: NpcId; value: number }
   | { type: 'npcHakiAtLeast'; npcId: NpcId; hakiType: HakiType; level: number }
-  | { type: 'npcHakiIsAwakened'; npcId: NpcId; hakiType: HakiType };
+  | { type: 'npcHakiIsAwakened'; npcId: NpcId; hakiType: HakiType }
+  | { type: 'careerAffiliationIs'; affiliationId: CareerAffiliationId }
+  | { type: 'reputationAtLeast'; value: number }
+  | { type: 'reputationAtMost'; value: number }
+  | { type: 'bountyAtLeast'; value: number }
+  | { type: 'marineRankIs'; rankId: MarineRankId }
+  | { type: 'marineRankAtLeast'; rankId: MarineRankId }
+  | { type: 'careerTitleIs'; titleId: CareerTitleId };
 
 export type Effect =
   | { type: 'setFlag'; flagId: FlagId }
@@ -130,7 +141,15 @@ export type Effect =
   | { type: 'raiseConquerorHakiTo'; level: number }
   | { type: 'setNpcDevilFruit'; npcId: NpcId; fruitId: DevilFruitId }
   | { type: 'increaseNpcDevilFruitAwakening'; npcId: NpcId; amount: number }
-  | { type: 'raiseNpcHakiTo'; npcId: NpcId; hakiType: HakiType; level: number };
+  | { type: 'raiseNpcHakiTo'; npcId: NpcId; hakiType: HakiType; level: number }
+  | { type: 'setCareerAffiliation'; affiliationId: CareerAffiliationId }
+  | { type: 'modifyReputation'; amount: number }
+  | { type: 'setBounty'; value: number }
+  | { type: 'modifyBounty'; amount: number }
+  | { type: 'setMarineRank'; rankId: MarineRankId | null }
+  | { type: 'setCareerTitle'; titleId: CareerTitleId }
+  | { type: 'clearCareerTitle' }
+  | { type: 'endCareerWithEnding'; endingId: EndingId };
 
 export interface Outcome {
   id: OutcomeId;
@@ -252,12 +271,20 @@ export interface AffiliationDefinition { id: AffiliationId; nameKey: Localizatio
 export interface FamilyStructureDefinition { id: FamilyStructureId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
 export interface SocialClassDefinition { id: SocialClassId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
 export interface LocationDefinition { id: LocationId; seaId: SeaId | null; blocksScheduledEvents: boolean; allowsShipSale: boolean; allowsDocking: boolean }
+export interface CareerAffiliationDefinition { id: CareerAffiliationId; nameKey: LocalizationKey }
+export interface MarineRankDefinition { id: MarineRankId; nameKey: LocalizationKey; affiliationId: 'marine'; sortOrder: number }
+export interface CareerTitleDefinition { id: CareerTitleId; nameKey: LocalizationKey; descriptionKey: LocalizationKey }
+export interface EndingDefinition { id: EndingId; nameKey: LocalizationKey; descriptionKey: LocalizationKey }
 
 export interface ContentCatalog {
   schemaVersion: number;
   races: RaceDefinition[];
   seas: SeaDefinition[];
   affiliations: AffiliationDefinition[];
+  careerAffiliations: CareerAffiliationDefinition[];
+  marineRanks: MarineRankDefinition[];
+  careerTitles: CareerTitleDefinition[];
+  endings: EndingDefinition[];
   familyStructures: FamilyStructureDefinition[];
   socialClasses: SocialClassDefinition[];
   locations: LocationDefinition[];

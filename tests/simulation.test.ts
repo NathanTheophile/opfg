@@ -7,8 +7,8 @@ import { simulateRun } from '../src/game/simulation/simulateRun';
 import { createInitialGameState } from '../src/game/model/initialState';
 
 const baseCatalog = (events: EventDefinition[], extra: Partial<ContentCatalog> = {}): ContentCatalog => ({
-  schemaVersion: 3,
-  races: [], seas: [], affiliations: [], familyStructures: [], socialClasses: [], traits: [], items: [], devilFruits: [], crewRoles: [], npcs: [],
+  schemaVersion: 4,
+  races: [], seas: [], affiliations: [], careerAffiliations: [], marineRanks: [], careerTitles: [], endings: [], familyStructures: [], socialClasses: [], traits: [], items: [], devilFruits: [], crewRoles: [], npcs: [],
   ships: [{ id: 'starter_sloop', nameKey: 'x', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 }],
   locations: [{ id: 'starter_port', seaId: null, blocksScheduledEvents: false, allowsShipSale: true, allowsDocking: true }],
   events,

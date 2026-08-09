@@ -2,7 +2,7 @@ import type { CareerEndReason, CareerPhase, GameState, ItemStack, NpcState, NpcS
 import { createDefaultPowerState } from './powers';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 13;
+const CURRENT_SAVE_VERSION = 14;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
@@ -62,6 +62,8 @@ function readGameState(value: unknown): GameState | null {
   if (inventory === null || inventory.capacity !== 2) return null;
   const profile = readPlayerProfile(value.player.profile);
   if (profile === null) return null;
+  const career = readCareerState(value.player.career);
+  if (career === null) return null;
   if (!isFiniteNumber(value.player.stats.health)) return null;
   if (!isStatValue(value.player.stats.morale)) return null;
   if (!isStatValue(value.player.stats.strength)) return null;
@@ -89,8 +91,11 @@ function readGameState(value: unknown): GameState | null {
   if (!(value.currentEventId === null || isString(value.currentEventId))) return null;
   if (!(value.careerStatus === 'active' || value.careerStatus === 'ended')) return null;
   if (!isCareerEndReason(value.careerEndReason)) return null;
+  if (!isNullableString(value.endingId)) return null;
   if (value.careerStatus === 'active' && value.careerEndReason !== null) return null;
   if (value.careerStatus === 'ended' && value.careerEndReason === null) return null;
+  if (value.careerStatus === 'active' && value.endingId !== null) return null;
+  if (value.endingId !== null && value.careerEndReason !== 'legacy') return null;
   if (value.careerPhase !== 'active' && value.slotInMonth !== 0) return null;
 
   return {
@@ -103,6 +108,7 @@ function readGameState(value: unknown): GameState | null {
     locationId: value.locationId,
     player: {
       profile,
+      career,
       stats: {
         health: value.player.stats.health,
         morale: value.player.stats.morale,
@@ -134,6 +140,7 @@ function readGameState(value: unknown): GameState | null {
     currentEventId: value.currentEventId,
     careerStatus: value.careerStatus,
     careerEndReason: value.careerEndReason,
+    endingId: value.endingId,
   };
 }
 
@@ -189,9 +196,24 @@ function migrateLegacySave(value: unknown): unknown {
     const stats = isRecord(player.stats) ? { ...player.stats } : player.stats;
     if (isRecord(stats)) delete stats.awakening;
     const npcs = isRecord(migrated.npcs) ? Object.fromEntries(Object.entries(migrated.npcs).map(([id, npc]) => [id, isRecord(npc) ? { ...npc, powers: createDefaultPowerState() } : npc])) : migrated.npcs;
-    migrated = { ...migrated, version: CURRENT_SAVE_VERSION, player: { ...player, stats, powers: createDefaultPowerState() }, npcs };
+    migrated = { ...migrated, version: 13, player: { ...player, stats, powers: createDefaultPowerState() }, npcs };
+  }
+  if (isRecord(migrated) && migrated.version === 13 && isRecord(migrated.player)) {
+    migrated = {
+      ...migrated,
+      version: 14,
+      player: { ...migrated.player, career: { affiliationId: 'civilian', reputation: 0, bounty: 0, marineRankId: null, titleId: null } },
+      endingId: null,
+    };
   }
   return migrated;
+}
+
+function readCareerState(value: unknown): GameState['player']['career'] | null {
+  if (!isRecord(value)) return null;
+  if (!isCareerAffiliationId(value.affiliationId) || !isNonNegativeInteger(value.reputation) || !isNonNegativeInteger(value.bounty)) return null;
+  if (!isNullableString(value.marineRankId) || !isNullableString(value.titleId)) return null;
+  return { affiliationId: value.affiliationId, reputation: value.reputation, bounty: value.bounty, marineRankId: value.marineRankId, titleId: value.titleId };
 }
 
 function readInventory(value: unknown): GameState['player']['inventory'] | null {
@@ -339,6 +361,10 @@ function isTravelState(value: unknown): value is TravelState {
 
 function isCareerEndReason(value: unknown): value is CareerEndReason | null {
   return value === null || value === 'death' || value === 'legacy';
+}
+
+function isCareerAffiliationId(value: unknown): value is GameState['player']['career']['affiliationId'] {
+  return value === 'civilian' || value === 'pirate' || value === 'marine' || value === 'revolutionary' || value === 'bounty_hunter';
 }
 
 function isStringArray(value: unknown): value is string[] {

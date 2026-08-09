@@ -7,6 +7,7 @@ const TYPES: Condition['type'][] = [
   'ageAtLeastMonths','ageAtMostMonths','hasShip','shipIs','shipHealthAtLeast','shipHealthAtMost','shipCrewCapacityAtLeast','shipCargoSpaceAtLeast','canAcquireShip','canSellShip','npcStatusIs','npcRelationshipAtLeast',
   'npcStatAtLeast','hasChosen','hasPlayed','hasOutcome','raceIs','originSeaIs','affiliationIs','familyStructureIs','socialClassIs',
   'hasDevilFruit','canConsumeDevilFruit','devilFruitIs','devilFruitTypeIs','devilFruitHasTag','devilFruitAwakeningAtLeast','devilFruitIsAwakened','hakiAtLeast','hakiIsAwakened','hakiSourceTotalAtLeast','npcHasDevilFruit','npcDevilFruitIs','npcDevilFruitTypeIs','npcDevilFruitHasTag','npcDevilFruitAwakeningAtLeast','npcHakiAtLeast','npcHakiIsAwakened',
+  'careerAffiliationIs','reputationAtLeast','reputationAtMost','bountyAtLeast','marineRankIs','marineRankAtLeast','careerTitleIs',
 ];
 
 interface Props { value?: Condition; onChange: (value?: Condition) => void; registries: GameRegistries; eventIds: string[]; }
@@ -46,6 +47,10 @@ export default function ConditionEditor({ value, onChange, registries, eventIds 
       case 'npcDevilFruitAwakeningAtLeast': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><NumberInput value={value.value} min={0} onChange={(next) => onChange({ ...value, value: next })} /></div>;
       case 'npcHakiAtLeast': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={value.hakiType} onChange={(e) => onChange({ ...value, hakiType: e.target.value as typeof value.hakiType })}>{HAKI_TYPES.map((x) => <option key={x}>{x}</option>)}</select><NumberInput value={value.level} min={0} onChange={(level) => onChange({ ...value, level })} /></div>;
       case 'npcHakiIsAwakened': return <div className="inline-fields"><IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} /><select value={value.hakiType} onChange={(e) => onChange({ ...value, hakiType: e.target.value as typeof value.hakiType })}>{HAKI_TYPES.map((x) => <option key={x}>{x}</option>)}</select></div>;
+      case 'careerAffiliationIs': return <IdSelect value={value.affiliationId} options={registries.careerAffiliations} onChange={(affiliationId) => onChange({ ...value, affiliationId: affiliationId as typeof value.affiliationId })} />;
+      case 'reputationAtLeast': case 'reputationAtMost': case 'bountyAtLeast': return <NumberInput value={value.value} min={0} onChange={(next) => onChange({ ...value, value: next })} />;
+      case 'marineRankIs': case 'marineRankAtLeast': return <IdSelect value={value.rankId} options={registries.marineRanks} onChange={(rankId) => onChange({ ...value, rankId })} />;
+      case 'careerTitleIs': return <IdSelect value={value.titleId} options={registries.careerTitles} onChange={(titleId) => onChange({ ...value, titleId })} />;
       case 'careerPhaseIs': return <select value={value.phase} onChange={(e) => onChange({ ...value, phase: e.target.value as typeof value.phase })}><option value="origins">origins</option><option value="childhood">childhood</option><option value="active">active</option></select>;
       case 'ageAtLeastMonths': case 'ageAtMostMonths': return <NumberInput value={value.value} min={0} onChange={(next) => onChange({ ...value, value: next })} />;
       case 'berriesAtLeast': case 'crewSizeAtLeast': case 'shipHealthAtLeast': case 'shipHealthAtMost': case 'shipCrewCapacityAtLeast': case 'shipCargoSpaceAtLeast': return <NumberInput value={value.value} min={0} onChange={(next) => onChange({ ...value, value: next })} />;

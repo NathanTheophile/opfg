@@ -2,6 +2,7 @@
 
 Implemented and verified:
 
+- Career V1: Save v14 / Content Schema v4, grouped career affiliation, non-negative unbounded reputation and bounty, ordered Marine ranks, optional titles, localized Endings, declarative Conditions/Effects, validator, minimal UI, simulation compatibility, and Event Authoring Tool v10 support;
 - Powers V1: shared Player/NPC PowerState, central Devil Fruit catalog and controlled tags, protected Item consumption, monotone Awakening, Event-awakened Haki with automatic post-awakening Player tiers, declarative Conditions/Effects, UI/localization, validator and Tool authoring support;
 - Content Contract v3 and save/GameState v13 (Powers migration defaults from v12);
 

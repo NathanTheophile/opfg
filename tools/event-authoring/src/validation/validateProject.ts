@@ -14,6 +14,8 @@ const ids = <T extends { id: string }>(values: T[]) => new Set(values.map((x) =>
 const collectRegistryKeys = (r: GameRegistries): Array<[string,string]> => [
   ...r.races.map((x) => [x.nameKey, 'Race'] as [string,string]), ...r.seas.map((x) => [x.nameKey, 'Sea'] as [string,string]),
   ...r.affiliations.map((x) => [x.nameKey, 'Affiliation'] as [string,string]), ...r.traits.flatMap((x) => [[x.nameKey, 'Trait'], [x.descriptionKey, 'Trait description']] as [string,string][]),
+  ...r.careerAffiliations.map((x) => [x.nameKey, 'Career affiliation'] as [string,string]), ...r.marineRanks.map((x) => [x.nameKey, 'Marine rank'] as [string,string]),
+  ...r.careerTitles.flatMap((x) => [[x.nameKey, 'Career title'], [x.descriptionKey, 'Career title description']] as [string,string][]), ...r.endings.flatMap((x) => [[x.nameKey, 'Ending'], [x.descriptionKey, 'Ending description']] as [string,string][]),
   ...r.familyStructures.map((x) => [x.nameKey, 'Family structure'] as [string,string]), ...r.socialClasses.map((x) => [x.nameKey, 'Social class'] as [string,string]),
   ...r.items.map((x) => [x.nameKey, 'Item'] as [string,string]), ...r.ships.map((x) => [x.nameKey, 'Ship'] as [string,string]), ...r.crewRoles.map((x) => [x.nameKey, 'Crew role'] as [string,string]), ...r.npcs.map((x) => [x.nameKey, 'NPC'] as [string,string]),
 ];
@@ -50,6 +52,10 @@ const runtimeCatalog = (project: AuthoringProject) => ({
   races: project.registries.races,
   seas: project.registries.seas,
   affiliations: project.registries.affiliations,
+  careerAffiliations: project.registries.careerAffiliations,
+  marineRanks: project.registries.marineRanks,
+  careerTitles: project.registries.careerTitles,
+  endings: project.registries.endings,
   familyStructures: project.registries.familyStructures,
   socialClasses: project.registries.socialClasses,
   locations: project.registries.locations,

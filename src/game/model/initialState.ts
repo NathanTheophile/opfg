@@ -5,7 +5,7 @@ const DEFAULT_SEED = 0x1a2b3c4d;
 
 export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
   return {
-    version: 13,
+    version: 14,
     rngState: seed >>> 0,
     careerPhase: 'origins',
     ageMonths: 0,
@@ -14,6 +14,7 @@ export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
     locationId: 'starter_port',
     player: {
       profile: { name: null, raceId: null, originSeaId: null, affiliationId: null, familyStructureId: null, socialClassId: null },
+      career: { affiliationId: 'civilian', reputation: 0, bounty: 0, marineRankId: null, titleId: null },
       // Temporary, deliberately simple Slice 0 starting data.
       stats: {
         health: 35,
@@ -56,5 +57,6 @@ export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
     currentEventId: null,
     careerStatus: 'active',
     careerEndReason: null,
+    endingId: null,
   };
 }

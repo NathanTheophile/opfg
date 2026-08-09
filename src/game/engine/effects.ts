@@ -15,6 +15,7 @@ export function applyEffects(state: GameState, catalog: ContentCatalog, effects:
     player: {
       ...state.player,
       profile: { ...state.player.profile },
+      career: { ...state.player.career },
       stats: { ...state.player.stats },
       traits: [...state.player.traits],
       inventory: cloneInventory(state.player.inventory),
@@ -235,6 +236,41 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
     case 'endCareer':
       state.careerStatus = 'ended';
       state.careerEndReason = effect.reason;
+      state.endingId = null;
+      state.currentEventId = null;
+      return;
+    case 'setCareerAffiliation':
+      if (!catalog.careerAffiliations.some(({ id }) => id === effect.affiliationId)) throw new Error(`Unknown Career affiliation "${effect.affiliationId}".`);
+      state.player.career.affiliationId = effect.affiliationId;
+      return;
+    case 'modifyReputation':
+      if (!Number.isInteger(effect.amount)) throw new Error('Reputation modification must be an integer.');
+      state.player.career.reputation = Math.max(0, state.player.career.reputation + effect.amount);
+      return;
+    case 'setBounty':
+      if (!Number.isInteger(effect.value) || effect.value < 0) throw new Error('Bounty must be a non-negative integer.');
+      state.player.career.bounty = Math.max(0, effect.value);
+      return;
+    case 'modifyBounty':
+      if (!Number.isInteger(effect.amount)) throw new Error('Bounty modification must be an integer.');
+      state.player.career.bounty = Math.max(0, state.player.career.bounty + effect.amount);
+      return;
+    case 'setMarineRank':
+      if (effect.rankId !== null && !catalog.marineRanks.some(({ id }) => id === effect.rankId)) throw new Error(`Unknown Marine rank "${effect.rankId}".`);
+      state.player.career.marineRankId = effect.rankId;
+      return;
+    case 'setCareerTitle':
+      if (!catalog.careerTitles.some(({ id }) => id === effect.titleId)) throw new Error(`Unknown Career title "${effect.titleId}".`);
+      state.player.career.titleId = effect.titleId;
+      return;
+    case 'clearCareerTitle':
+      state.player.career.titleId = null;
+      return;
+    case 'endCareerWithEnding':
+      if (!catalog.endings.some(({ id }) => id === effect.endingId)) throw new Error(`Unknown Ending "${effect.endingId}".`);
+      state.careerStatus = 'ended';
+      state.careerEndReason = 'legacy';
+      state.endingId = effect.endingId;
       state.currentEventId = null;
       return;
     case 'consumeDevilFruit': {

@@ -113,6 +113,18 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
     }
     case 'npcHakiAtLeast': return (state.npcs[condition.npcId]?.powers.haki[condition.hakiType] ?? -1) >= condition.level;
     case 'npcHakiIsAwakened': return (state.npcs[condition.npcId]?.powers.haki[condition.hakiType] ?? 0) > 0;
+    case 'careerAffiliationIs': return state.player.career.affiliationId === condition.affiliationId;
+    case 'reputationAtLeast': return state.player.career.reputation >= condition.value;
+    case 'reputationAtMost': return state.player.career.reputation <= condition.value;
+    case 'bountyAtLeast': return state.player.career.bounty >= condition.value;
+    case 'marineRankIs': return state.player.career.marineRankId === condition.rankId;
+    case 'marineRankAtLeast': {
+      if (state.player.career.affiliationId !== 'marine' || state.player.career.marineRankId === null || catalog === undefined) return false;
+      const current = catalog.marineRanks.find(({ id }) => id === state.player.career.marineRankId);
+      const required = catalog.marineRanks.find(({ id }) => id === condition.rankId);
+      return current !== undefined && required !== undefined && current.sortOrder >= required.sortOrder;
+    }
+    case 'careerTitleIs': return state.player.career.titleId === condition.titleId;
   }
 }
 

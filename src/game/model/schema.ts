@@ -16,6 +16,18 @@ export type CrewRoleId = string;
 export type DevilFruitId = string;
 export type DevilFruitTagId = string;
 export type HakiType = 'observation' | 'armament' | 'conqueror';
+export type CareerAffiliationId = 'civilian' | 'pirate' | 'marine' | 'revolutionary' | 'bounty_hunter';
+export type MarineRankId = string;
+export type CareerTitleId = string;
+export type EndingId = string;
+
+export interface CareerState {
+  affiliationId: CareerAffiliationId;
+  reputation: number;
+  bounty: number;
+  marineRankId: MarineRankId | null;
+  titleId: CareerTitleId | null;
+}
 
 export interface PowerState {
   devilFruitId: DevilFruitId | null;
@@ -58,6 +70,7 @@ export type PlayerAttributeId = Exclude<keyof PlayerStats, 'health'>;
 
 export interface PlayerState {
   profile: PlayerProfile;
+  career: CareerState;
   stats: PlayerStats;
   traits: TraitId[];
   inventory: InventoryState;
@@ -137,4 +150,5 @@ export interface GameState {
   currentEventId: EventId | null;
   careerStatus: CareerStatus;
   careerEndReason: CareerEndReason | null;
+  endingId: EndingId | null;
 }

@@ -51,6 +51,14 @@ La structure reste persistante et testable par les Events. Les parents ne devien
 
 Les affiliations V1 sont `civilian`, `marine`, `pirate`, `revolutionary`, `bandit`, `prisoner`, `slave`, `celestial_dragon` et `royal_family`. Elles ne modifient aucune stat. `player.profile.affiliationId` désigne exclusivement l’affiliation familiale héritée, pas une affiliation de carrière Active.
 
+## Carrière V1, réputation et fins
+
+La carrière Active est stockée séparément dans `player.career`. Son affiliation est l’une de `civilian`, `pirate`, `marine`, `revolutionary` ou `bounty_hunter`. Changer d’affiliation ne modifie automatiquement ni la réputation, ni la prime, ni le grade, ni le titre, ni le leadership.
+
+La réputation et la prime sont des entiers positifs ou nuls sans plafond. La prime est indépendante des Berrys possédés. Le grade de Marine est optionnel et ordonné par les définitions de contenu ; aucune promotion automatique n’existe. Le titre de carrière est également optionnel et attribué uniquement par le contenu.
+
+Une Ending est une conclusion de contenu identifiée et localisée. `endCareerWithEnding` termine la carrière avec la raison `legacy` et conserve son `endingId`. La mort reste gérée par la fin de carrière existante et ne reçoit pas automatiquement une Ending.
+
 ### Niveau social
 
 - Pauvre (`poor`) : Observation +3, Chance -3.

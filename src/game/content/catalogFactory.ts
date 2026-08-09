@@ -1,5 +1,5 @@
 import { CONTENT_SCHEMA_VERSION, type ContentCatalog, type EventDefinition } from './schema';
-import { traitNameKey, traitDescriptionKey, itemNameKey, raceNameKey, seaNameKey, affiliationNameKey, crewRoleNameKey, npcNameKey } from '../localization/keys';
+import { traitNameKey, traitDescriptionKey, itemNameKey, raceNameKey, seaNameKey, affiliationNameKey, crewRoleNameKey, npcNameKey, careerAffiliationNameKey, marineRankNameKey, careerTitleNameKey, careerTitleDescriptionKey, endingNameKey, endingDescriptionKey } from '../localization/keys';
 
 export function createContentCatalog(events: EventDefinition[]): ContentCatalog {
   return {
@@ -15,6 +15,10 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
     seas: ['east_blue', 'west_blue', 'north_blue', 'south_blue'].map((id) => ({ id, nameKey: seaNameKey(id) })),
     affiliations: ['civilian', 'marine', 'pirate', 'revolutionary', 'bandit', 'prisoner', 'slave', 'celestial_dragon', 'royal_family']
       .map((id) => ({ id, nameKey: affiliationNameKey(id) })),
+    careerAffiliations: (['civilian', 'pirate', 'marine', 'revolutionary', 'bounty_hunter'] as const).map((id) => ({ id, nameKey: careerAffiliationNameKey(id) })),
+    marineRanks: ['recruit', 'sailor', 'officer', 'lieutenant', 'commander', 'captain'].map((id, sortOrder) => ({ id, nameKey: marineRankNameKey(id), affiliationId: 'marine', sortOrder })),
+    careerTitles: ['rookie', 'veteran', 'legend'].map((id) => ({ id, nameKey: careerTitleNameKey(id), descriptionKey: careerTitleDescriptionKey(id) })),
+    endings: [{ id: 'career_complete', nameKey: endingNameKey('career_complete'), descriptionKey: endingDescriptionKey('career_complete') }],
     familyStructures: [
       { id: 'two_parents', nameKey: 'familyStructure.two_parents.name', attributeModifiers: { morale: 2, charisma: 1, observation: -1, agility: -2 } },
       { id: 'single_parent', nameKey: 'familyStructure.single_parent.name', attributeModifiers: { intelligence: 2, observation: 1, morale: -2, luck: -1 } },
