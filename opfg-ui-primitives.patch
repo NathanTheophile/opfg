@@ -1,0 +1,508 @@
+diff --git a/src/components/ui/badge.tsx b/src/components/ui/badge.tsx
+new file mode 100644
+index 0000000..8a2c9e0
+--- /dev/null
++++ b/src/components/ui/badge.tsx
+@@ -0,0 +1,27 @@
++import { cva, type VariantProps } from 'class-variance-authority';
++import type { HTMLAttributes } from 'react';
++import { cn } from '@/lib/utils';
++
++const badgeVariants = cva(
++  'inline-flex min-h-6 items-center rounded-[var(--radius-pill)] border px-2.5 py-0.5 text-xs font-semibold leading-none',
++  {
++    variants: {
++      variant: {
++        default: 'border-[var(--border-default)] bg-surface-soft text-fg-secondary',
++        gold: 'border-[var(--border-accent)] bg-gold/[0.12] text-gold',
++        success: 'border-success/[0.45] bg-success/[0.12] text-success',
++        warning: 'border-warning/[0.45] bg-warning/[0.12] text-warning',
++        critical: 'border-[var(--border-critical)] bg-critical/[0.12] text-critical',
++      },
++    },
++    defaultVariants: {
++      variant: 'default',
++    },
++  },
++);
++
++export interface BadgeProps extends HTMLAttributes<HTMLSpanElement>, VariantProps<typeof badgeVariants> {}
++
++export function Badge({ className, variant, ...props }: BadgeProps) {
++  return <span className={cn(badgeVariants({ variant }), className)} {...props} />;
++}
+diff --git a/src/components/ui/button.tsx b/src/components/ui/button.tsx
+new file mode 100644
+index 0000000..1829f2e
+--- /dev/null
++++ b/src/components/ui/button.tsx
+@@ -0,0 +1,48 @@
++import { cva, type VariantProps } from 'class-variance-authority';
++import type { ButtonHTMLAttributes } from 'react';
++import { cn } from '@/lib/utils';
++
++export const buttonVariants = cva(
++  [
++    'inline-flex min-h-[var(--touch-target-min)] items-center justify-center gap-2',
++    'rounded-[var(--radius-control)] border px-4 py-2 text-sm font-semibold leading-none',
++    'select-none whitespace-nowrap shadow-control',
++    'transition-[background-color,border-color,color,box-shadow,transform,translate,opacity]',
++    'duration-[var(--motion-fast)] ease-[var(--ease-standard)]',
++    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
++    'active:translate-y-px',
++    'disabled:pointer-events-none disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-45',
++  ].join(' '),
++  {
++    variants: {
++      variant: {
++        default:
++          'border-[var(--border-default)] bg-surface text-fg hover:border-[var(--border-strong)] hover:bg-surface-hover active:bg-surface-pressed',
++        primary:
++          'border-[var(--border-accent)] bg-gold text-[var(--text-inverse)] hover:bg-gold-strong active:brightness-90',
++        subtle:
++          'border-transparent bg-surface-soft text-fg-secondary shadow-none hover:border-[var(--border-subtle)] hover:bg-surface-hover hover:text-fg',
++        danger:
++          'border-[var(--border-critical)] bg-critical/[0.18] text-fg hover:bg-critical/[0.28] active:bg-critical/[0.36]',
++      },
++      size: {
++        sm: 'min-h-9 px-3 py-1.5 text-xs',
++        md: '',
++        lg: 'min-h-12 px-5 py-3 text-base',
++        icon: 'size-[var(--touch-target-min)] shrink-0 p-0',
++      },
++    },
++    defaultVariants: {
++      variant: 'default',
++      size: 'md',
++    },
++  },
++);
++
++export interface ButtonProps
++  extends ButtonHTMLAttributes<HTMLButtonElement>,
++    VariantProps<typeof buttonVariants> {}
++
++export function Button({ className, variant, size, type = 'button', ...props }: ButtonProps) {
++  return <button type={type} className={cn(buttonVariants({ variant, size }), className)} {...props} />;
++}
+diff --git a/src/components/ui/divider.tsx b/src/components/ui/divider.tsx
+new file mode 100644
+index 0000000..4785044
+--- /dev/null
++++ b/src/components/ui/divider.tsx
+@@ -0,0 +1,19 @@
++import type { HTMLAttributes } from 'react';
++import { cn } from '@/lib/utils';
++
++export interface DividerProps extends HTMLAttributes<HTMLHRElement> {
++  accent?: boolean;
++}
++
++export function Divider({ className, accent = false, ...props }: DividerProps) {
++  return (
++    <hr
++      className={cn(
++        'h-px w-full border-0',
++        accent ? 'bg-[var(--border-accent)]' : 'bg-[var(--border-subtle)]',
++        className,
++      )}
++      {...props}
++    />
++  );
++}
+diff --git a/src/components/ui/drawer.tsx b/src/components/ui/drawer.tsx
+new file mode 100644
+index 0000000..9995160
+--- /dev/null
++++ b/src/components/ui/drawer.tsx
+@@ -0,0 +1,124 @@
++import { Drawer as BaseDrawer } from '@base-ui/react/drawer';
++import { createContext, useContext, type ComponentProps, type HTMLAttributes } from 'react';
++import { cn } from '@/lib/utils';
++
++type DrawerSide = 'left' | 'right' | 'bottom';
++
++const DrawerSideContext = createContext<DrawerSide>('right');
++
++export interface DrawerProps extends Omit<ComponentProps<typeof BaseDrawer.Root>, 'swipeDirection'> {
++  side?: DrawerSide;
++}
++
++export function Drawer({ side = 'right', children, ...props }: DrawerProps) {
++  const swipeDirection = side === 'bottom' ? 'down' : side;
++
++  return (
++    <DrawerSideContext.Provider value={side}>
++      <BaseDrawer.Root swipeDirection={swipeDirection} {...props}>
++        {children}
++      </BaseDrawer.Root>
++    </DrawerSideContext.Provider>
++  );
++}
++
++export const DrawerTrigger = BaseDrawer.Trigger;
++export const DrawerClose = BaseDrawer.Close;
++export const DrawerVirtualKeyboardProvider = BaseDrawer.VirtualKeyboardProvider;
++
++export interface DrawerContentProps extends ComponentProps<typeof BaseDrawer.Popup> {
++  backdropClassName?: string;
++  viewportClassName?: string;
++}
++
++const viewportSideClasses: Record<DrawerSide, string> = {
++  left: 'items-stretch justify-start',
++  right: 'items-stretch justify-end',
++  bottom: 'items-end justify-center',
++};
++
++const popupSideClasses: Record<DrawerSide, string> = {
++  left: [
++    'h-full w-[min(92vw,28rem)] rounded-r-[var(--radius-overlay)] border-r',
++    '[transform:translateX(var(--drawer-swipe-movement-x))]',
++    'data-[starting-style]:-translate-x-full data-[ending-style]:-translate-x-full',
++  ].join(' '),
++  right: [
++    'h-full w-[min(92vw,28rem)] rounded-l-[var(--radius-overlay)] border-l',
++    '[transform:translateX(var(--drawer-swipe-movement-x))]',
++    'data-[starting-style]:translate-x-full data-[ending-style]:translate-x-full',
++  ].join(' '),
++  bottom: [
++    'max-h-[min(88dvh,46rem)] w-full rounded-t-[var(--radius-overlay)] border-t',
++    '[transform:translateY(var(--drawer-swipe-movement-y))]',
++    'data-[starting-style]:translate-y-full data-[ending-style]:translate-y-full',
++  ].join(' '),
++};
++
++export function DrawerContent({
++  className,
++  backdropClassName,
++  viewportClassName,
++  children,
++  ...props
++}: DrawerContentProps) {
++  const side = useContext(DrawerSideContext);
++
++  return (
++    <BaseDrawer.Portal>
++      <BaseDrawer.Backdrop
++        className={cn(
++          'fixed inset-0 z-[var(--layer-overlay)] bg-black/[0.55]',
++          'transition-opacity duration-[var(--motion-normal)] ease-[var(--ease-standard)]',
++          'data-[starting-style]:opacity-0 data-[ending-style]:opacity-0',
++          backdropClassName,
++        )}
++      />
++      <BaseDrawer.Viewport
++        className={cn(
++          'fixed inset-0 z-[calc(var(--layer-overlay)_+_1)] flex',
++          viewportSideClasses[side],
++          viewportClassName,
++        )}
++      >
++        <BaseDrawer.Popup
++          className={cn(
++            'border-[var(--border-strong)] bg-surface-strong text-fg shadow-overlay outline-none',
++            'transition-[transform,translate,opacity] duration-[var(--motion-normal)] ease-[var(--ease-emphasized)]',
++            popupSideClasses[side],
++            className,
++          )}
++          {...props}
++        >
++          {side === 'bottom' && (
++            <div className="mx-auto mt-2.5 h-1 w-10 rounded-full bg-[var(--border-strong)]" aria-hidden="true" />
++          )}
++          <BaseDrawer.Content className="h-full min-h-0 overflow-hidden p-5 md:p-6">
++            {children}
++          </BaseDrawer.Content>
++        </BaseDrawer.Popup>
++      </BaseDrawer.Viewport>
++    </BaseDrawer.Portal>
++  );
++}
++
++
++export function DrawerTitle({ className, ...props }: ComponentProps<typeof BaseDrawer.Title>) {
++  return <BaseDrawer.Title className={cn('font-display text-xl font-semibold leading-tight text-fg', className)} {...props} />;
++}
++
++export function DrawerDescription({ className, ...props }: ComponentProps<typeof BaseDrawer.Description>) {
++  return <BaseDrawer.Description className={cn('text-sm leading-relaxed text-fg-secondary', className)} {...props} />;
++}
++
++export function DrawerHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
++  return <div className={cn('mb-4 flex flex-col gap-1.5', className)} {...props} />;
++}
++
++export function DrawerBody({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
++  return <div className={cn('min-h-0 flex-1 text-sm leading-relaxed text-fg-secondary', className)} {...props} />;
++}
++
++export function DrawerFooter({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
++  return <div className={cn('mt-5 flex flex-wrap items-center justify-end gap-2', className)} {...props} />;
++}
+diff --git a/src/components/ui/icon-button.tsx b/src/components/ui/icon-button.tsx
+new file mode 100644
+index 0000000..805b511
+--- /dev/null
++++ b/src/components/ui/icon-button.tsx
+@@ -0,0 +1,10 @@
++import type { ComponentProps } from 'react';
++import { Button } from './button';
++
++type IconButtonProps = Omit<ComponentProps<typeof Button>, 'size' | 'aria-label'> & {
++  label: string;
++};
++
++export function IconButton({ label, title, ...props }: IconButtonProps) {
++  return <Button aria-label={label} title={title ?? label} size="icon" {...props} />;
++}
+diff --git a/src/components/ui/index.ts b/src/components/ui/index.ts
+new file mode 100644
+index 0000000..cc1ccaa
+--- /dev/null
++++ b/src/components/ui/index.ts
+@@ -0,0 +1,10 @@
++export * from './badge';
++export * from './button';
++export * from './divider';
++export * from './drawer';
++export * from './icon-button';
++export * from './modal';
++export * from './panel';
++export * from './scrollable-panel';
++export * from './surface';
++export * from './tooltip';
+diff --git a/src/components/ui/modal.tsx b/src/components/ui/modal.tsx
+new file mode 100644
+index 0000000..d2c9ea0
+--- /dev/null
++++ b/src/components/ui/modal.tsx
+@@ -0,0 +1,63 @@
++import { Dialog } from '@base-ui/react/dialog';
++import type { ComponentProps, HTMLAttributes } from 'react';
++import { cn } from '@/lib/utils';
++
++export const Modal = Dialog.Root;
++export const ModalTrigger = Dialog.Trigger;
++export const ModalClose = Dialog.Close;
++
++export interface ModalContentProps extends ComponentProps<typeof Dialog.Popup> {
++  backdropClassName?: string;
++}
++
++export function ModalContent({ className, backdropClassName, children, ...props }: ModalContentProps) {
++  return (
++    <Dialog.Portal>
++      <Dialog.Backdrop
++        className={cn(
++          'fixed inset-0 z-[var(--layer-overlay)] bg-black/[0.55]',
++          'transition-opacity duration-[var(--motion-normal)] ease-[var(--ease-standard)]',
++          'data-[starting-style]:opacity-0 data-[ending-style]:opacity-0',
++          backdropClassName,
++        )}
++      />
++      <Dialog.Popup
++        className={cn(
++          'fixed left-1/2 top-1/2 z-[calc(var(--layer-overlay)_+_1)]',
++          'max-h-[calc(100dvh_-_var(--safe-area-top)_-_var(--safe-area-bottom)_-_2rem)]',
++          'w-[min(calc(100vw_-_2rem),36rem)] -translate-x-1/2 -translate-y-1/2 overflow-auto',
++          'rounded-[var(--radius-overlay)] border border-[var(--border-strong)] bg-surface-strong',
++          'p-5 text-fg shadow-overlay outline-none md:p-6',
++          'transition-[scale,opacity] duration-[var(--motion-normal)] ease-[var(--ease-emphasized)]',
++          'data-[starting-style]:scale-95 data-[starting-style]:opacity-0',
++          'data-[ending-style]:scale-95 data-[ending-style]:opacity-0',
++          className,
++        )}
++        {...props}
++      >
++        {children}
++      </Dialog.Popup>
++    </Dialog.Portal>
++  );
++}
++
++
++export function ModalTitle({ className, ...props }: ComponentProps<typeof Dialog.Title>) {
++  return <Dialog.Title className={cn('font-display text-xl font-semibold leading-tight text-fg', className)} {...props} />;
++}
++
++export function ModalDescription({ className, ...props }: ComponentProps<typeof Dialog.Description>) {
++  return <Dialog.Description className={cn('text-sm leading-relaxed text-fg-secondary', className)} {...props} />;
++}
++
++export function ModalHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
++  return <div className={cn('mb-4 flex flex-col gap-1.5', className)} {...props} />;
++}
++
++export function ModalBody({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
++  return <div className={cn('min-w-0 text-sm leading-relaxed text-fg-secondary', className)} {...props} />;
++}
++
++export function ModalFooter({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
++  return <div className={cn('mt-5 flex flex-wrap items-center justify-end gap-2', className)} {...props} />;
++}
+diff --git a/src/components/ui/panel.tsx b/src/components/ui/panel.tsx
+new file mode 100644
+index 0000000..e067120
+--- /dev/null
++++ b/src/components/ui/panel.tsx
+@@ -0,0 +1,54 @@
++import { cva, type VariantProps } from 'class-variance-authority';
++import type { HTMLAttributes } from 'react';
++import { cn } from '@/lib/utils';
++
++const panelVariants = cva(
++  'rounded-[var(--radius-panel)] border bg-surface text-fg shadow-panel',
++  {
++    variants: {
++      variant: {
++        default: 'border-[var(--border-default)]',
++        strong: 'border-[var(--border-strong)] bg-surface-raised',
++        critical: 'border-[var(--border-critical)] bg-surface-strong',
++      },
++      padding: {
++        none: '',
++        sm: 'p-3',
++        md: 'p-5',
++        lg: 'p-6 md:p-7',
++      },
++    },
++    defaultVariants: {
++      variant: 'default',
++      padding: 'md',
++    },
++  },
++);
++
++export interface PanelProps
++  extends HTMLAttributes<HTMLElement>,
++    VariantProps<typeof panelVariants> {}
++
++export function Panel({ className, variant, padding, ...props }: PanelProps) {
++  return <section className={cn(panelVariants({ variant, padding }), className)} {...props} />;
++}
++
++export function PanelHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
++  return <div className={cn('mb-4 flex flex-col gap-1.5', className)} {...props} />;
++}
++
++export function PanelTitle({ className, ...props }: HTMLAttributes<HTMLHeadingElement>) {
++  return <h2 className={cn('font-display text-xl font-semibold leading-tight text-fg', className)} {...props} />;
++}
++
++export function PanelDescription({ className, ...props }: HTMLAttributes<HTMLParagraphElement>) {
++  return <p className={cn('text-sm leading-relaxed text-fg-secondary', className)} {...props} />;
++}
++
++export function PanelBody({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
++  return <div className={cn('min-w-0', className)} {...props} />;
++}
++
++export function PanelFooter({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
++  return <div className={cn('mt-5 flex flex-wrap items-center justify-end gap-2', className)} {...props} />;
++}
+diff --git a/src/components/ui/scrollable-panel.tsx b/src/components/ui/scrollable-panel.tsx
+new file mode 100644
+index 0000000..7a9135c
+--- /dev/null
++++ b/src/components/ui/scrollable-panel.tsx
+@@ -0,0 +1,30 @@
++import { ScrollArea } from '@base-ui/react/scroll-area';
++import type { ComponentProps } from 'react';
++import { cn } from '@/lib/utils';
++
++export interface ScrollablePanelProps extends ComponentProps<typeof ScrollArea.Root> {
++  contentClassName?: string;
++  viewportClassName?: string;
++}
++
++export function ScrollablePanel({
++  className,
++  contentClassName,
++  viewportClassName,
++  children,
++  ...props
++}: ScrollablePanelProps) {
++  return (
++    <ScrollArea.Root className={cn('relative min-h-0 overflow-hidden', className)} {...props}>
++      <ScrollArea.Viewport className={cn('h-full w-full overscroll-contain', viewportClassName)}>
++        <ScrollArea.Content className={contentClassName}>{children}</ScrollArea.Content>
++      </ScrollArea.Viewport>
++      <ScrollArea.Scrollbar
++        orientation="vertical"
++        className="m-1 flex w-2 touch-none select-none justify-center rounded-full bg-transparent py-0.5"
++      >
++        <ScrollArea.Thumb className="w-1.5 rounded-full bg-[var(--border-strong)] transition-colors hover:bg-[var(--border-accent)]" />
++      </ScrollArea.Scrollbar>
++    </ScrollArea.Root>
++  );
++}
+diff --git a/src/components/ui/surface.tsx b/src/components/ui/surface.tsx
+new file mode 100644
+index 0000000..882db05
+--- /dev/null
++++ b/src/components/ui/surface.tsx
+@@ -0,0 +1,23 @@
++import { cva, type VariantProps } from 'class-variance-authority';
++import type { HTMLAttributes } from 'react';
++import { cn } from '@/lib/utils';
++
++export const surfaceVariants = cva('border text-fg', {
++  variants: {
++    variant: {
++      soft: 'border-[var(--border-subtle)] bg-surface-soft',
++      default: 'border-[var(--border-default)] bg-surface',
++      raised: 'border-[var(--border-default)] bg-surface-raised',
++      strong: 'border-[var(--border-strong)] bg-surface-strong',
++    },
++  },
++  defaultVariants: {
++    variant: 'default',
++  },
++});
++
++export interface SurfaceProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof surfaceVariants> {}
++
++export function Surface({ className, variant, ...props }: SurfaceProps) {
++  return <div className={cn(surfaceVariants({ variant }), className)} {...props} />;
++}
+diff --git a/src/components/ui/tooltip.tsx b/src/components/ui/tooltip.tsx
+new file mode 100644
+index 0000000..0590d75
+--- /dev/null
++++ b/src/components/ui/tooltip.tsx
+@@ -0,0 +1,34 @@
++import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
++import type { ComponentProps } from 'react';
++import { cn } from '@/lib/utils';
++
++export const TooltipProvider = BaseTooltip.Provider;
++export const Tooltip = BaseTooltip.Root;
++export const TooltipTrigger = BaseTooltip.Trigger;
++
++export interface TooltipContentProps extends ComponentProps<typeof BaseTooltip.Popup> {
++  sideOffset?: number;
++}
++
++export function TooltipContent({ className, sideOffset = 8, children, ...props }: TooltipContentProps) {
++  return (
++    <BaseTooltip.Portal>
++      <BaseTooltip.Positioner sideOffset={sideOffset} className="z-[var(--layer-system)] outline-none">
++        <BaseTooltip.Popup
++          className={cn(
++            'max-w-64 origin-[var(--transform-origin)] rounded-[var(--radius-control)]',
++            'border border-[var(--border-default)] bg-surface-strong px-3 py-2',
++            'text-xs leading-relaxed text-fg shadow-overlay outline-none',
++            'transition-[scale,opacity] duration-[var(--motion-fast)] ease-[var(--ease-standard)]',
++            'data-[starting-style]:scale-95 data-[starting-style]:opacity-0',
++            'data-[ending-style]:scale-95 data-[ending-style]:opacity-0',
++            className,
++          )}
++          {...props}
++        >
++          {children}
++        </BaseTooltip.Popup>
++      </BaseTooltip.Positioner>
++    </BaseTooltip.Portal>
++  );
++}

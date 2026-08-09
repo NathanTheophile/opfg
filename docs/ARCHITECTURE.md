@@ -27,3 +27,9 @@ Each Event is stored as one JSON file under `src/game/content/events/**`, named 
 `definitions.ts` retains the small shared registries and assembles them with this single auto-discovered Event catalogue. Temporary filler Events remain visibly isolated under `events/fixtures/`.
 
 The validator checks structural combinations, references, localization, scheduled priorities/reach/fallback, critical triggers, dice contracts, and opposite traits. Persistent data contains only JSON values.
+
+## Headless simulation and QA
+
+`src/game/simulation/` is a headless driver over the public Engine APIs. It owns no gameplay rules. Automatic Choices use a deterministic PRNG stream separate from `GameState.rngState`, preserving gameplay rolls when simulation policy changes. Runs stop on career end, dead end, safety limit, or captured simulation error; batches aggregate progression, coverage, Dice, mortality, Traits, Items, pending Scheduled occurrences, and reproducible problem seeds.
+
+Node CLIs read the same Event JSON filesystem and pass it through the same catalogue builder and registry factory as Vite. `validate-content` combines the authoritative validator with warning-only production diagnostics; `simulate` performs dynamic reachability sampling. See `SIMULATION.md`.
