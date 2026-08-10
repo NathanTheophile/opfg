@@ -40,6 +40,7 @@ Do not invent gameplay rules when the specification is ambiguous. Surface the am
 - Do not store information that can be reliably derived from the source state.
 - Do not add duplicate sources of truth.
 - Stable IDs must be used for gameplay/content references.
+- All production player-facing copy, including accessibility text, tooltips, fallbacks and player errors, must use localization keys; never infer semantics or locale from translated text.
 
 ## GameState
 

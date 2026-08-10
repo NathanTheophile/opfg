@@ -10,13 +10,10 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import type { Translator } from '@/game/localization';
 import './mobile-side-drawers.css';
 
-type DrawerId =
-  | 'stats'
-  | 'inventory'
-  | 'crew'
-  | 'ship';
+type DrawerId = 'stats' | 'inventory' | 'crew' | 'ship';
 
 type DrawerDefinition = {
   id: DrawerId;
@@ -31,6 +28,7 @@ export interface MobileSideDrawersProps {
   inventory: ReactNode;
   crew: ReactNode;
   ship: ReactNode;
+  translate: Translator;
 }
 
 export function MobileSideDrawers({
@@ -38,112 +36,60 @@ export function MobileSideDrawers({
   inventory,
   crew,
   ship,
+  translate,
 }: MobileSideDrawersProps) {
-  const [openDrawer, setOpenDrawer] =
-    useState<DrawerId | null>(null);
+  const [openDrawer, setOpenDrawer] = useState<DrawerId | null>(null);
 
   const drawers: DrawerDefinition[] = [
-    {
-      id: 'stats',
-      label: 'Stats',
-      side: 'left',
-      icon: BarChart3,
-      content: stats,
-    },
-    {
-      id: 'inventory',
-      label: 'Inventaire',
-      side: 'left',
-      icon: Backpack,
-      content: inventory,
-    },
-    {
-      id: 'crew',
-      label: 'Crew',
-      side: 'right',
-      icon: UsersRound,
-      content: crew,
-    },
-    {
-      id: 'ship',
-      label: 'Bateau',
-      side: 'right',
-      icon: Anchor,
-      content: ship,
-    },
+    { id: 'stats', label: translate('ui.stats'), side: 'left', icon: BarChart3, content: stats },
+    { id: 'inventory', label: translate('ui.inventory'), side: 'left', icon: Backpack, content: inventory },
+    { id: 'crew', label: translate('ui.crew'), side: 'right', icon: UsersRound, content: crew },
+    { id: 'ship', label: translate('ui.ship'), side: 'right', icon: Anchor, content: ship },
   ];
 
-  const current =
-    drawers.find(({ id }) => id === openDrawer) ??
-    null;
+  const current = drawers.find(({ id }) => id === openDrawer) ?? null;
 
   useEffect(() => {
     if (!openDrawer) return;
-
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setOpenDrawer(null);
-      }
+      if (event.key === 'Escape') setOpenDrawer(null);
     };
-
     window.addEventListener('keydown', closeOnEscape);
-
-    return () => {
-      window.removeEventListener(
-        'keydown',
-        closeOnEscape,
-      );
-    };
+    return () => window.removeEventListener('keydown', closeOnEscape);
   }, [openDrawer]);
 
   return (
     <div className="opfg-mobile-side-ui">
       <div className="opfg-mobile-side-tabs is-left">
-        {drawers
-          .filter(({ side }) => side === 'left')
-          .map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              type="button"
-              className="opfg-mobile-side-tab"
-              data-active={
-                openDrawer === id ? 'true' : 'false'
-              }
-              aria-label={label}
-              title={label}
-              onClick={() =>
-                setOpenDrawer((currentId) =>
-                  currentId === id ? null : id,
-                )
-              }
-            >
-              <Icon className="size-4" />
-            </button>
-          ))}
+        {drawers.filter(({ side }) => side === 'left').map(({ id, label, icon: Icon }) => (
+          <button
+            key={id}
+            type="button"
+            className="opfg-mobile-side-tab"
+            data-active={openDrawer === id ? 'true' : 'false'}
+            aria-label={label}
+            title={label}
+            onClick={() => setOpenDrawer((currentId) => currentId === id ? null : id)}
+          >
+            <Icon className="size-4" />
+          </button>
+        ))}
       </div>
 
       <div className="opfg-mobile-side-tabs is-right">
-        {drawers
-          .filter(({ side }) => side === 'right')
-          .map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              type="button"
-              className="opfg-mobile-side-tab"
-              data-active={
-                openDrawer === id ? 'true' : 'false'
-              }
-              aria-label={label}
-              title={label}
-              onClick={() =>
-                setOpenDrawer((currentId) =>
-                  currentId === id ? null : id,
-                )
-              }
-            >
-              <Icon className="size-4" />
-            </button>
-          ))}
+        {drawers.filter(({ side }) => side === 'right').map(({ id, label, icon: Icon }) => (
+          <button
+            key={id}
+            type="button"
+            className="opfg-mobile-side-tab"
+            data-active={openDrawer === id ? 'true' : 'false'}
+            aria-label={label}
+            title={label}
+            onClick={() => setOpenDrawer((currentId) => currentId === id ? null : id)}
+          >
+            <Icon className="size-4" />
+          </button>
+        ))}
       </div>
 
       {current && (
@@ -151,7 +97,7 @@ export function MobileSideDrawers({
           <button
             type="button"
             className="opfg-mobile-side-backdrop"
-            aria-label="Fermer le panneau"
+            aria-label={translate('ui.drawer.close')}
             onClick={() => setOpenDrawer(null)}
           />
 
@@ -162,16 +108,14 @@ export function MobileSideDrawers({
           >
             <header className="opfg-mobile-side-drawer__header">
               <span>{current.label}</span>
-
               <button
                 type="button"
                 onClick={() => setOpenDrawer(null)}
-                aria-label="Fermer"
+                aria-label={translate('ui.action.close')}
               >
                 <X className="size-4" />
               </button>
             </header>
-
             <div className="opfg-mobile-side-drawer__content">
               {current.content}
             </div>

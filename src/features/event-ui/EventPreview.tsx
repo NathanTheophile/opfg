@@ -26,6 +26,7 @@ import {
   saveLocale,
   t,
   type LocaleId,
+  type Translator,
 } from '@/game/localization';
 import type {
   GameState,
@@ -50,10 +51,12 @@ import { OutcomePanel } from './OutcomePanel';
 import { NavigationPanel } from './NavigationPanel';
 import { MobileSideDrawers } from './MobileSideDrawers';
 import type {
+  ChoiceStatChangeViewModel,
   EventChoiceViewModel,
   EventViewModel,
   OutcomeEffectViewModel,
   OutcomeViewModel,
+  PlayerDisplayStatId,
 } from './types';
 import './event-preview.css';
 
@@ -114,129 +117,70 @@ interface PendingDice {
 function originPreview(
   choice: ChoiceDefinition,
   catalog: ContentCatalog,
-  translate: (key: string) => string,
-): string[] {
-  if (choice.resolution.type !== 'deterministic') {
-    return [];
-  }
+  translate: Translator,
+): ChoiceStatChangeViewModel[] {
+  if (choice.resolution.type !== 'deterministic') return [];
 
-  return choice.resolution.outcome.effects.flatMap(
-    (effect): string[] => {
-      const format = (
-        statId: keyof GameState['player']['stats'],
-        value: number,
-        absolute = false,
-      ) =>
-        `${translate(STAT_KEYS[statId])} ${
-          absolute
-            ? value
-            : `${value >= 0 ? '+' : ''}${value}`
-        }`;
+  return choice.resolution.outcome.effects.flatMap((effect): ChoiceStatChangeViewModel[] => {
+    const format = (statId: PlayerDisplayStatId, value: number, absolute = false): ChoiceStatChangeViewModel => ({
+      statId,
+      label: translate(STAT_KEYS[statId]),
+      value,
+      absolute,
+    });
 
-      if (effect.type === 'modifyStat') {
-        return [
-          format(effect.statId, effect.amount),
-        ];
-      }
+    if (effect.type === 'modifyStat') return [format(effect.statId, effect.amount)];
+    if (effect.type === 'modifyHealth') return [format('health', effect.amount)];
+    if (effect.type === 'setRace') {
+      const race = catalog.races.find(({ id }) => id === effect.raceId);
+      return race
+        ? [format('health', race.initialHealth, true), ...Object.entries(race.attributeModifiers).map(([id, value]) => format(id as StatId, value))]
+        : [];
+    }
 
-      if (effect.type === 'modifyHealth') {
-        return [
-          format('health', effect.amount),
-        ];
-      }
-
-      if (effect.type === 'setRace') {
-        const race = catalog.races.find(
-          ({ id }) => id === effect.raceId,
-        );
-
-        return race
-          ? [
-              format(
-                'health',
-                race.initialHealth,
-                true,
-              ),
-              ...Object.entries(
-                race.attributeModifiers,
-              ).map(([id, value]) =>
-                format(id as StatId, value),
-              ),
-            ]
-          : [];
-      }
-
-      const modifiers =
-        effect.type === 'setFamilyStructure'
-          ? catalog.familyStructures.find(
-              ({ id }) =>
-                id === effect.familyStructureId,
-            )?.attributeModifiers
-          : effect.type === 'setSocialClass'
-            ? catalog.socialClasses.find(
-                ({ id }) =>
-                  id === effect.socialClassId,
-              )?.attributeModifiers
-            : undefined;
-
-      return Object.entries(
-        modifiers ?? {},
-      ).map(([id, value]) =>
-        format(id as StatId, value),
-      );
-    },
-  );
+    const modifiers = effect.type === 'setFamilyStructure'
+      ? catalog.familyStructures.find(({ id }) => id === effect.familyStructureId)?.attributeModifiers
+      : effect.type === 'setSocialClass'
+        ? catalog.socialClasses.find(({ id }) => id === effect.socialClassId)?.attributeModifiers
+        : undefined;
+    return Object.entries(modifiers ?? {}).map(([id, value]) => format(id as StatId, value));
+  });
 }
 
 function transitionEffects(
   before: GameState | null,
   after: GameState | null,
-  translate: (key: string) => string,
+  catalog: ContentCatalog,
+  translate: Translator,
 ): OutcomeEffectViewModel[] {
   if (!before || !after) return [];
-
   const effects: OutcomeEffectViewModel[] = [];
 
-  for (
-    const statId of Object.keys(
-      STAT_KEYS,
-    ) as (keyof GameState['player']['stats'])[]
-  ) {
-    const previous =
-      before.player.stats[statId];
+  for (const statId of Object.keys(STAT_KEYS) as PlayerDisplayStatId[]) {
+    const previous = before.player.stats[statId];
     const next = after.player.stats[statId];
-
-    if (
-      typeof previous === 'number' &&
-      typeof next === 'number' &&
-      previous !== next
-    ) {
+    if (typeof previous === 'number' && typeof next === 'number' && previous !== next) {
       const delta = next - previous;
-
       effects.push({
         id: `stat-${statId}`,
-        label: `${
-          delta > 0 ? '+' : ''
-        }${delta} ${translate(
-          STAT_KEYS[statId],
-        )}`,
-        tone:
-          delta > 0 ? 'positive' : 'warning',
+        label: `${delta > 0 ? '+' : ''}${delta} ${translate(STAT_KEYS[statId])}`,
+        tone: delta > 0 ? 'positive' : 'warning',
+        statId,
+        delta,
       });
     }
   }
 
-  for (const traitId of after.player.traits.filter(
-    (id) =>
-      !before.player.traits.includes(id),
-  )) {
+  for (const traitId of after.player.traits.filter((id) => !before.player.traits.includes(id))) {
+    const trait = catalog.traits.find((entry) => entry.id === traitId);
+    const traitLabel = trait ? translate(trait.nameKey) : translate('ui.trait.unknown');
     effects.push({
       id: `trait-${traitId}`,
-      label: `Trait : ${traitId}`,
+      label: translate('ui.outcome.traitAdded', { trait: traitLabel }),
       tone: 'positive',
+      traitId,
     });
   }
-
   return effects;
 }
 
@@ -284,11 +228,10 @@ export function EventPreview({
   const timerRef =
     useRef<number | null>(null);
 
-  const translate = (key: string) =>
+  const translate: Translator = (key, params) =>
     t(key, locale, {
-      playerName:
-        session.gameState?.player.profile.name ??
-        '',
+      playerName: session.gameState?.player.profile.name ?? '',
+      ...params,
     });
 
   useEffect(
@@ -446,10 +389,12 @@ export function EventPreview({
         effects: transitionEffects(
           session.previousState,
           session.gameState,
+          catalog,
           translate,
         ),
         dice: dice
           ? {
+              statId: dice.statId,
               statLabel: translate(
                 STAT_KEYS[dice.statId],
               ),
@@ -457,6 +402,7 @@ export function EventPreview({
               modifier:
                 dice.modifierTotal,
               total: dice.total,
+              result: dice.result,
               resultLabel: translate(
                 RESULT_KEYS[dice.result],
               ),
@@ -543,13 +489,8 @@ export function EventPreview({
     } catch (error) {
       clearResolvedEventUi();
 
-      setInputError(
-        error instanceof Error
-          ? error.message
-          : translate(
-              'ui.choice.invalid',
-            ),
-      );
+      console.error('[EventPreview] Choice resolution failed.', error);
+      setInputError(translate('ui.choice.invalid'));
     }
   };
 
@@ -589,13 +530,8 @@ export function EventPreview({
       setPendingDice(null);
       clearResolvedEventUi();
 
-      setInputError(
-        error instanceof Error
-          ? error.message
-          : translate(
-              'ui.choice.invalid',
-            ),
-      );
+      console.error('[EventPreview] Choice resolution failed.', error);
+      setInputError(translate('ui.choice.invalid'));
     }
   };
 
@@ -702,6 +638,7 @@ export function EventPreview({
       statLabel={(id) =>
         translate(STAT_KEYS[id])
       }
+      translate={translate}
       traitLabel={(id) => {
         const trait =
           catalog.traits.find(
@@ -752,6 +689,7 @@ export function EventPreview({
     state: displayState,
     catalog,
     translate,
+    locale,
     calendarAgeMonths,
     monthEventProgress,
   };
@@ -824,6 +762,7 @@ export function EventPreview({
                   onContinue={
                     continueFromOutcome
                   }
+                  translate={translate}
                 />
               </motion.div>
             ) : pendingDice ? (
@@ -931,6 +870,7 @@ export function EventPreview({
       </div>
 
       <MobileSideDrawers
+        translate={translate}
         stats={statsRail}
         inventory={
           <InventoryHudPanel
@@ -953,6 +893,7 @@ export function EventPreview({
       />
 
       <DiceTableStage
+        translate={translate}
         visible={pendingDice !== null}
         status={
           pendingDice?.status ??

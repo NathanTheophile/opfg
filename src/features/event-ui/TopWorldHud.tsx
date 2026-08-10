@@ -22,11 +22,9 @@ import type {
   GameState,
   ItemStack,
 } from '@/game/model/schema';
+import type { LocaleId, Translator } from '@/game/localization';
 import { ContextTooltip } from './ContextTooltip';
-import {
-  getUiTooltipDetail,
-  inferTooltipLocale,
-} from './context-tooltip-copy';
+import { getUiTooltipKey } from './context-tooltip-copy';
 import './top-world-hud.css';
 
 const INVENTORY_PREVIEW_SLOTS = 2;
@@ -50,7 +48,8 @@ type CargoOccupant =
 export interface TopWorldHudProps {
   state: GameState;
   catalog: ContentCatalog;
-  translate: (key: string) => string;
+  translate: Translator;
+  locale: LocaleId;
 
   /**
    * Optional presentation override used while an Outcome is visible.
@@ -142,249 +141,98 @@ function buildCargoOccupants(
 
 function getCalendarLabel(
   ageMonths: number,
-  isFrench: boolean,
+  translate: Translator,
 ): string {
-  const safeAgeMonths = Math.max(
-    0,
-    Math.floor(ageMonths),
-  );
-
-  const year =
-    CALENDAR_START_YEAR +
-    Math.floor(safeAgeMonths / 12);
-
-  const monthIndex =
-    safeAgeMonths % 12;
-
-  const months = isFrench
-    ? [
-        'Janvier',
-        'Février',
-        'Mars',
-        'Avril',
-        'Mai',
-        'Juin',
-        'Juillet',
-        'Août',
-        'Septembre',
-        'Octobre',
-        'Novembre',
-        'Décembre',
-      ]
-    : [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-      ];
-
-  return `${months[monthIndex]} ${year}`;
+  const safeAgeMonths = Math.max(0, Math.floor(ageMonths));
+  const year = CALENDAR_START_YEAR + Math.floor(safeAgeMonths / 12);
+  const monthIndex = safeAgeMonths % 12;
+  const monthKey = `calendar.month.${String(monthIndex + 1).padStart(2, '0')}`;
+  return `${translate(monthKey)} ${year}`;
 }
 
 function getAffiliationTitle(
   state: GameState,
   catalog: ContentCatalog,
-  translate: (key: string) => string,
-  isFrench: boolean,
+  translate: Translator,
 ): string {
-  const careerAffiliation =
-    catalog.careerAffiliations.find(
-      ({ id }) =>
-        id === state.player.career.affiliationId,
-    );
-
-  if (careerAffiliation) {
-    return translate(careerAffiliation.nameKey);
-  }
-
-  const profileAffiliation =
-    catalog.affiliations.find(
-      ({ id }) =>
-        id === state.player.profile.affiliationId,
-    );
-
-  if (profileAffiliation) {
-    return translate(profileAffiliation.nameKey);
-  }
-
-  return isFrench ? 'Civil' : 'Civilian';
+  const careerAffiliation = catalog.careerAffiliations.find(({ id }) => id === state.player.career.affiliationId);
+  if (careerAffiliation) return translate(careerAffiliation.nameKey);
+  const profileAffiliation = catalog.affiliations.find(({ id }) => id === state.player.profile.affiliationId);
+  if (profileAffiliation) return translate(profileAffiliation.nameKey);
+  return translate('affiliation.civilian.name');
 }
 
 export function InventoryHudPanel({
   state,
   catalog,
   translate,
+  locale,
 }: TopWorldHudProps) {
-  const tooltipLocale = inferTooltipLocale(
-    translate('stat.health'),
-  );
-  const isFrench = tooltipLocale === 'fr';
-  const inventoryCapacity =
-    state.player.inventory.capacity;
-  const inventoryStacks =
-    state.player.inventory.stacks;
-
-  const berryFormatter =
-    new Intl.NumberFormat(
-      isFrench ? 'fr-FR' : 'en-US',
-    );
+  const inventoryCapacity = state.player.inventory.capacity;
+  const inventoryStacks = state.player.inventory.stacks;
+  const berryFormatter = new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en-US');
 
   return (
-    <Panel
-      variant="strong"
-      padding="none"
-      className="opfg-hud-panel opfg-hud-panel--inventory"
-    >
+    <Panel variant="strong" padding="none" className="opfg-hud-panel opfg-hud-panel--inventory">
       <div className="opfg-hud-panel__body opfg-hud-inventory">
         <div className="opfg-hud-inventory__topline">
           <ContextTooltip
             className="opfg-hud-inventory__icon"
-            title={
-              isFrench
-                ? 'Inventaire'
-                : 'Inventory'
-            }
-            detail={
-              isFrench
-                ? 'Deux emplacements personnels. Simple, rapide, et difficile à transformer en débarras.'
-                : 'Two personal slots. Simple, fast, and difficult to turn into a junk drawer.'
-            }
+            title={translate('ui.inventory')}
+            detail={translate('ui.inventory.description')}
             meta={`${inventoryStacks.length}/${inventoryCapacity}`}
             side="bottom"
           >
-            <Backpack
-              className="size-[1.15rem]"
-              aria-hidden="true"
-            />
+            <Backpack className="size-[1.15rem]" aria-hidden="true" />
           </ContextTooltip>
 
-          <div
-            className="opfg-hud-slots opfg-hud-inventory__slots"
-            aria-label={
-              isFrench
-                ? 'Emplacements d’inventaire'
-                : 'Inventory slots'
-            }
-          >
-            {Array.from(
-              {
-                length:
-                  INVENTORY_PREVIEW_SLOTS,
-              },
-              (_, index) => {
-                const stack =
-                  inventoryStacks[index];
+          <div className="opfg-hud-slots opfg-hud-inventory__slots" aria-label={translate('ui.inventory.slotsAria')}>
+            {Array.from({ length: INVENTORY_PREVIEW_SLOTS }, (_, index) => {
+              const stack = inventoryStacks[index];
+              const locked = index >= inventoryCapacity;
 
-                const locked =
-                  index >= inventoryCapacity;
-
-                if (locked) {
-                  return (
-                    <span
-                      key={`inventory-${index}`}
-                      className="opfg-hud-slot is-locked"
-                      aria-label={
-                        isFrench
-                          ? 'Emplacement indisponible'
-                          : 'Unavailable slot'
-                      }
-                    >
-                      <LockKeyhole
-                        className="size-3.5"
-                        aria-hidden="true"
-                      />
-                    </span>
-                  );
-                }
-
-                if (!stack) {
-                  return (
-                    <span
-                      key={`inventory-${index}`}
-                      className="opfg-hud-slot is-empty"
-                      aria-label={
-                        isFrench
-                          ? 'Emplacement vide'
-                          : 'Empty slot'
-                      }
-                    />
-                  );
-                }
-
-                const label = getItemLabel(
-                  stack,
-                  catalog,
-                  translate,
-                );
-
+              if (locked) {
                 return (
-                  <ContextTooltip
-                    key={`inventory-${stack.itemId}-${index}`}
-                    className="opfg-hud-slot-wrap"
-                    title={label}
-                    detail={
-                      isFrench
-                        ? 'Objet personnel. Les objets identiques restent empilés dans le même emplacement.'
-                        : 'Personal item. Identical items remain stacked in the same slot.'
-                    }
-                    meta={`×${stack.quantity}`}
-                    side="bottom"
-                    focusable
-                  >
-                    <span className="opfg-hud-slot is-filled">
-                      <Package
-                        className="size-4"
-                        aria-hidden="true"
-                      />
-
-                      {stack.quantity >
-                        1 && (
-                        <strong className="opfg-hud-slot__quantity">
-                          {
-                            stack.quantity
-                          }
-                        </strong>
-                      )}
-                    </span>
-                  </ContextTooltip>
+                  <span key={`inventory-${index}`} className="opfg-hud-slot is-locked" aria-label={translate('ui.slot.unavailable')}>
+                    <LockKeyhole className="size-3.5" aria-hidden="true" />
+                  </span>
                 );
-              },
-            )}
+              }
+
+              if (!stack) {
+                return <span key={`inventory-${index}`} className="opfg-hud-slot is-empty" aria-label={translate('ui.slot.empty')} />;
+              }
+
+              const label = getItemLabel(stack, catalog, translate);
+              return (
+                <ContextTooltip
+                  key={`inventory-${stack.itemId}-${index}`}
+                  className="opfg-hud-slot-wrap"
+                  title={label}
+                  detail={translate('ui.inventory.personalItem.description')}
+                  meta={`×${stack.quantity}`}
+                  side="bottom"
+                  focusable
+                >
+                  <span className="opfg-hud-slot is-filled">
+                    <Package className="size-4" aria-hidden="true" />
+                    {stack.quantity > 1 && <strong className="opfg-hud-slot__quantity">{stack.quantity}</strong>}
+                  </span>
+                </ContextTooltip>
+              );
+            })}
           </div>
         </div>
 
         <ContextTooltip
           className="opfg-hud-inventory__money"
-          title={
-            isFrench ? 'Berrys' : 'Berries'
-          }
-          detail={
-            isFrench
-              ? 'Votre argent liquide. Rien ne vous oblige à le dépenser dans le premier bar venu.'
-              : 'Your cash. Nothing forces you to spend it in the first bar you find.'
-          }
-          meta={`${berryFormatter.format(
-            state.berries,
-          )} B`}
+          title={translate('currency.berries.name')}
+          detail={translate('ui.currency.berries.description')}
+          meta={`${berryFormatter.format(state.berries)} B`}
           side="bottom"
         >
-          <Coins
-            className="size-4"
-            aria-hidden="true"
-          />
-          <strong>
-            {berryFormatter.format(
-              state.berries,
-            )}
-          </strong>
+          <Coins className="size-4" aria-hidden="true" />
+          <strong>{berryFormatter.format(state.berries)}</strong>
           <span>B</span>
         </ContextTooltip>
       </div>
@@ -399,243 +247,73 @@ export function IdentityEnvironmentHudPanel({
   calendarAgeMonths,
   monthEventProgress,
 }: TopWorldHudProps) {
-  const tooltipLocale = inferTooltipLocale(
-    translate('stat.health'),
-  );
-
-  const isFrench =
-    tooltipLocale === 'fr';
-
-  const locationPath =
-    getLocationPath(state, catalog);
-
-  const rootLocation =
-    locationPath[0];
-
-  const subLocations =
-    locationPath.slice(1);
-
-  const currentLocation =
-    locationPath[
-      locationPath.length - 1
-    ];
-
-  const sea = catalog.seas.find(
-    ({ id }) =>
-      id ===
-      (currentLocation?.seaId ??
-        state.player.profile
-          .originSeaId),
-  );
-
-  const locationLabel =
-    rootLocation
-      ? translate(
-          rootLocation.nameKey,
-        )
-      : state.locationId;
-
-  const subLocationLabel =
-    subLocations.length > 0
-      ? subLocations
-          .map((location) =>
-            translate(
-              location.nameKey,
-            ),
-          )
-          .join(' › ')
-      : '—';
-
-  const shownAgeMonths =
-    calendarAgeMonths ??
-    state.ageMonths;
-
-  const progress = Math.max(
-    0,
-    Math.min(
-      MONTH_EVENT_SLOTS,
-      monthEventProgress ??
-        (state.careerPhase ===
-        'active'
-          ? state.slotInMonth
-          : 0),
-    ),
-  );
-
-  const affiliationTitle =
-    getAffiliationTitle(
-      state,
-      catalog,
-      translate,
-      isFrench,
-    );
-
-  const calendarLabel =
-    getCalendarLabel(
-      shownAgeMonths,
-      isFrench,
-    );
+  const locationPath = getLocationPath(state, catalog);
+  const rootLocation = locationPath[0];
+  const subLocations = locationPath.slice(1);
+  const currentLocation = locationPath[locationPath.length - 1];
+  const sea = catalog.seas.find(({ id }) => id === (currentLocation?.seaId ?? state.player.profile.originSeaId));
+  const locationLabel = rootLocation ? translate(rootLocation.nameKey) : state.locationId;
+  const subLocationLabel = subLocations.length > 0 ? subLocations.map((location) => translate(location.nameKey)).join(' › ') : '—';
+  const shownAgeMonths = calendarAgeMonths ?? state.ageMonths;
+  const progress = Math.max(0, Math.min(MONTH_EVENT_SLOTS, monthEventProgress ?? (state.careerPhase === 'active' ? state.slotInMonth : 0)));
+  const affiliationTitle = getAffiliationTitle(state, catalog, translate);
+  const calendarLabel = getCalendarLabel(shownAgeMonths, translate);
 
   return (
-    <Panel
-      variant="strong"
-      padding="none"
-      className="opfg-hud-panel opfg-hud-panel--identity"
-    >
+    <Panel variant="strong" padding="none" className="opfg-hud-panel opfg-hud-panel--identity">
       <div className="opfg-hud-panel__body opfg-hud-identity">
         <div className="opfg-hud-identity__nameplate">
           <span aria-hidden="true" />
-          <strong>
-            {state.player.profile.name ??
-              '—'}
-          </strong>
+          <strong>{state.player.profile.name ?? '—'}</strong>
           <span aria-hidden="true" />
         </div>
-
-        <div className="opfg-hud-identity__title">
-          {affiliationTitle}
-        </div>
-
+        <div className="opfg-hud-identity__title">{affiliationTitle}</div>
         <div className="opfg-hud-identity__separator" />
 
         <div className="opfg-hud-identity__grid">
           <ContextTooltip
             className="opfg-hud-identity__column is-left"
-            title={
-              isFrench
-                ? 'Environnement'
-                : 'Environment'
-            }
-            detail={getUiTooltipDetail(
-              'world',
-              tooltipLocale,
-            )}
+            title={translate('ui.environment')}
+            detail={translate(getUiTooltipKey('world'))}
             side="bottom"
           >
             <div className="opfg-hud-info-row is-primary">
-              <MapPin
-                className="size-4"
-                aria-hidden="true"
-              />
-              <strong>
-                {locationLabel}
-              </strong>
+              <MapPin className="size-4" aria-hidden="true" />
+              <strong>{locationLabel}</strong>
             </div>
-
             <div className="opfg-hud-info-row is-muted">
-              <Navigation
-                className="size-4"
-                aria-hidden="true"
-              />
-              <strong>
-                {subLocationLabel}
-              </strong>
+              <Navigation className="size-4" aria-hidden="true" />
+              <strong>{subLocationLabel}</strong>
             </div>
-
             <div className="opfg-hud-info-row is-muted">
-              <Waves
-                className="size-4"
-                aria-hidden="true"
-              />
-              <strong>
-                {sea
-                  ? translate(
-                      sea.nameKey,
-                    )
-                  : '—'}
-              </strong>
+              <Waves className="size-4" aria-hidden="true" />
+              <strong>{sea ? translate(sea.nameKey) : '—'}</strong>
             </div>
           </ContextTooltip>
 
           <div className="opfg-hud-identity__column is-right">
-            <ContextTooltip
-              className="opfg-hud-info-row is-primary"
-              title={
-                isFrench ? 'Âge' : 'Age'
-              }
-              detail={
-                isFrench
-                  ? 'Âge actuel du personnage.'
-                  : 'Current character age.'
-              }
-              side="bottom"
-            >
-              <Clock3
-                className="size-4"
-                aria-hidden="true"
-              />
-              <strong>
-                {Math.floor(
-                  shownAgeMonths /
-                    12,
-                )}{' '}
-                {isFrench
-                  ? 'ans'
-                  : 'years'}
-              </strong>
+            <ContextTooltip className="opfg-hud-info-row is-primary" title={translate('ui.age')} detail={translate('ui.age.description')} side="bottom">
+              <Clock3 className="size-4" aria-hidden="true" />
+              <strong>{Math.floor(shownAgeMonths / 12)} {translate('ui.unit.years')}</strong>
             </ContextTooltip>
 
-            <ContextTooltip
-              className="opfg-hud-info-row is-muted"
-              title={
-                isFrench ? 'Date' : 'Date'
-              }
-              detail={
-                isFrench
-                  ? 'Le calendrier OPFG commence toujours en janvier 1507, deux ans après la naissance de Luffy.'
-                  : 'The OPFG calendar always starts in January 1507, two years after Luffy was born.'
-              }
-              side="bottom"
-            >
-              <CalendarDays
-                className="size-4"
-                aria-hidden="true"
-              />
-              <strong>
-                {calendarLabel}
-              </strong>
+            <ContextTooltip className="opfg-hud-info-row is-muted" title={translate('ui.date')} detail={translate('ui.date.description')} side="bottom">
+              <CalendarDays className="size-4" aria-hidden="true" />
+              <strong>{calendarLabel}</strong>
             </ContextTooltip>
 
             <ContextTooltip
               className="opfg-hud-info-row opfg-hud-month-progress"
-              title={
-                isFrench
-                  ? 'Events du mois'
-                  : 'Events this month'
-              }
-              detail={
-                isFrench
-                  ? 'Le premier rectangle se remplit après le premier Event du mois, le second après le deuxième. Les deux se vident au passage au mois suivant.'
-                  : 'The first pip fills after the first Event of the month and the second after the second. Both reset when the next month begins.'
-              }
+              title={translate('ui.monthEvents')}
+              detail={translate('ui.monthEvents.description')}
               meta={`${progress}/${MONTH_EVENT_SLOTS}`}
               side="bottom"
             >
-              <ListChecks
-                className="size-4"
-                aria-hidden="true"
-              />
-
+              <ListChecks className="size-4" aria-hidden="true" />
               <span className="opfg-hud-month-progress__pips">
-                {Array.from(
-                  {
-                    length:
-                      MONTH_EVENT_SLOTS,
-                  },
-                  (_, index) => (
-                    <span
-                      key={`month-event-${index}`}
-                      className="opfg-hud-month-progress__pip"
-                      data-filled={
-                        index <
-                        progress
-                          ? 'true'
-                          : 'false'
-                      }
-                      aria-hidden="true"
-                    />
-                  ),
-                )}
+                {Array.from({ length: MONTH_EVENT_SLOTS }, (_, index) => (
+                  <span key={`month-event-${index}`} className="opfg-hud-month-progress__pip" data-filled={index < progress ? 'true' : 'false'} aria-hidden="true" />
+                ))}
               </span>
             </ContextTooltip>
           </div>
@@ -645,286 +323,98 @@ export function IdentityEnvironmentHudPanel({
   );
 }
 
-export function ShipHudPanel({
-  state,
-  catalog,
-  translate,
-}: TopWorldHudProps) {
-  const tooltipLocale = inferTooltipLocale(
-    translate('stat.health'),
-  );
-
-  const isFrench =
-    tooltipLocale === 'fr';
-
-  const shipDefinition =
-    state.ship
-      ? catalog.ships.find(
-          ({ id }) =>
-            id ===
-            state.ship?.shipId,
-        )
-      : undefined;
-
-  const shipPercent =
-    state.ship &&
-    shipDefinition
-      ? Math.max(
-          0,
-          Math.min(
-            100,
-            Math.round(
-              (state.ship.health /
-                shipDefinition
-                  .maxHealth) *
-                100,
-            ),
-          ),
-        )
-      : 0;
-
-  const cargoCapacity =
-    shipDefinition?.cargoSlots ??
-    0;
-
-  const cargoOccupants =
-    buildCargoOccupants(
-      state,
-      catalog,
-      translate,
-    );
+export function ShipHudPanel({ state, catalog, translate }: TopWorldHudProps) {
+  const shipDefinition = state.ship ? catalog.ships.find(({ id }) => id === state.ship?.shipId) : undefined;
+  const shipPercent = state.ship && shipDefinition
+    ? Math.max(0, Math.min(100, Math.round((state.ship.health / shipDefinition.maxHealth) * 100)))
+    : 0;
+  const cargoCapacity = shipDefinition?.cargoSlots ?? 0;
+  const cargoOccupants = buildCargoOccupants(state, catalog, translate);
 
   return (
-    <Panel
-      variant="strong"
-      padding="none"
-      className="opfg-hud-panel opfg-hud-panel--ship"
-    >
+    <Panel variant="strong" padding="none" className="opfg-hud-panel opfg-hud-panel--ship">
       <div className="opfg-hud-panel__body opfg-hud-ship">
         <div className="opfg-hud-ship__identity">
           <ContextTooltip
             className="opfg-hud-ship__icon"
-            title={
-              isFrench ? 'Bateau' : 'Ship'
-            }
-            detail={getUiTooltipDetail(
-              'ship',
-              tooltipLocale,
-            )}
-            meta={
-              state.ship
-                ? `${state.ship.health} HP · ${shipPercent}%`
-                : undefined
-            }
+            title={translate('ui.ship')}
+            detail={translate(getUiTooltipKey('ship'))}
+            meta={state.ship ? `${state.ship.health} HP · ${shipPercent}%` : undefined}
             side="bottom"
           >
-            <Anchor
-              className="size-[1.2rem]"
-              aria-hidden="true"
-            />
+            <Anchor className="size-[1.2rem]" aria-hidden="true" />
           </ContextTooltip>
 
           <div className="opfg-hud-ship__copy">
-            <strong className="opfg-hud-ship__name">
-              {state.ship?.name ??
-                (isFrench
-                  ? 'Aucun bateau'
-                  : 'No ship')}
-            </strong>
-
-            <span className="opfg-hud-ship__status">
-              {state.ship
-                ? `${shipPercent}%`
-                : '—'}
-            </span>
+            <strong className="opfg-hud-ship__name">{state.ship?.name ?? translate('ui.ship.none')}</strong>
+            <span className="opfg-hud-ship__status">{state.ship ? `${shipPercent}%` : '—'}</span>
           </div>
         </div>
 
-        <div
-          className="opfg-hud-ship__condition"
-          aria-label={
-            isFrench
-              ? `État du bateau : ${shipPercent}%`
-              : `Ship condition: ${shipPercent}%`
-          }
-        >
-          <span
-            style={{
-              width:
-                `${shipPercent}%`,
-            }}
-          />
+        <div className="opfg-hud-ship__condition" aria-label={translate('ui.ship.conditionAria', { percent: shipPercent })}>
+          <span style={{ width: `${shipPercent}%` }} />
         </div>
 
-        <div
-          className="opfg-hud-slots opfg-hud-cargo"
-          aria-label={
-            isFrench
-              ? 'Cargaison'
-              : 'Cargo'
-          }
-        >
+        <div className="opfg-hud-slots opfg-hud-cargo" aria-label={translate('ui.cargo')}>
           <ContextTooltip
             className="opfg-hud-slot-wrap"
-            title={
-              isFrench
-                ? 'Cale'
-                : 'Cargo'
-            }
-            detail={
-              isFrench
-                ? 'La première case représente le transport. Les sept autres sont les emplacements de cargaison maximum.'
-                : 'The first cell represents transport. The other seven are the maximum cargo slots.'
-            }
+            title={translate('ui.cargo.hold')}
+            detail={translate('ui.cargo.description')}
             meta={`${cargoOccupants.length}/${cargoCapacity}`}
             side="bottom"
             focusable
           >
             <span className="opfg-hud-slot opfg-hud-slot--transport">
-              <Boxes
-                className="size-4"
-                aria-hidden="true"
-              />
+              <Boxes className="size-4" aria-hidden="true" />
             </span>
           </ContextTooltip>
 
-          {Array.from(
-            {
-              length:
-                CARGO_PREVIEW_SLOTS,
-            },
-            (_, index) => {
-              const occupant =
-                cargoOccupants[index];
+          {Array.from({ length: CARGO_PREVIEW_SLOTS }, (_, index) => {
+            const occupant = cargoOccupants[index];
+            const locked = !state.ship || index >= cargoCapacity;
 
-              const locked =
-                !state.ship ||
-                index >=
-                  cargoCapacity;
-
-              if (locked) {
-                return (
-                  <span
-                    key={`cargo-${index}`}
-                    className="opfg-hud-slot is-locked"
-                    aria-label={
-                      isFrench
-                        ? 'Slot de cargaison indisponible'
-                        : 'Unavailable cargo slot'
-                    }
-                  >
-                    <LockKeyhole
-                      className="size-3.5"
-                      aria-hidden="true"
-                    />
-                  </span>
-                );
-              }
-
-              if (!occupant) {
-                return (
-                  <span
-                    key={`cargo-${index}`}
-                    className="opfg-hud-slot is-empty"
-                    aria-label={
-                      isFrench
-                        ? 'Slot de cargaison vide'
-                        : 'Empty cargo slot'
-                    }
-                  />
-                );
-              }
-
+            if (locked) {
               return (
-                <ContextTooltip
-                  key={
-                    occupant.key
-                  }
-                  className="opfg-hud-slot-wrap"
-                  title={
-                    occupant.label
-                  }
-                  detail={
-                    occupant.kind ===
-                    'passenger'
-                      ? isFrench
-                        ? 'Passager temporaire : il consomme également un emplacement de cale.'
-                        : 'Temporary passenger: they also consume one cargo slot.'
-                      : isFrench
-                        ? 'Objet transporté dans la cale du bateau.'
-                        : 'Item transported in the ship cargo hold.'
-                  }
-                  meta={
-                    occupant.kind ===
-                    'item'
-                      ? `×${occupant.quantity}`
-                      : isFrench
-                        ? 'Passager'
-                        : 'Passenger'
-                  }
-                  side="bottom"
-                  focusable
-                >
-                  <span className="opfg-hud-slot is-filled">
-                    {occupant.kind ===
-                    'item' ? (
-                      <Package
-                        className="size-4"
-                        aria-hidden="true"
-                      />
-                    ) : (
-                      <UserRound
-                        className="size-4"
-                        aria-hidden="true"
-                      />
-                    )}
-
-                    {occupant.kind ===
-                      'item' &&
-                      occupant.quantity >
-                        1 && (
-                        <strong className="opfg-hud-slot__quantity">
-                          {
-                            occupant.quantity
-                          }
-                        </strong>
-                      )}
-                  </span>
-                </ContextTooltip>
+                <span key={`cargo-${index}`} className="opfg-hud-slot is-locked" aria-label={translate('ui.cargo.slotUnavailable')}>
+                  <LockKeyhole className="size-3.5" aria-hidden="true" />
+                </span>
               );
-            },
-          )}
+            }
+            if (!occupant) {
+              return <span key={`cargo-${index}`} className="opfg-hud-slot is-empty" aria-label={translate('ui.cargo.slotEmpty')} />;
+            }
+
+            return (
+              <ContextTooltip
+                key={occupant.key}
+                className="opfg-hud-slot-wrap"
+                title={occupant.label}
+                detail={translate(occupant.kind === 'passenger' ? 'ui.cargo.passenger.description' : 'ui.cargo.item.description')}
+                meta={occupant.kind === 'item' ? `×${occupant.quantity}` : translate('ui.cargo.passenger')}
+                side="bottom"
+                focusable
+              >
+                <span className="opfg-hud-slot is-filled">
+                  {occupant.kind === 'item'
+                    ? <Package className="size-4" aria-hidden="true" />
+                    : <UserRound className="size-4" aria-hidden="true" />}
+                  {occupant.kind === 'item' && occupant.quantity > 1 && <strong className="opfg-hud-slot__quantity">{occupant.quantity}</strong>}
+                </span>
+              </ContextTooltip>
+            );
+          })}
         </div>
       </div>
     </Panel>
   );
 }
 
-export function TopWorldHud(
-  props: TopWorldHudProps,
-) {
+export function TopWorldHud(props: TopWorldHudProps) {
   return (
-    <div
-      className="opfg-top-world-hud"
-      aria-label={
-        inferTooltipLocale(
-          props.translate(
-            'stat.health',
-          ),
-        ) === 'fr'
-          ? 'Informations principales'
-          : 'Primary information'
-      }
-    >
-      <InventoryHudPanel
-        {...props}
-      />
-      <IdentityEnvironmentHudPanel
-        {...props}
-      />
-      <ShipHudPanel
-        {...props}
-      />
+    <div className="opfg-top-world-hud" aria-label={props.translate('ui.hud.mainAria')}>
+      <InventoryHudPanel {...props} />
+      <IdentityEnvironmentHudPanel {...props} />
+      <ShipHudPanel {...props} />
     </div>
   );
 }

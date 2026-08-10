@@ -1,4 +1,5 @@
 import { Panel } from '@/components/ui';
+import type { Translator } from '@/game/localization';
 import { D20Roll } from './D20Roll';
 import './dice-panel.css';
 
@@ -19,16 +20,17 @@ export interface DicePanelProps {
   onRoll?: () => void;
   onComplete?: () => void;
   className?: string;
+  translate: Translator;
 }
 
-const RESULT_LABELS: Record<
+const RESULT_KEYS: Record<
   Extract<DicePanelStatus, 'success' | 'failure' | 'criticalSuccess' | 'criticalFailure'>,
   string
 > = {
-  success: 'RÉUSSITE',
-  failure: 'ÉCHEC',
-  criticalSuccess: 'RÉUSSITE CRITIQUE',
-  criticalFailure: 'ÉCHEC CRITIQUE',
+  success: 'dice.success',
+  failure: 'dice.failure',
+  criticalSuccess: 'dice.criticalSuccess',
+  criticalFailure: 'dice.criticalFailure',
 };
 
 function formatModifier(value: number): string {
@@ -36,9 +38,7 @@ function formatModifier(value: number): string {
   return String(value);
 }
 
-function isResolvedStatus(
-  status: DicePanelStatus,
-): status is 'success' | 'failure' | 'criticalSuccess' | 'criticalFailure' {
+function isResolvedStatus(status: DicePanelStatus): status is keyof typeof RESULT_KEYS {
   return status !== 'armed' && status !== 'rolling';
 }
 
@@ -51,9 +51,13 @@ export function DicePanel({
   onRoll,
   onComplete,
   className = '',
+  translate,
 }: DicePanelProps) {
   const resolved = isResolvedStatus(status);
   const modifierSign = modifier > 0 ? 'positive' : modifier < 0 ? 'negative' : 'neutral';
+  const panelAria = result === undefined
+    ? translate('ui.dice.readyAria')
+    : translate('ui.dice.resultAria', { result });
 
   return (
     <div className={`opfg-dice-module ${className}`.trim()}>
@@ -62,17 +66,13 @@ export function DicePanel({
         <strong>{formatModifier(modifier)}</strong>
       </div>
 
-      <Panel
-        variant="strong"
-        padding="none"
-        className="opfg-dice-panel"
-        aria-label={result === undefined ? 'Jet de d20 prêt' : `Jet de d20 : ${result}`}
-      >
+      <Panel variant="strong" padding="none" className="opfg-dice-panel" aria-label={panelAria}>
         <D20Roll
           result={result}
           rollKey={rollKey}
           rolling={status === 'rolling'}
           onComplete={onComplete}
+          translate={translate}
         />
 
         {status === 'armed' && (
@@ -80,15 +80,15 @@ export function DicePanel({
             type="button"
             className="opfg-dice-panel__roll-trigger"
             onClick={onRoll}
-            aria-label="Lancer le d20"
+            aria-label={translate('ui.dice.rollAria')}
           >
-            <span className="opfg-dice-panel__roll-label">LANCER</span>
+            <span className="opfg-dice-panel__roll-label">{translate('ui.dice.roll')}</span>
           </button>
         )}
 
         {resolved && (
           <div className="opfg-dice-panel__result" data-result={status} aria-live="assertive">
-            <span>{RESULT_LABELS[status]}</span>
+            <span>{translate(RESULT_KEYS[status])}</span>
           </div>
         )}
       </Panel>

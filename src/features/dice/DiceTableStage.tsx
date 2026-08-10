@@ -1,3 +1,4 @@
+import type { Translator } from '@/game/localization';
 import { D20Roll } from './D20Roll';
 import './dice-table-stage.css';
 
@@ -19,19 +20,17 @@ export interface DiceTableStageProps {
   rollKey?: string | number;
   onRoll?: () => void;
   onComplete?: () => void;
+  translate: Translator;
 }
 
-const RESULT_LABELS: Record<
-  Extract<
-    DiceTableStageStatus,
-    'success' | 'failure' | 'criticalSuccess' | 'criticalFailure'
-  >,
+const RESULT_KEYS: Record<
+  Extract<DiceTableStageStatus, 'success' | 'failure' | 'criticalSuccess' | 'criticalFailure'>,
   string
 > = {
-  success: 'RÉUSSITE',
-  failure: 'ÉCHEC',
-  criticalSuccess: 'RÉUSSITE CRITIQUE',
-  criticalFailure: 'ÉCHEC CRITIQUE',
+  success: 'dice.success',
+  failure: 'dice.failure',
+  criticalSuccess: 'dice.criticalSuccess',
+  criticalFailure: 'dice.criticalFailure',
 };
 
 function formatModifier(value: number): string {
@@ -39,9 +38,7 @@ function formatModifier(value: number): string {
   return String(value);
 }
 
-function isResolved(
-  status: DiceTableStageStatus,
-): status is 'success' | 'failure' | 'criticalSuccess' | 'criticalFailure' {
+function isResolved(status: DiceTableStageStatus): status is keyof typeof RESULT_KEYS {
   return status !== 'armed' && status !== 'rolling';
 }
 
@@ -55,6 +52,7 @@ export function DiceTableStage({
   rollKey,
   onRoll,
   onComplete,
+  translate,
 }: DiceTableStageProps) {
   const modifierSign = modifier > 0 ? 'positive' : modifier < 0 ? 'negative' : 'neutral';
   const resolved = isResolved(status);
@@ -76,6 +74,7 @@ export function DiceTableStage({
             rollKey={rollKey}
             rolling={status === 'rolling'}
             onComplete={onComplete}
+            translate={translate}
           />
 
           {status === 'armed' && (
@@ -83,9 +82,9 @@ export function DiceTableStage({
               type="button"
               className="opfg-dice-table-stage__trigger"
               onClick={onRoll}
-              aria-label="Lancer le d20 sur la table"
+              aria-label={translate('ui.dice.rollTableAria')}
             >
-              <span>LANCER</span>
+              <span>{translate('ui.dice.roll')}</span>
             </button>
           )}
 
@@ -95,8 +94,10 @@ export function DiceTableStage({
               data-result={status}
               aria-live="assertive"
             >
-              <span>{RESULT_LABELS[status]}</span>
-              {total !== undefined && <small>Total {total}</small>}
+              <span>{translate(RESULT_KEYS[status])}</span>
+              {total !== undefined && (
+                <small>{translate('ui.dice.total')} {total}</small>
+              )}
             </div>
           )}
         </div>

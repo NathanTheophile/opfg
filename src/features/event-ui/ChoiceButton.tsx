@@ -10,15 +10,10 @@ import {
   LockKeyhole,
   MessageCircle,
   Smile,
-  Sparkles,
   type LucideIcon,
 } from 'lucide-react';
 import { Badge, Button } from '@/components/ui';
-import {
-  dictionaries,
-  supportedLocales,
-} from '@/game/localization';
-import type { EventChoiceViewModel } from './types';
+import type { EventChoiceViewModel, PlayerDisplayStatId } from './types';
 import './choice-button.css';
 
 export interface ChoiceButtonProps {
@@ -26,143 +21,21 @@ export interface ChoiceButtonProps {
   onSelect: (choice: EventChoiceViewModel) => void;
 }
 
-type ChoiceStatId =
-  | 'health'
-  | 'morale'
-  | 'strength'
-  | 'agility'
-  | 'observation'
-  | 'intelligence'
-  | 'navigation'
-  | 'charisma'
-  | 'luck';
-
-interface ChoiceStatMeta {
-  icon: LucideIcon;
-  localizationKey: string;
-}
-
-interface ParsedChoiceStatChange {
-  id: string;
-  statId: ChoiceStatId | 'unknown';
-  label: string;
-  displayValue: string;
-  tone: 'positive' | 'negative' | 'neutral';
-  Icon: LucideIcon;
-}
-
-const STAT_META: Record<ChoiceStatId, ChoiceStatMeta> = {
-  health: {
-    icon: Heart,
-    localizationKey: 'stat.health',
-  },
-  morale: {
-    icon: Smile,
-    localizationKey: 'stat.morale',
-  },
-  strength: {
-    icon: Dumbbell,
-    localizationKey: 'stat.strength',
-  },
-  agility: {
-    icon: Footprints,
-    localizationKey: 'stat.agility',
-  },
-  observation: {
-    icon: Eye,
-    localizationKey: 'stat.observation',
-  },
-  intelligence: {
-    icon: Brain,
-    localizationKey: 'stat.intelligence',
-  },
-  navigation: {
-    icon: Compass,
-    localizationKey: 'stat.navigation',
-  },
-  charisma: {
-    icon: MessageCircle,
-    localizationKey: 'stat.charisma',
-  },
-  luck: {
-    icon: Clover,
-    localizationKey: 'stat.luck',
-  },
+const STAT_ICONS: Record<PlayerDisplayStatId, LucideIcon> = {
+  health: Heart,
+  morale: Smile,
+  strength: Dumbbell,
+  agility: Footprints,
+  observation: Eye,
+  intelligence: Brain,
+  navigation: Compass,
+  charisma: MessageCircle,
+  luck: Clover,
 };
 
-const STAT_IDS = Object.keys(STAT_META) as ChoiceStatId[];
-
-function normalizeLabel(value: string): string {
-  return value
-    .trim()
-    .toLocaleLowerCase()
-    .replace(/\s+/g, ' ');
-}
-
-function resolveStatId(
-  label: string,
-): ChoiceStatId | null {
-  const normalized = normalizeLabel(label);
-
-  for (const statId of STAT_IDS) {
-    const key = STAT_META[statId].localizationKey;
-
-    for (const locale of supportedLocales) {
-      const localized = dictionaries[locale][key];
-
-      if (
-        localized &&
-        normalizeLabel(localized) === normalized
-      ) {
-        return statId;
-      }
-    }
-  }
-
-  return null;
-}
-
-function parseStatChange(
-  change: string,
-  index: number,
-): ParsedChoiceStatChange | null {
-  const match = change
-    .trim()
-    .match(/^(.*?)\s+([+-]?\d+(?:[.,]\d+)?)$/);
-
-  if (!match) return null;
-
-  const [, rawLabel, rawValue] = match;
-  const numericValue = Number(rawValue.replace(',', '.'));
-
-  if (!Number.isFinite(numericValue)) return null;
-
-  const statId = resolveStatId(rawLabel) ?? 'unknown';
-  const explicitlySigned = /^[+-]/.test(rawValue);
-
-  const tone =
-    explicitlySigned && numericValue > 0
-      ? 'positive'
-      : explicitlySigned && numericValue < 0
-        ? 'negative'
-        : 'neutral';
-
-  const displayValue =
-    explicitlySigned && numericValue > 0
-      ? `+${numericValue}`
-      : String(numericValue);
-
-  return {
-    id: `${statId}-${index}-${displayValue}`,
-    statId,
-    label: rawLabel.trim(),
-    displayValue,
-    tone,
-    Icon:
-      statId === 'unknown'
-        ? Sparkles
-        : STAT_META[statId].icon,
-  };
+function formatChange(value: number, absolute = false): string {
+  if (!absolute && value > 0) return `+${value}`;
+  return String(value);
 }
 
 export function ChoiceButton({
@@ -172,18 +45,6 @@ export function ChoiceButton({
   const probability = choice.dice
     ? `${Math.round(choice.dice.successProbability * 100)} %`
     : null;
-
-  const parsedStatChanges =
-    choice.statChanges
-      ?.map((change, index) =>
-        parseStatChange(change, index),
-      )
-      .filter(
-        (
-          change,
-        ): change is ParsedChoiceStatChange =>
-          change !== null,
-      ) ?? [];
 
   return (
     <Button
@@ -207,44 +68,43 @@ export function ChoiceButton({
           </span>
         )}
 
-        {parsedStatChanges.length > 0 && (
+        {choice.statChanges && choice.statChanges.length > 0 && (
           <span
             className="opfg-choice-stat-effects"
-            aria-label={parsedStatChanges
-              .map(
-                (change) =>
-                  `${change.label} ${change.displayValue}`,
-              )
+            aria-label={choice.statChanges
+              .map((change) => `${change.label} ${formatChange(change.value, change.absolute)}`)
               .join(', ')}
           >
-            {parsedStatChanges.map(
-              ({
-                id,
-                statId,
-                label,
-                displayValue,
-                tone,
-                Icon,
-              }) => (
+            {choice.statChanges.map((change, index) => {
+              const Icon = STAT_ICONS[change.statId];
+              const displayValue = formatChange(change.value, change.absolute);
+              const tone = change.absolute
+                ? 'neutral'
+                : change.value > 0
+                  ? 'positive'
+                  : change.value < 0
+                    ? 'negative'
+                    : 'neutral';
+
+              return (
                 <span
-                  key={id}
+                  key={`${change.statId}-${index}-${displayValue}`}
                   className="opfg-choice-stat-effect"
-                  data-stat={statId}
+                  data-stat={change.statId}
                   data-tone={tone}
-                  data-tooltip={`${label} ${displayValue}`}
-                  aria-label={`${label} ${displayValue}`}
+                  data-tooltip={`${change.label} ${displayValue}`}
+                  aria-label={`${change.label} ${displayValue}`}
                 >
                   <Icon
                     className="opfg-choice-stat-effect__icon"
                     aria-hidden="true"
                   />
-
                   <strong className="opfg-choice-stat-effect__value">
                     {displayValue}
                   </strong>
                 </span>
-              ),
-            )}
+              );
+            })}
           </span>
         )}
       </span>

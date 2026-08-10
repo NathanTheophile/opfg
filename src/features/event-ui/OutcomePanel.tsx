@@ -21,6 +21,8 @@ import {
   PanelHeader,
   PanelTitle,
 } from '@/components/ui';
+import type { DiceResult } from '@/game/content/schema';
+import type { Translator } from '@/game/localization';
 import type {
   OutcomeEffectTone,
   OutcomeEffectViewModel,
@@ -76,89 +78,20 @@ const STAT_IDS = new Set<OutcomeStatId>(
 function getStatVisual(
   effect: OutcomeEffectViewModel,
 ): OutcomeStatVisual | null {
-  if (!effect.id.startsWith('stat-')) return null;
-
-  const statId = effect.id.slice('stat-'.length) as OutcomeStatId;
-  if (!STAT_IDS.has(statId)) return null;
-
-  const match = effect.label.trim().match(/^([+-]?\d+(?:[.,]\d+)?)\b/);
-  if (!match) return null;
-
-  const delta = Number(match[1].replace(',', '.'));
-  if (!Number.isFinite(delta)) return null;
-
-  return {
-    statId,
-    delta,
-    Icon: STAT_ICONS[statId],
-  };
+  if (!effect.statId || effect.delta === undefined) return null;
+  if (!STAT_IDS.has(effect.statId as OutcomeStatId)) return null;
+  const statId = effect.statId as OutcomeStatId;
+  return { statId, delta: effect.delta, Icon: STAT_ICONS[statId] };
 }
 
-function normalizeUiText(value: string): string {
-  return value
-    .normalize('NFD')
-    .replace(/\p{Diacritic}/gu, '')
-    .trim()
-    .toLowerCase();
-}
-
-function statIdFromLocalizedLabel(
-  label: string,
-): OutcomeStatId | null {
-  const normalized = normalizeUiText(label);
-
-  const aliases: Record<string, OutcomeStatId> = {
-    sante: 'health',
-    health: 'health',
-    moral: 'morale',
-    morale: 'morale',
-    force: 'strength',
-    strength: 'strength',
-    agilite: 'agility',
-    agility: 'agility',
-    observation: 'observation',
-    intelligence: 'intelligence',
-    navigation: 'navigation',
-    charisme: 'charisma',
-    charisma: 'charisma',
-    chance: 'luck',
-    luck: 'luck',
-  };
-
-  return aliases[normalized] ?? null;
-}
-
-type DiceFeedbackTone = 'success' | 'failure' | 'neutral';
-
-function getDiceFeedbackTone(
-  resultLabel: string,
-): DiceFeedbackTone {
-  const normalized = normalizeUiText(resultLabel);
-
-  if (
-    normalized.includes('echec') ||
-    normalized.includes('failure')
-  ) {
-    return 'failure';
-  }
-
-  if (
-    normalized.includes('succes') ||
-    normalized.includes('success')
-  ) {
-    return 'success';
-  }
-
+function getDiceFeedbackTone(result: DiceResult): 'success' | 'failure' | 'neutral' {
+  if (result === 'failure' || result === 'criticalFailure') return 'failure';
+  if (result === 'success' || result === 'criticalSuccess') return 'success';
   return 'neutral';
 }
 
-function isCriticalDiceLabel(resultLabel: string): boolean {
-  const normalized = normalizeUiText(resultLabel);
-
-  return (
-    normalized.includes('critique') ||
-    normalized.includes('critical')
-  );
+function isCriticalDiceResult(result: DiceResult): boolean {
+  return result === 'criticalSuccess' || result === 'criticalFailure';
 }
 
 function isVisibleElement(element: HTMLElement): boolean {
@@ -355,11 +288,13 @@ function animateStatTransfer(
 export interface OutcomePanelProps {
   outcome: OutcomeViewModel;
   onContinue: () => void;
+  translate: Translator;
 }
 
 export function OutcomePanel({
   outcome,
   onContinue,
+  translate,
 }: OutcomePanelProps) {
   const effectRefs = useRef<Map<string, HTMLElement>>(new Map());
 
@@ -423,7 +358,7 @@ export function OutcomePanel({
   }, [outcome.effects]);
 
   const diceTone = outcome.dice
-    ? getDiceFeedbackTone(outcome.dice.resultLabel)
+    ? getDiceFeedbackTone(outcome.dice.result)
     : 'neutral';
 
   const hasStatEffect =
@@ -432,10 +367,8 @@ export function OutcomePanel({
     ) ?? false;
 
   const zeroStatId =
-    outcome.dice &&
-    diceTone === 'failure' &&
-    !hasStatEffect
-      ? statIdFromLocalizedLabel(outcome.dice.statLabel)
+    outcome.dice && diceTone === 'failure' && !hasStatEffect
+      ? outcome.dice.statId
       : null;
 
   const displayEffects: OutcomeEffectViewModel[] = [
@@ -446,6 +379,8 @@ export function OutcomePanel({
             id: `stat-${zeroStatId}`,
             label: `+0 ${outcome.dice.statLabel}`,
             tone: 'warning' as const,
+            statId: zeroStatId,
+            delta: 0,
           },
         ]
       : []),
@@ -459,10 +394,10 @@ export function OutcomePanel({
     >
       <PanelHeader className="opfg-outcome-panel__header mb-0 px-5 pb-4 pt-5 md:px-7 md:pb-5 md:pt-6">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold">
-          Conséquence
+          {translate('ui.outcome.eyebrow')}
         </p>
         <PanelTitle className="text-2xl md:text-[1.75rem]">
-          {outcome.title ?? 'La suite de votre histoire'}
+          {outcome.title ?? translate('ui.outcome.defaultTitle')}
         </PanelTitle>
       </PanelHeader>
 
@@ -476,15 +411,15 @@ export function OutcomePanel({
         {(outcome.dice || displayEffects.length > 0) && (
           <div
             className="opfg-outcome-feedback-row opfg-outcome-effect-list"
-            aria-label="Résultat et effets de la conséquence"
+            aria-label={translate('ui.outcome.feedbackAria')}
           >
             {outcome.dice && (
               <span
                 className="opfg-outcome-dice-result"
                 data-tone={diceTone}
                 data-critical={
-                  isCriticalDiceLabel(
-                    outcome.dice.resultLabel,
+                  isCriticalDiceResult(
+                    outcome.dice.result,
                   )
                     ? 'true'
                     : 'false'
@@ -563,7 +498,7 @@ export function OutcomePanel({
           size="lg"
           onClick={onContinue}
         >
-          Continuer
+          {translate('ui.action.continue')}
           <ArrowRight
             className="size-4"
             aria-hidden="true"

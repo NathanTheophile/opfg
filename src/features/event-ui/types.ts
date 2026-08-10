@@ -1,7 +1,18 @@
+import type { DiceResult, StatId } from '@/game/content/schema';
+
+export type PlayerDisplayStatId = 'health' | StatId;
+
 export interface DiceChoicePreview {
   statLabel: string;
   successProbability: number;
   modifierTotal?: number;
+}
+
+export interface ChoiceStatChangeViewModel {
+  statId: PlayerDisplayStatId;
+  label: string;
+  value: number;
+  absolute?: boolean;
 }
 
 export interface EventChoiceViewModel {
@@ -10,7 +21,7 @@ export interface EventChoiceViewModel {
   disabled?: boolean;
   requirement?: string;
   dice?: DiceChoicePreview;
-  statChanges?: string[];
+  statChanges?: ChoiceStatChangeViewModel[];
   textInput?: { minLength: number; maxLength: number; placeholder?: string };
 }
 
@@ -27,11 +38,22 @@ export interface OutcomeEffectViewModel {
   id: string;
   label: string;
   tone?: OutcomeEffectTone;
+  statId?: PlayerDisplayStatId;
+  delta?: number;
+  traitId?: string;
 }
 
 export interface OutcomeViewModel {
   title?: string;
   body: string;
   effects?: OutcomeEffectViewModel[];
-  dice?: { statLabel: string; rawRoll: number; modifier: number; total: number; resultLabel: string };
+  dice?: {
+    statId: StatId;
+    statLabel: string;
+    rawRoll: number;
+    modifier: number;
+    total: number;
+    result: DiceResult;
+    resultLabel: string;
+  };
 }

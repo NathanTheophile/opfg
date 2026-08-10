@@ -20,3 +20,11 @@ Interpolation supports only named `{{placeholder}}` values. Secondary translatio
 `CONTENT_SCHEMA_VERSION = 6` versions the authoring/runtime content contract independently from save `GameState.version = 15`. Runtime content validation rejects unsupported schema versions and missing source-French keys. Missing English entries are valid.
 
 The UI locale is stored separately under `jam-op-fan-game.locale`; it is never part of career state.
+
+## Player-facing copy rule
+
+Every production string visible or exposed to the player must come from a localization key. This includes JSX copy, labels, buttons, titles, tooltips, fallbacks, empty states, validation/error messages intended for the player, `aria-label`, `title`, and `data-tooltip`.
+
+Do not keep parallel FR/EN copy in TypeScript and do not infer locale, IDs, result types, stats, or other semantics from translated text. Carry stable IDs/enums in view models and translate only at the render boundary. The locale JSON dictionaries are the single source of truth for localized copy.
+
+Allowed non-localized strings are non-linguistic/internal values such as stable IDs, CSS/data tokens, DOM event names, file paths, debug/log output not rendered to the player, DEV-only tooling, and explicitly invariant notation such as `HP`, `d20`, `%`, and `×`.
