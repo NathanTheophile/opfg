@@ -5,11 +5,13 @@ import {
   CalendarDays,
   Clock3,
   Coins,
+  House,
   ListChecks,
   LockKeyhole,
   MapPin,
   Navigation,
   Package,
+  ShieldCheck,
   UserRound,
   Waves,
 } from 'lucide-react';
@@ -25,6 +27,7 @@ import type {
 import type { LocaleId, Translator } from '@/game/localization';
 import { ContextTooltip } from './ContextTooltip';
 import { getUiTooltipKey } from './context-tooltip-copy';
+import './hud-panel-header.css';
 import './top-world-hud.css';
 
 const INVENTORY_PREVIEW_SLOTS = 2;
@@ -173,9 +176,19 @@ export function InventoryHudPanel({
   const berryFormatter = new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en-US');
 
   return (
-    <Panel variant="strong" padding="none" className="opfg-hud-panel opfg-hud-panel--inventory">
-      <div className="opfg-hud-panel__body opfg-hud-inventory">
-        <div className="opfg-hud-inventory__topline">
+    <div className="opfg-hud-inventory-stack">
+      <button type="button" className="opfg-hud-home-button" onClick={() => undefined}>
+        <House className="size-4" aria-hidden="true" />
+        <span>{translate('ui.action.home')}</span>
+      </button>
+
+      <Panel
+        variant="strong"
+        padding="none"
+        className="opfg-hud-panel opfg-hud-panel--inventory"
+        aria-label={translate('ui.inventory')}
+      >
+        <div className="opfg-hud-section-header opfg-hud-inventory__header">
           <ContextTooltip
             className="opfg-hud-inventory__icon"
             title={translate('ui.inventory')}
@@ -185,7 +198,11 @@ export function InventoryHudPanel({
           >
             <Backpack className="size-[1.15rem]" aria-hidden="true" />
           </ContextTooltip>
+          <span>{translate('ui.inventory')}</span>
+          <strong>{inventoryStacks.length}/{inventoryCapacity}</strong>
+        </div>
 
+        <div className="opfg-hud-panel__body opfg-hud-inventory">
           <div className="opfg-hud-slots opfg-hud-inventory__slots" aria-label={translate('ui.inventory.slotsAria')}>
             {Array.from({ length: INVENTORY_PREVIEW_SLOTS }, (_, index) => {
               const stack = inventoryStacks[index];
@@ -222,21 +239,21 @@ export function InventoryHudPanel({
               );
             })}
           </div>
-        </div>
 
-        <ContextTooltip
-          className="opfg-hud-inventory__money"
-          title={translate('currency.berries.name')}
-          detail={translate('ui.currency.berries.description')}
-          meta={`${berryFormatter.format(state.berries)} B`}
-          side="bottom"
-        >
-          <Coins className="size-4" aria-hidden="true" />
-          <strong>{berryFormatter.format(state.berries)}</strong>
-          <span>B</span>
-        </ContextTooltip>
-      </div>
-    </Panel>
+          <ContextTooltip
+            className="opfg-hud-inventory__money"
+            title={translate('currency.berries.name')}
+            detail={translate('ui.currency.berries.description')}
+            meta={`${berryFormatter.format(state.berries)} B`}
+            side="bottom"
+          >
+            <Coins className="size-4" aria-hidden="true" />
+            <strong>{berryFormatter.format(state.berries)}</strong>
+            <span>B</span>
+          </ContextTooltip>
+        </div>
+      </Panel>
+    </div>
   );
 }
 
@@ -325,47 +342,58 @@ export function IdentityEnvironmentHudPanel({
 
 export function ShipHudPanel({ state, catalog, translate }: TopWorldHudProps) {
   const shipDefinition = state.ship ? catalog.ships.find(({ id }) => id === state.ship?.shipId) : undefined;
-  const shipPercent = state.ship && shipDefinition
-    ? Math.max(0, Math.min(100, Math.round((state.ship.health / shipDefinition.maxHealth) * 100)))
-    : 0;
+  const shipHealth = state.ship?.health ?? 0;
+  const shipMaxHealth = shipDefinition?.maxHealth ?? 0;
+  const shipType = shipDefinition ? translate(shipDefinition.nameKey) : '—';
   const cargoCapacity = shipDefinition?.cargoSlots ?? 0;
   const cargoOccupants = buildCargoOccupants(state, catalog, translate);
 
   return (
     <Panel variant="strong" padding="none" className="opfg-hud-panel opfg-hud-panel--ship">
+      <div className="opfg-hud-section-header opfg-hud-ship__header">
+        <ContextTooltip
+          className="opfg-hud-ship__icon"
+          title={translate('ui.ship')}
+          detail={translate(getUiTooltipKey('ship'))}
+          side="bottom"
+        >
+          <Anchor className="size-[1.2rem]" aria-hidden="true" />
+        </ContextTooltip>
+
+        <div className="opfg-hud-ship__copy">
+          <strong className="opfg-hud-ship__name">{state.ship?.name ?? translate('ui.ship.none')}</strong>
+          <span className="opfg-hud-ship__type">{state.ship ? shipType : '—'}</span>
+        </div>
+
+        <ContextTooltip
+          className="opfg-hud-ship__resistance"
+          title={translate('ui.ship.resistance')}
+          detail={translate('ui.ship.resistance.description')}
+          meta={state.ship ? `${shipHealth}/${shipMaxHealth}` : undefined}
+          side="bottom"
+          ariaLabel={state.ship
+            ? translate('ui.ship.resistanceAria', { current: shipHealth, max: shipMaxHealth })
+            : translate('ui.ship.none')}
+          focusable
+        >
+          <ShieldCheck className="size-4" aria-hidden="true" />
+          <strong>{state.ship ? shipHealth : '—'}</strong>
+          {state.ship && <span>/{shipMaxHealth}</span>}
+        </ContextTooltip>
+      </div>
+
       <div className="opfg-hud-panel__body opfg-hud-ship">
-        <div className="opfg-hud-ship__identity">
-          <ContextTooltip
-            className="opfg-hud-ship__icon"
-            title={translate('ui.ship')}
-            detail={translate(getUiTooltipKey('ship'))}
-            meta={state.ship ? `${state.ship.health} HP · ${shipPercent}%` : undefined}
-            side="bottom"
-          >
-            <Anchor className="size-[1.2rem]" aria-hidden="true" />
-          </ContextTooltip>
-
-          <div className="opfg-hud-ship__copy">
-            <strong className="opfg-hud-ship__name">{state.ship?.name ?? translate('ui.ship.none')}</strong>
-            <span className="opfg-hud-ship__status">{state.ship ? `${shipPercent}%` : '—'}</span>
-          </div>
-        </div>
-
-        <div className="opfg-hud-ship__condition" aria-label={translate('ui.ship.conditionAria', { percent: shipPercent })}>
-          <span style={{ width: `${shipPercent}%` }} />
-        </div>
-
         <div className="opfg-hud-slots opfg-hud-cargo" aria-label={translate('ui.cargo')}>
           <ContextTooltip
-            className="opfg-hud-slot-wrap"
+            className="opfg-hud-slot-wrap opfg-hud-cargo__storage-wrap"
             title={translate('ui.cargo.hold')}
             detail={translate('ui.cargo.description')}
             meta={`${cargoOccupants.length}/${cargoCapacity}`}
             side="bottom"
             focusable
           >
-            <span className="opfg-hud-slot opfg-hud-slot--transport">
-              <Boxes className="size-4" aria-hidden="true" />
+            <span className="opfg-hud-cargo__storage-icon">
+              <Boxes className="size-[1.15rem]" aria-hidden="true" />
             </span>
           </ContextTooltip>
 

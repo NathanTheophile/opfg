@@ -107,9 +107,20 @@ export function PlayerStatsRail({ state, previousState, statLabel, traitLabel, t
                 <span className="opfg-player-stat__watermark" aria-hidden="true">
                   <StatGlyph statId={id} Icon={Icon} watermark />
                 </span>
-                <ContextTooltip className="opfg-player-stat__icon" title={label} detail={tooltipDetail} meta={tooltipMeta} accent={STAT_TOOLTIP_COLORS[id]} side="right" focusable>
-                  <StatGlyph statId={id} Icon={Icon} />
+                <ContextTooltip
+                  className="opfg-player-stat__tooltip-hitbox"
+                  title={label}
+                  detail={tooltipDetail}
+                  meta={tooltipMeta}
+                  accent={STAT_TOOLTIP_COLORS[id]}
+                  side="right"
+                  focusable
+                >
+                  <span className="sr-only">{label}</span>
                 </ContextTooltip>
+                <span className="opfg-player-stat__icon" aria-hidden="true">
+                  <StatGlyph statId={id} Icon={Icon} />
+                </span>
                 <span className="opfg-player-stat__label">{label}</span>
                 <strong className="opfg-player-stat__value">{value}</strong>
 

@@ -6,6 +6,7 @@ import type { Translator } from '@/game/localization';
 import type { GameState, NpcStatId } from '@/game/model/schema';
 import { ContextTooltip } from './ContextTooltip';
 import { getStatTooltipKey, getUiTooltipKey, STAT_TOOLTIP_COLORS } from './context-tooltip-copy';
+import './hud-panel-header.css';
 import './crew-rail.css';
 
 const NPC_STAT_IDS: NpcStatId[] = ['health', 'morale', 'strength', 'observation', 'intelligence', 'luck', 'loyalty', 'calm'];
@@ -23,7 +24,7 @@ export function CrewRail({ state, catalog, translate, statLabel }: CrewRailProps
     <Panel
       variant="strong"
       padding="none"
-      className="opfg-crew-header"
+      className="opfg-crew-header opfg-hud-section-header"
       aria-label={translate('ui.crew.capacityAria', { count: crew.length, capacity })}
     >
       <ContextTooltip

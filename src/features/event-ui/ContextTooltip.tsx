@@ -20,6 +20,7 @@ export interface ContextTooltipProps {
   className?: string;
   children: ReactNode;
   focusable?: boolean;
+  ariaLabel?: string;
 }
 
 interface TooltipPosition {
@@ -40,6 +41,7 @@ export function ContextTooltip({
   className,
   children,
   focusable = false,
+  ariaLabel,
 }: ContextTooltipProps) {
   const id = useId();
   const triggerRef = useRef<HTMLSpanElement | null>(null);
@@ -131,6 +133,7 @@ export function ContextTooltip({
         ref={triggerRef}
         className={`opfg-context-tooltip__trigger${className ? ` ${className}` : ''}`}
         tabIndex={focusable ? 0 : undefined}
+        aria-label={ariaLabel}
         aria-describedby={open ? id : undefined}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
