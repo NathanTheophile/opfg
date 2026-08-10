@@ -1,14 +1,22 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Button, Panel } from '@/components/ui';
-import type { ChoiceDefinition, ContentCatalog, DiceResult, StatId } from '@/game/content/schema';
+import type {
+  ChoiceDefinition,
+  ContentCatalog,
+  DiceResult,
+  StatId,
+} from '@/game/content/schema';
 import { getChoiceState } from '@/game/engine/conditions';
 import { getDicePreview, type DiceRollResult } from '@/game/engine/dice';
 import type { StorageLike } from '@/game/engine/save';
 import { loadLocale, saveLocale, t, type LocaleId } from '@/game/localization';
 import type { GameState, NpcStatId } from '@/game/model/schema';
 import { useGameSession } from '@/game/session/useGameSession';
-import { DiceTableStage, type DiceTableStageStatus } from '@/features/dice/DiceTableStage';
+import {
+  DiceTableStage,
+  type DiceTableStageStatus,
+} from '@/features/dice/DiceTableStage';
 import { PlayerStatsRail } from './PlayerStatsRail';
 import { TopWorldHud } from './TopWorldHud';
 import { CrewRail } from './CrewRail';
@@ -17,129 +25,558 @@ import { OutcomePanel } from './OutcomePanel';
 import { NavigationPanel } from './NavigationPanel';
 import { LanguageControls } from '@/features/settings/LanguageControls';
 import { notifyUiLocaleChanged } from '@/features/settings/localeSync';
-import type { EventChoiceViewModel, EventViewModel, OutcomeEffectViewModel, OutcomeViewModel } from './types';
+import type {
+  EventChoiceViewModel,
+  EventViewModel,
+  OutcomeEffectViewModel,
+  OutcomeViewModel,
+} from './types';
 import './event-preview.css';
 
-const STAT_KEYS: Record<keyof GameState['player']['stats'], string> = { health: 'stat.health', morale: 'stat.morale', strength: 'stat.strength', agility: 'stat.agility', observation: 'stat.observation', intelligence: 'stat.intelligence', navigation: 'stat.navigation', charisma: 'stat.charisma', luck: 'stat.luck' };
-const NPC_STAT_KEYS: Record<NpcStatId, string> = { health: 'stat.health', morale: 'stat.morale', strength: 'stat.strength', observation: 'stat.observation', intelligence: 'stat.intelligence', luck: 'stat.luck', loyalty: 'npcStat.loyalty', calm: 'npcStat.calm' };
-const RESULT_KEYS: Record<DiceResult, string> = { criticalFailure: 'dice.criticalFailure', failure: 'dice.failure', success: 'dice.success', criticalSuccess: 'dice.criticalSuccess' };
-const PANEL_TRANSITION = { duration: 0.28, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] };
+const STAT_KEYS: Record<keyof GameState['player']['stats'], string> = {
+  health: 'stat.health',
+  morale: 'stat.morale',
+  strength: 'stat.strength',
+  agility: 'stat.agility',
+  observation: 'stat.observation',
+  intelligence: 'stat.intelligence',
+  navigation: 'stat.navigation',
+  charisma: 'stat.charisma',
+  luck: 'stat.luck',
+};
+
+const NPC_STAT_KEYS: Record<NpcStatId, string> = {
+  health: 'stat.health',
+  morale: 'stat.morale',
+  strength: 'stat.strength',
+  observation: 'stat.observation',
+  intelligence: 'stat.intelligence',
+  luck: 'stat.luck',
+  loyalty: 'npcStat.loyalty',
+  calm: 'npcStat.calm',
+};
+
+const RESULT_KEYS: Record<DiceResult, string> = {
+  criticalFailure: 'dice.criticalFailure',
+  failure: 'dice.failure',
+  success: 'dice.success',
+  criticalSuccess: 'dice.criticalSuccess',
+};
+
+const PANEL_TRANSITION = {
+  duration: 0.28,
+  ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+};
 const RESULT_HOLD_MS = 650;
 
-interface PendingDice { status: DiceTableStageStatus; dice: DiceRollResult }
+/**
+ * While `status === 'armed'`, the choice has NOT been resolved yet.
+ * The engine roll is produced only when the player presses the D20 roll button.
+ *
+ * This prevents the next Event / resulting state from becoming visible before
+ * the die is actually rolled, while still keeping the engine authoritative over
+ * the result before the 3D animation starts.
+ */
+interface PendingDice {
+  status: DiceTableStageStatus;
+  choiceId: string;
+  input?: string;
+  statId: StatId;
+  modifierTotal: number;
+  dice?: DiceRollResult;
+}
 
-function originPreview(choice: ChoiceDefinition, catalog: ContentCatalog, translate: (key: string) => string): string[] {
+function originPreview(
+  choice: ChoiceDefinition,
+  catalog: ContentCatalog,
+  translate: (key: string) => string,
+): string[] {
   if (choice.resolution.type !== 'deterministic') return [];
+
   return choice.resolution.outcome.effects.flatMap((effect): string[] => {
-    const format = (statId: keyof GameState['player']['stats'], value: number, absolute = false) => `${translate(STAT_KEYS[statId])} ${absolute ? value : `${value >= 0 ? '+' : ''}${value}`}`;
-    if (effect.type === 'modifyStat') return [format(effect.statId, effect.amount)];
-    if (effect.type === 'modifyHealth') return [format('health', effect.amount)];
+    const format = (
+      statId: keyof GameState['player']['stats'],
+      value: number,
+      absolute = false,
+    ) =>
+      `${translate(STAT_KEYS[statId])} ${
+        absolute ? value : `${value >= 0 ? '+' : ''}${value}`
+      }`;
+
+    if (effect.type === 'modifyStat') {
+      return [format(effect.statId, effect.amount)];
+    }
+    if (effect.type === 'modifyHealth') {
+      return [format('health', effect.amount)];
+    }
     if (effect.type === 'setRace') {
       const race = catalog.races.find(({ id }) => id === effect.raceId);
-      return race ? [format('health', race.initialHealth, true), ...Object.entries(race.attributeModifiers).map(([id, value]) => format(id as StatId, value))] : [];
+      return race
+        ? [
+            format('health', race.initialHealth, true),
+            ...Object.entries(race.attributeModifiers).map(([id, value]) =>
+              format(id as StatId, value),
+            ),
+          ]
+        : [];
     }
-    const modifiers = effect.type === 'setFamilyStructure'
-      ? catalog.familyStructures.find(({ id }) => id === effect.familyStructureId)?.attributeModifiers
-      : effect.type === 'setSocialClass'
-        ? catalog.socialClasses.find(({ id }) => id === effect.socialClassId)?.attributeModifiers
-        : undefined;
-    return Object.entries(modifiers ?? {}).map(([id, value]) => format(id as StatId, value));
+
+    const modifiers =
+      effect.type === 'setFamilyStructure'
+        ? catalog.familyStructures.find(
+            ({ id }) => id === effect.familyStructureId,
+          )?.attributeModifiers
+        : effect.type === 'setSocialClass'
+          ? catalog.socialClasses.find(({ id }) => id === effect.socialClassId)
+              ?.attributeModifiers
+          : undefined;
+
+    return Object.entries(modifiers ?? {}).map(([id, value]) =>
+      format(id as StatId, value),
+    );
   });
 }
 
-function transitionEffects(before: GameState | null, after: GameState | null, translate: (key: string) => string): OutcomeEffectViewModel[] {
+function transitionEffects(
+  before: GameState | null,
+  after: GameState | null,
+  translate: (key: string) => string,
+): OutcomeEffectViewModel[] {
   if (!before || !after) return [];
+
   const effects: OutcomeEffectViewModel[] = [];
+
   for (const statId of Object.keys(STAT_KEYS) as (keyof GameState['player']['stats'])[]) {
-    const previous = before.player.stats[statId]; const next = after.player.stats[statId];
-    if (typeof previous === 'number' && typeof next === 'number' && previous !== next) {
+    const previous = before.player.stats[statId];
+    const next = after.player.stats[statId];
+
+    if (
+      typeof previous === 'number' &&
+      typeof next === 'number' &&
+      previous !== next
+    ) {
       const delta = next - previous;
-      effects.push({ id: `stat-${statId}`, label: `${delta > 0 ? '+' : ''}${delta} ${translate(STAT_KEYS[statId])}`, tone: delta > 0 ? 'positive' : 'warning' });
+      effects.push({
+        id: `stat-${statId}`,
+        label: `${delta > 0 ? '+' : ''}${delta} ${translate(STAT_KEYS[statId])}`,
+        tone: delta > 0 ? 'positive' : 'warning',
+      });
     }
   }
-  for (const traitId of after.player.traits.filter((id) => !before.player.traits.includes(id))) effects.push({ id: `trait-${traitId}`, label: `Trait : ${traitId}`, tone: 'positive' });
+
+  for (const traitId of after.player.traits.filter(
+    (id) => !before.player.traits.includes(id),
+  )) {
+    effects.push({
+      id: `trait-${traitId}`,
+      label: `Trait : ${traitId}`,
+      tone: 'positive',
+    });
+  }
+
   return effects;
 }
 
-export interface EventPreviewProps { catalog: ContentCatalog; storage: StorageLike }
+export interface EventPreviewProps {
+  catalog: ContentCatalog;
+  storage: StorageLike;
+}
 
 export function EventPreview({ catalog, storage }: EventPreviewProps) {
   const session = useGameSession(catalog, storage);
-  const [locale, setLocale] = useState<LocaleId>(() => loadLocale(storage, navigator.language));
+  const [locale, setLocale] = useState<LocaleId>(() =>
+    loadLocale(storage, navigator.language),
+  );
   const [inputError, setInputError] = useState<string | null>(null);
   const [showOutcome, setShowOutcome] = useState(false);
   const [pendingDice, setPendingDice] = useState<PendingDice | null>(null);
   const timerRef = useRef<number | null>(null);
-  const translate = (key: string) => t(key, locale, { playerName: session.gameState?.player.profile.name ?? '' });
 
-  useEffect(() => () => { if (timerRef.current !== null) window.clearTimeout(timerRef.current); }, []);
+  const translate = (key: string) =>
+    t(key, locale, {
+      playerName: session.gameState?.player.profile.name ?? '',
+    });
+
+  useEffect(
+    () => () => {
+      if (timerRef.current !== null) window.clearTimeout(timerRef.current);
+    },
+    [],
+  );
 
   const eventView = useMemo<EventViewModel | null>(() => {
     if (!session.gameState || !session.currentEvent) return null;
+
     const state = session.gameState;
-    const sea = catalog.seas.find(({ id }) => id === state.player.profile.originSeaId);
-    const choices = session.currentEvent.choices.flatMap((choice): EventChoiceViewModel[] => {
-      const choiceState = getChoiceState(choice, state, catalog);
-      if (!choiceState.visible) return [];
-      const preview = choice.resolution.type === 'dice' ? getDicePreview(choice.resolution, state, catalog) : null;
-      return [{ id: choice.id, label: translate(choice.textKey), disabled: !choiceState.available, requirement: !choiceState.available ? translate('ui.choice.conditionsUnmet') : undefined,
-        statChanges: state.careerPhase === 'origins' ? originPreview(choice, catalog, translate) : undefined,
-        textInput: choice.input ? { minLength: choice.input.minLength, maxLength: choice.input.maxLength, placeholder: choice.input.placeholderKey ? translate(choice.input.placeholderKey) : undefined } : undefined,
-        dice: preview?.available ? { statLabel: translate(STAT_KEYS[preview.statId]), successProbability: preview.successProbability, modifierTotal: preview.knownModifierTotal + preview.statModifier } : undefined }];
-    });
-    return { eyebrow: `${translate(`phase.${state.careerPhase}`)}${sea ? ` · ${translate(sea.nameKey)}` : ''}`, title: translate(session.currentEvent.titleKey), body: translate(session.currentEvent.textKey), choices };
+    const sea = catalog.seas.find(
+      ({ id }) => id === state.player.profile.originSeaId,
+    );
+
+    const choices = session.currentEvent.choices.flatMap(
+      (choice): EventChoiceViewModel[] => {
+        const choiceState = getChoiceState(choice, state, catalog);
+        if (!choiceState.visible) return [];
+
+        const preview =
+          choice.resolution.type === 'dice'
+            ? getDicePreview(choice.resolution, state, catalog)
+            : null;
+
+        return [
+          {
+            id: choice.id,
+            label: translate(choice.textKey),
+            disabled: !choiceState.available,
+            requirement: !choiceState.available
+              ? translate('ui.choice.conditionsUnmet')
+              : undefined,
+            statChanges:
+              state.careerPhase === 'origins'
+                ? originPreview(choice, catalog, translate)
+                : undefined,
+            textInput: choice.input
+              ? {
+                  minLength: choice.input.minLength,
+                  maxLength: choice.input.maxLength,
+                  placeholder: choice.input.placeholderKey
+                    ? translate(choice.input.placeholderKey)
+                    : undefined,
+                }
+              : undefined,
+            dice: preview?.available
+              ? {
+                  statLabel: translate(STAT_KEYS[preview.statId]),
+                  successProbability: preview.successProbability,
+                  modifierTotal:
+                    preview.knownModifierTotal + preview.statModifier,
+                }
+              : undefined,
+          },
+        ];
+      },
+    );
+
+    return {
+      eyebrow: `${translate(`phase.${state.careerPhase}`)}${
+        sea ? ` · ${translate(sea.nameKey)}` : ''
+      }`,
+      title: translate(session.currentEvent.titleKey),
+      body: translate(session.currentEvent.textKey),
+      choices,
+    };
   }, [catalog, locale, session.currentEvent, session.gameState]);
 
   const outcomeView = useMemo<OutcomeViewModel | null>(() => {
     if (!session.lastResolution) return null;
+
     const dice = session.lastResolution.dice;
-    return { body: translate(session.lastResolution.outcome.textKey), effects: transitionEffects(session.previousState, session.gameState, translate), dice: dice ? { statLabel: translate(STAT_KEYS[dice.statId]), rawRoll: dice.rawRoll, modifier: dice.modifierTotal, total: dice.total, resultLabel: translate(RESULT_KEYS[dice.result]) } : undefined };
+
+    return {
+      body: translate(session.lastResolution.outcome.textKey),
+      effects: transitionEffects(
+        session.previousState,
+        session.gameState,
+        translate,
+      ),
+      dice: dice
+        ? {
+            statLabel: translate(STAT_KEYS[dice.statId]),
+            rawRoll: dice.rawRoll,
+            modifier: dice.modifierTotal,
+            total: dice.total,
+            resultLabel: translate(RESULT_KEYS[dice.result]),
+          }
+        : undefined,
+    };
   }, [locale, session.gameState, session.lastResolution, session.previousState]);
 
   const selectChoice = (choice: EventChoiceViewModel, input?: string) => {
     if (choice.disabled || pendingDice) return;
+
     try {
-      const resolution = session.choose(choice.id, input);
+      const runtimeChoice = session.currentEvent?.choices.find(
+        ({ id }) => id === choice.id,
+      );
+
+      if (!runtimeChoice || !session.gameState) {
+        throw new Error('Cannot resolve Choice without a current Event.');
+      }
+
       setInputError(null);
-      if (resolution?.dice) setPendingDice({ status: 'armed', dice: resolution.dice });
-      else setShowOutcome(true);
-    } catch (error) { setInputError(error instanceof Error ? error.message : translate('ui.choice.invalid')); }
+
+      if (runtimeChoice.resolution.type === 'dice') {
+        const preview = getDicePreview(
+          runtimeChoice.resolution,
+          session.gameState,
+          catalog,
+        );
+
+        if (!preview.available) {
+          throw new Error('DiceCheck is not currently available.');
+        }
+
+        // Important: do NOT call session.choose() yet.
+        // The current Event/state remains authoritative and visible in storage
+        // until the player actually presses LANCER.
+        setPendingDice({
+          status: 'armed',
+          choiceId: choice.id,
+          input,
+          statId: preview.statId,
+          modifierTotal: preview.knownModifierTotal + preview.statModifier,
+        });
+        return;
+      }
+
+      session.choose(choice.id, input);
+      setShowOutcome(true);
+    } catch (error) {
+      setInputError(
+        error instanceof Error ? error.message : translate('ui.choice.invalid'),
+      );
+    }
   };
-  const rollPendingDice = () => pendingDice?.status === 'armed' && setPendingDice({ ...pendingDice, status: 'rolling' });
+
+  const rollPendingDice = () => {
+    if (!pendingDice || pendingDice.status !== 'armed') return;
+
+    try {
+      // The engine resolves the DiceCheck here, immediately before animation.
+      // It remains the single source of truth for RNG/result/outcome.
+      const resolution = session.choose(
+        pendingDice.choiceId,
+        pendingDice.input,
+      );
+
+      if (!resolution?.dice) {
+        throw new Error('Expected a DiceCheck resolution.');
+      }
+
+      setInputError(null);
+      setPendingDice({
+        ...pendingDice,
+        status: 'rolling',
+        statId: resolution.dice.statId,
+        modifierTotal: resolution.dice.modifierTotal,
+        dice: resolution.dice,
+      });
+    } catch (error) {
+      // Return to the Event rather than trapping the player on an armed D20.
+      setPendingDice(null);
+      setInputError(
+        error instanceof Error ? error.message : translate('ui.choice.invalid'),
+      );
+    }
+  };
+
   const completeDiceRoll = () => {
-    if (!pendingDice || pendingDice.status !== 'rolling') return;
-    setPendingDice({ ...pendingDice, status: pendingDice.dice.result });
-    timerRef.current = window.setTimeout(() => { setShowOutcome(true); setPendingDice(null); timerRef.current = null; }, RESULT_HOLD_MS);
+    if (
+      !pendingDice ||
+      pendingDice.status !== 'rolling' ||
+      !pendingDice.dice
+    ) {
+      return;
+    }
+
+    setPendingDice({
+      ...pendingDice,
+      status: pendingDice.dice.result,
+    });
+
+    timerRef.current = window.setTimeout(() => {
+      setShowOutcome(true);
+      setPendingDice(null);
+      timerRef.current = null;
+    }, RESULT_HOLD_MS);
   };
-  const continueFromOutcome = () => { setShowOutcome(false); setPendingDice(null); session.continueAfterResolution(); };
+
+  const continueFromOutcome = () => {
+    setShowOutcome(false);
+    setPendingDice(null);
+    session.continueAfterResolution();
+  };
+
   const changeLocale = (next: LocaleId) => {
     saveLocale(storage, next);
     setLocale(next);
     notifyUiLocaleChanged(next);
   };
 
-  if (!session.gameState) return <main className="min-h-dvh grid place-items-center p-6"><Panel variant="strong" className="max-w-lg text-center"><h1 className="text-3xl font-bold text-gold">{translate('ui.app.title')}</h1><p className="my-5 text-fg-secondary">{translate('ui.newRun.prompt')}</p><Button size="lg" onClick={() => session.startNewRun()}>{translate('ui.action.newCareer')}</Button></Panel></main>;
+  if (!session.gameState) {
+    return (
+      <main className="min-h-dvh grid place-items-center p-6">
+        <Panel variant="strong" className="max-w-lg text-center">
+          <h1 className="text-3xl font-bold text-gold">
+            {translate('ui.app.title')}
+          </h1>
+          <p className="my-5 text-fg-secondary">
+            {translate('ui.newRun.prompt')}
+          </p>
+          <Button size="lg" onClick={() => session.startNewRun()}>
+            {translate('ui.action.newCareer')}
+          </Button>
+        </Panel>
+      </main>
+    );
+  }
 
   const state = session.gameState;
-  return <main className="min-h-dvh w-full overflow-x-hidden overflow-y-auto pl-[max(var(--layout-gutter),var(--safe-area-left))] pr-[max(var(--layout-gutter),var(--safe-area-right))] pt-[max(var(--layout-gutter),var(--safe-area-top))] pb-[max(var(--layout-gutter),var(--safe-area-bottom))]">
-    <div className="mx-auto w-full max-w-[78rem]">
-      <div className="mb-3 flex items-center justify-end gap-3 px-1">
-        <button
-          className="text-xs text-fg-muted transition hover:text-fg-secondary"
-          onClick={() => session.restartRun()}
-        >
-          {translate('ui.action.restartRun')}
-        </button>
+
+  // Once the roll has been resolved by the engine, session.gameState already
+  // contains its consequence + the selected next Event. Keep the HUD frozen on
+  // the pre-roll state until the dice animation has finished.
+  const displayState =
+    pendingDice && session.previousState ? session.previousState : state;
+  const displayPreviousState = pendingDice ? null : session.previousState;
+
+  return (
+    <main className="min-h-dvh w-full overflow-x-hidden overflow-y-auto pl-[max(var(--layout-gutter),var(--safe-area-left))] pr-[max(var(--layout-gutter),var(--safe-area-right))] pt-[max(var(--layout-gutter),var(--safe-area-top))] pb-[max(var(--layout-gutter),var(--safe-area-bottom))]">
+      <div className="mx-auto w-full max-w-[78rem]">
+        <div className="mb-3 flex items-center justify-end gap-3 px-1">
+          <button
+            className="text-xs text-fg-muted transition hover:text-fg-secondary"
+            onClick={() => session.restartRun()}
+          >
+            {translate('ui.action.restartRun')}
+          </button>
+        </div>
+
+        <TopWorldHud
+          state={displayState}
+          catalog={catalog}
+          translate={translate}
+        />
+
+        <div className="relative mx-auto mt-4 w-full max-w-[52rem]">
+          <div className="absolute right-[calc(100%+1rem)] top-0 z-10 hidden w-[14rem] justify-end xl:flex">
+            <PlayerStatsRail
+              state={displayState}
+              previousState={displayPreviousState}
+              statLabel={(id) => translate(STAT_KEYS[id])}
+              traitLabel={(id) => {
+                const trait = catalog.traits.find((entry) => entry.id === id);
+                return trait ? translate(trait.nameKey) : id;
+              }}
+            />
+          </div>
+
+          <div className="absolute left-[calc(100%+1rem)] top-0 z-10 hidden xl:block">
+            <CrewRail
+              state={displayState}
+              catalog={catalog}
+              translate={translate}
+              statLabel={(id) => translate(NPC_STAT_KEYS[id])}
+            />
+          </div>
+
+          <AnimatePresence mode="wait" initial={false}>
+            {showOutcome && outcomeView ? (
+              <motion.div
+                key="outcome"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={PANEL_TRANSITION}
+              >
+                <OutcomePanel
+                  outcome={outcomeView}
+                  onContinue={continueFromOutcome}
+                />
+              </motion.div>
+            ) : pendingDice ? (
+              // Never render session.currentEvent while a D20 is armed/rolling.
+              // After session.choose() the session already points at the next
+              // Event, so rendering it here would leak/bypass progression.
+              <motion.div
+                key="dice-pending"
+                className="min-h-[18rem]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={PANEL_TRANSITION}
+                aria-hidden="true"
+              />
+            ) : (
+              <motion.div
+                key={
+                  session.navigationOptions.length > 0
+                    ? 'navigation'
+                    : session.currentEvent?.id ?? 'no-event'
+                }
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={PANEL_TRANSITION}
+              >
+                {session.navigationOptions.length > 0 ? (
+                  <NavigationPanel
+                    travelState={state.travelState}
+                    options={session.navigationOptions}
+                    translate={translate}
+                    onChoice={session.chooseNavigation}
+                  />
+                ) : eventView ? (
+                  <EventPanel
+                    event={eventView}
+                    onChoice={selectChoice}
+                    error={inputError}
+                  />
+                ) : (
+                  <Panel variant="strong" className="text-center">
+                    {state.careerStatus === 'ended'
+                      ? translate('ui.careerComplete')
+                      : translate('ui.noEvent')}
+                  </Panel>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <div className="mt-4 grid gap-3 xl:hidden">
+            <PlayerStatsRail
+              state={displayState}
+              previousState={displayPreviousState}
+              statLabel={(id) => translate(STAT_KEYS[id])}
+              traitLabel={(id) => {
+                const trait = catalog.traits.find((entry) => entry.id === id);
+                return trait ? translate(trait.nameKey) : id;
+              }}
+            />
+            <CrewRail
+              state={displayState}
+              catalog={catalog}
+              translate={translate}
+              statLabel={(id) => translate(NPC_STAT_KEYS[id])}
+            />
+          </div>
+        </div>
       </div>
-      <TopWorldHud state={state} catalog={catalog} translate={translate} />
-      <div className="relative mx-auto mt-4 w-full max-w-[52rem]">
-        <div className="absolute right-[calc(100%+1rem)] top-0 z-10 hidden w-[14rem] justify-end xl:flex"><PlayerStatsRail state={state} previousState={session.previousState} statLabel={(id) => translate(STAT_KEYS[id])} traitLabel={(id) => { const trait = catalog.traits.find((entry) => entry.id === id); return trait ? translate(trait.nameKey) : id; }} /></div>
-        <div className="absolute left-[calc(100%+1rem)] top-0 z-10 hidden xl:block"><CrewRail state={state} catalog={catalog} translate={translate} statLabel={(id) => translate(NPC_STAT_KEYS[id])} /></div>
-        <AnimatePresence mode="wait" initial={false}>{showOutcome && outcomeView ? <motion.div key="outcome" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={PANEL_TRANSITION}><OutcomePanel outcome={outcomeView} onContinue={continueFromOutcome} /></motion.div> : <motion.div key={session.navigationOptions.length > 0 ? 'navigation' : session.currentEvent?.id ?? 'no-event'} className={pendingDice ? 'pointer-events-none select-none' : ''} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={PANEL_TRANSITION}>{session.navigationOptions.length > 0 ? <NavigationPanel travelState={state.travelState} options={session.navigationOptions} translate={translate} onChoice={session.chooseNavigation} /> : eventView ? <EventPanel event={eventView} onChoice={selectChoice} error={inputError} /> : <Panel variant="strong" className="text-center">{state.careerStatus === 'ended' ? translate('ui.careerComplete') : translate('ui.noEvent')}</Panel>}</motion.div>}</AnimatePresence>
-        <div className="mt-4 grid gap-3 xl:hidden"><PlayerStatsRail state={state} previousState={session.previousState} statLabel={(id) => translate(STAT_KEYS[id])} traitLabel={(id) => id} /><CrewRail state={state} catalog={catalog} translate={translate} statLabel={(id) => translate(NPC_STAT_KEYS[id])} /></div>
-      </div>
-    </div>
-    <LanguageControls locale={locale} onLocaleChange={changeLocale} />
-    <DiceTableStage visible={pendingDice !== null} status={pendingDice?.status ?? 'armed'} modifier={pendingDice?.dice.modifierTotal ?? 0} statLabel={pendingDice ? translate(STAT_KEYS[pendingDice.dice.statId]) : undefined} result={pendingDice?.dice.rawRoll} total={pendingDice?.dice.total} rollKey={pendingDice ? `${pendingDice.dice.rawRoll}-${state.rngState}` : undefined} onRoll={rollPendingDice} onComplete={completeDiceRoll} />
-  </main>;
+
+      <LanguageControls locale={locale} onLocaleChange={changeLocale} />
+
+      <DiceTableStage
+        visible={pendingDice !== null}
+        status={pendingDice?.status ?? 'armed'}
+        modifier={
+          pendingDice?.dice?.modifierTotal ?? pendingDice?.modifierTotal ?? 0
+        }
+        statLabel={
+          pendingDice
+            ? translate(
+                STAT_KEYS[pendingDice.dice?.statId ?? pendingDice.statId],
+              )
+            : undefined
+        }
+        result={pendingDice?.dice?.rawRoll}
+        total={pendingDice?.dice?.total}
+        rollKey={
+          pendingDice?.dice
+            ? `${pendingDice.dice.rawRoll}-${state.rngState}`
+            : undefined
+        }
+        onRoll={rollPendingDice}
+        onComplete={completeDiceRoll}
+      />
+    </main>
+  );
 }

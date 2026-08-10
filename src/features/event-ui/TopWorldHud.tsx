@@ -1,4 +1,4 @@
-import { Anchor, CalendarDays, Clock3, Compass, MapPin, Waves } from 'lucide-react';
+import { Anchor, Clock3, Compass, MapPin, Waves } from 'lucide-react';
 import { Panel } from '@/components/ui';
 import type { ContentCatalog } from '@/game/content/schema';
 import type { GameState } from '@/game/model/schema';
@@ -16,6 +16,15 @@ export function TopWorldHud({ state, catalog, translate }: TopWorldHudProps) {
   const shipDefinition = state.ship ? catalog.ships.find(({ id }) => id === state.ship?.shipId) : undefined;
   const shipPercent = state.ship && shipDefinition ? Math.max(0, Math.min(100, Math.round(state.ship.health / shipDefinition.maxHealth * 100))) : 0;
   const tooltipLocale = inferTooltipLocale(translate('stat.health'));
+  const profileAffiliation = catalog.affiliations.find(
+    ({ id }) => id === state.player.profile.affiliationId,
+  );
+  const careerAffiliation = catalog.careerAffiliations.find(
+    ({ id }) => id === state.player.career.affiliationId,
+  );
+  const affiliationLabel = state.careerPhase === 'active'
+    ? (careerAffiliation ? translate(careerAffiliation.nameKey) : '—')
+    : (profileAffiliation ? translate(profileAffiliation.nameKey) : '—');
 
   return <Panel variant="strong" padding="none" className="opfg-top-world-hud" aria-label="Informations du monde et du navire">
     <section className="opfg-top-world-hud__section opfg-top-world-hud__world">
@@ -40,20 +49,9 @@ export function TopWorldHud({ state, catalog, translate }: TopWorldHudProps) {
 
     <section className="opfg-top-world-hud__section opfg-top-world-hud__time">
       <div className="opfg-top-world-hud__character-name" aria-label="Nom du personnage">{state.player.profile.name ?? '—'}</div>
-
-      <ContextTooltip
-        className="opfg-top-world-hud__eyebrow"
-        title={tooltipLocale === 'fr' ? 'Temps' : 'Time'}
-        detail={getUiTooltipDetail('time', tooltipLocale)}
-        side="bottom"
-      >
-        <Clock3 className="size-4" aria-hidden="true" />
-        {tooltipLocale === 'fr' ? 'Temps' : 'Time'}
-      </ContextTooltip>
-
-      <div className="opfg-top-world-hud__primary">{Math.floor(state.ageMonths / 12)} ans · {state.ageMonths % 12} mois</div>
+      <div className="opfg-top-world-hud__affiliation">{affiliationLabel}</div>
       <div className="opfg-top-world-hud__secondary">
-        <span><CalendarDays className="size-3.5" aria-hidden="true" />{translate(`phase.${state.careerPhase}`)}</span>
+        <span><Clock3 className="size-3.5" aria-hidden="true" />{Math.floor(state.ageMonths / 12)} ans · {state.ageMonths % 12} mois</span>
         {state.careerPhase === 'active' && <span>Slot {state.slotInMonth + 1} / 2</span>}
       </div>
     </section>

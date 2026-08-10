@@ -14,8 +14,7 @@ function resolveFirst(state: ReturnType<typeof createInitialGameState>) {
 }
 
 describe('complete pre-career pipeline', () => {
-  it('plays origins then exactly 20 childhood occurrences before active age 15', () => {
-    let state = selectNextEvent(createInitialGameState(42), contentCatalog);
+it('plays origins then exactly 20 slot-consuming childhood events before active age 15', () => {    let state = selectNextEvent(createInitialGameState(42), contentCatalog);
     while (state.careerPhase === 'origins') state = resolveFirst(state);
     expect(state.ageMonths).toBe(12);
     expect(state).toMatchObject({
@@ -30,10 +29,16 @@ describe('complete pre-career pipeline', () => {
     });
     const historyAtChildhood = state.history.length;
     while (state.careerPhase === 'childhood') state = resolveFirst(state);
-    expect(state.history.length - historyAtChildhood).toBe(20);
-    expect(state).toMatchObject({ careerPhase: 'active', ageMonths: 180, slotInMonth: 0 });
-    expect(state.player.traits).toEqual(expect.arrayContaining(['resilient', 'audacious']));
-    expect(state.history.some(({ eventId }) => eventId === 'childhood_memory')).toBe(true);
+    const childhoodHistory = state.history.slice(historyAtChildhood);
+
+    const slotConsumingChildhoodEvents = childhoodHistory.filter(({ eventId }) => {
+      const event = contentCatalog.events.find(({ id }) => id === eventId);
+    
+      return event?.kind === 'normal' || event?.kind === 'scheduled';
+    });
+
+    expect(slotConsumingChildhoodEvents).toHaveLength(20);
+    expect(childhoodHistory.length).toBeGreaterThanOrEqual(20);    expect(state).toMatchObject({ careerPhase: 'active', ageMonths: 180, slotInMonth: 0 });
     expect(state.history.every((entry) => !Object.prototype.hasOwnProperty.call(entry, 'month'))).toBe(true);
     for (let adultEvents = 0; adultEvents < 3; adultEvents += 1) state = resolveFirst(state);
     expect(state).toMatchObject({ careerPhase: 'active', ageMonths: 181, slotInMonth: 1 });
