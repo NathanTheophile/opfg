@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { contentCatalog } from '../src/game/content/definitions';
 import { buildEventCatalog, eventCatalog } from '../src/game/content/eventCatalog';
 import { loadNodeContentCatalog } from '../src/game/content/nodeContentCatalog';
@@ -13,7 +13,6 @@ describe('eventCatalog', () => {
       'origin_name',
       'origin_family_structure',
       'origin_social_class',
-      'origin_birthplace',
       'departure',
       'mira_returns_favor',
       'critical_player_death',

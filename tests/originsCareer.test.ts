@@ -53,7 +53,7 @@ describe('complete pre-career pipeline', () => {
     expect(state.ageMonths).toBe(12);
 
     expect(state).toMatchObject({
-      locationId: 'foosha_village',
+      locationId: expect.any(String),
       player: {
         profile: {
           name: 'Luffy',

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { contentCatalog } from '../src/game/content/definitions';
 import type { Effect, StatId } from '../src/game/content/schema';
-import { evaluateCondition, getChoiceState } from '../src/game/engine/conditions';
+import { evaluateCondition } from '../src/game/engine/conditions';
 import { applyEffects } from '../src/game/engine/effects';
 import { selectNextEvent } from '../src/game/engine/events';
 import { createInitialGameState } from '../src/game/model/initialState';
@@ -59,7 +59,7 @@ describe('Origins V1 rules', () => {
     expect(() => applyEffects(initial, contentCatalog, [{ type: 'setOriginSea', seaId: 'west_blue' }, { type: 'setBirthLocation', locationId: 'foosha_village' }], context)).toThrow(/incompatible/);
   });
 
-  it('exposes new profile dimensions to Conditions and only the compatible birthplace Choice', () => {
+  it('exposes new profile dimensions to Conditions', () => {
     const state = applyEffects(createInitialGameState(), contentCatalog, [
       { type: 'setFamilyStructure', familyStructureId: 'orphan' },
       { type: 'setSocialClass', socialClassId: 'poor' },
@@ -67,8 +67,6 @@ describe('Origins V1 rules', () => {
     ], context);
     expect(evaluateCondition({ type: 'familyStructureIs', familyStructureId: 'orphan' }, state)).toBe(true);
     expect(evaluateCondition({ type: 'socialClassIs', socialClassId: 'poor' }, state)).toBe(true);
-    const birthplace = contentCatalog.events.find(({ id }) => id === 'origin_birthplace')!;
-    expect(birthplace.choices.filter((choice) => getChoiceState(choice, state, contentCatalog).visible).map(({ id }) => id)).toEqual(['north_blue_port']);
   });
 
   it('does not apply race, family, or social modifiers twice', () => {

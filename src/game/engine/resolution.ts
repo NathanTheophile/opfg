@@ -4,6 +4,7 @@ import { evaluateCondition, getChoiceState } from './conditions';
 import { resolveDiceCheck } from './dice';
 import type { DiceRollResult } from './dice';
 import { applyEffects } from './effects';
+import { nextRandom } from './rng';
 import { findCriticalEvent, selectNextEvent } from './events';
 import { consumePhaseSlot, finalizePendingSlot } from './time';
 
@@ -62,13 +63,17 @@ function finalizeOutcome(
     sourceEventId: event.id,
     sourceChoiceId: choiceId,
   });
+  const afterSystemResolution =
+    event.id === 'origin_sea'
+      ? assignRandomBirthLocation(afterEffects, catalog)
+      : afterEffects;
   let resolvedState: GameState = {
-    ...afterEffects,
+    ...afterSystemResolution,
     history: [
-      ...afterEffects.history,
-      { eventId: event.id, choiceId, outcomeId: outcome.id, ageMonths: afterEffects.ageMonths },
+      ...afterSystemResolution.history,
+      { eventId: event.id, choiceId, outcomeId: outcome.id, ageMonths: afterSystemResolution.ageMonths },
     ],
-    scheduledEvents: consumeScheduledEntry(afterEffects, catalog, event, state.ageMonths),
+    scheduledEvents: consumeScheduledEntry(afterSystemResolution, catalog, event, state.ageMonths),
   };
 
   if (event.kind === 'immediate') {
@@ -90,6 +95,32 @@ function finalizeOutcome(
     state: selectNextEvent(resolvedState, catalog),
     outcome,
     dice,
+  };
+}
+
+function assignRandomBirthLocation(state: GameState, catalog: ContentCatalog): GameState {
+  const seaId = state.player.profile.originSeaId;
+  if (seaId === null) {
+    throw new Error('Cannot assign a Birth Location before originSeaId is set.');
+  }
+
+  const candidates = catalog.locations
+    .filter((location) => location.canBeBirthLocation && location.seaId === seaId)
+    .map((location) => location.id)
+    .sort();
+
+  if (candidates.length !== 8) {
+    throw new Error(`Expected exactly 8 Birth Locations for "${seaId}", found ${candidates.length}.`);
+  }
+
+  const random = nextRandom(state.rngState);
+  const locationId = candidates[Math.floor(random.value * candidates.length)];
+
+  return {
+    ...state,
+    rngState: random.nextState,
+    locationId,
+    travelState: 'on_land',
   };
 }
 

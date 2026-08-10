@@ -23,16 +23,17 @@ describe('GameSession', () => {
     session = choose(session, 'poor');
     session = choose(session, 'east_blue');
 
-    expect(session.gameState?.currentEventId).toBe('origin_birthplace');
-    expect(() => choose(session, 'west_blue_port')).toThrow('is not available');
+    expect(session.gameState?.currentEventId).toBe('origin_to_childhood');
 
-    session = choose(session, 'east_blue_port');
+    const birthLocation = contentCatalog.locations.find(({ id }) => id === session.gameState?.locationId);
+    expect(birthLocation).toMatchObject({ seaId: 'east_blue', canBeBirthLocation: true });
+
     session = choose(session, 'begin_childhood');
 
     expect(session.gameState).toMatchObject({
       careerPhase: 'childhood',
       ageMonths: 12,
-      locationId: 'foosha_village',
+      locationId: expect.any(String),
       player: {
         profile: {
           name: 'SimPlayer', raceId: 'giant', familyStructureId: 'orphan', affiliationId: 'civilian',

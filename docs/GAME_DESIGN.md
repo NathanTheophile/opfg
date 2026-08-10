@@ -34,7 +34,7 @@ Le personnage peut mourir ou atteindre une Ending authorée. Toute fin affiche l
 
 ## 2. Origins
 
-Origins représente la naissance et l’environnement initial. C’est une séquence fixe de questions à réponses fixes : **Nom → Race → Structure familiale → Affiliation familiale → Niveau social → Mer d’origine → Lieu de naissance**. Il n’existe aucun Event « année 0 ».
+Origins représente la naissance et l’environnement initial. C’est une séquence fixe de questions à réponses fixes : **Nom → Race → Structure familiale → Affiliation familiale → Niveau social → Mer d’origine**. Il n’existe aucun Event « année 0 ». Après le choix de la mer d’origine, le système sélectionne immédiatement et de manière seedée uniforme le lieu de naissance parmi les **8 Birth Locations valides de cette Blue** ; ce choix n’est pas présenté comme un Event ou une question au joueur.
 
 Origins est la seule phase qui affiche systématiquement les conséquences de statistiques avant chaque Choice. À partir de Childhood, le texte peut donner des indices, mais aucune UI globale ne révèle automatiquement les effets mécaniques.
 
@@ -85,7 +85,7 @@ Le niveau social reste persistant et testable. Il n’accorde aucun Berry initia
 
 ### Mer et lieu de naissance
 
-Les quatre mers sélectionnables dans Origins sont `east_blue`, `west_blue`, `north_blue` et `south_blue`. Le runtime World V1 contient aussi `grand_line_paradise`, `new_world`, `sky`, `underwater`, `calm_belt` et `red_line`, sans les proposer comme origines. La mer ne modifie aucune stat et n’accorde aucun Trait caché. Le lieu de naissance est une vraie Location du catalogue rattachée à la mer choisie ; il devient la `locationId` du joueur sans modifier ses statistiques.
+Les quatre mers sélectionnables dans Origins sont `east_blue`, `west_blue`, `north_blue` et `south_blue`. Le runtime World V1 contient aussi `grand_line_paradise`, `new_world`, `sky`, `underwater`, `calm_belt` et `red_line`, sans les proposer comme origines. La mer ne modifie aucune stat et n’accorde aucun Trait caché. Après le choix de la mer, le runtime tire de manière seedée uniforme une vraie Location parmi les exactement **8 Locations `canBeBirthLocation`** de la Blue choisie. Cette Location devient immédiatement la `locationId` du joueur sans modifier ses statistiques.
 
 ## 3. Statistiques du joueur
 
