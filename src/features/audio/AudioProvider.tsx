@@ -23,6 +23,12 @@ type PlayOptions = {
   loop?: boolean;
 };
 
+export type MusicTrack = {
+  id: string;
+  title: string;
+  src: string;
+};
+
 type AudioContextValue = AudioSettings & {
   setMasterVolume: (value: number) => void;
   setAmbienceVolume: (value: number) => void;
@@ -32,10 +38,18 @@ type AudioContextValue = AudioSettings & {
   playMusic: (src: string, options?: PlayOptions) => Promise<void>;
   stopAmbience: (fadeSeconds?: number) => void;
   stopMusic: (fadeSeconds?: number) => void;
+  musicTrack: MusicTrack | null;
+  isMusicPlaying: boolean;
+  musicCurrentTime: number;
+  musicDuration: number;
+  toggleMusicPlayback: () => Promise<void>;
+  nextMusic: () => Promise<void>;
+  seekMusic: (seconds: number) => void;
 };
 
 type AudioProviderProps = PropsWithChildren<{
   initialAmbienceSrc?: string;
+  musicPlaylist?: readonly MusicTrack[];
 }>;
 
 type ChannelState = {
@@ -46,6 +60,7 @@ type ChannelState = {
 
 const STORAGE_KEY = 'opfg.audio.v1';
 const DEFAULT_FADE_SECONDS = 1.5;
+const MUSIC_FADE_SECONDS = 0.6;
 const DEFAULT_SETTINGS: AudioSettings = {
   master: 0.8,
   ambience: 0.65,
@@ -77,11 +92,35 @@ function loadSettings(): AudioSettings {
   }
 }
 
-export function AudioProvider({ children, initialAmbienceSrc }: AudioProviderProps) {
+function inferTrackTitle(src: string): string {
+  const fileName = decodeURIComponent(src.split('/').pop()?.split('?')[0] ?? src);
+  const withoutExtension = fileName.replace(/\.[^.]+$/, '');
+  return withoutExtension.replace(/[-_]+/g, ' ') || 'Music';
+}
+
+function resetPlayer(player: HTMLAudioElement) {
+  player.pause();
+  player.currentTime = 0;
+  player.removeAttribute('src');
+  player.load();
+  setEnvelope(player, 0);
+}
+
+export function AudioProvider({
+  children,
+  initialAmbienceSrc,
+  musicPlaylist = [],
+}: AudioProviderProps) {
   const [settings, setSettings] = useState(loadSettings);
+  const [musicTrack, setMusicTrack] = useState<MusicTrack | null>(() => musicPlaylist[0] ?? null);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [musicCurrentTime, setMusicCurrentTime] = useState(0);
+  const [musicDuration, setMusicDuration] = useState(0);
+
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
 
+  const musicIndexRef = useRef(0);
   const ambiencePlayers = useRef<[HTMLAudioElement | null, HTMLAudioElement | null]>([null, null]);
   const musicPlayers = useRef<[HTMLAudioElement | null, HTMLAudioElement | null]>([null, null]);
   const channelState = useRef<Record<AudioChannel, ChannelState>>({
@@ -100,6 +139,17 @@ export function AudioProvider({ children, initialAmbienceSrc }: AudioProviderPro
     audio.volume = current.muted ? 0 : clamp01(current.master * channelVolume * getEnvelope(audio));
   }, []);
 
+  const syncMusicState = useCallback((playerIndex: 0 | 1) => {
+    if (channelState.current.music.activeIndex !== playerIndex) return;
+
+    const player = musicPlayers.current[playerIndex];
+    if (!player) return;
+
+    setIsMusicPlaying(!player.paused && !player.ended);
+    setMusicCurrentTime(Number.isFinite(player.currentTime) ? player.currentTime : 0);
+    setMusicDuration(Number.isFinite(player.duration) ? player.duration : 0);
+  }, []);
+
   const fadeChannel = useCallback(
     (channel: AudioChannel, targetIndex: 0 | 1 | null, fadeSeconds = DEFAULT_FADE_SECONDS) => {
       const state = channelState.current[channel];
@@ -112,11 +162,7 @@ export function AudioProvider({ children, initialAmbienceSrc }: AudioProviderPro
       const finish = () => {
         players.forEach((player, index) => {
           if (!player || index === targetIndex) return;
-          player.pause();
-          player.currentTime = 0;
-          player.removeAttribute('src');
-          player.load();
-          setEnvelope(player, 0);
+          resetPlayer(player);
         });
         state.animationFrame = null;
       };
@@ -153,32 +199,38 @@ export function AudioProvider({ children, initialAmbienceSrc }: AudioProviderPro
   );
 
   const playChannel = useCallback(
-    async (channel: AudioChannel, src: string, options: PlayOptions = {}) => {
+    async (channel: AudioChannel, src: string, options: PlayOptions = {}): Promise<boolean> => {
       const state = channelState.current[channel];
       const players = getPlayers(channel);
       const fadeSeconds = options.fadeSeconds ?? DEFAULT_FADE_SECONDS;
+      const loop = options.loop ?? channel === 'ambience';
 
       if (state.src === src) {
         const active = players[state.activeIndex];
-        if (!active) return;
-        active.loop = options.loop ?? true;
+        if (!active) return false;
+
+        active.loop = loop;
+        if (active.ended) active.currentTime = 0;
+
         if (active.paused) {
           try {
             await active.play();
           } catch {
-            return;
+            return false;
           }
         }
+
         fadeChannel(channel, state.activeIndex, fadeSeconds);
-        return;
+        if (channel === 'music') syncMusicState(state.activeIndex);
+        return true;
       }
 
       const nextIndex = (state.activeIndex === 0 ? 1 : 0) as 0 | 1;
       const next = players[nextIndex];
-      if (!next) return;
+      if (!next) return false;
 
       next.src = src;
-      next.loop = options.loop ?? true;
+      next.loop = loop;
       next.currentTime = 0;
       setEnvelope(next, 0);
       applyVolume(next, channel);
@@ -186,16 +238,17 @@ export function AudioProvider({ children, initialAmbienceSrc }: AudioProviderPro
       try {
         await next.play();
       } catch {
-        next.removeAttribute('src');
-        next.load();
-        return;
+        resetPlayer(next);
+        return false;
       }
 
       state.activeIndex = nextIndex;
       state.src = src;
       fadeChannel(channel, nextIndex, fadeSeconds);
+      if (channel === 'music') syncMusicState(nextIndex);
+      return true;
     },
-    [applyVolume, fadeChannel, getPlayers],
+    [applyVolume, fadeChannel, getPlayers, syncMusicState],
   );
 
   const stopChannel = useCallback(
@@ -219,15 +272,143 @@ export function AudioProvider({ children, initialAmbienceSrc }: AudioProviderPro
   }, [applyVolume, getPlayers, settings]);
 
   const playAmbience = useCallback(
-    (src: string, options?: PlayOptions) => playChannel('ambience', src, options),
+    async (src: string, options?: PlayOptions) => {
+      await playChannel('ambience', src, options);
+    },
     [playChannel],
   );
+
   const playMusic = useCallback(
-    (src: string, options?: PlayOptions) => playChannel('music', src, options),
-    [playChannel],
+    async (src: string, options: PlayOptions = {}) => {
+      const playlistIndex = musicPlaylist.findIndex((track) => track.src === src);
+
+      if (playlistIndex >= 0) {
+        musicIndexRef.current = playlistIndex;
+        setMusicTrack(musicPlaylist[playlistIndex] ?? null);
+      } else {
+        setMusicTrack({ id: src, title: inferTrackTitle(src), src });
+      }
+
+      setMusicCurrentTime(0);
+      await playChannel('music', src, {
+        ...options,
+        loop: options.loop ?? false,
+      });
+    },
+    [musicPlaylist, playChannel],
   );
+
+  const playPlaylistTrack = useCallback(
+    async (index: number) => {
+      if (musicPlaylist.length === 0) return;
+
+      const normalizedIndex = ((index % musicPlaylist.length) + musicPlaylist.length) % musicPlaylist.length;
+      const track = musicPlaylist[normalizedIndex];
+      if (!track) return;
+
+      musicIndexRef.current = normalizedIndex;
+      setMusicTrack(track);
+      setMusicCurrentTime(0);
+      setMusicDuration(0);
+
+      await playChannel('music', track.src, {
+        loop: false,
+        fadeSeconds: MUSIC_FADE_SECONDS,
+      });
+    },
+    [musicPlaylist, playChannel],
+  );
+
+  const nextMusic = useCallback(async () => {
+    if (musicPlaylist.length === 0) return;
+
+    if (musicPlaylist.length === 1) {
+      const state = channelState.current.music;
+      const active = musicPlayers.current[state.activeIndex];
+      const onlyTrack = musicPlaylist[0];
+
+      if (active && onlyTrack && state.src === onlyTrack.src) {
+        active.currentTime = 0;
+        if (active.paused) {
+          try {
+            await active.play();
+          } catch {
+            return;
+          }
+        }
+        syncMusicState(state.activeIndex);
+        return;
+      }
+    }
+
+    await playPlaylistTrack(musicIndexRef.current + 1);
+  }, [musicPlaylist, playPlaylistTrack, syncMusicState]);
+
+  const toggleMusicPlayback = useCallback(async () => {
+    const track = musicTrack ?? musicPlaylist[0] ?? null;
+    if (!track) return;
+
+    const state = channelState.current.music;
+    const active = musicPlayers.current[state.activeIndex];
+
+    if (!active || state.src !== track.src) {
+      const playlistIndex = musicPlaylist.findIndex((entry) => entry.src === track.src);
+      if (playlistIndex >= 0) await playPlaylistTrack(playlistIndex);
+      else await playMusic(track.src);
+      return;
+    }
+
+    if (active.paused) {
+      if (active.ended) active.currentTime = 0;
+      try {
+        await active.play();
+      } catch {
+        return;
+      }
+      setEnvelope(active, 1);
+      applyVolume(active, 'music');
+    } else {
+      if (state.animationFrame !== null) {
+        cancelAnimationFrame(state.animationFrame);
+        state.animationFrame = null;
+      }
+
+      musicPlayers.current.forEach((player, index) => {
+        if (!player) return;
+        if (index === state.activeIndex) {
+          setEnvelope(player, 1);
+          applyVolume(player, 'music');
+          player.pause();
+        } else {
+          resetPlayer(player);
+        }
+      });
+    }
+
+    syncMusicState(state.activeIndex);
+  }, [applyVolume, musicPlaylist, musicTrack, playMusic, playPlaylistTrack, syncMusicState]);
+
+  const seekMusic = useCallback(
+    (seconds: number) => {
+      const state = channelState.current.music;
+      const active = musicPlayers.current[state.activeIndex];
+      if (!active || !Number.isFinite(active.duration) || active.duration <= 0) return;
+
+      active.currentTime = Math.min(active.duration, Math.max(0, seconds));
+      syncMusicState(state.activeIndex);
+    },
+    [syncMusicState],
+  );
+
   const stopAmbience = useCallback((fadeSeconds?: number) => stopChannel('ambience', fadeSeconds), [stopChannel]);
-  const stopMusic = useCallback((fadeSeconds?: number) => stopChannel('music', fadeSeconds), [stopChannel]);
+  const stopMusic = useCallback(
+    (fadeSeconds?: number) => {
+      stopChannel('music', fadeSeconds);
+      setIsMusicPlaying(false);
+      setMusicCurrentTime(0);
+    },
+    [stopChannel],
+  );
 
   useEffect(() => {
     if (!initialAmbienceSrc) return;
@@ -268,8 +449,28 @@ export function AudioProvider({ children, initialAmbienceSrc }: AudioProviderPro
       playMusic,
       stopAmbience,
       stopMusic,
+      musicTrack,
+      isMusicPlaying,
+      musicCurrentTime,
+      musicDuration,
+      toggleMusicPlayback,
+      nextMusic,
+      seekMusic,
     }),
-    [playAmbience, playMusic, settings, stopAmbience, stopMusic],
+    [
+      isMusicPlaying,
+      musicCurrentTime,
+      musicDuration,
+      musicTrack,
+      nextMusic,
+      playAmbience,
+      playMusic,
+      seekMusic,
+      settings,
+      stopAmbience,
+      stopMusic,
+      toggleMusicPlayback,
+    ],
   );
 
   return (
@@ -277,8 +478,30 @@ export function AudioProvider({ children, initialAmbienceSrc }: AudioProviderPro
       {children}
       <audio ref={(element) => { ambiencePlayers.current[0] = element; }} preload="auto" />
       <audio ref={(element) => { ambiencePlayers.current[1] = element; }} preload="auto" />
-      <audio ref={(element) => { musicPlayers.current[0] = element; }} preload="auto" />
-      <audio ref={(element) => { musicPlayers.current[1] = element; }} preload="auto" />
+      <audio
+        ref={(element) => { musicPlayers.current[0] = element; }}
+        preload="metadata"
+        onTimeUpdate={() => syncMusicState(0)}
+        onLoadedMetadata={() => syncMusicState(0)}
+        onDurationChange={() => syncMusicState(0)}
+        onPlay={() => syncMusicState(0)}
+        onPause={() => syncMusicState(0)}
+        onEnded={() => {
+          if (channelState.current.music.activeIndex === 0) void nextMusic();
+        }}
+      />
+      <audio
+        ref={(element) => { musicPlayers.current[1] = element; }}
+        preload="metadata"
+        onTimeUpdate={() => syncMusicState(1)}
+        onLoadedMetadata={() => syncMusicState(1)}
+        onDurationChange={() => syncMusicState(1)}
+        onPlay={() => syncMusicState(1)}
+        onPause={() => syncMusicState(1)}
+        onEnded={() => {
+          if (channelState.current.music.activeIndex === 1) void nextMusic();
+        }}
+      />
     </AudioContext.Provider>
   );
 }
