@@ -1,0 +1,60 @@
+{
+  "id": "active_haki_observation_01_life_03b_count_breaths",
+  "kind": "scheduled",
+  "titleKey": "event.active_haki_observation_01_life_03b_count_breaths.title",
+  "textKey": "event.active_haki_observation_01_life_03b_count_breaths.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "ordinary",
+      "textKey": "event.active_haki_observation_01_life_03b_count_breaths.choice.ordinary.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ordinary",
+          "textKey": "event.active_haki_observation_01_life_03b_count_breaths.choice.ordinary.outcome.ordinary.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_observation_01_life_04b_map_of_noise",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "haki",
+      "textKey": "event.active_haki_observation_01_life_03b_count_breaths.choice.haki.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "haki",
+          "textKey": "event.active_haki_observation_01_life_03b_count_breaths.choice.haki.outcome.haki.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_observation_01_life_04b_map_of_noise",
+              "delayMonths": 10
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

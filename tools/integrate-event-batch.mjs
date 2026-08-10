@@ -25,7 +25,7 @@ function fail(message) {
 
 function usage() {
   console.log(`
-OPFG Event Batch Integrator v3
+OPFG Event Batch Integrator v4
 
 Usage:
   node tools/integrate-event-batch.mjs [options] <batch-dir-or-zip> [more batches...]
@@ -329,6 +329,36 @@ function inferBatchIdFromManifest(manifestText, fallback) {
   return match?.[1] || fallback;
 }
 
+function inferBatchTypeFromManifest(manifestText) {
+  const match = manifestText?.match(/\*\*Batch type:\*\*\s*`([^`]+)`/i);
+  return match?.[1]?.trim().toLowerCase() || 'standard';
+}
+
+function replacementEventIdsFromManifest(manifestText) {
+  if (!manifestText) return new Set();
+  const registry = sectionByHeading(manifestText, (heading) => heading.toUpperCase() === 'EVENT_REGISTRY');
+  if (!registry) return new Set();
+
+  const match = registry.content.match(
+    /^###\s+Stable existing IDs replaced\s*$([\s\S]*?)(?=^###\s+|\z)/mi,
+  );
+  const body = match?.[1] || '';
+  return new Set(
+    [...body.matchAll(/^\s*-\s*`([A-Za-z0-9_.:-]+)`\s*$/gm)].map((entry) => entry[1]),
+  );
+}
+
+function isDeterministicRecoveryBatch(batch) {
+  return batch.batchType === 'deterministic_recovery';
+}
+
+function allowsLocalizationOverride(batch, key) {
+  for (const eventId of batch.replaceEventIds) {
+    if (key.startsWith(`event.${eventId}.`)) return true;
+  }
+  return false;
+}
+
 function inferContentDomain(batchId, phase) {
   const id = batchId.toUpperCase();
   if (id.startsWith('CH_GENERIC_')) return 'generic';
@@ -567,6 +597,8 @@ const batches = inputs.map((input) => {
   const manifestPath = join(root, 'MANIFEST.md');
   const manifestText = existsSync(manifestPath) ? readFileSync(manifestPath, 'utf8') : null;
   const batchId = inferBatchIdFromManifest(manifestText, basename(root));
+  const batchType = inferBatchTypeFromManifest(manifestText);
+  const replaceEventIds = replacementEventIdsFromManifest(manifestText);
   const phase = forcedPhase || inferPhase(batchId);
   if (!phase) {
     fail(
@@ -577,10 +609,7 @@ const batches = inputs.map((input) => {
 
   const eventsDir = join(root, 'events');
   const localizationPath = join(root, 'localization', 'fr.json');
-  const eventFiles = readdirSync(eventsDir, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith('.json'))
-    .map((entry) => join(eventsDir, entry.name))
-    .sort();
+  const eventFiles = walkJsonFiles(eventsDir);
 
   if (eventFiles.length === 0) fail(`Batch ${batchId} contains no Event JSON files.`);
 
@@ -591,6 +620,8 @@ const batches = inputs.map((input) => {
 
   return {
     batchId,
+    batchType,
+    replaceEventIds,
     root,
     phase,
     eventFiles,
@@ -607,8 +638,6 @@ const plannedEventCopies = [];
 let identicalEventsSkipped = 0;
 
 for (const batch of batches) {
-  const destinationDir = join(eventsRoot, batch.phase);
-
   for (const sourcePath of batch.eventFiles) {
     const fileName = basename(sourcePath);
     const { value } = parseJsonFile(sourcePath, `${batch.batchId}/events/${fileName}`);
@@ -626,6 +655,7 @@ for (const batch of batches) {
     }
 
     const semantic = semanticJson(value);
+    const replaceExisting = batch.replaceEventIds.has(value.id);
 
     const incomingExisting = incomingEventsById.get(value.id);
     if (incomingExisting) {
@@ -648,14 +678,38 @@ for (const batch of batches) {
         identicalEventsSkipped += 1;
         continue;
       }
+
+      if (!replaceExisting) {
+        conflicts.push(
+          `Event ID "${value.id}" already exists with different content and is not declared as an explicit replacement:\n` +
+          `  repo: ${repoExisting.path}\n  batch: ${sourcePath}`,
+        );
+        continue;
+      }
+
+      plannedEventCopies.push({
+        batchId: batch.batchId,
+        sourcePath,
+        destinationPath: repoExisting.path,
+        eventId: value.id,
+        replaceExisting: true,
+      });
+      continue;
+    }
+
+    if (replaceExisting) {
       conflicts.push(
-        `Event ID "${value.id}" already exists with different content:\n` +
-        `  repo: ${repoExisting.path}\n  batch: ${sourcePath}`,
+        `${batch.batchId}: Event "${value.id}" is declared as a replacement but does not exist in the repository.`,
       );
       continue;
     }
 
+    const destinationDir =
+      isDeterministicRecoveryBatch(batch) && value.kind === 'critical'
+        ? join(eventsRoot, 'critical')
+        : join(eventsRoot, batch.phase);
     const destinationPath = join(destinationDir, fileName);
+
     if (existsSync(destinationPath)) {
       const existing = parseJsonFile(destinationPath).value;
       if (semanticJson(existing) === semantic) {
@@ -674,13 +728,26 @@ for (const batch of batches) {
       sourcePath,
       destinationPath,
       eventId: value.id,
+      replaceExisting: false,
     });
   }
+
+  for (const replacementId of batch.replaceEventIds) {
+    if (!batch.eventFiles.some((sourcePath) => basename(sourcePath, '.json') === replacementId)) {
+      conflicts.push(
+        `${batch.batchId}: replacement Event "${replacementId}" is declared in MANIFEST but missing from events/.`,
+      );
+    }
+  }
 }
+
+const plannedEventReplacements = plannedEventCopies.filter((item) => item.replaceExisting).length;
+const plannedEventCreates = plannedEventCopies.length - plannedEventReplacements;
 
 const mergedFr = { ...targetFr };
 const incomingLocalizationSeen = new Map();
 let localizationAdded = 0;
+let localizationUpdated = 0;
 let localizationIdenticalSkipped = 0;
 
 for (const batch of batches) {
@@ -704,6 +771,9 @@ for (const batch of batches) {
     if (Object.prototype.hasOwnProperty.call(mergedFr, key)) {
       if (mergedFr[key] === value) {
         localizationIdenticalSkipped += 1;
+      } else if (allowsLocalizationOverride(batch, key)) {
+        mergedFr[key] = value;
+        localizationUpdated += 1;
       } else {
         conflicts.push(
           `Localization key "${key}" already exists with different text:\n` +
@@ -727,6 +797,7 @@ if (!skipDocs) {
     const docs = [
       ['MANIFEST.md', batch.manifestPath],
       ['PROPOSED_DEFINITIONS.md', batch.proposalsPath],
+      ['TOOL_INTEGRATION_NOTES.md', join(batch.root, 'TOOL_INTEGRATION_NOTES.md')],
     ];
 
     for (const [name, sourcePath] of docs) {
@@ -754,7 +825,9 @@ let plannedIndexText = null;
 let indexRowsAdded = 0;
 let indexRowsSkipped = 0;
 
-if (!skipIndex) {
+const indexableBatches = batches.filter((batch) => !isDeterministicRecoveryBatch(batch));
+
+if (!skipIndex && indexableBatches.length > 0) {
   plannedIndexText = readFileSync(conceptIndexPath, 'utf8');
 
   const rootRows = [];
@@ -762,7 +835,7 @@ if (!skipIndex) {
   const secondaryRows = [];
   const lifetimeRows = [];
 
-  for (const batch of batches) {
+  for (const batch of indexableBatches) {
     if (!batch.manifestText) {
       conflicts.push(`${batch.batchId}: MANIFEST.md is required for automatic EVENT_CONCEPT_INDEX.md update. Use --skip-index to bypass.`);
       continue;
@@ -879,7 +952,7 @@ if (!skipIndex) {
     indexRowsSkipped += result.skipped;
   }
 
-  plannedIndexText = removeFromRegenerationScope(plannedIndexText, batches.map((batch) => batch.batchId));
+  plannedIndexText = removeFromRegenerationScope(plannedIndexText, indexableBatches.map((batch) => batch.batchId));
   if (indexRowsAdded > 0) {
     plannedIndexText = plannedIndexText.replace(
       '> **Status: regeneration baseline after Lifetime Thread authoring-contract revision.**',
@@ -903,13 +976,15 @@ console.log(`Repo: ${repoRoot}`);
 console.log(`Mode: ${dryRun ? 'DRY RUN' : 'WRITE'}\n`);
 
 for (const batch of batches) {
-  console.log(`- ${batch.batchId} -> ${batch.phase}`);
+  console.log(`- ${batch.batchId} [${batch.batchType}] -> ${batch.phase}`);
 }
 
 console.log('\nPlan');
-console.log(`Events to copy:              ${plannedEventCopies.length}`);
+console.log(`Events to create:            ${plannedEventCreates}`);
+console.log(`Events to replace:           ${plannedEventReplacements}`);
 console.log(`Identical Events skipped:    ${identicalEventsSkipped}`);
 console.log(`Localization keys to add:    ${localizationAdded}`);
+console.log(`Localization keys to update: ${localizationUpdated}`);
 console.log(`Identical loc keys skipped:  ${localizationIdenticalSkipped}`);
 console.log(`Batch docs to copy:          ${plannedDocs.length}`);
 console.log(`Identical docs skipped:      ${identicalDocsSkipped}`);
@@ -928,7 +1003,7 @@ if (!dryRun) {
     cpSync(item.sourcePath, item.destinationPath);
   }
 
-  if (localizationAdded > 0) {
+  if (localizationAdded > 0 || localizationUpdated > 0) {
     atomicWrite(targetFrPath, `${JSON.stringify(mergedFr, null, 2)}\n`);
   }
 

@@ -1,0 +1,131 @@
+{
+  "id": "active_haki_armament_01_black_knot_challenge",
+  "kind": "normal",
+  "titleKey": "event.active_haki_armament_01_black_knot_challenge.title",
+  "textKey": "event.active_haki_armament_01_black_knot_challenge.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "ordinary",
+      "textKey": "event.active_haki_armament_01_black_knot_challenge.choice.ordinary.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ordinary",
+          "textKey": "event.active_haki_armament_01_black_knot_challenge.choice.ordinary.outcome.ordinary.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_armament_01_life_01_knot_returns",
+              "delayMonths": 8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "alternate",
+      "textKey": "event.active_haki_armament_01_black_knot_challenge.choice.alternate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alternate",
+          "textKey": "event.active_haki_armament_01_black_knot_challenge.choice.alternate.outcome.alternate.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_armament_01_life_01_knot_returns",
+              "delayMonths": 8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "haki",
+      "textKey": "event.active_haki_armament_01_black_knot_challenge.choice.haki.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "haki",
+          "textKey": "event.active_haki_armament_01_black_knot_challenge.choice.haki.outcome.haki.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_armament_01_life_01_knot_returns",
+              "delayMonths": 8
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "armament",
+        "level": 1
+      }
+    },
+    {
+      "id": "awaken",
+      "textKey": "event.active_haki_armament_01_black_knot_challenge.choice.awaken.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "awakened",
+          "textKey": "event.active_haki_armament_01_black_knot_challenge.choice.awaken.outcome.awakened.text",
+          "effects": [
+            {
+              "type": "awakenHaki",
+              "hakiType": "armament"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_armament_01_life_01_knot_returns",
+              "delayMonths": 8
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hakiIsAwakened",
+              "hakiType": "armament"
+            }
+          },
+          {
+            "type": "hakiSourceTotalAtLeast",
+            "hakiType": "armament",
+            "value": 75
+          }
+        ]
+      }
+    }
+  ],
+  "lifetimeThreadSeed": true
+}

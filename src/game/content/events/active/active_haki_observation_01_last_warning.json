@@ -1,0 +1,109 @@
+{
+  "id": "active_haki_observation_01_last_warning",
+  "kind": "normal",
+  "titleKey": "event.active_haki_observation_01_last_warning.title",
+  "textKey": "event.active_haki_observation_01_last_warning.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "ordinary",
+      "textKey": "event.active_haki_observation_01_last_warning.choice.ordinary.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ordinary",
+          "textKey": "event.active_haki_observation_01_last_warning.choice.ordinary.outcome.ordinary.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "alternate",
+      "textKey": "event.active_haki_observation_01_last_warning.choice.alternate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alternate",
+          "textKey": "event.active_haki_observation_01_last_warning.choice.alternate.outcome.alternate.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "haki",
+      "textKey": "event.active_haki_observation_01_last_warning.choice.haki.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "haki",
+          "textKey": "event.active_haki_observation_01_last_warning.choice.haki.outcome.haki.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    },
+    {
+      "id": "awaken",
+      "textKey": "event.active_haki_observation_01_last_warning.choice.awaken.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "awakened",
+          "textKey": "event.active_haki_observation_01_last_warning.choice.awaken.outcome.awakened.text",
+          "effects": [
+            {
+              "type": "awakenHaki",
+              "hakiType": "observation"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hakiIsAwakened",
+              "hakiType": "observation"
+            }
+          },
+          {
+            "type": "hakiSourceTotalAtLeast",
+            "hakiType": "observation",
+            "value": 75
+          }
+        ]
+      }
+    }
+  ]
+}

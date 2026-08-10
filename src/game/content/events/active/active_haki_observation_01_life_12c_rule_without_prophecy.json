@@ -1,0 +1,60 @@
+{
+  "id": "active_haki_observation_01_life_12c_rule_without_prophecy",
+  "kind": "scheduled",
+  "titleKey": "event.active_haki_observation_01_life_12c_rule_without_prophecy.title",
+  "textKey": "event.active_haki_observation_01_life_12c_rule_without_prophecy.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "ordinary",
+      "textKey": "event.active_haki_observation_01_life_12c_rule_without_prophecy.choice.ordinary.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ordinary",
+          "textKey": "event.active_haki_observation_01_life_12c_rule_without_prophecy.choice.ordinary.outcome.ordinary.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_observation_01_life_13c_present_only",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "haki",
+      "textKey": "event.active_haki_observation_01_life_12c_rule_without_prophecy.choice.haki.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "haki",
+          "textKey": "event.active_haki_observation_01_life_12c_rule_without_prophecy.choice.haki.outcome.haki.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_observation_01_life_13c_present_only",
+              "delayMonths": 10
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

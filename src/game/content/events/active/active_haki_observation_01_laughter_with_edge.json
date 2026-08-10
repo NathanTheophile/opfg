@@ -1,0 +1,127 @@
+{
+  "id": "active_haki_observation_01_laughter_with_edge",
+  "kind": "normal",
+  "titleKey": "event.active_haki_observation_01_laughter_with_edge.title",
+  "textKey": "event.active_haki_observation_01_laughter_with_edge.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "ordinary",
+      "textKey": "event.active_haki_observation_01_laughter_with_edge.choice.ordinary.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_haki_observation_01_laughter_with_edge.choice.ordinary.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_01_laughter_with_edge_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_haki_observation_01_laughter_with_edge.choice.ordinary.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_01_laughter_with_edge_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_haki_observation_01_laughter_with_edge.choice.ordinary.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_01_laughter_with_edge_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_haki_observation_01_laughter_with_edge.choice.ordinary.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_01_laughter_with_edge_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "alternate",
+      "textKey": "event.active_haki_observation_01_laughter_with_edge.choice.alternate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alternate",
+          "textKey": "event.active_haki_observation_01_laughter_with_edge.choice.alternate.outcome.alternate.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_01_laughter_with_edge_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "haki",
+      "textKey": "event.active_haki_observation_01_laughter_with_edge.choice.haki.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "success",
+          "textKey": "event.active_haki_observation_01_laughter_with_edge.choice.haki.outcome.success.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_01_laughter_with_edge_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    }
+  ]
+}

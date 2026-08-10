@@ -1,0 +1,86 @@
+{
+  "id": "active_haki_observation_01_quiet_after_victory",
+  "kind": "normal",
+  "titleKey": "event.active_haki_observation_01_quiet_after_victory.title",
+  "textKey": "event.active_haki_observation_01_quiet_after_victory.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "ordinary",
+      "textKey": "event.active_haki_observation_01_quiet_after_victory.choice.ordinary.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ordinary",
+          "textKey": "event.active_haki_observation_01_quiet_after_victory.choice.ordinary.outcome.ordinary.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_observation_01_after_victory_echo",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "alternate",
+      "textKey": "event.active_haki_observation_01_quiet_after_victory.choice.alternate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alternate",
+          "textKey": "event.active_haki_observation_01_quiet_after_victory.choice.alternate.outcome.alternate.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_observation_01_after_victory_echo",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "haki",
+      "textKey": "event.active_haki_observation_01_quiet_after_victory.choice.haki.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "haki",
+          "textKey": "event.active_haki_observation_01_quiet_after_victory.choice.haki.outcome.haki.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_observation_01_after_victory_echo",
+              "delayMonths": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    }
+  ]
+}

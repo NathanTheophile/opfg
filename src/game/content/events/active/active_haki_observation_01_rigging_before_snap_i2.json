@@ -1,0 +1,100 @@
+{
+  "id": "active_haki_observation_01_rigging_before_snap_i2",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_01_rigging_before_snap_i2.title",
+  "textKey": "event.active_haki_observation_01_rigging_before_snap_i2.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "ordinary",
+      "textKey": "event.active_haki_observation_01_rigging_before_snap_i2.choice.ordinary.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_haki_observation_01_rigging_before_snap_i2.choice.ordinary.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_01_rigging_before_snap_i3"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_haki_observation_01_rigging_before_snap_i2.choice.ordinary.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_01_rigging_before_snap_i3"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_haki_observation_01_rigging_before_snap_i2.choice.ordinary.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_01_rigging_before_snap_i3"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_haki_observation_01_rigging_before_snap_i2.choice.ordinary.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_01_rigging_before_snap_i3"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "haki",
+      "textKey": "event.active_haki_observation_01_rigging_before_snap_i2.choice.haki.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "success",
+          "textKey": "event.active_haki_observation_01_rigging_before_snap_i2.choice.haki.outcome.success.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_01_rigging_before_snap_i3"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    }
+  ]
+}

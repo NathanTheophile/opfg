@@ -1,0 +1,109 @@
+{
+  "id": "active_haki_armament_01_stone_wall_training",
+  "kind": "normal",
+  "titleKey": "event.active_haki_armament_01_stone_wall_training.title",
+  "textKey": "event.active_haki_armament_01_stone_wall_training.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "ordinary",
+      "textKey": "event.active_haki_armament_01_stone_wall_training.choice.ordinary.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ordinary",
+          "textKey": "event.active_haki_armament_01_stone_wall_training.choice.ordinary.outcome.ordinary.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "alternate",
+      "textKey": "event.active_haki_armament_01_stone_wall_training.choice.alternate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alternate",
+          "textKey": "event.active_haki_armament_01_stone_wall_training.choice.alternate.outcome.alternate.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "haki",
+      "textKey": "event.active_haki_armament_01_stone_wall_training.choice.haki.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "haki",
+          "textKey": "event.active_haki_armament_01_stone_wall_training.choice.haki.outcome.haki.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "armament",
+        "level": 1
+      }
+    },
+    {
+      "id": "awaken",
+      "textKey": "event.active_haki_armament_01_stone_wall_training.choice.awaken.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "awakened",
+          "textKey": "event.active_haki_armament_01_stone_wall_training.choice.awaken.outcome.awakened.text",
+          "effects": [
+            {
+              "type": "awakenHaki",
+              "hakiType": "armament"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hakiIsAwakened",
+              "hakiType": "armament"
+            }
+          },
+          {
+            "type": "hakiSourceTotalAtLeast",
+            "hakiType": "armament",
+            "value": 75
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -126,6 +126,40 @@ function sectionByHeading(text, heading) {
 }
 function stripMd(s) { return String(s ?? '').replaceAll('**', '').replaceAll('`', '').trim(); }
 
+function inferBatchIdFromManifest(manifest, fallback) {
+  return manifest.match(/\*\*Batch ID:\*\*\s*`([^`]+)`/i)?.[1] || fallback;
+}
+
+function inferBatchTypeFromManifest(manifest) {
+  return manifest.match(/\*\*Batch type:\*\*\s*`([^`]+)`/i)?.[1]?.trim().toLowerCase() || 'standard';
+}
+
+function replacementEventIdsFromManifest(manifest) {
+  const registry = sectionByHeading(manifest, 'EVENT_REGISTRY');
+  if (!registry) return new Set();
+  const match = registry.match(
+    /^###\s+Stable existing IDs replaced\s*$([\s\S]*?)(?=^###\s+|\z)/mi,
+  );
+  return new Set(
+    [...(match?.[1] || '').matchAll(/^\s*-\s*`([A-Za-z0-9_.:-]+)`\s*$/gm)].map((entry) => entry[1]),
+  );
+}
+
+function walkJsonFiles(root) {
+  if (!existsSync(root)) return [];
+  const result = [];
+  const stack = [root];
+  while (stack.length > 0) {
+    const current = stack.pop();
+    for (const entry of readdirSync(current, { withFileTypes: true })) {
+      const path = join(current, entry.name);
+      if (entry.isDirectory()) stack.push(path);
+      else if (entry.isFile() && extname(entry.name).toLowerCase() === '.json') result.push(path);
+    }
+  }
+  return result.sort();
+}
+
 function schemaVocabulary() {
   const defaults = {
     conditions: new Set(['all','any','not','hasTrait','statAtLeast','hasFlag','hasItem','berriesAtLeast','hasCrew','crewSizeAtLeast','hasCrewRole','canRecruitNpc','isLeader','locationIs','locationHasTag','locationHasService','locationWithin','currentSeaIs','isAtSea','isOnLand','careerPhaseIs','ageAtLeastMonths','ageAtMostMonths','hasShip','shipIs','shipHealthAtLeast','shipHealthAtMost','shipCrewCapacityAtLeast','shipCargoSpaceAtLeast','canAcquireShip','canSellShip','npcStatusIs','npcRelationshipAtLeast','npcStatAtLeast','hasChosen','hasPlayed','hasOutcome','raceIs','originSeaIs','affiliationIs','familyStructureIs','socialClassIs','hasDevilFruit','canConsumeDevilFruit','devilFruitIs','devilFruitTypeIs','devilFruitHasTag','devilFruitAwakeningAtLeast','devilFruitIsAwakened','hakiAtLeast','hakiIsAwakened','hakiSourceTotalAtLeast','npcHasDevilFruit','npcDevilFruitIs','npcDevilFruitTypeIs','npcDevilFruitHasTag','npcDevilFruitAwakeningAtLeast','npcHakiAtLeast','npcHakiIsAwakened','careerAffiliationIs','reputationAtLeast','reputationAtMost','bountyAtLeast','careerRankIs','careerRankAtLeast','careerTitleIs']),
@@ -149,6 +183,16 @@ function schemaVocabulary() {
   return defaults;
 }
 const vocab = schemaVocabulary();
+
+const schemaSource = (() => {
+  if (!repoRoot) return '';
+  const path = join(repoRoot, 'src', 'game', 'content', 'schema.ts');
+  return existsSync(path) ? readFileSync(path, 'utf8') : '';
+})();
+const schemaSupportsDiceActor = /\bactor\??\s*:|\bDiceActor\b/.test(schemaSource);
+const schemaSupportsNpcSelector = /\bnpcSelector\b/.test(schemaSource);
+const schemaSupportsEndingReason =
+  /endCareerWithEnding[\s\S]{0,220}\breason\??\s*:/.test(schemaSource);
 
 function repoEventIds() {
   const ids = new Set();
@@ -284,25 +328,41 @@ function parseRootRegistry(manifest) {
 function analyze(input) {
   const errors = [], warnings = [], notes = [];
   const root = resolveBatchRoot(input);
-  const batchId = basename(root);
+  let batchId = basename(root);
   const eventDir = join(root, 'events');
-  const loc = parseJson(join(root, 'localization', 'fr.json'), errors, `${batchId}/localization/fr.json`) || {};
   const manifestPath = join(root, 'MANIFEST.md');
   const manifest = existsSync(manifestPath) ? readFileSync(manifestPath, 'utf8') : '';
   if (!manifest) errors.push('Missing MANIFEST.md.');
+  batchId = inferBatchIdFromManifest(manifest, batchId);
+  const batchType = inferBatchTypeFromManifest(manifest);
+  const deterministicRecovery = batchType === 'deterministic_recovery';
+  const replaceEventIds = replacementEventIdsFromManifest(manifest);
+  const loc = parseJson(join(root, 'localization', 'fr.json'), errors, `${batchId}/localization/fr.json`) || {};
   const proposedPath = join(root, 'PROPOSED_DEFINITIONS.md');
   const proposed = existsSync(proposedPath) ? readFileSync(proposedPath, 'utf8').trim() : '';
   const proposedBody = proposed.replace(/^#\s+PROPOSED_DEFINITIONS\s*/i, '').trim();
   if (proposedBody && !/^(none|aucune?|n\/a|—|-)?\.?$/i.test(proposedBody)) warnings.push('PROPOSED_DEFINITIONS.md contains proposals: human approval required before integration.');
 
-  const files = readdirSync(eventDir).filter((f) => extname(f).toLowerCase() === '.json').sort();
+  const files = walkJsonFiles(eventDir);
   const events = new Map();
   for (const file of files) {
-    const e = parseJson(join(eventDir, file), errors, `${batchId}/events/${file}`);
+    const e = parseJson(file, errors, `${batchId}/events/${basename(file)}`);
     if (!e?.id) continue;
     if (events.has(e.id)) errors.push(`Duplicate Event ID: ${e.id}`);
     events.set(e.id, e);
-    if (basename(file, '.json') !== e.id) errors.push(`Filename/Event ID mismatch: ${file} != ${e.id}.json`);
+    if (basename(file, '.json') !== e.id) errors.push(`Filename/Event ID mismatch: ${basename(file)} != ${e.id}.json`);
+  }
+
+  if (deterministicRecovery) {
+    for (const id of replaceEventIds) {
+      if (!events.has(id)) errors.push(`MANIFEST declares replacement Event "${id}" but it is missing from events/.`);
+      if (!existingEventIds.has(id)) errors.push(`MANIFEST declares replacement Event "${id}" but the repository does not currently contain it.`);
+    }
+    for (const id of events.keys()) {
+      if (existingEventIds.has(id) && !replaceEventIds.has(id)) {
+        errors.push(`Event "${id}" already exists in the repository but is not declared under "Stable existing IDs replaced".`);
+      }
+    }
   }
   const kinds = { normal: 0, immediate: 0, scheduled: 0, critical: 0, unknown: 0 };
   for (const e of events.values()) kinds[e.kind] = (kinds[e.kind] ?? 0) + 1;
@@ -317,7 +377,11 @@ function analyze(input) {
 
   for (const e of events.values()) {
     if (!Array.isArray(e.choices) || e.choices.length === 0) errors.push(`${e.id}: no Choices.`);
-    else if (!choicesProvablyResolvable(e)) errors.push(`${e.id}: V4.1 Choice resolvability not provable (all Choices use availableIf without a recognized exhaustive complement).`);
+    else if (!choicesProvablyResolvable(e)) {
+      const message = `${e.id}: Choice resolvability is not provable by the fast complement checker; inspect this Event against STATE_COVERAGE_MATRIX/runtime invariants.`;
+      if (deterministicRecovery) warnings.push(message);
+      else errors.push(message);
+    }
 
     // Localization and vocabulary.
     walk(e, (value, path) => {
@@ -326,19 +390,37 @@ function analyze(input) {
       }
       if (value && typeof value === 'object' && !Array.isArray(value) && typeof value.type === 'string') {
         if (path.includes('/eligibility') || path.includes('/availableIf') || path.includes('/visibleIf') || path.includes('/condition') || path.includes('/cancelIf')) {
-          if (!vocab.conditions.has(value.type) && !['deterministic','dice','text'].includes(value.type)) warnings.push(`${e.id}: unknown Condition-like type "${value.type}" at ${path || '/'}.`);
+          if (!vocab.conditions.has(value.type) && !['deterministic','dice','text'].includes(value.type)) {
+            const message = `${e.id}: unknown Condition-like type "${value.type}" at ${path || '/'}.`;
+            if (deterministicRecovery) errors.push(message);
+            else warnings.push(message);
+          }
         }
         if (path.includes('/effects/') && !vocab.effects.has(value.type)) errors.push(`${e.id}: unknown Effect type "${value.type}" at ${path}.`);
+        if (path.includes('/effects/') && value.npcSelector !== undefined && !schemaSupportsNpcSelector) {
+          errors.push(`${e.id}: npcSelector is used at ${path} but current content schema does not support dynamic NPC selectors.`);
+        }
+        if (path.includes('/effects/') && value.type === 'endCareerWithEnding' && value.reason !== undefined && !schemaSupportsEndingReason) {
+          errors.push(`${e.id}: endCareerWithEnding.reason is used at ${path} but current content schema does not support it.`);
+        }
       }
     });
 
     let hasDice = false, hasSchedule = false;
+    const diceStatsSeen = new Set();
     for (const choice of e.choices || []) {
       const r = choice.resolution;
       if (!r) { errors.push(`${e.id}/${choice.id}: missing resolution.`); continue; }
       if (r.type === 'dice') {
         hasDice = true;
+        if (diceStatsSeen.has(r.statId)) {
+          errors.push(`${e.id}/${choice.id}: Multiple DiceChoices in one Event cannot use StatId "${r.statId}".`);
+        }
+        diceStatsSeen.add(r.statId);
         if (r.statId === 'health') errors.push(`${e.id}/${choice.id}: DiceCheck uses health.`);
+        if (r.actor !== undefined && !schemaSupportsDiceActor) {
+          errors.push(`${e.id}/${choice.id}: Dice actor is authored but current content schema does not support DiceActor.`);
+        }
         if (!diceThresholds.has(r.successThreshold)) errors.push(`${e.id}/${choice.id}: Dice threshold ${r.successThreshold} is outside 8/11/14/17.`);
         const keys = Object.keys(r.outcomes || {}).sort().join(',');
         if (keys !== ['criticalFailure','criticalSuccess','failure','success'].sort().join(',')) errors.push(`${e.id}/${choice.id}: Dice outcomes must be exactly criticalFailure/failure/success/criticalSuccess.`);
@@ -388,10 +470,13 @@ function analyze(input) {
   if (hasCycle(events, 'queueImmediateEvent', new Set(['immediate']))) errors.push('Immediate graph contains a cycle.');
   if (hasCycle(events, 'scheduleEvent', new Set(['scheduled']))) errors.push('Scheduled graph contains a cycle.');
 
-  const immediateDepths = [...events.values()].filter((e) => e.kind === 'normal').map((e) => ({ id: e.id, depth: graphDepth(e.id, events, 'queueImmediateEvent', 'immediate') })).sort((a,b) => b.depth-a.depth);
+  const immediateDepths = [...events.values()]
+    .filter((e) => deterministicRecovery ? (e.kind === 'normal' || e.kind === 'critical') : e.kind === 'normal')
+    .map((e) => ({ id: e.id, depth: graphDepth(e.id, events, 'queueImmediateEvent', 'immediate') }))
+    .sort((a,b) => b.depth-a.depth);
   const signatureCandidates = immediateDepths.filter((x) => x.depth >= 5);
   const depth3Candidates = immediateDepths.filter((x) => x.depth >= 3);
-  if (kinds.normal >= 15) {
+  if (!deterministicRecovery && kinds.normal >= 15) {
     if (signatureCandidates.length < 1) errors.push('No Signature Immediate Arc reaches depth 5.');
     const signatureId = signatureCandidates[0]?.id;
     if (depth3Candidates.filter((x) => x.id !== signatureId).length < 3) errors.push('Fewer than 3 Secondary Immediate roots reach depth 3 outside the Signature root.');
@@ -409,20 +494,22 @@ function analyze(input) {
     if (div.count < 2) errors.push(`${seed.id}: fewer than 2 structural Scheduled divergence candidates.`);
     else if (div.count < 3) warnings.push(`${seed.id}: ${div.count} structural divergences pass floor but are below preferred 3+.`);
   }
-  if (kinds.normal >= 15 && lifetime.length === 0) errors.push('No lifetimeThreadSeed root found in a standard-sized batch.');
+  if (!deterministicRecovery && kinds.normal >= 15 && lifetime.length === 0) errors.push('No lifetimeThreadSeed root found in a standard-sized batch.');
 
   // Manifest/index compatibility and exact concept dedup.
   const registry = parseRootRegistry(manifest);
   if (!registry.length) errors.push('MANIFEST ROOT_REGISTRY could not be parsed.');
   else {
-    if (registry.length !== kinds.normal) warnings.push(`MANIFEST ROOT_REGISTRY has ${registry.length} rows but batch has ${kinds.normal} Normal roots.`);
+    if (!deterministicRecovery && registry.length !== kinds.normal) warnings.push(`MANIFEST ROOT_REGISTRY has ${registry.length} rows but batch has ${kinds.normal} Normal roots.`);
     for (const row of registry) {
       if (!events.has(row.rootId)) errors.push(`MANIFEST root missing from events/: ${row.rootId}`);
-      if (row.conceptKey && acceptedConceptKeys.has(row.conceptKey)) warnings.push(`Exact conceptKey already present in EVENT_CONCEPT_INDEX.md: ${row.conceptKey}`);
+      if (!deterministicRecovery && row.conceptKey && acceptedConceptKeys.has(row.conceptKey)) warnings.push(`Exact conceptKey already present in EVENT_CONCEPT_INDEX.md: ${row.conceptKey}`);
     }
   }
-  for (const heading of ['SIGNATURE_IMMEDIATE_ARCS','SECONDARY_IMMEDIATE_ARCS','LIFETIME_THREADS']) {
-    if (!sectionByHeading(manifest, heading)) errors.push(`MANIFEST missing ## ${heading}.`);
+  if (!deterministicRecovery) {
+    for (const heading of ['SIGNATURE_IMMEDIATE_ARCS','SECONDARY_IMMEDIATE_ARCS','LIFETIME_THREADS']) {
+      if (!sectionByHeading(manifest, heading)) errors.push(`MANIFEST missing ## ${heading}.`);
+    }
   }
   const lifetimeSection = sectionByHeading(manifest, 'LIFETIME_THREADS') || '';
   for (const lt of lifetime) {
@@ -434,12 +521,16 @@ function analyze(input) {
 
   const rootDicePct = kinds.normal ? (100 * rootDice / kinds.normal) : 0;
   const rootScheduledPct = kinds.normal ? (100 * rootScheduled / kinds.normal) : 0;
-  if (kinds.normal >= 15 && (rootDicePct < 35 || rootDicePct > 55)) warnings.push(`Root Dice coverage ${rootDice}/${kinds.normal} = ${rootDicePct.toFixed(1)}% (target ~40–50%).`);
-  if (kinds.normal >= 15 && (rootScheduledPct < 10 || rootScheduledPct > 30)) warnings.push(`Roots initiating Scheduled ${rootScheduled}/${kinds.normal} = ${rootScheduledPct.toFixed(1)}% (target ~15–25%).`);
+  if (!deterministicRecovery && kinds.normal >= 15 && (rootDicePct < 35 || rootDicePct > 55)) warnings.push(`Root Dice coverage ${rootDice}/${kinds.normal} = ${rootDicePct.toFixed(1)}% (target ~40–50%).`);
+  if (!deterministicRecovery && kinds.normal >= 15 && (rootScheduledPct < 10 || rootScheduledPct > 30)) warnings.push(`Roots initiating Scheduled ${rootScheduled}/${kinds.normal} = ${rootScheduledPct.toFixed(1)}% (target ~15–25%).`);
 
-  notes.push('Human review still required: narrative quality, meaningful/persistent divergence, anti-reskin, Scheduled causal wording, geography/canon plausibility, and whether positive rewards match fiction.');
+  if (deterministicRecovery) {
+    notes.push('Human review still required: read STATE_COVERAGE_MATRIX, the shipwreck Immediate chains, terminal outcomes, and every PROPOSED_DEFINITIONS runtime hook. Standard Signature/Secondary/Lifetime quotas do not apply.');
+  } else {
+    notes.push('Human review still required: narrative quality, meaningful/persistent divergence, anti-reskin, Scheduled causal wording, geography/canon plausibility, and whether positive rewards match fiction.');
+  }
   const result = {
-    batchId, input: resolve(input), eventCount: events.size, kinds,
+    batchId, batchType, input: resolve(input), eventCount: events.size, kinds,
     roots: { dice: rootDice, dicePercent: rootDicePct, scheduled: rootScheduled, scheduledPercent: rootScheduledPct },
     immediate: { maxDepth: immediateDepths[0]?.depth || 0, signatureCandidates, depth3Candidates },
     lifetime, positiveShipHealthEffects: positiveShipHealth,
@@ -453,6 +544,7 @@ function markdownReport(r) {
   const lines = [];
   lines.push(`# ${r.batchId} — Fast Review`, '');
   lines.push(`**Verdict mécanique:** ${r.verdict}`, '');
+  lines.push(`**Batch type:** ${r.batchType}`, '');
   lines.push(`- Events: ${r.eventCount} — Normal ${r.kinds.normal}, Immediate ${r.kinds.immediate}, Scheduled ${r.kinds.scheduled}, Critical ${r.kinds.critical}`);
   lines.push(`- Root Dice: ${r.roots.dice}/${r.kinds.normal} (${r.roots.dicePercent.toFixed(1)}%)`);
   lines.push(`- Roots Scheduled: ${r.roots.scheduled}/${r.kinds.normal} (${r.roots.scheduledPercent.toFixed(1)}%)`);
@@ -481,6 +573,7 @@ try {
     for (const r of results) {
       console.log(`\n${r.batchId}`);
       console.log('-'.repeat(r.batchId.length));
+      console.log(`Type: ${r.batchType}`);
       console.log(`Events: ${r.eventCount} | N ${r.kinds.normal} / I ${r.kinds.immediate} / S ${r.kinds.scheduled} / C ${r.kinds.critical}`);
       console.log(`Roots Dice: ${r.roots.dice}/${r.kinds.normal} (${r.roots.dicePercent.toFixed(1)}%) | Roots Scheduled: ${r.roots.scheduled}/${r.kinds.normal} (${r.roots.scheduledPercent.toFixed(1)}%)`);
       console.log(`Immediate max depth: ${r.immediate.maxDepth}`);
@@ -489,7 +582,11 @@ try {
       r.errors.forEach((x) => console.log(`  ERROR: ${x}`));
       r.warnings.forEach((x) => console.log(`  WARN:  ${x}`));
     }
-    console.log('\nHuman pass after this tool: read only the 4 Immediate arc roots/chains, the Lifetime branch points + a few reconvergences/endings, and any warnings. That should reduce a normal batch review to a few minutes instead of redoing the mechanical graph audit manually.\n');
+    if (results.some((r) => r.batchType === 'deterministic_recovery')) {
+      console.log('\nHuman pass for deterministic_recovery: review STATE_COVERAGE_MATRIX, shipwreck/transport Immediate chains, terminal outcomes, and proposed runtime hooks. Standard Lifetime/Signature quotas are intentionally skipped.\n');
+    } else {
+      console.log('\nHuman pass after this tool: read only the 4 Immediate arc roots/chains, the Lifetime branch points + a few reconvergences/endings, and any warnings. That should reduce a normal batch review to a few minutes instead of redoing the mechanical graph audit manually.\n');
+    }
   }
   process.exit(results.some((r) => r.errors.length) ? 2 : 0);
 } finally {

@@ -1,0 +1,170 @@
+{
+  "id": "active_haki_observation_01_crowd_before_scream",
+  "kind": "normal",
+  "titleKey": "event.active_haki_observation_01_crowd_before_scream.title",
+  "textKey": "event.active_haki_observation_01_crowd_before_scream.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "ordinary",
+      "textKey": "event.active_haki_observation_01_crowd_before_scream.choice.ordinary.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_haki_observation_01_crowd_before_scream.choice.ordinary.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_01_crowd_before_scream_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_haki_observation_01_crowd_before_scream.choice.ordinary.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_01_crowd_before_scream_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_haki_observation_01_crowd_before_scream.choice.ordinary.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_01_crowd_before_scream_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_haki_observation_01_crowd_before_scream.choice.ordinary.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_01_crowd_before_scream_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "alternate",
+      "textKey": "event.active_haki_observation_01_crowd_before_scream.choice.alternate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alternate",
+          "textKey": "event.active_haki_observation_01_crowd_before_scream.choice.alternate.outcome.alternate.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_01_crowd_before_scream_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "haki",
+      "textKey": "event.active_haki_observation_01_crowd_before_scream.choice.haki.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "success",
+          "textKey": "event.active_haki_observation_01_crowd_before_scream.choice.haki.outcome.success.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_01_crowd_before_scream_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    },
+    {
+      "id": "awaken",
+      "textKey": "event.active_haki_observation_01_crowd_before_scream.choice.awaken.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "awakened",
+          "textKey": "event.active_haki_observation_01_crowd_before_scream.choice.awaken.outcome.awakened.text",
+          "effects": [
+            {
+              "type": "awakenHaki",
+              "hakiType": "observation"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_01_crowd_before_scream_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hakiIsAwakened",
+              "hakiType": "observation"
+            }
+          },
+          {
+            "type": "hakiSourceTotalAtLeast",
+            "hakiType": "observation",
+            "value": 75
+          }
+        ]
+      }
+    }
+  ]
+}

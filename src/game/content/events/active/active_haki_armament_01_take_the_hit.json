@@ -1,0 +1,139 @@
+{
+  "id": "active_haki_armament_01_take_the_hit",
+  "kind": "normal",
+  "titleKey": "event.active_haki_armament_01_take_the_hit.title",
+  "textKey": "event.active_haki_armament_01_take_the_hit.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "ordinary",
+      "textKey": "event.active_haki_armament_01_take_the_hit.choice.ordinary.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_haki_armament_01_take_the_hit.choice.ordinary.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_haki_armament_01_take_the_hit.choice.ordinary.outcome.failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_haki_armament_01_take_the_hit.choice.ordinary.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_haki_armament_01_take_the_hit.choice.ordinary.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "alternate",
+      "textKey": "event.active_haki_armament_01_take_the_hit.choice.alternate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alternate",
+          "textKey": "event.active_haki_armament_01_take_the_hit.choice.alternate.outcome.alternate.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "haki",
+      "textKey": "event.active_haki_armament_01_take_the_hit.choice.haki.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "success",
+          "textKey": "event.active_haki_armament_01_take_the_hit.choice.haki.outcome.success.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "armament",
+        "level": 1
+      }
+    },
+    {
+      "id": "awaken",
+      "textKey": "event.active_haki_armament_01_take_the_hit.choice.awaken.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "awakened",
+          "textKey": "event.active_haki_armament_01_take_the_hit.choice.awaken.outcome.awakened.text",
+          "effects": [
+            {
+              "type": "awakenHaki",
+              "hakiType": "armament"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hakiIsAwakened",
+              "hakiType": "armament"
+            }
+          },
+          {
+            "type": "hakiSourceTotalAtLeast",
+            "hakiType": "armament",
+            "value": 75
+          }
+        ]
+      }
+    }
+  ]
+}
