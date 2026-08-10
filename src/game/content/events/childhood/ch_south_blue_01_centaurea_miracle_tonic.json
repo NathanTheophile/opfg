@@ -1,0 +1,153 @@
+{
+  "id": "ch_south_blue_01_centaurea_miracle_tonic",
+  "titleKey": "event.ch_south_blue_01_centaurea_miracle_tonic.title",
+  "textKey": "event.ch_south_blue_01_centaurea_miracle_tonic.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 144
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "locationWithin",
+            "locationId": "centaurea"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "city"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "challenge_claims",
+      "textKey": "event.ch_south_blue_01_centaurea_miracle_tonic.choice.challenge_claims.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "crowd_turns",
+            "textKey": "event.ch_south_blue_01_centaurea_miracle_tonic.choice.challenge_claims.outcome.crowd_turns.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_south_blue_01_centaurea_tonic_followup",
+                "delayMonths": 6
+              }
+            ]
+          },
+          "failure": {
+            "id": "vague_answer",
+            "textKey": "event.ch_south_blue_01_centaurea_miracle_tonic.choice.challenge_claims.outcome.vague_answer.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_south_blue_01_centaurea_tonic_followup",
+                "delayMonths": 6
+              }
+            ]
+          },
+          "success": {
+            "id": "claims_narrowed",
+            "textKey": "event.ch_south_blue_01_centaurea_miracle_tonic.choice.challenge_claims.outcome.claims_narrowed.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_south_blue_01_centaurea_tonic_followup",
+                "delayMonths": 6
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "public_correction",
+            "textKey": "event.ch_south_blue_01_centaurea_miracle_tonic.choice.challenge_claims.outcome.public_correction.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_south_blue_01_centaurea_tonic_followup",
+                "delayMonths": 6
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ask_medical_worker",
+      "textKey": "event.ch_south_blue_01_centaurea_miracle_tonic.choice.ask_medical_worker.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "explanation_given",
+          "textKey": "event.ch_south_blue_01_centaurea_miracle_tonic.choice.ask_medical_worker.outcome.explanation_given.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_south_blue_01_centaurea_tonic_followup",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_stall",
+      "textKey": "event.ch_south_blue_01_centaurea_miracle_tonic.choice.leave_stall.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stall_continues",
+          "textKey": "event.ch_south_blue_01_centaurea_miracle_tonic.choice.leave_stall.outcome.stall_continues.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_south_blue_01_centaurea_tonic_followup",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

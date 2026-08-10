@@ -1,0 +1,109 @@
+{
+  "id": "ch_north_blue_01_lvneel_old_explorer_tale",
+  "titleKey": "event.ch_north_blue_01_lvneel_old_explorer_tale.title",
+  "textKey": "event.ch_north_blue_01_lvneel_old_explorer_tale.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      },
+      {
+        "type": "locationWithin",
+        "locationId": "lvneel_kingdom"
+      }
+    ]
+  },
+  "lifetimeThreadSeed": true,
+  "choices": [
+    {
+      "id": "compare_versions",
+      "textKey": "event.ch_north_blue_01_lvneel_old_explorer_tale.choice.compare_versions.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "compare_versions_result",
+          "textKey": "event.ch_north_blue_01_lvneel_old_explorer_tale.choice.compare_versions.outcome.compare_versions_result.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "curious"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_north_blue_01_lvneel_memory_s01",
+              "delayMonths": 12
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "curious"
+        }
+      }
+    },
+    {
+      "id": "trust_familiar",
+      "textKey": "event.ch_north_blue_01_lvneel_old_explorer_tale.choice.trust_familiar.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trust_familiar_result",
+          "textKey": "event.ch_north_blue_01_lvneel_old_explorer_tale.choice.trust_familiar.outcome.trust_familiar_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_north_blue_01_lvneel_memory_s01",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_why_changed",
+      "textKey": "event.ch_north_blue_01_lvneel_old_explorer_tale.choice.ask_why_changed.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_why_changed_result",
+          "textKey": "event.ch_north_blue_01_lvneel_old_explorer_tale.choice.ask_why_changed.outcome.ask_why_changed_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_north_blue_01_lvneel_memory_s01",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

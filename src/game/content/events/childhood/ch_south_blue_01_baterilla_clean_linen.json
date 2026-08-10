@@ -1,0 +1,118 @@
+{
+  "id": "ch_south_blue_01_baterilla_clean_linen",
+  "titleKey": "event.ch_south_blue_01_baterilla_clean_linen.title",
+  "textKey": "event.ch_south_blue_01_baterilla_clean_linen.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 95
+      },
+      {
+        "type": "locationIs",
+        "locationId": "baterilla_harbor"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "separate_layers",
+      "textKey": "event.ch_south_blue_01_baterilla_clean_linen.choice.separate_layers.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "miss_stain",
+            "textKey": "event.ch_south_blue_01_baterilla_clean_linen.choice.separate_layers.outcome.miss_stain.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "too_cautious",
+            "textKey": "event.ch_south_blue_01_baterilla_clean_linen.choice.separate_layers.outcome.too_cautious.text",
+            "effects": []
+          },
+          "success": {
+            "id": "clean_saved",
+            "textKey": "event.ch_south_blue_01_baterilla_clean_linen.choice.separate_layers.outcome.clean_saved.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "trace_source",
+            "textKey": "event.ch_south_blue_01_baterilla_clean_linen.choice.separate_layers.outcome.trace_source.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "move_rope",
+      "textKey": "event.ch_south_blue_01_baterilla_clean_linen.choice.move_rope.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rope_moved",
+          "textKey": "event.ch_south_blue_01_baterilla_clean_linen.choice.move_rope.outcome.rope_moved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_dispensary",
+      "textKey": "event.ch_south_blue_01_baterilla_clean_linen.choice.call_dispensary.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "dispensary_checks",
+          "textKey": "event.ch_south_blue_01_baterilla_clean_linen.choice.call_dispensary.outcome.dispensary_checks.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

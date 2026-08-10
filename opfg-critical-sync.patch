@@ -1,0 +1,92 @@
+--- a/docs/content/EVENT_AUTHORING_RULES.md
++++ b/docs/content/EVENT_AUTHORING_RULES.md
+@@ -639,6 +639,20 @@
+ ### 11.4 Strongly contextual batches
+ 
+ A location-specific batch may naturally use many `locationIs` Conditions, e.g. `ACTIVE_ALABASTA_01`.
++
++### 11.5 Childhood geography and Birth Location reachability
++
++Childhood has no free navigation loop and does not use the Active dead-end travel fallback. A standalone Childhood root must therefore be reachable from the player's actual Childhood location, which normally remains the Birth Location selected during Origins unless an explicitly authored causal sequence has moved the player.
++
++For Childhood authoring and review:
++
++- do not gate a standalone root with `locationIs` on a non-Birth Location and assume the player can simply travel there;
++- when using `locationWithin(parentLocationId)`, verify that at least one valid Birth Location can satisfy the condition and that the scene text remains true for every Birth Location descendant that may make the Event eligible;
++- do not broaden eligibility to a parent/region while keeping narration that requires a more specific sub-location, unless that specific place is only flavor and does not contradict the eligible states;
++- tag/service-gated Childhood roots must be checked against the real tags/services of the 32 Birth Locations, not against the wider 188-Location World V1 catalogue;
++- do not rely on Active navigation, future movement, or dead-end fallback to make a Childhood root reachable.
++
++Batch review must include a Birth Location coverage pass for geography-sensitive Childhood roots. An Event that is structurally valid but unreachable from every valid Birth Location is a content coverage defect.
+ 
+ ## 12. Travel and world progression
+ 
+--- a/docs/GAME_DESIGN.md
++++ b/docs/GAME_DESIGN.md
+@@ -230,11 +230,11 @@
+ 
+ Une conséquence programmée à 17 ans avec `delayMonths: 18` devient due 18 mois calendaires plus tard.
+ 
+-`monthAtLeast` est considéré comme redondant puisque l’ancienneté Active est dérivable de l’âge biologique. Il doit être retiré du contrat de contenu lors de la prochaine passe technique. **Aucune suppression n’est réalisée dans la présente tâche documentaire.**
++`monthAtLeast` est redondant puisque l’ancienneté Active est dérivable de l’âge biologique et a été retiré du contrat de contenu/runtime. Utiliser `ageAtLeastMonths`, `ageAtMostMonths` et `delayMonths` selon le besoin ; ne pas réintroduire `monthAtLeast`.
+ 
+ ## 8. Scheduled Events
+ 
+-Un Event `scheduledOnly` ne peut jamais venir du pool normal : une conséquence antérieure doit l’avoir programmé. Lorsqu’il est joué, il consomme un slot normal. Une conséquence Childhood peut devenir due pendant Childhood ou après le passage en Active.
++Un Event `kind: "scheduled"` ne peut jamais venir du pool normal : une conséquence antérieure doit l’avoir programmé. Lorsqu’il est joué, il consomme un slot normal. Une conséquence Childhood peut devenir due pendant Childhood ou après le passage en Active.
+ 
+ ### Sélection et priorité
+ 
+@@ -582,7 +582,6 @@
+ - modèle explicite de slots propre aux phases ;
+ - `slotInMonth: 0 | 1` en Active ;
+ - progression du temps retirée du contrôle des Outcomes ;
+-- suppression future de `monthAtLeast` ;
+ - Scheduled Events prioritaires sur le pool normal ;
+ - priorités Scheduled `50 / 100 / 200 / 300` ;
+ - `blocksScheduledEvents` sur les Locations ;
+--- a/docs/LOCALIZATION.md
++++ b/docs/LOCALIZATION.md
+@@ -17,6 +17,6 @@
+ 
+ Interpolation supports only named `{{placeholder}}` values. Secondary translations must preserve exactly the source placeholder set. No HTML, expressions, conditions, ICU, or pluralization is evaluated.
+ 
+-`CONTENT_SCHEMA_VERSION = 6` versions the authoring/runtime content contract independently from save `GameState.version = 11`. Runtime content validation rejects unsupported schema versions and missing source-French keys. Missing English entries are valid.
++`CONTENT_SCHEMA_VERSION = 6` versions the authoring/runtime content contract independently from save `GameState.version = 15`. Runtime content validation rejects unsupported schema versions and missing source-French keys. Missing English entries are valid.
+ 
+ The UI locale is stored separately under `jam-op-fan-game.locale`; it is never part of career state.
+--- a/docs/content/EVENT_CONCEPT_INDEX.md
++++ b/docs/content/EVENT_CONCEPT_INDEX.md
+@@ -4,7 +4,7 @@
+ >
+ > **Status: active accepted-content ledger under the current Lifetime Thread authoring contract.**
+ >
+-> The previously generated Childhood Waves 1–2 are intentionally withdrawn from the accepted ledger and must be regenerated under the current authority. Their old concepts do not block reuse or revision.
++> Childhood batches currently listed in this ledger are the accepted versions under the current Lifetime Thread authoring contract. Older withdrawn/regenerated historical copies are non-authoritative and must not be used for deduplication or regeneration decisions.
+ 
+ ## Accepted root concepts
+ 
+--- a/src/game/content/events/active/year_one_end.json
++++ b/src/game/content/events/active/year_one_end.json
+@@ -42,8 +42,19 @@
+       "id": "press_on",
+       "textKey": "event.year_one_end.choice.press_on.text",
+       "availableIf": {
+-        "type": "shipHealthAtLeast",
+-        "value": 1
++        "type": "any",
++        "conditions": [
++          {
++            "type": "shipHealthAtLeast",
++            "value": 1
++          },
++          {
++            "type": "not",
++            "condition": {
++              "type": "hasShip"
++            }
++          }
++        ]
+       },
+       "resolution": {
+         "type": "deterministic",

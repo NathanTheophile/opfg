@@ -1,0 +1,152 @@
+{
+  "id": "ch_south_blue_01_baterilla_cool_crates",
+  "titleKey": "event.ch_south_blue_01_baterilla_cool_crates.title",
+  "textKey": "event.ch_south_blue_01_baterilla_cool_crates.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      },
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "locationWithin",
+            "locationId": "baterilla"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "move_canvas",
+      "textKey": "event.ch_south_blue_01_baterilla_cool_crates.choice.move_canvas.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "slip_crate",
+            "textKey": "event.ch_south_blue_01_baterilla_cool_crates.choice.move_canvas.outcome.slip_crate.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_south_blue_01_baterilla_cool_crates_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "slow_move",
+            "textKey": "event.ch_south_blue_01_baterilla_cool_crates.choice.move_canvas.outcome.slow_move.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_south_blue_01_baterilla_cool_crates_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "both_moved",
+            "textKey": "event.ch_south_blue_01_baterilla_cool_crates.choice.move_canvas.outcome.both_moved.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_south_blue_01_baterilla_cool_crates_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "clear_lane",
+            "textKey": "event.ch_south_blue_01_baterilla_cool_crates.choice.move_canvas.outcome.clear_lane.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_south_blue_01_baterilla_cool_crates_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "organize_hands",
+      "textKey": "event.ch_south_blue_01_baterilla_cool_crates.choice.organize_hands.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "roles_set",
+          "textKey": "event.ch_south_blue_01_baterilla_cool_crates.choice.organize_hands.outcome.roles_set.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_south_blue_01_baterilla_cool_crates_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "save_labels",
+      "textKey": "event.ch_south_blue_01_baterilla_cool_crates.choice.save_labels.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "labels_dry",
+          "textKey": "event.ch_south_blue_01_baterilla_cool_crates.choice.save_labels.outcome.labels_dry.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_south_blue_01_baterilla_cool_crates_i1"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

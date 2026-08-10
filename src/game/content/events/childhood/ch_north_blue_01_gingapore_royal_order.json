@@ -1,0 +1,155 @@
+{
+  "id": "ch_north_blue_01_gingapore_royal_order",
+  "titleKey": "event.ch_north_blue_01_gingapore_royal_order.title",
+  "textKey": "event.ch_north_blue_01_gingapore_royal_order.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      },
+      {
+        "type": "locationWithin",
+        "locationId": "gingapore_kingdom"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "mediate_queue",
+      "textKey": "event.ch_north_blue_01_gingapore_royal_order.choice.mediate_queue.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "mediate_queue_critical_failure",
+            "textKey": "event.ch_north_blue_01_gingapore_royal_order.choice.mediate_queue.outcome.mediate_queue_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_north_blue_01_gingapore_royal_order_followup",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "failure": {
+            "id": "mediate_queue_failure",
+            "textKey": "event.ch_north_blue_01_gingapore_royal_order.choice.mediate_queue.outcome.mediate_queue_failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_north_blue_01_gingapore_royal_order_followup",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "success": {
+            "id": "mediate_queue_success",
+            "textKey": "event.ch_north_blue_01_gingapore_royal_order.choice.mediate_queue.outcome.mediate_queue_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_north_blue_01_gingapore_royal_order_followup",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "mediate_queue_critical_success",
+            "textKey": "event.ch_north_blue_01_gingapore_royal_order.choice.mediate_queue.outcome.mediate_queue_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_north_blue_01_gingapore_royal_order_followup",
+                "delayMonths": 12
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "defend_small_vendor",
+      "textKey": "event.ch_north_blue_01_gingapore_royal_order.choice.defend_small_vendor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "defend_small_vendor_result",
+          "textKey": "event.ch_north_blue_01_gingapore_royal_order.choice.defend_small_vendor.outcome.defend_small_vendor_result.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "proud"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_north_blue_01_gingapore_royal_order_followup",
+              "delayMonths": 12
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "proud"
+        }
+      }
+    },
+    {
+      "id": "sort_by_fragility",
+      "textKey": "event.ch_north_blue_01_gingapore_royal_order.choice.sort_by_fragility.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sort_by_fragility_result",
+          "textKey": "event.ch_north_blue_01_gingapore_royal_order.choice.sort_by_fragility.outcome.sort_by_fragility_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_north_blue_01_gingapore_royal_order_followup",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "id": "ch_south_blue_01_centaurea_blade_rack",
+  "titleKey": "event.ch_south_blue_01_centaurea_blade_rack.title",
+  "textKey": "event.ch_south_blue_01_centaurea_blade_rack.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "locationWithin",
+            "locationId": "centaurea"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "city"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "stop_hand",
+      "textKey": "event.ch_south_blue_01_centaurea_blade_rack.choice.stop_hand.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hand_stopped",
+          "textKey": "event.ch_south_blue_01_centaurea_blade_rack.choice.stop_hand.outcome.hand_stopped.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_south_blue_01_centaurea_blade_rack_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "alert_merchant",
+      "textKey": "event.ch_south_blue_01_centaurea_blade_rack.choice.alert_merchant.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "merchant_turns",
+          "textKey": "event.ch_south_blue_01_centaurea_blade_rack.choice.alert_merchant.outcome.merchant_turns.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_south_blue_01_centaurea_blade_rack_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "remove_blade",
+      "textKey": "event.ch_south_blue_01_centaurea_blade_rack.choice.remove_blade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "blade_removed",
+          "textKey": "event.ch_south_blue_01_centaurea_blade_rack.choice.remove_blade.outcome.blade_removed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_south_blue_01_centaurea_blade_rack_i1"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

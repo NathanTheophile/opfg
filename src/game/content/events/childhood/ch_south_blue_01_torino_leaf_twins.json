@@ -1,0 +1,190 @@
+{
+  "id": "ch_south_blue_01_torino_leaf_twins",
+  "titleKey": "event.ch_south_blue_01_torino_leaf_twins.title",
+  "textKey": "event.ch_south_blue_01_torino_leaf_twins.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 95
+      },
+      {
+        "type": "locationIs",
+        "locationId": "torino_tree_village"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "inspect_veins",
+      "textKey": "event.ch_south_blue_01_torino_leaf_twins.choice.inspect_veins.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "irritant_leaf",
+            "textKey": "event.ch_south_blue_01_torino_leaf_twins.choice.inspect_veins.outcome.irritant_leaf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_south_blue_01_torino_leaf_followup",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "ask_after_doubt",
+            "textKey": "event.ch_south_blue_01_torino_leaf_twins.choice.inspect_veins.outcome.ask_after_doubt.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_south_blue_01_torino_leaf_followup",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "right_leaf",
+            "textKey": "event.ch_south_blue_01_torino_leaf_twins.choice.inspect_veins.outcome.right_leaf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_south_blue_01_torino_leaf_followup",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "teach_difference",
+            "textKey": "event.ch_south_blue_01_torino_leaf_twins.choice.inspect_veins.outcome.teach_difference.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_south_blue_01_torino_leaf_followup",
+                "delayMonths": 18
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "mark_both",
+      "textKey": "event.ch_south_blue_01_torino_leaf_twins.choice.mark_both.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "plants_marked",
+          "textKey": "event.ch_south_blue_01_torino_leaf_twins.choice.mark_both.outcome.plants_marked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_south_blue_01_torino_leaf_followup",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_guess",
+      "textKey": "event.ch_south_blue_01_torino_leaf_twins.choice.refuse_guess.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cautious_wait",
+          "textKey": "event.ch_south_blue_01_torino_leaf_twins.choice.refuse_guess.outcome.cautious_wait.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "cautious"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_south_blue_01_torino_leaf_followup",
+              "delayMonths": 18
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "cautious"
+            }
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "audacious"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "ask_for_rule",
+      "textKey": "event.ch_south_blue_01_torino_leaf_twins.choice.ask_for_rule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rule_learned",
+          "textKey": "event.ch_south_blue_01_torino_leaf_twins.choice.ask_for_rule.outcome.rule_learned.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_south_blue_01_torino_leaf_followup",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

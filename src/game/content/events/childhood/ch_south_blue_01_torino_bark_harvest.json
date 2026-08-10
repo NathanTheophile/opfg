@@ -1,0 +1,127 @@
+{
+  "id": "ch_south_blue_01_torino_bark_harvest",
+  "titleKey": "event.ch_south_blue_01_torino_bark_harvest.title",
+  "textKey": "event.ch_south_blue_01_torino_bark_harvest.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "locationWithin",
+            "locationId": "torino_kingdom"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "forest"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "measure_strip",
+      "textKey": "event.ch_south_blue_01_torino_bark_harvest.choice.measure_strip.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cut_too_wide",
+            "textKey": "event.ch_south_blue_01_torino_bark_harvest.choice.measure_strip.outcome.cut_too_wide.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "small_yield",
+            "textKey": "event.ch_south_blue_01_torino_bark_harvest.choice.measure_strip.outcome.small_yield.text",
+            "effects": []
+          },
+          "success": {
+            "id": "clean_strip",
+            "textKey": "event.ch_south_blue_01_torino_bark_harvest.choice.measure_strip.outcome.clean_strip.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "best_strip",
+            "textKey": "event.ch_south_blue_01_torino_bark_harvest.choice.measure_strip.outcome.best_strip.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "take_less",
+      "textKey": "event.ch_south_blue_01_torino_bark_harvest.choice.take_less.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tree_first",
+          "textKey": "event.ch_south_blue_01_torino_bark_harvest.choice.take_less.outcome.tree_first.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_other_tree",
+      "textKey": "event.ch_south_blue_01_torino_bark_harvest.choice.ask_other_tree.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "spread_harvest",
+          "textKey": "event.ch_south_blue_01_torino_bark_harvest.choice.ask_other_tree.outcome.spread_harvest.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

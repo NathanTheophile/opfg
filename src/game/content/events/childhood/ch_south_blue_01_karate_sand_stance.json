@@ -1,0 +1,118 @@
+{
+  "id": "ch_south_blue_01_karate_sand_stance",
+  "titleKey": "event.ch_south_blue_01_karate_sand_stance.title",
+  "textKey": "event.ch_south_blue_01_karate_sand_stance.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 95
+      },
+      {
+        "type": "locationIs",
+        "locationId": "karate_island"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "rebuild_in_motion",
+      "textKey": "event.ch_south_blue_01_karate_sand_stance.choice.rebuild_in_motion.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "stumble",
+            "textKey": "event.ch_south_blue_01_karate_sand_stance.choice.rebuild_in_motion.outcome.stumble.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "rough_stance",
+            "textKey": "event.ch_south_blue_01_karate_sand_stance.choice.rebuild_in_motion.outcome.rough_stance.text",
+            "effects": []
+          },
+          "success": {
+            "id": "clean_stance",
+            "textKey": "event.ch_south_blue_01_karate_sand_stance.choice.rebuild_in_motion.outcome.clean_stance.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "fluid_stance",
+            "textKey": "event.ch_south_blue_01_karate_sand_stance.choice.rebuild_in_motion.outcome.fluid_stance.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "describe_first",
+      "textKey": "event.ch_south_blue_01_karate_sand_stance.choice.describe_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "verbal_memory",
+          "textKey": "event.ch_south_blue_01_karate_sand_stance.choice.describe_first.outcome.verbal_memory.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_retrace",
+      "textKey": "event.ch_south_blue_01_karate_sand_stance.choice.ask_retrace.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "marks_redrawn",
+          "textKey": "event.ch_south_blue_01_karate_sand_stance.choice.ask_retrace.outcome.marks_redrawn.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

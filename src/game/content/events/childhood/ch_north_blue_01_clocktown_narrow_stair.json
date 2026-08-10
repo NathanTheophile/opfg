@@ -1,0 +1,123 @@
+{
+  "id": "ch_north_blue_01_clocktown_narrow_stair",
+  "titleKey": "event.ch_north_blue_01_clocktown_narrow_stair.title",
+  "textKey": "event.ch_north_blue_01_clocktown_narrow_stair.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 144
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "locationIs",
+        "locationId": "deul_clocktown"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "plan_turn",
+      "textKey": "event.ch_north_blue_01_clocktown_narrow_stair.choice.plan_turn.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "plan_turn_critical_failure",
+            "textKey": "event.ch_north_blue_01_clocktown_narrow_stair.choice.plan_turn.outcome.plan_turn_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "plan_turn_failure",
+            "textKey": "event.ch_north_blue_01_clocktown_narrow_stair.choice.plan_turn.outcome.plan_turn_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "plan_turn_success",
+            "textKey": "event.ch_north_blue_01_clocktown_narrow_stair.choice.plan_turn.outcome.plan_turn_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "plan_turn_critical_success",
+            "textKey": "event.ch_north_blue_01_clocktown_narrow_stair.choice.plan_turn.outcome.plan_turn_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_landing",
+      "textKey": "event.ch_north_blue_01_clocktown_narrow_stair.choice.clear_landing.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "clear_landing_result",
+          "textKey": "event.ch_north_blue_01_clocktown_narrow_stair.choice.clear_landing.outcome.clear_landing_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "change_carry",
+      "textKey": "event.ch_north_blue_01_clocktown_narrow_stair.choice.change_carry.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "change_carry_result",
+          "textKey": "event.ch_north_blue_01_clocktown_narrow_stair.choice.change_carry.outcome.change_carry_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

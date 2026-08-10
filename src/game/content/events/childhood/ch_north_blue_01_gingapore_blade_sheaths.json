@@ -1,0 +1,123 @@
+{
+  "id": "ch_north_blue_01_gingapore_blade_sheaths",
+  "titleKey": "event.ch_north_blue_01_gingapore_blade_sheaths.title",
+  "textKey": "event.ch_north_blue_01_gingapore_blade_sheaths.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationIs",
+        "locationId": "gingapore_city"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "match_pairs",
+      "textKey": "event.ch_north_blue_01_gingapore_blade_sheaths.choice.match_pairs.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "match_pairs_critical_failure",
+            "textKey": "event.ch_north_blue_01_gingapore_blade_sheaths.choice.match_pairs.outcome.match_pairs_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "match_pairs_failure",
+            "textKey": "event.ch_north_blue_01_gingapore_blade_sheaths.choice.match_pairs.outcome.match_pairs_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "match_pairs_success",
+            "textKey": "event.ch_north_blue_01_gingapore_blade_sheaths.choice.match_pairs.outcome.match_pairs_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "match_pairs_critical_success",
+            "textKey": "event.ch_north_blue_01_gingapore_blade_sheaths.choice.match_pairs.outcome.match_pairs_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "sort_by_length",
+      "textKey": "event.ch_north_blue_01_gingapore_blade_sheaths.choice.sort_by_length.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sort_by_length_result",
+          "textKey": "event.ch_north_blue_01_gingapore_blade_sheaths.choice.sort_by_length.outcome.sort_by_length_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mark_pairs",
+      "textKey": "event.ch_north_blue_01_gingapore_blade_sheaths.choice.mark_pairs.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mark_pairs_result",
+          "textKey": "event.ch_north_blue_01_gingapore_blade_sheaths.choice.mark_pairs.outcome.mark_pairs_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "id": "ch_south_blue_01_samba_double_booking",
+  "titleKey": "event.ch_south_blue_01_samba_double_booking.title",
+  "textKey": "event.ch_south_blue_01_samba_double_booking.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "locationWithin",
+            "locationId": "samba_kingdom"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "city"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "split_time",
+      "textKey": "event.ch_south_blue_01_samba_double_booking.choice.split_time.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "time_split",
+          "textKey": "event.ch_south_blue_01_samba_double_booking.choice.split_time.outcome.time_split.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_south_blue_01_samba_double_booking_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shared_opening",
+      "textKey": "event.ch_south_blue_01_samba_double_booking.choice.shared_opening.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "joint_start",
+          "textKey": "event.ch_south_blue_01_samba_double_booking.choice.shared_opening.outcome.joint_start.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_south_blue_01_samba_double_booking_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_crowd_choose",
+      "textKey": "event.ch_south_blue_01_samba_double_booking.choice.let_crowd_choose.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crowd_vote",
+          "textKey": "event.ch_south_blue_01_samba_double_booking.choice.let_crowd_choose.outcome.crowd_vote.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_south_blue_01_samba_double_booking_i1"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}
