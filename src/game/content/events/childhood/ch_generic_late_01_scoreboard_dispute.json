@@ -1,0 +1,90 @@
+{
+  "id": "ch_generic_late_01_scoreboard_dispute",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_scoreboard_dispute.title",
+  "textKey": "event.ch_generic_late_01_scoreboard_dispute.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "demand_rematch",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "competitive_gain",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "competitive"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_scoreboard_dispute.choice.demand_rematch.outcome.competitive_gain.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_scoreboard_dispute.choice.demand_rematch.text",
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "competitive"
+        }
+      }
+    },
+    {
+      "id": "split_point",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "split",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_scoreboard_dispute.choice.split_point.outcome.split.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_scoreboard_dispute.choice.split_point.text"
+    },
+    {
+      "id": "let_other_win",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "yield",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_scoreboard_dispute.choice.let_other_win.outcome.yield.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_scoreboard_dispute.choice.let_other_win.text"
+    }
+  ]
+}

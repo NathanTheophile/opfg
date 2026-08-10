@@ -36,6 +36,7 @@ Options:
                       origins | childhood | active | system
   --dry-run           Validate and print the integration plan without writing.
   --skip-docs         Do not copy MANIFEST.md / PROPOSED_DEFINITIONS.md.
+  --skip-index        Do not update EVENT_CONCEPT_INDEX.md.
   -h, --help          Show this help.
 
 Examples:
@@ -50,6 +51,8 @@ Behavior:
   - conflicting localization keys stop the whole integration before writes
   - duplicate/conflicting Event IDs stop the whole integration before writes
   - batch docs are copied to docs/content/events/batches/<BATCH_ID>/
+  - EVENT_CONCEPT_INDEX.md is updated from each batch MANIFEST + root localization
+  - only pass reviewed/accepted batches: integration records them as accepted in the index
 `);
 }
 
@@ -57,6 +60,7 @@ let repoArg = null;
 let forcedPhase = null;
 let dryRun = false;
 let skipDocs = false;
+let skipIndex = false;
 const inputs = [];
 
 for (let i = 0; i < args.length; i += 1) {
@@ -71,6 +75,10 @@ for (let i = 0; i < args.length; i += 1) {
   }
   if (arg === '--skip-docs') {
     skipDocs = true;
+    continue;
+  }
+  if (arg === '--skip-index') {
+    skipIndex = true;
     continue;
   }
   if (arg === '--repo') {
@@ -138,9 +146,11 @@ if (!repoRoot) {
 const targetFrPath = join(repoRoot, 'src', 'game', 'localization', 'locales', 'fr.json');
 const eventsRoot = join(repoRoot, 'src', 'game', 'content', 'events');
 const batchDocsRoot = join(repoRoot, 'docs', 'content', 'events', 'batches');
+const conceptIndexPath = join(repoRoot, 'docs', 'content', 'events', 'EVENT_CONCEPT_INDEX.md');
 
 if (!existsSync(targetFrPath)) fail(`Missing target localization file: ${targetFrPath}`);
 if (!existsSync(eventsRoot)) fail(`Missing events root: ${eventsRoot}`);
+if (!skipIndex && !existsSync(conceptIndexPath)) fail(`Missing Event Concept Index: ${conceptIndexPath}`);
 
 const cleanupPaths = [];
 
@@ -266,6 +276,258 @@ function atomicWrite(path, text) {
   renameSync(tempPath, path);
 }
 
+
+function stripInlineMarkdown(value) {
+  return String(value ?? '')
+    .replaceAll('**', '')
+    .replaceAll('`', '')
+    .trim();
+}
+
+function escapeMarkdownCell(value) {
+  return String(value ?? '')
+    .replace(/\r?\n/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replaceAll('|', '\\|')
+    .trim();
+}
+
+function sectionByHeading(text, predicate) {
+  const matches = [...text.matchAll(/^##\s+(.+)$/gm)];
+  for (let i = 0; i < matches.length; i += 1) {
+    const heading = matches[i][1].trim();
+    if (!predicate(heading)) continue;
+    const start = matches[i].index + matches[i][0].length;
+    const end = i + 1 < matches.length ? matches[i + 1].index : text.length;
+    return { heading, start, end, content: text.slice(start, end) };
+  }
+  return null;
+}
+
+function parseMarkdownTable(sectionContent) {
+  const lines = sectionContent.split(/\r?\n/);
+  const tableLines = lines.filter((line) => line.trim().startsWith('|'));
+  if (tableLines.length < 2) return null;
+
+  const split = (line) => line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((cell) => cell.trim());
+  const headers = split(tableLines[0]);
+  const rows = tableLines.slice(2).map(split).filter((row) => row.some((cell) => cell.length > 0));
+  return { headers, rows };
+}
+
+function headerIndex(headers, aliases) {
+  const normalized = headers.map((header) => stripInlineMarkdown(header).toLowerCase());
+  for (const alias of aliases) {
+    const index = normalized.indexOf(alias.toLowerCase());
+    if (index >= 0) return index;
+  }
+  return -1;
+}
+
+function inferBatchIdFromManifest(manifestText, fallback) {
+  const match = manifestText?.match(/\*\*Batch ID:\*\*\s*`([^`]+)`/i);
+  return match?.[1] || fallback;
+}
+
+function inferContentDomain(batchId, phase) {
+  const id = batchId.toUpperCase();
+  if (id.startsWith('CH_GENERIC_')) return 'generic';
+  if (id.startsWith('CH_FAMILY_SOCIAL_')) return 'family_social';
+  if (id.startsWith('CH_IDENTITY_WORLD_')) return 'identity_world';
+  if (id.startsWith('CH_EAST_BLUE_')) return 'east_blue';
+  if (id.startsWith('CH_WEST_BLUE_')) return 'west_blue';
+  if (id.startsWith('CH_NORTH_BLUE_')) return 'north_blue';
+  if (id.startsWith('CH_SOUTH_BLUE_')) return 'south_blue';
+
+  const withoutSerial = batchId.toLowerCase().replace(/_\d+$/, '');
+  const withoutPhase = withoutSerial.replace(/^(ch|childhood|active|origin|origins|system)_/, '');
+  return withoutPhase || phase;
+}
+
+function rootRegistryFromManifest(manifestText) {
+  const section = sectionByHeading(manifestText, (heading) => {
+    const normalized = heading.toUpperCase().replaceAll('_', ' ');
+    return normalized === 'ROOT REGISTRY' || normalized === 'ROOT REGISTER';
+  });
+  if (!section) return null;
+
+  const table = parseMarkdownTable(section.content);
+  if (!table) return null;
+
+  const rootIndex = headerIndex(table.headers, ['Root ID', 'Root']);
+  const conceptIndex = headerIndex(table.headers, ['conceptKey']);
+  const ageIndex = headerIndex(table.headers, ['Âge', "Tranche d’âge", "Tranche d'âge", 'Age']);
+  const contextIndex = headerIndex(table.headers, ['Contexte principal', 'Primary context']);
+  if ([rootIndex, conceptIndex, ageIndex, contextIndex].some((index) => index < 0)) return null;
+
+  return table.rows.map((row) => ({
+    rootId: stripInlineMarkdown(row[rootIndex]),
+    conceptKey: stripInlineMarkdown(row[conceptIndex]),
+    ageBand: stripInlineMarkdown(row[ageIndex]),
+    primaryContext: stripInlineMarkdown(row[contextIndex]),
+  }));
+}
+
+function parseSignatureArcs(manifestText) {
+  const section = sectionByHeading(manifestText, (heading) => heading.toUpperCase() === 'SIGNATURE_IMMEDIATE_ARCS');
+  if (!section) return [];
+
+  const rootMatches = [...section.content.matchAll(/\*\*Root ID:\*\*\s*`([^`]+)`/gi)];
+  return rootMatches.map((match, index) => {
+    const blockStart = match.index;
+    const blockEnd = index + 1 < rootMatches.length ? rootMatches[index + 1].index : section.content.length;
+    const block = section.content.slice(blockStart, blockEnd);
+    const arcKey = block.match(/\*\*arcKey:\*\*\s*`([^`]+)`/i)?.[1];
+    const depth = block.match(/\*\*(?:Maximum reachable Immediate depth|Profondeur Immediate maximale atteignable):\*\*\s*\*\*(\d+)\*\*/i)?.[1];
+    const premise = block.match(/\*\*(?:Premise|Prémisse):\*\*\s*(.+)/i)?.[1]?.trim();
+    return { rootId: match[1], arcKey, depth: depth ? Number(depth) : null, premise };
+  });
+}
+
+function parseSecondaryArcs(manifestText) {
+  const section = sectionByHeading(manifestText, (heading) => heading.toUpperCase() === 'SECONDARY_IMMEDIATE_ARCS');
+  if (!section) return [];
+
+  const result = [];
+  for (const rawLine of section.content.split(/\r?\n/)) {
+    if (!rawLine.trim().startsWith('-')) continue;
+    const line = stripInlineMarkdown(rawLine);
+    const root = line.match(/^-\s*(?:Root ID:\s*)?([^\s]+)\s+—/i)?.[1];
+    const arcKey = line.match(/arcKey:\s*([^\s]+)\s+—/i)?.[1];
+    const depth = line.match(/depth:?\s*(\d+)/i)?.[1];
+    const premise = line.match(/depth:?\s*\d+\s+—\s*(.+)$/i)?.[1]?.trim();
+    if (root && arcKey && depth) result.push({ rootId: root, arcKey, depth: Number(depth), premise });
+  }
+  return result;
+}
+
+function lifetimeBlocks(manifestText) {
+  const section = sectionByHeading(manifestText, (heading) => heading.toUpperCase() === 'LIFETIME_THREADS');
+  if (!section) return [];
+
+  const subheads = [...section.content.matchAll(/^###\s+`([^`]+)`\s+—\s+`([^`]+)`.*$/gm)];
+  if (subheads.length > 0) {
+    return subheads.map((match, index) => ({
+      seedRootId: match[1],
+      threadKey: match[2],
+      content: section.content.slice(match.index + match[0].length, index + 1 < subheads.length ? subheads[index + 1].index : section.content.length),
+    }));
+  }
+
+  const seedRootId = section.content.match(/\*\*Seed root ID:\*\*\s*`([^`]+)`/i)?.[1];
+  const threadKey = section.content.match(/\*\*threadKey:\*\*\s*`([^`]+)`/i)?.[1];
+  return seedRootId && threadKey ? [{ seedRootId, threadKey, content: section.content }] : [];
+}
+
+function lifetimeField(block, labels) {
+  for (const rawLine of block.split(/\r?\n/)) {
+    if (!rawLine.trim().startsWith('-')) continue;
+    const line = stripInlineMarkdown(rawLine).replace(/^\-\s*/, '');
+    for (const label of labels) {
+      const prefix = `${label}:`;
+      if (line.toLowerCase().startsWith(prefix.toLowerCase())) return line.slice(prefix.length).trim();
+    }
+  }
+  return null;
+}
+
+function parseLifetimeThreads(manifestText) {
+  return lifetimeBlocks(manifestText).map((block) => {
+    const anchor = lifetimeField(block.content, ['Ancre durable', 'Ancre / NPC récurrent', 'Recurring NPC / anchor']) || '—';
+    const depthText = lifetimeField(block.content, ['Longest reachable Scheduled depth']) || '';
+    const totalText = lifetimeField(block.content, ['Total distinct reachable Scheduled EventDefinitions', 'Total reachable Scheduled nodes']) || '';
+    const divergencesText = lifetimeField(block.content, ['Vrais points de divergence long-terme', 'Meaningful long-term divergence count']) || '';
+    const topology = lifetimeField(block.content, ['Topologie', 'Topology']) || 'branching';
+    const span = lifetimeField(block.content, ['Span temporel visé', 'Span visé', 'Intended span']) || '—';
+    return {
+      seedRootId: block.seedRootId,
+      threadKey: block.threadKey,
+      anchor,
+      depth: Number(depthText.match(/\d+/)?.[0] || 0),
+      totalNodes: Number(totalText.match(/\d+/)?.[0] || 0),
+      divergences: Number(divergencesText.match(/\d+/)?.[0] || 0),
+      topology: topology.replace(/[.;]$/, ''),
+      span,
+    };
+  });
+}
+
+function indexTableSection(text, headingPrefix) {
+  return sectionByHeading(text, (heading) => heading.startsWith(headingPrefix));
+}
+
+function appendIndexRows(text, headingPrefix, rows, keyColumnIndex, conflicts) {
+  if (rows.length === 0) return { text, added: 0, skipped: 0 };
+  const section = indexTableSection(text, headingPrefix);
+  if (!section) {
+    conflicts.push(`EVENT_CONCEPT_INDEX.md missing section "${headingPrefix}".`);
+    return { text, added: 0, skipped: 0 };
+  }
+
+  const lines = section.content.split(/\r?\n/);
+  const firstTable = lines.findIndex((line) => line.trim().startsWith('|'));
+  if (firstTable < 0 || firstTable + 1 >= lines.length) {
+    conflicts.push(`EVENT_CONCEPT_INDEX.md section "${headingPrefix}" has no markdown table.`);
+    return { text, added: 0, skipped: 0 };
+  }
+
+  let lastTable = firstTable + 1;
+  while (lastTable + 1 < lines.length && lines[lastTable + 1].trim().startsWith('|')) lastTable += 1;
+
+  const existingRows = lines.slice(firstTable + 2, lastTable + 1)
+    .filter((line) => line.trim().startsWith('|'))
+    .map((line) => line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((cell) => stripInlineMarkdown(cell)));
+
+  let added = 0;
+  let skipped = 0;
+  const newLines = [];
+
+  for (const row of rows) {
+    const clean = row.map((cell) => escapeMarkdownCell(cell));
+    const key = stripInlineMarkdown(clean[keyColumnIndex]);
+    const existing = existingRows.find((candidate) => stripInlineMarkdown(candidate[keyColumnIndex]) === key);
+    if (existing) {
+      const same = existing.length === clean.length && existing.every((cell, index) => stripInlineMarkdown(cell) === stripInlineMarkdown(clean[index]));
+      if (same) skipped += 1;
+      else conflicts.push(`EVENT_CONCEPT_INDEX.md already contains "${key}" with different metadata in section "${headingPrefix}".`);
+      continue;
+    }
+    existingRows.push(clean);
+    newLines.push(`| ${clean.join(' | ')} |`);
+    added += 1;
+  }
+
+  if (newLines.length > 0) {
+    lines.splice(lastTable + 1, 0, ...newLines);
+    const noneIndex = lines.findIndex((line) => /_None accepted yet\._|_Aucun.*accept|_No production batch is currently accepted/i.test(line.trim()));
+    if (noneIndex >= 0) lines.splice(noneIndex, 1);
+  }
+
+  const newSectionContent = lines.join('\n');
+  return {
+    text: text.slice(0, section.start) + newSectionContent + text.slice(section.end),
+    added,
+    skipped,
+  };
+}
+
+function removeFromRegenerationScope(text, batchIds) {
+  const section = sectionByHeading(text, (heading) => heading.toUpperCase() === 'REGENERATION SCOPE');
+  if (!section) return text;
+  const lines = section.content.split(/\r?\n/);
+  const wanted = new Set(batchIds);
+  const filtered = lines.filter((line) => {
+    const match = line.match(/^\s*-\s*`([^`]+)`\s*$/);
+    return !(match && wanted.has(match[1]));
+  });
+  const remainingBatchBullets = filtered.filter((line) => /^\s*-\s*`[^`]+`\s*$/.test(line));
+  if (remainingBatchBullets.length === 0 && !filtered.some((line) => /_No batches currently scheduled for regeneration\._/.test(line))) {
+    const insertAt = filtered.findIndex((line) => line.trim().startsWith('Do not copy'));
+    filtered.splice(insertAt >= 0 ? insertAt : filtered.length, 0, '_No batches currently scheduled for regeneration._', '');
+  }
+  return text.slice(0, section.start) + filtered.join('\n') + text.slice(section.end);
+}
+
 const targetFr = parseJsonFile(targetFrPath, targetFrPath).value;
 if (!targetFr || Array.isArray(targetFr) || typeof targetFr !== 'object') {
   fail(`Target localization must be a flat JSON object: ${targetFrPath}`);
@@ -290,7 +552,9 @@ for (const filePath of walkJsonFiles(eventsRoot)) {
 
 const batches = inputs.map((input) => {
   const root = normalizeBatchRoot(input);
-  const batchId = basename(root);
+  const manifestPath = join(root, 'MANIFEST.md');
+  const manifestText = existsSync(manifestPath) ? readFileSync(manifestPath, 'utf8') : null;
+  const batchId = inferBatchIdFromManifest(manifestText, basename(root));
   const phase = forcedPhase || inferPhase(batchId);
   if (!phase) {
     fail(
@@ -319,7 +583,8 @@ const batches = inputs.map((input) => {
     phase,
     eventFiles,
     localization,
-    manifestPath: join(root, 'MANIFEST.md'),
+    manifestPath,
+    manifestText,
     proposalsPath: join(root, 'PROPOSED_DEFINITIONS.md'),
   };
 });
@@ -472,6 +737,113 @@ if (!skipDocs) {
   }
 }
 
+
+let plannedIndexText = null;
+let indexRowsAdded = 0;
+let indexRowsSkipped = 0;
+
+if (!skipIndex) {
+  plannedIndexText = readFileSync(conceptIndexPath, 'utf8');
+
+  const rootRows = [];
+  const signatureRows = [];
+  const secondaryRows = [];
+  const lifetimeRows = [];
+
+  for (const batch of batches) {
+    if (!batch.manifestText) {
+      conflicts.push(`${batch.batchId}: MANIFEST.md is required for automatic EVENT_CONCEPT_INDEX.md update. Use --skip-index to bypass.`);
+      continue;
+    }
+
+    const rootRegistry = rootRegistryFromManifest(batch.manifestText);
+    if (!rootRegistry || rootRegistry.length === 0) {
+      conflicts.push(`${batch.batchId}: could not parse ROOT_REGISTRY / ROOT REGISTER from MANIFEST.md.`);
+      continue;
+    }
+
+    const batchEvents = new Map();
+    for (const eventPath of batch.eventFiles) {
+      const event = parseJsonFile(eventPath).value;
+      if (event?.id) batchEvents.set(event.id, event);
+    }
+
+    const domain = inferContentDomain(batch.batchId, batch.phase);
+    for (const root of rootRegistry) {
+      const event = batchEvents.get(root.rootId);
+      if (!event) {
+        conflicts.push(`${batch.batchId}: root "${root.rootId}" from MANIFEST is missing from events/.`);
+        continue;
+      }
+      const premise = batch.localization[event.textKey] || batch.localization[`event.${root.rootId}.text`] || event.textKey;
+      rootRows.push([
+        batch.batchId,
+        `\`${root.rootId}\``,
+        `\`${root.conceptKey}\``,
+        root.ageBand,
+        domain,
+        root.primaryContext,
+        premise,
+      ]);
+    }
+
+    for (const arc of parseSignatureArcs(batch.manifestText)) {
+      if (!arc.arcKey || !arc.depth || !arc.premise) {
+        conflicts.push(`${batch.batchId}: incomplete Signature Immediate Arc metadata for root "${arc.rootId}".`);
+        continue;
+      }
+      signatureRows.push([batch.batchId, `\`${arc.rootId}\``, `\`${arc.arcKey}\``, String(arc.depth), arc.premise]);
+    }
+
+    for (const arc of parseSecondaryArcs(batch.manifestText)) {
+      secondaryRows.push([batch.batchId, `\`${arc.rootId}\``, `\`${arc.arcKey}\``, String(arc.depth), arc.premise || '—']);
+    }
+
+    for (const thread of parseLifetimeThreads(batch.manifestText)) {
+      if (!thread.depth || !thread.totalNodes || !thread.divergences) {
+        conflicts.push(`${batch.batchId}: incomplete Lifetime Thread metrics for seed "${thread.seedRootId}".`);
+        continue;
+      }
+      const rootEvent = batchEvents.get(thread.seedRootId);
+      const premise = rootEvent
+        ? (batch.localization[rootEvent.textKey] || batch.localization[`event.${thread.seedRootId}.text`] || rootEvent.textKey)
+        : '—';
+      lifetimeRows.push([
+        batch.batchId,
+        `\`${thread.seedRootId}\``,
+        `\`${thread.threadKey}\``,
+        thread.anchor,
+        String(thread.depth),
+        String(thread.totalNodes),
+        String(thread.divergences),
+        `\`${thread.topology}\``,
+        thread.span,
+        premise,
+      ]);
+    }
+  }
+
+  for (const [heading, rows, keyColumn] of [
+    ['Accepted root concepts', rootRows, 1],
+    ['Accepted Signature Immediate Arcs', signatureRows, 1],
+    ['Accepted Secondary Immediate Arcs', secondaryRows, 1],
+    ['Accepted Lifetime Threads', lifetimeRows, 1],
+  ]) {
+    const result = appendIndexRows(plannedIndexText, heading, rows, keyColumn, conflicts);
+    plannedIndexText = result.text;
+    indexRowsAdded += result.added;
+    indexRowsSkipped += result.skipped;
+  }
+
+  plannedIndexText = removeFromRegenerationScope(plannedIndexText, batches.map((batch) => batch.batchId));
+  if (indexRowsAdded > 0) {
+    plannedIndexText = plannedIndexText.replace(
+      '> **Status: regeneration baseline after Lifetime Thread authoring-contract revision.**',
+      '> **Status: active accepted-content ledger under the current Lifetime Thread authoring contract.**',
+    );
+  }
+}
+
 if (conflicts.length > 0) {
   console.error('\nINTEGRATION BLOCKED — conflicts found:\n');
   conflicts.forEach((conflict, index) => {
@@ -497,6 +869,8 @@ console.log(`Localization keys to add:    ${localizationAdded}`);
 console.log(`Identical loc keys skipped:  ${localizationIdenticalSkipped}`);
 console.log(`Batch docs to copy:          ${plannedDocs.length}`);
 console.log(`Identical docs skipped:      ${identicalDocsSkipped}`);
+console.log(`Concept Index rows to add:   ${indexRowsAdded}`);
+console.log(`Concept Index rows skipped:  ${indexRowsSkipped}`);
 console.log('Conflicts:                   0');
 
 if (!dryRun) {
@@ -512,6 +886,10 @@ if (!dryRun) {
 
   if (localizationAdded > 0) {
     atomicWrite(targetFrPath, `${JSON.stringify(mergedFr, null, 2)}\n`);
+  }
+
+  if (!skipIndex && plannedIndexText !== null) {
+    atomicWrite(conceptIndexPath, plannedIndexText.endsWith('\n') ? plannedIndexText : `${plannedIndexText}\n`);
   }
 
   console.log('\nINTEGRATION COMPLETE');

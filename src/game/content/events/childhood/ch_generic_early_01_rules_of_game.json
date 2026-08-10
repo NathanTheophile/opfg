@@ -1,0 +1,116 @@
+{
+  "id": "ch_generic_early_01_rules_of_game",
+  "titleKey": "event.ch_generic_early_01_rules_of_game.title",
+  "textKey": "event.ch_generic_early_01_rules_of_game.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "mediate",
+      "textKey": "event.ch_generic_early_01_rules_of_game.choice.mediate.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "everyone_shouts",
+            "textKey": "event.ch_generic_early_01_rules_of_game.choice.mediate.outcome.everyone_shouts.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "no_one_listens",
+            "textKey": "event.ch_generic_early_01_rules_of_game.choice.mediate.outcome.no_one_listens.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_rules_of_game_i1_cheating_accusation"
+              }
+            ]
+          },
+          "success": {
+            "id": "voices_separate",
+            "textKey": "event.ch_generic_early_01_rules_of_game.choice.mediate.outcome.voices_separate.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_rules_of_game_i1_cheating_accusation"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "group_listens",
+            "textKey": "event.ch_generic_early_01_rules_of_game.choice.mediate.outcome.group_listens.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_rules_of_game_i1_cheating_accusation"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pick_side",
+      "textKey": "event.ch_generic_early_01_rules_of_game.choice.pick_side.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "side_chosen",
+          "textKey": "event.ch_generic_early_01_rules_of_game.choice.pick_side.outcome.side_chosen.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_rules_of_game_i1_cheating_accusation"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "walk_away",
+      "textKey": "event.ch_generic_early_01_rules_of_game.choice.walk_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "left_game",
+          "textKey": "event.ch_generic_early_01_rules_of_game.choice.walk_away.outcome.left_game.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "id": "ch_generic_early_01_night_scratching",
+  "titleKey": "event.ch_generic_early_01_night_scratching.title",
+  "textKey": "event.ch_generic_early_01_night_scratching.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "follow_sound",
+      "textKey": "event.ch_generic_early_01_night_scratching.choice.follow_sound.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "panic_bump",
+            "textKey": "event.ch_generic_early_01_night_scratching.choice.follow_sound.outcome.panic_bump.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "lose_nerve",
+            "textKey": "event.ch_generic_early_01_night_scratching.choice.follow_sound.outcome.lose_nerve.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "trace_sound",
+            "textKey": "event.ch_generic_early_01_night_scratching.choice.follow_sound.outcome.trace_sound.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_night_scratching_i1_behind_cupboard"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "spot_gap",
+            "textKey": "event.ch_generic_early_01_night_scratching.choice.follow_sound.outcome.spot_gap.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_night_scratching_i1_behind_cupboard"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_adult",
+      "textKey": "event.ch_generic_early_01_night_scratching.choice.call_adult.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "help_called",
+          "textKey": "event.ch_generic_early_01_night_scratching.choice.call_adult.outcome.help_called.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "answer_noise",
+      "textKey": "event.ch_generic_early_01_night_scratching.choice.answer_noise.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "noise_answers",
+          "textKey": "event.ch_generic_early_01_night_scratching.choice.answer_noise.outcome.noise_answers.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_night_scratching_i1_behind_cupboard"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hide",
+      "textKey": "event.ch_generic_early_01_night_scratching.choice.hide.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hide_until_morning",
+          "textKey": "event.ch_generic_early_01_night_scratching.choice.hide.outcome.hide_until_morning.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 36
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 95
+      }
+    ]
+  }
+}

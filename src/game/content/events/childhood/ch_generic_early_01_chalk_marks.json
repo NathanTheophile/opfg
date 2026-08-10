@@ -1,0 +1,96 @@
+{
+  "id": "ch_generic_early_01_chalk_marks",
+  "titleKey": "event.ch_generic_early_01_chalk_marks.title",
+  "textKey": "event.ch_generic_early_01_chalk_marks.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "follow_sequence",
+      "textKey": "event.ch_generic_early_01_chalk_marks.choice.follow_sequence.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sequence_followed",
+          "textKey": "event.ch_generic_early_01_chalk_marks.choice.follow_sequence.outcome.sequence_followed.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_chalk_marks_scheduled_marks_return",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "copy_mark",
+      "textKey": "event.ch_generic_early_01_chalk_marks.choice.copy_mark.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mark_copied",
+          "textKey": "event.ch_generic_early_01_chalk_marks.choice.copy_mark.outcome.mark_copied.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_chalk_marks_scheduled_marks_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "erase_one",
+      "textKey": "event.ch_generic_early_01_chalk_marks.choice.erase_one.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mark_erased",
+          "textKey": "event.ch_generic_early_01_chalk_marks.choice.erase_one.outcome.mark_erased.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_chalk_marks_scheduled_marks_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_mystery",
+      "textKey": "event.ch_generic_early_01_chalk_marks.choice.leave_mystery.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mystery_left",
+          "textKey": "event.ch_generic_early_01_chalk_marks.choice.leave_mystery.outcome.mystery_left.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  }
+}

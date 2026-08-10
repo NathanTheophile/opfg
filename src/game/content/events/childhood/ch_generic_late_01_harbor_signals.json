@@ -1,0 +1,134 @@
+{
+  "id": "ch_generic_late_01_harbor_signals",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_harbor_signals.title",
+  "textKey": "event.ch_generic_late_01_harbor_signals.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_pattern",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "sig_cf",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_harbor_signals_i1_signal_post"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_harbor_signals.choice.read_pattern.outcome.sig_cf.text"
+          },
+          "failure": {
+            "id": "sig_f",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_harbor_signals_i1_signal_post"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_harbor_signals.choice.read_pattern.outcome.sig_f.text"
+          },
+          "success": {
+            "id": "sig_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_harbor_signals_i1_signal_post"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_harbor_signals.choice.read_pattern.outcome.sig_s.text"
+          },
+          "criticalSuccess": {
+            "id": "sig_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_harbor_signals_i1_signal_post"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_harbor_signals.choice.read_pattern.outcome.sig_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_harbor_signals.choice.read_pattern.text"
+    },
+    {
+      "id": "shout_warning",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shout",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_harbor_signals_i1_signal_post"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_harbor_signals.choice.shout_warning.outcome.shout.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_harbor_signals.choice.shout_warning.text"
+    },
+    {
+      "id": "fetch_harbor_worker",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "worker",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_harbor_signals_i1_signal_post"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_harbor_signals.choice.fetch_harbor_worker.outcome.worker.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_harbor_signals.choice.fetch_harbor_worker.text"
+    }
+  ]
+}

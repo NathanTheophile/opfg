@@ -1,0 +1,125 @@
+{
+  "id": "ch_generic_early_01_runaway_ball",
+  "titleKey": "event.ch_generic_early_01_runaway_ball.title",
+  "textKey": "event.ch_generic_early_01_runaway_ball.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "sprint_after",
+      "textKey": "event.ch_generic_early_01_runaway_ball.choice.sprint_after.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hard_fall",
+            "textKey": "event.ch_generic_early_01_runaway_ball.choice.sprint_after.outcome.hard_fall.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "lose_ground",
+            "textKey": "event.ch_generic_early_01_runaway_ball.choice.sprint_after.outcome.lose_ground.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_runaway_ball_i1_under_cart"
+              }
+            ]
+          },
+          "success": {
+            "id": "keep_up",
+            "textKey": "event.ch_generic_early_01_runaway_ball.choice.sprint_after.outcome.keep_up.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_runaway_ball_i1_under_cart"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "almost_catch",
+            "textKey": "event.ch_generic_early_01_runaway_ball.choice.sprint_after.outcome.almost_catch.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_runaway_ball_i1_under_cart"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "shout_warning",
+      "textKey": "event.ch_generic_early_01_runaway_ball.choice.shout_warning.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "people_notice",
+          "textKey": "event.ch_generic_early_01_runaway_ball.choice.shout_warning.outcome.people_notice.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_runaway_ball_i1_under_cart"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_it_go",
+      "textKey": "event.ch_generic_early_01_runaway_ball.choice.let_it_go.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ball_lost",
+          "textKey": "event.ch_generic_early_01_runaway_ball.choice.let_it_go.outcome.ball_lost.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 95
+      }
+    ]
+  }
+}

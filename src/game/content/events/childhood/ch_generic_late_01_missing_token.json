@@ -1,0 +1,133 @@
+{
+  "id": "ch_generic_late_01_missing_token",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_missing_token.title",
+  "textKey": "event.ch_generic_late_01_missing_token.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "rummage_fast",
+      "resolution": {
+        "type": "dice",
+        "statId": "luck",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "token_cf",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_missing_token.choice.rummage_fast.outcome.token_cf.text"
+          },
+          "failure": {
+            "id": "token_f",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_missing_token.choice.rummage_fast.outcome.token_f.text"
+          },
+          "success": {
+            "id": "token_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_missing_token.choice.rummage_fast.outcome.token_s.text"
+          },
+          "criticalSuccess": {
+            "id": "token_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 2
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 10
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_missing_token.choice.rummage_fast.outcome.token_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_missing_token.choice.rummage_fast.text"
+    },
+    {
+      "id": "sort_pile",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sort",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_missing_token.choice.sort_pile.outcome.sort.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_missing_token.choice.sort_pile.text"
+    },
+    {
+      "id": "admit_now",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "admit",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_missing_token.choice.admit_now.outcome.admit.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_missing_token.choice.admit_now.text"
+    }
+  ]
+}

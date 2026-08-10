@@ -1,0 +1,68 @@
+{
+  "id": "ch_generic_early_01_three_breaths_s03_who_owns_method",
+  "titleKey": "event.ch_generic_early_01_three_breaths_s03_who_owns_method.title",
+  "textKey": "event.ch_generic_early_01_three_breaths_s03_who_owns_method.text",
+  "kind": "scheduled",
+  "choices": [
+    {
+      "id": "share_openly",
+      "textKey": "event.ch_generic_early_01_three_breaths_s03_who_owns_method.choice.share_openly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "branch_shared",
+          "textKey": "event.ch_generic_early_01_three_breaths_s03_who_owns_method.choice.share_openly.outcome.branch_shared.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s04a_shared_words",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_private",
+      "textKey": "event.ch_generic_early_01_three_breaths_s03_who_owns_method.choice.keep_private.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "branch_private",
+          "textKey": "event.ch_generic_early_01_three_breaths_s03_who_owns_method.choice.keep_private.outcome.branch_private.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s04b_private_test",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "abandon_method",
+      "textKey": "event.ch_generic_early_01_three_breaths_s03_who_owns_method.choice.abandon_method.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "thread_early_end",
+          "textKey": "event.ch_generic_early_01_three_breaths_s03_who_owns_method.choice.abandon_method.outcome.thread_early_end.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

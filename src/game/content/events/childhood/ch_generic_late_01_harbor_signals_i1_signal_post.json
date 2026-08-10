@@ -1,0 +1,95 @@
+{
+  "id": "ch_generic_late_01_harbor_signals_i1_signal_post",
+  "kind": "immediate",
+  "titleKey": "event.ch_generic_late_01_harbor_signals_i1_signal_post.title",
+  "textKey": "event.ch_generic_late_01_harbor_signals_i1_signal_post.text",
+  "choices": [
+    {
+      "id": "reset_board",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "board_cf",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_harbor_signals_i2_crossed_orders"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_harbor_signals_i1_signal_post.choice.reset_board.outcome.board_cf.text"
+          },
+          "failure": {
+            "id": "board_f",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_harbor_signals_i2_crossed_orders"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_harbor_signals_i1_signal_post.choice.reset_board.outcome.board_f.text"
+          },
+          "success": {
+            "id": "board_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_harbor_signals_i2_crossed_orders"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_harbor_signals_i1_signal_post.choice.reset_board.outcome.board_s.text"
+          },
+          "criticalSuccess": {
+            "id": "board_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_harbor_signals_i2_crossed_orders"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_harbor_signals_i1_signal_post.choice.reset_board.outcome.board_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_harbor_signals_i1_signal_post.choice.reset_board.text"
+    },
+    {
+      "id": "relay_by_voice",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "relay",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_harbor_signals_i2_crossed_orders"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_harbor_signals_i1_signal_post.choice.relay_by_voice.outcome.relay.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_harbor_signals_i1_signal_post.choice.relay_by_voice.text"
+    }
+  ]
+}

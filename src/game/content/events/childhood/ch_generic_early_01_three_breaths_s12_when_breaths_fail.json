@@ -1,0 +1,126 @@
+{
+  "id": "ch_generic_early_01_three_breaths_s12_when_breaths_fail",
+  "titleKey": "event.ch_generic_early_01_three_breaths_s12_when_breaths_fail.title",
+  "textKey": "event.ch_generic_early_01_three_breaths_s12_when_breaths_fail.text",
+  "kind": "scheduled",
+  "choices": [
+    {
+      "id": "stay_with_feeling",
+      "textKey": "event.ch_generic_early_01_three_breaths_s12_when_breaths_fail.choice.stay_with_feeling.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "overwhelmed",
+            "textKey": "event.ch_generic_early_01_three_breaths_s12_when_breaths_fail.choice.stay_with_feeling.outcome.overwhelmed.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_early_01_three_breaths_s13_what_remains",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "need_support",
+            "textKey": "event.ch_generic_early_01_three_breaths_s12_when_breaths_fail.choice.stay_with_feeling.outcome.need_support.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_early_01_three_breaths_s13_what_remains",
+                "delayMonths": 18
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "fear_allowed",
+            "textKey": "event.ch_generic_early_01_three_breaths_s12_when_breaths_fail.choice.stay_with_feeling.outcome.fear_allowed.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_early_01_three_breaths_s13_what_remains",
+                "delayMonths": 18
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "calm_without_solution",
+            "textKey": "event.ch_generic_early_01_three_breaths_s12_when_breaths_fail.choice.stay_with_feeling.outcome.calm_without_solution.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_early_01_three_breaths_s13_what_remains",
+                "delayMonths": 18
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "change_method",
+      "textKey": "event.ch_generic_early_01_three_breaths_s12_when_breaths_fail.choice.change_method.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "method_changed",
+          "textKey": "event.ch_generic_early_01_three_breaths_s12_when_breaths_fail.choice.change_method.outcome.method_changed.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s13_what_remains",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_for_help",
+      "textKey": "event.ch_generic_early_01_three_breaths_s12_when_breaths_fail.choice.ask_for_help.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "help_requested",
+          "textKey": "event.ch_generic_early_01_three_breaths_s12_when_breaths_fail.choice.ask_for_help.outcome.help_requested.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s13_what_remains",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

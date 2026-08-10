@@ -1,0 +1,73 @@
+{
+  "id": "ch_generic_early_01_spilled_bucket",
+  "titleKey": "event.ch_generic_early_01_spilled_bucket.title",
+  "textKey": "event.ch_generic_early_01_spilled_bucket.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "clean_now",
+      "textKey": "event.ch_generic_early_01_spilled_bucket.choice.clean_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cleaned",
+          "textKey": "event.ch_generic_early_01_spilled_bucket.choice.clean_now.outcome.cleaned.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "warn_people",
+      "textKey": "event.ch_generic_early_01_spilled_bucket.choice.warn_people.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "people_warned",
+          "textKey": "event.ch_generic_early_01_spilled_bucket.choice.warn_people.outcome.people_warned.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pretend_not_you",
+      "textKey": "event.ch_generic_early_01_spilled_bucket.choice.pretend_not_you.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "walked_away",
+          "textKey": "event.ch_generic_early_01_spilled_bucket.choice.pretend_not_you.outcome.walked_away.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 95
+      }
+    ]
+  }
+}

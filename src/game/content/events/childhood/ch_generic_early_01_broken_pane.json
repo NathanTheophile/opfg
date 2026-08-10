@@ -1,0 +1,100 @@
+{
+  "id": "ch_generic_early_01_broken_pane",
+  "titleKey": "event.ch_generic_early_01_broken_pane.title",
+  "textKey": "event.ch_generic_early_01_broken_pane.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "own_mistake",
+      "textKey": "event.ch_generic_early_01_broken_pane.choice.own_mistake.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mistake_owned",
+          "textKey": "event.ch_generic_early_01_broken_pane.choice.own_mistake.outcome.mistake_owned.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_broken_pane_scheduled_repair_day",
+              "delayMonths": 6
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "improvise_fix",
+      "textKey": "event.ch_generic_early_01_broken_pane.choice.improvise_fix.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "temporary_fix",
+          "textKey": "event.ch_generic_early_01_broken_pane.choice.improvise_fix.outcome.temporary_fix.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_broken_pane_scheduled_repair_day",
+              "delayMonths": 6
+            },
+            {
+              "type": "addTrait",
+              "traitId": "resourceful"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stay_silent",
+      "textKey": "event.ch_generic_early_01_broken_pane.choice.stay_silent.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "silence_kept",
+          "textKey": "event.ch_generic_early_01_broken_pane.choice.stay_silent.outcome.silence_kept.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "blame_accident",
+      "textKey": "event.ch_generic_early_01_broken_pane.choice.blame_accident.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accident_claimed",
+          "textKey": "event.ch_generic_early_01_broken_pane.choice.blame_accident.outcome.accident_claimed.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  }
+}

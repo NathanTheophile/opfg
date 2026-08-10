@@ -1,0 +1,96 @@
+{
+  "id": "ch_generic_late_01_grass_fire_i1_scrape_line",
+  "kind": "immediate",
+  "titleKey": "event.ch_generic_late_01_grass_fire_i1_scrape_line.title",
+  "textKey": "event.ch_generic_late_01_grass_fire_i1_scrape_line.text",
+  "choices": [
+    {
+      "id": "scrape_fast",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "scrape_cf",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_grass_fire_i2_wind_shift"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_grass_fire_i1_scrape_line.choice.scrape_fast.outcome.scrape_cf.text"
+          },
+          "failure": {
+            "id": "scrape_f",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_grass_fire_i2_wind_shift"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_grass_fire_i1_scrape_line.choice.scrape_fast.outcome.scrape_f.text"
+          },
+          "success": {
+            "id": "scrape_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_grass_fire_i2_wind_shift"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_grass_fire_i1_scrape_line.choice.scrape_fast.outcome.scrape_s.text"
+          },
+          "criticalSuccess": {
+            "id": "scrape_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_grass_fire_i2_wind_shift"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_grass_fire_i1_scrape_line.choice.scrape_fast.outcome.scrape_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_grass_fire_i1_scrape_line.choice.scrape_fast.text"
+    },
+    {
+      "id": "wet_border",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wet",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_grass_fire_i2_wind_shift"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_grass_fire_i1_scrape_line.choice.wet_border.outcome.wet.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_grass_fire_i1_scrape_line.choice.wet_border.text"
+    }
+  ]
+}

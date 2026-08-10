@@ -130,6 +130,21 @@ For V1, special or blocked Choices should normally remain **visible but disabled
 
 Use hidden Choices only when secrecy itself is narratively important.
 
+### 3.6 Choice resolvability invariant
+
+An Event must never be reachable or resolvable in a state where **all of its Choices are unavailable**.
+
+For every Normal, Immediate, Scheduled and Critical Event, authors must guarantee one of the following:
+
+1. at least one Choice has no `availableIf` and therefore remains available whenever the Event is resolved; or
+2. the set of authored `availableIf` conditions is exhaustive across every state allowed by the Event's own eligibility/trigger/reach conditions.
+
+Conditionally locked special Choices are encouraged where useful, but they must not eliminate the last valid action.
+
+A large Event pool does not mitigate this defect: once a Normal Event is selected, or an Immediate/Scheduled/Critical Event is reached, that Event itself must remain resolvable.
+
+During review, explicitly inspect conditional Choice partitions such as Trait/opposite-Trait, Race, Item, History, career, NPC state, ship state and geography. If exhaustiveness cannot be established confidently, provide an unconditional fallback Choice.
+
 ## 4. DiceCheck rules
 
 ### 4.1 Batch-level target
@@ -730,6 +745,7 @@ A batch is accepted only after:
 10. verification that at least one qualifying divergence is persistent rather than cosmetic: multi-chapter separation, materially different termination/transformation, persistent-state divergence, or delayed credible reconvergence;
 11. review of Lifetime Thread authored depth: exact depth 10 is valid but should not become the systematic production default; substantial threads should generally have a longest meaningful path in the 10–20 range, with 12–16 preferred when justified;
 12. review that graph-size and branching requirements were not satisfied through filler, unreachable nodes or shallow cosmetic forks.
+13. verification that every reachable Event remains Choice-resolvable: at least one unconditional Choice or an exhaustive set of `availableIf` branches in every reachable Event state.
 
 Compilation alone is not sufficient.
 

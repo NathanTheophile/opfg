@@ -1,0 +1,113 @@
+{
+  "id": "ch_generic_late_01_favor_s11",
+  "kind": "scheduled",
+  "titleKey": "event.ch_generic_late_01_favor_s11.title",
+  "textKey": "event.ch_generic_late_01_favor_s11.text",
+  "priority": 100,
+  "scheduledReach": "unrestricted",
+  "choices": [
+    {
+      "id": "help_under_strain",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "strain_cf",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_late_01_favor_s12_broken",
+                "delayMonths": 12
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_favor_s11.choice.help_under_strain.outcome.strain_cf.text"
+          },
+          "failure": {
+            "id": "strain_f",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_late_01_favor_s12_tired",
+                "delayMonths": 12
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_favor_s11.choice.help_under_strain.outcome.strain_f.text"
+          },
+          "success": {
+            "id": "strain_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_late_01_favor_s12_steady",
+                "delayMonths": 12
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_favor_s11.choice.help_under_strain.outcome.strain_s.text"
+          },
+          "criticalSuccess": {
+            "id": "strain_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_late_01_favor_s12_ripple",
+                "delayMonths": 12
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_favor_s11.choice.help_under_strain.outcome.strain_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_favor_s11.choice.help_under_strain.text"
+    },
+    {
+      "id": "say_no",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "strain_no",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_favor_s12_steady",
+              "delayMonths": 12
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_favor_s11.choice.say_no.outcome.strain_no.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_favor_s11.choice.say_no.text"
+    }
+  ]
+}

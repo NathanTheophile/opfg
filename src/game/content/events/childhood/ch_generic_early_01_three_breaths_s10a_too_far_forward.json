@@ -1,0 +1,78 @@
+{
+  "id": "ch_generic_early_01_three_breaths_s10a_too_far_forward",
+  "titleKey": "event.ch_generic_early_01_three_breaths_s10a_too_far_forward.title",
+  "textKey": "event.ch_generic_early_01_three_breaths_s10a_too_far_forward.text",
+  "kind": "scheduled",
+  "choices": [
+    {
+      "id": "admit_limit",
+      "textKey": "event.ch_generic_early_01_three_breaths_s10a_too_far_forward.choice.admit_limit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "limit_admitted",
+          "textKey": "event.ch_generic_early_01_three_breaths_s10a_too_far_forward.choice.admit_limit.outcome.limit_admitted.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s11_teach_or_keep",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "push_more",
+      "textKey": "event.ch_generic_early_01_three_breaths_s10a_too_far_forward.choice.push_more.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pushed_too_far",
+          "textKey": "event.ch_generic_early_01_three_breaths_s10a_too_far_forward.choice.push_more.outcome.pushed_too_far.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s11_teach_or_keep",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_opinion",
+      "textKey": "event.ch_generic_early_01_three_breaths_s10a_too_far_forward.choice.ask_opinion.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "outside_view",
+          "textKey": "event.ch_generic_early_01_three_breaths_s10a_too_far_forward.choice.ask_opinion.outcome.outside_view.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s11_teach_or_keep",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

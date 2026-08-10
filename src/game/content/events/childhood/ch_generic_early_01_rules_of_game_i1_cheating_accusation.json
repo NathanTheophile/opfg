@@ -1,0 +1,109 @@
+{
+  "id": "ch_generic_early_01_rules_of_game_i1_cheating_accusation",
+  "titleKey": "event.ch_generic_early_01_rules_of_game_i1_cheating_accusation.title",
+  "textKey": "event.ch_generic_early_01_rules_of_game_i1_cheating_accusation.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "replay_move",
+      "textKey": "event.ch_generic_early_01_rules_of_game_i1_cheating_accusation.choice.replay_move.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "move_replayed",
+          "textKey": "event.ch_generic_early_01_rules_of_game_i1_cheating_accusation.choice.replay_move.outcome.move_replayed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_rules_of_game_i2_someone_leaves"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "reconstruct",
+      "textKey": "event.ch_generic_early_01_rules_of_game_i1_cheating_accusation.choice.reconstruct.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "memory_mixed",
+            "textKey": "event.ch_generic_early_01_rules_of_game_i1_cheating_accusation.choice.reconstruct.outcome.memory_mixed.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "uncertain_memory",
+            "textKey": "event.ch_generic_early_01_rules_of_game_i1_cheating_accusation.choice.reconstruct.outcome.uncertain_memory.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_rules_of_game_i2_someone_leaves"
+              }
+            ]
+          },
+          "success": {
+            "id": "clear_memory",
+            "textKey": "event.ch_generic_early_01_rules_of_game_i1_cheating_accusation.choice.reconstruct.outcome.clear_memory.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_rules_of_game_i2_someone_leaves"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "spot_misunderstanding",
+            "textKey": "event.ch_generic_early_01_rules_of_game_i1_cheating_accusation.choice.reconstruct.outcome.spot_misunderstanding.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_rules_of_game_i2_someone_leaves"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "say_stop",
+      "textKey": "event.ch_generic_early_01_rules_of_game_i1_cheating_accusation.choice.say_stop.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "call_for_stop",
+          "textKey": "event.ch_generic_early_01_rules_of_game_i1_cheating_accusation.choice.say_stop.outcome.call_for_stop.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_rules_of_game_i2_someone_leaves"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

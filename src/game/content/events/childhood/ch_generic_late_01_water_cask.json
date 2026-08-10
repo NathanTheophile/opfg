@@ -1,0 +1,133 @@
+{
+  "id": "ch_generic_late_01_water_cask",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_water_cask.title",
+  "textKey": "event.ch_generic_late_01_water_cask.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "food"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "move_alone",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cask_cf",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_water_cask.choice.move_alone.outcome.cask_cf.text"
+          },
+          "failure": {
+            "id": "cask_f",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_water_cask.choice.move_alone.outcome.cask_f.text"
+          },
+          "success": {
+            "id": "cask_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_water_cask.choice.move_alone.outcome.cask_s.text"
+          },
+          "criticalSuccess": {
+            "id": "cask_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_water_cask.choice.move_alone.outcome.cask_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_water_cask.choice.move_alone.text"
+    },
+    {
+      "id": "make_ramp",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ramp",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_water_cask.choice.make_ramp.outcome.ramp.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_water_cask.choice.make_ramp.text"
+    },
+    {
+      "id": "ask_pair",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pair",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_water_cask.choice.ask_pair.outcome.pair.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_water_cask.choice.ask_pair.text"
+    }
+  ]
+}

@@ -63,13 +63,36 @@ describe('simulation', () => {
   });
 
   it('counts runs reaching Active with and without a Lifetime Thread', () => {
-    const withoutSeeds = simulateBatch({ runs: 3, baseSeed: 10, catalog: contentCatalog, maxResolvedEvents: 200 });
-    expect(withoutSeeds.summary).toMatchObject({ lifetimeThreadStarted: 0, reachedActiveWithoutLifetimeThread: 3 });
-    const events = contentCatalog.events.map((event): EventDefinition => event.kind === 'normal' && event.id.startsWith('childhood_')
-      ? { ...event, lifetimeThreadSeed: true }
-      : event);
-    const withSeeds = simulateBatch({ runs: 3, baseSeed: 10, catalog: { ...contentCatalog, events }, maxResolvedEvents: 200 });
-    expect(withSeeds.summary).toMatchObject({ lifetimeThreadStarted: 3, reachedActiveWithoutLifetimeThread: 0 });
+    const eventsWithoutSeeds = contentCatalog.events.map(
+      (event): EventDefinition =>
+        event.kind === 'normal' && event.lifetimeThreadSeed
+          ? { ...event, lifetimeThreadSeed: undefined }
+          : event,
+    );
+
+    const withoutSeeds = simulateBatch({
+      runs: 3,
+      baseSeed: 10,
+      catalog: { ...contentCatalog, events: eventsWithoutSeeds },
+      maxResolvedEvents: 200,
+    });
+
+    expect(withoutSeeds.summary).toMatchObject({
+      lifetimeThreadStarted: 0,
+      reachedActiveWithoutLifetimeThread: 3,
+    });
+
+    const withSeeds = simulateBatch({
+      runs: 3,
+      baseSeed: 10,
+      catalog: contentCatalog,
+      maxResolvedEvents: 200,
+    });
+
+    expect(withSeeds.summary).toMatchObject({
+      lifetimeThreadStarted: 3,
+      reachedActiveWithoutLifetimeThread: 0,
+    });
   });
 
   it('drives monthly navigation and counts a complete Immediate chain as one slot', () => {

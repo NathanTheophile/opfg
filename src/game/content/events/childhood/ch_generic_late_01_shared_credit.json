@@ -1,0 +1,89 @@
+{
+  "id": "ch_generic_late_01_shared_credit",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_shared_credit.title",
+  "textKey": "event.ch_generic_late_01_shared_credit.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "name_everyone",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shared",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_shared_credit_echo",
+              "delayMonths": 12
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_shared_credit.choice.name_everyone.outcome.shared.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_shared_credit.choice.name_everyone.text"
+    },
+    {
+      "id": "accept_silently",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "solo_credit",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_shared_credit_echo",
+              "delayMonths": 12
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_shared_credit.choice.accept_silently.outcome.solo_credit.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_shared_credit.choice.accept_silently.text"
+    },
+    {
+      "id": "redirect_to_work",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "work_credit",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_shared_credit_echo",
+              "delayMonths": 12
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_shared_credit.choice.redirect_to_work.outcome.work_credit.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_shared_credit.choice.redirect_to_work.text"
+    }
+  ]
+}

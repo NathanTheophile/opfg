@@ -1,0 +1,89 @@
+{
+  "id": "ch_generic_early_01_night_scratching_i1_behind_cupboard",
+  "titleKey": "event.ch_generic_early_01_night_scratching_i1_behind_cupboard.title",
+  "textKey": "event.ch_generic_early_01_night_scratching_i1_behind_cupboard.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "pull_cupboard",
+      "textKey": "event.ch_generic_early_01_night_scratching_i1_behind_cupboard.choice.pull_cupboard.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "gap_opened",
+          "textKey": "event.ch_generic_early_01_night_scratching_i1_behind_cupboard.choice.pull_cupboard.outcome.gap_opened.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_night_scratching_i2_moving_crate"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "peek_low",
+      "textKey": "event.ch_generic_early_01_night_scratching_i1_behind_cupboard.choice.peek_low.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "dust_eye",
+            "textKey": "event.ch_generic_early_01_night_scratching_i1_behind_cupboard.choice.peek_low.outcome.dust_eye.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "see_nothing",
+            "textKey": "event.ch_generic_early_01_night_scratching_i1_behind_cupboard.choice.peek_low.outcome.see_nothing.text",
+            "effects": []
+          },
+          "success": {
+            "id": "see_crate",
+            "textKey": "event.ch_generic_early_01_night_scratching_i1_behind_cupboard.choice.peek_low.outcome.see_crate.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_night_scratching_i2_moving_crate"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "see_tail",
+            "textKey": "event.ch_generic_early_01_night_scratching_i1_behind_cupboard.choice.peek_low.outcome.see_tail.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_night_scratching_i2_moving_crate"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "retreat",
+      "textKey": "event.ch_generic_early_01_night_scratching_i1_behind_cupboard.choice.retreat.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "retreated",
+          "textKey": "event.ch_generic_early_01_night_scratching_i1_behind_cupboard.choice.retreat.outcome.retreated.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

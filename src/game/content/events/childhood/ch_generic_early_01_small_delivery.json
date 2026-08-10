@@ -1,0 +1,119 @@
+{
+  "id": "ch_generic_early_01_small_delivery",
+  "titleKey": "event.ch_generic_early_01_small_delivery.title",
+  "textKey": "event.ch_generic_early_01_small_delivery.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "memorize_route",
+      "textKey": "event.ch_generic_early_01_small_delivery.choice.memorize_route.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "mix_directions",
+            "textKey": "event.ch_generic_early_01_small_delivery.choice.memorize_route.outcome.mix_directions.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "need_help",
+            "textKey": "event.ch_generic_early_01_small_delivery.choice.memorize_route.outcome.need_help.text",
+            "effects": []
+          },
+          "success": {
+            "id": "delivered",
+            "textKey": "event.ch_generic_early_01_small_delivery.choice.memorize_route.outcome.delivered.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_early_01_small_delivery_scheduled_trusted_again",
+                "delayMonths": 12
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "delivered_early",
+            "textKey": "event.ch_generic_early_01_small_delivery.choice.memorize_route.outcome.delivered_early.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_early_01_small_delivery_scheduled_trusted_again",
+                "delayMonths": 12
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ask_companion",
+      "textKey": "event.ch_generic_early_01_small_delivery.choice.ask_companion.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shared_delivery",
+          "textKey": "event.ch_generic_early_01_small_delivery.choice.ask_companion.outcome.shared_delivery.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_small_delivery_scheduled_trusted_again",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline",
+      "textKey": "event.ch_generic_early_01_small_delivery.choice.decline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "declined",
+          "textKey": "event.ch_generic_early_01_small_delivery.choice.decline.outcome.declined.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  }
+}

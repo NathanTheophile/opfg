@@ -1,0 +1,95 @@
+{
+  "id": "ch_generic_late_01_puppet_case_i1_crowd_cut",
+  "kind": "immediate",
+  "titleKey": "event.ch_generic_late_01_puppet_case_i1_crowd_cut.title",
+  "textKey": "event.ch_generic_late_01_puppet_case_i1_crowd_cut.text",
+  "choices": [
+    {
+      "id": "cut_across",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cut_cf",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_puppet_case_i2_split_thieves"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_puppet_case_i1_crowd_cut.choice.cut_across.outcome.cut_cf.text"
+          },
+          "failure": {
+            "id": "cut_f",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_puppet_case_i2_split_thieves"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_puppet_case_i1_crowd_cut.choice.cut_across.outcome.cut_f.text"
+          },
+          "success": {
+            "id": "cut_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_puppet_case_i2_split_thieves"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_puppet_case_i1_crowd_cut.choice.cut_across.outcome.cut_s.text"
+          },
+          "criticalSuccess": {
+            "id": "cut_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_puppet_case_i2_split_thieves"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_puppet_case_i1_crowd_cut.choice.cut_across.outcome.cut_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_puppet_case_i1_crowd_cut.choice.cut_across.text"
+    },
+    {
+      "id": "call_people",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "call",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_puppet_case_i2_split_thieves"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_puppet_case_i1_crowd_cut.choice.call_people.outcome.call.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_puppet_case_i1_crowd_cut.choice.call_people.text"
+    }
+  ]
+}

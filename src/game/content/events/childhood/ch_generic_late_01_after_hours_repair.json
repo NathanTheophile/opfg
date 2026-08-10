@@ -1,0 +1,133 @@
+{
+  "id": "ch_generic_late_01_after_hours_repair",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_after_hours_repair.title",
+  "textKey": "event.ch_generic_late_01_after_hours_repair.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "ship_repair"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "help_finish",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "helped",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_after_hours_repair_return",
+              "delayMonths": 9
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_after_hours_repair.choice.help_finish.outcome.helped.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_after_hours_repair.choice.help_finish.text"
+    },
+    {
+      "id": "demand_confession",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "confession",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_after_hours_repair_return",
+              "delayMonths": 9
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_after_hours_repair.choice.demand_confession.outcome.confession.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_after_hours_repair.choice.demand_confession.text"
+    },
+    {
+      "id": "tell_now",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "told",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_after_hours_repair.choice.tell_now.outcome.told.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_after_hours_repair.choice.tell_now.text"
+    },
+    {
+      "id": "suspicious_watch",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "suspicious"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "watched",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_after_hours_repair_return",
+              "delayMonths": 9
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_after_hours_repair.choice.suspicious_watch.outcome.watched.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_after_hours_repair.choice.suspicious_watch.text"
+    }
+  ]
+}

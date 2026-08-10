@@ -1,0 +1,138 @@
+{
+  "id": "ch_generic_late_01_puppet_case",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_puppet_case.title",
+  "textKey": "event.ch_generic_late_01_puppet_case.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "entertainment"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "watch_hands",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "watch_cf",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_puppet_case_i1_crowd_cut"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_puppet_case.choice.watch_hands.outcome.watch_cf.text"
+          },
+          "failure": {
+            "id": "watch_f",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_puppet_case_i1_crowd_cut"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_puppet_case.choice.watch_hands.outcome.watch_f.text"
+          },
+          "success": {
+            "id": "watch_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_puppet_case_i1_crowd_cut"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_puppet_case.choice.watch_hands.outcome.watch_s.text"
+          },
+          "criticalSuccess": {
+            "id": "watch_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_puppet_case_i1_crowd_cut"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_puppet_case.choice.watch_hands.outcome.watch_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_puppet_case.choice.watch_hands.text"
+    },
+    {
+      "id": "move_case",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "move",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_puppet_case_i1_crowd_cut"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_puppet_case.choice.move_case.outcome.move.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_puppet_case.choice.move_case.text"
+    },
+    {
+      "id": "confront_now",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "confront",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_puppet_case_i1_crowd_cut"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_puppet_case.choice.confront_now.outcome.confront.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_puppet_case.choice.confront_now.text"
+    }
+  ]
+}

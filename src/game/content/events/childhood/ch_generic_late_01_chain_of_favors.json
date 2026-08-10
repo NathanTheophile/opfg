@@ -1,0 +1,113 @@
+{
+  "id": "ch_generic_late_01_chain_of_favors",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_chain_of_favors.title",
+  "textKey": "event.ch_generic_late_01_chain_of_favors.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "lifetimeThreadSeed": true,
+  "choices": [
+    {
+      "id": "repay_directly",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "debt_rule",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_favor_s01",
+              "delayMonths": 12
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_chain_of_favors.choice.repay_directly.outcome.debt_rule.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_chain_of_favors.choice.repay_directly.text"
+    },
+    {
+      "id": "pass_forward",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "forward_rule",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_favor_s01",
+              "delayMonths": 12
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_chain_of_favors.choice.pass_forward.outcome.forward_rule.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_chain_of_favors.choice.pass_forward.text"
+    },
+    {
+      "id": "keep_tally",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tally_rule",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_favor_s01",
+              "delayMonths": 12
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_chain_of_favors.choice.keep_tally.outcome.tally_rule.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_chain_of_favors.choice.keep_tally.text"
+    },
+    {
+      "id": "shrug_it_off",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "loose_rule",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_favor_s01",
+              "delayMonths": 12
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_chain_of_favors.choice.shrug_it_off.outcome.loose_rule.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_chain_of_favors.choice.shrug_it_off.text"
+    }
+  ]
+}

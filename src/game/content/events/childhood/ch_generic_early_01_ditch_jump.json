@@ -1,0 +1,120 @@
+{
+  "id": "ch_generic_early_01_ditch_jump",
+  "titleKey": "event.ch_generic_early_01_ditch_jump.title",
+  "textKey": "event.ch_generic_early_01_ditch_jump.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "jump",
+      "textKey": "event.ch_generic_early_01_ditch_jump.choice.jump.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "mud_fall",
+            "textKey": "event.ch_generic_early_01_ditch_jump.choice.jump.outcome.mud_fall.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "short_jump",
+            "textKey": "event.ch_generic_early_01_ditch_jump.choice.jump.outcome.short_jump.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "clean_jump",
+            "textKey": "event.ch_generic_early_01_ditch_jump.choice.jump.outcome.clean_jump.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "easy_jump",
+            "textKey": "event.ch_generic_early_01_ditch_jump.choice.jump.outcome.easy_jump.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "find_narrow",
+      "textKey": "event.ch_generic_early_01_ditch_jump.choice.find_narrow.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "narrow_found",
+          "textKey": "event.ch_generic_early_01_ditch_jump.choice.find_narrow.outcome.narrow_found.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "walk_around",
+      "textKey": "event.ch_generic_early_01_ditch_jump.choice.walk_around.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "detour_taken",
+          "textKey": "event.ch_generic_early_01_ditch_jump.choice.walk_around.outcome.detour_taken.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 95
+      }
+    ]
+  }
+}
