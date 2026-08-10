@@ -1,0 +1,63 @@
+{
+  "id": "active_port_trade_01_repair_quote_split_i2_material",
+  "kind": "immediate",
+  "titleKey": "event.active_port_trade_01_repair_quote_split_i2_material.title",
+  "textKey": "event.active_port_trade_01_repair_quote_split_i2_material.text",
+  "choices": [
+    {
+      "id": "correct",
+      "textKey": "event.active_port_trade_01_repair_quote_split_i2_material.choice.correct.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "correct",
+          "textKey": "event.active_port_trade_01_repair_quote_split_i2_material.choice.correct.outcome.correct.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_repair_quote_split_i3_payment"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "meilleure",
+      "textKey": "event.active_port_trade_01_repair_quote_split_i2_material.choice.meilleure.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "meilleure",
+          "textKey": "event.active_port_trade_01_repair_quote_split_i2_material.choice.meilleure.outcome.meilleure.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_repair_quote_split_i3_payment"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "negocier",
+      "textKey": "event.active_port_trade_01_repair_quote_split_i2_material.choice.negocier.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rabais",
+          "textKey": "event.active_port_trade_01_repair_quote_split_i2_material.choice.negocier.outcome.rabais.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_repair_quote_split_i3_payment"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

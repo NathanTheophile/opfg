@@ -1,114 +1,75 @@
 .opfg-top-world-hud {
-  position: relative;
   display: grid;
+  width: 100%;
+  max-width: calc(
+    var(--ui-hud-side-width, 17rem) +
+    var(--ui-hud-side-width, 17rem) +
+    var(--ui-hud-center-width, 34rem) +
+    var(--ui-hud-group-gap, 0.8rem) +
+    var(--ui-hud-group-gap, 0.8rem)
+  );
   grid-template-columns:
-    minmax(9.25rem, 0.55fr)
-    1px
-    minmax(0, 0.95fr)
-    1px
-    minmax(13rem, 0.72fr)
-    1px
-    minmax(18.5rem, 1.2fr);
-  min-height: 7.25rem;
+    var(--ui-hud-side-width, 17rem)
+    minmax(0, var(--ui-hud-center-width, 34rem))
+    var(--ui-hud-side-width, 17rem);
+  gap: var(--ui-hud-group-gap, 0.8rem);
+  margin-inline: auto;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.opfg-hud-panel {
+  min-width: 0;
+  min-height: var(--ui-hud-panel-min-height, 8.75rem);
   overflow: visible;
   box-shadow: var(--shadow-overlay);
 }
 
-.opfg-top-world-hud__section {
-  min-width: 0;
-  padding: 1rem 1.1rem;
+.opfg-hud-panel__body {
+  min-height: 100%;
+  padding:
+    var(--ui-hud-panel-py, 0.85rem)
+    var(--ui-hud-panel-px, 1rem);
 }
 
-.opfg-top-world-hud__divider {
-  align-self: stretch;
-  background: var(--border-subtle);
-}
-
-.opfg-top-world-hud__eyebrow {
+.opfg-hud-panel__heading {
   display: flex;
   align-items: center;
-  gap: 0.42rem;
+  gap: 0.4rem;
   color: var(--gold);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.13em;
+  font-size: var(--ui-hud-eyebrow-size, 0.68rem);
+  font-weight: 820;
+  letter-spacing: 0.12em;
+  line-height: 1;
   text-transform: uppercase;
 }
 
-.opfg-top-world-hud__primary {
-  margin-top: 0.32rem;
-  overflow: hidden;
-  color: var(--text-primary);
-  font-size: 1.08rem;
-  font-weight: 750;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+/* ------------------------------------------------------------------------- */
+/* Shared square slots                                                       */
+/* ------------------------------------------------------------------------- */
 
-.opfg-top-world-hud__secondary {
-  display: flex;
-  min-width: 0;
-  flex-wrap: wrap;
-  gap: 0.35rem 0.9rem;
-  margin-top: 0.38rem;
-  color: var(--text-muted);
-  font-size: 0.73rem;
-  font-weight: 600;
-}
-
-.opfg-top-world-hud__secondary span {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.32rem;
-  min-width: 0;
-}
-
-.opfg-top-world-hud__affiliation {
-  margin-top: 0.24rem;
-  overflow: hidden;
-  color: var(--text-primary);
-  font-size: 1.08rem;
-  font-weight: 750;
-  line-height: 1.1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* ------------------------------------------------------------------ */
-/* Inventory                                                          */
-/* ------------------------------------------------------------------ */
-
-.opfg-top-world-hud__inventory {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.opfg-top-world-hud__inventory-slots {
-  position: relative;
+.opfg-hud-slots {
   display: grid;
-  grid-template-columns: repeat(2, 2.15rem);
-  gap: 0.38rem;
-  margin-top: 0.58rem;
+  gap: var(--ui-hud-slot-gap, 0.34rem);
 }
 
-.opfg-top-world-hud__slot-wrap {
+.opfg-hud-slot-wrap {
   display: block;
-  width: 2.15rem;
-  height: 2.15rem;
+  width: var(--ui-hud-slot-size, 2.15rem);
+  height: var(--ui-hud-slot-size, 2.15rem);
 }
 
-.opfg-top-world-hud__slot {
+.opfg-hud-slot {
   position: relative;
   display: grid;
-  width: 2.15rem;
-  min-width: 2.15rem;
-  height: 2.15rem;
+  width: var(--ui-hud-slot-size, 2.15rem);
+  min-width: var(--ui-hud-slot-size, 2.15rem);
+  height: var(--ui-hud-slot-size, 2.15rem);
   aspect-ratio: 1;
   place-items: center;
   overflow: hidden;
   border: 1px solid var(--border-default);
-  border-radius: 0.42rem;
+  border-radius: var(--ui-hud-slot-radius, 0.42rem);
   background:
     linear-gradient(
       145deg,
@@ -122,177 +83,345 @@
     0 2px 7px rgb(0 0 0 / 0.18);
 }
 
-.opfg-top-world-hud__slot.is-empty {
+.opfg-hud-slot.is-empty {
   border-style: dashed;
   opacity: 0.5;
 }
 
-.opfg-top-world-hud__slot.is-empty::after {
+.opfg-hud-slot.is-empty::after {
   content: "";
-  width: 0.28rem;
-  height: 0.28rem;
+  width: 0.25rem;
+  height: 0.25rem;
   border-radius: 999px;
   background: var(--border-default);
-  opacity: 0.7;
 }
 
-.opfg-top-world-hud__slot.is-locked {
+.opfg-hud-slot.is-locked {
   border-color: var(--border-subtle);
   background: rgb(0 0 0 / 0.15);
   color: var(--text-muted);
-  opacity: 0.32;
+  opacity: 0.28;
 }
 
-.opfg-top-world-hud__slot.is-filled {
+.opfg-hud-slot.is-filled,
+.opfg-hud-slot--transport {
   border-color:
     color-mix(in srgb, var(--gold) 34%, var(--border-default));
   background:
     radial-gradient(
       circle at 45% 45%,
-      color-mix(in srgb, var(--gold) 9%, transparent),
-      transparent 70%
+      color-mix(in srgb, var(--gold) 10%, transparent),
+      transparent 72%
     ),
     color-mix(in srgb, var(--surface-soft) 90%, black);
 }
 
-.opfg-top-world-hud__slot-quantity {
+.opfg-hud-slot__quantity {
   position: absolute;
-  right: 0.18rem;
+  right: 0.17rem;
   bottom: 0.08rem;
   color: var(--text-primary);
-  font-size: 0.58rem;
+  font-size: 0.56rem;
   font-weight: 900;
   line-height: 1;
   text-shadow: 0 1px 3px rgb(0 0 0 / 0.8);
 }
 
+/* ------------------------------------------------------------------------- */
+/* Inventory                                                                 */
+/* ------------------------------------------------------------------------- */
 
-.opfg-top-world-hud__berries {
+.opfg-hud-inventory {
   display: flex;
-  align-items: baseline;
-  gap: 0.3rem;
-  margin-top: 0.52rem;
-  color: var(--gold);
-  font-size: 0.72rem;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.opfg-top-world-hud__berries svg {
+.opfg-hud-inventory__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.opfg-hud-inventory__money {
+  display: inline-flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 0.28rem;
+  color: var(--gold);
+}
+
+.opfg-hud-inventory__money svg {
   align-self: center;
 }
 
-.opfg-top-world-hud__berries strong {
+.opfg-hud-inventory__money strong {
+  overflow: hidden;
   color: var(--text-primary);
   font-size: 0.86rem;
   font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
 }
 
-.opfg-top-world-hud__berries span {
-  color: var(--gold);
+.opfg-hud-inventory__money span {
   font-size: 0.66rem;
   font-weight: 850;
 }
 
-/* ------------------------------------------------------------------ */
-/* Time                                                               */
-/* ------------------------------------------------------------------ */
+.opfg-hud-inventory__slots {
+  grid-template-columns:
+    repeat(2, var(--ui-hud-slot-size, 2.15rem));
+}
 
-.opfg-top-world-hud__time {
+/* ------------------------------------------------------------------------- */
+/* Identity + annual progress + environment                                  */
+/* ------------------------------------------------------------------------- */
+
+.opfg-hud-panel--identity {
   position: relative;
-  padding-top: 1.45rem;
+  z-index: 2;
+}
+
+.opfg-hud-identity {
+  display: grid;
+  align-content: center;
+  justify-items: stretch;
   text-align: center;
 }
 
-.opfg-top-world-hud__time .opfg-top-world-hud__secondary {
-  justify-content: center;
-}
-
-.opfg-top-world-hud__character-name {
-  position: absolute;
-  z-index: 3;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -55%);
-  max-width: calc(100% - 1.5rem);
-  padding: 0.08rem 0.9rem 0.14rem;
+.opfg-hud-identity__nameplate {
+  display: grid;
+  grid-template-columns: minmax(1.5rem, 1fr) auto minmax(1.5rem, 1fr);
+  align-items: center;
+  gap: 0.7rem;
   color: var(--gold);
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(1.05rem, 1.4vw, 1.35rem);
-  font-style: italic;
-  font-weight: 700;
-  letter-spacing: 0.045em;
-  line-height: 1;
-  text-shadow:
-    0 2px 10px oklch(0 0 0 / 54%),
-    0 0 18px oklch(0.68 0.13 74 / 18%);
-  white-space: nowrap;
 }
 
-.opfg-top-world-hud__character-name::before,
-.opfg-top-world-hud__character-name::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 1.2rem;
+.opfg-hud-identity__nameplate > span {
   height: 1px;
-  background: linear-gradient(90deg, transparent, currentColor);
-  opacity: 0.6;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--gold) 70%, transparent)
+    );
 }
 
-.opfg-top-world-hud__character-name::before {
-  right: 100%;
-  margin-right: 0.15rem;
-}
-
-.opfg-top-world-hud__character-name::after {
-  left: 100%;
-  margin-left: 0.15rem;
+.opfg-hud-identity__nameplate > span:last-child {
   transform: scaleX(-1);
 }
 
-/* ------------------------------------------------------------------ */
-/* Ship + cargo                                                       */
-/* ------------------------------------------------------------------ */
-
-.opfg-top-world-hud__ship {
+.opfg-hud-identity__nameplate strong {
   position: relative;
+  max-width: 100%;
+  color: var(--gold);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: var(--ui-hud-name-size, 1.28rem);
+  font-style: italic;
+  font-weight: 720;
+  letter-spacing: 0.045em;
+  line-height: 1.1;
+  text-shadow:
+    0 2px 10px rgb(0 0 0 / 0.55),
+    0 0 18px color-mix(in srgb, var(--gold) 15%, transparent);
+  text-transform: uppercase;
+}
+
+.opfg-hud-identity__nameplate strong::before,
+.opfg-hud-identity__nameplate strong::after {
+  content: "◆";
+  position: absolute;
+  top: 50%;
+  color: color-mix(in srgb, var(--gold) 58%, transparent);
+  font-size: 0.4rem;
+  transform: translateY(-50%);
+}
+
+.opfg-hud-identity__nameplate strong::before {
+  right: calc(100% + 0.25rem);
+}
+
+.opfg-hud-identity__nameplate strong::after {
+  left: calc(100% + 0.25rem);
+}
+
+.opfg-hud-identity__age {
+  margin-top: 0.18rem;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 650;
+}
+
+.opfg-hud-year-progress {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ui-hud-event-slot-gap, 0.5rem);
+  margin-top: 0.66rem;
+}
+
+.opfg-hud-year-progress__slot {
+  display: inline-flex;
+  min-width: 0;
+  height: var(--ui-hud-event-slot-height, 1.8rem);
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  border-radius: var(--ui-hud-event-slot-radius, 0.62rem);
+  background: rgb(0 0 0 / 0.12);
+  color: var(--text-muted);
+  font-size: 0.64rem;
+  font-weight: 750;
+  letter-spacing: 0.025em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition:
+    border-color var(--motion-normal) var(--ease-standard),
+    background-color var(--motion-normal) var(--ease-standard),
+    color var(--motion-normal) var(--ease-standard);
+}
+
+.opfg-hud-year-progress__slot[data-filled="true"] {
+  border-color:
+    color-mix(in srgb, var(--gold) 48%, var(--border-default));
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--gold) 18%, transparent),
+      color-mix(in srgb, var(--gold) 7%, transparent)
+    ),
+    var(--surface-soft);
+  color: var(--gold);
+}
+
+.opfg-hud-identity__separator {
+  height: 1px;
+  margin: 0.64rem 0 0.55rem;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--border-default) 14%,
+      var(--border-default) 86%,
+      transparent
+    );
+}
+
+.opfg-hud-environment {
+  display: grid;
+  gap: 0.36rem;
+  text-align: left;
+}
+
+.opfg-hud-environment__location,
+.opfg-hud-environment__sea {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.42rem;
+  color: var(--text-secondary);
+  font-size: var(--ui-hud-environment-size, 0.72rem);
+}
+
+.opfg-hud-environment__location > svg,
+.opfg-hud-environment__sea > svg {
+  flex: 0 0 auto;
+  color: var(--gold);
+}
+
+.opfg-hud-environment__location > span {
+  display: inline-flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 0.3rem;
+}
+
+.opfg-hud-environment small {
+  color: var(--text-muted);
+  font-size: 0.6rem;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.opfg-hud-environment strong {
+  overflow: hidden;
+  color: var(--text-primary);
+  font-weight: 720;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.opfg-hud-environment__location i {
+  color: var(--border-strong);
+  font-style: normal;
+}
+
+.opfg-hud-environment__sea {
+  padding-left: 0.05rem;
+}
+
+/* ------------------------------------------------------------------------- */
+/* Ship                                                                      */
+/* ------------------------------------------------------------------------- */
+
+.opfg-hud-ship {
   display: grid;
   align-content: center;
-  gap: 0.42rem;
-  padding-bottom: 0.72rem;
+  gap: 0.45rem;
 }
 
-.opfg-top-world-hud__ship-main {
+.opfg-hud-ship__header {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  column-gap: 0.72rem;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  min-width: 0;
+  gap: 0.55rem;
 }
 
-.opfg-top-world-hud__ship-icon {
+.opfg-hud-ship__icon {
   display: grid;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: var(--ui-hud-ship-icon-size, 2.35rem);
+  height: var(--ui-hud-ship-icon-size, 2.35rem);
   place-items: center;
   border: 1px solid var(--border-default);
   border-radius: 999px;
   background: var(--surface-soft);
   color: var(--gold);
-  box-shadow: var(--shadow-control);
 }
 
-.opfg-top-world-hud__ship-copy {
+.opfg-hud-ship__copy {
   min-width: 0;
 }
 
-.opfg-top-world-hud__ship-condition {
-  height: 0.2rem;
+.opfg-hud-ship__name {
+  display: block;
+  overflow: hidden;
+  margin-top: 0.18rem;
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 780;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.opfg-hud-ship__health {
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  font-weight: 780;
+  font-variant-numeric: tabular-nums;
+}
+
+.opfg-hud-ship__condition {
+  height: 0.18rem;
   overflow: hidden;
   border-radius: 999px;
   background: var(--surface-soft);
 }
 
-.opfg-top-world-hud__ship-condition span {
+.opfg-hud-ship__condition span {
   display: block;
   height: 100%;
   border-radius: inherit;
@@ -300,104 +429,70 @@
   opacity: 0.78;
 }
 
-.opfg-top-world-hud__cargo {
-  min-width: 0;
-  margin-left: 3.22rem;
+.opfg-hud-cargo {
+  grid-template-columns:
+    repeat(4, var(--ui-hud-slot-size, 2.15rem));
+  grid-template-rows:
+    repeat(2, var(--ui-hud-slot-size, 2.15rem));
+  justify-content: center;
 }
 
+/* ------------------------------------------------------------------------- */
+/* Tablet / mobile: the identity panel becomes the only permanent top panel. */
+/* Inventory and Ship are exposed by edge drawers in EventPreview.            */
+/* ------------------------------------------------------------------------- */
 
-.opfg-top-world-hud__cargo-slots {
-  display: grid;
-  grid-template-columns: repeat(4, 2.15rem);
-  grid-template-rows: repeat(2, 2.15rem);
-  gap: 0.34rem;
-  justify-content: start;
-}
-
-.opfg-top-world-hud__slot--cargo-icon {
-  border-color:
-    color-mix(in srgb, var(--gold) 38%, var(--border-default));
-  background:
-    radial-gradient(
-      circle at 50% 45%,
-      color-mix(in srgb, var(--gold) 12%, transparent),
-      transparent 72%
-    ),
-    color-mix(in srgb, var(--surface-soft) 92%, black);
-  color: var(--gold);
-}
-
-/* ------------------------------------------------------------------ */
-/* Responsive                                                         */
-/* ------------------------------------------------------------------ */
-
-@media (max-width: 72rem) {
+@media (max-width: 79.999rem) {
   .opfg-top-world-hud {
-    grid-template-columns:
-      minmax(8.75rem, 0.55fr)
-      1px
-      minmax(0, 0.9fr)
-      1px
-      minmax(12rem, 0.72fr)
-      1px
-      minmax(16rem, 1fr);
+    max-width: min(100%, var(--ui-hud-center-width, 34rem));
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .opfg-top-world-hud__section {
-    padding-inline: 0.85rem;
-  }
-}
-
-@media (max-width: 64rem) {
-  .opfg-top-world-hud {
-    grid-template-columns: 0.65fr 1fr;
-  }
-
-  .opfg-top-world-hud__divider {
+  .opfg-top-world-hud > .opfg-hud-panel--inventory,
+  .opfg-top-world-hud > .opfg-hud-panel--ship {
     display: none;
   }
 
-  .opfg-top-world-hud__time,
-  .opfg-top-world-hud__ship {
-    border-top: 1px solid var(--border-subtle);
-  }
-
-  .opfg-top-world-hud__ship {
-    grid-column: auto;
+  .opfg-hud-panel--identity {
+    min-height: auto;
   }
 }
 
 @media (max-width: 40rem) {
-  .opfg-top-world-hud {
-    grid-template-columns: 1fr;
+  .opfg-hud-panel__body {
+    padding: 0.72rem 0.8rem;
   }
 
-  .opfg-top-world-hud__section {
-    padding: 0.8rem 1rem;
+  .opfg-hud-identity__nameplate {
+    gap: 0.45rem;
   }
 
-  .opfg-top-world-hud__world,
-  .opfg-top-world-hud__time,
-  .opfg-top-world-hud__ship {
-    border-top: 1px solid var(--border-subtle);
+  .opfg-hud-identity__nameplate strong {
+    font-size: min(
+      var(--ui-hud-name-size, 1.28rem),
+      1.08rem
+    );
   }
 
-  .opfg-top-world-hud__time {
-    padding-top: 1.1rem;
-    text-align: left;
+  .opfg-hud-year-progress {
+    gap: 0.35rem;
   }
 
-  .opfg-top-world-hud__time .opfg-top-world-hud__secondary {
-    justify-content: flex-start;
+  .opfg-hud-year-progress__slot {
+    font-size: 0.58rem;
   }
 
-  .opfg-top-world-hud__character-name {
-    left: 1rem;
-    transform: translateY(-55%);
+  .opfg-hud-environment__location {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.25rem 0.42rem;
   }
 
-  .opfg-top-world-hud__ship {
-    grid-column: auto;
+  .opfg-hud-environment__location > span {
+    grid-column: 2;
   }
 
+  .opfg-hud-environment__location > i {
+    display: none;
+  }
 }

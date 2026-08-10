@@ -1,0 +1,83 @@
+{
+  "id": "active_crew_social_01_s_culture_fear_clause",
+  "kind": "scheduled",
+  "titleKey": "event.active_crew_social_01_s_culture_fear_clause.title",
+  "textKey": "event.active_crew_social_01_s_culture_fear_clause.text",
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "hasCrew"
+    }
+  },
+  "choices": [
+    {
+      "id": "fear_first",
+      "textKey": "event.active_crew_social_01_s_culture_fear_clause.choice.fear_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_fear_clause.choice.fear_first.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_final_split",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "facts_first",
+      "textKey": "event.active_crew_social_01_s_culture_fear_clause.choice.facts_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_fear_clause.choice.facts_first.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_final_split",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "separate",
+      "textKey": "event.active_crew_social_01_s_culture_fear_clause.choice.separate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_fear_clause.choice.separate.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_final_split",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "crewSizeAtLeast",
+    "value": 2
+  }
+}

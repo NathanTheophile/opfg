@@ -1,0 +1,77 @@
+{
+  "id": "active_crew_social_01_s_mira_first_course",
+  "kind": "scheduled",
+  "titleKey": "event.active_crew_social_01_s_mira_first_course.title",
+  "textKey": "event.active_crew_social_01_s_mira_first_course.text",
+  "eligibility": {
+    "type": "npcStatusIs",
+    "npcId": "mira",
+    "status": "crew"
+  },
+  "priority": 100,
+  "cancelIf": {
+    "type": "npcStatusIs",
+    "npcId": "mira",
+    "status": "dead"
+  },
+  "choices": [
+    {
+      "id": "agree",
+      "textKey": "event.active_crew_social_01_s_mira_first_course.choice.agree.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_mira_first_course.choice.agree.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": 5
+            },
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "expect_warning",
+      "textKey": "event.active_crew_social_01_s_mira_first_course.choice.expect_warning.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_mira_first_course.choice.expect_warning.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": 3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_roles_simple",
+      "textKey": "event.active_crew_social_01_s_mira_first_course.choice.keep_roles_simple.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_mira_first_course.choice.keep_roles_simple.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

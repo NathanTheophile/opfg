@@ -54,32 +54,31 @@
   --ui-failure-color: oklch(0.72 0.17 29);
 
   /* ----------------------------------------------------------------------- */
-  /* Top HUD                                                                 */
+  /* Top HUD — three detached panels                                        */
   /* ----------------------------------------------------------------------- */
 
-  --ui-hud-min-height: 116px;
-  --ui-hud-section-px: 17px;
-  --ui-hud-section-py: 16px;
+  --ui-hud-group-gap: 13px;
+  --ui-hud-side-width: 272px;
+  --ui-hud-center-width: 544px;
+  --ui-hud-panel-min-height: 140px;
+  --ui-hud-panel-px: 16px;
+  --ui-hud-panel-py: 14px;
 
-  --ui-hud-inventory-fr: 0.55fr;
-  --ui-hud-world-fr: 0.95fr;
-  --ui-hud-player-fr: 0.72fr;
-  --ui-hud-ship-fr: 1.2fr;
-
-  --ui-hud-inventory-min: 148px;
-  --ui-hud-player-min: 208px;
-  --ui-hud-ship-min: 296px;
-
-  --ui-hud-primary-size: 17px;
-  --ui-hud-secondary-size: 11.7px;
   --ui-hud-eyebrow-size: 10.9px;
   --ui-hud-name-size: 20px;
+  --ui-hud-environment-size: 11.5px;
 
   --ui-hud-slot-size: 34.4px;
   --ui-hud-slot-gap: 5.4px;
   --ui-hud-slot-radius: 6.7px;
-  --ui-hud-cargo-offset: 51px;
-  --ui-hud-ship-icon-size: 40px;
+
+  --ui-hud-event-slot-height: 29px;
+  --ui-hud-event-slot-gap: 8px;
+  --ui-hud-event-slot-radius: 10px;
+
+  --ui-hud-ship-icon-size: 38px;
+  --ui-mobile-drawer-width: 336px;
+  --ui-adventure-stack-gap: 12px;
 
   /* ----------------------------------------------------------------------- */
   /* Event / choices                                                         */
@@ -298,74 +297,71 @@
 }
 
 /* ------------------------------------------------------------------------- */
-/* Desktop HUD bridge                                                        */
+/* Three-panel HUD bridge                                                    */
 /* ------------------------------------------------------------------------- */
 
-@media (min-width: 64.01rem) {
-  :root .opfg-top-world-hud {
-    grid-template-columns:
-      minmax(var(--ui-hud-inventory-min), var(--ui-hud-inventory-fr))
-      1px
-      minmax(0, var(--ui-hud-world-fr))
-      1px
-      minmax(var(--ui-hud-player-min), var(--ui-hud-player-fr))
-      1px
-      minmax(var(--ui-hud-ship-min), var(--ui-hud-ship-fr));
-    min-height: var(--ui-hud-min-height);
-  }
+:root .opfg-top-world-hud {
+  gap: var(--ui-hud-group-gap);
+  grid-template-columns:
+    var(--ui-hud-side-width)
+    minmax(0, var(--ui-hud-center-width))
+    var(--ui-hud-side-width);
+}
 
-  :root .opfg-top-world-hud__section {
-    padding:
-      var(--ui-hud-section-py)
-      var(--ui-hud-section-px);
-  }
+:root .opfg-hud-panel {
+  min-height: var(--ui-hud-panel-min-height);
+}
 
-  :root .opfg-top-world-hud__primary {
-    font-size: var(--ui-hud-primary-size);
-  }
+:root .opfg-hud-panel__body {
+  padding:
+    var(--ui-hud-panel-py)
+    var(--ui-hud-panel-px);
+}
 
-  :root .opfg-top-world-hud__secondary {
-    font-size: var(--ui-hud-secondary-size);
-  }
+:root .opfg-hud-panel__heading {
+  font-size: var(--ui-hud-eyebrow-size);
+}
 
-  :root .opfg-top-world-hud__eyebrow {
-    font-size: var(--ui-hud-eyebrow-size);
-  }
+:root .opfg-hud-identity__nameplate strong {
+  font-size: var(--ui-hud-name-size);
+}
 
-  :root .opfg-top-world-hud__character-name {
-    font-size: var(--ui-hud-name-size);
-  }
+:root .opfg-hud-environment__location,
+:root .opfg-hud-environment__sea {
+  font-size: var(--ui-hud-environment-size);
+}
 
-  :root .opfg-top-world-hud__ship-icon {
-    width: var(--ui-hud-ship-icon-size);
-    height: var(--ui-hud-ship-icon-size);
-  }
+:root .opfg-hud-slot,
+:root .opfg-hud-slot-wrap {
+  width: var(--ui-hud-slot-size);
+  min-width: var(--ui-hud-slot-size);
+  height: var(--ui-hud-slot-size);
+}
 
-  :root .opfg-top-world-hud__inventory-slots {
-    grid-template-columns:
-      repeat(2, var(--ui-hud-slot-size));
-    gap: var(--ui-hud-slot-gap);
-  }
+:root .opfg-hud-slot {
+  border-radius: var(--ui-hud-slot-radius);
+}
 
-  :root .opfg-top-world-hud__slot-wrap,
-  :root .opfg-top-world-hud__slot {
-    width: var(--ui-hud-slot-size);
-    min-width: var(--ui-hud-slot-size);
-    height: var(--ui-hud-slot-size);
-    border-radius: var(--ui-hud-slot-radius);
-  }
+:root .opfg-hud-slots {
+  gap: var(--ui-hud-slot-gap);
+}
 
-  :root .opfg-top-world-hud__cargo {
-    margin-left: var(--ui-hud-cargo-offset);
-  }
+:root .opfg-hud-year-progress {
+  gap: var(--ui-hud-event-slot-gap);
+}
 
-  :root .opfg-top-world-hud__cargo-slots {
-    grid-template-columns:
-      repeat(4, var(--ui-hud-slot-size));
-    grid-template-rows:
-      repeat(2, var(--ui-hud-slot-size));
-    gap: var(--ui-hud-slot-gap);
-  }
+:root .opfg-hud-year-progress__slot {
+  height: var(--ui-hud-event-slot-height);
+  border-radius: var(--ui-hud-event-slot-radius);
+}
+
+:root .opfg-hud-ship__icon {
+  width: var(--ui-hud-ship-icon-size);
+  height: var(--ui-hud-ship-icon-size);
+}
+
+:root .opfg-adventure-stack {
+  gap: var(--ui-adventure-stack-gap);
 }
 
 /* ------------------------------------------------------------------------- */

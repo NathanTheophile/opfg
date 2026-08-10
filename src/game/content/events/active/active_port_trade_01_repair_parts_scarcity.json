@@ -1,0 +1,185 @@
+{
+  "id": "active_port_trade_01_repair_parts_scarcity",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_repair_parts_scarcity.title",
+  "textKey": "event.active_port_trade_01_repair_parts_scarcity.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "ship_repair"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "isLeader"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "shipIs",
+                "shipId": "dinghy"
+              },
+              {
+                "type": "shipHealthAtMost",
+                "value": 17
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "shipIs",
+                "shipId": "sloop"
+              },
+              {
+                "type": "shipHealthAtMost",
+                "value": 29
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "shipIs",
+                "shipId": "caravel"
+              },
+              {
+                "type": "shipHealthAtMost",
+                "value": 37
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "shipIs",
+                "shipId": "brig"
+              },
+              {
+                "type": "shipHealthAtMost",
+                "value": 49
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "shipIs",
+                "shipId": "merchant_ship"
+              },
+              {
+                "type": "shipHealthAtMost",
+                "value": 41
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "shipIs",
+                "shipId": "galleon"
+              },
+              {
+                "type": "shipHealthAtMost",
+                "value": 64
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "provisoire",
+      "textKey": "event.active_port_trade_01_repair_parts_scarcity.choice.provisoire.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "repare",
+          "textKey": "event.active_port_trade_01_repair_parts_scarcity.choice.provisoire.outcome.repare.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -220
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 3
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 220
+      }
+    },
+    {
+      "id": "commander",
+      "textKey": "event.active_port_trade_01_repair_parts_scarcity.choice.commander.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "commande",
+          "textKey": "event.active_port_trade_01_repair_parts_scarcity.choice.commander.outcome.commande.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -120
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_ordered_parts_arrive",
+              "delayMonths": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 120
+      }
+    },
+    {
+      "id": "rien",
+      "textKey": "event.active_port_trade_01_repair_parts_scarcity.choice.rien.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rien",
+          "textKey": "event.active_port_trade_01_repair_parts_scarcity.choice.rien.outcome.rien.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

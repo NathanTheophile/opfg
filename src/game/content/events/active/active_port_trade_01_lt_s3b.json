@@ -1,0 +1,59 @@
+{
+  "id": "active_port_trade_01_lt_s3b",
+  "kind": "scheduled",
+  "titleKey": "event.active_port_trade_01_lt_s3b.title",
+  "textKey": "event.active_port_trade_01_lt_s3b.text",
+  "eligibility": {
+    "type": "locationHasService",
+    "serviceId": "trade"
+  },
+  "choices": [
+    {
+      "id": "couper",
+      "textKey": "event.active_port_trade_01_lt_s3b.choice.couper.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "couper",
+          "textKey": "event.active_port_trade_01_lt_s3b.choice.couper.outcome.couper.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s4b",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "laisser",
+      "textKey": "event.active_port_trade_01_lt_s3b.choice.laisser.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "laisser",
+          "textKey": "event.active_port_trade_01_lt_s3b.choice.laisser.outcome.laisser.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 80
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s4b",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

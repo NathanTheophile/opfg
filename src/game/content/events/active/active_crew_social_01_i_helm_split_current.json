@@ -1,0 +1,82 @@
+{
+  "id": "active_crew_social_01_i_helm_split_current",
+  "kind": "immediate",
+  "titleKey": "event.active_crew_social_01_i_helm_split_current.title",
+  "textKey": "event.active_crew_social_01_i_helm_split_current.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "combine",
+      "textKey": "event.active_crew_social_01_i_helm_split_current.choice.combine.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_i_helm_split_current.choice.combine.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_helm_split_sides"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hold_line",
+      "textKey": "event.active_crew_social_01_i_helm_split_current.choice.hold_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_i_helm_split_current.choice.hold_line.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_helm_split_sides"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "swap_voice",
+      "textKey": "event.active_crew_social_01_i_helm_split_current.choice.swap_voice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_i_helm_split_current.choice.swap_voice.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_helm_split_sides"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "id": "active_crew_social_01_s_culture_dissent_protect_2",
+  "kind": "scheduled",
+  "titleKey": "event.active_crew_social_01_s_culture_dissent_protect_2.title",
+  "textKey": "event.active_crew_social_01_s_culture_dissent_protect_2.text",
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "hasCrew"
+    }
+  },
+  "choices": [
+    {
+      "id": "rotate_cost",
+      "textKey": "event.active_crew_social_01_s_culture_dissent_protect_2.choice.rotate_cost.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_dissent_protect_2.choice.rotate_cost.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_dissent_protect_3",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "voluntary_cover",
+      "textKey": "event.active_crew_social_01_s_culture_dissent_protect_2.choice.voluntary_cover.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_dissent_protect_2.choice.voluntary_cover.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_dissent_protect_3",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "crewSizeAtLeast",
+    "value": 2
+  }
+}

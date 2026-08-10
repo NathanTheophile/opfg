@@ -1,0 +1,60 @@
+{
+  "id": "active_port_trade_01_lt_s12c",
+  "kind": "scheduled",
+  "titleKey": "event.active_port_trade_01_lt_s12c.title",
+  "textKey": "event.active_port_trade_01_lt_s12c.text",
+  "eligibility": {
+    "type": "locationHasService",
+    "serviceId": "trade"
+  },
+  "choices": [
+    {
+      "id": "exiger_clarte",
+      "textKey": "event.active_port_trade_01_lt_s12c.choice.exiger_clarte.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "exiger_clarte",
+          "textKey": "event.active_port_trade_01_lt_s12c.choice.exiger_clarte.outcome.exiger_clarte.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s13c",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "exception",
+      "textKey": "event.active_port_trade_01_lt_s12c.choice.exception.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "exception",
+          "textKey": "event.active_port_trade_01_lt_s12c.choice.exception.outcome.exception.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "luck",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s13c",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

@@ -1,0 +1,157 @@
+{
+  "id": "active_port_trade_01_ship_purchase_offer",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_ship_purchase_offer.title",
+  "textKey": "event.active_port_trade_01_ship_purchase_offer.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      },
+      {
+        "type": "isLeader"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "dinghy",
+      "textKey": "event.active_port_trade_01_ship_purchase_offer.choice.dinghy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "achetee",
+          "textKey": "event.active_port_trade_01_ship_purchase_offer.choice.dinghy.outcome.achetee.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -600
+            },
+            {
+              "type": "acquireShip",
+              "shipId": "dinghy",
+              "name": "Petite Marée"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "berriesAtLeast",
+            "value": 600
+          },
+          {
+            "type": "canAcquireShip",
+            "shipId": "dinghy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sloop",
+      "textKey": "event.active_port_trade_01_ship_purchase_offer.choice.sloop.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "achete",
+          "textKey": "event.active_port_trade_01_ship_purchase_offer.choice.sloop.outcome.achete.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1800
+            },
+            {
+              "type": "acquireShip",
+              "shipId": "sloop",
+              "name": "Franc-Bord"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "berriesAtLeast",
+            "value": 1800
+          },
+          {
+            "type": "canAcquireShip",
+            "shipId": "sloop"
+          }
+        ]
+      }
+    },
+    {
+      "id": "merchant",
+      "textKey": "event.active_port_trade_01_ship_purchase_offer.choice.merchant.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "achete",
+          "textKey": "event.active_port_trade_01_ship_purchase_offer.choice.merchant.outcome.achete.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -5200
+            },
+            {
+              "type": "acquireShip",
+              "shipId": "merchant_ship",
+              "name": "Long Crédit"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "berriesAtLeast",
+            "value": 5200
+          },
+          {
+            "type": "canAcquireShip",
+            "shipId": "merchant_ship"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rien",
+      "textKey": "event.active_port_trade_01_ship_purchase_offer.choice.rien.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "aucun",
+          "textKey": "event.active_port_trade_01_ship_purchase_offer.choice.rien.outcome.aucun.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

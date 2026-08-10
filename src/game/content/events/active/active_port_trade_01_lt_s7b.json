@@ -1,0 +1,59 @@
+{
+  "id": "active_port_trade_01_lt_s7b",
+  "kind": "scheduled",
+  "titleKey": "event.active_port_trade_01_lt_s7b.title",
+  "textKey": "event.active_port_trade_01_lt_s7b.text",
+  "eligibility": {
+    "type": "locationHasService",
+    "serviceId": "trade"
+  },
+  "choices": [
+    {
+      "id": "regler",
+      "textKey": "event.active_port_trade_01_lt_s7b.choice.regler.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "regler",
+          "textKey": "event.active_port_trade_01_lt_s7b.choice.regler.outcome.regler.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 90
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s8b",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "attendre",
+      "textKey": "event.active_port_trade_01_lt_s7b.choice.attendre.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "attendre",
+          "textKey": "event.active_port_trade_01_lt_s7b.choice.attendre.outcome.attendre.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s8b",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

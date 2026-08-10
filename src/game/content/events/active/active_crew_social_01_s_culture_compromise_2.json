@@ -1,0 +1,65 @@
+{
+  "id": "active_crew_social_01_s_culture_compromise_2",
+  "kind": "scheduled",
+  "titleKey": "event.active_crew_social_01_s_culture_compromise_2.title",
+  "textKey": "event.active_crew_social_01_s_culture_compromise_2.text",
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "hasCrew"
+    }
+  },
+  "choices": [
+    {
+      "id": "admit_limit",
+      "textKey": "event.active_crew_social_01_s_culture_compromise_2.choice.admit_limit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_compromise_2.choice.admit_limit.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_credit_test",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_compromise",
+      "textKey": "event.active_crew_social_01_s_culture_compromise_2.choice.keep_compromise.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_compromise_2.choice.keep_compromise.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_credit_test",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "crewSizeAtLeast",
+    "value": 2
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "id": "active_port_trade_01_cargo_damage_liability",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_cargo_damage_liability.title",
+  "textKey": "event.active_port_trade_01_cargo_damage_liability.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "temoins",
+      "textKey": "event.active_port_trade_01_cargo_damage_liability.choice.temoins.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_port_trade_01_cargo_damage_liability.choice.temoins.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_port_trade_01_cargo_damage_liability.choice.temoins.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -60
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_port_trade_01_cargo_damage_liability.choice.temoins.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_port_trade_01_cargo_damage_liability.choice.temoins.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 60
+      }
+    },
+    {
+      "id": "partager",
+      "textKey": "event.active_port_trade_01_cargo_damage_liability.choice.partager.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "partage",
+          "textKey": "event.active_port_trade_01_cargo_damage_liability.choice.partager.outcome.partage.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -50
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 50
+      }
+    },
+    {
+      "id": "refuser",
+      "textKey": "event.active_port_trade_01_cargo_damage_liability.choice.refuser.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refus",
+          "textKey": "event.active_port_trade_01_cargo_damage_liability.choice.refuser.outcome.refus.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

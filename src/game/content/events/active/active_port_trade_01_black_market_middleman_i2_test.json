@@ -1,0 +1,63 @@
+{
+  "id": "active_port_trade_01_black_market_middleman_i2_test",
+  "kind": "immediate",
+  "titleKey": "event.active_port_trade_01_black_market_middleman_i2_test.title",
+  "textKey": "event.active_port_trade_01_black_market_middleman_i2_test.text",
+  "choices": [
+    {
+      "id": "plafond_reel",
+      "textKey": "event.active_port_trade_01_black_market_middleman_i2_test.choice.plafond_reel.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "plafond",
+          "textKey": "event.active_port_trade_01_black_market_middleman_i2_test.choice.plafond_reel.outcome.plafond.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_black_market_middleman_i3_terms"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "faux_plafond",
+      "textKey": "event.active_port_trade_01_black_market_middleman_i2_test.choice.faux_plafond.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "faux",
+          "textKey": "event.active_port_trade_01_black_market_middleman_i2_test.choice.faux_plafond.outcome.faux.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_black_market_middleman_i3_terms"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "deceptive"
+      }
+    },
+    {
+      "id": "aucun_plafond",
+      "textKey": "event.active_port_trade_01_black_market_middleman_i2_test.choice.aucun_plafond.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "position",
+          "textKey": "event.active_port_trade_01_black_market_middleman_i2_test.choice.aucun_plafond.outcome.position.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_black_market_middleman_i3_terms"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

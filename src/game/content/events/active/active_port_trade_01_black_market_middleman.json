@@ -1,0 +1,87 @@
+{
+  "id": "active_port_trade_01_black_market_middleman",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_black_market_middleman.title",
+  "textKey": "event.active_port_trade_01_black_market_middleman.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "black_market"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "demander_preuve",
+      "textKey": "event.active_port_trade_01_black_market_middleman.choice.demander_preuve.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "preuve",
+          "textKey": "event.active_port_trade_01_black_market_middleman.choice.demander_preuve.outcome.preuve.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_black_market_middleman_i1_token"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "payer",
+      "textKey": "event.active_port_trade_01_black_market_middleman.choice.payer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "commission",
+          "textKey": "event.active_port_trade_01_black_market_middleman.choice.payer.outcome.commission.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -120
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_black_market_middleman_i1_token"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 120
+      }
+    },
+    {
+      "id": "refuser",
+      "textKey": "event.active_port_trade_01_black_market_middleman.choice.refuser.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refus",
+          "textKey": "event.active_port_trade_01_black_market_middleman.choice.refuser.outcome.refus.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

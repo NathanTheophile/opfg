@@ -1,0 +1,65 @@
+{
+  "id": "active_crew_social_01_s_culture_tight_final_2",
+  "kind": "scheduled",
+  "titleKey": "event.active_crew_social_01_s_culture_tight_final_2.title",
+  "textKey": "event.active_crew_social_01_s_culture_tight_final_2.text",
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "hasCrew"
+    }
+  },
+  "choices": [
+    {
+      "id": "hear_alarm",
+      "textKey": "event.active_crew_social_01_s_culture_tight_final_2.choice.hear_alarm.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_tight_final_2.choice.hear_alarm.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_tight_final_end",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "enforce",
+      "textKey": "event.active_crew_social_01_s_culture_tight_final_2.choice.enforce.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_tight_final_2.choice.enforce.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_tight_final_end",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "crewSizeAtLeast",
+    "value": 2
+  }
+}

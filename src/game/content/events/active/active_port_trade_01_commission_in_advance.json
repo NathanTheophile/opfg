@@ -1,0 +1,89 @@
+{
+  "id": "active_port_trade_01_commission_in_advance",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_commission_in_advance.title",
+  "textKey": "event.active_port_trade_01_commission_in_advance.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "petit_acompte",
+      "textKey": "event.active_port_trade_01_commission_in_advance.choice.petit_acompte.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paye",
+          "textKey": "event.active_port_trade_01_commission_in_advance.choice.petit_acompte.outcome.paye.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -80
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_commission_return",
+              "delayMonths": 3
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 80
+      }
+    },
+    {
+      "id": "succes",
+      "textKey": "event.active_port_trade_01_commission_in_advance.choice.succes.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "succes",
+          "textKey": "event.active_port_trade_01_commission_in_advance.choice.succes.outcome.succes.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_commission_return",
+              "delayMonths": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuser",
+      "textKey": "event.active_port_trade_01_commission_in_advance.choice.refuser.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refus",
+          "textKey": "event.active_port_trade_01_commission_in_advance.choice.refuser.outcome.refus.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

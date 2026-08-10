@@ -1,0 +1,65 @@
+{
+  "id": "active_crew_social_01_s_culture_outsider_mirror",
+  "kind": "scheduled",
+  "titleKey": "event.active_crew_social_01_s_culture_outsider_mirror.title",
+  "textKey": "event.active_crew_social_01_s_culture_outsider_mirror.text",
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "hasCrew"
+    }
+  },
+  "choices": [
+    {
+      "id": "embrace",
+      "textKey": "event.active_crew_social_01_s_culture_outsider_mirror.choice.embrace.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_outsider_mirror.choice.embrace.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_dissent_split",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "question",
+      "textKey": "event.active_crew_social_01_s_culture_outsider_mirror.choice.question.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_outsider_mirror.choice.question.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_dissent_split",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "crewSizeAtLeast",
+    "value": 2
+  }
+}

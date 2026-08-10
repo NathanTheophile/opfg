@@ -1,0 +1,82 @@
+{
+  "id": "active_crew_social_01_shipwright_overwork_boundary",
+  "kind": "normal",
+  "titleKey": "event.active_crew_social_01_shipwright_overwork_boundary.title",
+  "textKey": "event.active_crew_social_01_shipwright_overwork_boundary.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "hasCrew"
+      },
+      {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "redistribute",
+      "textKey": "event.active_crew_social_01_shipwright_overwork_boundary.choice.redistribute.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_shipwright_overwork_boundary.choice.redistribute.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "support_no",
+      "textKey": "event.active_crew_social_01_shipwright_overwork_boundary.choice.support_no.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_shipwright_overwork_boundary.choice.support_no.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "finish_today",
+      "textKey": "event.active_crew_social_01_shipwright_overwork_boundary.choice.finish_today.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_shipwright_overwork_boundary.choice.finish_today.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

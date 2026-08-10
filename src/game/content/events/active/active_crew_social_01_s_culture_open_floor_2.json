@@ -1,0 +1,65 @@
+{
+  "id": "active_crew_social_01_s_culture_open_floor_2",
+  "kind": "scheduled",
+  "titleKey": "event.active_crew_social_01_s_culture_open_floor_2.title",
+  "textKey": "event.active_crew_social_01_s_culture_open_floor_2.text",
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "hasCrew"
+    }
+  },
+  "choices": [
+    {
+      "id": "protect_dissent",
+      "textKey": "event.active_crew_social_01_s_culture_open_floor_2.choice.protect_dissent.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_open_floor_2.choice.protect_dissent.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_outsider_mirror",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "separate_voice_vote",
+      "textKey": "event.active_crew_social_01_s_culture_open_floor_2.choice.separate_voice_vote.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_open_floor_2.choice.separate_voice_vote.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_outsider_mirror",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "crewSizeAtLeast",
+    "value": 2
+  }
+}

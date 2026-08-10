@@ -1,0 +1,65 @@
+{
+  "id": "active_crew_social_01_s_culture_discipline_1",
+  "kind": "scheduled",
+  "titleKey": "event.active_crew_social_01_s_culture_discipline_1.title",
+  "textKey": "event.active_crew_social_01_s_culture_discipline_1.text",
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "hasCrew"
+    }
+  },
+  "choices": [
+    {
+      "id": "open_after_action",
+      "textKey": "event.active_crew_social_01_s_culture_discipline_1.choice.open_after_action.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_discipline_1.choice.open_after_action.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_discipline_2",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hold_line",
+      "textKey": "event.active_crew_social_01_s_culture_discipline_1.choice.hold_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_discipline_1.choice.hold_line.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_discipline_2",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "crewSizeAtLeast",
+    "value": 2
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "id": "active_port_trade_01_customs_manifest_mismatch",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_customs_manifest_mismatch.title",
+  "textKey": "event.active_port_trade_01_customs_manifest_mismatch.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "expliquer",
+      "textKey": "event.active_port_trade_01_customs_manifest_mismatch.choice.expliquer.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_port_trade_01_customs_manifest_mismatch.choice.expliquer.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "modifyBerries",
+                "amount": -70
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_port_trade_01_customs_manifest_mismatch.choice.expliquer.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -50
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_port_trade_01_customs_manifest_mismatch.choice.expliquer.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_port_trade_01_customs_manifest_mismatch.choice.expliquer.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 70
+      }
+    },
+    {
+      "id": "payer",
+      "textKey": "event.active_port_trade_01_customs_manifest_mismatch.choice.payer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paye",
+          "textKey": "event.active_port_trade_01_customs_manifest_mismatch.choice.payer.outcome.paye.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -60
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 60
+      }
+    },
+    {
+      "id": "abandon",
+      "textKey": "event.active_port_trade_01_customs_manifest_mismatch.choice.abandon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "abandonne",
+          "textKey": "event.active_port_trade_01_customs_manifest_mismatch.choice.abandon.outcome.abandonne.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "id": "active_crew_social_01_i_rescue_dissent_frozen_hands",
+  "kind": "immediate",
+  "titleKey": "event.active_crew_social_01_i_rescue_dissent_frozen_hands.title",
+  "textKey": "event.active_crew_social_01_i_rescue_dissent_frozen_hands.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "trust_them",
+      "textKey": "event.active_crew_social_01_i_rescue_dissent_frozen_hands.choice.trust_them.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_i_rescue_dissent_frozen_hands.choice.trust_them.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_rescue_dissent_last_pull"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "replace_them",
+      "textKey": "event.active_crew_social_01_i_rescue_dissent_frozen_hands.choice.replace_them.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_i_rescue_dissent_frozen_hands.choice.replace_them.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_rescue_dissent_last_pull"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stand_beside",
+      "textKey": "event.active_crew_social_01_i_rescue_dissent_frozen_hands.choice.stand_beside.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_i_rescue_dissent_frozen_hands.choice.stand_beside.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_rescue_dissent_last_pull"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "id": "active_port_trade_01_deferred_contract_network",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_deferred_contract_network.title",
+  "textKey": "event.active_port_trade_01_deferred_contract_network.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "commission_fixe",
+      "textKey": "event.active_port_trade_01_deferred_contract_network.choice.commission_fixe.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fixe",
+          "textKey": "event.active_port_trade_01_deferred_contract_network.choice.commission_fixe.outcome.fixe.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 120
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s1",
+              "delayMonths": 9
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "part_variable",
+      "textKey": "event.active_port_trade_01_deferred_contract_network.choice.part_variable.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "variable",
+          "textKey": "event.active_port_trade_01_deferred_contract_network.choice.part_variable.outcome.variable.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s1",
+              "delayMonths": 9
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "garantie_partielle",
+      "textKey": "event.active_port_trade_01_deferred_contract_network.choice.garantie_partielle.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mixte",
+          "textKey": "event.active_port_trade_01_deferred_contract_network.choice.garantie_partielle.outcome.mixte.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 60
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s1",
+              "delayMonths": 9
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "lifetimeThreadSeed": true
+}

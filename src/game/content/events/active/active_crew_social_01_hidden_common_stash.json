@@ -1,0 +1,155 @@
+{
+  "id": "active_crew_social_01_hidden_common_stash",
+  "kind": "normal",
+  "titleKey": "event.active_crew_social_01_hidden_common_stash.title",
+  "textKey": "event.active_crew_social_01_hidden_common_stash.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "crewSizeAtLeast",
+        "value": 2
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "look_for_signs",
+      "textKey": "event.active_crew_social_01_hidden_common_stash.choice.look_for_signs.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_crew_social_01_hidden_common_stash.choice.look_for_signs.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_crew_social_01_s_stash_echo",
+                "delayMonths": 4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_crew_social_01_i_stash_confront"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_crew_social_01_hidden_common_stash.choice.look_for_signs.outcome.failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_crew_social_01_s_stash_echo",
+                "delayMonths": 4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_crew_social_01_i_stash_confront"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_crew_social_01_hidden_common_stash.choice.look_for_signs.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_crew_social_01_s_stash_echo",
+                "delayMonths": 4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_crew_social_01_i_stash_confront"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_crew_social_01_hidden_common_stash.choice.look_for_signs.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_crew_social_01_s_stash_echo",
+                "delayMonths": 4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_crew_social_01_i_stash_confront"
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "suspicious"
+            },
+            "value": 2,
+            "displayLabelKey": "event.active_crew_social_01_hidden_common_stash.choice.look_for_signs.modifier.suspicious"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ask_group",
+      "textKey": "event.active_crew_social_01_hidden_common_stash.choice.ask_group.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_hidden_common_stash.choice.ask_group.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_stash_echo",
+              "delayMonths": 4
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_stash_confront"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "put_back",
+      "textKey": "event.active_crew_social_01_hidden_common_stash.choice.put_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_hidden_common_stash.choice.put_back.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

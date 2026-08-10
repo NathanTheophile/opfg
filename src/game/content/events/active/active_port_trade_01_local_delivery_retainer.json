@@ -1,0 +1,88 @@
+{
+  "id": "active_port_trade_01_local_delivery_retainer",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_local_delivery_retainer.title",
+  "textKey": "event.active_port_trade_01_local_delivery_retainer.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "general_goods"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "accepter",
+      "textKey": "event.active_port_trade_01_local_delivery_retainer.choice.accepter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accepte",
+          "textKey": "event.active_port_trade_01_local_delivery_retainer.choice.accepter.outcome.accepte.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 80
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_retainer_second_job",
+              "delayMonths": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "tout_maintenant",
+      "textKey": "event.active_port_trade_01_local_delivery_retainer.choice.tout_maintenant.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paye",
+          "textKey": "event.active_port_trade_01_local_delivery_retainer.choice.tout_maintenant.outcome.paye.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 120
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuser",
+      "textKey": "event.active_port_trade_01_local_delivery_retainer.choice.refuser.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refus",
+          "textKey": "event.active_port_trade_01_local_delivery_retainer.choice.refuser.outcome.refus.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

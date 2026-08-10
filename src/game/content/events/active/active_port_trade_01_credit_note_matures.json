@@ -1,0 +1,65 @@
+{
+  "id": "active_port_trade_01_credit_note_matures",
+  "kind": "scheduled",
+  "titleKey": "event.active_port_trade_01_credit_note_matures.title",
+  "textKey": "event.active_port_trade_01_credit_note_matures.text",
+  "eligibility": {
+    "type": "locationHasService",
+    "serviceId": "trade"
+  },
+  "choices": [
+    {
+      "id": "tenir_montant",
+      "textKey": "event.active_port_trade_01_credit_note_matures.choice.tenir_montant.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "montant",
+          "textKey": "event.active_port_trade_01_credit_note_matures.choice.tenir_montant.outcome.montant.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 180
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rabais",
+      "textKey": "event.active_port_trade_01_credit_note_matures.choice.rabais.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rabais",
+          "textKey": "event.active_port_trade_01_credit_note_matures.choice.rabais.outcome.rabais.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 130
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "laisser",
+      "textKey": "event.active_port_trade_01_credit_note_matures.choice.laisser.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "perdu",
+          "textKey": "event.active_port_trade_01_credit_note_matures.choice.laisser.outcome.perdu.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}
