@@ -1,0 +1,134 @@
+{
+  "id": "ch_combat_01_three_against_one",
+  "titleKey": "event.ch_combat_01_three_against_one.title",
+  "textKey": "event.ch_combat_01_three_against_one.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "stand_beside",
+      "textKey": "event.ch_combat_01_three_against_one.choice.stand_beside.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "voice_breaks",
+            "textKey": "event.ch_combat_01_three_against_one.choice.stand_beside.outcome.voice_breaks.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_three_against_one_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "ignored",
+            "textKey": "event.ch_combat_01_three_against_one.choice.stand_beside.outcome.ignored.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_three_against_one_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "line_held",
+            "textKey": "event.ch_combat_01_three_against_one.choice.stand_beside.outcome.line_held.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_three_against_one_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crowd_turns",
+            "textKey": "event.ch_combat_01_three_against_one.choice.stand_beside.outcome.crowd_turns.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_three_against_one_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "draw_one_out",
+      "textKey": "event.ch_combat_01_three_against_one.choice.draw_one_out.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "one_drawn_out",
+          "textKey": "event.ch_combat_01_three_against_one.choice.draw_one_out.outcome.one_drawn_out.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_three_against_one_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_witnesses",
+      "textKey": "event.ch_combat_01_three_against_one.choice.call_witnesses.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "witnesses_called",
+          "textKey": "event.ch_combat_01_three_against_one.choice.call_witnesses.outcome.witnesses_called.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_three_against_one_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "id": "active_generic_combat_01_rival_s10_borrowed_opening",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_s10_borrowed_opening.title",
+  "textKey": "event.active_generic_combat_01_rival_s10_borrowed_opening.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "truce",
+      "textKey": "event.active_generic_combat_01_rival_s10_borrowed_opening.choice.truce.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "truce_outcome",
+          "textKey": "event.active_generic_combat_01_rival_s10_borrowed_opening.choice.truce.outcome.truce_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_t11_shared_rule",
+              "delayMonths": 18
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_s10_borrowed_opening_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rivalry",
+      "textKey": "event.active_generic_combat_01_rival_s10_borrowed_opening.choice.rivalry.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rivalry_outcome",
+          "textKey": "event.active_generic_combat_01_rival_s10_borrowed_opening.choice.rivalry.outcome.rivalry_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_r11_last_challenge",
+              "delayMonths": 18
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_s10_borrowed_opening_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "escalate",
+      "textKey": "event.active_generic_combat_01_rival_s10_borrowed_opening.choice.escalate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "escalate_outcome",
+          "textKey": "event.active_generic_combat_01_rival_s10_borrowed_opening.choice.escalate.outcome.escalate_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_e11_hard_break",
+              "delayMonths": 18
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_s10_borrowed_opening_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

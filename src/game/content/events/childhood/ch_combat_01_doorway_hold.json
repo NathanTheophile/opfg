@@ -1,0 +1,91 @@
+{
+  "id": "ch_combat_01_doorway_hold",
+  "titleKey": "event.ch_combat_01_doorway_hold.title",
+  "textKey": "event.ch_combat_01_doorway_hold.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "brace_door",
+      "textKey": "event.ch_combat_01_doorway_hold.choice.brace_door.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "door_braced",
+          "textKey": "event.ch_combat_01_doorway_hold.choice.brace_door.outcome.door_braced.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_doorway_hold_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "clear_back_exit",
+      "textKey": "event.ch_combat_01_doorway_hold.choice.clear_back_exit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "back_exit_cleared",
+          "textKey": "event.ch_combat_01_doorway_hold.choice.clear_back_exit.outcome.back_exit_cleared.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_doorway_hold_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_neighbors",
+      "textKey": "event.ch_combat_01_doorway_hold.choice.call_neighbors.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "neighbors_called",
+          "textKey": "event.ch_combat_01_doorway_hold.choice.call_neighbors.outcome.neighbors_called.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_doorway_hold_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

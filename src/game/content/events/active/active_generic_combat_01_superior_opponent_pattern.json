@@ -1,0 +1,164 @@
+{
+  "id": "active_generic_combat_01_superior_opponent_pattern",
+  "kind": "normal",
+  "titleKey": "event.active_generic_combat_01_superior_opponent_pattern.title",
+  "textKey": "event.active_generic_combat_01_superior_opponent_pattern.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "engage",
+      "textKey": "event.active_generic_combat_01_superior_opponent_pattern.choice.engage.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "engage_criticalfailure",
+            "textKey": "event.active_generic_combat_01_superior_opponent_pattern.choice.engage.outcome.engage_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_superior_opponent_pattern_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "engage_failure",
+            "textKey": "event.active_generic_combat_01_superior_opponent_pattern.choice.engage.outcome.engage_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_superior_opponent_pattern_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "engage_success",
+            "textKey": "event.active_generic_combat_01_superior_opponent_pattern.choice.engage.outcome.engage_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_superior_opponent_pattern_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "engage_criticalsuccess",
+            "textKey": "event.active_generic_combat_01_superior_opponent_pattern.choice.engage.outcome.engage_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_superior_opponent_pattern_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "control",
+      "textKey": "event.active_generic_combat_01_superior_opponent_pattern.choice.control.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "control_outcome",
+          "textKey": "event.active_generic_combat_01_superior_opponent_pattern.choice.control.outcome.control_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_superior_opponent_pattern_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw",
+      "textKey": "event.active_generic_combat_01_superior_opponent_pattern.choice.withdraw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "withdraw_outcome",
+          "textKey": "event.active_generic_combat_01_superior_opponent_pattern.choice.withdraw.outcome.withdraw_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hunter_read",
+      "textKey": "event.active_generic_combat_01_superior_opponent_pattern.choice.hunter_read.text",
+      "availableIf": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "bounty_hunter"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hunter_read_outcome",
+          "textKey": "event.active_generic_combat_01_superior_opponent_pattern.choice.hunter_read.outcome.hunter_read_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_superior_opponent_pattern_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

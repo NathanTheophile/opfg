@@ -1,0 +1,73 @@
+{
+  "id": "ch_combat_01_cart_raid_i4",
+  "titleKey": "event.ch_combat_01_cart_raid_i4.title",
+  "textKey": "event.ch_combat_01_cart_raid_i4.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "offer_exit",
+      "textKey": "event.ch_combat_01_cart_raid_i4.choice.offer_exit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "exit_offered",
+          "textKey": "event.ch_combat_01_cart_raid_i4.choice.offer_exit.outcome.exit_offered.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_cart_raid_i5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "recover_sack",
+      "textKey": "event.ch_combat_01_cart_raid_i4.choice.recover_sack.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sack_recovered",
+          "textKey": "event.ch_combat_01_cart_raid_i4.choice.recover_sack.outcome.sack_recovered.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_cart_raid_i5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ignore_sack",
+      "textKey": "event.ch_combat_01_cart_raid_i4.choice.ignore_sack.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sack_ignored",
+          "textKey": "event.ch_combat_01_cart_raid_i4.choice.ignore_sack.outcome.sack_ignored.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "resourceful"
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_cart_raid_i5"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

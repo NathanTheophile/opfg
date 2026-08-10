@@ -1,0 +1,68 @@
+{
+  "id": "active_generic_combat_01_rival_t11_shared_rule",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_t11_shared_rule.title",
+  "textKey": "event.active_generic_combat_01_rival_t11_shared_rule.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "teach",
+      "textKey": "event.active_generic_combat_01_rival_t11_shared_rule.choice.teach.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "teach_outcome",
+          "textKey": "event.active_generic_combat_01_rival_t11_shared_rule.choice.teach.outcome.teach_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_t12_parting_respect",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "private",
+      "textKey": "event.active_generic_combat_01_rival_t11_shared_rule.choice.private.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "private_outcome",
+          "textKey": "event.active_generic_combat_01_rival_t11_shared_rule.choice.private.outcome.private_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_t12_parting_respect",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

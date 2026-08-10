@@ -1,0 +1,119 @@
+{
+  "id": "active_generic_combat_01_improvised_bodyguard",
+  "kind": "normal",
+  "titleKey": "event.active_generic_combat_01_improvised_bodyguard.title",
+  "textKey": "event.active_generic_combat_01_improvised_bodyguard.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "wealthy"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "engage",
+      "textKey": "event.active_generic_combat_01_improvised_bodyguard.choice.engage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "engage_outcome",
+          "textKey": "event.active_generic_combat_01_improvised_bodyguard.choice.engage.outcome.engage_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_improvised_bodyguard_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "control",
+      "textKey": "event.active_generic_combat_01_improvised_bodyguard.choice.control.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "control_outcome",
+          "textKey": "event.active_generic_combat_01_improvised_bodyguard.choice.control.outcome.control_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_improvised_bodyguard_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw",
+      "textKey": "event.active_generic_combat_01_improvised_bodyguard.choice.withdraw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "withdraw_outcome",
+          "textKey": "event.active_generic_combat_01_improvised_bodyguard.choice.withdraw.outcome.withdraw_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "civilian_organize",
+      "textKey": "event.active_generic_combat_01_improvised_bodyguard.choice.civilian_organize.text",
+      "availableIf": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "civilian_organize_outcome",
+          "textKey": "event.active_generic_combat_01_improvised_bodyguard.choice.civilian_organize.outcome.civilian_organize_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_improvised_bodyguard_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

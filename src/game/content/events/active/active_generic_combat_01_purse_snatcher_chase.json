@@ -1,0 +1,136 @@
+{
+  "id": "active_generic_combat_01_purse_snatcher_chase",
+  "kind": "normal",
+  "titleKey": "event.active_generic_combat_01_purse_snatcher_chase.title",
+  "textKey": "event.active_generic_combat_01_purse_snatcher_chase.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "engage",
+      "textKey": "event.active_generic_combat_01_purse_snatcher_chase.choice.engage.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "engage_criticalfailure",
+            "textKey": "event.active_generic_combat_01_purse_snatcher_chase.choice.engage.outcome.engage_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_purse_snatcher_chase_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "engage_failure",
+            "textKey": "event.active_generic_combat_01_purse_snatcher_chase.choice.engage.outcome.engage_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_purse_snatcher_chase_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "engage_success",
+            "textKey": "event.active_generic_combat_01_purse_snatcher_chase.choice.engage.outcome.engage_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_purse_snatcher_chase_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "engage_criticalsuccess",
+            "textKey": "event.active_generic_combat_01_purse_snatcher_chase.choice.engage.outcome.engage_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_purse_snatcher_chase_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "control",
+      "textKey": "event.active_generic_combat_01_purse_snatcher_chase.choice.control.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "control_outcome",
+          "textKey": "event.active_generic_combat_01_purse_snatcher_chase.choice.control.outcome.control_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_purse_snatcher_chase_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw",
+      "textKey": "event.active_generic_combat_01_purse_snatcher_chase.choice.withdraw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "withdraw_outcome",
+          "textKey": "event.active_generic_combat_01_purse_snatcher_chase.choice.withdraw.outcome.withdraw_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

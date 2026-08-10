@@ -1,0 +1,168 @@
+{
+  "id": "ch_combat_01_breakfall_lesson",
+  "titleKey": "event.ch_combat_01_breakfall_lesson.title",
+  "textKey": "event.ch_combat_01_breakfall_lesson.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 143
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "tuck_and_roll",
+      "textKey": "event.ch_combat_01_breakfall_lesson.choice.tuck_and_roll.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "arm_out",
+            "textKey": "event.ch_combat_01_breakfall_lesson.choice.tuck_and_roll.outcome.arm_out.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_breakfall_lesson_i1"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_combat_01_breakfall_lesson_return",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "awkward_roll",
+            "textKey": "event.ch_combat_01_breakfall_lesson.choice.tuck_and_roll.outcome.awkward_roll.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_breakfall_lesson_i1"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_combat_01_breakfall_lesson_return",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "clean_roll",
+            "textKey": "event.ch_combat_01_breakfall_lesson.choice.tuck_and_roll.outcome.clean_roll.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_breakfall_lesson_i1"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_combat_01_breakfall_lesson_return",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "automatic_fall",
+            "textKey": "event.ch_combat_01_breakfall_lesson.choice.tuck_and_roll.outcome.automatic_fall.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_breakfall_lesson_i1"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_combat_01_breakfall_lesson_return",
+                "delayMonths": 18
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "protect_head",
+      "textKey": "event.ch_combat_01_breakfall_lesson.choice.protect_head.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "head_protected",
+          "textKey": "event.ch_combat_01_breakfall_lesson.choice.protect_head.outcome.head_protected.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_breakfall_lesson_i1"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_breakfall_lesson_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "grab_partner",
+      "textKey": "event.ch_combat_01_breakfall_lesson.choice.grab_partner.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "partner_grabbed",
+          "textKey": "event.ch_combat_01_breakfall_lesson.choice.grab_partner.outcome.partner_grabbed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_breakfall_lesson_i1"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_breakfall_lesson_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

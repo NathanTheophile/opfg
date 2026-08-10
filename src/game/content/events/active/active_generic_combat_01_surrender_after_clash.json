@@ -1,0 +1,90 @@
+{
+  "id": "active_generic_combat_01_surrender_after_clash",
+  "kind": "normal",
+  "titleKey": "event.active_generic_combat_01_surrender_after_clash.title",
+  "textKey": "event.active_generic_combat_01_surrender_after_clash.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "engage",
+      "textKey": "event.active_generic_combat_01_surrender_after_clash.choice.engage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "engage_outcome",
+          "textKey": "event.active_generic_combat_01_surrender_after_clash.choice.engage.outcome.engage_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_scheduled_spared_opponent_callback",
+              "delayMonths": 5
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_surrender_after_clash_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "control",
+      "textKey": "event.active_generic_combat_01_surrender_after_clash.choice.control.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "control_outcome",
+          "textKey": "event.active_generic_combat_01_surrender_after_clash.choice.control.outcome.control_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_scheduled_spared_opponent_callback",
+              "delayMonths": 5
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_surrender_after_clash_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw",
+      "textKey": "event.active_generic_combat_01_surrender_after_clash.choice.withdraw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "withdraw_outcome",
+          "textKey": "event.active_generic_combat_01_surrender_after_clash.choice.withdraw.outcome.withdraw_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

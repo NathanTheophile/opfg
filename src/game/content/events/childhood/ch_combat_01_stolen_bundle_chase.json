@@ -1,0 +1,148 @@
+{
+  "id": "ch_combat_01_stolen_bundle_chase",
+  "titleKey": "event.ch_combat_01_stolen_bundle_chase.title",
+  "textKey": "event.ch_combat_01_stolen_bundle_chase.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 143
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "chase_direct",
+      "textKey": "event.ch_combat_01_stolen_bundle_chase.choice.chase_direct.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bad_corner",
+            "textKey": "event.ch_combat_01_stolen_bundle_chase.choice.chase_direct.outcome.bad_corner.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_stolen_bundle_chase_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "losing_ground",
+            "textKey": "event.ch_combat_01_stolen_bundle_chase.choice.chase_direct.outcome.losing_ground.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_stolen_bundle_chase_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "pace_matched",
+            "textKey": "event.ch_combat_01_stolen_bundle_chase.choice.chase_direct.outcome.pace_matched.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_stolen_bundle_chase_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "route_cut",
+            "textKey": "event.ch_combat_01_stolen_bundle_chase.choice.chase_direct.outcome.route_cut.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_stolen_bundle_chase_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cut_side_lane",
+      "textKey": "event.ch_combat_01_stolen_bundle_chase.choice.cut_side_lane.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "side_lane_taken",
+          "textKey": "event.ch_combat_01_stolen_bundle_chase.choice.cut_side_lane.outcome.side_lane_taken.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_stolen_bundle_chase_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "raise_alarm",
+      "textKey": "event.ch_combat_01_stolen_bundle_chase.choice.raise_alarm.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alarm_raised",
+          "textKey": "event.ch_combat_01_stolen_bundle_chase.choice.raise_alarm.outcome.alarm_raised.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_stolen_bundle_chase_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

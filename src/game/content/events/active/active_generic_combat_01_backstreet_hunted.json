@@ -1,0 +1,168 @@
+{
+  "id": "active_generic_combat_01_backstreet_hunted",
+  "kind": "normal",
+  "titleKey": "event.active_generic_combat_01_backstreet_hunted.title",
+  "textKey": "event.active_generic_combat_01_backstreet_hunted.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "urban"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "engage",
+      "textKey": "event.active_generic_combat_01_backstreet_hunted.choice.engage.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "engage_criticalfailure",
+            "textKey": "event.active_generic_combat_01_backstreet_hunted.choice.engage.outcome.engage_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_backstreet_hunted_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "engage_failure",
+            "textKey": "event.active_generic_combat_01_backstreet_hunted.choice.engage.outcome.engage_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_backstreet_hunted_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "engage_success",
+            "textKey": "event.active_generic_combat_01_backstreet_hunted.choice.engage.outcome.engage_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_backstreet_hunted_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "engage_criticalsuccess",
+            "textKey": "event.active_generic_combat_01_backstreet_hunted.choice.engage.outcome.engage_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_backstreet_hunted_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "control",
+      "textKey": "event.active_generic_combat_01_backstreet_hunted.choice.control.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "control_outcome",
+          "textKey": "event.active_generic_combat_01_backstreet_hunted.choice.control.outcome.control_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_backstreet_hunted_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw",
+      "textKey": "event.active_generic_combat_01_backstreet_hunted.choice.withdraw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "withdraw_outcome",
+          "textKey": "event.active_generic_combat_01_backstreet_hunted.choice.withdraw.outcome.withdraw_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "revolutionary_low_profile",
+      "textKey": "event.active_generic_combat_01_backstreet_hunted.choice.revolutionary_low_profile.text",
+      "availableIf": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "revolutionary_low_profile_outcome",
+          "textKey": "event.active_generic_combat_01_backstreet_hunted.choice.revolutionary_low_profile.outcome.revolutionary_low_profile_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_backstreet_hunted_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

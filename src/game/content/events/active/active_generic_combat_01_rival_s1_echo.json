@@ -1,0 +1,78 @@
+{
+  "id": "active_generic_combat_01_rival_s1_echo",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_s1_echo.title",
+  "textKey": "event.active_generic_combat_01_rival_s1_echo.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "answer",
+      "textKey": "event.active_generic_combat_01_rival_s1_echo.choice.answer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_outcome",
+          "textKey": "event.active_generic_combat_01_rival_s1_echo.choice.answer.outcome.answer_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_s2_crossing",
+              "delayMonths": 8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ignore",
+      "textKey": "event.active_generic_combat_01_rival_s1_echo.choice.ignore.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ignore_outcome",
+          "textKey": "event.active_generic_combat_01_rival_s1_echo.choice.ignore.outcome.ignore_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_s2_crossing",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "warn",
+      "textKey": "event.active_generic_combat_01_rival_s1_echo.choice.warn.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "warn_outcome",
+          "textKey": "event.active_generic_combat_01_rival_s1_echo.choice.warn.outcome.warn_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_s2_crossing",
+              "delayMonths": 8
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

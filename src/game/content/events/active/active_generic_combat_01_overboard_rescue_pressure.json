@@ -1,0 +1,160 @@
+{
+  "id": "active_generic_combat_01_overboard_rescue_pressure",
+  "kind": "normal",
+  "titleKey": "event.active_generic_combat_01_overboard_rescue_pressure.title",
+  "textKey": "event.active_generic_combat_01_overboard_rescue_pressure.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "engage",
+      "textKey": "event.active_generic_combat_01_overboard_rescue_pressure.choice.engage.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "engage_criticalfailure",
+            "textKey": "event.active_generic_combat_01_overboard_rescue_pressure.choice.engage.outcome.engage_criticalfailure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_generic_combat_01_scheduled_rescue_debt_callback",
+                "delayMonths": 3
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_overboard_rescue_pressure_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "engage_failure",
+            "textKey": "event.active_generic_combat_01_overboard_rescue_pressure.choice.engage.outcome.engage_failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_generic_combat_01_scheduled_rescue_debt_callback",
+                "delayMonths": 3
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_overboard_rescue_pressure_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "engage_success",
+            "textKey": "event.active_generic_combat_01_overboard_rescue_pressure.choice.engage.outcome.engage_success.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_generic_combat_01_scheduled_rescue_debt_callback",
+                "delayMonths": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_overboard_rescue_pressure_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "engage_criticalsuccess",
+            "textKey": "event.active_generic_combat_01_overboard_rescue_pressure.choice.engage.outcome.engage_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_generic_combat_01_scheduled_rescue_debt_callback",
+                "delayMonths": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_overboard_rescue_pressure_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "control",
+      "textKey": "event.active_generic_combat_01_overboard_rescue_pressure.choice.control.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "control_outcome",
+          "textKey": "event.active_generic_combat_01_overboard_rescue_pressure.choice.control.outcome.control_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_scheduled_rescue_debt_callback",
+              "delayMonths": 3
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_overboard_rescue_pressure_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw",
+      "textKey": "event.active_generic_combat_01_overboard_rescue_pressure.choice.withdraw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "withdraw_outcome",
+          "textKey": "event.active_generic_combat_01_overboard_rescue_pressure.choice.withdraw.outcome.withdraw_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

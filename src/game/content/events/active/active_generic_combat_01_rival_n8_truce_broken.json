@@ -1,0 +1,76 @@
+{
+  "id": "active_generic_combat_01_rival_n8_truce_broken",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_n8_truce_broken.title",
+  "textKey": "event.active_generic_combat_01_rival_n8_truce_broken.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "hold_terms",
+      "textKey": "event.active_generic_combat_01_rival_n8_truce_broken.choice.hold_terms.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hold_terms_outcome",
+          "textKey": "event.active_generic_combat_01_rival_n8_truce_broken.choice.hold_terms.outcome.hold_terms_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_n9_terms_hold",
+              "delayMonths": 12
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_n8_truce_broken_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "protect_exit",
+      "textKey": "event.active_generic_combat_01_rival_n8_truce_broken.choice.protect_exit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "protect_exit_outcome",
+          "textKey": "event.active_generic_combat_01_rival_n8_truce_broken.choice.protect_exit.outcome.protect_exit_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_n9_terms_hold",
+              "delayMonths": 12
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_n8_truce_broken_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

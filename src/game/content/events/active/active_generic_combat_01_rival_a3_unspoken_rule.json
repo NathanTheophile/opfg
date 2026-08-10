@@ -1,0 +1,55 @@
+{
+  "id": "active_generic_combat_01_rival_a3_unspoken_rule",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_a3_unspoken_rule.title",
+  "textKey": "event.active_generic_combat_01_rival_a3_unspoken_rule.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "accept",
+      "textKey": "event.active_generic_combat_01_rival_a3_unspoken_rule.choice.accept.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_outcome",
+          "textKey": "event.active_generic_combat_01_rival_a3_unspoken_rule.choice.accept.outcome.accept_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_a4_bridge_pressure",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "delay",
+      "textKey": "event.active_generic_combat_01_rival_a3_unspoken_rule.choice.delay.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "delay_outcome",
+          "textKey": "event.active_generic_combat_01_rival_a3_unspoken_rule.choice.delay.outcome.delay_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_a4_bridge_pressure",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

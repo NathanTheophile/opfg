@@ -1,0 +1,134 @@
+{
+  "id": "ch_combat_01_mirror_step_drill",
+  "titleKey": "event.ch_combat_01_mirror_step_drill.title",
+  "textKey": "event.ch_combat_01_mirror_step_drill.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 84
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_shoulders",
+      "textKey": "event.ch_combat_01_mirror_step_drill.choice.read_shoulders.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_wrong",
+            "textKey": "event.ch_combat_01_mirror_step_drill.choice.read_shoulders.outcome.read_wrong.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_mirror_step_drill_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "late_read",
+            "textKey": "event.ch_combat_01_mirror_step_drill.choice.read_shoulders.outcome.late_read.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_mirror_step_drill_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "rhythm_read",
+            "textKey": "event.ch_combat_01_mirror_step_drill.choice.read_shoulders.outcome.rhythm_read.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_mirror_step_drill_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "tempo_owned",
+            "textKey": "event.ch_combat_01_mirror_step_drill.choice.read_shoulders.outcome.tempo_owned.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_mirror_step_drill_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "match_speed",
+      "textKey": "event.ch_combat_01_mirror_step_drill.choice.match_speed.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "speed_matched",
+          "textKey": "event.ch_combat_01_mirror_step_drill.choice.match_speed.outcome.speed_matched.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_mirror_step_drill_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "slow_it_down",
+      "textKey": "event.ch_combat_01_mirror_step_drill.choice.slow_it_down.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "drill_slowed",
+          "textKey": "event.ch_combat_01_mirror_step_drill.choice.slow_it_down.outcome.drill_slowed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_mirror_step_drill_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

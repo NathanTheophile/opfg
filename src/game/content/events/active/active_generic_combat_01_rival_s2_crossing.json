@@ -1,0 +1,75 @@
+{
+  "id": "active_generic_combat_01_rival_s2_crossing",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_s2_crossing.title",
+  "textKey": "event.active_generic_combat_01_rival_s2_crossing.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "measure",
+      "textKey": "event.active_generic_combat_01_rival_s2_crossing.choice.measure.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "measure_outcome",
+          "textKey": "event.active_generic_combat_01_rival_s2_crossing.choice.measure.outcome.measure_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_a3_unspoken_rule",
+              "delayMonths": 10
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_s2_crossing_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dominate",
+      "textKey": "event.active_generic_combat_01_rival_s2_crossing.choice.dominate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "dominate_outcome",
+          "textKey": "event.active_generic_combat_01_rival_s2_crossing.choice.dominate.outcome.dominate_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_b3_hard_story",
+              "delayMonths": 10
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_s2_crossing_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

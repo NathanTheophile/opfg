@@ -1,0 +1,143 @@
+{
+  "id": "ch_combat_01_tool_flash",
+  "titleKey": "event.ch_combat_01_tool_flash.title",
+  "textKey": "event.ch_combat_01_tool_flash.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 144
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_hands",
+      "textKey": "event.ch_combat_01_tool_flash.choice.read_hands.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "wrong_side",
+            "textKey": "event.ch_combat_01_tool_flash.choice.read_hands.outcome.wrong_side.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_tool_flash_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "late_step",
+            "textKey": "event.ch_combat_01_tool_flash.choice.read_hands.outcome.late_step.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_tool_flash_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "axis_read",
+            "textKey": "event.ch_combat_01_tool_flash.choice.read_hands.outcome.axis_read.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_tool_flash_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "safe_angle",
+            "textKey": "event.ch_combat_01_tool_flash.choice.read_hands.outcome.safe_angle.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_tool_flash_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pull_companion",
+      "textKey": "event.ch_combat_01_tool_flash.choice.pull_companion.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "companion_pulled",
+          "textKey": "event.ch_combat_01_tool_flash.choice.pull_companion.outcome.companion_pulled.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_tool_flash_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_adults",
+      "textKey": "event.ch_combat_01_tool_flash.choice.call_adults.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "adults_called",
+          "textKey": "event.ch_combat_01_tool_flash.choice.call_adults.outcome.adults_called.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_tool_flash_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

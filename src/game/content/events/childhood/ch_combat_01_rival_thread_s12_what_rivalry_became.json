@@ -1,0 +1,79 @@
+{
+  "id": "ch_combat_01_rival_thread_s12_what_rivalry_became",
+  "titleKey": "event.ch_combat_01_rival_thread_s12_what_rivalry_became.title",
+  "textKey": "event.ch_combat_01_rival_thread_s12_what_rivalry_became.text",
+  "kind": "scheduled",
+  "eligibility": {
+    "type": "isOnLand"
+  },
+  "priority": 200,
+  "choices": [
+    {
+      "id": "choose_respect",
+      "textKey": "event.ch_combat_01_rival_thread_s12_what_rivalry_became.choice.choose_respect.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "respect_path",
+          "textKey": "event.ch_combat_01_rival_thread_s12_what_rivalry_became.choice.choose_respect.outcome.respect_path.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_rival_thread_s13r_respect_without_score",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "choose_competition",
+      "textKey": "event.ch_combat_01_rival_thread_s12_what_rivalry_became.choice.choose_competition.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "competition_path",
+          "textKey": "event.ch_combat_01_rival_thread_s12_what_rivalry_became.choice.choose_competition.outcome.competition_path.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "competitive"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_rival_thread_s13c_keep_the_score",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "choose_responsibility",
+      "textKey": "event.ch_combat_01_rival_thread_s12_what_rivalry_became.choice.choose_responsibility.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "responsibility_path",
+          "textKey": "event.ch_combat_01_rival_thread_s12_what_rivalry_became.choice.choose_responsibility.outcome.responsibility_path.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "protective"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_rival_thread_s13d_take_responsibility",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

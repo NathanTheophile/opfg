@@ -1,0 +1,182 @@
+{
+  "id": "ch_combat_01_tide_pull_rescue",
+  "titleKey": "event.ch_combat_01_tide_pull_rescue.title",
+  "textKey": "event.ch_combat_01_tide_pull_rescue.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "coastal"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "reach_from_rock",
+      "textKey": "event.ch_combat_01_tide_pull_rescue.choice.reach_from_rock.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "both_dragged",
+            "textKey": "event.ch_combat_01_tide_pull_rescue.choice.reach_from_rock.outcome.both_dragged.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_tide_pull_rescue_i1"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_combat_01_tide_pull_rescue_return",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "failure": {
+            "id": "grip_slips",
+            "textKey": "event.ch_combat_01_tide_pull_rescue.choice.reach_from_rock.outcome.grip_slips.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_tide_pull_rescue_i1"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_combat_01_tide_pull_rescue_return",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "success": {
+            "id": "grip_holds",
+            "textKey": "event.ch_combat_01_tide_pull_rescue.choice.reach_from_rock.outcome.grip_holds.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_tide_pull_rescue_i1"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_combat_01_tide_pull_rescue_return",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "anchor_and_pull",
+            "textKey": "event.ch_combat_01_tide_pull_rescue.choice.reach_from_rock.outcome.anchor_and_pull.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_tide_pull_rescue_i1"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_combat_01_tide_pull_rescue_return",
+                "delayMonths": 12
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_and_direct",
+      "textKey": "event.ch_combat_01_tide_pull_rescue.choice.call_and_direct.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "directed_help",
+          "textKey": "event.ch_combat_01_tide_pull_rescue.choice.call_and_direct.outcome.directed_help.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_tide_pull_rescue_i1"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_tide_pull_rescue_return",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "use_long_object",
+      "textKey": "event.ch_combat_01_tide_pull_rescue.choice.use_long_object.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reach_extended",
+          "textKey": "event.ch_combat_01_tide_pull_rescue.choice.use_long_object.outcome.reach_extended.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_tide_pull_rescue_i1"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_tide_pull_rescue_return",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

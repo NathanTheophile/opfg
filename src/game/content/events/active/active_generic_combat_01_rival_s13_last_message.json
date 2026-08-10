@@ -1,0 +1,113 @@
+{
+  "id": "active_generic_combat_01_rival_s13_last_message",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_s13_last_message.title",
+  "textKey": "event.active_generic_combat_01_rival_s13_last_message.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "answer_truce",
+      "textKey": "event.active_generic_combat_01_rival_s13_last_message.choice.answer_truce.text",
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "active_generic_combat_01_rival_t12_parting_respect"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_truce_outcome",
+          "textKey": "event.active_generic_combat_01_rival_s13_last_message.choice.answer_truce.outcome.answer_truce_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_s14_final_terms",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "answer_rival",
+      "textKey": "event.active_generic_combat_01_rival_s13_last_message.choice.answer_rival.text",
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "active_generic_combat_01_rival_r12_agreed_ground"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_rival_outcome",
+          "textKey": "event.active_generic_combat_01_rival_s13_last_message.choice.answer_rival.outcome.answer_rival_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_s14_final_terms",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "answer_break",
+      "textKey": "event.active_generic_combat_01_rival_s13_last_message.choice.answer_break.text",
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "active_generic_combat_01_rival_e12_hunt_or_end"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_break_outcome",
+          "textKey": "event.active_generic_combat_01_rival_s13_last_message.choice.answer_break.outcome.answer_break_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_s14_final_terms",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "answer_anyway",
+      "textKey": "event.active_generic_combat_01_rival_s13_last_message.choice.answer_anyway.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_anyway_outcome",
+          "textKey": "event.active_generic_combat_01_rival_s13_last_message.choice.answer_anyway.outcome.answer_anyway_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_s14_final_terms",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "id": "ch_combat_01_too_many_to_fight",
+  "titleKey": "event.ch_combat_01_too_many_to_fight.title",
+  "textKey": "event.ch_combat_01_too_many_to_fight.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 144
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "run_for_help",
+      "textKey": "event.ch_combat_01_too_many_to_fight.choice.run_for_help.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "help_run",
+          "textKey": "event.ch_combat_01_too_many_to_fight.choice.run_for_help.outcome.help_run.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_too_many_to_fight_i1"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_too_many_to_fight_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "guide_others_away",
+      "textKey": "event.ch_combat_01_too_many_to_fight.choice.guide_others_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "others_guided",
+          "textKey": "event.ch_combat_01_too_many_to_fight.choice.guide_others_away.outcome.others_guided.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_too_many_to_fight_i1"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_too_many_to_fight_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "challenge_them",
+      "textKey": "event.ch_combat_01_too_many_to_fight.choice.challenge_them.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bad_challenge",
+          "textKey": "event.ch_combat_01_too_many_to_fight.choice.challenge_them.outcome.bad_challenge.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -4
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_too_many_to_fight_i1"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_too_many_to_fight_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

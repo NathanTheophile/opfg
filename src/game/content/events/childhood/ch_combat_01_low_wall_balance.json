@@ -1,0 +1,139 @@
+{
+  "id": "ch_combat_01_low_wall_balance",
+  "titleKey": "event.ch_combat_01_low_wall_balance.title",
+  "textKey": "event.ch_combat_01_low_wall_balance.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "stay_up",
+      "textKey": "event.ch_combat_01_low_wall_balance.choice.stay_up.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hard_fall",
+            "textKey": "event.ch_combat_01_low_wall_balance.choice.stay_up.outcome.hard_fall.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_low_wall_balance_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "dropped_down",
+            "textKey": "event.ch_combat_01_low_wall_balance.choice.stay_up.outcome.dropped_down.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_low_wall_balance_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "balance_held",
+            "textKey": "event.ch_combat_01_low_wall_balance.choice.stay_up.outcome.balance_held.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_low_wall_balance_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "balance_shared",
+            "textKey": "event.ch_combat_01_low_wall_balance.choice.stay_up.outcome.balance_shared.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_low_wall_balance_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "jump_down",
+      "textKey": "event.ch_combat_01_low_wall_balance.choice.jump_down.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "jumped_down",
+          "textKey": "event.ch_combat_01_low_wall_balance.choice.jump_down.outcome.jumped_down.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_low_wall_balance_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "steady_other",
+      "textKey": "event.ch_combat_01_low_wall_balance.choice.steady_other.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "other_steadied",
+          "textKey": "event.ch_combat_01_low_wall_balance.choice.steady_other.outcome.other_steadied.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_low_wall_balance_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "id": "ch_combat_01_rival_thread_s09e_intelligent_avoidance",
+  "titleKey": "event.ch_combat_01_rival_thread_s09e_intelligent_avoidance.title",
+  "textKey": "event.ch_combat_01_rival_thread_s09e_intelligent_avoidance.text",
+  "kind": "scheduled",
+  "eligibility": {
+    "type": "isOnLand"
+  },
+  "priority": 100,
+  "choices": [
+    {
+      "id": "approve",
+      "textKey": "event.ch_combat_01_rival_thread_s09e_intelligent_avoidance.choice.approve.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approved",
+          "textKey": "event.ch_combat_01_rival_thread_s09e_intelligent_avoidance.choice.approve.outcome.approved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_rival_thread_s10e_refuse_bad_fight",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_what_he_saw",
+      "textKey": "event.ch_combat_01_rival_thread_s09e_intelligent_avoidance.choice.ask_what_he_saw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "detail_asked",
+          "textKey": "event.ch_combat_01_rival_thread_s09e_intelligent_avoidance.choice.ask_what_he_saw.outcome.detail_asked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_rival_thread_s10e_refuse_bad_fight",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

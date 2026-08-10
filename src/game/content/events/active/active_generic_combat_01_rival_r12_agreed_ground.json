@@ -1,0 +1,68 @@
+{
+  "id": "active_generic_combat_01_rival_r12_agreed_ground",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_r12_agreed_ground.title",
+  "textKey": "event.active_generic_combat_01_rival_r12_agreed_ground.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "keep_date",
+      "textKey": "event.active_generic_combat_01_rival_r12_agreed_ground.choice.keep_date.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_date_outcome",
+          "textKey": "event.active_generic_combat_01_rival_r12_agreed_ground.choice.keep_date.outcome.keep_date_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_s13_last_message",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "release",
+      "textKey": "event.active_generic_combat_01_rival_r12_agreed_ground.choice.release.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "release_outcome",
+          "textKey": "event.active_generic_combat_01_rival_r12_agreed_ground.choice.release.outcome.release_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_s13_last_message",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

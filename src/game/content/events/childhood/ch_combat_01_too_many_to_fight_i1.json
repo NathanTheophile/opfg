@@ -1,0 +1,74 @@
+{
+  "id": "ch_combat_01_too_many_to_fight_i1",
+  "titleKey": "event.ch_combat_01_too_many_to_fight_i1.title",
+  "textKey": "event.ch_combat_01_too_many_to_fight_i1.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "break_line_of_sight",
+      "textKey": "event.ch_combat_01_too_many_to_fight_i1.choice.break_line_of_sight.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sight_broken",
+          "textKey": "event.ch_combat_01_too_many_to_fight_i1.choice.break_line_of_sight.outcome.sight_broken.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_too_many_to_fight_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send_others_first",
+      "textKey": "event.ch_combat_01_too_many_to_fight_i1.choice.send_others_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "others_first",
+          "textKey": "event.ch_combat_01_too_many_to_fight_i1.choice.send_others_first.outcome.others_first.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_too_many_to_fight_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stay_hidden",
+      "textKey": "event.ch_combat_01_too_many_to_fight_i1.choice.stay_hidden.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hidden_still",
+          "textKey": "event.ch_combat_01_too_many_to_fight_i1.choice.stay_hidden.outcome.hidden_still.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_too_many_to_fight_i2"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

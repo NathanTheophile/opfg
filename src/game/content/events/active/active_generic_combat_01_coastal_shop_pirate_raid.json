@@ -1,0 +1,88 @@
+{
+  "id": "active_generic_combat_01_coastal_shop_pirate_raid",
+  "kind": "normal",
+  "titleKey": "event.active_generic_combat_01_coastal_shop_pirate_raid.title",
+  "textKey": "event.active_generic_combat_01_coastal_shop_pirate_raid.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "coastal"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "engage",
+      "textKey": "event.active_generic_combat_01_coastal_shop_pirate_raid.choice.engage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "engage_outcome",
+          "textKey": "event.active_generic_combat_01_coastal_shop_pirate_raid.choice.engage.outcome.engage_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_coastal_shop_pirate_raid_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "control",
+      "textKey": "event.active_generic_combat_01_coastal_shop_pirate_raid.choice.control.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "control_outcome",
+          "textKey": "event.active_generic_combat_01_coastal_shop_pirate_raid.choice.control.outcome.control_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_coastal_shop_pirate_raid_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw",
+      "textKey": "event.active_generic_combat_01_coastal_shop_pirate_raid.choice.withdraw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "withdraw_outcome",
+          "textKey": "event.active_generic_combat_01_coastal_shop_pirate_raid.choice.withdraw.outcome.withdraw_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

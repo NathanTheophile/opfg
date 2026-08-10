@@ -1,0 +1,58 @@
+{
+  "id": "ch_combat_01_rival_thread_s11p_responsibility_cost",
+  "titleKey": "event.ch_combat_01_rival_thread_s11p_responsibility_cost.title",
+  "textKey": "event.ch_combat_01_rival_thread_s11p_responsibility_cost.text",
+  "kind": "scheduled",
+  "eligibility": {
+    "type": "isOnLand"
+  },
+  "priority": 100,
+  "choices": [
+    {
+      "id": "accept_cost",
+      "textKey": "event.ch_combat_01_rival_thread_s11p_responsibility_cost.choice.accept_cost.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cost_accepted",
+          "textKey": "event.ch_combat_01_rival_thread_s11p_responsibility_cost.choice.accept_cost.outcome.cost_accepted.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_rival_thread_s12_what_rivalry_became",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "explain_once",
+      "textKey": "event.ch_combat_01_rival_thread_s11p_responsibility_cost.choice.explain_once.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "explained_once",
+          "textKey": "event.ch_combat_01_rival_thread_s11p_responsibility_cost.choice.explain_once.outcome.explained_once.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_rival_thread_s12_what_rivalry_became",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
