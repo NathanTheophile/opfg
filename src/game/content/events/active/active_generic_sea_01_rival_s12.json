@@ -1,0 +1,103 @@
+{
+  "id": "active_generic_sea_01_rival_s12",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_sea_01_rival_s12.title",
+  "textKey": "event.active_generic_sea_01_rival_s12.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "trust_together",
+      "textKey": "event.active_generic_sea_01_rival_s12.choice.trust_together.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s12.choice.trust_together.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s13_a",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "separate_safe",
+      "textKey": "event.active_generic_sea_01_rival_s12.choice.separate_safe.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s12.choice.separate_safe.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s13_b",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cautious_separate",
+      "textKey": "event.active_generic_sea_01_rival_s12.choice.cautious_separate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s12.choice.cautious_separate.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s13_b",
+              "delayMonths": 12
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "cautious"
+      }
+    }
+  ]
+}

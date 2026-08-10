@@ -1,0 +1,110 @@
+{
+  "id": "active_generic_sea_01_squall_staysail_snap_i1_running_line",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_01_squall_staysail_snap_i1_running_line.title",
+  "textKey": "event.active_generic_sea_01_squall_staysail_snap_i1_running_line.text",
+  "choices": [
+    {
+      "id": "free_by_hand",
+      "textKey": "event.active_generic_sea_01_squall_staysail_snap_i1_running_line.choice.free_by_hand.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_01_squall_staysail_snap_i1_running_line.choice.free_by_hand.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_squall_staysail_snap_i2_crossed_sheet"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_01_squall_staysail_snap_i1_running_line.choice.free_by_hand.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_squall_staysail_snap_i2_crossed_sheet"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_01_squall_staysail_snap_i1_running_line.choice.free_by_hand.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_squall_staysail_snap_i2_crossed_sheet"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_01_squall_staysail_snap_i1_running_line.choice.free_by_hand.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_squall_staysail_snap_i2_crossed_sheet"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cut_line",
+      "textKey": "event.active_generic_sea_01_squall_staysail_snap_i1_running_line.choice.cut_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_squall_staysail_snap_i1_running_line.choice.cut_line.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_squall_staysail_snap_i2_crossed_sheet"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_it",
+      "textKey": "event.active_generic_sea_01_squall_staysail_snap_i1_running_line.choice.leave_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_squall_staysail_snap_i1_running_line.choice.leave_it.outcome.done.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

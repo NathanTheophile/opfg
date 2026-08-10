@@ -1,0 +1,101 @@
+{
+  "id": "active_generic_land_01_paid_room_storm",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_01_paid_room_storm.title",
+  "textKey": "event.active_generic_land_01_paid_room_storm.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "lodging"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "give_room",
+      "textKey": "event.active_generic_land_01_paid_room_storm.choice.give_room.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_paid_room_storm.choice.give_room.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "share_floor",
+      "textKey": "event.active_generic_land_01_paid_room_storm.choice.share_floor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_paid_room_storm.choice.share_floor.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_room",
+      "textKey": "event.active_generic_land_01_paid_room_storm.choice.keep_room.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_paid_room_storm.choice.keep_room.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "generous_no_refund",
+      "textKey": "event.active_generic_land_01_paid_room_storm.choice.generous_no_refund.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_paid_room_storm.choice.generous_no_refund.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "generous"
+      }
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "id": "active_generic_sea_01_salted_stores_argument",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_salted_stores_argument.title",
+  "textKey": "event.active_generic_sea_01_salted_stores_argument.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "defuse_blame",
+      "textKey": "event.active_generic_sea_01_salted_stores_argument.choice.defuse_blame.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_01_salted_stores_argument.choice.defuse_blame.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_generic_sea_01_salted_stores_argument_later_watch",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_01_salted_stores_argument.choice.defuse_blame.outcome.failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_generic_sea_01_salted_stores_argument_later_watch",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_01_salted_stores_argument.choice.defuse_blame.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_generic_sea_01_salted_stores_argument_later_watch",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_01_salted_stores_argument.choice.defuse_blame.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_generic_sea_01_salted_stores_argument_later_watch",
+                "delayMonths": 3
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "eat_less",
+      "textKey": "event.active_generic_sea_01_salted_stores_argument.choice.eat_less.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_salted_stores_argument.choice.eat_less.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_salted_stores_argument_later_watch",
+              "delayMonths": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_role",
+      "textKey": "event.active_generic_sea_01_salted_stores_argument.choice.refuse_role.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_salted_stores_argument.choice.refuse_role.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_salted_stores_argument_later_watch",
+              "delayMonths": 3
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

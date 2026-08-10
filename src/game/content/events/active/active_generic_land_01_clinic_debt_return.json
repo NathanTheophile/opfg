@@ -1,0 +1,82 @@
+{
+  "id": "active_generic_land_01_clinic_debt_return",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_land_01_clinic_debt_return.title",
+  "textKey": "event.active_generic_land_01_clinic_debt_return.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "accept_repayment",
+      "textKey": "event.active_generic_land_01_clinic_debt_return.choice.accept_repayment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_clinic_debt_return.choice.accept_repayment.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 250
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "return_to_clinic",
+      "textKey": "event.active_generic_land_01_clinic_debt_return.choice.return_to_clinic.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_clinic_debt_return.choice.return_to_clinic.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_small_part",
+      "textKey": "event.active_generic_land_01_clinic_debt_return.choice.take_small_part.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_clinic_debt_return.choice.take_small_part.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 100
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 50,
+  "scheduledReach": "normal"
+}

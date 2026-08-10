@@ -1,0 +1,126 @@
+{
+  "id": "active_generic_sea_01_overturned_longboat",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_overturned_longboat.title",
+  "textKey": "event.active_generic_sea_01_overturned_longboat.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "reach_first",
+      "textKey": "event.active_generic_sea_01_overturned_longboat.choice.reach_first.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_01_overturned_longboat.choice.reach_first.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overturned_longboat_i1_first_hand"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_01_overturned_longboat.choice.reach_first.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overturned_longboat_i1_first_hand"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_01_overturned_longboat.choice.reach_first.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overturned_longboat_i1_first_hand"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_01_overturned_longboat.choice.reach_first.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overturned_longboat_i1_first_hand"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "throw_lines",
+      "textKey": "event.active_generic_sea_01_overturned_longboat.choice.throw_lines.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_overturned_longboat.choice.throw_lines.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_overturned_longboat_i1_first_hand"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_distance",
+      "textKey": "event.active_generic_sea_01_overturned_longboat.choice.keep_distance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_overturned_longboat.choice.keep_distance.outcome.done.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

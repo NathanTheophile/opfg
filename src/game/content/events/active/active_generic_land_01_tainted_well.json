@@ -1,0 +1,171 @@
+{
+  "id": "active_generic_land_01_tainted_well",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_01_tainted_well.title",
+  "textKey": "event.active_generic_land_01_tainted_well.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "village"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "rural"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "trace_source",
+      "textKey": "event.active_generic_land_01_tainted_well.choice.trace_source.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_land_01_tainted_well.choice.trace_source.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_tainted_well_i1_residents_argue"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_land_01_tainted_well.choice.trace_source.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_tainted_well_i1_residents_argue"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_land_01_tainted_well.choice.trace_source.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_tainted_well_i1_residents_argue"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_land_01_tainted_well.choice.trace_source.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_tainted_well_i1_residents_argue"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "close_well",
+      "textKey": "event.active_generic_land_01_tainted_well.choice.close_well.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_tainted_well.choice.close_well.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_tainted_well_i1_residents_argue"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "warn_without_claim",
+      "textKey": "event.active_generic_land_01_tainted_well.choice.warn_without_claim.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_tainted_well.choice.warn_without_claim.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_tainted_well_i1_residents_argue"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "resourceful_filter",
+      "textKey": "event.active_generic_land_01_tainted_well.choice.resourceful_filter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_tainted_well.choice.resourceful_filter.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_tainted_well_i1_residents_argue"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "resourceful"
+      }
+    }
+  ]
+}

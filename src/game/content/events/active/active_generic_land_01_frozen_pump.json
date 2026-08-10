@@ -1,0 +1,132 @@
+{
+  "id": "active_generic_land_01_frozen_pump",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_01_frozen_pump.title",
+  "textKey": "event.active_generic_land_01_frozen_pump.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "snow"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "thaw_slowly",
+      "textKey": "event.active_generic_land_01_frozen_pump.choice.thaw_slowly.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_land_01_frozen_pump.choice.thaw_slowly.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_land_01_frozen_pump.choice.thaw_slowly.outcome.failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_land_01_frozen_pump.choice.thaw_slowly.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_land_01_frozen_pump.choice.thaw_slowly.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "stop_hammering",
+      "textKey": "event.active_generic_land_01_frozen_pump.choice.stop_hammering.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_frozen_pump.choice.stop_hammering.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ration_remaining",
+      "textKey": "event.active_generic_land_01_frozen_pump.choice.ration_remaining.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_frozen_pump.choice.ration_remaining.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_pump",
+      "textKey": "event.active_generic_land_01_frozen_pump.choice.leave_pump.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_frozen_pump.choice.leave_pump.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

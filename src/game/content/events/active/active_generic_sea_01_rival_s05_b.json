@@ -1,0 +1,98 @@
+{
+  "id": "active_generic_sea_01_rival_s05_b",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_sea_01_rival_s05_b.title",
+  "textKey": "event.active_generic_sea_01_rival_s05_b.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "salute",
+      "textKey": "event.active_generic_sea_01_rival_s05_b.choice.salute.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s05_b.choice.salute.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s06",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "taunt",
+      "textKey": "event.active_generic_sea_01_rival_s05_b.choice.taunt.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s05_b.choice.taunt.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s06",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "proud_silence",
+      "textKey": "event.active_generic_sea_01_rival_s05_b.choice.proud_silence.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s05_b.choice.proud_silence.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s06",
+              "delayMonths": 12
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "proud"
+      }
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "id": "active_generic_land_01_lt_r1_open_archive",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_land_01_lt_r1_open_archive.title",
+  "textKey": "event.active_generic_land_01_lt_r1_open_archive.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "publish_corrections",
+      "textKey": "event.active_generic_land_01_lt_r1_open_archive.choice.publish_corrections.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_r1_open_archive.choice.publish_corrections.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_r2_imitation_risk",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "protect_sensitive_names",
+      "textKey": "event.active_generic_land_01_lt_r1_open_archive.choice.protect_sensitive_names.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_r1_open_archive.choice.protect_sensitive_names.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_r2_imitation_risk",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_it_open",
+      "textKey": "event.active_generic_land_01_lt_r1_open_archive.choice.leave_it_open.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_r1_open_archive.choice.leave_it_open.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_r2_imitation_risk",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

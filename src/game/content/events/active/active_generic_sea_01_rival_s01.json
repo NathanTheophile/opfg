@@ -1,0 +1,85 @@
+{
+  "id": "active_generic_sea_01_rival_s01",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_sea_01_rival_s01.title",
+  "textKey": "event.active_generic_sea_01_rival_s01.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "hail",
+      "textKey": "event.active_generic_sea_01_rival_s01.choice.hail.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s01.choice.hail.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s02",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "watch",
+      "textKey": "event.active_generic_sea_01_rival_s01.choice.watch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s01.choice.watch.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s02",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ignore",
+      "textKey": "event.active_generic_sea_01_rival_s01.choice.ignore.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s01.choice.ignore.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s02",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

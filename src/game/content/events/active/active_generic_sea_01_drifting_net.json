@@ -1,0 +1,105 @@
+{
+  "id": "active_generic_sea_01_drifting_net",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_drifting_net.title",
+  "textKey": "event.active_generic_sea_01_drifting_net.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "wide_avoid",
+      "textKey": "event.active_generic_sea_01_drifting_net.choice.wide_avoid.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_drifting_net.choice.wide_avoid.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cut_clear",
+      "textKey": "event.active_generic_sea_01_drifting_net.choice.cut_clear.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_drifting_net.choice.cut_clear.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leader_recover",
+      "textKey": "event.active_generic_sea_01_drifting_net.choice.leader_recover.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_drifting_net.choice.leader_recover.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "isLeader"
+      }
+    },
+    {
+      "id": "greedy_recover",
+      "textKey": "event.active_generic_sea_01_drifting_net.choice.greedy_recover.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_drifting_net.choice.greedy_recover.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "greedy"
+      }
+    }
+  ]
+}

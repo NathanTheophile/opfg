@@ -1,0 +1,112 @@
+{
+  "id": "active_generic_land_01_forest_snare_line_i1_trapped_traveler",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_01_forest_snare_line_i1_trapped_traveler.title",
+  "textKey": "event.active_generic_land_01_forest_snare_line_i1_trapped_traveler.text",
+  "choices": [
+    {
+      "id": "cut_tension",
+      "textKey": "event.active_generic_land_01_forest_snare_line_i1_trapped_traveler.choice.cut_tension.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_forest_snare_line_i1_trapped_traveler.choice.cut_tension.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_forest_snare_line_i2_trapper_arrives"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "release_loop",
+      "textKey": "event.active_generic_land_01_forest_snare_line_i1_trapped_traveler.choice.release_loop.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_land_01_forest_snare_line_i1_trapped_traveler.choice.release_loop.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_forest_snare_line_i2_trapper_arrives"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_land_01_forest_snare_line_i1_trapped_traveler.choice.release_loop.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_forest_snare_line_i2_trapper_arrives"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_land_01_forest_snare_line_i1_trapped_traveler.choice.release_loop.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_forest_snare_line_i2_trapper_arrives"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_land_01_forest_snare_line_i1_trapped_traveler.choice.release_loop.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_forest_snare_line_i2_trapper_arrives"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_owner_now",
+      "textKey": "event.active_generic_land_01_forest_snare_line_i1_trapped_traveler.choice.call_owner_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_forest_snare_line_i1_trapped_traveler.choice.call_owner_now.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_forest_snare_line_i2_trapper_arrives"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "id": "active_generic_land_01_backroom_violence",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_01_backroom_violence.title",
+  "textKey": "event.active_generic_land_01_backroom_violence.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "criminal"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "step_between",
+      "textKey": "event.active_generic_land_01_backroom_violence.choice.step_between.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_land_01_backroom_violence.choice.step_between.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_land_01_backroom_violence.choice.step_between.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_land_01_backroom_violence.choice.step_between.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_land_01_backroom_violence.choice.step_between.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_neighbors",
+      "textKey": "event.active_generic_land_01_backroom_violence.choice.call_neighbors.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_backroom_violence.choice.call_neighbors.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "protective_entry",
+      "textKey": "event.active_generic_land_01_backroom_violence.choice.protective_entry.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_backroom_violence.choice.protective_entry.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -2
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "protective"
+      }
+    },
+    {
+      "id": "walk_past",
+      "textKey": "event.active_generic_land_01_backroom_violence.choice.walk_past.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_backroom_violence.choice.walk_past.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "id": "active_generic_land_01_switchback_rockslide",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_01_switchback_rockslide.title",
+  "textKey": "event.active_generic_land_01_switchback_rockslide.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "mountain"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "brace_cart",
+      "textKey": "event.active_generic_land_01_switchback_rockslide.choice.brace_cart.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_land_01_switchback_rockslide.choice.brace_cart.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i1_pinned_ankle"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_land_01_switchback_rockslide.choice.brace_cart.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i1_pinned_ankle"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_land_01_switchback_rockslide.choice.brace_cart.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i1_pinned_ankle"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_land_01_switchback_rockslide.choice.brace_cart.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i1_pinned_ankle"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "run_warning",
+      "textKey": "event.active_generic_land_01_switchback_rockslide.choice.run_warning.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_land_01_switchback_rockslide.choice.run_warning.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i1_pinned_ankle"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_land_01_switchback_rockslide.choice.run_warning.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i1_pinned_ankle"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_land_01_switchback_rockslide.choice.run_warning.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i1_pinned_ankle"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_land_01_switchback_rockslide.choice.run_warning.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i1_pinned_ankle"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_center",
+      "textKey": "event.active_generic_land_01_switchback_rockslide.choice.clear_center.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_switchback_rockslide.choice.clear_center.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_switchback_rockslide_i1_pinned_ankle"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

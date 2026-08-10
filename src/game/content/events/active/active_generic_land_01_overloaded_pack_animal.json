@@ -1,0 +1,117 @@
+{
+  "id": "active_generic_land_01_overloaded_pack_animal",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_01_overloaded_pack_animal.title",
+  "textKey": "event.active_generic_land_01_overloaded_pack_animal.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "rural"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "village"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "unload_some",
+      "textKey": "event.active_generic_land_01_overloaded_pack_animal.choice.unload_some.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_overloaded_pack_animal.choice.unload_some.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "confront_owner",
+      "textKey": "event.active_generic_land_01_overloaded_pack_animal.choice.confront_owner.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_overloaded_pack_animal.choice.confront_owner.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pay_for_help",
+      "textKey": "event.active_generic_land_01_overloaded_pack_animal.choice.pay_for_help.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_overloaded_pack_animal.choice.pay_for_help.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -150
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 150
+      }
+    },
+    {
+      "id": "walk_past",
+      "textKey": "event.active_generic_land_01_overloaded_pack_animal.choice.walk_past.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_overloaded_pack_animal.choice.walk_past.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

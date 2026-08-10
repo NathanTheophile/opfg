@@ -1,0 +1,90 @@
+{
+  "id": "active_generic_sea_01_rival_s07_c",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_sea_01_rival_s07_c.title",
+  "textKey": "event.active_generic_sea_01_rival_s07_c.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "accept",
+      "textKey": "event.active_generic_sea_01_rival_s07_c.choice.accept.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s07_c.choice.accept.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s08_c",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "reshape",
+      "textKey": "event.active_generic_sea_01_rival_s07_c.choice.reshape.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s07_c.choice.reshape.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s08_c",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cool_down",
+      "textKey": "event.active_generic_sea_01_rival_s07_c.choice.cool_down.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s07_c.choice.cool_down.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s08_c",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

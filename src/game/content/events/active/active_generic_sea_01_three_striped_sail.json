@@ -1,0 +1,111 @@
+{
+  "id": "active_generic_sea_01_three_striped_sail",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_three_striped_sail.title",
+  "textKey": "event.active_generic_sea_01_three_striped_sail.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "lifetimeThreadSeed": true,
+  "choices": [
+    {
+      "id": "wave",
+      "textKey": "event.active_generic_sea_01_three_striped_sail.choice.wave.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_three_striped_sail.choice.wave.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s01",
+              "delayMonths": 9
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "measure",
+      "textKey": "event.active_generic_sea_01_three_striped_sail.choice.measure.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_three_striped_sail.choice.measure.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s01",
+              "delayMonths": 9
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ignore",
+      "textKey": "event.active_generic_sea_01_three_striped_sail.choice.ignore.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_three_striped_sail.choice.ignore.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s01",
+              "delayMonths": 9
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "curious_signal",
+      "textKey": "event.active_generic_sea_01_three_striped_sail.choice.curious_signal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_three_striped_sail.choice.curious_signal.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s01",
+              "delayMonths": 9
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "curious"
+      }
+    }
+  ]
+}

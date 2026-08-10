@@ -1,0 +1,128 @@
+{
+  "id": "active_generic_land_01_courtyard_sinkhole_i1_hanging_edge",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_01_courtyard_sinkhole_i1_hanging_edge.title",
+  "textKey": "event.active_generic_land_01_courtyard_sinkhole_i1_hanging_edge.text",
+  "choices": [
+    {
+      "id": "pull_up",
+      "textKey": "event.active_generic_land_01_courtyard_sinkhole_i1_hanging_edge.choice.pull_up.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_land_01_courtyard_sinkhole_i1_hanging_edge.choice.pull_up.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_courtyard_sinkhole_i2_bad_anchor"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_land_01_courtyard_sinkhole_i1_hanging_edge.choice.pull_up.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_courtyard_sinkhole_i2_bad_anchor"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_land_01_courtyard_sinkhole_i1_hanging_edge.choice.pull_up.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_courtyard_sinkhole_i2_bad_anchor"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_land_01_courtyard_sinkhole_i1_hanging_edge.choice.pull_up.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_courtyard_sinkhole_i2_bad_anchor"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "direct_rope",
+      "textKey": "event.active_generic_land_01_courtyard_sinkhole_i1_hanging_edge.choice.direct_rope.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_courtyard_sinkhole_i1_hanging_edge.choice.direct_rope.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_courtyard_sinkhole_i2_bad_anchor"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "protective_reach",
+      "textKey": "event.active_generic_land_01_courtyard_sinkhole_i1_hanging_edge.choice.protective_reach.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_courtyard_sinkhole_i1_hanging_edge.choice.protective_reach.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_courtyard_sinkhole_i2_bad_anchor"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "protective"
+      }
+    }
+  ]
+}

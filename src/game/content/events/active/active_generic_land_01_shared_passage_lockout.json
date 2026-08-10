@@ -1,0 +1,95 @@
+{
+  "id": "active_generic_land_01_shared_passage_lockout",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_01_shared_passage_lockout.title",
+  "textKey": "event.active_generic_land_01_shared_passage_lockout.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "village"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "mediate_clear_width",
+      "textKey": "event.active_generic_land_01_shared_passage_lockout.choice.mediate_clear_width.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_shared_passage_lockout.choice.mediate_clear_width.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_shared_passage_followup",
+              "delayMonths": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "move_nearest_barrier",
+      "textKey": "event.active_generic_land_01_shared_passage_lockout.choice.move_nearest_barrier.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_shared_passage_lockout.choice.move_nearest_barrier.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "take_one_side",
+      "textKey": "event.active_generic_land_01_shared_passage_lockout.choice.take_one_side.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_shared_passage_lockout.choice.take_one_side.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "leave_passage",
+      "textKey": "event.active_generic_land_01_shared_passage_lockout.choice.leave_passage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_shared_passage_lockout.choice.leave_passage.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

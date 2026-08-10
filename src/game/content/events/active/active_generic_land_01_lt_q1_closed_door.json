@@ -1,0 +1,95 @@
+{
+  "id": "active_generic_land_01_lt_q1_closed_door",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_land_01_lt_q1_closed_door.title",
+  "textKey": "event.active_generic_land_01_lt_q1_closed_door.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_it",
+      "textKey": "event.active_generic_land_01_lt_q1_closed_door.choice.read_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_q1_closed_door.choice.read_it.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_q2_last_witness",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "return_unread",
+      "textKey": "event.active_generic_land_01_lt_q1_closed_door.choice.return_unread.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_q1_closed_door.choice.return_unread.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_q2_last_witness",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_one_question",
+      "textKey": "event.active_generic_land_01_lt_q1_closed_door.choice.ask_one_question.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_q1_closed_door.choice.ask_one_question.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_q2_last_witness",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

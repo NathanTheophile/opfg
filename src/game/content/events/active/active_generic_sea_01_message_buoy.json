@@ -1,0 +1,98 @@
+{
+  "id": "active_generic_sea_01_message_buoy",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_message_buoy.title",
+  "textKey": "event.active_generic_sea_01_message_buoy.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_and_leave",
+      "textKey": "event.active_generic_sea_01_message_buoy.choice.read_and_leave.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_message_buoy.choice.read_and_leave.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "add_note",
+      "textKey": "event.active_generic_sea_01_message_buoy.choice.add_note.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_message_buoy.choice.add_note.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_message_buoy_answering_signal",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ignore_buoy",
+      "textKey": "event.active_generic_sea_01_message_buoy.choice.ignore_buoy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_message_buoy.choice.ignore_buoy.outcome.done.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "suspicious_check",
+      "textKey": "event.active_generic_sea_01_message_buoy.choice.suspicious_check.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_message_buoy.choice.suspicious_check.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "suspicious"
+      }
+    }
+  ]
+}

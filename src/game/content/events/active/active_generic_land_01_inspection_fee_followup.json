@@ -1,0 +1,73 @@
+{
+  "id": "active_generic_land_01_inspection_fee_followup",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_land_01_inspection_fee_followup.title",
+  "textKey": "event.active_generic_land_01_inspection_fee_followup.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "sign_name",
+      "textKey": "event.active_generic_land_01_inspection_fee_followup.choice.sign_name.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_inspection_fee_followup.choice.sign_name.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "anonymous_account",
+      "textKey": "event.active_generic_land_01_inspection_fee_followup.choice.anonymous_account.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_inspection_fee_followup.choice.anonymous_account.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw_account",
+      "textKey": "event.active_generic_land_01_inspection_fee_followup.choice.withdraw_account.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_inspection_fee_followup.choice.withdraw_account.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

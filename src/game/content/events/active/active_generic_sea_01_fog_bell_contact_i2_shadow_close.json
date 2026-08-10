@@ -1,0 +1,115 @@
+{
+  "id": "active_generic_sea_01_fog_bell_contact_i2_shadow_close",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_01_fog_bell_contact_i2_shadow_close.title",
+  "textKey": "event.active_generic_sea_01_fog_bell_contact_i2_shadow_close.text",
+  "choices": [
+    {
+      "id": "coordinate_pass",
+      "textKey": "event.active_generic_sea_01_fog_bell_contact_i2_shadow_close.choice.coordinate_pass.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_01_fog_bell_contact_i2_shadow_close.choice.coordinate_pass.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fog_bell_contact_i3_passing_words"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_01_fog_bell_contact_i2_shadow_close.choice.coordinate_pass.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fog_bell_contact_i3_passing_words"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_01_fog_bell_contact_i2_shadow_close.choice.coordinate_pass.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fog_bell_contact_i3_passing_words"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_01_fog_bell_contact_i2_shadow_close.choice.coordinate_pass.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fog_bell_contact_i3_passing_words"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "brace",
+      "textKey": "event.active_generic_sea_01_fog_bell_contact_i2_shadow_close.choice.brace.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_fog_bell_contact_i2_shadow_close.choice.brace.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_fog_bell_contact_i3_passing_words"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "signal_helmsman",
+      "textKey": "event.active_generic_sea_01_fog_bell_contact_i2_shadow_close.choice.signal_helmsman.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_fog_bell_contact_i2_shadow_close.choice.signal_helmsman.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_fog_bell_contact_i3_passing_words"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "helmsman"
+      }
+    }
+  ]
+}

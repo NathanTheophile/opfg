@@ -1,0 +1,67 @@
+{
+  "id": "active_generic_sea_01_current_shear_i1_sideways_wake",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_01_current_shear_i1_sideways_wake.title",
+  "textKey": "event.active_generic_sea_01_current_shear_i1_sideways_wake.text",
+  "choices": [
+    {
+      "id": "follow_foam",
+      "textKey": "event.active_generic_sea_01_current_shear_i1_sideways_wake.choice.follow_foam.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_current_shear_i1_sideways_wake.choice.follow_foam.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_current_shear_i2_hidden_foam"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cross_fast",
+      "textKey": "event.active_generic_sea_01_current_shear_i1_sideways_wake.choice.cross_fast.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_current_shear_i1_sideways_wake.choice.cross_fast.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_current_shear_i2_hidden_foam"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "navigator_call",
+      "textKey": "event.active_generic_sea_01_current_shear_i1_sideways_wake.choice.navigator_call.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_current_shear_i1_sideways_wake.choice.navigator_call.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_current_shear_i2_hidden_foam"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "navigator"
+      }
+    }
+  ]
+}

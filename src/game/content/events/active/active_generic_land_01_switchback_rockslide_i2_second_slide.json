@@ -1,0 +1,115 @@
+{
+  "id": "active_generic_land_01_switchback_rockslide_i2_second_slide",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_01_switchback_rockslide_i2_second_slide.title",
+  "textKey": "event.active_generic_land_01_switchback_rockslide_i2_second_slide.text",
+  "choices": [
+    {
+      "id": "take_overhang",
+      "textKey": "event.active_generic_land_01_switchback_rockslide_i2_second_slide.choice.take_overhang.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_switchback_rockslide_i2_second_slide.choice.take_overhang.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_switchback_rockslide_i3_path_decision"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cross_scree",
+      "textKey": "event.active_generic_land_01_switchback_rockslide_i2_second_slide.choice.cross_scree.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_land_01_switchback_rockslide_i2_second_slide.choice.cross_scree.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i3_path_decision"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_land_01_switchback_rockslide_i2_second_slide.choice.cross_scree.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i3_path_decision"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_land_01_switchback_rockslide_i2_second_slide.choice.cross_scree.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i3_path_decision"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_land_01_switchback_rockslide_i2_second_slide.choice.cross_scree.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i3_path_decision"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "stay_low",
+      "textKey": "event.active_generic_land_01_switchback_rockslide_i2_second_slide.choice.stay_low.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_switchback_rockslide_i2_second_slide.choice.stay_low.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_switchback_rockslide_i3_path_decision"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

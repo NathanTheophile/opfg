@@ -1,0 +1,78 @@
+{
+  "id": "active_generic_sea_01_message_buoy_answering_signal",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_sea_01_message_buoy_answering_signal.title",
+  "textKey": "event.active_generic_sea_01_message_buoy_answering_signal.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "add_again",
+      "textKey": "event.active_generic_sea_01_message_buoy_answering_signal.choice.add_again.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_message_buoy_answering_signal.choice.add_again.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "smile_leave",
+      "textKey": "event.active_generic_sea_01_message_buoy_answering_signal.choice.smile_leave.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_message_buoy_answering_signal.choice.smile_leave.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stop_chain",
+      "textKey": "event.active_generic_sea_01_message_buoy_answering_signal.choice.stop_chain.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_message_buoy_answering_signal.choice.stop_chain.outcome.done.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

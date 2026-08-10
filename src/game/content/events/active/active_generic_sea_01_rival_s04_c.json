@@ -1,0 +1,94 @@
+{
+  "id": "active_generic_sea_01_rival_s04_c",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_sea_01_rival_s04_c.title",
+  "textKey": "event.active_generic_sea_01_rival_s04_c.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "neutral_signal",
+      "textKey": "event.active_generic_sea_01_rival_s04_c.choice.neutral_signal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s04_c.choice.neutral_signal.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s05_c",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "watch_details",
+      "textKey": "event.active_generic_sea_01_rival_s04_c.choice.watch_details.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s04_c.choice.watch_details.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s05_c",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "suspicious_hide",
+      "textKey": "event.active_generic_sea_01_rival_s04_c.choice.suspicious_hide.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s04_c.choice.suspicious_hide.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s05_c",
+              "delayMonths": 10
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "suspicious"
+      }
+    }
+  ]
+}

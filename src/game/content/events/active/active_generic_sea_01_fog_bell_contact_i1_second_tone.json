@@ -1,0 +1,67 @@
+{
+  "id": "active_generic_sea_01_fog_bell_contact_i1_second_tone",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_01_fog_bell_contact_i1_second_tone.title",
+  "textKey": "event.active_generic_sea_01_fog_bell_contact_i1_second_tone.text",
+  "choices": [
+    {
+      "id": "call_course",
+      "textKey": "event.active_generic_sea_01_fog_bell_contact_i1_second_tone.choice.call_course.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_fog_bell_contact_i1_second_tone.choice.call_course.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_fog_bell_contact_i2_shadow_close"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "listen_only",
+      "textKey": "event.active_generic_sea_01_fog_bell_contact_i1_second_tone.choice.listen_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_fog_bell_contact_i1_second_tone.choice.listen_only.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_fog_bell_contact_i2_shadow_close"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leader_slow",
+      "textKey": "event.active_generic_sea_01_fog_bell_contact_i1_second_tone.choice.leader_slow.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_fog_bell_contact_i1_second_tone.choice.leader_slow.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_fog_bell_contact_i2_shadow_close"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "isLeader"
+      }
+    }
+  ]
+}

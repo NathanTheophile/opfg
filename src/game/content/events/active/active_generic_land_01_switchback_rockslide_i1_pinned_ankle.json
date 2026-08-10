@@ -1,0 +1,120 @@
+{
+  "id": "active_generic_land_01_switchback_rockslide_i1_pinned_ankle",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_01_switchback_rockslide_i1_pinned_ankle.title",
+  "textKey": "event.active_generic_land_01_switchback_rockslide_i1_pinned_ankle.text",
+  "choices": [
+    {
+      "id": "lift_block",
+      "textKey": "event.active_generic_land_01_switchback_rockslide_i1_pinned_ankle.choice.lift_block.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_land_01_switchback_rockslide_i1_pinned_ankle.choice.lift_block.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i2_second_slide"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_land_01_switchback_rockslide_i1_pinned_ankle.choice.lift_block.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i2_second_slide"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_land_01_switchback_rockslide_i1_pinned_ankle.choice.lift_block.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i2_second_slide"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_land_01_switchback_rockslide_i1_pinned_ankle.choice.lift_block.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_switchback_rockslide_i2_second_slide"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "dig_around",
+      "textKey": "event.active_generic_land_01_switchback_rockslide_i1_pinned_ankle.choice.dig_around.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_switchback_rockslide_i1_pinned_ankle.choice.dig_around.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_switchback_rockslide_i2_second_slide"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shield_wait",
+      "textKey": "event.active_generic_land_01_switchback_rockslide_i1_pinned_ankle.choice.shield_wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_switchback_rockslide_i1_pinned_ankle.choice.shield_wait.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_switchback_rockslide_i2_second_slide"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

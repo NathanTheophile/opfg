@@ -10,7 +10,6 @@ import {
   Heart,
   MessageCircle,
   Smile,
-  Sparkles,
   type LucideIcon,
 } from 'lucide-react';
 import {
@@ -86,13 +85,80 @@ function getStatVisual(
   if (!match) return null;
 
   const delta = Number(match[1].replace(',', '.'));
-  if (!Number.isFinite(delta) || delta === 0) return null;
+  if (!Number.isFinite(delta)) return null;
 
   return {
     statId,
     delta,
     Icon: STAT_ICONS[statId],
   };
+}
+
+function normalizeUiText(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .trim()
+    .toLowerCase();
+}
+
+function statIdFromLocalizedLabel(
+  label: string,
+): OutcomeStatId | null {
+  const normalized = normalizeUiText(label);
+
+  const aliases: Record<string, OutcomeStatId> = {
+    sante: 'health',
+    health: 'health',
+    moral: 'morale',
+    morale: 'morale',
+    force: 'strength',
+    strength: 'strength',
+    agilite: 'agility',
+    agility: 'agility',
+    observation: 'observation',
+    intelligence: 'intelligence',
+    navigation: 'navigation',
+    charisme: 'charisma',
+    charisma: 'charisma',
+    chance: 'luck',
+    luck: 'luck',
+  };
+
+  return aliases[normalized] ?? null;
+}
+
+type DiceFeedbackTone = 'success' | 'failure' | 'neutral';
+
+function getDiceFeedbackTone(
+  resultLabel: string,
+): DiceFeedbackTone {
+  const normalized = normalizeUiText(resultLabel);
+
+  if (
+    normalized.includes('echec') ||
+    normalized.includes('failure')
+  ) {
+    return 'failure';
+  }
+
+  if (
+    normalized.includes('succes') ||
+    normalized.includes('success')
+  ) {
+    return 'success';
+  }
+
+  return 'neutral';
+}
+
+function isCriticalDiceLabel(resultLabel: string): boolean {
+  const normalized = normalizeUiText(resultLabel);
+
+  return (
+    normalized.includes('critique') ||
+    normalized.includes('critical')
+  );
 }
 
 function isVisibleElement(element: HTMLElement): boolean {
@@ -310,7 +376,7 @@ export function OutcomePanel({
           ): entry is {
             effect: OutcomeEffectViewModel;
             visual: OutcomeStatVisual;
-          } => entry.visual !== null,
+          } => entry.visual !== null && entry.visual.delta !== 0,
         ) ?? [];
 
     if (statEffects.length === 0) return undefined;
@@ -356,6 +422,35 @@ export function OutcomePanel({
     };
   }, [outcome.effects]);
 
+  const diceTone = outcome.dice
+    ? getDiceFeedbackTone(outcome.dice.resultLabel)
+    : 'neutral';
+
+  const hasStatEffect =
+    outcome.effects?.some(
+      (effect) => getStatVisual(effect) !== null,
+    ) ?? false;
+
+  const zeroStatId =
+    outcome.dice &&
+    diceTone === 'failure' &&
+    !hasStatEffect
+      ? statIdFromLocalizedLabel(outcome.dice.statLabel)
+      : null;
+
+  const displayEffects: OutcomeEffectViewModel[] = [
+    ...(outcome.effects ?? []),
+    ...(zeroStatId && outcome.dice
+      ? [
+          {
+            id: `stat-${zeroStatId}`,
+            label: `+0 ${outcome.dice.statLabel}`,
+            tone: 'warning' as const,
+          },
+        ]
+      : []),
+  ];
+
   return (
     <Panel
       variant="strong"
@@ -378,47 +473,39 @@ export function OutcomePanel({
           {outcome.body}
         </p>
 
-        {outcome.dice && (
+        {(outcome.dice || displayEffects.length > 0) && (
           <div
-            className="mt-4 flex flex-wrap gap-2"
-            aria-label="Résultat du DiceCheck"
+            className="opfg-outcome-feedback-row"
+            aria-label="Résultat et effets de la conséquence"
           >
-            <Badge variant="gold">
-              {outcome.dice.statLabel}{' '}
-              {outcome.dice.modifier >= 0 ? '+' : ''}
-              {outcome.dice.modifier}
-            </Badge>
-            <Badge variant="default">
-              d20 : {outcome.dice.rawRoll}
-            </Badge>
-            <Badge variant="default">
-              Total : {outcome.dice.total}
-            </Badge>
-            <Badge
-              variant={
-                outcome.dice.resultLabel.includes('critique')
-                  ? 'critical'
-                  : 'default'
-              }
-            >
-              {outcome.dice.resultLabel}
-            </Badge>
-          </div>
-        )}
+            {outcome.dice && (
+              <span
+                className="opfg-outcome-dice-result"
+                data-tone={diceTone}
+                data-critical={
+                  isCriticalDiceLabel(
+                    outcome.dice.resultLabel,
+                  )
+                    ? 'true'
+                    : 'false'
+                }
+              >
+                {outcome.dice.resultLabel}
+              </span>
+            )}
 
-        {outcome.effects && outcome.effects.length > 0 && (
-          <div
-            className="mt-5 flex flex-wrap gap-2"
-            aria-label="Effets de la conséquence"
-          >
-            {outcome.effects.map((effect) => {
+            {displayEffects.map((effect) => {
               const statVisual = getStatVisual(effect);
 
               if (!statVisual) {
                 return (
                   <Badge
                     key={effect.id}
-                    variant={EFFECT_VARIANT[effect.tone ?? 'default']}
+                    variant={
+                      EFFECT_VARIANT[
+                        effect.tone ?? 'default'
+                      ]
+                    }
                   >
                     {effect.label}
                   </Badge>
@@ -432,14 +519,20 @@ export function OutcomePanel({
                   key={effect.id}
                   ref={(element) => {
                     if (element) {
-                      effectRefs.current.set(effect.id, element);
+                      effectRefs.current.set(
+                        effect.id,
+                        element,
+                      );
                     } else {
                       effectRefs.current.delete(effect.id);
                     }
                   }}
                   className="opfg-outcome-stat-effect"
                   data-stat={statId}
-                  data-tone={delta > 0 ? 'positive' : 'negative'}
+                  data-tone={
+                    delta > 0 ? 'positive' : 'negative'
+                  }
+                  data-zero={delta === 0 ? 'true' : 'false'}
                   aria-label={effect.label}
                 >
                   <span
