@@ -20,7 +20,7 @@ _No production batch is currently accepted after the Lifetime Thread reset._
 
 _None accepted yet._
 
-## Accepted Secondary Immediate Arcs — depth 3
+## Accepted Secondary Immediate Arcs — depth 3+
 
 | Batch | Root Event ID | arcKey | Reachable Immediate depth | One-line arc premise |
 |---|---|---|---:|---|
@@ -43,7 +43,7 @@ The following batch IDs are scheduled for regeneration under the new authority:
 - `CH_FAMILY_SOCIAL_01`
 - `CH_IDENTITY_WORLD_01`
 
-Do not copy old generated JSON forward merely to preserve volume. Reuse a premise only when the regenerated Event still passes anti-reskin review and the batch as a whole satisfies the new Signature Immediate Arc + Lifetime Thread contract.
+Do not copy old generated JSON forward merely to preserve volume. Reuse a premise only when the regenerated Event still passes anti-reskin review and the batch as a whole satisfies the new Signature Immediate Arc + Secondary Immediate Arcs + Lifetime Thread contract.
 
 ## Maintenance rule
 

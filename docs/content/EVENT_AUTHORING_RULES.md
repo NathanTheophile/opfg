@@ -64,7 +64,7 @@ A depth-5 chain does not also satisfy any of the required depth-3 slots.
 
 Additional Signature or Secondary Immediate Arcs are allowed and encouraged when narratively justified.
 
-The Lifetime Thread may originate from one of those two Immediate-arc roots only when that produces a genuinely coherent story. Do not force structures together merely to reduce Event count.
+The Lifetime Thread may originate from one of the qualifying Immediate-arc roots only when that produces a genuinely coherent story. Do not force structures together merely to reduce Event count.
 
 The batch manifest must explicitly identify:
 
