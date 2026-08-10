@@ -455,9 +455,9 @@ export function OutcomePanel({
     <Panel
       variant="strong"
       padding="none"
-      className="w-full overflow-hidden shadow-overlay"
+      className="opfg-outcome-panel w-full overflow-hidden shadow-overlay"
     >
-      <PanelHeader className="mb-0 px-5 pb-4 pt-5 md:px-7 md:pb-5 md:pt-6">
+      <PanelHeader className="opfg-outcome-panel__header mb-0 px-5 pb-4 pt-5 md:px-7 md:pb-5 md:pt-6">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold">
           Conséquence
         </p>
@@ -468,14 +468,14 @@ export function OutcomePanel({
 
       <div className="h-px bg-[var(--border-subtle)]" />
 
-      <PanelBody className="px-5 py-5 md:px-7 md:py-6">
+      <PanelBody className="opfg-outcome-panel__body px-5 py-5 md:px-7 md:py-6">
         <p className="max-w-[68ch] text-[0.98rem] leading-7 text-fg-secondary md:text-base md:leading-7">
           {outcome.body}
         </p>
 
         {(outcome.dice || displayEffects.length > 0) && (
           <div
-            className="opfg-outcome-feedback-row"
+            className="opfg-outcome-feedback-row opfg-outcome-effect-list"
             aria-label="Résultat et effets de la conséquence"
           >
             {outcome.dice && (
@@ -557,7 +557,7 @@ export function OutcomePanel({
         )}
       </PanelBody>
 
-      <PanelFooter className="mt-0 border-t border-[var(--border-subtle)] bg-black/[0.08] px-4 py-4 md:px-6">
+      <PanelFooter className="opfg-outcome-panel__footer mt-0 border-t border-[var(--border-subtle)] bg-black/[0.08] px-4 py-4 md:px-6">
         <Button
           variant="glass"
           size="lg"
