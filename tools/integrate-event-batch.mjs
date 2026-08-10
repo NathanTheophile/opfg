@@ -52,6 +52,8 @@ Behavior:
   - duplicate/conflicting Event IDs stop the whole integration before writes
   - batch docs are copied to docs/content/events/batches/<BATCH_ID>/
   - EVENT_CONCEPT_INDEX.md is updated from each batch MANIFEST + root localization
+  - Lifetime metadata parsing is tolerant to minor Markdown formatting differences
+  - Lifetime seeds without parseable MANIFEST metadata block integration instead of being silently omitted
   - only pass reviewed/accepted batches: integration records them as accepted in the index
 `);
 }
@@ -276,7 +278,6 @@ function atomicWrite(path, text) {
   renameSync(tempPath, path);
 }
 
-
 function stripInlineMarkdown(value) {
   return String(value ?? '')
     .replaceAll('**', '')
@@ -309,7 +310,12 @@ function parseMarkdownTable(sectionContent) {
   const tableLines = lines.filter((line) => line.trim().startsWith('|'));
   if (tableLines.length < 2) return null;
 
-  const split = (line) => line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((cell) => cell.trim());
+  const split = (line) => line
+    .trim()
+    .replace(/^\|/, '')
+    .replace(/\|$/, '')
+    .split('|')
+    .map((cell) => cell.trim());
   const headers = split(tableLines[0]);
   const rows = tableLines.slice(2).map(split).filter((row) => row.some((cell) => cell.length > 0));
   return { headers, rows };
@@ -369,23 +375,36 @@ function rootRegistryFromManifest(manifestText) {
 }
 
 function parseSignatureArcs(manifestText) {
-  const section = sectionByHeading(manifestText, (heading) => heading.toUpperCase() === 'SIGNATURE_IMMEDIATE_ARCS');
+  const section = sectionByHeading(
+    manifestText,
+    (heading) => heading.toUpperCase() === 'SIGNATURE_IMMEDIATE_ARCS',
+  );
   if (!section) return [];
 
   const rootMatches = [...section.content.matchAll(/\*\*Root ID:\*\*\s*`([^`]+)`/gi)];
   return rootMatches.map((match, index) => {
     const blockStart = match.index;
-    const blockEnd = index + 1 < rootMatches.length ? rootMatches[index + 1].index : section.content.length;
+    const blockEnd = index + 1 < rootMatches.length
+      ? rootMatches[index + 1].index
+      : section.content.length;
     const block = section.content.slice(blockStart, blockEnd);
     const arcKey = block.match(/\*\*arcKey:\*\*\s*`([^`]+)`/i)?.[1];
-    const depth = block.match(/\*\*(?:Maximum reachable Immediate depth|Profondeur Immediate maximale atteignable):\*\*\s*\*\*(\d+)\*\*/i)?.[1];
+
+    // Accept both "5" and "**5**". Markdown emphasis must never decide parser validity.
+    const depth = block.match(
+      /\*\*(?:Maximum reachable Immediate depth|Profondeur Immediate maximale atteignable):\*\*\s*(?:\*\*)?(\d+)(?:\*\*)?/i,
+    )?.[1];
+
     const premise = block.match(/\*\*(?:Premise|Prémisse):\*\*\s*(.+)/i)?.[1]?.trim();
     return { rootId: match[1], arcKey, depth: depth ? Number(depth) : null, premise };
   });
 }
 
 function parseSecondaryArcs(manifestText) {
-  const section = sectionByHeading(manifestText, (heading) => heading.toUpperCase() === 'SECONDARY_IMMEDIATE_ARCS');
+  const section = sectionByHeading(
+    manifestText,
+    (heading) => heading.toUpperCase() === 'SECONDARY_IMMEDIATE_ARCS',
+  );
   if (!section) return [];
 
   const result = [];
@@ -396,36 +415,71 @@ function parseSecondaryArcs(manifestText) {
     const arcKey = line.match(/arcKey:\s*([^\s]+)\s+—/i)?.[1];
     const depth = line.match(/depth:?\s*(\d+)/i)?.[1];
     const premise = line.match(/depth:?\s*\d+\s+—\s*(.+)$/i)?.[1]?.trim();
-    if (root && arcKey && depth) result.push({ rootId: root, arcKey, depth: Number(depth), premise });
+    if (root && arcKey && depth) {
+      result.push({ rootId: root, arcKey, depth: Number(depth), premise });
+    }
   }
   return result;
 }
 
 function lifetimeBlocks(manifestText) {
-  const section = sectionByHeading(manifestText, (heading) => heading.toUpperCase() === 'LIFETIME_THREADS');
+  const section = sectionByHeading(
+    manifestText,
+    (heading) => heading.toUpperCase() === 'LIFETIME_THREADS',
+  );
   if (!section) return [];
 
-  const subheads = [...section.content.matchAll(/^###\s+`([^`]+)`\s+—\s+`([^`]+)`.*$/gm)];
+  // Accept headings with or without backticks around IDs, and em/en/ASCII dashes.
+  // Examples:
+  //   ### `seed_id` — `thread_key`
+  //   ### seed_id — thread_key
+  const subheads = [
+    ...section.content.matchAll(
+      /^###\s+`?([A-Za-z0-9_.:-]+)`?\s+(?:—|–|-)\s+`?([A-Za-z0-9_.:-]+)`?.*$/gm,
+    ),
+  ];
+
   if (subheads.length > 0) {
     return subheads.map((match, index) => ({
       seedRootId: match[1],
       threadKey: match[2],
-      content: section.content.slice(match.index + match[0].length, index + 1 < subheads.length ? subheads[index + 1].index : section.content.length),
+      content: section.content.slice(
+        match.index + match[0].length,
+        index + 1 < subheads.length ? subheads[index + 1].index : section.content.length,
+      ),
     }));
   }
 
-  const seedRootId = section.content.match(/\*\*Seed root ID:\*\*\s*`([^`]+)`/i)?.[1];
-  const threadKey = section.content.match(/\*\*threadKey:\*\*\s*`([^`]+)`/i)?.[1];
-  return seedRootId && threadKey ? [{ seedRootId, threadKey, content: section.content }] : [];
+  // Fallback for manifests that expose explicit fields instead of a ### subheading.
+  const seedRootId = section.content.match(
+    /\*\*Seed root ID:\*\*\s*`?([A-Za-z0-9_.:-]+)`?/i,
+  )?.[1];
+  const threadKey = section.content.match(
+    /\*\*threadKey:\*\*\s*`?([A-Za-z0-9_.:-]+)`?/i,
+  )?.[1];
+
+  return seedRootId && threadKey
+    ? [{ seedRootId, threadKey, content: section.content }]
+    : [];
 }
 
 function lifetimeField(block, labels) {
   for (const rawLine of block.split(/\r?\n/)) {
-    if (!rawLine.trim().startsWith('-')) continue;
-    const line = stripInlineMarkdown(rawLine).replace(/^\-\s*/, '');
+    // Accept both bullet fields and plain fields. stripInlineMarkdown also removes
+    // bold/backtick formatting, so these all parse the same:
+    //   - **Longest reachable Scheduled depth:** 14
+    //   **Longest reachable Scheduled depth:** 14
+    //   Longest reachable Scheduled depth: 14
+    const line = stripInlineMarkdown(rawLine)
+      .replace(/^\s*-\s*/, '')
+      .trim();
+    if (!line) continue;
+
     for (const label of labels) {
       const prefix = `${label}:`;
-      if (line.toLowerCase().startsWith(prefix.toLowerCase())) return line.slice(prefix.length).trim();
+      if (line.toLowerCase().startsWith(prefix.toLowerCase())) {
+        return line.slice(prefix.length).trim();
+      }
     }
   }
   return null;
@@ -433,12 +487,31 @@ function lifetimeField(block, labels) {
 
 function parseLifetimeThreads(manifestText) {
   return lifetimeBlocks(manifestText).map((block) => {
-    const anchor = lifetimeField(block.content, ['Ancre durable', 'Ancre / NPC récurrent', 'Recurring NPC / anchor']) || '—';
-    const depthText = lifetimeField(block.content, ['Longest reachable Scheduled depth']) || '';
-    const totalText = lifetimeField(block.content, ['Total distinct reachable Scheduled EventDefinitions', 'Total reachable Scheduled nodes']) || '';
-    const divergencesText = lifetimeField(block.content, ['Vrais points de divergence long-terme', 'Meaningful long-term divergence count']) || '';
-    const topology = lifetimeField(block.content, ['Topologie', 'Topology']) || 'branching';
-    const span = lifetimeField(block.content, ['Span temporel visé', 'Span visé', 'Intended span']) || '—';
+    const anchor = lifetimeField(
+      block.content,
+      ['Ancre durable', 'Ancre / NPC récurrent', 'Recurring NPC / anchor'],
+    ) || '—';
+    const depthText = lifetimeField(
+      block.content,
+      ['Longest reachable Scheduled depth'],
+    ) || '';
+    const totalText = lifetimeField(
+      block.content,
+      ['Total distinct reachable Scheduled EventDefinitions', 'Total reachable Scheduled nodes'],
+    ) || '';
+    const divergencesText = lifetimeField(
+      block.content,
+      ['Vrais points de divergence long-terme', 'Meaningful long-term divergence count'],
+    ) || '';
+    const topology = lifetimeField(
+      block.content,
+      ['Topologie', 'Topology'],
+    ) || 'branching';
+    const span = lifetimeField(
+      block.content,
+      ['Span temporel visé', 'Span visé', 'Intended span'],
+    ) || '—';
+
     return {
       seedRootId: block.seedRootId,
       threadKey: block.threadKey,
@@ -472,11 +545,18 @@ function appendIndexRows(text, headingPrefix, rows, keyColumnIndex, conflicts) {
   }
 
   let lastTable = firstTable + 1;
-  while (lastTable + 1 < lines.length && lines[lastTable + 1].trim().startsWith('|')) lastTable += 1;
+  while (lastTable + 1 < lines.length && lines[lastTable + 1].trim().startsWith('|')) {
+    lastTable += 1;
+  }
 
   const existingRows = lines.slice(firstTable + 2, lastTable + 1)
     .filter((line) => line.trim().startsWith('|'))
-    .map((line) => line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((cell) => stripInlineMarkdown(cell)));
+    .map((line) => line
+      .trim()
+      .replace(/^\|/, '')
+      .replace(/\|$/, '')
+      .split('|')
+      .map((cell) => stripInlineMarkdown(cell)));
 
   let added = 0;
   let skipped = 0;
@@ -485,13 +565,24 @@ function appendIndexRows(text, headingPrefix, rows, keyColumnIndex, conflicts) {
   for (const row of rows) {
     const clean = row.map((cell) => escapeMarkdownCell(cell));
     const key = stripInlineMarkdown(clean[keyColumnIndex]);
-    const existing = existingRows.find((candidate) => stripInlineMarkdown(candidate[keyColumnIndex]) === key);
+    const existing = existingRows.find(
+      (candidate) => stripInlineMarkdown(candidate[keyColumnIndex]) === key,
+    );
+
     if (existing) {
-      const same = existing.length === clean.length && existing.every((cell, index) => stripInlineMarkdown(cell) === stripInlineMarkdown(clean[index]));
+      const same = existing.length === clean.length
+        && existing.every(
+          (cell, index) => stripInlineMarkdown(cell) === stripInlineMarkdown(clean[index]),
+        );
       if (same) skipped += 1;
-      else conflicts.push(`EVENT_CONCEPT_INDEX.md already contains "${key}" with different metadata in section "${headingPrefix}".`);
+      else {
+        conflicts.push(
+          `EVENT_CONCEPT_INDEX.md already contains "${key}" with different metadata in section "${headingPrefix}".`,
+        );
+      }
       continue;
     }
+
     existingRows.push(clean);
     newLines.push(`| ${clean.join(' | ')} |`);
     added += 1;
@@ -499,7 +590,8 @@ function appendIndexRows(text, headingPrefix, rows, keyColumnIndex, conflicts) {
 
   if (newLines.length > 0) {
     lines.splice(lastTable + 1, 0, ...newLines);
-    const noneIndex = lines.findIndex((line) => /_None accepted yet\._|_Aucun.*accept|_No production batch is currently accepted/i.test(line.trim()));
+    const noneIndex = lines.findIndex((line) =>
+      /_None accepted yet\._|_Aucun.*accept|_No production batch is currently accepted/i.test(line.trim()));
     if (noneIndex >= 0) lines.splice(noneIndex, 1);
   }
 
@@ -512,19 +604,35 @@ function appendIndexRows(text, headingPrefix, rows, keyColumnIndex, conflicts) {
 }
 
 function removeFromRegenerationScope(text, batchIds) {
-  const section = sectionByHeading(text, (heading) => heading.toUpperCase() === 'REGENERATION SCOPE');
+  const section = sectionByHeading(
+    text,
+    (heading) => heading.toUpperCase() === 'REGENERATION SCOPE',
+  );
   if (!section) return text;
+
   const lines = section.content.split(/\r?\n/);
   const wanted = new Set(batchIds);
   const filtered = lines.filter((line) => {
     const match = line.match(/^\s*-\s*`([^`]+)`\s*$/);
     return !(match && wanted.has(match[1]));
   });
-  const remainingBatchBullets = filtered.filter((line) => /^\s*-\s*`[^`]+`\s*$/.test(line));
-  if (remainingBatchBullets.length === 0 && !filtered.some((line) => /_No batches currently scheduled for regeneration\._/.test(line))) {
+
+  const remainingBatchBullets = filtered.filter(
+    (line) => /^\s*-\s*`[^`]+`\s*$/.test(line),
+  );
+  if (
+    remainingBatchBullets.length === 0
+    && !filtered.some((line) => /_No batches currently scheduled for regeneration\._/.test(line))
+  ) {
     const insertAt = filtered.findIndex((line) => line.trim().startsWith('Do not copy'));
-    filtered.splice(insertAt >= 0 ? insertAt : filtered.length, 0, '_No batches currently scheduled for regeneration._', '');
+    filtered.splice(
+      insertAt >= 0 ? insertAt : filtered.length,
+      0,
+      '_No batches currently scheduled for regeneration._',
+      '',
+    );
   }
+
   return text.slice(0, section.start) + filtered.join('\n') + text.slice(section.end);
 }
 
@@ -544,6 +652,7 @@ for (const filePath of walkJsonFiles(eventsRoot)) {
       `  ${existingEventsById.get(value.id).path}\n  ${filePath}`,
     );
   }
+
   existingEventsById.set(value.id, {
     path: filePath,
     semantic: semanticJson(value),
@@ -556,6 +665,7 @@ const batches = inputs.map((input) => {
   const manifestText = existsSync(manifestPath) ? readFileSync(manifestPath, 'utf8') : null;
   const batchId = inferBatchIdFromManifest(manifestText, basename(root));
   const phase = forcedPhase || inferPhase(batchId);
+
   if (!phase) {
     fail(
       `Cannot infer phase for batch "${batchId}". ` +
@@ -572,7 +682,10 @@ const batches = inputs.map((input) => {
 
   if (eventFiles.length === 0) fail(`Batch ${batchId} contains no Event JSON files.`);
 
-  const localization = parseJsonFile(localizationPath, `${batchId}/localization/fr.json`).value;
+  const localization = parseJsonFile(
+    localizationPath,
+    `${batchId}/localization/fr.json`,
+  ).value;
   if (!localization || Array.isArray(localization) || typeof localization !== 'object') {
     fail(`${batchId}/localization/fr.json must be a flat JSON object.`);
   }
@@ -614,8 +727,8 @@ for (const batch of batches) {
     }
 
     const semantic = semanticJson(value);
-
     const incomingExisting = incomingEventsById.get(value.id);
+
     if (incomingExisting) {
       if (incomingExisting.semantic !== semantic) {
         conflicts.push(
@@ -674,6 +787,7 @@ let localizationIdenticalSkipped = 0;
 for (const batch of batches) {
   for (const [key, value] of Object.entries(batch.localization)) {
     const incomingExisting = incomingLocalizationSeen.get(key);
+
     if (incomingExisting) {
       if (incomingExisting.value !== value) {
         conflicts.push(
@@ -737,7 +851,6 @@ if (!skipDocs) {
   }
 }
 
-
 let plannedIndexText = null;
 let indexRowsAdded = 0;
 let indexRowsSkipped = 0;
@@ -752,13 +865,17 @@ if (!skipIndex) {
 
   for (const batch of batches) {
     if (!batch.manifestText) {
-      conflicts.push(`${batch.batchId}: MANIFEST.md is required for automatic EVENT_CONCEPT_INDEX.md update. Use --skip-index to bypass.`);
+      conflicts.push(
+        `${batch.batchId}: MANIFEST.md is required for automatic EVENT_CONCEPT_INDEX.md update. Use --skip-index to bypass.`,
+      );
       continue;
     }
 
     const rootRegistry = rootRegistryFromManifest(batch.manifestText);
     if (!rootRegistry || rootRegistry.length === 0) {
-      conflicts.push(`${batch.batchId}: could not parse ROOT_REGISTRY / ROOT REGISTER from MANIFEST.md.`);
+      conflicts.push(
+        `${batch.batchId}: could not parse ROOT_REGISTRY / ROOT REGISTER from MANIFEST.md.`,
+      );
       continue;
     }
 
@@ -772,10 +889,14 @@ if (!skipIndex) {
     for (const root of rootRegistry) {
       const event = batchEvents.get(root.rootId);
       if (!event) {
-        conflicts.push(`${batch.batchId}: root "${root.rootId}" from MANIFEST is missing from events/.`);
+        conflicts.push(
+          `${batch.batchId}: root "${root.rootId}" from MANIFEST is missing from events/.`,
+        );
         continue;
       }
-      const premise = batch.localization[event.textKey] || batch.localization[`event.${root.rootId}.text`] || event.textKey;
+      const premise = batch.localization[event.textKey]
+        || batch.localization[`event.${root.rootId}.text`]
+        || event.textKey;
       rootRows.push([
         batch.batchId,
         `\`${root.rootId}\``,
@@ -789,25 +910,90 @@ if (!skipIndex) {
 
     for (const arc of parseSignatureArcs(batch.manifestText)) {
       if (!arc.arcKey || !arc.depth || !arc.premise) {
-        conflicts.push(`${batch.batchId}: incomplete Signature Immediate Arc metadata for root "${arc.rootId}".`);
+        conflicts.push(
+          `${batch.batchId}: incomplete Signature Immediate Arc metadata for root "${arc.rootId}".`,
+        );
         continue;
       }
-      signatureRows.push([batch.batchId, `\`${arc.rootId}\``, `\`${arc.arcKey}\``, String(arc.depth), arc.premise]);
+      signatureRows.push([
+        batch.batchId,
+        `\`${arc.rootId}\``,
+        `\`${arc.arcKey}\``,
+        String(arc.depth),
+        arc.premise,
+      ]);
     }
 
     for (const arc of parseSecondaryArcs(batch.manifestText)) {
-      secondaryRows.push([batch.batchId, `\`${arc.rootId}\``, `\`${arc.arcKey}\``, String(arc.depth), arc.premise || '—']);
+      secondaryRows.push([
+        batch.batchId,
+        `\`${arc.rootId}\``,
+        `\`${arc.arcKey}\``,
+        String(arc.depth),
+        arc.premise || '—',
+      ]);
     }
 
-    for (const thread of parseLifetimeThreads(batch.manifestText)) {
+    // Lifetime integrity guard: never allow a seed to disappear from the index because
+    // a MANIFEST formatting variation made the parser return [].
+    const lifetimeSeeds = [...batchEvents.values()]
+      .filter((event) => event.lifetimeThreadSeed === true);
+    const parsedLifetimeThreads = parseLifetimeThreads(batch.manifestText);
+
+    if (lifetimeSeeds.length > 0 && parsedLifetimeThreads.length === 0) {
+      conflicts.push(
+        `${batch.batchId}: ${lifetimeSeeds.length} Lifetime seed(s) found in events/ ` +
+        'but no Lifetime Thread metadata could be parsed from MANIFEST.md.',
+      );
+    }
+
+    const parsedSeedIds = new Set(parsedLifetimeThreads.map((thread) => thread.seedRootId));
+    for (const seed of lifetimeSeeds) {
+      if (!parsedSeedIds.has(seed.id)) {
+        conflicts.push(
+          `${batch.batchId}: Lifetime seed "${seed.id}" has no parsed MANIFEST entry.`,
+        );
+      }
+    }
+
+    const actualSeedIds = new Set(lifetimeSeeds.map((seed) => seed.id));
+    const seenParsedSeeds = new Set();
+    for (const thread of parsedLifetimeThreads) {
+      if (seenParsedSeeds.has(thread.seedRootId)) {
+        conflicts.push(
+          `${batch.batchId}: duplicate Lifetime MANIFEST entry for seed "${thread.seedRootId}".`,
+        );
+      }
+      seenParsedSeeds.add(thread.seedRootId);
+
+      if (!batchEvents.has(thread.seedRootId)) {
+        conflicts.push(
+          `${batch.batchId}: Lifetime MANIFEST seed "${thread.seedRootId}" is missing from events/.`,
+        );
+      } else if (!actualSeedIds.has(thread.seedRootId)) {
+        conflicts.push(
+          `${batch.batchId}: MANIFEST declares Lifetime seed "${thread.seedRootId}" but the Event is not marked lifetimeThreadSeed: true.`,
+        );
+      }
+    }
+
+    for (const thread of parsedLifetimeThreads) {
       if (!thread.depth || !thread.totalNodes || !thread.divergences) {
-        conflicts.push(`${batch.batchId}: incomplete Lifetime Thread metrics for seed "${thread.seedRootId}".`);
+        conflicts.push(
+          `${batch.batchId}: incomplete Lifetime Thread metrics for seed "${thread.seedRootId}".`,
+        );
         continue;
       }
+
       const rootEvent = batchEvents.get(thread.seedRootId);
       const premise = rootEvent
-        ? (batch.localization[rootEvent.textKey] || batch.localization[`event.${thread.seedRootId}.text`] || rootEvent.textKey)
+        ? (
+          batch.localization[rootEvent.textKey]
+          || batch.localization[`event.${thread.seedRootId}.text`]
+          || rootEvent.textKey
+        )
         : '—';
+
       lifetimeRows.push([
         batch.batchId,
         `\`${thread.seedRootId}\``,
@@ -829,13 +1015,23 @@ if (!skipIndex) {
     ['Accepted Secondary Immediate Arcs', secondaryRows, 1],
     ['Accepted Lifetime Threads', lifetimeRows, 1],
   ]) {
-    const result = appendIndexRows(plannedIndexText, heading, rows, keyColumn, conflicts);
+    const result = appendIndexRows(
+      plannedIndexText,
+      heading,
+      rows,
+      keyColumn,
+      conflicts,
+    );
     plannedIndexText = result.text;
     indexRowsAdded += result.added;
     indexRowsSkipped += result.skipped;
   }
 
-  plannedIndexText = removeFromRegenerationScope(plannedIndexText, batches.map((batch) => batch.batchId));
+  plannedIndexText = removeFromRegenerationScope(
+    plannedIndexText,
+    batches.map((batch) => batch.batchId),
+  );
+
   if (indexRowsAdded > 0) {
     plannedIndexText = plannedIndexText.replace(
       '> **Status: regeneration baseline after Lifetime Thread authoring-contract revision.**',
@@ -889,7 +1085,10 @@ if (!dryRun) {
   }
 
   if (!skipIndex && plannedIndexText !== null) {
-    atomicWrite(conceptIndexPath, plannedIndexText.endsWith('\n') ? plannedIndexText : `${plannedIndexText}\n`);
+    atomicWrite(
+      conceptIndexPath,
+      plannedIndexText.endsWith('\n') ? plannedIndexText : `${plannedIndexText}\n`,
+    );
   }
 
   console.log('\nINTEGRATION COMPLETE');
