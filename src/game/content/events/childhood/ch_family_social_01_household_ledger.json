@@ -1,0 +1,80 @@
+{
+  "id": "ch_family_social_01_household_ledger",
+  "titleKey": "event.ch_family_social_01_household_ledger.title",
+  "textKey": "event.ch_family_social_01_household_ledger.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 174
+      }
+    ]
+  },
+  "lifetimeThreadSeed": true,
+  "choices": [
+    {
+      "id": "honor_entries",
+      "textKey": "event.ch_family_social_01_household_ledger.choice.honor_entries.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "entries_honored",
+          "textKey": "event.ch_family_social_01_household_ledger.choice.honor_entries.outcome.entries_honored.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_s1_first_request",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "question_entries",
+      "textKey": "event.ch_family_social_01_household_ledger.choice.question_entries.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "entries_questioned",
+          "textKey": "event.ch_family_social_01_household_ledger.choice.question_entries.outcome.entries_questioned.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_s1_first_request",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "claim_own_terms",
+      "textKey": "event.ch_family_social_01_household_ledger.choice.claim_own_terms.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "own_terms_claimed",
+          "textKey": "event.ch_family_social_01_household_ledger.choice.claim_own_terms.outcome.own_terms_claimed.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_s1_first_request",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

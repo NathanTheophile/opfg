@@ -1,0 +1,157 @@
+{
+  "id": "ch_identity_world_01_official_stamp",
+  "titleKey": "event.ch_identity_world_01_official_stamp.title",
+  "textKey": "event.ch_identity_world_01_official_stamp.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "government"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "find_rule",
+      "textKey": "event.ch_identity_world_01_official_stamp.choice.find_rule.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rule_misread",
+            "textKey": "event.ch_identity_world_01_official_stamp.choice.find_rule.outcome.rule_misread.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_official_stamp_s01_stamp_memory",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "failure": {
+            "id": "rule_unclear",
+            "textKey": "event.ch_identity_world_01_official_stamp.choice.find_rule.outcome.rule_unclear.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_official_stamp_s01_stamp_memory",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "success": {
+            "id": "rule_found",
+            "textKey": "event.ch_identity_world_01_official_stamp.choice.find_rule.outcome.rule_found.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_official_stamp_s01_stamp_memory",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "rule_loophole",
+            "textKey": "event.ch_identity_world_01_official_stamp.choice.find_rule.outcome.rule_loophole.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_official_stamp_s01_stamp_memory",
+                "delayMonths": 12
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "value_procedure",
+      "textKey": "event.ch_identity_world_01_official_stamp.choice.value_procedure.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "procedure_value",
+          "textKey": "event.ch_identity_world_01_official_stamp.choice.value_procedure.outcome.procedure_value.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_official_stamp_s01_stamp_memory",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "criticize_bureaucracy",
+      "textKey": "event.ch_identity_world_01_official_stamp.choice.criticize_bureaucracy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bureaucracy_criticized",
+          "textKey": "event.ch_identity_world_01_official_stamp.choice.criticize_bureaucracy.outcome.bureaucracy_criticized.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_official_stamp_s01_stamp_memory",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "walk_past",
+      "textKey": "event.ch_identity_world_01_official_stamp.choice.walk_past.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stamp_ignored",
+          "textKey": "event.ch_identity_world_01_official_stamp.choice.walk_past.outcome.stamp_ignored.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_official_stamp_s01_stamp_memory",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

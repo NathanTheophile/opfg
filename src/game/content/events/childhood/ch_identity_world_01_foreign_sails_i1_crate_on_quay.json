@@ -1,0 +1,102 @@
+{
+  "id": "ch_identity_world_01_foreign_sails_i1_crate_on_quay",
+  "titleKey": "event.ch_identity_world_01_foreign_sails_i1_crate_on_quay.title",
+  "textKey": "event.ch_identity_world_01_foreign_sails_i1_crate_on_quay.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "catch_the_rope",
+      "textKey": "event.ch_identity_world_01_foreign_sails_i1_crate_on_quay.choice.catch_the_rope.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rope_burn",
+            "textKey": "event.ch_identity_world_01_foreign_sails_i1_crate_on_quay.choice.catch_the_rope.outcome.rope_burn.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i2_broken_lid"
+              }
+            ]
+          },
+          "failure": {
+            "id": "rope_slips",
+            "textKey": "event.ch_identity_world_01_foreign_sails_i1_crate_on_quay.choice.catch_the_rope.outcome.rope_slips.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i2_broken_lid"
+              }
+            ]
+          },
+          "success": {
+            "id": "rope_held",
+            "textKey": "event.ch_identity_world_01_foreign_sails_i1_crate_on_quay.choice.catch_the_rope.outcome.rope_held.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i2_broken_lid"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "rope_clean",
+            "textKey": "event.ch_identity_world_01_foreign_sails_i1_crate_on_quay.choice.catch_the_rope.outcome.rope_clean.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i2_broken_lid"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "shout_warning",
+      "textKey": "event.ch_identity_world_01_foreign_sails_i1_crate_on_quay.choice.shout_warning.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "warning_given",
+          "textKey": "event.ch_identity_world_01_foreign_sails_i1_crate_on_quay.choice.shout_warning.outcome.warning_given.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_foreign_sails_i2_broken_lid"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step_away",
+      "textKey": "event.ch_identity_world_01_foreign_sails_i1_crate_on_quay.choice.step_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "scene_ends",
+          "textKey": "event.ch_identity_world_01_foreign_sails_i1_crate_on_quay.choice.step_away.outcome.scene_ends.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

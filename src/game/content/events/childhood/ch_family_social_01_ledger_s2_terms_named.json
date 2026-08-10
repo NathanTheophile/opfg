@@ -1,0 +1,64 @@
+{
+  "id": "ch_family_social_01_ledger_s2_terms_named",
+  "titleKey": "event.ch_family_social_01_ledger_s2_terms_named.title",
+  "textKey": "event.ch_family_social_01_ledger_s2_terms_named.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "carry_duty",
+      "textKey": "event.ch_family_social_01_ledger_s2_terms_named.choice.carry_duty.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "duty_carried",
+          "textKey": "event.ch_family_social_01_ledger_s2_terms_named.choice.carry_duty.outcome.duty_carried.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_a3_carry_burden",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "audit_history",
+      "textKey": "event.ch_family_social_01_ledger_s2_terms_named.choice.audit_history.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "history_audited",
+          "textKey": "event.ch_family_social_01_ledger_s2_terms_named.choice.audit_history.outcome.history_audited.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_b3_audit_old_entry",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_ledger",
+      "textKey": "event.ch_family_social_01_ledger_s2_terms_named.choice.leave_ledger.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ledger_left",
+          "textKey": "event.ch_family_social_01_ledger_s2_terms_named.choice.leave_ledger.outcome.ledger_left.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

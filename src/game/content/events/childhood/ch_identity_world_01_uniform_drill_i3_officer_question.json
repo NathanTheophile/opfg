@@ -1,0 +1,92 @@
+{
+  "id": "ch_identity_world_01_uniform_drill_i3_officer_question",
+  "titleKey": "event.ch_identity_world_01_uniform_drill_i3_officer_question.title",
+  "textKey": "event.ch_identity_world_01_uniform_drill_i3_officer_question.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "value_order",
+      "textKey": "event.ch_identity_world_01_uniform_drill_i3_officer_question.choice.value_order.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "order_value",
+          "textKey": "event.ch_identity_world_01_uniform_drill_i3_officer_question.choice.value_order.outcome.order_value.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "disciplined"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "disciplined"
+            }
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "rebellious"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "value_independence",
+      "textKey": "event.ch_identity_world_01_uniform_drill_i3_officer_question.choice.value_independence.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "independence_value",
+          "textKey": "event.ch_identity_world_01_uniform_drill_i3_officer_question.choice.value_independence.outcome.independence_value.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "rebellious"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "rebellious"
+            }
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "disciplined"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "no_answer",
+      "textKey": "event.ch_identity_world_01_uniform_drill_i3_officer_question.choice.no_answer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "question_open",
+          "textKey": "event.ch_identity_world_01_uniform_drill_i3_officer_question.choice.no_answer.outcome.question_open.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

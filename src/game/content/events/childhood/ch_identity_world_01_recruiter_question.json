@@ -1,0 +1,106 @@
+{
+  "id": "ch_identity_world_01_recruiter_question",
+  "titleKey": "event.ch_identity_world_01_recruiter_question.title",
+  "textKey": "event.ch_identity_world_01_recruiter_question.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "marine_presence"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "ask_what_service_means",
+      "textKey": "event.ch_identity_world_01_recruiter_question.choice.ask_what_service_means.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "service_asked",
+          "textKey": "event.ch_identity_world_01_recruiter_question.choice.ask_what_service_means.outcome.service_asked.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_recruiter_question_s01_old_question",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "say_maybe",
+      "textKey": "event.ch_identity_world_01_recruiter_question.choice.say_maybe.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "maybe_said",
+          "textKey": "event.ch_identity_world_01_recruiter_question.choice.say_maybe.outcome.maybe_said.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_recruiter_question_s01_old_question",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "say_never",
+      "textKey": "event.ch_identity_world_01_recruiter_question.choice.say_never.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "never_said",
+          "textKey": "event.ch_identity_world_01_recruiter_question.choice.say_never.outcome.never_said.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_recruiter_question_s01_old_question",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "avoid_answer",
+      "textKey": "event.ch_identity_world_01_recruiter_question.choice.avoid_answer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_avoided",
+          "textKey": "event.ch_identity_world_01_recruiter_question.choice.avoid_answer.outcome.answer_avoided.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_recruiter_question_s01_old_question",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

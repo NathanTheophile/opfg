@@ -1,0 +1,126 @@
+{
+  "id": "ch_family_social_01_ledger_s8_public_reckoning",
+  "titleKey": "event.ch_family_social_01_ledger_s8_public_reckoning.title",
+  "textKey": "event.ch_family_social_01_ledger_s8_public_reckoning.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "stand_by_home",
+      "textKey": "event.ch_family_social_01_ledger_s8_public_reckoning.choice.stand_by_home.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "home_defended",
+          "textKey": "event.ch_family_social_01_ledger_s8_public_reckoning.choice.stand_by_home.outcome.home_defended.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_c9_stand_by_home",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "break_claim",
+      "textKey": "event.ch_family_social_01_ledger_s8_public_reckoning.choice.break_claim.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "claim_broken",
+          "textKey": "event.ch_family_social_01_ledger_s8_public_reckoning.choice.break_claim.outcome.claim_broken.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_d9_break_with_claim",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "speak_without_notes",
+      "textKey": "event.ch_family_social_01_ledger_s8_public_reckoning.choice.speak_without_notes.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "speech_breaks",
+            "textKey": "event.ch_family_social_01_ledger_s8_public_reckoning.choice.speak_without_notes.outcome.speech_breaks.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_family_social_01_ledger_d9_break_with_claim",
+                "delayMonths": 18
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "speech_rejected",
+            "textKey": "event.ch_family_social_01_ledger_s8_public_reckoning.choice.speak_without_notes.outcome.speech_rejected.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_family_social_01_ledger_d9_break_with_claim",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "speech_lands",
+            "textKey": "event.ch_family_social_01_ledger_s8_public_reckoning.choice.speak_without_notes.outcome.speech_lands.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_family_social_01_ledger_c9_stand_by_home",
+                "delayMonths": 18
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "speech_changes_room",
+            "textKey": "event.ch_family_social_01_ledger_s8_public_reckoning.choice.speak_without_notes.outcome.speech_changes_room.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_family_social_01_ledger_c9_stand_by_home",
+                "delayMonths": 18
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "id": "ch_identity_world_01_traveling_notebook_s03a_questions",
+  "titleKey": "event.ch_identity_world_01_traveling_notebook_s03a_questions.title",
+  "textKey": "event.ch_identity_world_01_traveling_notebook_s03a_questions.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "check_consistency",
+      "textKey": "event.ch_identity_world_01_traveling_notebook_s03a_questions.choice.check_consistency.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bad_measure",
+            "textKey": "event.ch_identity_world_01_traveling_notebook_s03a_questions.choice.check_consistency.outcome.bad_measure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_traveling_notebook_s04a_measures",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "uncertain_measure",
+            "textKey": "event.ch_identity_world_01_traveling_notebook_s03a_questions.choice.check_consistency.outcome.uncertain_measure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_traveling_notebook_s04a_measures",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "good_measure",
+            "textKey": "event.ch_identity_world_01_traveling_notebook_s03a_questions.choice.check_consistency.outcome.good_measure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_traveling_notebook_s04a_measures",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "excellent_measure",
+            "textKey": "event.ch_identity_world_01_traveling_notebook_s03a_questions.choice.check_consistency.outcome.excellent_measure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_traveling_notebook_s04a_measures",
+                "delayMonths": 18
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "leave_both",
+      "textKey": "event.ch_identity_world_01_traveling_notebook_s03a_questions.choice.leave_both.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "both_kept",
+          "textKey": "event.ch_identity_world_01_traveling_notebook_s03a_questions.choice.leave_both.outcome.both_kept.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_traveling_notebook_s04a_measures",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

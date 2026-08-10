@@ -1,0 +1,98 @@
+{
+  "id": "ch_identity_world_01_forbidden_rooftop_i2_signal_jam",
+  "titleKey": "event.ch_identity_world_01_forbidden_rooftop_i2_signal_jam.title",
+  "textKey": "event.ch_identity_world_01_forbidden_rooftop_i2_signal_jam.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "free_line",
+      "textKey": "event.ch_identity_world_01_forbidden_rooftop_i2_signal_jam.choice.free_line.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "line_snaps",
+            "textKey": "event.ch_identity_world_01_forbidden_rooftop_i2_signal_jam.choice.free_line.outcome.line_snaps.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_forbidden_rooftop_i3_after_signal"
+              }
+            ]
+          },
+          "failure": {
+            "id": "line_sticks",
+            "textKey": "event.ch_identity_world_01_forbidden_rooftop_i2_signal_jam.choice.free_line.outcome.line_sticks.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_forbidden_rooftop_i3_after_signal"
+              }
+            ]
+          },
+          "success": {
+            "id": "line_freed",
+            "textKey": "event.ch_identity_world_01_forbidden_rooftop_i2_signal_jam.choice.free_line.outcome.line_freed.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_forbidden_rooftop_i3_after_signal"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "line_fixed",
+            "textKey": "event.ch_identity_world_01_forbidden_rooftop_i2_signal_jam.choice.free_line.outcome.line_fixed.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_forbidden_rooftop_i3_after_signal"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "follow_guard",
+      "textKey": "event.ch_identity_world_01_forbidden_rooftop_i2_signal_jam.choice.follow_guard.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "followed_guard",
+          "textKey": "event.ch_identity_world_01_forbidden_rooftop_i2_signal_jam.choice.follow_guard.outcome.followed_guard.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_forbidden_rooftop_i3_after_signal"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_problem",
+      "textKey": "event.ch_identity_world_01_forbidden_rooftop_i2_signal_jam.choice.leave_problem.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "left_problem",
+          "textKey": "event.ch_identity_world_01_forbidden_rooftop_i2_signal_jam.choice.leave_problem.outcome.left_problem.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

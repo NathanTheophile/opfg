@@ -1,0 +1,131 @@
+{
+  "id": "ch_family_social_01_work_for_supper",
+  "titleKey": "event.ch_family_social_01_work_for_supper.title",
+  "textKey": "event.ch_family_social_01_work_for_supper.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 150
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "socialClassIs",
+            "socialClassId": "poor"
+          },
+          {
+            "type": "familyStructureIs",
+            "familyStructureId": "orphan"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "food"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "carry_crates",
+      "textKey": "event.ch_family_social_01_work_for_supper.choice.carry_crates.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "crate_drop",
+            "textKey": "event.ch_family_social_01_work_for_supper.choice.carry_crates.outcome.crate_drop.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "crates_slow",
+            "textKey": "event.ch_family_social_01_work_for_supper.choice.carry_crates.outcome.crates_slow.text",
+            "effects": []
+          },
+          "success": {
+            "id": "crates_done",
+            "textKey": "event.ch_family_social_01_work_for_supper.choice.carry_crates.outcome.crates_done.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crates_easy",
+            "textKey": "event.ch_family_social_01_work_for_supper.choice.carry_crates.outcome.crates_easy.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "sort_instead",
+      "textKey": "event.ch_family_social_01_work_for_supper.choice.sort_instead.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sorted_stock",
+          "textKey": "event.ch_family_social_01_work_for_supper.choice.sort_instead.outcome.sorted_stock.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_terms",
+      "textKey": "event.ch_family_social_01_work_for_supper.choice.refuse_terms.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "terms_refused",
+          "textKey": "event.ch_family_social_01_work_for_supper.choice.refuse_terms.outcome.terms_refused.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

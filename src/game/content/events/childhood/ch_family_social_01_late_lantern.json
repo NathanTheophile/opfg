@@ -1,0 +1,116 @@
+{
+  "id": "ch_family_social_01_late_lantern",
+  "titleKey": "event.ch_family_social_01_late_lantern.title",
+  "textKey": "event.ch_family_social_01_late_lantern.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 36
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 84
+      },
+      {
+        "type": "familyStructureIs",
+        "familyStructureId": "single_parent"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "npcStatusIs",
+          "npcId": "player_parent_1",
+          "status": "dead"
+        }
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "finish_chore",
+      "textKey": "event.ch_family_social_01_late_lantern.choice.finish_chore.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "finished_chore",
+          "textKey": "event.ch_family_social_01_late_lantern.choice.finish_chore.outcome.finished_chore.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_late_lantern_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wait_awake",
+      "textKey": "event.ch_family_social_01_late_lantern.choice.wait_awake.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "waited_awake",
+          "textKey": "event.ch_family_social_01_late_lantern.choice.wait_awake.outcome.waited_awake.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_late_lantern_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_task",
+      "textKey": "event.ch_family_social_01_late_lantern.choice.leave_task.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "left_task",
+          "textKey": "event.ch_family_social_01_late_lantern.choice.leave_task.outcome.left_task.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_late_lantern_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

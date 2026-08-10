@@ -1,0 +1,51 @@
+{
+  "id": "ch_identity_world_01_traveling_notebook_s13q_give_away",
+  "titleKey": "event.ch_identity_world_01_traveling_notebook_s13q_give_away.title",
+  "textKey": "event.ch_identity_world_01_traveling_notebook_s13q_give_away.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "answer_new_reader",
+      "textKey": "event.ch_identity_world_01_traveling_notebook_s13q_give_away.choice.answer_new_reader.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "new_reader_answered",
+          "textKey": "event.ch_identity_world_01_traveling_notebook_s13q_give_away.choice.answer_new_reader.outcome.new_reader_answered.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_traveling_notebook_s14q_shared_horizon",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pass_question_forward",
+      "textKey": "event.ch_identity_world_01_traveling_notebook_s13q_give_away.choice.pass_question_forward.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "question_forwarded",
+          "textKey": "event.ch_identity_world_01_traveling_notebook_s13q_give_away.choice.pass_question_forward.outcome.question_forwarded.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_traveling_notebook_s14q_shared_horizon",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

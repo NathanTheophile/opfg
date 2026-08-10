@@ -1,0 +1,51 @@
+{
+  "id": "ch_identity_world_01_traveling_notebook_s04b_echo",
+  "titleKey": "event.ch_identity_world_01_traveling_notebook_s04b_echo.title",
+  "textKey": "event.ch_identity_world_01_traveling_notebook_s04b_echo.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "correct_story",
+      "textKey": "event.ch_identity_world_01_traveling_notebook_s04b_echo.choice.correct_story.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "story_corrected",
+          "textKey": "event.ch_identity_world_01_traveling_notebook_s04b_echo.choice.correct_story.outcome.story_corrected.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_traveling_notebook_s05b_correction",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_legend_live",
+      "textKey": "event.ch_identity_world_01_traveling_notebook_s04b_echo.choice.let_legend_live.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "legend_allowed",
+          "textKey": "event.ch_identity_world_01_traveling_notebook_s04b_echo.choice.let_legend_live.outcome.legend_allowed.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_traveling_notebook_s05b_correction",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

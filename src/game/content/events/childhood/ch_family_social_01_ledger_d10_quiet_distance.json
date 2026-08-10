@@ -1,0 +1,68 @@
+{
+  "id": "ch_family_social_01_ledger_d10_quiet_distance",
+  "titleKey": "event.ch_family_social_01_ledger_d10_quiet_distance.title",
+  "textKey": "event.ch_family_social_01_ledger_d10_quiet_distance.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "accept_distance",
+      "textKey": "event.ch_family_social_01_ledger_d10_quiet_distance.choice.accept_distance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "distance_accepted",
+          "textKey": "event.ch_family_social_01_ledger_d10_quiet_distance.choice.accept_distance.outcome.distance_accepted.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_d11_name_without_debt",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_updates",
+      "textKey": "event.ch_family_social_01_ledger_d10_quiet_distance.choice.ask_updates.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "updates_requested",
+          "textKey": "event.ch_family_social_01_ledger_d10_quiet_distance.choice.ask_updates.outcome.updates_requested.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_d11_name_without_debt",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_silence",
+      "textKey": "event.ch_family_social_01_ledger_d10_quiet_distance.choice.keep_silence.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "silence_kept",
+          "textKey": "event.ch_family_social_01_ledger_d10_quiet_distance.choice.keep_silence.outcome.silence_kept.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

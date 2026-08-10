@@ -1,0 +1,56 @@
+{
+  "id": "ch_family_social_01_parent_weak_day_return",
+  "titleKey": "event.ch_family_social_01_parent_weak_day_return.title",
+  "textKey": "event.ch_family_social_01_parent_weak_day_return.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "npcStatusIs",
+    "npcId": "player_parent_1",
+    "status": "dead"
+  },
+  "choices": [
+    {
+      "id": "accept_once",
+      "textKey": "event.ch_family_social_01_parent_weak_day_return.choice.accept_once.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accepted_once",
+          "textKey": "event.ch_family_social_01_parent_weak_day_return.choice.accept_once.outcome.accepted_once.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 5
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline_now",
+      "textKey": "event.ch_family_social_01_parent_weak_day_return.choice.decline_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "declined_now",
+          "textKey": "event.ch_family_social_01_parent_weak_day_return.choice.decline_now.outcome.declined_now.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -2
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

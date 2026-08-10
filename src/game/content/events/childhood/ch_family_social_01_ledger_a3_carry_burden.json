@@ -1,0 +1,68 @@
+{
+  "id": "ch_family_social_01_ledger_a3_carry_burden",
+  "titleKey": "event.ch_family_social_01_ledger_a3_carry_burden.title",
+  "textKey": "event.ch_family_social_01_ledger_a3_carry_burden.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "do_service",
+      "textKey": "event.ch_family_social_01_ledger_a3_carry_burden.choice.do_service.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "service_done",
+          "textKey": "event.ch_family_social_01_ledger_a3_carry_burden.choice.do_service.outcome.service_done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_a4_household_asks_more",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cap_service",
+      "textKey": "event.ch_family_social_01_ledger_a3_carry_burden.choice.cap_service.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "service_capped",
+          "textKey": "event.ch_family_social_01_ledger_a3_carry_burden.choice.cap_service.outcome.service_capped.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_a4_household_asks_more",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "end_branch",
+      "textKey": "event.ch_family_social_01_ledger_a3_carry_burden.choice.end_branch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "branch_ended",
+          "textKey": "event.ch_family_social_01_ledger_a3_carry_burden.choice.end_branch.outcome.branch_ended.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

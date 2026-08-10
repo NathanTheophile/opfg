@@ -1,0 +1,104 @@
+{
+  "id": "ch_family_social_01_tuition_offer",
+  "titleKey": "event.ch_family_social_01_tuition_offer.title",
+  "textKey": "event.ch_family_social_01_tuition_offer.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 144
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "solve_sample",
+      "textKey": "event.ch_family_social_01_tuition_offer.choice.solve_sample.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "sample_failed_hard",
+            "textKey": "event.ch_family_social_01_tuition_offer.choice.solve_sample.outcome.sample_failed_hard.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "sample_failed",
+            "textKey": "event.ch_family_social_01_tuition_offer.choice.solve_sample.outcome.sample_failed.text",
+            "effects": []
+          },
+          "success": {
+            "id": "sample_passed",
+            "textKey": "event.ch_family_social_01_tuition_offer.choice.solve_sample.outcome.sample_passed.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "sample_excelled",
+            "textKey": "event.ch_family_social_01_tuition_offer.choice.solve_sample.outcome.sample_excelled.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ask_work_exchange",
+      "textKey": "event.ch_family_social_01_tuition_offer.choice.ask_work_exchange.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "work_exchange",
+          "textKey": "event.ch_family_social_01_tuition_offer.choice.ask_work_exchange.outcome.work_exchange.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline_offer",
+      "textKey": "event.ch_family_social_01_tuition_offer.choice.decline_offer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "offer_declined",
+          "textKey": "event.ch_family_social_01_tuition_offer.choice.decline_offer.outcome.offer_declined.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

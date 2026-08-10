@@ -1,0 +1,74 @@
+{
+  "id": "ch_family_social_01_ledger_c11_seat_at_table",
+  "titleKey": "event.ch_family_social_01_ledger_c11_seat_at_table.title",
+  "textKey": "event.ch_family_social_01_ledger_c11_seat_at_table.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "accept_place",
+      "textKey": "event.ch_family_social_01_ledger_c11_seat_at_table.choice.accept_place.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "place_accepted",
+          "textKey": "event.ch_family_social_01_ledger_c11_seat_at_table.choice.accept_place.outcome.place_accepted.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_s12_late_letter",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_advisory",
+      "textKey": "event.ch_family_social_01_ledger_c11_seat_at_table.choice.keep_advisory.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "advisory_kept",
+          "textKey": "event.ch_family_social_01_ledger_c11_seat_at_table.choice.keep_advisory.outcome.advisory_kept.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_s12_late_letter",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline_place",
+      "textKey": "event.ch_family_social_01_ledger_c11_seat_at_table.choice.decline_place.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "place_declined",
+          "textKey": "event.ch_family_social_01_ledger_c11_seat_at_table.choice.decline_place.outcome.place_declined.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_s12_late_letter",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

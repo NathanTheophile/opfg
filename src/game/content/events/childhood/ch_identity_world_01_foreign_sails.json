@@ -1,0 +1,129 @@
+{
+  "id": "ch_identity_world_01_foreign_sails",
+  "titleKey": "event.ch_identity_world_01_foreign_sails.title",
+  "textKey": "event.ch_identity_world_01_foreign_sails.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_the_signals",
+      "textKey": "event.ch_identity_world_01_foreign_sails.choice.read_the_signals.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "signals_misread",
+            "textKey": "event.ch_identity_world_01_foreign_sails.choice.read_the_signals.outcome.signals_misread.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i1_crate_on_quay"
+              }
+            ]
+          },
+          "failure": {
+            "id": "signals_unclear",
+            "textKey": "event.ch_identity_world_01_foreign_sails.choice.read_the_signals.outcome.signals_unclear.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i1_crate_on_quay"
+              }
+            ]
+          },
+          "success": {
+            "id": "signals_understood",
+            "textKey": "event.ch_identity_world_01_foreign_sails.choice.read_the_signals.outcome.signals_understood.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i1_crate_on_quay"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "signals_precise",
+            "textKey": "event.ch_identity_world_01_foreign_sails.choice.read_the_signals.outcome.signals_precise.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i1_crate_on_quay"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "watch_from_back",
+      "textKey": "event.ch_identity_world_01_foreign_sails.choice.watch_from_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "watched_quietly",
+          "textKey": "event.ch_identity_world_01_foreign_sails.choice.watch_from_back.outcome.watched_quietly.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_foreign_sails_i1_crate_on_quay"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_the_quay",
+      "textKey": "event.ch_identity_world_01_foreign_sails.choice.leave_the_quay.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "left_quay",
+          "textKey": "event.ch_identity_world_01_foreign_sails.choice.leave_the_quay.outcome.left_quay.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

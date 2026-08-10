@@ -1,0 +1,117 @@
+{
+  "id": "ch_family_social_01_family_reputation",
+  "titleKey": "event.ch_family_social_01_family_reputation.title",
+  "textKey": "event.ch_family_social_01_family_reputation.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 168
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "affiliationIs",
+          "affiliationId": "civilian"
+        }
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "listen_first",
+      "textKey": "event.ch_family_social_01_family_reputation.choice.listen_first.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "noticed_listening",
+            "textKey": "event.ch_family_social_01_family_reputation.choice.listen_first.outcome.noticed_listening.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "little_learned",
+            "textKey": "event.ch_family_social_01_family_reputation.choice.listen_first.outcome.little_learned.text",
+            "effects": []
+          },
+          "success": {
+            "id": "useful_detail",
+            "textKey": "event.ch_family_social_01_family_reputation.choice.listen_first.outcome.useful_detail.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "whole_pattern",
+            "textKey": "event.ch_family_social_01_family_reputation.choice.listen_first.outcome.whole_pattern.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "challenge_them",
+      "textKey": "event.ch_family_social_01_family_reputation.choice.challenge_them.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "challenged_speakers",
+          "textKey": "event.ch_family_social_01_family_reputation.choice.challenge_them.outcome.challenged_speakers.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_it",
+      "textKey": "event.ch_family_social_01_family_reputation.choice.leave_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "left_rumor",
+          "textKey": "event.ch_family_social_01_family_reputation.choice.leave_it.outcome.left_rumor.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

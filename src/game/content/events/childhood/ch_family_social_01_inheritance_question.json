@@ -1,0 +1,137 @@
+{
+  "id": "ch_family_social_01_inheritance_question",
+  "titleKey": "event.ch_family_social_01_inheritance_question.title",
+  "textKey": "event.ch_family_social_01_inheritance_question.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 138
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 174
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "keep_commitments",
+      "textKey": "event.ch_family_social_01_inheritance_question.choice.keep_commitments.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "commitments_kept",
+          "textKey": "event.ch_family_social_01_inheritance_question.choice.keep_commitments.outcome.commitments_kept.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "loyal"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "loyal"
+            }
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "disloyal"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "build_bigger",
+      "textKey": "event.ch_family_social_01_inheritance_question.choice.build_bigger.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bigger_future",
+          "textKey": "event.ch_family_social_01_inheritance_question.choice.build_bigger.outcome.bigger_future.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "ambitious"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "ambitious"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "keep_dignity",
+      "textKey": "event.ch_family_social_01_inheritance_question.choice.keep_dignity.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "dignity_kept",
+          "textKey": "event.ch_family_social_01_inheritance_question.choice.keep_dignity.outcome.dignity_kept.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "proud"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "proud"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "keep_no_answer",
+      "textKey": "event.ch_family_social_01_inheritance_question.choice.keep_no_answer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "no_answer_kept",
+          "textKey": "event.ch_family_social_01_inheritance_question.choice.keep_no_answer.outcome.no_answer_kept.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "id": "ch_identity_world_01_traveling_notebook",
+  "titleKey": "event.ch_identity_world_01_traveling_notebook.title",
+  "textKey": "event.ch_identity_world_01_traveling_notebook.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "lifetimeThreadSeed": true,
+  "choices": [
+    {
+      "id": "write_question",
+      "textKey": "event.ch_identity_world_01_traveling_notebook.choice.write_question.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "question_written",
+          "textKey": "event.ch_identity_world_01_traveling_notebook.choice.write_question.outcome.question_written.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_traveling_notebook_s01_first_return",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "write_story",
+      "textKey": "event.ch_identity_world_01_traveling_notebook.choice.write_story.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "story_written",
+          "textKey": "event.ch_identity_world_01_traveling_notebook.choice.write_story.outcome.story_written.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_traveling_notebook_s01_first_return",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "draw_route",
+      "textKey": "event.ch_identity_world_01_traveling_notebook.choice.draw_route.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "route_drawn",
+          "textKey": "event.ch_identity_world_01_traveling_notebook.choice.draw_route.outcome.route_drawn.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_traveling_notebook_s01_first_return",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_notebook",
+      "textKey": "event.ch_identity_world_01_traveling_notebook.choice.refuse_notebook.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "notebook_refused",
+          "textKey": "event.ch_identity_world_01_traveling_notebook.choice.refuse_notebook.outcome.notebook_refused.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

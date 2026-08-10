@@ -1,0 +1,64 @@
+{
+  "id": "ch_family_social_01_eviction_notice_i2",
+  "titleKey": "event.ch_family_social_01_eviction_notice_i2.title",
+  "textKey": "event.ch_family_social_01_eviction_notice_i2.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "protect_essentials",
+      "textKey": "event.ch_family_social_01_eviction_notice_i2.choice.protect_essentials.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "essentials_protected",
+          "textKey": "event.ch_family_social_01_eviction_notice_i2.choice.protect_essentials.outcome.essentials_protected.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_family_social_01_eviction_notice_i3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "offer_labor",
+      "textKey": "event.ch_family_social_01_eviction_notice_i2.choice.offer_labor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "labor_offered",
+          "textKey": "event.ch_family_social_01_eviction_notice_i2.choice.offer_labor.outcome.labor_offered.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_family_social_01_eviction_notice_i3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_inventory",
+      "textKey": "event.ch_family_social_01_eviction_notice_i2.choice.refuse_inventory.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "inventory_refused",
+          "textKey": "event.ch_family_social_01_eviction_notice_i2.choice.refuse_inventory.outcome.inventory_refused.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_family_social_01_eviction_notice_i3"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

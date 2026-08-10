@@ -1,0 +1,69 @@
+{
+  "id": "ch_identity_world_01_traveling_notebook_s01_first_return",
+  "titleKey": "event.ch_identity_world_01_traveling_notebook_s01_first_return.title",
+  "textKey": "event.ch_identity_world_01_traveling_notebook_s01_first_return.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "read_everything",
+      "textKey": "event.ch_identity_world_01_traveling_notebook_s01_first_return.choice.read_everything.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pages_read",
+          "textKey": "event.ch_identity_world_01_traveling_notebook_s01_first_return.choice.read_everything.outcome.pages_read.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_traveling_notebook_s02_what_to_send",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "read_own_reply",
+      "textKey": "event.ch_identity_world_01_traveling_notebook_s01_first_return.choice.read_own_reply.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reply_read",
+          "textKey": "event.ch_identity_world_01_traveling_notebook_s01_first_return.choice.read_own_reply.outcome.reply_read.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_traveling_notebook_s02_what_to_send",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send_without_reading",
+      "textKey": "event.ch_identity_world_01_traveling_notebook_s01_first_return.choice.send_without_reading.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "passed_unread",
+          "textKey": "event.ch_identity_world_01_traveling_notebook_s01_first_return.choice.send_without_reading.outcome.passed_unread.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_traveling_notebook_s02_what_to_send",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

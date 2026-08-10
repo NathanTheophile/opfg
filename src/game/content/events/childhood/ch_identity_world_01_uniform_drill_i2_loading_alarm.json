@@ -1,0 +1,98 @@
+{
+  "id": "ch_identity_world_01_uniform_drill_i2_loading_alarm",
+  "titleKey": "event.ch_identity_world_01_uniform_drill_i2_loading_alarm.title",
+  "textKey": "event.ch_identity_world_01_uniform_drill_i2_loading_alarm.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "help_clear_area",
+      "textKey": "event.ch_identity_world_01_uniform_drill_i2_loading_alarm.choice.help_clear_area.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "crowd_pushes",
+            "textKey": "event.ch_identity_world_01_uniform_drill_i2_loading_alarm.choice.help_clear_area.outcome.crowd_pushes.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_uniform_drill_i3_officer_question"
+              }
+            ]
+          },
+          "failure": {
+            "id": "crowd_slow",
+            "textKey": "event.ch_identity_world_01_uniform_drill_i2_loading_alarm.choice.help_clear_area.outcome.crowd_slow.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_uniform_drill_i3_officer_question"
+              }
+            ]
+          },
+          "success": {
+            "id": "crowd_clears",
+            "textKey": "event.ch_identity_world_01_uniform_drill_i2_loading_alarm.choice.help_clear_area.outcome.crowd_clears.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_uniform_drill_i3_officer_question"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crowd_organizes",
+            "textKey": "event.ch_identity_world_01_uniform_drill_i2_loading_alarm.choice.help_clear_area.outcome.crowd_organizes.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_uniform_drill_i3_officer_question"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "follow_orders",
+      "textKey": "event.ch_identity_world_01_uniform_drill_i2_loading_alarm.choice.follow_orders.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "orders_followed",
+          "textKey": "event.ch_identity_world_01_uniform_drill_i2_loading_alarm.choice.follow_orders.outcome.orders_followed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_uniform_drill_i3_officer_question"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stay_out",
+      "textKey": "event.ch_identity_world_01_uniform_drill_i2_loading_alarm.choice.stay_out.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stayed_out",
+          "textKey": "event.ch_identity_world_01_uniform_drill_i2_loading_alarm.choice.stay_out.outcome.stayed_out.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "id": "ch_identity_world_01_foreign_sails_i3_owner_returns",
+  "titleKey": "event.ch_identity_world_01_foreign_sails_i3_owner_returns.title",
+  "textKey": "event.ch_identity_world_01_foreign_sails_i3_owner_returns.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "tell_truth",
+      "textKey": "event.ch_identity_world_01_foreign_sails_i3_owner_returns.choice.tell_truth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "truth_told",
+          "textKey": "event.ch_identity_world_01_foreign_sails_i3_owner_returns.choice.tell_truth.outcome.truth_told.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_foreign_sails_i4_step_aboard"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "gesture_story",
+      "textKey": "event.ch_identity_world_01_foreign_sails_i3_owner_returns.choice.gesture_story.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "gesture_confusion",
+            "textKey": "event.ch_identity_world_01_foreign_sails_i3_owner_returns.choice.gesture_story.outcome.gesture_confusion.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i4_step_aboard"
+              }
+            ]
+          },
+          "failure": {
+            "id": "gesture_partial",
+            "textKey": "event.ch_identity_world_01_foreign_sails_i3_owner_returns.choice.gesture_story.outcome.gesture_partial.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i4_step_aboard"
+              }
+            ]
+          },
+          "success": {
+            "id": "gesture_clear",
+            "textKey": "event.ch_identity_world_01_foreign_sails_i3_owner_returns.choice.gesture_story.outcome.gesture_clear.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i4_step_aboard"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "gesture_friendship",
+            "textKey": "event.ch_identity_world_01_foreign_sails_i3_owner_returns.choice.gesture_story.outcome.gesture_friendship.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i4_step_aboard"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "walk_away",
+      "textKey": "event.ch_identity_world_01_foreign_sails_i3_owner_returns.choice.walk_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "walked_away",
+          "textKey": "event.ch_identity_world_01_foreign_sails_i3_owner_returns.choice.walk_away.outcome.walked_away.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

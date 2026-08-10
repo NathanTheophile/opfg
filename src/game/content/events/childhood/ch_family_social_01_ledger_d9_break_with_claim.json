@@ -1,0 +1,63 @@
+{
+  "id": "ch_family_social_01_ledger_d9_break_with_claim",
+  "titleKey": "event.ch_family_social_01_ledger_d9_break_with_claim.title",
+  "textKey": "event.ch_family_social_01_ledger_d9_break_with_claim.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "answer_person",
+      "textKey": "event.ch_family_social_01_ledger_d9_break_with_claim.choice.answer_person.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "person_answered",
+          "textKey": "event.ch_family_social_01_ledger_d9_break_with_claim.choice.answer_person.outcome.person_answered.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_d10_quiet_distance",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "return_unopened",
+      "textKey": "event.ch_family_social_01_ledger_d9_break_with_claim.choice.return_unopened.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "message_returned",
+          "textKey": "event.ch_family_social_01_ledger_d9_break_with_claim.choice.return_unopened.outcome.message_returned.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_d10_quiet_distance",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "end_contact",
+      "textKey": "event.ch_family_social_01_ledger_d9_break_with_claim.choice.end_contact.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "d_branch_ended",
+          "textKey": "event.ch_family_social_01_ledger_d9_break_with_claim.choice.end_contact.outcome.d_branch_ended.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

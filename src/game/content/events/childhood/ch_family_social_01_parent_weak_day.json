@@ -1,0 +1,119 @@
+{
+  "id": "ch_family_social_01_parent_weak_day",
+  "titleKey": "event.ch_family_social_01_parent_weak_day.title",
+  "textKey": "event.ch_family_social_01_parent_weak_day.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 126
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 174
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "familyStructureIs",
+          "familyStructureId": "orphan"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "npcStatusIs",
+          "npcId": "player_parent_1",
+          "status": "dead"
+        }
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "take_one_task",
+      "textKey": "event.ch_family_social_01_parent_weak_day.choice.take_one_task.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "one_task_taken",
+          "textKey": "event.ch_family_social_01_parent_weak_day.choice.take_one_task.outcome.one_task_taken.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_parent_weak_day_return",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_priorities",
+      "textKey": "event.ch_family_social_01_parent_weak_day.choice.ask_priorities.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "priorities_set",
+          "textKey": "event.ch_family_social_01_parent_weak_day.choice.ask_priorities.outcome.priorities_set.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_parent_weak_day_return",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_distance",
+      "textKey": "event.ch_family_social_01_parent_weak_day.choice.keep_distance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "distance_kept",
+          "textKey": "event.ch_family_social_01_parent_weak_day.choice.keep_distance.outcome.distance_kept.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_parent_weak_day_return",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

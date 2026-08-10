@@ -1,0 +1,120 @@
+{
+  "id": "ch_identity_world_01_revolutionary_whisper",
+  "titleKey": "event.ch_identity_world_01_revolutionary_whisper.title",
+  "textKey": "event.ch_identity_world_01_revolutionary_whisper.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "revolutionary_presence"
+          },
+          {
+            "type": "affiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_then_hide",
+      "textKey": "event.ch_identity_world_01_revolutionary_whisper.choice.read_then_hide.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tract_hidden",
+          "textKey": "event.ch_identity_world_01_revolutionary_whisper.choice.read_then_hide.outcome.tract_hidden.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_revolutionary_whisper_s01_phrase_returns",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_trusted_adult",
+      "textKey": "event.ch_identity_world_01_revolutionary_whisper.choice.ask_trusted_adult.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "adult_asked",
+          "textKey": "event.ch_identity_world_01_revolutionary_whisper.choice.ask_trusted_adult.outcome.adult_asked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_revolutionary_whisper_s01_phrase_returns",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_it",
+      "textKey": "event.ch_identity_world_01_revolutionary_whisper.choice.leave_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tract_left",
+          "textKey": "event.ch_identity_world_01_revolutionary_whisper.choice.leave_it.outcome.tract_left.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_revolutionary_whisper_s01_phrase_returns",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "tear_it",
+      "textKey": "event.ch_identity_world_01_revolutionary_whisper.choice.tear_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tract_torn",
+          "textKey": "event.ch_identity_world_01_revolutionary_whisper.choice.tear_it.outcome.tract_torn.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_revolutionary_whisper_s01_phrase_returns",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

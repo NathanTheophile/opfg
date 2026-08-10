@@ -1,0 +1,59 @@
+{
+  "id": "ch_family_social_01_market_errand_i2",
+  "titleKey": "event.ch_family_social_01_market_errand_i2.title",
+  "textKey": "event.ch_family_social_01_market_errand_i2.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "catch_helper",
+      "textKey": "event.ch_family_social_01_market_errand_i2.choice.catch_helper.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "helper_stopped",
+          "textKey": "event.ch_family_social_01_market_errand_i2.choice.catch_helper.outcome.helper_stopped.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_family_social_01_market_errand_i3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "save_goods",
+      "textKey": "event.ch_family_social_01_market_errand_i2.choice.save_goods.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "goods_saved",
+          "textKey": "event.ch_family_social_01_market_errand_i2.choice.save_goods.outcome.goods_saved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_family_social_01_market_errand_i3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step_back",
+      "textKey": "event.ch_family_social_01_market_errand_i2.choice.step_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stepped_back",
+          "textKey": "event.ch_family_social_01_market_errand_i2.choice.step_back.outcome.stepped_back.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

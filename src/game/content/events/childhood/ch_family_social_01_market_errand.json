@@ -1,0 +1,124 @@
+{
+  "id": "ch_family_social_01_market_errand",
+  "titleKey": "event.ch_family_social_01_market_errand.title",
+  "textKey": "event.ch_family_social_01_market_errand.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 96
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "general_goods"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "bargain",
+      "textKey": "event.ch_family_social_01_market_errand.choice.bargain.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bargain_backfires",
+            "textKey": "event.ch_family_social_01_market_errand.choice.bargain.outcome.bargain_backfires.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_family_social_01_market_errand_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "bargain_stalls",
+            "textKey": "event.ch_family_social_01_market_errand.choice.bargain.outcome.bargain_stalls.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_family_social_01_market_errand_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "bargain_works",
+            "textKey": "event.ch_family_social_01_market_errand.choice.bargain.outcome.bargain_works.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_family_social_01_market_errand_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "bargain_flips",
+            "textKey": "event.ch_family_social_01_market_errand.choice.bargain.outcome.bargain_flips.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_family_social_01_market_errand_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_less_items",
+      "textKey": "event.ch_family_social_01_market_errand.choice.pay_less_items.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bought_less",
+          "textKey": "event.ch_family_social_01_market_errand.choice.pay_less_items.outcome.bought_less.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_family_social_01_market_errand_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_market",
+      "textKey": "event.ch_family_social_01_market_errand.choice.leave_market.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "left_market",
+          "textKey": "event.ch_family_social_01_market_errand.choice.leave_market.outcome.left_market.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

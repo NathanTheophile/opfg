@@ -1,0 +1,68 @@
+{
+  "id": "ch_family_social_01_ledger_b5_rewrite_terms",
+  "titleKey": "event.ch_family_social_01_ledger_b5_rewrite_terms.title",
+  "textKey": "event.ch_family_social_01_ledger_b5_rewrite_terms.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "mutual_only",
+      "textKey": "event.ch_family_social_01_ledger_b5_rewrite_terms.choice.mutual_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mutual_rule",
+          "textKey": "event.ch_family_social_01_ledger_b5_rewrite_terms.choice.mutual_only.outcome.mutual_rule.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_s6_news_from_home",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "erase_old",
+      "textKey": "event.ch_family_social_01_ledger_b5_rewrite_terms.choice.erase_old.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "old_erased",
+          "textKey": "event.ch_family_social_01_ledger_b5_rewrite_terms.choice.erase_old.outcome.old_erased.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_s6_news_from_home",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_reform",
+      "textKey": "event.ch_family_social_01_ledger_b5_rewrite_terms.choice.leave_reform.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reform_left",
+          "textKey": "event.ch_family_social_01_ledger_b5_rewrite_terms.choice.leave_reform.outcome.reform_left.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

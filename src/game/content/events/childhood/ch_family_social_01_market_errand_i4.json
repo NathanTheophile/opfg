@@ -1,0 +1,64 @@
+{
+  "id": "ch_family_social_01_market_errand_i4",
+  "titleKey": "event.ch_family_social_01_market_errand_i4.title",
+  "textKey": "event.ch_family_social_01_market_errand_i4.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "erase_small_debts",
+      "textKey": "event.ch_family_social_01_market_errand_i4.choice.erase_small_debts.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "debts_erased",
+          "textKey": "event.ch_family_social_01_market_errand_i4.choice.erase_small_debts.outcome.debts_erased.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_family_social_01_market_errand_i5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "make_repayment_list",
+      "textKey": "event.ch_family_social_01_market_errand_i4.choice.make_repayment_list.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "repayment_list",
+          "textKey": "event.ch_family_social_01_market_errand_i4.choice.make_repayment_list.outcome.repayment_list.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_family_social_01_market_errand_i5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "only_clear_family",
+      "textKey": "event.ch_family_social_01_market_errand_i4.choice.only_clear_family.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "family_cleared",
+          "textKey": "event.ch_family_social_01_market_errand_i4.choice.only_clear_family.outcome.family_cleared.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_family_social_01_market_errand_i5"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

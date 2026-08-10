@@ -1,0 +1,59 @@
+{
+  "id": "ch_family_social_01_formal_dinner_i1",
+  "titleKey": "event.ch_family_social_01_formal_dinner_i1.title",
+  "textKey": "event.ch_family_social_01_formal_dinner_i1.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "take_new_seat",
+      "textKey": "event.ch_family_social_01_formal_dinner_i1.choice.take_new_seat.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "new_seat_taken",
+          "textKey": "event.ch_family_social_01_formal_dinner_i1.choice.take_new_seat.outcome.new_seat_taken.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_family_social_01_formal_dinner_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "put_card_back",
+      "textKey": "event.ch_family_social_01_formal_dinner_i1.choice.put_card_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "card_restored",
+          "textKey": "event.ch_family_social_01_formal_dinner_i1.choice.put_card_back.outcome.card_restored.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_family_social_01_formal_dinner_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_now",
+      "textKey": "event.ch_family_social_01_formal_dinner_i1.choice.leave_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "left_after_seat",
+          "textKey": "event.ch_family_social_01_formal_dinner_i1.choice.leave_now.outcome.left_after_seat.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}
