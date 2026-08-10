@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 import { contentCatalog } from '../src/game/content/definitions';
 import { validateContent } from '../src/game/validation/validateContent';
 
@@ -86,7 +86,7 @@ describe('validateContent', () => {
     const catalog = cloneCatalog();
     catalog.npcs[0].raceId = 'missing_race';
     eventById(catalog, 'origin_race').choices[0].resolution.outcome.effects[0].raceId = 'missing_race';
-    eventById(catalog, 'childhood_middle').eligibility.conditions[3].conditions[0].seaId = 'missing_sea';
+    eventById(catalog, 'origin_name').eligibility = { type: 'originSeaIs', seaId: 'missing_sea' };
     eventById(catalog, 'origin_name').choices[0].input.target = 'unknown';
     const errors = messages(catalog);
     expect(errors).toContainEqual(expect.stringContaining('Unknown RaceId "missing_race"'));
@@ -268,8 +268,8 @@ describe('validateContent', () => {
     eventById(catalog, 'departure').eligibility = { type: 'monthAtLeast', value: 1 };
     eventById(catalog, 'departure').choices[0].resolution.outcome.advanceMonths = 1;
     eventById(catalog, 'departure').priority = 100;
-    eventById(catalog, 'childhood_memory').scheduledReach = 'teleport';
-    eventById(catalog, 'childhood_memory').fallbackEventId = 'departure';
+    eventById(catalog, 'mira_returns_favor').scheduledReach = 'teleport';
+    eventById(catalog, 'mira_returns_favor').fallbackEventId = 'departure';
     const errors = messages(catalog);
     expect(errors).toContainEqual(expect.stringContaining('Unknown Condition type "monthAtLeast"'));
     expect(errors).toContainEqual(expect.stringContaining('Outcome.advanceMonths is not supported'));
@@ -278,3 +278,4 @@ describe('validateContent', () => {
     expect(errors).toContainEqual(expect.stringContaining('Unknown Scheduled EventId "departure"'));
   });
 });
+

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 import { contentCatalog } from '../src/game/content/definitions';
 import { buildEventCatalog, eventCatalog } from '../src/game/content/eventCatalog';
 import { loadNodeContentCatalog } from '../src/game/content/nodeContentCatalog';
@@ -15,7 +15,6 @@ describe('eventCatalog', () => {
       'origin_social_class',
       'origin_birthplace',
       'departure',
-      'childhood_memory',
       'mira_returns_favor',
       'critical_player_death',
       'critical_mira_death',
@@ -25,18 +24,13 @@ describe('eventCatalog', () => {
     ]));
   });
 
-  it('contains all twenty explicit Childhood fixtures', () => {
-    const fixtureIds = eventCatalog.filter(({ id }) => id.startsWith('childhood_fixture_')).map(({ id }) => id);
-    expect(fixtureIds).toEqual(Array.from({ length: 20 }, (_, index) => `childhood_fixture_${String(index + 1).padStart(2, '0')}`));
-  });
 
   it('keeps Scheduled and Critical variants and validates the assembled catalog', () => {
     expect(
       eventCatalog.filter(({ kind }) => kind === 'scheduled').map(({ id }) => id),
     ).toEqual(
       expect.arrayContaining([
-        'childhood_memory',
-        'mira_returns_favor',
+          'mira_returns_favor',
       ]),
     );
     expect(eventCatalog.filter(({ kind }) => kind === 'critical').map(({ id }) => id)).toEqual([
@@ -59,3 +53,4 @@ describe('eventCatalog', () => {
     expect(loadNodeContentCatalog()).toEqual(contentCatalog);
   });
 });
+

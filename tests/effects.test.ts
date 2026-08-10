@@ -11,11 +11,11 @@ describe('effects v2', () => {
     state.ageMonths = 25;
     const result = applyEffects(state, contentCatalog, [
       { type: 'setFlag', flagId: 'ready' },
-      { type: 'scheduleEvent', eventId: 'childhood_memory', delayMonths: 2 },
+      { type: 'scheduleEvent', eventId: 'mira_returns_favor', delayMonths: 2 },
     ], context);
     expect(state.flags).toEqual([]);
     expect(result.flags).toEqual(['ready']);
-    expect(result.scheduledEvents[0]).toEqual({ eventId: 'childhood_memory', dueAgeMonths: 27, ...context });
+    expect(result.scheduledEvents[0]).toEqual({ eventId: 'mira_returns_favor', dueAgeMonths: 27, ...context });
   });
 
   it('rejects an opposite trait and applies loseShip', () => {
