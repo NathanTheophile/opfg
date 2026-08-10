@@ -1,0 +1,114 @@
+{
+  "id": "ch_west_blue_01_sankan_toy_ferry",
+  "kind": "normal",
+  "titleKey": "event.ch_west_blue_01_sankan_toy_ferry.title",
+  "textKey": "event.ch_west_blue_01_sankan_toy_ferry.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationIs",
+        "locationId": "sankan_river_town"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_current",
+      "textKey": "event.ch_west_blue_01_sankan_toy_ferry.choice.read_current.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "current_missed",
+            "textKey": "event.ch_west_blue_01_sankan_toy_ferry.choice.read_current.outcome.current_missed.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "current_late",
+            "textKey": "event.ch_west_blue_01_sankan_toy_ferry.choice.read_current.outcome.current_late.text",
+            "effects": []
+          },
+          "success": {
+            "id": "current_read",
+            "textKey": "event.ch_west_blue_01_sankan_toy_ferry.choice.read_current.outcome.current_read.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "current_mastered",
+            "textKey": "event.ch_west_blue_01_sankan_toy_ferry.choice.read_current.outcome.current_mastered.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ask_bargeman",
+      "textKey": "event.ch_west_blue_01_sankan_toy_ferry.choice.ask_bargeman.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bargeman_helped",
+          "textKey": "event.ch_west_blue_01_sankan_toy_ferry.choice.ask_bargeman.outcome.bargeman_helped.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "build_replacement",
+      "textKey": "event.ch_west_blue_01_sankan_toy_ferry.choice.build_replacement.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "replacement_built",
+          "textKey": "event.ch_west_blue_01_sankan_toy_ferry.choice.build_replacement.outcome.replacement_built.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

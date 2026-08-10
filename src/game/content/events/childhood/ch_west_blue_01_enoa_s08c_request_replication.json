@@ -1,0 +1,56 @@
+{
+  "id": "ch_west_blue_01_enoa_s08c_request_replication",
+  "kind": "scheduled",
+  "titleKey": "event.ch_west_blue_01_enoa_s08c_request_replication.title",
+  "textKey": "event.ch_west_blue_01_enoa_s08c_request_replication.text",
+  "choices": [
+    {
+      "id": "write_prediction",
+      "textKey": "event.ch_west_blue_01_enoa_s08c_request_replication.choice.write_prediction.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "prediction_written",
+          "textKey": "event.ch_west_blue_01_enoa_s08c_request_replication.choice.write_prediction.outcome.prediction_written.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_enoa_s09c_second_observation",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "avoid_prediction",
+      "textKey": "event.ch_west_blue_01_enoa_s08c_request_replication.choice.avoid_prediction.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "prediction_avoided",
+          "textKey": "event.ch_west_blue_01_enoa_s08c_request_replication.choice.avoid_prediction.outcome.prediction_avoided.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_enoa_s09c_second_observation",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

@@ -1,0 +1,125 @@
+{
+  "id": "ch_east_blue_01_foosha_tide_barrels",
+  "kind": "normal",
+  "titleKey": "event.ch_east_blue_01_foosha_tide_barrels.title",
+  "textKey": "event.ch_east_blue_01_foosha_tide_barrels.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationIs",
+        "locationId": "foosha_village"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_tide",
+      "textKey": "event.ch_east_blue_01_foosha_tide_barrels.choice.read_tide.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "misread_current",
+            "textKey": "event.ch_east_blue_01_foosha_tide_barrels.choice.read_tide.outcome.misread_current.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "late_recovery",
+            "textKey": "event.ch_east_blue_01_foosha_tide_barrels.choice.read_tide.outcome.late_recovery.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "clean_recovery",
+            "textKey": "event.ch_east_blue_01_foosha_tide_barrels.choice.read_tide.outcome.clean_recovery.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "teach_the_tide",
+            "textKey": "event.ch_east_blue_01_foosha_tide_barrels.choice.read_tide.outcome.teach_the_tide.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_fishers",
+      "textKey": "event.ch_east_blue_01_foosha_tide_barrels.choice.call_fishers.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "warning_given",
+          "textKey": "event.ch_east_blue_01_foosha_tide_barrels.choice.call_fishers.outcome.warning_given.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wait_for_ebb",
+      "textKey": "event.ch_east_blue_01_foosha_tide_barrels.choice.wait_for_ebb.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safe_wait",
+          "textKey": "event.ch_east_blue_01_foosha_tide_barrels.choice.wait_for_ebb.outcome.safe_wait.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

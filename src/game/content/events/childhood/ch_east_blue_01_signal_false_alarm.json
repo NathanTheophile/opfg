@@ -1,0 +1,55 @@
+{
+  "id": "ch_east_blue_01_signal_false_alarm",
+  "kind": "scheduled",
+  "titleKey": "event.ch_east_blue_01_signal_false_alarm.title",
+  "textKey": "event.ch_east_blue_01_signal_false_alarm.text",
+  "choices": [
+    {
+      "id": "own_false_alarm",
+      "textKey": "event.ch_east_blue_01_signal_false_alarm.choice.own_false_alarm.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "false_alarm_owned",
+          "textKey": "event.ch_east_blue_01_signal_false_alarm.choice.own_false_alarm.outcome.false_alarm_owned.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_east_blue_01_signal_speed_earned",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "add_cancel_signal",
+      "textKey": "event.ch_east_blue_01_signal_false_alarm.choice.add_cancel_signal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cancel_added",
+          "textKey": "event.ch_east_blue_01_signal_false_alarm.choice.add_cancel_signal.outcome.cancel_added.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_east_blue_01_signal_speed_earned",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100
+}

@@ -1,0 +1,94 @@
+{
+  "id": "ch_west_blue_01_masala_lantern_parade",
+  "kind": "normal",
+  "titleKey": "event.ch_west_blue_01_masala_lantern_parade.title",
+  "textKey": "event.ch_west_blue_01_masala_lantern_parade.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationIs",
+        "locationId": "bollywood_masala_port"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "join_parade",
+      "textKey": "event.ch_west_blue_01_masala_lantern_parade.choice.join_parade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "parade_joined",
+          "textKey": "event.ch_west_blue_01_masala_lantern_parade.choice.join_parade.outcome.parade_joined.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "addTrait",
+              "traitId": "sociable"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "solitary"
+        }
+      }
+    },
+    {
+      "id": "guide_from_side",
+      "textKey": "event.ch_west_blue_01_masala_lantern_parade.choice.guide_from_side.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "parade_guided",
+          "textKey": "event.ch_west_blue_01_masala_lantern_parade.choice.guide_from_side.outcome.parade_guided.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "protect_stalls",
+      "textKey": "event.ch_west_blue_01_masala_lantern_parade.choice.protect_stalls.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stalls_protected",
+          "textKey": "event.ch_west_blue_01_masala_lantern_parade.choice.protect_stalls.outcome.stalls_protected.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

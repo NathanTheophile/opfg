@@ -1,0 +1,144 @@
+{
+  "id": "ch_east_blue_01_shells_runaway_target_cart",
+  "kind": "normal",
+  "titleKey": "event.ch_east_blue_01_shells_runaway_target_cart.title",
+  "textKey": "event.ch_east_blue_01_shells_runaway_target_cart.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      },
+      {
+        "type": "locationIs",
+        "locationId": "shells_town"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "take_command",
+      "textKey": "event.ch_east_blue_01_shells_runaway_target_cart.choice.take_command.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "shouts_confuse",
+            "textKey": "event.ch_east_blue_01_shells_runaway_target_cart.choice.take_command.outcome.shouts_confuse.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_shells_cart_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "partial_lane",
+            "textKey": "event.ch_east_blue_01_shells_runaway_target_cart.choice.take_command.outcome.partial_lane.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_shells_cart_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "clear_lane",
+            "textKey": "event.ch_east_blue_01_shells_runaway_target_cart.choice.take_command.outcome.clear_lane.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_shells_cart_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "street_moves",
+            "textKey": "event.ch_east_blue_01_shells_runaway_target_cart.choice.take_command.outcome.street_moves.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_shells_cart_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "run_alongside",
+      "textKey": "event.ch_east_blue_01_shells_runaway_target_cart.choice.run_alongside.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "moving_warning",
+          "textKey": "event.ch_east_blue_01_shells_runaway_target_cart.choice.run_alongside.outcome.moving_warning.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_east_blue_01_shells_cart_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ring_shop_bells",
+      "textKey": "event.ch_east_blue_01_shells_runaway_target_cart.choice.ring_shop_bells.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bells_warning",
+          "textKey": "event.ch_east_blue_01_shells_runaway_target_cart.choice.ring_shop_bells.outcome.bells_warning.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_east_blue_01_shells_cart_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

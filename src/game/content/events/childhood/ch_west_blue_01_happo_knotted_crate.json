@@ -1,0 +1,119 @@
+{
+  "id": "ch_west_blue_01_happo_knotted_crate",
+  "kind": "normal",
+  "titleKey": "event.ch_west_blue_01_happo_knotted_crate.title",
+  "textKey": "event.ch_west_blue_01_happo_knotted_crate.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationIs",
+        "locationId": "kano_happo_port"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "loosen_knot",
+      "textKey": "event.ch_west_blue_01_happo_knotted_crate.choice.loosen_knot.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "knot_worse",
+            "textKey": "event.ch_west_blue_01_happo_knotted_crate.choice.loosen_knot.outcome.knot_worse.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "knot_stubborn",
+            "textKey": "event.ch_west_blue_01_happo_knotted_crate.choice.loosen_knot.outcome.knot_stubborn.text",
+            "effects": []
+          },
+          "success": {
+            "id": "knot_opened",
+            "textKey": "event.ch_west_blue_01_happo_knotted_crate.choice.loosen_knot.outcome.knot_opened.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "knot_clean",
+            "textKey": "event.ch_west_blue_01_happo_knotted_crate.choice.loosen_knot.outcome.knot_clean.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "study_lashing",
+      "textKey": "event.ch_west_blue_01_happo_knotted_crate.choice.study_lashing.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lashing_studied",
+          "textKey": "event.ch_west_blue_01_happo_knotted_crate.choice.study_lashing.outcome.lashing_studied.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cut_and_relace",
+      "textKey": "event.ch_west_blue_01_happo_knotted_crate.choice.cut_and_relace.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rope_replaced",
+          "textKey": "event.ch_west_blue_01_happo_knotted_crate.choice.cut_and_relace.outcome.rope_replaced.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

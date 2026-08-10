@@ -1,0 +1,69 @@
+{
+  "id": "ch_west_blue_01_happo_banner_i1_rolling_barrel",
+  "kind": "immediate",
+  "titleKey": "event.ch_west_blue_01_happo_banner_i1_rolling_barrel.title",
+  "textKey": "event.ch_west_blue_01_happo_banner_i1_rolling_barrel.text",
+  "choices": [
+    {
+      "id": "compare_marks",
+      "textKey": "event.ch_west_blue_01_happo_banner_i1_rolling_barrel.choice.compare_marks.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "marks_compared",
+          "textKey": "event.ch_west_blue_01_happo_banner_i1_rolling_barrel.choice.compare_marks.outcome.marks_compared.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_west_blue_01_happo_banner_i2_false_mark"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_dockworker",
+      "textKey": "event.ch_west_blue_01_happo_banner_i1_rolling_barrel.choice.call_dockworker.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "worker_called",
+          "textKey": "event.ch_west_blue_01_happo_banner_i1_rolling_barrel.choice.call_dockworker.outcome.worker_called.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_west_blue_01_happo_banner_i2_false_mark"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "close_crate",
+      "textKey": "event.ch_west_blue_01_happo_banner_i1_rolling_barrel.choice.close_crate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crate_closed",
+          "textKey": "event.ch_west_blue_01_happo_banner_i1_rolling_barrel.choice.close_crate.outcome.crate_closed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_west_blue_01_happo_banner_i2_false_mark"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "id": "ch_east_blue_01_shimotsuki_rain_steps",
+  "kind": "normal",
+  "titleKey": "event.ch_east_blue_01_shimotsuki_rain_steps.title",
+  "textKey": "event.ch_east_blue_01_shimotsuki_rain_steps.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 84
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationIs",
+        "locationId": "shimotsuki_village"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "carry_bundle",
+      "textKey": "event.ch_east_blue_01_shimotsuki_rain_steps.choice.carry_bundle.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bundle_scattered",
+            "textKey": "event.ch_east_blue_01_shimotsuki_rain_steps.choice.carry_bundle.outcome.bundle_scattered.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "heavy_bundle",
+            "textKey": "event.ch_east_blue_01_shimotsuki_rain_steps.choice.carry_bundle.outcome.heavy_bundle.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "steady_bundle",
+            "textKey": "event.ch_east_blue_01_shimotsuki_rain_steps.choice.carry_bundle.outcome.steady_bundle.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "balanced_load",
+            "textKey": "event.ch_east_blue_01_shimotsuki_rain_steps.choice.carry_bundle.outcome.balanced_load.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "split_load",
+      "textKey": "event.ch_east_blue_01_shimotsuki_rain_steps.choice.split_load.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "patient_carry",
+          "textKey": "event.ch_east_blue_01_shimotsuki_rain_steps.choice.split_load.outcome.patient_carry.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "study_footing",
+      "textKey": "event.ch_east_blue_01_shimotsuki_rain_steps.choice.study_footing.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "footwork_observed",
+          "textKey": "event.ch_east_blue_01_shimotsuki_rain_steps.choice.study_footing.outcome.footwork_observed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

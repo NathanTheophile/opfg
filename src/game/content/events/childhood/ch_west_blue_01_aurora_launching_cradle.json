@@ -1,0 +1,139 @@
+{
+  "id": "ch_west_blue_01_aurora_launching_cradle",
+  "kind": "normal",
+  "titleKey": "event.ch_west_blue_01_aurora_launching_cradle.title",
+  "textKey": "event.ch_west_blue_01_aurora_launching_cradle.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "locationIs",
+        "locationId": "ilisia_aurora_city"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_motion",
+      "textKey": "event.ch_west_blue_01_aurora_launching_cradle.choice.read_motion.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "motion_misread",
+            "textKey": "event.ch_west_blue_01_aurora_launching_cradle.choice.read_motion.outcome.motion_misread.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_west_blue_01_aurora_launch_i1_split_wedge"
+              }
+            ]
+          },
+          "failure": {
+            "id": "motion_unclear",
+            "textKey": "event.ch_west_blue_01_aurora_launching_cradle.choice.read_motion.outcome.motion_unclear.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_west_blue_01_aurora_launch_i1_split_wedge"
+              }
+            ]
+          },
+          "success": {
+            "id": "motion_read",
+            "textKey": "event.ch_west_blue_01_aurora_launching_cradle.choice.read_motion.outcome.motion_read.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_west_blue_01_aurora_launch_i1_split_wedge"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "motion_predicted",
+            "textKey": "event.ch_west_blue_01_aurora_launching_cradle.choice.read_motion.outcome.motion_predicted.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_west_blue_01_aurora_launch_i1_split_wedge"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_path",
+      "textKey": "event.ch_west_blue_01_aurora_launching_cradle.choice.clear_path.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "path_cleared",
+          "textKey": "event.ch_west_blue_01_aurora_launching_cradle.choice.clear_path.outcome.path_cleared.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_west_blue_01_aurora_launch_i1_split_wedge"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fetch_blocks",
+      "textKey": "event.ch_west_blue_01_aurora_launching_cradle.choice.fetch_blocks.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "blocks_fetched",
+          "textKey": "event.ch_west_blue_01_aurora_launching_cradle.choice.fetch_blocks.outcome.blocks_fetched.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_west_blue_01_aurora_launch_i1_split_wedge"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "ch_east_blue_01_signal_public_duty",
+  "kind": "scheduled",
+  "titleKey": "event.ch_east_blue_01_signal_public_duty.title",
+  "textKey": "event.ch_east_blue_01_signal_public_duty.text",
+  "choices": [
+    {
+      "id": "relay_without_reward",
+      "textKey": "event.ch_east_blue_01_signal_public_duty.choice.relay_without_reward.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "free_warning",
+          "textKey": "event.ch_east_blue_01_signal_public_duty.choice.relay_without_reward.outcome.free_warning.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_east_blue_01_signal_rescue_chain",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "train_newcomers",
+      "textKey": "event.ch_east_blue_01_signal_public_duty.choice.train_newcomers.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "newcomers_trained",
+          "textKey": "event.ch_east_blue_01_signal_public_duty.choice.train_newcomers.outcome.newcomers_trained.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_east_blue_01_signal_rescue_chain",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100
+}

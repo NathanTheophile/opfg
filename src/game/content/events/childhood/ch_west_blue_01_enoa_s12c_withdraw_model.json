@@ -1,0 +1,56 @@
+{
+  "id": "ch_west_blue_01_enoa_s12c_withdraw_model",
+  "kind": "scheduled",
+  "titleKey": "event.ch_west_blue_01_enoa_s12c_withdraw_model.title",
+  "textKey": "event.ch_west_blue_01_enoa_s12c_withdraw_model.text",
+  "choices": [
+    {
+      "id": "write_failure_note",
+      "textKey": "event.ch_west_blue_01_enoa_s12c_withdraw_model.choice.write_failure_note.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "failure_explained",
+          "textKey": "event.ch_west_blue_01_enoa_s12c_withdraw_model.choice.write_failure_note.outcome.failure_explained.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_enoa_s13c_last_note",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_raw_data",
+      "textKey": "event.ch_west_blue_01_enoa_s12c_withdraw_model.choice.leave_raw_data.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "raw_data_left",
+          "textKey": "event.ch_west_blue_01_enoa_s12c_withdraw_model.choice.leave_raw_data.outcome.raw_data_left.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_enoa_s13c_last_note",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

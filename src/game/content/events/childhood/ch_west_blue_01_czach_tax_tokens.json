@@ -1,0 +1,102 @@
+{
+  "id": "ch_west_blue_01_czach_tax_tokens",
+  "kind": "normal",
+  "titleKey": "event.ch_west_blue_01_czach_tax_tokens.title",
+  "textKey": "event.ch_west_blue_01_czach_tax_tokens.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "west_blue"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "sort_tokens",
+      "textKey": "event.ch_west_blue_01_czach_tax_tokens.choice.sort_tokens.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tokens_sorted",
+          "textKey": "event.ch_west_blue_01_czach_tax_tokens.choice.sort_tokens.outcome.tokens_sorted.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_czach_tokens_audit",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_both_sides",
+      "textKey": "event.ch_west_blue_01_czach_tax_tokens.choice.ask_both_sides.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sides_heard",
+          "textKey": "event.ch_west_blue_01_czach_tax_tokens.choice.ask_both_sides.outcome.sides_heard.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_czach_tokens_audit",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_judgment",
+      "textKey": "event.ch_west_blue_01_czach_tax_tokens.choice.refuse_judgment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "judgment_refused",
+          "textKey": "event.ch_west_blue_01_czach_tax_tokens.choice.refuse_judgment.outcome.judgment_refused.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_czach_tokens_audit",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

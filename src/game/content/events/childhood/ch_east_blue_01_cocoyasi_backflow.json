@@ -1,0 +1,149 @@
+{
+  "id": "ch_east_blue_01_cocoyasi_backflow",
+  "kind": "normal",
+  "titleKey": "event.ch_east_blue_01_cocoyasi_backflow.title",
+  "textKey": "event.ch_east_blue_01_cocoyasi_backflow.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      },
+      {
+        "type": "locationIs",
+        "locationId": "cocoyasi_village"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_backflow",
+      "textKey": "event.ch_east_blue_01_cocoyasi_backflow.choice.read_backflow.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "wrong_sluice",
+            "textKey": "event.ch_east_blue_01_cocoyasi_backflow.choice.read_backflow.outcome.wrong_sluice.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_cocoyasi_backflow_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "slow_release",
+            "textKey": "event.ch_east_blue_01_cocoyasi_backflow.choice.read_backflow.outcome.slow_release.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_cocoyasi_backflow_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "good_release",
+            "textKey": "event.ch_east_blue_01_cocoyasi_backflow.choice.read_backflow.outcome.good_release.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_cocoyasi_backflow_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "split_flow",
+            "textKey": "event.ch_east_blue_01_cocoyasi_backflow.choice.read_backflow.outcome.split_flow.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_cocoyasi_backflow_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "raise_baskets",
+      "textKey": "event.ch_east_blue_01_cocoyasi_backflow.choice.raise_baskets.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tools_saved",
+          "textKey": "event.ch_east_blue_01_cocoyasi_backflow.choice.raise_baskets.outcome.tools_saved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_east_blue_01_cocoyasi_backflow_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "warn_houses",
+      "textKey": "event.ch_east_blue_01_cocoyasi_backflow.choice.warn_houses.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "houses_warned",
+          "textKey": "event.ch_east_blue_01_cocoyasi_backflow.choice.warn_houses.outcome.houses_warned.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_east_blue_01_cocoyasi_backflow_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

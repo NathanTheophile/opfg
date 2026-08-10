@@ -1,0 +1,149 @@
+{
+  "id": "ch_west_blue_01_mauri_white_path",
+  "kind": "normal",
+  "titleKey": "event.ch_west_blue_01_mauri_white_path.title",
+  "textKey": "event.ch_west_blue_01_mauri_white_path.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "west_blue"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "rebuild_marker",
+      "textKey": "event.ch_west_blue_01_mauri_white_path.choice.rebuild_marker.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "marker_misread",
+            "textKey": "event.ch_west_blue_01_mauri_white_path.choice.rebuild_marker.outcome.marker_misread.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_west_blue_01_mauri_marker_news",
+                "delayMonths": 9
+              }
+            ]
+          },
+          "failure": {
+            "id": "marker_uncertain",
+            "textKey": "event.ch_west_blue_01_mauri_white_path.choice.rebuild_marker.outcome.marker_uncertain.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_west_blue_01_mauri_marker_news",
+                "delayMonths": 9
+              }
+            ]
+          },
+          "success": {
+            "id": "marker_rebuilt",
+            "textKey": "event.ch_west_blue_01_mauri_white_path.choice.rebuild_marker.outcome.marker_rebuilt.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_west_blue_01_mauri_marker_news",
+                "delayMonths": 9
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "marker_and_map",
+            "textKey": "event.ch_west_blue_01_mauri_white_path.choice.rebuild_marker.outcome.marker_and_map.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_west_blue_01_mauri_marker_news",
+                "delayMonths": 9
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_slope",
+      "textKey": "event.ch_west_blue_01_mauri_white_path.choice.read_slope.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "slope_read",
+          "textKey": "event.ch_west_blue_01_mauri_white_path.choice.read_slope.outcome.slope_read.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_mauri_marker_news",
+              "delayMonths": 9
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "close_route",
+      "textKey": "event.ch_west_blue_01_mauri_white_path.choice.close_route.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "route_closed",
+          "textKey": "event.ch_west_blue_01_mauri_white_path.choice.close_route.outcome.route_closed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_mauri_marker_news",
+              "delayMonths": 9
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
