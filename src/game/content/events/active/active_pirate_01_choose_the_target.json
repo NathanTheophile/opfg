@@ -1,0 +1,173 @@
+{
+  "id": "active_pirate_01_choose_the_target",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_choose_the_target.title",
+  "textKey": "event.active_pirate_01_choose_the_target.text",
+  "choices": [
+    {
+      "id": "merchant_raid",
+      "textKey": "event.active_pirate_01_choose_the_target.choice.merchant_raid.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_pirate_01_choose_the_target.choice.merchant_raid.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 100
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_pirate_01_choose_the_target.choice.merchant_raid.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 150
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_pirate_01_choose_the_target.choice.merchant_raid.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 350
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_pirate_01_choose_the_target.choice.merchant_raid.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 500
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "government_ship",
+      "textKey": "event.active_pirate_01_choose_the_target.choice.government_ship.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_choose_the_target.choice.government_ship.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -2
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_both_pass",
+      "textKey": "event.active_pirate_01_choose_the_target.choice.let_both_pass.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_choose_the_target.choice.let_both_pass.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "merciful_choice",
+      "textKey": "event.active_pirate_01_choose_the_target.choice.merciful_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_choose_the_target.choice.merciful_choice.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 150
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "merciful"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "isLeader"
+      }
+    ]
+  }
+}

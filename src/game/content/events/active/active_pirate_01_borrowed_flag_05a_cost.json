@@ -1,0 +1,68 @@
+{
+  "id": "active_pirate_01_borrowed_flag_05a_cost",
+  "kind": "scheduled",
+  "titleKey": "event.active_pirate_01_borrowed_flag_05a_cost.title",
+  "textKey": "event.active_pirate_01_borrowed_flag_05a_cost.text",
+  "choices": [
+    {
+      "id": "set_limits",
+      "textKey": "event.active_pirate_01_borrowed_flag_05a_cost.choice.set_limits.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_05a_cost.choice.set_limits.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_06_crossroads",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_answering",
+      "textKey": "event.active_pirate_01_borrowed_flag_05a_cost.choice.keep_answering.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_05a_cost.choice.keep_answering.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_06_crossroads",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "pirate"
+    }
+  },
+  "fallbackEventId": "active_pirate_01_borrowed_flag_departure"
+}

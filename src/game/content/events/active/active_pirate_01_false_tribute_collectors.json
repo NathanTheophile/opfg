@@ -1,0 +1,166 @@
+{
+  "id": "active_pirate_01_false_tribute_collectors",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_false_tribute_collectors.title",
+  "textKey": "event.active_pirate_01_false_tribute_collectors.text",
+  "choices": [
+    {
+      "id": "call_the_bluff",
+      "textKey": "event.active_pirate_01_false_tribute_collectors.choice.call_the_bluff.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_pirate_01_false_tribute_collectors.choice.call_the_bluff.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_pirate_01_false_tribute_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_pirate_01_false_tribute_collectors.choice.call_the_bluff.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_pirate_01_false_tribute_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_pirate_01_false_tribute_collectors.choice.call_the_bluff.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_pirate_01_false_tribute_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_pirate_01_false_tribute_collectors.choice.call_the_bluff.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_pirate_01_false_tribute_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "watch_first",
+      "textKey": "event.active_pirate_01_false_tribute_collectors.choice.watch_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_false_tribute_collectors.choice.watch_first.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_pirate_01_false_tribute_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_a_cut",
+      "textKey": "event.active_pirate_01_false_tribute_collectors.choice.take_a_cut.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_false_tribute_collectors.choice.take_a_cut.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 150
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_pirate_01_false_tribute_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "deceptive_hook",
+      "textKey": "event.active_pirate_01_false_tribute_collectors.choice.deceptive_hook.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_false_tribute_collectors.choice.deceptive_hook.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_pirate_01_false_tribute_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "deceptive"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 3
+      }
+    ]
+  }
+}

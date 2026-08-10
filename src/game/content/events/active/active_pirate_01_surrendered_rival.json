@@ -1,0 +1,129 @@
+{
+  "id": "active_pirate_01_surrendered_rival",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_surrendered_rival.title",
+  "textKey": "event.active_pirate_01_surrendered_rival.text",
+  "choices": [
+    {
+      "id": "accept_surrender",
+      "textKey": "event.active_pirate_01_surrendered_rival.choice.accept_surrender.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_surrendered_rival.choice.accept_surrender.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "addTrait",
+              "traitId": "merciful"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "ruthless"
+        }
+      }
+    },
+    {
+      "id": "take_payment",
+      "textKey": "event.active_pirate_01_surrendered_rival.choice.take_payment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_surrendered_rival.choice.take_payment.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 200
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "strip_and_release",
+      "textKey": "event.active_pirate_01_surrendered_rival.choice.strip_and_release.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_surrendered_rival.choice.strip_and_release.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 300
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ruthless_example",
+      "textKey": "event.active_pirate_01_surrendered_rival.choice.ruthless_example.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_surrendered_rival.choice.ruthless_example.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "addTrait",
+              "traitId": "ruthless"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "merciful"
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

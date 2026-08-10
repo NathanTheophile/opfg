@@ -1,0 +1,77 @@
+{
+  "id": "active_marine_01_contested_evacuation_order_i1",
+  "kind": "immediate",
+  "titleKey": "event.active_marine_01_contested_evacuation_order_i1.title",
+  "textKey": "event.active_marine_01_contested_evacuation_order_i1.text",
+  "choices": [
+    {
+      "id": "create_small_groups",
+      "textKey": "event.active_marine_01_contested_evacuation_order_i1.choice.create_small_groups.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_contested_evacuation_order_i1_create_small_groups",
+          "textKey": "event.active_marine_01_contested_evacuation_order_i1.choice.create_small_groups.outcome.active_marine_01_contested_evacuation_order_i1_create_small_groups.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_marine_01_contested_evacuation_order_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "assign_two_lanes",
+      "textKey": "event.active_marine_01_contested_evacuation_order_i1.choice.assign_two_lanes.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_contested_evacuation_order_i1_assign_two_lanes",
+          "textKey": "event.active_marine_01_contested_evacuation_order_i1.choice.assign_two_lanes.outcome.active_marine_01_contested_evacuation_order_i1_assign_two_lanes.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_marine_01_contested_evacuation_order_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "protective_front",
+      "textKey": "event.active_marine_01_contested_evacuation_order_i1.choice.protective_front.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_contested_evacuation_order_i1_protective_front",
+          "textKey": "event.active_marine_01_contested_evacuation_order_i1.choice.protective_front.outcome.active_marine_01_contested_evacuation_order_i1_protective_front.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_marine_01_contested_evacuation_order_i2"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "protective"
+      }
+    }
+  ]
+}

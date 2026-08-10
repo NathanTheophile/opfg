@@ -1,0 +1,57 @@
+{
+  "id": "active_marine_01_sealed_manifest_s8q_missing_minutes",
+  "kind": "scheduled",
+  "titleKey": "event.active_marine_01_sealed_manifest_s8q_missing_minutes.title",
+  "textKey": "event.active_marine_01_sealed_manifest_s8q_missing_minutes.text",
+  "choices": [
+    {
+      "id": "request_index",
+      "textKey": "event.active_marine_01_sealed_manifest_s8q_missing_minutes.choice.request_index.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_s8q_missing_minutes_request_index",
+          "textKey": "event.active_marine_01_sealed_manifest_s8q_missing_minutes.choice.request_index.outcome.active_marine_01_sealed_manifest_s8q_missing_minutes_request_index.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s9_command_decision",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_classification",
+      "textKey": "event.active_marine_01_sealed_manifest_s8q_missing_minutes.choice.accept_classification.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_s8q_missing_minutes_accept_classification",
+          "textKey": "event.active_marine_01_sealed_manifest_s8q_missing_minutes.choice.accept_classification.outcome.active_marine_01_sealed_manifest_s8q_missing_minutes_accept_classification.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s9_command_decision",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "marine"
+    }
+  }
+}

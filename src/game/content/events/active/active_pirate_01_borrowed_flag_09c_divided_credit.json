@@ -1,0 +1,66 @@
+{
+  "id": "active_pirate_01_borrowed_flag_09c_divided_credit",
+  "kind": "scheduled",
+  "titleKey": "event.active_pirate_01_borrowed_flag_09c_divided_credit.title",
+  "textKey": "event.active_pirate_01_borrowed_flag_09c_divided_credit.text",
+  "choices": [
+    {
+      "id": "share_credit",
+      "textKey": "event.active_pirate_01_borrowed_flag_09c_divided_credit.choice.share_credit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_09c_divided_credit.choice.share_credit.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_10_returning_generation",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_credit",
+      "textKey": "event.active_pirate_01_borrowed_flag_09c_divided_credit.choice.take_credit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_09c_divided_credit.choice.take_credit.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "modifyBerries",
+              "amount": 100
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_10_returning_generation",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "pirate"
+    }
+  },
+  "fallbackEventId": "active_pirate_01_borrowed_flag_departure"
+}

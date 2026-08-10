@@ -1,0 +1,146 @@
+{
+  "id": "active_pirate_01_refuge_with_price",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_refuge_with_price.title",
+  "textKey": "event.active_pirate_01_refuge_with_price.text",
+  "choices": [
+    {
+      "id": "inspect_refuge",
+      "textKey": "event.active_pirate_01_refuge_with_price.choice.inspect_refuge.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_pirate_01_refuge_with_price.choice.inspect_refuge.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_pirate_01_refuge_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_pirate_01_refuge_with_price.choice.inspect_refuge.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_pirate_01_refuge_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_pirate_01_refuge_with_price.choice.inspect_refuge.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_pirate_01_refuge_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_pirate_01_refuge_with_price.choice.inspect_refuge.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_pirate_01_refuge_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "refuse_name",
+      "textKey": "event.active_pirate_01_refuge_with_price.choice.refuse_name.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_refuge_with_price.choice.refuse_name.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_pirate_01_refuge_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "give_false_name",
+      "textKey": "event.active_pirate_01_refuge_with_price.choice.give_false_name.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_refuge_with_price.choice.give_false_name.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_pirate_01_refuge_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "deceptive"
+      }
+    },
+    {
+      "id": "leave",
+      "textKey": "event.active_pirate_01_refuge_with_price.choice.leave.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_refuge_with_price.choice.leave.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "criminal"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "pirate_presence"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "black_market"
+          }
+        ]
+      }
+    ]
+  }
+}

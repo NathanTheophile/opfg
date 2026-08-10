@@ -1,0 +1,177 @@
+{
+  "id": "active_marine_01_storm_quay_rescue",
+  "kind": "normal",
+  "titleKey": "event.active_marine_01_storm_quay_rescue.title",
+  "textKey": "event.active_marine_01_storm_quay_rescue.text",
+  "choices": [
+    {
+      "id": "lift_the_beam",
+      "textKey": "event.active_marine_01_storm_quay_rescue.choice.lift_the_beam.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_marine_01_storm_quay_rescue_lift_the_beam_criticalfailure",
+            "textKey": "event.active_marine_01_storm_quay_rescue.choice.lift_the_beam.outcome.active_marine_01_storm_quay_rescue_lift_the_beam_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_storm_quay_rescue_return",
+                "delayMonths": 6
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_marine_01_storm_quay_rescue_lift_the_beam_failure",
+            "textKey": "event.active_marine_01_storm_quay_rescue.choice.lift_the_beam.outcome.active_marine_01_storm_quay_rescue_lift_the_beam_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_storm_quay_rescue_return",
+                "delayMonths": 6
+              }
+            ]
+          },
+          "success": {
+            "id": "active_marine_01_storm_quay_rescue_lift_the_beam_success",
+            "textKey": "event.active_marine_01_storm_quay_rescue.choice.lift_the_beam.outcome.active_marine_01_storm_quay_rescue_lift_the_beam_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_storm_quay_rescue_return",
+                "delayMonths": 6
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_marine_01_storm_quay_rescue_lift_the_beam_criticalsuccess",
+            "textKey": "event.active_marine_01_storm_quay_rescue.choice.lift_the_beam.outcome.active_marine_01_storm_quay_rescue_lift_the_beam_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_storm_quay_rescue_return",
+                "delayMonths": 6
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "organize_human_chain",
+      "textKey": "event.active_marine_01_storm_quay_rescue.choice.organize_human_chain.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_storm_quay_rescue_organize_human_chain",
+          "textKey": "event.active_marine_01_storm_quay_rescue.choice.organize_human_chain.outcome.active_marine_01_storm_quay_rescue_organize_human_chain.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_storm_quay_rescue_return",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "protect_children_first",
+      "textKey": "event.active_marine_01_storm_quay_rescue.choice.protect_children_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_storm_quay_rescue_protect_children_first",
+          "textKey": "event.active_marine_01_storm_quay_rescue.choice.protect_children_first.outcome.active_marine_01_storm_quay_rescue_protect_children_first.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_storm_quay_rescue_return",
+              "delayMonths": 6
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "protective"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_recruit"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "coastal"
+      }
+    ]
+  }
+}

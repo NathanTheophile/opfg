@@ -1,0 +1,152 @@
+{
+  "id": "active_marine_01_conflicting_distress_signals",
+  "kind": "normal",
+  "titleKey": "event.active_marine_01_conflicting_distress_signals.title",
+  "textKey": "event.active_marine_01_conflicting_distress_signals.text",
+  "choices": [
+    {
+      "id": "read_the_sequence",
+      "textKey": "event.active_marine_01_conflicting_distress_signals.choice.read_the_sequence.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_marine_01_conflicting_distress_signals_read_the_sequence_criticalfailure",
+            "textKey": "event.active_marine_01_conflicting_distress_signals.choice.read_the_sequence.outcome.active_marine_01_conflicting_distress_signals_read_the_sequence_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_conflicting_distress_signals_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_marine_01_conflicting_distress_signals_read_the_sequence_failure",
+            "textKey": "event.active_marine_01_conflicting_distress_signals.choice.read_the_sequence.outcome.active_marine_01_conflicting_distress_signals_read_the_sequence_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_conflicting_distress_signals_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "active_marine_01_conflicting_distress_signals_read_the_sequence_success",
+            "textKey": "event.active_marine_01_conflicting_distress_signals.choice.read_the_sequence.outcome.active_marine_01_conflicting_distress_signals_read_the_sequence_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_conflicting_distress_signals_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_marine_01_conflicting_distress_signals_read_the_sequence_criticalsuccess",
+            "textKey": "event.active_marine_01_conflicting_distress_signals.choice.read_the_sequence.outcome.active_marine_01_conflicting_distress_signals_read_the_sequence_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_conflicting_distress_signals_i1"
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "suspicious"
+            },
+            "value": 2,
+            "displayLabelKey": "event.active_marine_01_conflicting_distress_signals.choice.read_the_sequence.modifier.suspicious.text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "send_runner",
+      "textKey": "event.active_marine_01_conflicting_distress_signals.choice.send_runner.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_conflicting_distress_signals_send_runner",
+          "textKey": "event.active_marine_01_conflicting_distress_signals.choice.send_runner.outcome.active_marine_01_conflicting_distress_signals_send_runner.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_marine_01_conflicting_distress_signals_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "prepare_rescue_without_departing",
+      "textKey": "event.active_marine_01_conflicting_distress_signals.choice.prepare_rescue_without_departing.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_conflicting_distress_signals_prepare_rescue_without_departing",
+          "textKey": "event.active_marine_01_conflicting_distress_signals.choice.prepare_rescue_without_departing.outcome.active_marine_01_conflicting_distress_signals_prepare_rescue_without_departing.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_marine_01_conflicting_distress_signals_i1"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 183
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_recruit"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      }
+    ]
+  }
+}

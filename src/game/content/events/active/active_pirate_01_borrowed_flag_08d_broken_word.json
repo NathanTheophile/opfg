@@ -1,0 +1,62 @@
+{
+  "id": "active_pirate_01_borrowed_flag_08d_broken_word",
+  "kind": "scheduled",
+  "titleKey": "event.active_pirate_01_borrowed_flag_08d_broken_word.title",
+  "textKey": "event.active_pirate_01_borrowed_flag_08d_broken_word.text",
+  "choices": [
+    {
+      "id": "rebuild_slowly",
+      "textKey": "event.active_pirate_01_borrowed_flag_08d_broken_word.choice.rebuild_slowly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_08d_broken_word.choice.rebuild_slowly.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_09d_rebuild_name",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "answer_hard",
+      "textKey": "event.active_pirate_01_borrowed_flag_08d_broken_word.choice.answer_hard.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_08d_broken_word.choice.answer_hard.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_09d_rebuild_name",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "pirate"
+    }
+  },
+  "fallbackEventId": "active_pirate_01_borrowed_flag_departure"
+}

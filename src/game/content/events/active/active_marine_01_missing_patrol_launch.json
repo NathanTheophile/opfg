@@ -1,0 +1,160 @@
+{
+  "id": "active_marine_01_missing_patrol_launch",
+  "kind": "normal",
+  "titleKey": "event.active_marine_01_missing_patrol_launch.title",
+  "textKey": "event.active_marine_01_missing_patrol_launch.text",
+  "choices": [
+    {
+      "id": "reconstruct_course",
+      "textKey": "event.active_marine_01_missing_patrol_launch.choice.reconstruct_course.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_marine_01_missing_patrol_launch_reconstruct_course_criticalfailure",
+            "textKey": "event.active_marine_01_missing_patrol_launch.choice.reconstruct_course.outcome.active_marine_01_missing_patrol_launch_reconstruct_course_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_missing_patrol_launch_return",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_marine_01_missing_patrol_launch_reconstruct_course_failure",
+            "textKey": "event.active_marine_01_missing_patrol_launch.choice.reconstruct_course.outcome.active_marine_01_missing_patrol_launch_reconstruct_course_failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_missing_patrol_launch_return",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "success": {
+            "id": "active_marine_01_missing_patrol_launch_reconstruct_course_success",
+            "textKey": "event.active_marine_01_missing_patrol_launch.choice.reconstruct_course.outcome.active_marine_01_missing_patrol_launch_reconstruct_course_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_missing_patrol_launch_return",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_marine_01_missing_patrol_launch_reconstruct_course_criticalsuccess",
+            "textKey": "event.active_marine_01_missing_patrol_launch.choice.reconstruct_course.outcome.active_marine_01_missing_patrol_launch_reconstruct_course_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_missing_patrol_launch_return",
+                "delayMonths": 3
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "signal_grid",
+      "textKey": "event.active_marine_01_missing_patrol_launch.choice.signal_grid.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_missing_patrol_launch_signal_grid",
+          "textKey": "event.active_marine_01_missing_patrol_launch.choice.signal_grid.outcome.active_marine_01_missing_patrol_launch_signal_grid.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_missing_patrol_launch_return",
+              "delayMonths": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wait_for_weather",
+      "textKey": "event.active_marine_01_missing_patrol_launch.choice.wait_for_weather.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_missing_patrol_launch_wait_for_weather",
+          "textKey": "event.active_marine_01_missing_patrol_launch.choice.wait_for_weather.outcome.active_marine_01_missing_patrol_launch_wait_for_weather.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_missing_patrol_launch_return",
+              "delayMonths": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 186
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_recruit"
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  }
+}

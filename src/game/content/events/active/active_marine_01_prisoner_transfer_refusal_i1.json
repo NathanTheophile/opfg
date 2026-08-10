@@ -1,0 +1,77 @@
+{
+  "id": "active_marine_01_prisoner_transfer_refusal_i1",
+  "kind": "immediate",
+  "titleKey": "event.active_marine_01_prisoner_transfer_refusal_i1.title",
+  "textKey": "event.active_marine_01_prisoner_transfer_refusal_i1.text",
+  "choices": [
+    {
+      "id": "stop_the_guard",
+      "textKey": "event.active_marine_01_prisoner_transfer_refusal_i1.choice.stop_the_guard.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_prisoner_transfer_refusal_i1_stop_the_guard",
+          "textKey": "event.active_marine_01_prisoner_transfer_refusal_i1.choice.stop_the_guard.outcome.active_marine_01_prisoner_transfer_refusal_i1_stop_the_guard.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_marine_01_prisoner_transfer_refusal_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "move_out_of_crowd",
+      "textKey": "event.active_marine_01_prisoner_transfer_refusal_i1.choice.move_out_of_crowd.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_prisoner_transfer_refusal_i1_move_out_of_crowd",
+          "textKey": "event.active_marine_01_prisoner_transfer_refusal_i1.choice.move_out_of_crowd.outcome.active_marine_01_prisoner_transfer_refusal_i1_move_out_of_crowd.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_marine_01_prisoner_transfer_refusal_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ruthless_force",
+      "textKey": "event.active_marine_01_prisoner_transfer_refusal_i1.choice.ruthless_force.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_prisoner_transfer_refusal_i1_ruthless_force",
+          "textKey": "event.active_marine_01_prisoner_transfer_refusal_i1.choice.ruthless_force.outcome.active_marine_01_prisoner_transfer_refusal_i1_ruthless_force.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_marine_01_prisoner_transfer_refusal_i2"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "ruthless"
+      }
+    }
+  ]
+}

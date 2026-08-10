@@ -1,0 +1,157 @@
+{
+  "id": "active_pirate_01_rival_crosses_bow",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_rival_crosses_bow.title",
+  "textKey": "event.active_pirate_01_rival_crosses_bow.text",
+  "choices": [
+    {
+      "id": "answer_signal",
+      "textKey": "event.active_pirate_01_rival_crosses_bow.choice.answer_signal.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_pirate_01_rival_crosses_bow.choice.answer_signal.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_pirate_01_rival_bow_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_pirate_01_rival_crosses_bow.choice.answer_signal.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_pirate_01_rival_bow_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_pirate_01_rival_crosses_bow.choice.answer_signal.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_pirate_01_rival_bow_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_pirate_01_rival_crosses_bow.choice.answer_signal.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_pirate_01_rival_bow_i1"
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "isLeader"
+      }
+    },
+    {
+      "id": "signal_challenge",
+      "textKey": "event.active_pirate_01_rival_crosses_bow.choice.signal_challenge.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_rival_crosses_bow.choice.signal_challenge.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_pirate_01_rival_bow_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ignore",
+      "textKey": "event.active_pirate_01_rival_crosses_bow.choice.ignore.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_rival_crosses_bow.choice.ignore.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "competitive_reply",
+      "textKey": "event.active_pirate_01_rival_crosses_bow.choice.competitive_reply.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_rival_crosses_bow.choice.competitive_reply.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_pirate_01_rival_bow_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "competitive"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

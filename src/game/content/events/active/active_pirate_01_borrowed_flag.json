@@ -1,0 +1,115 @@
+{
+  "id": "active_pirate_01_borrowed_flag",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_borrowed_flag.title",
+  "textKey": "event.active_pirate_01_borrowed_flag.text",
+  "choices": [
+    {
+      "id": "lend_as_shield",
+      "textKey": "event.active_pirate_01_borrowed_flag.choice.lend_as_shield.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag.choice.lend_as_shield.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_01_echo",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "sell_protection",
+      "textKey": "event.active_pirate_01_borrowed_flag.choice.sell_protection.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag.choice.sell_protection.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 200
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_01_echo",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lend_with_rules",
+      "textKey": "event.active_pirate_01_borrowed_flag.choice.lend_with_rules.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag.choice.lend_with_rules.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_01_echo",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse",
+      "textKey": "event.active_pirate_01_borrowed_flag.choice.refuse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag.choice.refuse.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  },
+  "lifetimeThreadSeed": true
+}

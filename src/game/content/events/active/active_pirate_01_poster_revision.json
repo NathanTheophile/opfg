@@ -1,0 +1,187 @@
+{
+  "id": "active_pirate_01_poster_revision",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_poster_revision.title",
+  "textKey": "event.active_pirate_01_poster_revision.text",
+  "choices": [
+    {
+      "id": "escape_clean",
+      "textKey": "event.active_pirate_01_poster_revision.choice.escape_clean.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_pirate_01_poster_revision.choice.escape_clean.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1000000
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_pirate_01_poster_revision.choice.escape_clean.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1000000
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_pirate_01_poster_revision.choice.escape_clean.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyBounty",
+                "amount": 750000
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_pirate_01_poster_revision.choice.escape_clean.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyBounty",
+                "amount": 1500000
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "walk_into_crowd",
+      "textKey": "event.active_pirate_01_poster_revision.choice.walk_into_crowd.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_poster_revision.choice.walk_into_crowd.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBounty",
+              "amount": 500000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "intimidate_line",
+      "textKey": "event.active_pirate_01_poster_revision.choice.intimidate_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_poster_revision.choice.intimidate_line.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBounty",
+              "amount": 1000000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "haki_warning",
+      "textKey": "event.active_pirate_01_poster_revision.choice.haki_warning.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_poster_revision.choice.haki_warning.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBounty",
+              "amount": 1250000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "conqueror",
+        "level": 1
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "marine_presence"
+      },
+      {
+        "type": "bountyAtLeast",
+        "value": 1
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 18
+      }
+    ]
+  }
+}

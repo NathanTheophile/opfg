@@ -1,0 +1,155 @@
+{
+  "id": "active_marine_01_field_drill_misfire",
+  "kind": "normal",
+  "titleKey": "event.active_marine_01_field_drill_misfire.title",
+  "textKey": "event.active_marine_01_field_drill_misfire.text",
+  "choices": [
+    {
+      "id": "catch_the_cart",
+      "textKey": "event.active_marine_01_field_drill_misfire.choice.catch_the_cart.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_marine_01_field_drill_misfire_catch_the_cart_criticalfailure",
+            "textKey": "event.active_marine_01_field_drill_misfire.choice.catch_the_cart.outcome.active_marine_01_field_drill_misfire_catch_the_cart_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_field_drill_misfire_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_marine_01_field_drill_misfire_catch_the_cart_failure",
+            "textKey": "event.active_marine_01_field_drill_misfire.choice.catch_the_cart.outcome.active_marine_01_field_drill_misfire_catch_the_cart_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_field_drill_misfire_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "active_marine_01_field_drill_misfire_catch_the_cart_success",
+            "textKey": "event.active_marine_01_field_drill_misfire.choice.catch_the_cart.outcome.active_marine_01_field_drill_misfire_catch_the_cart_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_field_drill_misfire_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_marine_01_field_drill_misfire_catch_the_cart_criticalsuccess",
+            "textKey": "event.active_marine_01_field_drill_misfire.choice.catch_the_cart.outcome.active_marine_01_field_drill_misfire_catch_the_cart_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_field_drill_misfire_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_the_line",
+      "textKey": "event.active_marine_01_field_drill_misfire.choice.clear_the_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_field_drill_misfire_clear_the_line",
+          "textKey": "event.active_marine_01_field_drill_misfire.choice.clear_the_line.outcome.active_marine_01_field_drill_misfire_clear_the_line.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_marine_01_field_drill_misfire_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "find_the_shooter",
+      "textKey": "event.active_marine_01_field_drill_misfire.choice.find_the_shooter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_field_drill_misfire_find_the_shooter",
+          "textKey": "event.active_marine_01_field_drill_misfire.choice.find_the_shooter.outcome.active_marine_01_field_drill_misfire_find_the_shooter.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_marine_01_field_drill_misfire_i1"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "careerRankIs",
+        "rankId": "marine_recruit"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      }
+    ]
+  }
+}

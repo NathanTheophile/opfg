@@ -729,10 +729,31 @@ export function EventPreview({
     />
   );
 
+  const outcomePresentationState =
+    showOutcome && session.previousState
+      ? session.previousState
+      : null;
+
+  const calendarAgeMonths =
+    outcomePresentationState?.ageMonths ??
+    displayState.ageMonths;
+
+  const monthEventProgress =
+    displayState.careerPhase === 'active'
+      ? outcomePresentationState
+        ? Math.min(
+            2,
+            outcomePresentationState.slotInMonth + 1,
+          )
+        : displayState.slotInMonth
+      : 0;
+
   const hudProps = {
     state: displayState,
     catalog,
     translate,
+    calendarAgeMonths,
+    monthEventProgress,
   };
 
   return (

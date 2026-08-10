@@ -1,0 +1,66 @@
+{
+  "id": "active_pirate_01_borrowed_flag_04b_missing_cut",
+  "kind": "scheduled",
+  "titleKey": "event.active_pirate_01_borrowed_flag_04b_missing_cut.title",
+  "textKey": "event.active_pirate_01_borrowed_flag_04b_missing_cut.text",
+  "choices": [
+    {
+      "id": "cancel_cut",
+      "textKey": "event.active_pirate_01_borrowed_flag_04b_missing_cut.choice.cancel_cut.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_04b_missing_cut.choice.cancel_cut.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_05b_fear",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "collect_direct",
+      "textKey": "event.active_pirate_01_borrowed_flag_04b_missing_cut.choice.collect_direct.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_04b_missing_cut.choice.collect_direct.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "modifyBerries",
+              "amount": 200
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_05b_fear",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "pirate"
+    }
+  },
+  "fallbackEventId": "active_pirate_01_borrowed_flag_departure"
+}

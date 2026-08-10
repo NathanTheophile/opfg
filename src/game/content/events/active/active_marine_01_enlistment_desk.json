@@ -1,0 +1,123 @@
+{
+  "id": "active_marine_01_enlistment_desk",
+  "kind": "normal",
+  "titleKey": "event.active_marine_01_enlistment_desk.title",
+  "textKey": "event.active_marine_01_enlistment_desk.text",
+  "choices": [
+    {
+      "id": "sign_without_ceremony",
+      "textKey": "event.active_marine_01_enlistment_desk.choice.sign_without_ceremony.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_enlistment_desk_sign_without_ceremony",
+          "textKey": "event.active_marine_01_enlistment_desk.choice.sign_without_ceremony.outcome.active_marine_01_enlistment_desk_sign_without_ceremony.text",
+          "effects": [
+            {
+              "type": "setCareerAffiliation",
+              "affiliationId": "marine"
+            },
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_recruit"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_field_posting",
+      "textKey": "event.active_marine_01_enlistment_desk.choice.ask_field_posting.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_enlistment_desk_ask_field_posting",
+          "textKey": "event.active_marine_01_enlistment_desk.choice.ask_field_posting.outcome.active_marine_01_enlistment_desk_ask_field_posting.text",
+          "effects": [
+            {
+              "type": "setCareerAffiliation",
+              "affiliationId": "marine"
+            },
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_recruit"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "disciplined_oath",
+      "textKey": "event.active_marine_01_enlistment_desk.choice.disciplined_oath.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_enlistment_desk_disciplined_oath",
+          "textKey": "event.active_marine_01_enlistment_desk.choice.disciplined_oath.outcome.active_marine_01_enlistment_desk_disciplined_oath.text",
+          "effects": [
+            {
+              "type": "setCareerAffiliation",
+              "affiliationId": "marine"
+            },
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_recruit"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "disciplined"
+      }
+    },
+    {
+      "id": "walk_away",
+      "textKey": "event.active_marine_01_enlistment_desk.choice.walk_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_enlistment_desk_walk_away",
+          "textKey": "event.active_marine_01_enlistment_desk.choice.walk_away.outcome.active_marine_01_enlistment_desk_walk_away.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      }
+    ]
+  }
+}

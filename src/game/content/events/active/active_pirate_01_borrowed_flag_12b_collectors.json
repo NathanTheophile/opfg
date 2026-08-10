@@ -1,0 +1,66 @@
+{
+  "id": "active_pirate_01_borrowed_flag_12b_collectors",
+  "kind": "scheduled",
+  "titleKey": "event.active_pirate_01_borrowed_flag_12b_collectors.title",
+  "textKey": "event.active_pirate_01_borrowed_flag_12b_collectors.text",
+  "choices": [
+    {
+      "id": "audit_collectors",
+      "textKey": "event.active_pirate_01_borrowed_flag_12b_collectors.choice.audit_collectors.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_12b_collectors.choice.audit_collectors.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_13b_rebellion",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_system_run",
+      "textKey": "event.active_pirate_01_borrowed_flag_12b_collectors.choice.let_system_run.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_12b_collectors.choice.let_system_run.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 300
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_13b_rebellion",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "pirate"
+    }
+  },
+  "fallbackEventId": "active_pirate_01_borrowed_flag_departure"
+}

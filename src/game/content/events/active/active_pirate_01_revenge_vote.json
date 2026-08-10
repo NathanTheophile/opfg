@@ -1,0 +1,124 @@
+{
+  "id": "active_pirate_01_revenge_vote",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_revenge_vote.title",
+  "textKey": "event.active_pirate_01_revenge_vote.text",
+  "choices": [
+    {
+      "id": "promise_revenge",
+      "textKey": "event.active_pirate_01_revenge_vote.choice.promise_revenge.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_revenge_vote.choice.promise_revenge.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "addTrait",
+              "traitId": "vengeful"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "forgiving"
+        }
+      }
+    },
+    {
+      "id": "let_go",
+      "textKey": "event.active_pirate_01_revenge_vote.choice.let_go.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_revenge_vote.choice.let_go.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "addTrait",
+              "traitId": "forgiving"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "vengeful"
+        }
+      }
+    },
+    {
+      "id": "make_it_competition",
+      "textKey": "event.active_pirate_01_revenge_vote.choice.make_it_competition.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_revenge_vote.choice.make_it_competition.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "competitive"
+      }
+    },
+    {
+      "id": "no_promise",
+      "textKey": "event.active_pirate_01_revenge_vote.choice.no_promise.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_revenge_vote.choice.no_promise.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "hasCrew"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_pirate_01_rival_crosses_bow"
+      }
+    ]
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "id": "active_pirate_01_shuttered_quay",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_shuttered_quay.title",
+  "textKey": "event.active_pirate_01_shuttered_quay.text",
+  "choices": [
+    {
+      "id": "pay_fair",
+      "textKey": "event.active_pirate_01_shuttered_quay.choice.pay_fair.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_shuttered_quay.choice.pay_fair.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -80
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 80
+      }
+    },
+    {
+      "id": "use_fear",
+      "textKey": "event.active_pirate_01_shuttered_quay.choice.use_fear.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_shuttered_quay.choice.use_fear.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 120
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "give_space",
+      "textKey": "event.active_pirate_01_shuttered_quay.choice.give_space.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_shuttered_quay.choice.give_space.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "announce_rules",
+      "textKey": "event.active_pirate_01_shuttered_quay.choice.announce_rules.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_shuttered_quay.choice.announce_rules.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "coastal"
+          }
+        ]
+      }
+    ]
+  }
+}

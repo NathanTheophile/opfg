@@ -54,29 +54,32 @@
   --ui-failure-color: oklch(0.72 0.17 29);
 
   /* ----------------------------------------------------------------------- */
-  /* Top HUD — three detached panels                                        */
+  /* Top HUD — compact three-panel composition                               */
   /* ----------------------------------------------------------------------- */
 
-  --ui-hud-group-gap: 13px;
-  --ui-hud-side-width: 272px;
-  --ui-hud-center-width: 544px;
-  --ui-hud-panel-min-height: 140px;
-  --ui-hud-panel-px: 16px;
-  --ui-hud-panel-py: 14px;
+  --ui-hud-group-gap: 12px;
+  --ui-hud-side-width: 248px;
+  --ui-hud-center-width: 512px;
+  --ui-hud-panel-min-height: 128px;
+  --ui-hud-panel-px: 14px;
+  --ui-hud-panel-py: 12px;
 
-  --ui-hud-eyebrow-size: 10.9px;
-  --ui-hud-name-size: 20px;
-  --ui-hud-environment-size: 11.5px;
+  --ui-hud-name-size: 19px;
+  --ui-hud-title-size: 10.5px;
+  --ui-hud-info-size: 11.5px;
+  --ui-hud-info-column-gap: 16px;
+  --ui-hud-info-row-gap: 3px;
 
-  --ui-hud-slot-size: 34.4px;
-  --ui-hud-slot-gap: 5.4px;
-  --ui-hud-slot-radius: 6.7px;
+  --ui-hud-slot-size: 31px;
+  --ui-hud-slot-gap: 5px;
+  --ui-hud-slot-radius: 6px;
 
-  --ui-hud-event-slot-height: 29px;
-  --ui-hud-event-slot-gap: 8px;
-  --ui-hud-event-slot-radius: 10px;
+  --ui-hud-month-pip-width: 32px;
+  --ui-hud-month-pip-height: 7px;
+  --ui-hud-month-pip-gap: 5px;
+  --ui-hud-month-pip-radius: 999px;
 
-  --ui-hud-ship-icon-size: 38px;
+  --ui-hud-ship-icon-size: 35px;
   --ui-mobile-drawer-width: 336px;
   --ui-adventure-stack-gap: 12px;
 
@@ -297,7 +300,7 @@
 }
 
 /* ------------------------------------------------------------------------- */
-/* Three-panel HUD bridge                                                    */
+/* Compact three-panel HUD bridge                                            */
 /* ------------------------------------------------------------------------- */
 
 :root .opfg-top-world-hud {
@@ -318,21 +321,29 @@
     var(--ui-hud-panel-px);
 }
 
-:root .opfg-hud-panel__heading {
-  font-size: var(--ui-hud-eyebrow-size);
-}
-
 :root .opfg-hud-identity__nameplate strong {
   font-size: var(--ui-hud-name-size);
 }
 
-:root .opfg-hud-environment__location,
-:root .opfg-hud-environment__sea {
-  font-size: var(--ui-hud-environment-size);
+:root .opfg-hud-identity__title {
+  font-size: var(--ui-hud-title-size);
+}
+
+:root .opfg-hud-identity__grid {
+  gap: var(--ui-hud-info-column-gap);
+}
+
+:root .opfg-hud-identity__column {
+  gap: var(--ui-hud-info-row-gap);
+}
+
+:root .opfg-hud-info-row {
+  font-size: var(--ui-hud-info-size);
 }
 
 :root .opfg-hud-slot,
-:root .opfg-hud-slot-wrap {
+:root .opfg-hud-slot-wrap,
+:root .opfg-hud-inventory__icon {
   width: var(--ui-hud-slot-size);
   min-width: var(--ui-hud-slot-size);
   height: var(--ui-hud-slot-size);
@@ -346,13 +357,14 @@
   gap: var(--ui-hud-slot-gap);
 }
 
-:root .opfg-hud-year-progress {
-  gap: var(--ui-hud-event-slot-gap);
+:root .opfg-hud-month-progress__pips {
+  gap: var(--ui-hud-month-pip-gap);
 }
 
-:root .opfg-hud-year-progress__slot {
-  height: var(--ui-hud-event-slot-height);
-  border-radius: var(--ui-hud-event-slot-radius);
+:root .opfg-hud-month-progress__pip {
+  width: var(--ui-hud-month-pip-width);
+  height: var(--ui-hud-month-pip-height);
+  border-radius: var(--ui-hud-month-pip-radius);
 }
 
 :root .opfg-hud-ship__icon {

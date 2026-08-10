@@ -1,0 +1,84 @@
+{
+  "id": "active_marine_01_sealed_manifest_s9_command_decision",
+  "kind": "scheduled",
+  "titleKey": "event.active_marine_01_sealed_manifest_s9_command_decision.title",
+  "textKey": "event.active_marine_01_sealed_manifest_s9_command_decision.text",
+  "choices": [
+    {
+      "id": "favor_accountability",
+      "textKey": "event.active_marine_01_sealed_manifest_s9_command_decision.choice.favor_accountability.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_s9_command_decision_favor_accountability",
+          "textKey": "event.active_marine_01_sealed_manifest_s9_command_decision.choice.favor_accountability.outcome.active_marine_01_sealed_manifest_s9_command_decision_favor_accountability.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s10_three_paths",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "favor_reform",
+      "textKey": "event.active_marine_01_sealed_manifest_s9_command_decision.choice.favor_reform.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_s9_command_decision_favor_reform",
+          "textKey": "event.active_marine_01_sealed_manifest_s9_command_decision.choice.favor_reform.outcome.active_marine_01_sealed_manifest_s9_command_decision_favor_reform.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s10_three_paths",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "favor_chain_stability",
+      "textKey": "event.active_marine_01_sealed_manifest_s9_command_decision.choice.favor_chain_stability.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_s9_command_decision_favor_chain_stability",
+          "textKey": "event.active_marine_01_sealed_manifest_s9_command_decision.choice.favor_chain_stability.outcome.active_marine_01_sealed_manifest_s9_command_decision_favor_chain_stability.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s10_three_paths",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 200,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "marine"
+    }
+  }
+}

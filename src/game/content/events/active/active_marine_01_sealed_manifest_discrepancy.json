@@ -1,0 +1,107 @@
+{
+  "id": "active_marine_01_sealed_manifest_discrepancy",
+  "kind": "normal",
+  "titleKey": "event.active_marine_01_sealed_manifest_discrepancy.title",
+  "textKey": "event.active_marine_01_sealed_manifest_discrepancy.text",
+  "choices": [
+    {
+      "id": "preserve_all_versions",
+      "textKey": "event.active_marine_01_sealed_manifest_discrepancy.choice.preserve_all_versions.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_discrepancy_preserve_all_versions",
+          "textKey": "event.active_marine_01_sealed_manifest_discrepancy.choice.preserve_all_versions.outcome.active_marine_01_sealed_manifest_discrepancy_preserve_all_versions.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s1_summons",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_for_quiet_review",
+      "textKey": "event.active_marine_01_sealed_manifest_discrepancy.choice.ask_for_quiet_review.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_discrepancy_ask_for_quiet_review",
+          "textKey": "event.active_marine_01_sealed_manifest_discrepancy.choice.ask_for_quiet_review.outcome.active_marine_01_sealed_manifest_discrepancy_ask_for_quiet_review.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s1_summons",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "report_up_chain",
+      "textKey": "event.active_marine_01_sealed_manifest_discrepancy.choice.report_up_chain.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_discrepancy_report_up_chain",
+          "textKey": "event.active_marine_01_sealed_manifest_discrepancy.choice.report_up_chain.outcome.active_marine_01_sealed_manifest_discrepancy_report_up_chain.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s1_summons",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 192
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_petty_officer"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 15
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      }
+    ]
+  },
+  "lifetimeThreadSeed": true
+}

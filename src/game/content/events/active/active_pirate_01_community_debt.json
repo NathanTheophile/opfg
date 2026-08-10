@@ -1,0 +1,121 @@
+{
+  "id": "active_pirate_01_community_debt",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_community_debt.title",
+  "textKey": "event.active_pirate_01_community_debt.text",
+  "choices": [
+    {
+      "id": "pay_damage",
+      "textKey": "event.active_pirate_01_community_debt.choice.pay_damage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_community_debt.choice.pay_damage.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -250
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 250
+      }
+    },
+    {
+      "id": "work_damage",
+      "textKey": "event.active_pirate_01_community_debt.choice.work_damage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_community_debt.choice.work_damage.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "deny_debt",
+      "textKey": "event.active_pirate_01_community_debt.choice.deny_debt.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_community_debt.choice.deny_debt.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "protective_offer",
+      "textKey": "event.active_pirate_01_community_debt.choice.protective_offer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_community_debt.choice.protective_offer.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "protective"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_pirate_01_merchant_under_shadow"
+      }
+    ]
+  }
+}

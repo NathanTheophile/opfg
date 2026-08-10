@@ -1,0 +1,140 @@
+{
+  "id": "active_pirate_01_marine_patrol_question",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_marine_patrol_question.title",
+  "textKey": "event.active_pirate_01_marine_patrol_question.text",
+  "choices": [
+    {
+      "id": "bluff",
+      "textKey": "event.active_pirate_01_marine_patrol_question.choice.bluff.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_pirate_01_marine_patrol_question.choice.bluff.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_pirate_01_marine_patrol_question.choice.bluff.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_pirate_01_marine_patrol_question.choice.bluff.outcome.success.text",
+            "effects": []
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_pirate_01_marine_patrol_question.choice.bluff.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "bribe",
+      "textKey": "event.active_pirate_01_marine_patrol_question.choice.bribe.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_marine_patrol_question.choice.bribe.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -150
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 150
+      }
+    },
+    {
+      "id": "deceptive_alias",
+      "textKey": "event.active_pirate_01_marine_patrol_question.choice.deceptive_alias.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_marine_patrol_question.choice.deceptive_alias.outcome.resolved.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "deceptive"
+      }
+    },
+    {
+      "id": "walk_past",
+      "textKey": "event.active_pirate_01_marine_patrol_question.choice.walk_past.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_marine_patrol_question.choice.walk_past.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "marine_presence"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 5
+      }
+    ]
+  }
+}
