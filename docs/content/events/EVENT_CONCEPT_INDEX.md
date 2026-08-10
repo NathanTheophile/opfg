@@ -29,10 +29,19 @@ _None accepted yet._
 
 ## Accepted Lifetime Threads
 
-| Batch | Seed Root Event ID | threadKey | Recurring NPC / anchor | Reachable Scheduled depth | Intended span | One-line thread premise |
-|---|---|---|---|---:|---|---|
+| Batch | Seed Root Event ID | threadKey | Recurring NPC / anchor | Longest reachable Scheduled depth | Total reachable Scheduled nodes | Long-term divergence points | Topology | Intended span | One-line thread premise |
+|---|---|---|---|---:|---:|---:|---|---|---|
 
 _None accepted yet._
+
+For accepted Lifetime Threads:
+
+- `Longest reachable Scheduled depth` counts Scheduled chapters encountered along one coherent reachable path after the seed;
+- `Total reachable Scheduled nodes` counts distinct reachable Scheduled EventDefinitions across the complete authored branch graph;
+- qualifying production target is **10+ longest-path depth** and **20+ total reachable Scheduled nodes**;
+- `Long-term divergence points` counts meaningful authored splits where different player Choices/Dice outcomes lead to materially different future Scheduled Event IDs;
+- qualifying production target is **2+ meaningful long-term divergence points**, with at least one persistent split rather than an immediate cosmetic reconvergence;
+- `Topology` should normally be `branching` or `strongly_branching`.
 
 ## Regeneration scope
 
@@ -52,7 +61,7 @@ After each reviewed/accepted batch:
 1. append only accepted **root** concepts to `Accepted root concepts`;
 2. append every accepted qualifying depth-5 Signature Immediate Arc at root level;
 3. append every accepted qualifying depth-3 Secondary Immediate Arc at root level;
-4. append every accepted Lifetime Thread at seed/thread level;
+4. append every accepted Lifetime Thread at seed/thread level, including longest depth, total reachable Scheduled graph size, divergence count and topology;
 5. update batch summaries/dedup notes as needed.
 
 Do not add rejected drafts, discarded alternatives, Immediate descendants or Scheduled descendants as independent root concepts.

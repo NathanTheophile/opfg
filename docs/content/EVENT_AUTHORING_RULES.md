@@ -55,11 +55,31 @@ Every standard batch of approximately 20 root Events must contain **at least** t
 
 1. **at least one Signature Immediate Arc**: a root Event with at least one reachable branch containing **five consecutive Immediate Events** after the root;
 2. **at least three Secondary Immediate Arcs**: three **different root Events**, each with at least one reachable branch containing **three consecutive Immediate Events** after the root;
-3. **at least one Lifetime Thread**: a root Normal Event marked `lifetimeThreadSeed: true` with at least one reachable authored continuation path containing **10 or more successive Scheduled chapters**.
+3. **at least one Lifetime Thread**: a root Normal Event marked `lifetimeThreadSeed: true` that opens a substantial, branching long-form narrative built from vertically scheduled chapters.
+
+For every qualifying Lifetime Thread used to satisfy the batch requirement:
+
+- the hard reachable-path floor is **10 successive Scheduled chapters after the seed**;
+- the longest meaningful reachable path should normally fall in the **10–20 Scheduled** range;
+- **12–16 Scheduled on the longest meaningful path is the preferred ordinary target** when the premise supports that length;
+- the complete authored Lifetime graph must contain **at least 20 distinct reachable Scheduled EventDefinitions**, counting alternative branches;
+- a normal substantial Lifetime graph will often contain roughly **20–30 distinct reachable Scheduled EventDefinitions**;
+- the graph must contain **at least two meaningful long-term divergence points** where different player Choices and/or Dice outcomes lead to different future Scheduled Event IDs;
+- at least one major divergence must be structurally persistent: its branches must remain meaningfully distinct across multiple future chapters, terminate differently, transform the thread differently, or reconverge only after materially different consequences.
+
+**Depth and authored graph size are separate metrics.** A thread may have a longest reachable path of 14 Scheduled chapters while containing 22 or 26 distinct reachable Scheduled EventDefinitions across all branches.
+
+The seed root itself and any Immediate Events do **not** count toward the 20-Scheduled authored-graph minimum.
+
+Unreachable, disconnected, dead-code or impossible Scheduled Events do not count toward authored graph size.
+
+Ten remains the runtime/content acceptance floor for reachable depth; **20 distinct reachable Scheduled nodes and meaningful branching are authoring-production requirements**, not new GameState or schema concepts.
+
+Do not pad a thread with repetitive callbacks merely to reach graph-size or path-depth targets. Do not create shallow cosmetic forks only to satisfy branching metrics.
 
 These supporting Immediate/Scheduled Events are **in addition** to the approximately 20 root Events and never count toward the root target.
 
-The required Signature Immediate Arc and the three required Secondary Immediate Arcs must use **distinct root Events**. 
+The required Signature Immediate Arc and the three required Secondary Immediate Arcs must use **distinct root Events**.
 A depth-5 chain does not also satisfy any of the required depth-3 slots.
 
 Additional Signature or Secondary Immediate Arcs are allowed and encouraged when narratively justified.
@@ -73,10 +93,15 @@ The batch manifest must explicitly identify:
 - qualifying Secondary Immediate Arc root IDs (at least 3);
 - maximum reachable consecutive Immediate depth for each Secondary Arc;
 - Lifetime Thread seed root ID(s);
-- recurring persistent NPC(s), if any;
-- minimum reachable Scheduled continuation depth;
+- recurring persistent NPC(s) or other durable narrative anchor(s), if any;
+- **longest reachable Scheduled depth** for each qualifying Lifetime Thread;
+- **total number of distinct reachable Scheduled EventDefinitions in the complete Lifetime graph**;
+- **meaningful long-term divergence count**;
+- major authored branch points and the Choices/Dice outcomes that create them;
+- major branch persistence / reconvergence structure;
+- major early-termination branches;
 - approximate intended age/time span;
-- known early-termination or major branch points;
+- whether the thread is primarily `branching` or `strongly_branching`;
 - whether the thread is designed to cross Childhood → Active.
 
 ## 3. Event scene structure
@@ -315,7 +340,22 @@ Approximately **15–25% of root Events** in suitable batches should create a me
 
 Prefer narratively legible delays: months, years, or meaningful age thresholds. Avoid arbitrary delays used only to randomize timing.
 
-For Lifetime Threads, spacing must feel biographical rather than like a quest log firing every slot. The authored surviving path should normally span **many years**, target roughly **10+ years of possible life**, and include multiple gaps measured in years rather than only adjacent months.
+For Lifetime Threads, spacing must feel biographical rather than like a quest log firing every slot.
+
+The authored storyline should normally span **many years**, target roughly **10+ years of possible life**, and include multiple gaps measured in years rather than only adjacent months.
+
+Chapter count, calendar span, longest-path depth, and complete authored-graph size are separate concerns.
+
+For a qualifying Lifetime Thread:
+
+- hard reachable-path floor: **10 Scheduled chapters**;
+- normal longest meaningful path: **10–20**;
+- preferred ordinary longest path when justified: **12–16**;
+- complete authored graph: **20+ distinct reachable Scheduled EventDefinitions**, commonly around **20–30** when branching naturally supports it.
+
+Do not artificially compress a story to exactly 10 chapters merely because 10 satisfies the runtime floor.
+
+Do not pad a finished story with filler callbacks merely to reach 20 total nodes, 15 nodes on one path, or any other numerical target.
 
 ### 10.3 Context on return
 
@@ -339,15 +379,50 @@ The seed must:
 - declare `lifetimeThreadSeed: true`;
 - initiate a coherent long-form narrative rather than merely scheduling an unrelated reminder;
 - have at least one reachable authored path containing **10 or more successive Scheduled chapters** after the seed;
+- lead to a complete authored graph containing **at least 20 distinct reachable Scheduled EventDefinitions**;
+- contain **at least two meaningful long-term divergence points** in the authored graph;
 - be recorded explicitly in the batch manifest.
 
-A Lifetime Thread should preferably be anchored by a persistent relationship, recurring person, rival, mentor, family member, organization contact, long-term obligation, mystery or comparable durable narrative subject. When a persistent NPC is used, it counts against the normal persistent-NPC proposal budget.
+### Path depth target
 
-### 10.6 Vertical scheduling, not ten events queued at once
+**Depth 10 is a floor, not the normal production target.**
+
+A substantial Lifetime Thread should generally contain a longest meaningful reachable path of approximately **10–20 Scheduled chapters**.
+
+For ordinary production, authors should normally aim around **12–16 Scheduled chapters on the longest meaningful path** when the premise supports that amount of development.
+
+Exact depth 10 is fully valid when the story reaches a natural conclusion there, but batches should not systematically stop every Lifetime Thread at exactly 10 merely because that is the minimum reachable depth.
+
+Threads approaching or exceeding 20 chapters on one path are valid when their narrative evolution genuinely supports that scale.
+
+### Complete graph size target
+
+The **complete authored Lifetime graph** must contain **at least 20 distinct reachable Scheduled EventDefinitions**, counting all alternative branches reachable from the seed.
+
+This graph-size minimum counts Scheduled EventDefinitions, not:
+
+- the seed root;
+- Immediate Events;
+- repeated visits to the same Event ID;
+- unreachable or disconnected EventDefinitions.
+
+A normal substantial thread may contain roughly **20–30 total reachable Scheduled EventDefinitions**. More is allowed when justified, but avoid uncontrolled combinatorial growth.
+
+A thread with a longest path of 14 and 24 total reachable Scheduled nodes is therefore valid and desirable: one run may experience roughly 14 chapters while another run experiences a different 14-chapter route through the same larger authored graph.
+
+A Lifetime Thread should preferably be anchored by a persistent relationship, recurring person, rival, mentor, family member, organization contact, long-term obligation, mystery, evolving personal commitment or comparable durable narrative subject.
+
+When a persistent NPC is used, it counts against the normal persistent-NPC proposal budget.
+
+### 10.6 Vertical and branching scheduling
 
 A Lifetime Thread must be authored **vertically**.
 
-Preferred structure:
+A chapter normally schedules only the next consequence or consequences that result from the chapter that has just been resolved.
+
+Do **not** enqueue an entire future Lifetime Thread from the seed root.
+
+Basic vertical structure:
 
 ```text
 Seed root
@@ -356,26 +431,83 @@ Scheduled 1
   ↓
 Scheduled 2
   ↓
-Scheduled 3
-  ↓
 ...
-  ↓
-Scheduled 10+
 ```
 
-A Scheduled chapter normally schedules the next relevant chapter **only after that chapter is resolved**.
+However, **a purely linear S1 → S2 → S3 → ... chain does not satisfy the normal authoring expectation for a qualifying Lifetime Thread**.
 
-Do **not** have the seed root enqueue ten future Scheduled Events at once. That would flood the scheduler, reduce player agency and make later branches difficult to author.
+### Mandatory long-term divergence
 
-Branching is valid and encouraged:
+A qualifying Lifetime Thread must contain **at least two meaningful long-term divergence points** in its complete authored graph.
+
+A divergence point counts when different Choices and/or Dice outcomes schedule **different future Scheduled Event IDs** whose consequences are materially different.
+
+Example:
 
 ```text
 Scheduled 3
-├─ Choice A → Scheduled 4A → ...
-└─ Choice B → Scheduled 4B → ...
+├─ Choice A
+│   └─ Outcome A → Scheduled 4A
+│
+├─ Choice B
+│   └─ Outcome B → Scheduled 4B
+│
+└─ Choice C
+    └─ Outcome C → thread ends
 ```
 
-The minimum depth requirement means that at least one coherent reachable continuation path contains 10+ Scheduled chapters. It does not require every branch to survive that long.
+Dice outcomes may also produce genuine divergence:
+
+```text
+Scheduled 6
+└─ risky Choice
+    ├─ criticalFailure → Scheduled 7D
+    ├─ failure         → Scheduled 7B
+    ├─ success         → Scheduled 7A
+    └─ criticalSuccess → Scheduled 7C
+```
+
+A branch does **not** count as meaningful merely because one alternate node immediately rejoins the same next chapter with no lasting difference.
+
+At least one of the qualifying divergence points must produce branches that do one or more of the following:
+
+- remain distinct across **at least two successive Scheduled chapters after the split**;
+- terminate at materially different moments or endings;
+- transform the recurring relationship, objective or premise differently;
+- create persistent state/history differences that materially alter later chapters;
+- reconverge only after the branches have produced materially different consequences.
+
+Branches may later reconverge when that convergence is narratively credible.
+
+Example:
+
+```text
+                   → S4A → S5A → S6A ─┐
+S1 → S2 → S3 ────→                     ├→ S7 → S8...
+                   → S4B → S5B ────────┘
+```
+
+A later second divergence can then create another durable difference:
+
+```text
+S8 → S9
+      ├→ S10A → S11A → S12A → ...
+      └→ S10B → S11B → ...
+```
+
+### Branching quality
+
+Different player intentions should regularly produce different long-term futures when the fiction supports that distinction.
+
+Do not make every Choice cosmetic and then schedule the same next chapter.
+
+Do not create artificial forks solely to increase node count.
+
+Avoid uncontrolled combinatorial explosion. A small number of strong, persistent divergences with credible reconvergence is preferable to dozens of shallow branches.
+
+The hard reachable-depth minimum still concerns one coherent path: at least one path must reach Scheduled depth 10. Other branches may end earlier when the player's decision genuinely ends or transforms the story.
+
+The complete authored graph-size minimum concerns all reachable Scheduled nodes across all branches: **20 distinct reachable Scheduled EventDefinitions minimum**.
 
 ### 10.7 Agency, death and thread termination
 
@@ -393,6 +525,12 @@ A thread may end, transform or fork because the player:
 Use `hasChosen`, `hasOutcome`, NPC state, Traits, Items, career state, geography, `cancelIf` and fallback before inventing a dedicated Flag.
 
 A recurring NPC must not be magically teleported across the world. Physical reunions must respect geography; letters, rumors, organization channels or other remote consequences may use broader Scheduled reach when narratively justified.
+
+Early termination is not a failure of authoring when it is the direct consequence of meaningful player agency.
+
+A Lifetime Thread with a longest path of 15 chapters may legitimately contain branches that end at chapter 4, 7 or 11 because the player rejected, betrayed, solved, abandoned or fundamentally transformed the underlying relationship/problem.
+
+Do not keep a dead narrative branch alive merely to preserve chapter count.
 
 ### 10.8 Childhood run guarantee
 
@@ -412,9 +550,11 @@ No persistent `threadId`, `arcState`, quest state or chapter counter is allowed 
 
 ### 10.9 Lifetime Thread quality bar
 
-Ten callbacks are not enough by themselves. A Lifetime Thread must visibly evolve.
+Raw chapter count, raw graph size and raw branch count are not sufficient by themselves.
 
-Across its surviving path, change several of the following over time:
+A Lifetime Thread must visibly evolve, and its later state should reflect what the player actually did earlier.
+
+Across its surviving branches, change several of the following over time:
 
 - relationship;
 - character age/status/responsibility;
@@ -423,9 +563,28 @@ Across its surviving path, change several of the following over time:
 - stakes;
 - player identity/career;
 - recurring character goals;
-- consequences of earlier Choices.
+- consequences of earlier Choices;
+- the meaning of the original conflict, promise, mystery or relationship.
+
+A thread should not merely contain 20+ authored nodes. Those nodes should create **different possible life trajectories**.
+
+Player Choices made inside the thread should regularly affect later chapters. When materially different Choices all schedule the exact same next chapter, authors should ask whether a genuine branch would better preserve agency.
+
+A qualifying Lifetime Thread must therefore satisfy all three dimensions:
+
+1. **lived depth** — at least 10 reachable Scheduled chapters on one path, normally 10–20 and often 12–16;
+2. **authored breadth** — at least 20 distinct reachable Scheduled EventDefinitions across the whole thread graph;
+3. **meaningful topology** — at least two genuine long-term divergence points, with at least one persistent split as defined in §10.6.
 
 Do not write ten near-identical “the same person visits again” scenes.
+
+Do not turn a 20-node graph into twenty cosmetic variants of the same callback.
+
+Do not inflate a natural 11-chapter story into 18 chapters with filler.
+
+Do not reduce a story that clearly has material for 15 chapters to exactly 10 merely to satisfy the minimum.
+
+Do not create extra branches that exist only to satisfy the 20-node authored-graph minimum.
 
 ## 11. Locations, tags, and services
 
@@ -565,7 +724,12 @@ A batch is accepted only after:
 4. verification that at least one Signature Immediate Arc has a reachable depth-5 path;
 5. verification that at least three Secondary Immediate Arcs use distinct roots, all distinct from the required Signature root, and each has a reachable depth-3 path;
 6. verification that at least one Lifetime Thread has a reachable Scheduled depth of at least 10;
-7. verification that every qualifying Lifetime Thread used to satisfy the batch requirement is vertically scheduled rather than pre-queuing its full future chain.
+7. verification that every qualifying Lifetime Thread used to satisfy the batch requirement is vertically scheduled rather than pre-queuing its full future chain;
+8. verification that every qualifying Lifetime Thread has **at least 20 distinct reachable Scheduled EventDefinitions** in its complete authored graph;
+9. verification that every qualifying Lifetime Thread contains **at least two meaningful long-term divergence points**;
+10. verification that at least one qualifying divergence is persistent rather than cosmetic: multi-chapter separation, materially different termination/transformation, persistent-state divergence, or delayed credible reconvergence;
+11. review of Lifetime Thread authored depth: exact depth 10 is valid but should not become the systematic production default; substantial threads should generally have a longest meaningful path in the 10–20 range, with 12–16 preferred when justified;
+12. review that graph-size and branching requirements were not satisfied through filler, unreachable nodes or shallow cosmetic forks.
 
 Compilation alone is not sufficient.
 
@@ -605,8 +769,13 @@ Every Event-generation conversation should receive:
 12. an explicit statement that new persistent definitions must go in `PROPOSED_DEFINITIONS`;
 13. the mandatory minimum of at least one Signature Immediate Arc (reachable depth 5);
 14. the mandatory minimum of at least three Secondary Immediate Arcs (three additional distinct roots, each reachable depth 3);
-15. the mandatory minimum of at least one Lifetime Thread, including `lifetimeThreadSeed: true`, 10+ Scheduled depth, vertical scheduling and intended multi-year span;
-16. the current accepted Lifetime Thread / Immediate Arc concept index so parallel batches do not create near-identical long-form stories.
+15. the mandatory minimum of at least one Lifetime Thread with `lifetimeThreadSeed: true`;
+16. Lifetime lived-depth requirements: hard reachable floor 10, normal longest-path range roughly 10–20, 12–16 preferred when justified;
+17. Lifetime authored-breadth requirement: **at least 20 distinct reachable Scheduled EventDefinitions** in the complete thread graph, commonly around 20–30 when justified;
+18. Lifetime topology requirement: **at least two meaningful long-term divergence points**, with at least one structurally persistent split rather than an immediate cosmetic reconvergence;
+19. an explicit reminder that different Choices/Dice outcomes may and should schedule different future chapters when their long-term consequences differ;
+20. vertical scheduling and multi-year narrative evolution requirements;
+21. the current accepted Lifetime Thread / Immediate Arc concept index so parallel batches do not create near-identical long-form stories.
 
 A batch prompt must define scope narrowly enough that another GPT conversation can work on a different batch without collision.
 
@@ -636,7 +805,7 @@ The goal is not to create a large deck of disconnected random cards.
 
 The goal is to create a coherent, replayable life history where origin, personality, geography, career, relationships, powers, and prior decisions meaningfully alter what happens later.
 
-For V1 production, this principle is measurable: every standard batch contributes **at least one depth-5 Signature Immediate Arc, at least three distinct depth-3 Secondary Immediate Arcs, and at least one multi-year Lifetime Thread**, while every completed Childhood run is guaranteed to have initiated at least one Lifetime Thread.
+For V1 production, this principle is measurable: every standard batch contributes **at least one depth-5 Signature Immediate Arc, at least three distinct depth-3 Secondary Immediate Arcs, and at least one multi-year Lifetime Thread with 10+ reachable Scheduled depth, 20+ distinct reachable Scheduled nodes in its complete authored graph, and meaningful long-term branching**, while every completed Childhood run is guaranteed to have initiated at least one Lifetime Thread.
 
 # 22. World travel authoring contract
 
