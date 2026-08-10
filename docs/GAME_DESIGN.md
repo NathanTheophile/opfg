@@ -230,11 +230,11 @@ Les personnages, organisations et Locations sensibles au canon doivent porter de
 
 Une conséquence programmée à 17 ans avec `delayMonths: 18` devient due 18 mois calendaires plus tard.
 
-`monthAtLeast` est considéré comme redondant puisque l’ancienneté Active est dérivable de l’âge biologique. Il doit être retiré du contrat de contenu lors de la prochaine passe technique. **Aucune suppression n’est réalisée dans la présente tâche documentaire.**
+`monthAtLeast` est redondant puisque l’ancienneté Active est dérivable de l’âge biologique et a été retiré du contrat de contenu/runtime. Utiliser `ageAtLeastMonths`, `ageAtMostMonths` et `delayMonths` selon le besoin ; ne pas réintroduire `monthAtLeast`.
 
 ## 8. Scheduled Events
 
-Un Event `scheduledOnly` ne peut jamais venir du pool normal : une conséquence antérieure doit l’avoir programmé. Lorsqu’il est joué, il consomme un slot normal. Une conséquence Childhood peut devenir due pendant Childhood ou après le passage en Active.
+Un Event `kind: "scheduled"` ne peut jamais venir du pool normal : une conséquence antérieure doit l’avoir programmé. Lorsqu’il est joué, il consomme un slot normal. Une conséquence Childhood peut devenir due pendant Childhood ou après le passage en Active.
 
 ### Sélection et priorité
 
@@ -582,7 +582,6 @@ Les décisions suivantes sont verrouillées mais pas nécessairement implément�
 - modèle explicite de slots propre aux phases ;
 - `slotInMonth: 0 | 1` en Active ;
 - progression du temps retirée du contrôle des Outcomes ;
-- suppression future de `monthAtLeast` ;
 - Scheduled Events prioritaires sur le pool normal ;
 - priorités Scheduled `50 / 100 / 200 / 300` ;
 - `blocksScheduledEvents` sur les Locations ;

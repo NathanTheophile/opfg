@@ -4,7 +4,7 @@
 >
 > **Status: active accepted-content ledger under the current Lifetime Thread authoring contract.**
 >
-> The previously generated Childhood Waves 1–2 are intentionally withdrawn from the accepted ledger and must be regenerated under the current authority. Their old concepts do not block reuse or revision.
+> Childhood batches currently listed in this ledger are the accepted versions under the current Lifetime Thread authoring contract. Older withdrawn/regenerated historical copies are non-authoritative and must not be used for deduplication or regeneration decisions.
 
 ## Accepted root concepts
 

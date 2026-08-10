@@ -42,8 +42,19 @@
       "id": "press_on",
       "textKey": "event.year_one_end.choice.press_on.text",
       "availableIf": {
-        "type": "shipHealthAtLeast",
-        "value": 1
+        "type": "any",
+        "conditions": [
+          {
+            "type": "shipHealthAtLeast",
+            "value": 1
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasShip"
+            }
+          }
+        ]
       },
       "resolution": {
         "type": "deterministic",

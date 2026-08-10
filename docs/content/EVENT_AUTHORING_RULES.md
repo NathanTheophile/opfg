@@ -640,6 +640,20 @@ Use `locationIs` when the exact identity of the place matters. Do not enumerate 
 
 A location-specific batch may naturally use many `locationIs` Conditions, e.g. `ACTIVE_ALABASTA_01`.
 
+### 11.5 Childhood geography and Birth Location reachability
+
+Childhood has no free navigation loop and does not use the Active dead-end travel fallback. A standalone Childhood root must therefore be reachable from the player's actual Childhood location, which normally remains the Birth Location selected during Origins unless an explicitly authored causal sequence has moved the player.
+
+For Childhood authoring and review:
+
+- do not gate a standalone root with `locationIs` on a non-Birth Location and assume the player can simply travel there;
+- when using `locationWithin(parentLocationId)`, verify that at least one valid Birth Location can satisfy the condition and that the scene text remains true for every Birth Location descendant that may make the Event eligible;
+- do not broaden eligibility to a parent/region while keeping narration that requires a more specific sub-location, unless that specific place is only flavor and does not contradict the eligible states;
+- tag/service-gated Childhood roots must be checked against the real tags/services of the 32 Birth Locations, not against the wider 188-Location World V1 catalogue;
+- do not rely on Active navigation, future movement, or dead-end fallback to make a Childhood root reachable.
+
+Batch review must include a Birth Location coverage pass for geography-sensitive Childhood roots. An Event that is structurally valid but unreachable from every valid Birth Location is a content coverage defect.
+
 ## 12. Travel and world progression
 
 ### 12.1 Movement must be narrated
