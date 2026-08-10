@@ -49,6 +49,36 @@ Every batch must include a manifest containing at least:
 
 New persistent definitions must be isolated under `PROPOSED_DEFINITIONS`. They are not automatically accepted.
 
+### 2.5 Mandatory long-form narrative structures
+
+Every standard batch of approximately 20 root Events must contain **at least** the following three categories of long-form narrative structures:
+
+1. **at least one Signature Immediate Arc**: a root Event with at least one reachable branch containing **five consecutive Immediate Events** after the root;
+2. **at least three Secondary Immediate Arcs**: three **different root Events**, each with at least one reachable branch containing **three consecutive Immediate Events** after the root;
+3. **at least one Lifetime Thread**: a root Normal Event marked `lifetimeThreadSeed: true` with at least one reachable authored continuation path containing **10 or more successive Scheduled chapters**.
+
+These supporting Immediate/Scheduled Events are **in addition** to the approximately 20 root Events and never count toward the root target.
+
+The required Signature Immediate Arc and the three required Secondary Immediate Arcs must use **distinct root Events**. 
+A depth-5 chain does not also satisfy any of the required depth-3 slots.
+
+Additional Signature or Secondary Immediate Arcs are allowed and encouraged when narratively justified.
+
+The Lifetime Thread may originate from one of those two Immediate-arc roots only when that produces a genuinely coherent story. Do not force structures together merely to reduce Event count.
+
+The batch manifest must explicitly identify:
+
+- qualifying Signature Immediate Arc root ID(s);
+- maximum reachable consecutive Immediate depth for each Signature Arc;
+- qualifying Secondary Immediate Arc root IDs (at least 3);
+- maximum reachable consecutive Immediate depth for each Secondary Arc;
+- Lifetime Thread seed root ID(s);
+- recurring persistent NPC(s), if any;
+- minimum reachable Scheduled continuation depth;
+- approximate intended age/time span;
+- known early-termination or major branch points;
+- whether the thread is designed to cross Childhood → Active.
+
 ## 3. Event scene structure
 
 ### 3.1 Standard number of Choices
@@ -196,31 +226,96 @@ Do not use major canon characters as ambient fan-service.
 
 ## 9. Immediate continuations and mini-arcs
 
-### 9.1 Standard chain length
+### 9.1 Ordinary chain length
 
-A root Event may normally lead to **1–3 Immediate Events**.
+Outside the mandatory long-form Immediate arcs, a root Event should normally lead to **1–3 Immediate Events**.
 
-### 9.2 Immediate meaning
+### 9.2 Mandatory Signature Immediate Arc — depth 5
+
+Every standard batch must contain at least **one root Event** with a reachable narrative path of **five consecutive Immediate Events after the root**.
+
+Conceptually:
+
+```text
+Root A
+→ Immediate 1
+→ Immediate 2
+→ Immediate 3
+→ Immediate 4
+→ Immediate 5
+```
+
+Five is the V1 production target for this signature structure. A branch may terminate earlier when a player choice genuinely ends the scene, but at least one complete reachable path must attain depth 5.
+
+This exception exists to create regular substantial same-scene mini-arcs. Do not turn every Event into a five-scene chain.
+
+### 9.3 Mandatory Secondary Immediate Arcs — 3 × depth 3
+
+Every standard batch must also contain **at least three Secondary Immediate Arcs**, each rooted in a **different root Event** and each containing at least one reachable path of **three consecutive Immediate Events after the root**.
+
+Conceptually:
+
+```text
+Root B
+→ Immediate 1
+→ Immediate 2
+→ Immediate 3
+
+Root C
+→ Immediate 1
+→ Immediate 2
+→ Immediate 3
+
+Root D
+→ Immediate 1
+→ Immediate 2
+→ Immediate 3
+```
+The three Secondary Immediate Arcs must use three distinct root Events.
+
+None of those roots may reuse the Signature Immediate Arc root.
+
+The depth-5 Signature Immediate Arc does not count toward any of the three depth-3 Secondary Immediate Arc requirements.
+
+Each Secondary Immediate Arc must satisfy the same interaction and narrative-quality rules as other Immediate chains: every Immediate must contain a meaningful player decision, uncertainty, discovery, or narrative/tactical change rather than functioning as a simple continue screen.
+
+Branches may terminate earlier when a player choice genuinely ends the scene, but each Secondary Arc must contain at least one complete reachable path attaining depth 3.
+
+The goal is to make substantial multi-scene situations frequent enough to shape ordinary runs while keeping most root Events concise and self-contained.
+
+The first three qualifying Secondary Immediate Arcs establish the minimum batch requirement. Additional depth-3 or deeper Immediate arcs are allowed and encouraged when narratively justified.
+
+### 9.4 Immediate meaning
 
 Immediate means the same continuous scene. Use it for a continuing confrontation, search, revelation, conversation or short sequence without meaningful time passing.
 
-### 9.3 Immediate must remain interactive
+### 9.5 Immediate must remain interactive
 
-An Immediate continuation should continue to present a meaningful decision to the player. Do not build long chains of non-interactive `continue` screens.
+Every Immediate in any mandatory Immediate arc must still contain a meaningful player decision, uncertainty, discovery or tactical/narrative change. Do not satisfy the depth requirement with `continue` screens or cosmetically different non-decisions.
 
-### 9.4 Ellipses
+Branches inside the arcs are encouraged. Different choices may alter later Immediate eligibility, consequences, relationships, Traits or the ending of the scene.
 
-As soon as the fiction contains a meaningful delay — days, months, years, recovery time, waiting, or a consequence resurfacing later — use Scheduled rather than Immediate.
+### 9.6 Slot/time contract
+
+The root Normal/Scheduled Event and its complete Immediate chain consume **one slot total**. Immediate Events do not advance biological time.
+
+Critical retains priority and may interrupt a chain before it resumes.
+
+### 9.7 Ellipses
+
+As soon as the fiction contains a meaningful delay — days, months, years, recovery time, waiting, travel that cannot plausibly belong to the same continuous scene, or a consequence resurfacing later — use Scheduled rather than Immediate.
 
 ## 10. Scheduled consequences
 
-### 10.1 Target frequency
+### 10.1 Root-level target frequency
 
-Approximately **15–25% of root Events** in suitable batches should create a meaningful Scheduled consequence. Long-term causality must be visible in OPFG.
+Approximately **15–25% of root Events** in suitable batches should create a meaningful Scheduled consequence. This percentage concerns roots that initiate future causality; the many descendant chapters of a Lifetime Thread do not count as additional roots.
 
 ### 10.2 Delays
 
-Prefer narratively legible delays: a few months, one or more years, or a meaningful age threshold. Avoid arbitrary delays used only to randomize timing.
+Prefer narratively legible delays: months, years, or meaningful age thresholds. Avoid arbitrary delays used only to randomize timing.
+
+For Lifetime Threads, spacing must feel biographical rather than like a quest log firing every slot. The authored surviving path should normally span **many years**, target roughly **10+ years of possible life**, and include multiple gaps measured in years rather than only adjacent months.
 
 ### 10.3 Context on return
 
@@ -233,6 +328,104 @@ A Scheduled Event may depend strongly on the state that exists when it becomes d
 ### 10.4 Recall the cause
 
 Scheduled consequences should generally make the originating decision recognizable. The player should be able to understand that the later event happened because of something they did earlier.
+
+### 10.5 Mandatory Lifetime Thread per batch
+
+Every standard batch must contain at least **one Lifetime Thread seed root**.
+
+The seed must:
+
+- be `kind: "normal"`;
+- declare `lifetimeThreadSeed: true`;
+- initiate a coherent long-form narrative rather than merely scheduling an unrelated reminder;
+- have at least one reachable authored path containing **10 or more successive Scheduled chapters** after the seed;
+- be recorded explicitly in the batch manifest.
+
+A Lifetime Thread should preferably be anchored by a persistent relationship, recurring person, rival, mentor, family member, organization contact, long-term obligation, mystery or comparable durable narrative subject. When a persistent NPC is used, it counts against the normal persistent-NPC proposal budget.
+
+### 10.6 Vertical scheduling, not ten events queued at once
+
+A Lifetime Thread must be authored **vertically**.
+
+Preferred structure:
+
+```text
+Seed root
+  ↓
+Scheduled 1
+  ↓
+Scheduled 2
+  ↓
+Scheduled 3
+  ↓
+...
+  ↓
+Scheduled 10+
+```
+
+A Scheduled chapter normally schedules the next relevant chapter **only after that chapter is resolved**.
+
+Do **not** have the seed root enqueue ten future Scheduled Events at once. That would flood the scheduler, reduce player agency and make later branches difficult to author.
+
+Branching is valid and encouraged:
+
+```text
+Scheduled 3
+├─ Choice A → Scheduled 4A → ...
+└─ Choice B → Scheduled 4B → ...
+```
+
+The minimum depth requirement means that at least one coherent reachable continuation path contains 10+ Scheduled chapters. It does not require every branch to survive that long.
+
+### 10.7 Agency, death and thread termination
+
+The runtime guarantee concerns **starting** a Lifetime Thread, not forcing it to continue forever.
+
+A thread may end, transform or fork because the player:
+
+- rejects the relationship;
+- betrays or abandons the recurring character;
+- causes or witnesses a death;
+- joins an incompatible organization;
+- moves into a genuinely incompatible state;
+- reaches a narratively final resolution.
+
+Use `hasChosen`, `hasOutcome`, NPC state, Traits, Items, career state, geography, `cancelIf` and fallback before inventing a dedicated Flag.
+
+A recurring NPC must not be magically teleported across the world. Physical reunions must respect geography; letters, rumors, organization channels or other remote consequences may use broader Scheduled reach when narratively justified.
+
+### 10.8 Childhood run guarantee
+
+The complete Childhood corpus must guarantee that every run reaching Active has initiated at least one Lifetime Thread.
+
+Runtime selection contract:
+
+- before `ageMonths = 120`, seeds behave as ordinary Normal Events;
+- at the first Childhood **Normal-selection opportunity** with `ageMonths >= 120`, if History contains no played Event marked `lifetimeThreadSeed: true`, select seed-uniformly among currently eligible Lifetime Thread seeds instead of the ordinary Normal pool;
+- Critical, Immediate and due Scheduled Events keep their existing priority;
+- after one seed has been played, no further special preference exists;
+- if the checkpoint has no eligible seed, the game must not crash, but validation/simulation must surface a narrative-guarantee failure.
+
+At least one broadly eligible Lifetime Thread seed in the assembled Childhood corpus must therefore cover the guarantee checkpoint for every valid Origins profile/location. Contextual seeds are still encouraged in addition to that safety coverage.
+
+No persistent `threadId`, `arcState`, quest state or chapter counter is allowed solely to implement this guarantee. Started-state is reconstructed from History plus Event metadata.
+
+### 10.9 Lifetime Thread quality bar
+
+Ten callbacks are not enough by themselves. A Lifetime Thread must visibly evolve.
+
+Across its surviving path, change several of the following over time:
+
+- relationship;
+- character age/status/responsibility;
+- worldview or knowledge;
+- location or organization context;
+- stakes;
+- player identity/career;
+- recurring character goals;
+- consequences of earlier Choices.
+
+Do not write ten near-identical “the same person visits again” scenes.
 
 ## 11. Locations, tags, and services
 
@@ -368,7 +561,11 @@ A batch is accepted only after:
 
 1. schema/content validation;
 2. reachability/simulation check;
-3. quick human review.
+3. quick human review;
+4. verification that at least one Signature Immediate Arc has a reachable depth-5 path;
+5. verification that at least three Secondary Immediate Arcs use distinct roots, all distinct from the required Signature root, and each has a reachable depth-3 path;
+6. verification that at least one Lifetime Thread has a reachable Scheduled depth of at least 10;
+7. verification that every qualifying Lifetime Thread used to satisfy the batch requirement is vertically scheduled rather than pre-queuing its full future chain.
 
 Compilation alone is not sufficient.
 
@@ -378,13 +575,17 @@ Warnings such as unused Traits/Items do not automatically block a batch. Every *
 
 ### 18.3 Validation cadence
 
-After each batch, run content validation and a small simulation/reachability pass. After a group of batches, run a larger simulation and inspect coverage, dead ends, unreachable Events, overrepresented Events, progression distribution, and warnings.
+After each batch, run content validation and a small simulation/reachability pass. After a group of batches, run a larger simulation and inspect coverage, dead ends, unreachable Events, overrepresented Events, progression distribution, warnings, maximum Immediate-chain depth, Lifetime Thread starts, and runs reaching Active without a Lifetime Thread.
+
+Once the assembled Childhood corpus contains Lifetime Thread seeds, **zero runs reaching Active without a started Lifetime Thread** is the acceptance target.
 
 ### 18.4 Concept deduplication
 
 Before final acceptance, compare the batch against a central index of existing Event concepts. The index should detect duplicated premises, mini-arcs, rewards, Scheduled payoffs, and near-identical contextual reskins.
 
 Parallel GPT conversations must not rely on their own memory for deduplication.
+
+The central concept index must also track accepted Signature Immediate Arcs, Secondary Immediate Arcs and Lifetime Threads at the **root/thread-concept level**. Do not add every Immediate or Scheduled descendant as an independent root concept.
 
 ## 19. Multi-GPT production protocol
 
@@ -401,7 +602,11 @@ Every Event-generation conversation should receive:
 9. explicit allowed Locations/tags/services;
 10. explicit allowed NPCs/Items/Traits/Fruits/Ships/Career concepts;
 11. any required timeline window;
-12. an explicit statement that new persistent definitions must go in `PROPOSED_DEFINITIONS`.
+12. an explicit statement that new persistent definitions must go in `PROPOSED_DEFINITIONS`;
+13. the mandatory minimum of at least one Signature Immediate Arc (reachable depth 5);
+14. the mandatory minimum of at least three Secondary Immediate Arcs (three additional distinct roots, each reachable depth 3);
+15. the mandatory minimum of at least one Lifetime Thread, including `lifetimeThreadSeed: true`, 10+ Scheduled depth, vertical scheduling and intended multi-year span;
+16. the current accepted Lifetime Thread / Immediate Arc concept index so parallel batches do not create near-identical long-form stories.
 
 A batch prompt must define scope narrowly enough that another GPT conversation can work on a different batch without collision.
 
@@ -430,6 +635,8 @@ Event
 The goal is not to create a large deck of disconnected random cards.
 
 The goal is to create a coherent, replayable life history where origin, personality, geography, career, relationships, powers, and prior decisions meaningfully alter what happens later.
+
+For V1 production, this principle is measurable: every standard batch contributes **at least one depth-5 Signature Immediate Arc, at least three distinct depth-3 Secondary Immediate Arcs, and at least one multi-year Lifetime Thread**, while every completed Childhood run is guaranteed to have initiated at least one Lifetime Thread.
 
 # 22. World travel authoring contract
 

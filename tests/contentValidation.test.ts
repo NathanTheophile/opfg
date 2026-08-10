@@ -46,6 +46,20 @@ describe('validateContent', () => {
     });
   });
 
+  it('accepts lifetimeThreadSeed only as true on Normal Events', () => {
+    const valid = cloneCatalog();
+    eventById(valid, 'departure').lifetimeThreadSeed = true;
+    expect(validateContent(valid)).toEqual([]);
+
+    const invalidValue = cloneCatalog();
+    eventById(invalidValue, 'departure').lifetimeThreadSeed = false;
+    expect(messages(invalidValue)).toContainEqual(expect.stringContaining('lifetimeThreadSeed must be true'));
+
+    const invalidKind = cloneCatalog();
+    invalidKind.events.find((event: Record<string, any>) => event.kind !== 'normal').lifetimeThreadSeed = true;
+    expect(messages(invalidKind)).toContainEqual(expect.stringContaining('Invalid Event kind field combination'));
+  });
+
   it('validates ShipDefinition references, Location market capability, and stack quantities', () => {
     const catalog = cloneCatalog();
     catalog.locations[0].shipMarket = 'yes';

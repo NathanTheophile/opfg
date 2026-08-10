@@ -278,7 +278,9 @@ function validateEvent(
   if (!['normal', 'immediate', 'scheduled', 'critical'].includes(String(event.kind))) errors.push({ path, message: `Invalid Event kind "${String(event.kind)}".` });
   if (event.scheduledOnly !== undefined
     || (event.kind !== 'scheduled' && [event.priority, event.scheduledReach, event.cancelIf, event.fallbackEventId].some((value) => value !== undefined))
-    || (event.kind !== 'critical' && event.trigger !== undefined)) errors.push({ path, message: 'Invalid Event kind field combination.' });
+    || (event.kind !== 'critical' && event.trigger !== undefined)
+    || (event.kind !== 'normal' && event.lifetimeThreadSeed !== undefined)) errors.push({ path, message: 'Invalid Event kind field combination.' });
+  if (event.kind === 'normal' && event.lifetimeThreadSeed !== undefined && event.lifetimeThreadSeed !== true) errors.push({ path: `${path}.lifetimeThreadSeed`, message: 'lifetimeThreadSeed must be true when present.' });
   if (event.kind === 'scheduled') {
     if (![50, 100, 200, 300].includes(Number(event.priority))) errors.push({ path, message: 'Scheduled priority must be 50, 100, 200, or 300.' });
     if (event.scheduledReach !== undefined && !['normal', 'unrestricted'].includes(String(event.scheduledReach))) errors.push({ path, message: 'Invalid scheduledReach.' });

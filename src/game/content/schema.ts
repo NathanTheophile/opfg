@@ -31,7 +31,7 @@ import type {
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 5;
+export const CONTENT_SCHEMA_VERSION = 6;
 
 export const DEVIL_FRUIT_TYPES = ['paramecia', 'zoan', 'logia'] as const;
 export type DevilFruitType = typeof DEVIL_FRUIT_TYPES[number];
@@ -231,7 +231,7 @@ export type CriticalTrigger =
   | { type: 'shipMissingAtSea' }
   | { type: 'shipReplacementPending' };
 export type EventDefinition =
-  | (EventBase & { kind: 'normal' })
+  | (EventBase & { kind: 'normal'; lifetimeThreadSeed?: true })
   | (EventBase & { kind: 'immediate' })
   | (EventBase & { kind: 'scheduled'; priority: ScheduledPriority; scheduledReach?: ScheduledReach; cancelIf?: Condition; fallbackEventId?: EventId })
   | (EventBase & { kind: 'critical'; trigger: CriticalTrigger });

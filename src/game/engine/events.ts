@@ -42,11 +42,29 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     const accessible = state.travelState === 'at_sea' || findDockableAccess(catalog, state.locationId) !== undefined;
     return { ...state, scheduledEvents: scheduled.entries, currentEventId: fallback && accessible ? fallback.id : null };
   }
-  if (candidates.length === 1) return { ...state, scheduledEvents: scheduled.entries, currentEventId: candidates[0].id };
+  const normalPool = shouldGuaranteeLifetimeThread(state, catalog)
+    ? candidates.filter((event) => event.kind === 'normal' && event.lifetimeThreadSeed === true)
+    : candidates;
+  return selectUniformNormal(state, scheduled.entries, normalPool.length > 0 ? normalPool : candidates);
+}
+
+export function hasStartedLifetimeThread(state: GameState, catalog: ContentCatalog): boolean {
+  const lifetimeSeedIds = new Set(catalog.events
+    .filter((event) => event.kind === 'normal' && event.lifetimeThreadSeed === true)
+    .map(({ id }) => id));
+  return state.history.some(({ eventId }) => lifetimeSeedIds.has(eventId));
+}
+
+function shouldGuaranteeLifetimeThread(state: GameState, catalog: ContentCatalog): boolean {
+  return state.careerPhase === 'childhood' && state.ageMonths >= 120 && !hasStartedLifetimeThread(state, catalog);
+}
+
+function selectUniformNormal(state: GameState, scheduledEvents: ScheduledEvent[], candidates: EventDefinition[]): GameState {
+  if (candidates.length === 1) return { ...state, scheduledEvents, currentEventId: candidates[0].id };
   const random = nextRandom(state.rngState);
   return {
     ...state,
-    scheduledEvents: scheduled.entries,
+    scheduledEvents,
     rngState: random.nextState,
     currentEventId: candidates[Math.floor(random.value * candidates.length)].id,
   };

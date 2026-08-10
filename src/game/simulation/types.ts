@@ -51,6 +51,7 @@ export interface SimulationRunResult {
   maxAgeMonths: number;
   childhoodReached: boolean;
   activeReached: boolean;
+  lifetimeThreadStarted: boolean;
   pendingScheduled: { due: ScheduledEvent[]; notDue: ScheduledEvent[] };
   possibleCriticalLoop: boolean;
   deadEnd?: DeadEndSnapshot;

@@ -7,7 +7,7 @@ import { simulateRun } from '../src/game/simulation/simulateRun';
 import { createInitialGameState } from '../src/game/model/initialState';
 
 const baseCatalog = (events: EventDefinition[], extra: Partial<ContentCatalog> = {}): ContentCatalog => ({
-  schemaVersion: 5,
+  schemaVersion: 6,
   races: [], seas: [], affiliations: [], careerAffiliations: [], careerRanks: [], careerTitles: [], endings: [], familyStructures: [], socialClasses: [], traits: [], items: [], devilFruits: [], crewRoles: [], npcs: [],
   ships: [{ id: 'sloop', nameKey: 'x', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 }],
   locations: [{ id: 'foosha_village', nameKey: 'x', seaId: 'east_blue', type: 'village', parentLocationId: null, canBeBirthLocation: true, blocksScheduledEvents: false, allowsDocking: true, shipMarket: 'small_craft', services: [], tags: [] }],
@@ -60,6 +60,16 @@ describe('simulation', () => {
     expect(first.summary.reachedActive).toBe(10);
     expect(first.summary.scheduledResolved).toBeGreaterThan(0);
     expect(first.events).toHaveLength(contentCatalog.events.length);
+  });
+
+  it('counts runs reaching Active with and without a Lifetime Thread', () => {
+    const withoutSeeds = simulateBatch({ runs: 3, baseSeed: 10, catalog: contentCatalog, maxResolvedEvents: 200 });
+    expect(withoutSeeds.summary).toMatchObject({ lifetimeThreadStarted: 0, reachedActiveWithoutLifetimeThread: 3 });
+    const events = contentCatalog.events.map((event): EventDefinition => event.kind === 'normal' && event.id.startsWith('childhood_')
+      ? { ...event, lifetimeThreadSeed: true }
+      : event);
+    const withSeeds = simulateBatch({ runs: 3, baseSeed: 10, catalog: { ...contentCatalog, events }, maxResolvedEvents: 200 });
+    expect(withSeeds.summary).toMatchObject({ lifetimeThreadStarted: 3, reachedActiveWithoutLifetimeThread: 0 });
   });
 
   it('drives monthly navigation and counts a complete Immediate chain as one slot', () => {

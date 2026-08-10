@@ -25,6 +25,8 @@ export interface SimulationBatchResult {
     terminations: Record<SimulationTerminationReason, number>;
     reachedChildhood: number;
     reachedActive: number;
+    lifetimeThreadStarted: number;
+    reachedActiveWithoutLifetimeThread: number;
     averageFinalAgeMonths: number;
     minFinalAgeMonths: number;
     maxFinalAgeMonths: number;
@@ -101,6 +103,8 @@ export function simulateBatch(options: SimulateBatchOptions): SimulationBatchRes
       terminations,
       reachedChildhood: runResults.filter(({ childhoodReached }) => childhoodReached).length,
       reachedActive: runResults.filter(({ activeReached }) => activeReached).length,
+      lifetimeThreadStarted: runResults.filter(({ lifetimeThreadStarted }) => lifetimeThreadStarted).length,
+      reachedActiveWithoutLifetimeThread: runResults.filter(({ activeReached, lifetimeThreadStarted }) => activeReached && !lifetimeThreadStarted).length,
       averageFinalAgeMonths: average(finalAges),
       minFinalAgeMonths: Math.min(...finalAges),
       maxFinalAgeMonths: Math.max(...finalAges),

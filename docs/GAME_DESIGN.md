@@ -159,6 +159,24 @@ Tous les Events n’accordent pas nécessairement une récompense numérique. Po
 
 Cette répartition guide la production de contenu ; ce n’est pas un quota construit par le runtime. Une enfance complète doit permettre l’acquisition d’au moins **2 Traits**.
 
+### Lifetime Threads — garantie narrative de run
+
+Une **Lifetime Thread** est une ligne narrative longue initiée par un root Event Childhood `normal` explicitement marqué `lifetimeThreadSeed: true`. Elle est conçue pour revenir à travers une chaîne verticale de Scheduled Events espacés dans le temps, potentiellement de Childhood jusqu’à Active et aux années suivantes.
+
+Chaque run qui atteint Active doit avoir **initié au moins une Lifetime Thread** pendant Childhood.
+
+La garantie de sélection fonctionne ainsi :
+
+- avant `ageMonths = 120`, les Lifetime Thread seeds restent des Normal Events ordinaires et peuvent être tirés naturellement ;
+- à la première opportunité de sélection d’un **Normal Event Childhood** avec `ageMonths >= 120`, si aucun Event `lifetimeThreadSeed` n’existe encore dans History, le moteur tire de manière seedée et uniforme parmi les Lifetime Thread seeds actuellement éligibles ;
+- Critical, Immediate et Scheduled conservent toujours leur priorité existante ; la garantie n’intervient qu’au moment où le moteur allait sélectionner un Normal Event ;
+- si aucun Lifetime Thread seed n’est éligible au checkpoint, le runtime ne doit pas crasher ni bloquer la run : il poursuit le pool Normal, mais cette situation constitue une **erreur de couverture narrative** que validation/simulation doivent rendre visible ;
+- une fois une Lifetime Thread initiée, les autres seeds ne reçoivent plus aucune priorité spéciale et redeviennent des Normal Events ordinaires.
+
+La garantie porte sur **l’initiation** d’une trame, pas sur sa survie jusqu’à son dernier chapitre. Les choix du joueur, la mort, les relations, la géographie, un `cancelIf`, un fallback ou une rupture narrative peuvent écourter ou transformer la ligne.
+
+Aucun `ArcState`, `questState`, compteur de chapitre ou identifiant de thread n’est ajouté au GameState. Le fait qu’une Lifetime Thread ait commencé se reconstruit depuis History et le metadata des EventDefinitions.
+
 ## 5. Active
 
 Active commence toujours à **15 ans** et utilise **2 slots d’Event par mois**, soit au maximum 24 Events consommant un slot par année complète, hors Critical Events.
@@ -189,7 +207,10 @@ Un Immediate se distingue d’un Scheduled : l’Immediate continue la scène ac
 
 1. déterminer tous les Events normaux éligibles ;
 2. exclure ceux déjà joués ;
-3. tirer uniformément parmi les Events restants.
+3. appliquer, uniquement en Childhood, la garantie Lifetime Thread décrite ci-dessus si son checkpoint est atteint et qu’aucune Lifetime Thread n’a encore commencé ;
+4. sinon tirer uniformément parmi les Events restants.
+
+Hors cette exception de garantie narrative, tous les Normal Events éligibles conservent exactement la même probabilité : aucun poids de rareté n’est introduit.
 
 Tous les Events normaux authorés sont **one-shot en V1**. Il n’existe ni `repeatable`, ni cooldown, ni compteur de répétition. Deux situations proches nécessitent deux Events distincts. Les deux Events système Active `dead_end_on_land` et `dead_end_at_sea` sont les seules exceptions répétables : ils rétablissent un contexte navigable quand le contenu normal est épuisé et restent un signal diagnostique de contenu manquant.
 

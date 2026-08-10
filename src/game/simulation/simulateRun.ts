@@ -1,6 +1,6 @@
 import type { ContentCatalog } from '../content/schema';
 import { getChoiceState } from '../engine/conditions';
-import { findCurrentEvent, selectNextEvent } from '../engine/events';
+import { findCurrentEvent, hasStartedLifetimeThread, selectNextEvent } from '../engine/events';
 import { resolveChoice } from '../engine/resolution';
 import { createInitialGameState } from '../model/initialState';
 import type { GameState } from '../model/schema';
@@ -126,6 +126,7 @@ export function simulateRun(options: SimulateRunOptions): SimulationRunResult {
   }
   const due = state.scheduledEvents.filter(({ dueAgeMonths }) => dueAgeMonths <= state.ageMonths);
   const notDue = state.scheduledEvents.filter(({ dueAgeMonths }) => dueAgeMonths > state.ageMonths);
+  const lifetimeThreadStarted = hasStartedLifetimeThread(state, options.catalog);
 
   return {
     seed,
@@ -152,6 +153,7 @@ export function simulateRun(options: SimulateRunOptions): SimulationRunResult {
     maxAgeMonths,
     childhoodReached,
     activeReached,
+    lifetimeThreadStarted,
     pendingScheduled: { due, notDue },
     possibleCriticalLoop,
     ...(terminationReason === 'deadEnd' ? { deadEnd: createDeadEndSnapshot(seed, state) } : {}),

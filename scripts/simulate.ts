@@ -29,6 +29,8 @@ row('Elapsed', `${elapsedMs.toFixed(1)} ms`);
 console.log('');
 row('Reached Childhood', countRate(batch.summary.reachedChildhood, args.runs));
 row('Reached Active', countRate(batch.summary.reachedActive, args.runs));
+row('Lifetime Thread started', countRate(batch.summary.lifetimeThreadStarted, args.runs));
+row('Active without Lifetime Thread', countRate(batch.summary.reachedActiveWithoutLifetimeThread, args.runs));
 row('Career ended', batch.summary.terminations.careerEnded);
 row('Dead ends', batch.summary.terminations.deadEnd);
 row('Safety limits', batch.summary.terminations.safetyLimit);
@@ -122,7 +124,7 @@ function requiredValue(value: string | undefined, label: string): string {
   return value;
 }
 
-function row(label: string, value: string | number): void { console.log(`${label.padEnd(27)}${value}`); }
+function row(label: string, value: string | number): void { console.log(`${label.padEnd(35)}${value}`); }
 function percentage(value: number, total: number): string { return total === 0 ? '0.0%' : `${(value / total * 100).toFixed(1)}%`; }
 function countRate(value: number, total: number): string { return `${value} (${percentage(value, total)})`; }
 function formatAge(months: number): string { return `${Math.floor(months / 12)}y ${Math.round(months % 12)}m`; }
