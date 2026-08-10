@@ -5,7 +5,7 @@ const DEFAULT_SEED = 0x1a2b3c4d;
 
 export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
   return {
-    version: 15,
+    version: 16,
     rngState: seed >>> 0,
     careerPhase: 'origins',
     ageMonths: 0,
@@ -31,13 +31,9 @@ export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
       inventory: { capacity: 2, stacks: [] },
       powers: { devilFruitId: null, devilFruitAwakening: 0, haki: { observation: 0, armament: 0, conqueror: 0 } },
     },
-    ship: {
-      shipId: 'sloop',
-      name: 'Wind Finch',
-      health: 30,
-      cargo: [],
-    },
+    ship: null,
     pendingShip: null,
+    maritimeEmergency: null,
     isLeader: true,
     passengerNpcIds: [],
     berries: 0,

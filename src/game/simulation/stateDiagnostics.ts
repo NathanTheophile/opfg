@@ -15,7 +15,7 @@ export function assertValidSimulationState(state: GameState, catalog: ContentCat
     const npc = state.npcs[npcId];
     if (!npc || npc.status === 'crew' || npc.status === 'dead') throw new Error(`Invalid passenger NPC "${npcId}".`);
   }
-  if (state.careerStatus === 'active' && state.currentEventId === null && (state.pendingShip !== null || (state.ship === null && state.travelState === 'at_sea') || (state.ship?.health ?? 1) <= 0)) {
+  if (state.careerStatus === 'active' && state.currentEventId === null && (state.pendingShip !== null || (state.ship === null && state.travelState === 'at_sea' && state.maritimeEmergency === null) || (state.ship?.health ?? 1) <= 0)) {
     throw new Error('Critical ship state was left unresolved by the content pipeline.');
   }
 }

@@ -28,6 +28,8 @@ describe('Powers V1', () => {
     expect(consumed.player.powers.devilFruitAwakening).toBe(0);
     expect(() => apply(consumed, [{ type: 'consumeDevilFruit', fruitId: 'tori_tori_falcon' }])).toThrow('cannot be consumed');
     expect(evaluateCondition({ type: 'devilFruitTypeIs', fruitType: 'logia' }, consumed, catalog)).toBe(true);
+    expect(evaluateCondition({ type: 'hasDevilFruit' }, consumed, catalog)).toBe(true);
+    expect(evaluateCondition({ type: 'devilFruitIs', fruitId: 'yuki_yuki' }, consumed, catalog)).toBe(true);
     expect(evaluateCondition({ type: 'devilFruitHasTag', tagId: 'cold' }, consumed, catalog)).toBe(true);
   });
 
@@ -54,6 +56,16 @@ describe('Powers V1', () => {
     expect(state.player.powers.haki[hakiType]).toBe(5);
     state = apply(state, [{ type: 'modifyStat', statId: second, amount: -20 }]);
     expect(state.player.powers.haki[hakiType]).toBe(5);
+  });
+
+  it.each([80, 85, 90, 95])('maps Haki source total %i to the existing progression contract', (total) => {
+    let state = createInitialGameState();
+    state.player.stats.observation = 50;
+    state.player.stats.intelligence = 25;
+    state = apply(state, [{ type: 'awakenHaki', hakiType: 'observation' }]);
+    state.player.stats.intelligence = total - 50;
+    state = apply(state, []);
+    expect(state.player.powers.haki.observation).toBe(1 + (total - 75) / 5);
   });
 
   it('never awakens from stats alone and keeps Conqueror progression event-driven', () => {
@@ -85,6 +97,7 @@ describe('Powers V1', () => {
   it('keeps NPC Fruit assignment monotone and rejects replacing a different Fruit', () => {
     let state = createInitialGameState();
     state = apply(state, [{ type: 'setNpcDevilFruit', npcId: 'mira', fruitId: 'yuki_yuki' }]);
+    expect(evaluateCondition({ type: 'npcHasDevilFruit', npcId: 'mira' }, state, catalog)).toBe(true);
     state = apply(state, [{ type: 'increaseNpcDevilFruitAwakening', npcId: 'mira', amount: 7 }]);
     const repeated = apply(state, [{ type: 'setNpcDevilFruit', npcId: 'mira', fruitId: 'yuki_yuki' }]);
     expect(repeated.npcs.mira.powers).toMatchObject({ devilFruitId: 'yuki_yuki', devilFruitAwakening: 7 });

@@ -2,6 +2,7 @@ export type EventId = string;
 export type ChoiceId = string;
 export type OutcomeId = string;
 export type LocationId = string;
+export type IslandId = string;
 export type TraitId = string;
 export type FlagId = string;
 export type ItemId = string;
@@ -127,6 +128,12 @@ export type CareerStatus = 'active' | 'ended';
 export type CareerEndReason = 'death' | 'legacy';
 export type CareerPhase = 'origins' | 'childhood' | 'active';
 export type TravelState = 'at_sea' | 'on_land';
+export type ShipDamageCause = 'enemy' | 'accident';
+export interface MaritimeEmergencyState {
+  kind: 'shipwreck';
+  seaId: SeaId;
+  cause: ShipDamageCause | 'ship_missing' | 'sea_monster';
+}
 
 export interface GameState {
   version: number;
@@ -139,6 +146,7 @@ export interface GameState {
   player: PlayerState;
   ship: ShipState | null;
   pendingShip: ShipState | null;
+  maritimeEmergency: MaritimeEmergencyState | null;
   isLeader: boolean;
   passengerNpcIds: NpcId[];
   berries: number;

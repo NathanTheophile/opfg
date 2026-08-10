@@ -65,10 +65,10 @@ describe('Content Authoring Readiness V1', () => {
     const legacy = structuredClone(createInitialGameState()) as unknown as Record<string, any>;
     legacy.version = 14;
     legacy.player.career = { affiliationId: 'marine', reputation: 140, bounty: 0, marineRankId: 'captain', titleId: null };
-    legacy.ship.shipId = 'starter_sloop';
+    legacy.ship = { shipId: 'starter_sloop', name: 'Legacy Sloop', health: 30, cargo: [] };
     for (const npc of Object.values(legacy.npcs) as Record<string, any>[]) delete npc.raceId;
     expect(deserializeGameState(JSON.stringify(legacy))).toMatchObject({
-      version: 15,
+      version: 16,
       ship: { shipId: 'sloop' },
       player: { career: { affiliationId: 'marine', reputation: 100, rankId: 'marine_commodore' } },
       npcs: { mira: { raceId: null } },

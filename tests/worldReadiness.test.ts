@@ -14,6 +14,7 @@ const blues = ['east_blue', 'west_blue', 'north_blue', 'south_blue'];
 
 function activeState(locationId = 'foosha_village', travelState: 'on_land' | 'at_sea' = 'on_land') {
   const state = createInitialGameState(1);
+  state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
   state.careerPhase = 'active'; state.ageMonths = 180; state.locationId = locationId; state.travelState = travelState;
   state.navigationDecisionAgeMonths = state.ageMonths;
   return state;

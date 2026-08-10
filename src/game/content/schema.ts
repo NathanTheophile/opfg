@@ -28,6 +28,8 @@ import type {
   CareerRankId,
   CareerTitleId,
   EndingId,
+  IslandId,
+  ShipDamageCause,
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
@@ -64,6 +66,13 @@ export type Condition =
   | { type: 'locationHasService'; serviceId: LocationServiceId }
   | { type: 'locationWithin'; locationId: LocationId }
   | { type: 'currentSeaIs'; seaId: SeaId }
+  | { type: 'sameIslandPortExists' }
+  | { type: 'currentSeaHasPort' }
+  | { type: 'fallbackStreakAtLeast'; value: number }
+  | { type: 'shipDestructionCauseIs'; cause: ShipDamageCause }
+  | { type: 'maritimeEmergencyActive' }
+  | { type: 'hasEligibleSwimmingRescuer' }
+  | { type: 'hasCrewMemberWithDevilFruit' }
   | { type: 'isAtSea' }
   | { type: 'isOnLand' }
   | { type: 'careerPhaseIs'; phase: CareerPhase }
@@ -132,11 +141,16 @@ export type Effect =
   | { type: 'moveToLocation'; locationId: LocationId; travelState: TravelState }
   | { type: 'setBirthLocation'; locationId: LocationId }
   | { type: 'recoverTravel'; mode: 'land' | 'sea' }
-  | { type: 'setNpcStatus'; npcId: NpcId; status: NpcStatus; allowWithoutLeadership?: boolean }
+  | { type: 'moveToSameIslandPort' }
+  | { type: 'recoverToLandInCurrentSea' }
+  | { type: 'recoverToOtherRegion' }
+  | { type: 'beginMaritimeEmergency'; cause: ShipDamageCause | 'ship_missing' | 'sea_monster' }
+  | { type: 'resolveMaritimeEmergencyLandfall' }
+  | ({ type: 'setNpcStatus'; status: NpcStatus; allowWithoutLeadership?: boolean } & NpcTarget)
   | { type: 'setNpcPassenger'; npcId: NpcId; passenger: boolean; allowWithoutLeadership?: boolean }
   | { type: 'setLeadership'; isLeader: boolean }
   | { type: 'modifyNpcRelationship'; npcId: NpcId; amount: number }
-  | { type: 'modifyNpcStat'; npcId: NpcId; statId: NpcStatId; amount: number }
+  | ({ type: 'modifyNpcStat'; statId: NpcStatId; amount: number } & NpcTarget)
   | { type: 'scheduleEvent'; eventId: EventId; delayMonths: number }
   | { type: 'queueImmediateEvent'; eventId: EventId }
   | { type: 'setCareerPhase'; phase: CareerPhase }
@@ -160,12 +174,16 @@ export type Effect =
   | { type: 'setCareerRank'; rankId: CareerRankId | null }
   | { type: 'setCareerTitle'; titleId: CareerTitleId }
   | { type: 'clearCareerTitle' }
-  | { type: 'endCareerWithEnding'; endingId: EndingId };
+  | { type: 'endCareerWithEnding'; endingId: EndingId; reason?: CareerEndReason };
+
+export type NpcSelector = 'diceActor' | 'highestRelationshipCrewWithDevilFruit';
+export type NpcTarget = { npcId: NpcId; npcSelector?: never } | { npcId?: never; npcSelector: NpcSelector };
 
 export interface Outcome {
   id: OutcomeId;
   textKey: LocalizationKey;
   effects: Effect[];
+  shipDamageCause?: ShipDamageCause;
 }
 
 export type DiceResult = 'criticalFailure' | 'failure' | 'success' | 'criticalSuccess';
@@ -193,6 +211,7 @@ export interface DiceResolution {
   modifiers?: ConditionalDiceModifier[];
   traitOverrides?: TraitResultOverride[];
   outcomes: Record<DiceResult, Outcome>;
+  actor?: { type: 'player' } | { type: 'bestCrew'; statId: NpcStatId; requireNoDevilFruit?: boolean };
 }
 
 export type Resolution = DeterministicResolution | DiceResolution;
@@ -229,7 +248,8 @@ export type CriticalTrigger =
   | { type: 'npcHealthDepleted'; npcId: NpcId }
   | { type: 'shipDestroyed' }
   | { type: 'shipMissingAtSea' }
-  | { type: 'shipReplacementPending' };
+  | { type: 'shipReplacementPending' }
+  | { type: 'fallbackStreakAtLeast'; value: number };
 export type EventDefinition =
   | (EventBase & { kind: 'normal'; lifetimeThreadSeed?: true })
   | (EventBase & { kind: 'immediate' })
@@ -282,7 +302,7 @@ export interface SeaDefinition { id: SeaId; nameKey: LocalizationKey }
 export interface AffiliationDefinition { id: AffiliationId; nameKey: LocalizationKey }
 export interface FamilyStructureDefinition { id: FamilyStructureId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
 export interface SocialClassDefinition { id: SocialClassId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
-export interface LocationDefinition { id: LocationId; nameKey: LocalizationKey; seaId: SeaId; type: LocationType; parentLocationId: LocationId | null; canBeBirthLocation: boolean; blocksScheduledEvents: boolean; allowsDocking: boolean; shipMarket: ShipMarket; services: LocationServiceId[]; tags: LocationTagId[] }
+export interface LocationDefinition { id: LocationId; nameKey: LocalizationKey; seaId: SeaId; islandId: IslandId; type: LocationType; parentLocationId: LocationId | null; canBeBirthLocation: boolean; blocksScheduledEvents: boolean; allowsDocking: boolean; shipMarket: ShipMarket; services: LocationServiceId[]; tags: LocationTagId[] }
 export interface CareerAffiliationDefinition { id: CareerAffiliationId; nameKey: LocalizationKey }
 export interface CareerRankDefinition { id: CareerRankId; nameKey: LocalizationKey; affiliationId: Extract<CareerAffiliationId, 'marine' | 'revolutionary' | 'bounty_hunter'>; sortOrder: number }
 export interface CareerTitleDefinition { id: CareerTitleId; nameKey: LocalizationKey; descriptionKey: LocalizationKey }

@@ -7,10 +7,15 @@ import { createDefaultNpcState } from '../src/game/model/npcState';
 
 const context = { sourceEventId: 'crew_fixture', sourceChoiceId: 'choice' };
 const npc = (status: 'known' | 'crew' | 'unavailable' = 'known') => ({ ...createDefaultNpcState(), status });
+const withShip = () => {
+  const state = createInitialGameState();
+  state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
+  return state;
+};
 
 describe('Crew System V1', () => {
   it('recruits with room, excludes the player from capacity, greys a full Choice, and rejects overflow at runtime', () => {
-    const state = createInitialGameState();
+    const state = withShip();
     state.npcs.a = npc('crew'); state.npcs.b = npc('crew');
     const recruited = applyEffects(state, contentCatalog, [{ type: 'setNpcStatus', npcId: 'mira', status: 'crew' }], context);
     expect(evaluateCondition({ type: 'crewSizeAtLeast', value: 3 }, recruited, contentCatalog)).toBe(true);
@@ -21,7 +26,7 @@ describe('Crew System V1', () => {
   });
 
   it('keeps crew after ship loss and refuses a ship too small for the current NPC crew', () => {
-    const state = createInitialGameState();
+    const state = withShip();
     state.npcs.mira.status = 'crew';
     const lost = applyEffects(state, contentCatalog, [{ type: 'loseShip', locationId: 'shipwreck_shore', travelState: 'on_land', allowWithoutLeadership: true }], context);
     expect(lost.npcs.mira.status).toBe('crew');
@@ -30,7 +35,7 @@ describe('Crew System V1', () => {
   });
 
   it('uses one cargo slot per passenger without consuming crew capacity', () => {
-    const state = createInitialGameState();
+    const state = withShip();
     state.npcs.guest = npc();
     const withPassenger = applyEffects(state, contentCatalog, [{ type: 'setNpcPassenger', npcId: 'guest', passenger: true }], context);
     expect(withPassenger.passengerNpcIds).toEqual(['guest']);
@@ -43,7 +48,7 @@ describe('Crew System V1', () => {
   });
 
   it('keeps relationship and loyalty independent', () => {
-    const state = createInitialGameState();
+    const state = withShip();
     const related = applyEffects(state, contentCatalog, [{ type: 'modifyNpcRelationship', npcId: 'mira', amount: 20 }], context);
     expect(related.npcs.mira.relationship).toBe(20);
     expect(related.npcs.mira.stats.loyalty).toBe(25);
@@ -73,7 +78,7 @@ describe('Crew System V1', () => {
   });
 
   it('blocks non-Leader management while allowing narrative overrides and travel', () => {
-    const state = createInitialGameState();
+    const state = withShip();
     state.isLeader = false;
     expect(evaluateCondition({ type: 'isLeader' }, state, contentCatalog)).toBe(false);
     expect(() => applyEffects(state, contentCatalog, [{ type: 'setNpcStatus', npcId: 'mira', status: 'crew' }], context)).toThrow(/leadership/);

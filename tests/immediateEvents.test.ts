@@ -12,6 +12,7 @@ const scheduled: EventDefinition = { id: 'later', kind: 'scheduled', priority: 1
 const catalog = (events: EventDefinition[]): ContentCatalog => ({ schemaVersion: 5, races: [], seas: [], affiliations: [], careerAffiliations: [], careerRanks: [], careerTitles: [], endings: [], familyStructures: [], socialClasses: [], traits: [], items: [], devilFruits: [], ships: [{ id: 'sloop', nameKey: 'x', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 }], crewRoles: [], npcs: [], locations: [{ id: 'foosha_village', nameKey: 'x', seaId: 'east_blue', type: 'village', parentLocationId: null, canBeBirthLocation: true, blocksScheduledEvents: false, allowsDocking: true, shipMarket: 'small_craft', services: [], tags: [] }], events });
 const activeState = (slotInMonth: 0 | 1 = 0) => {
   const state = createInitialGameState(1);
+  state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
   state.careerPhase = 'active'; state.ageMonths = 180; state.slotInMonth = slotInMonth; state.navigationDecisionAgeMonths = 180;
   return state;
 };

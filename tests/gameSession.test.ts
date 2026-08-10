@@ -65,6 +65,7 @@ describe('GameSession', () => {
 
   it('exposes monthly navigation as session state without creating history', () => {
     const state = createInitialGameState(5);
+    state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
     state.careerPhase = 'active'; state.ageMonths = 180; state.locationId = 'foosha_village'; state.travelState = 'on_land';
     const session = createSessionState(state);
     expect(getSessionNavigationOptions(session, contentCatalog).map(({ id }) => id)).toEqual(['stay', 'goToSea']);

@@ -52,6 +52,7 @@ const CONDITION_TYPES = new Set([
   'locationHasService',
   'locationWithin',
   'currentSeaIs',
+  'sameIslandPortExists','currentSeaHasPort','fallbackStreakAtLeast','shipDestructionCauseIs','maritimeEmergencyActive','hasEligibleSwimmingRescuer','hasCrewMemberWithDevilFruit',
   'isAtSea',
   'isOnLand',
   'careerPhaseIs',
@@ -111,6 +112,7 @@ const EFFECT_TYPES = new Set([
   'setFamilyStructure',
   'setSocialClass',
   'recoverTravel',
+  'moveToSameIslandPort','recoverToLandInCurrentSea','recoverToOtherRegion','beginMaritimeEmergency','resolveMaritimeEmergencyLandfall',
   'endCareer',
   'consumeDevilFruit','increaseDevilFruitAwakening','awakenHaki','raiseConquerorHakiTo','setNpcDevilFruit','increaseNpcDevilFruitAwakening','raiseNpcHakiTo',
   'setCareerAffiliation','modifyReputation','setBounty','modifyBounty','setCareerRank','setCareerTitle','clearCareerTitle','endCareerWithEnding',
@@ -206,6 +208,7 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
     const path = `locations[${index}]`;
     validateReference(location.seaId, seaIds, 'SeaId', `${path}.seaId`, errors);
     if (!stringValue(location.nameKey)) errors.push({ path: `${path}.nameKey`, message: 'Location requires nameKey.' });
+    if (!stringValue(location.islandId)) errors.push({ path: `${path}.islandId`, message: 'Location requires islandId.' });
     if (location.parentLocationId !== null) {
       validateReference(location.parentLocationId, locationIds, 'LocationId', `${path}.parentLocationId`, errors);
       if (location.parentLocationId === location.id) errors.push({ path: `${path}.parentLocationId`, message: 'Location cannot be its own parent.' });
@@ -291,8 +294,9 @@ function validateEvent(
     }
   }
   if (event.kind === 'critical') {
-    if (!isRecord(event.trigger) || !['playerHealthDepleted', 'npcHealthDepleted', 'shipDestroyed', 'shipMissingAtSea', 'shipReplacementPending'].includes(String(event.trigger.type))) errors.push({ path: `${path}.trigger`, message: 'Invalid Critical trigger.' });
+    if (!isRecord(event.trigger) || !['playerHealthDepleted', 'npcHealthDepleted', 'shipDestroyed', 'shipMissingAtSea', 'shipReplacementPending', 'fallbackStreakAtLeast'].includes(String(event.trigger.type))) errors.push({ path: `${path}.trigger`, message: 'Invalid Critical trigger.' });
     else if (event.trigger.type === 'npcHealthDepleted') validateReference(event.trigger.npcId, references.npcIds, 'NpcId', `${path}.trigger`, errors);
+    else if (event.trigger.type === 'fallbackStreakAtLeast' && (!Number.isInteger(event.trigger.value) || (event.trigger.value as number) < 1)) errors.push({ path: `${path}.trigger`, message: 'fallbackStreakAtLeast trigger requires a positive integer.' });
   }
   if (event.eligibility !== undefined) {
     validateCondition(event.eligibility, `${path}.eligibility`, references, errors);
@@ -310,6 +314,9 @@ function validateEvent(
     }
     if (choice.input !== undefined) validateChoiceInput(choice.input, `${choicePath}.input`, errors);
     validateResolution(choice.resolution, `${choicePath}.resolution`, references, errors);
+    if (containsEffectType(choice.resolution, 'modifyShipHealth') && !conditionGuaranteesHasShip(event.eligibility) && !conditionGuaranteesHasShip(choice.availableIf)) {
+      errors.push({ path: choicePath, message: `Event "${event.id}" modifyShipHealth requires an explicit hasShip guard on Event eligibility or Choice availability.` });
+    }
     if (isRecord(choice.resolution) && choice.resolution.type === 'dice') {
       const statId = stringValue(choice.resolution.statId);
       if (statId && diceStatIds.has(statId)) {
@@ -317,6 +324,17 @@ function validateEvent(
       } else if (statId) diceStatIds.add(statId);
     }
   }
+}
+
+function conditionGuaranteesHasShip(value: unknown): boolean {
+  if (!isRecord(value)) return false;
+  return value.type === 'hasShip' || (value.type === 'all' && Array.isArray(value.conditions) && value.conditions.some(conditionGuaranteesHasShip));
+}
+
+function containsEffectType(value: unknown, effectType: string): boolean {
+  if (Array.isArray(value)) return value.some((entry) => containsEffectType(entry, effectType));
+  if (!isRecord(value)) return false;
+  return value.type === effectType || Object.values(value).some((entry) => containsEffectType(entry, effectType));
 }
 
 function validateCondition(
@@ -359,6 +377,8 @@ function validateCondition(
   if (type === 'canRecruitNpc') validateReference(value.npcId, references.npcIds, 'NpcId', path, errors);
   if (type === 'locationIs' || type === 'locationWithin') validateReference(value.locationId, references.locationIds, 'LocationId', path, errors);
   if (type === 'currentSeaIs') validateReference(value.seaId, references.seaIds, 'SeaId', path, errors);
+  if (type === 'fallbackStreakAtLeast' && (!Number.isInteger(value.value) || (value.value as number) < 1)) errors.push({ path, message: 'fallbackStreakAtLeast requires a positive integer.' });
+  if (type === 'shipDestructionCauseIs' && !['enemy', 'accident'].includes(String(value.cause))) errors.push({ path, message: 'Invalid ship destruction cause.' });
   if (type === 'locationHasTag' && !VALID_LOCATION_TAGS.has(String(value.tagId) as never)) errors.push({ path, message: `Unknown Location tag "${String(value.tagId)}".` });
   if (type === 'locationHasService' && !VALID_LOCATION_SERVICES.has(String(value.serviceId) as never)) errors.push({ path, message: `Unknown Location service "${String(value.serviceId)}".` });
   if (type === 'npcStatusIs' || type === 'npcRelationshipAtLeast' || type === 'npcStatAtLeast') {
@@ -446,6 +466,13 @@ function validateDiceResolution(
     return;
   }
   validateStat(value.statId, path, errors);
+  if (value.actor !== undefined) {
+    if (!isRecord(value.actor) || !['player', 'bestCrew'].includes(String(value.actor.type))) errors.push({ path: `${path}.actor`, message: 'Invalid Dice actor.' });
+    else if (value.actor.type === 'bestCrew') {
+      validateNpcStat(value.actor.statId, `${path}.actor`, errors);
+      if (value.actor.requireNoDevilFruit !== undefined && typeof value.actor.requireNoDevilFruit !== 'boolean') errors.push({ path: `${path}.actor`, message: 'requireNoDevilFruit must be boolean.' });
+    }
+  }
   if (!Number.isInteger(value.successThreshold) || (value.successThreshold as number) < 2 || (value.successThreshold as number) > 19) {
     errors.push({ path, message: 'successThreshold must be an integer from 2 to 19.' });
   }
@@ -503,6 +530,7 @@ function validateOutcome(
   }
   if (!stringValue(value.id)) errors.push({ path: `${path}.id`, message: 'Outcome requires a non-empty ID.' });
   if (value.advanceMonths !== undefined) errors.push({ path, message: 'Outcome.advanceMonths is not supported in Content Schema v2.' });
+  if (value.shipDamageCause !== undefined && !['enemy', 'accident'].includes(String(value.shipDamageCause))) errors.push({ path: `${path}.shipDamageCause`, message: 'Invalid shipDamageCause.' });
   const effects = readRecords(value.effects, `${path}.effects`, errors);
   effects.forEach((effect, index) =>
     validateEffect(effect, `${path}.effects[${index}]`, references, errors),
@@ -536,7 +564,9 @@ function validateEffect(
   if (type === 'addTrait' || type === 'removeTrait') {
     validateReference(effect.traitId, references.traitIds, 'TraitId', path, errors);
   }
-  if (type === 'setNpcStatus' || type === 'setNpcPassenger' || type === 'modifyNpcRelationship' || type === 'modifyNpcStat') {
+  if (type === 'setNpcStatus' || type === 'modifyNpcStat') {
+    validateNpcTarget(effect, path, references, errors);
+  } else if (type === 'setNpcPassenger' || type === 'modifyNpcRelationship') {
     validateReference(effect.npcId, references.npcIds, 'NpcId', path, errors);
   }
   if (type === 'setNpcPassenger' && typeof effect.passenger !== 'boolean') errors.push({ path, message: 'setNpcPassenger requires a boolean passenger field.' });
@@ -568,6 +598,7 @@ function validateEffect(
   if (type === 'setFamilyStructure') validateReference(effect.familyStructureId, references.familyStructureIds, 'FamilyStructureId', path, errors);
   if (type === 'setSocialClass') validateReference(effect.socialClassId, references.socialClassIds, 'SocialClassId', path, errors);
   if (type === 'recoverTravel' && !['land', 'sea'].includes(String(effect.mode))) errors.push({ path, message: 'recoverTravel mode must be land or sea.' });
+  if (type === 'beginMaritimeEmergency' && !['enemy', 'accident', 'ship_missing', 'sea_monster'].includes(String(effect.cause))) errors.push({ path, message: 'Invalid maritime emergency cause.' });
   if (type === 'endCareer' && !['death', 'legacy'].includes(String(effect.reason))) {
     errors.push({ path, message: `Invalid CareerEndReason "${String(effect.reason)}".` });
   }
@@ -585,9 +616,23 @@ function validateEffect(
   if (type === 'setCareerAffiliation') validateReference(effect.affiliationId, references.careerAffiliationIds, 'CareerAffiliationId', path, errors);
   if (type === 'setCareerRank' && effect.rankId !== null) validateReference(effect.rankId, references.careerRankIds, 'CareerRankId', path, errors);
   if (type === 'setCareerTitle') validateReference(effect.titleId, references.careerTitleIds, 'CareerTitleId', path, errors);
-  if (type === 'endCareerWithEnding') validateReference(effect.endingId, references.endingIds, 'EndingId', path, errors);
+  if (type === 'endCareerWithEnding') {
+    validateReference(effect.endingId, references.endingIds, 'EndingId', path, errors);
+    if (effect.reason !== undefined && !['death', 'legacy'].includes(String(effect.reason))) errors.push({ path, message: 'Invalid endCareerWithEnding reason.' });
+  }
   if (['modifyReputation', 'modifyBounty'].includes(type) && !Number.isInteger(effect.amount)) errors.push({ path, message: `${type} amount must be an integer.` });
   if (type === 'setBounty' && (!Number.isInteger(effect.value) || (effect.value as number) < 0)) errors.push({ path, message: 'setBounty value must be a non-negative integer.' });
+}
+
+function validateNpcTarget(effect: UnknownRecord, path: string, references: References, errors: ContentValidationError[]): void {
+  const hasId = effect.npcId !== undefined;
+  const hasSelector = effect.npcSelector !== undefined;
+  if (hasId === hasSelector) {
+    errors.push({ path, message: 'NPC-targeting Effect requires exactly one of npcId or npcSelector.' });
+    return;
+  }
+  if (hasId) validateReference(effect.npcId, references.npcIds, 'NpcId', path, errors);
+  if (hasSelector && !['diceActor', 'highestRelationshipCrewWithDevilFruit'].includes(String(effect.npcSelector))) errors.push({ path, message: 'Unknown npcSelector.' });
 }
 
 function validateImmediateCycles(events: UnknownRecord[], errors: ContentValidationError[]): void {

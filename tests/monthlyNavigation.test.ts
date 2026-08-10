@@ -6,6 +6,7 @@ import { createInitialGameState } from '../src/game/model/initialState';
 
 const activeState = () => {
   const state = createInitialGameState(1);
+  state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
   state.careerPhase = 'active'; state.ageMonths = 180; state.slotInMonth = 0; state.locationId = 'foosha_village'; state.travelState = 'on_land';
   return state;
 };

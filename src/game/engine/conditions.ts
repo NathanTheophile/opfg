@@ -4,6 +4,7 @@ import type { GameState } from '../model/schema';
 import { availableCargoSlots, canAcquireShip, canRecruitNpc, countCurrentCrew, findShipDefinition } from './ship';
 import { canConsumeDevilFruit, playerHakiSourceTotal } from './powers';
 import { isLocationWithin } from './locations';
+import { countFallbackStreak, currentSeaPorts, currentShipDestructionCause, findBestSwimmingRescuer, findHighestRelationshipFruitCrew, sameIslandPorts } from './maritime';
 
 export interface ChoiceState {
   visible: boolean;
@@ -50,6 +51,13 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
       return catalog !== undefined && isLocationWithin(catalog, state.locationId, condition.locationId);
     case 'currentSeaIs':
       return catalog?.locations.find(({ id }) => id === state.locationId)?.seaId === condition.seaId;
+    case 'sameIslandPortExists': return catalog !== undefined && sameIslandPorts(state, catalog).length > 0;
+    case 'currentSeaHasPort': return catalog !== undefined && currentSeaPorts(state, catalog).length > 0;
+    case 'fallbackStreakAtLeast': return catalog !== undefined && countFallbackStreak(state, catalog.events) >= condition.value;
+    case 'shipDestructionCauseIs': return catalog !== undefined && currentShipDestructionCause(state, catalog) === condition.cause;
+    case 'maritimeEmergencyActive': return state.maritimeEmergency !== null;
+    case 'hasEligibleSwimmingRescuer': return findBestSwimmingRescuer(state) !== undefined;
+    case 'hasCrewMemberWithDevilFruit': return findHighestRelationshipFruitCrew(state) !== undefined;
     case 'isAtSea':
       return state.travelState === 'at_sea';
     case 'isOnLand':

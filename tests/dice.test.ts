@@ -81,6 +81,7 @@ describe('vNext roll evaluation', () => {
 
   it('does not make a natural 20 critical when a malus lowers total below 20', () => {
     const state = createInitialGameState();
+    state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
     state.ship.health = 10;
     const check = resolution({
       successThreshold: 13,

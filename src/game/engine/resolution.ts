@@ -62,6 +62,7 @@ function finalizeOutcome(
   const afterEffects = applyEffects(state, catalog, outcome.effects, {
     sourceEventId: event.id,
     sourceChoiceId: choiceId,
+    ...(dice?.actorNpcId ? { diceActorNpcId: dice.actorNpcId } : {}),
   });
   const afterSystemResolution =
     event.id === 'origin_sea'

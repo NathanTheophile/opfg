@@ -1,8 +1,8 @@
-import type { CareerEndReason, CareerPhase, GameState, ItemStack, NpcState, NpcStats, PowerState, ShipState, TravelState } from '../model/schema';
+import type { CareerEndReason, CareerPhase, GameState, ItemStack, MaritimeEmergencyState, NpcState, NpcStats, PowerState, ShipState, TravelState } from '../model/schema';
 import { createDefaultPowerState } from './powers';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 15;
+const CURRENT_SAVE_VERSION = 16;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
@@ -77,7 +77,8 @@ function readGameState(value: unknown): GameState | null {
   if (playerPowers === null) return null;
   const ship = readShip(value.ship);
   const pendingShip = readShip(value.pendingShip);
-  if (ship === undefined || pendingShip === undefined || typeof value.isLeader !== 'boolean' || !isUniqueStringArray(value.passengerNpcIds) || !isNonNegativeInteger(value.berries)) return null;
+  const maritimeEmergency = readMaritimeEmergency(value.maritimeEmergency);
+  if (ship === undefined || pendingShip === undefined || maritimeEmergency === undefined || typeof value.isLeader !== 'boolean' || !isUniqueStringArray(value.passengerNpcIds) || !isNonNegativeInteger(value.berries)) return null;
   if (!isStringArray(value.flags)) return null;
 
   const npcs = readNpcs(value.npcs);
@@ -95,7 +96,7 @@ function readGameState(value: unknown): GameState | null {
   if (value.careerStatus === 'active' && value.careerEndReason !== null) return null;
   if (value.careerStatus === 'ended' && value.careerEndReason === null) return null;
   if (value.careerStatus === 'active' && value.endingId !== null) return null;
-  if (value.endingId !== null && value.careerEndReason !== 'legacy') return null;
+  if (value.endingId !== null && value.careerEndReason === null) return null;
   if (value.careerPhase !== 'active' && value.slotInMonth !== 0) return null;
 
   return {
@@ -126,6 +127,7 @@ function readGameState(value: unknown): GameState | null {
     },
     ship,
     pendingShip,
+    maritimeEmergency,
     isLeader: value.isLeader,
     passengerNpcIds: [...value.passengerNpcIds],
     berries: value.berries,
@@ -222,7 +224,16 @@ function migrateLegacySave(value: unknown): unknown {
       npcs,
     };
   }
+  if (isRecord(migrated) && migrated.version === 15) {
+    migrated = { ...migrated, version: 16, maritimeEmergency: null };
+  }
   return migrated;
+}
+
+function readMaritimeEmergency(value: unknown): MaritimeEmergencyState | null | undefined {
+  if (value === null) return null;
+  if (!isRecord(value) || value.kind !== 'shipwreck' || !isString(value.seaId) || !['enemy', 'accident', 'ship_missing', 'sea_monster'].includes(String(value.cause))) return undefined;
+  return { kind: 'shipwreck', seaId: value.seaId, cause: value.cause as MaritimeEmergencyState['cause'] };
 }
 
 function migrateMarineRankId(value: unknown): string | null {

@@ -6,6 +6,7 @@ import { nextRandom } from './rng';
 import { needsMonthlyNavigationDecision } from './navigation';
 import { finalizePendingSlot } from './time';
 import { findDockableAccess } from './locations';
+import { countFallbackStreak } from './maritime';
 
 export const FALLBACK_EVENT_IDS = ['dead_end_on_land', 'dead_end_at_sea'] as const;
 
@@ -78,8 +79,9 @@ export function findCriticalEvent(state: GameState, events: readonly EventDefini
     .map(([npcId]) => npcId).sort()[0];
   if (deadNpcId) return critical.find(({ trigger }) => trigger.type === 'npcHealthDepleted' && trigger.npcId === deadNpcId);
   if (state.ship !== null && state.ship.health <= 0) return critical.find(({ trigger }) => trigger.type === 'shipDestroyed');
-  if (state.ship === null && state.travelState === 'at_sea') return critical.find(({ trigger }) => trigger.type === 'shipMissingAtSea');
+  if (state.ship === null && state.travelState === 'at_sea' && state.maritimeEmergency === null) return critical.find(({ trigger }) => trigger.type === 'shipMissingAtSea');
   if (state.pendingShip !== null) return critical.find(({ trigger }) => trigger.type === 'shipReplacementPending');
+  return critical.find(({ trigger }) => trigger.type === 'fallbackStreakAtLeast' && countFallbackStreak(state, events) >= trigger.value);
 }
 
 function selectScheduledEvent(state: GameState, catalog: ContentCatalog): { event?: EventDefinition; entries: ScheduledEvent[] } {

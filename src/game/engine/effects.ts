@@ -4,10 +4,12 @@ import { createDefaultNpcState } from '../model/npcState';
 import { addStack, canAcquireShip, canRecruitNpc, cloneInventory, cloneShip, findShipDefinition, removeStack } from './ship';
 import { canConsumeDevilFruit, createDefaultPowerState, playerHakiSourceTotal, synchronizePlayerHaki } from './powers';
 import { recoverTravel } from './locations';
+import { beginMaritimeEmergency, findHighestRelationshipFruitCrew, moveToSameIslandPort, recoverToLandInCurrentSea, recoverToOtherRegion, resolveMaritimeEmergencyLandfall } from './maritime';
 
 export interface EffectContext {
   sourceEventId: EventId;
   sourceChoiceId: ChoiceId;
+  diceActorNpcId?: string;
 }
 
 export function applyEffects(state: GameState, catalog: ContentCatalog, effects: Effect[], context: EffectContext): GameState {
@@ -147,13 +149,19 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
     case 'recoverTravel':
       recoverTravel(state, catalog, effect.mode);
       return;
+    case 'moveToSameIslandPort': moveToSameIslandPort(state, catalog); return;
+    case 'recoverToLandInCurrentSea': recoverToLandInCurrentSea(state, catalog); return;
+    case 'recoverToOtherRegion': recoverToOtherRegion(state, catalog); return;
+    case 'beginMaritimeEmergency': beginMaritimeEmergency(state, catalog, effect.cause); return;
+    case 'resolveMaritimeEmergencyLandfall': resolveMaritimeEmergencyLandfall(state, catalog); return;
     case 'setNpcStatus': {
-      const npc = getNpcState(state, effect.npcId);
+      const npcId = resolveNpcTarget(state, effect, context);
+      const npc = getNpcState(state, npcId);
       const changesCrew = npc.status === 'crew' || effect.status === 'crew';
       if (changesCrew && effect.status !== 'dead') requireLeadership(state, effect.allowWithoutLeadership);
-      if (effect.status === 'crew' && npc.status !== 'crew' && !canRecruitNpc(state, catalog, effect.npcId, effect.allowWithoutLeadership === true)) throw new Error(`Cannot recruit NPC "${effect.npcId}" without leadership or free crew capacity.`);
-      if (effect.status === 'crew') state.passengerNpcIds = state.passengerNpcIds.filter((npcId) => npcId !== effect.npcId);
-      state.npcs[effect.npcId] = { ...npc, status: effect.status };
+      if (effect.status === 'crew' && npc.status !== 'crew' && !canRecruitNpc(state, catalog, npcId, effect.allowWithoutLeadership === true)) throw new Error(`Cannot recruit NPC "${npcId}" without leadership or free crew capacity.`);
+      if (effect.status === 'crew') state.passengerNpcIds = state.passengerNpcIds.filter((id) => id !== npcId);
+      state.npcs[npcId] = { ...npc, status: effect.status };
       return;
     }
     case 'setNpcPassenger': {
@@ -182,8 +190,9 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       return;
     }
     case 'modifyNpcStat': {
-      const npc = getNpcState(state, effect.npcId);
-      state.npcs[effect.npcId] = {
+      const npcId = resolveNpcTarget(state, effect, context);
+      const npc = getNpcState(state, npcId);
+      state.npcs[npcId] = {
         ...npc,
         stats: {
           ...npc.stats,
@@ -251,6 +260,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       state.careerEndReason = effect.reason;
       state.endingId = null;
       state.currentEventId = null;
+      state.maritimeEmergency = null;
       return;
     case 'setCareerAffiliation':
       if (!catalog.careerAffiliations.some(({ id }) => id === effect.affiliationId)) throw new Error(`Unknown Career affiliation "${effect.affiliationId}".`);
@@ -286,9 +296,10 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
     case 'endCareerWithEnding':
       if (!catalog.endings.some(({ id }) => id === effect.endingId)) throw new Error(`Unknown Ending "${effect.endingId}".`);
       state.careerStatus = 'ended';
-      state.careerEndReason = 'legacy';
+      state.careerEndReason = effect.reason ?? 'legacy';
       state.endingId = effect.endingId;
       state.currentEventId = null;
+      state.maritimeEmergency = null;
       return;
     case 'consumeDevilFruit': {
       if (!canConsumeDevilFruit(state, catalog, effect.fruitId)) throw new Error(`Devil Fruit "${effect.fruitId}" cannot be consumed.`);
@@ -344,6 +355,16 @@ function applyAttributeModifiers(state: GameState, modifiers: Partial<Record<imp
 
 function getNpcState(state: GameState, npcId: string): NpcState {
   return state.npcs[npcId] ?? createDefaultNpcState();
+}
+
+function resolveNpcTarget(state: GameState, target: { npcId?: string; npcSelector?: 'diceActor' | 'highestRelationshipCrewWithDevilFruit' }, context: EffectContext): string {
+  if (target.npcId !== undefined) return target.npcId;
+  if (target.npcSelector === 'diceActor' && context.diceActorNpcId !== undefined) return context.diceActorNpcId;
+  if (target.npcSelector === 'highestRelationshipCrewWithDevilFruit') {
+    const npcId = findHighestRelationshipFruitCrew(state);
+    if (npcId !== undefined) return npcId;
+  }
+  throw new Error(`Dynamic NPC selector "${String(target.npcSelector)}" has no valid target.`);
 }
 
 function clamp(value: number, minimum: number, maximum: number): number {

@@ -9,6 +9,11 @@ import { createDefaultNpcState } from '../src/game/model/npcState';
 import { assertValidSimulationState } from '../src/game/simulation/stateDiagnostics';
 
 const context = { sourceEventId: 'fixture', sourceChoiceId: 'choice' };
+const withShip = () => {
+  const state = createInitialGameState();
+  state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
+  return state;
+};
 
 describe('Ship System V1', () => {
   it('acquires a first named ship at max or authored damaged health and modifies HP within definition bounds', () => {
@@ -23,7 +28,7 @@ describe('Ship System V1', () => {
   });
 
   it('keeps personal stacks separate from cargo and enforces slots and quantities', () => {
-    const state = createInitialGameState();
+    const state = withShip();
     const stacked = applyEffects(state, contentCatalog, [
       { type: 'addItem', itemId: 'sealed_chart', quantity: 2 },
       { type: 'addItem', itemId: 'sealed_chart', quantity: 3 },
@@ -38,7 +43,7 @@ describe('Ship System V1', () => {
   });
 
   it('blocks acquisition when the authored ship cannot accommodate current NPC crew', () => {
-    const state = createInitialGameState();
+    const state = withShip();
     for (const id of ['a', 'b', 'c', 'd']) state.npcs[id] = { ...createDefaultNpcState(), status: 'crew' };
     expect(evaluateCondition({ type: 'canAcquireShip', shipId: 'sloop' }, state, contentCatalog)).toBe(false);
     const choice = { id: 'acquire', textKey: 'x', availableIf: { type: 'canAcquireShip', shipId: 'sloop' } as const, resolution: { type: 'deterministic' as const, outcome: { id: 'x', textKey: 'x', effects: [] } } };
@@ -47,7 +52,7 @@ describe('Ship System V1', () => {
   });
 
   it('queues replacement, transfers cargo, and resolves abandon or location-gated sale through the Critical pipeline', () => {
-    const state = createInitialGameState();
+    const state = withShip();
     state.locationId = 'loguetown';
     state.ship!.cargo = [{ itemId: 'sealed_chart', quantity: 2 }];
     const pending = applyEffects(state, contentCatalog, [{ type: 'acquireShip', shipId: 'merchant_ship', name: 'New Dawn' }], context);
@@ -69,7 +74,7 @@ describe('Ship System V1', () => {
   });
 
   it('resolves destruction and shipless-at-sea states before any slot-consuming event while preserving crew', () => {
-    const destroyed = createInitialGameState();
+    const destroyed = withShip();
     destroyed.careerPhase = 'active';
     destroyed.ageMonths = 180;
     destroyed.ship!.health = 0;
@@ -84,8 +89,29 @@ describe('Ship System V1', () => {
     expect(selectNextEvent(adrift, contentCatalog).currentEventId).toBe('critical_ship_missing_at_sea');
   });
 
+  it('does not turn a voluntary sale or a wreck into a free legacy replacement', () => {
+    const state = withShip(); state.locationId = 'loguetown';
+    const sold = applyEffects(state, contentCatalog, [{ type: 'loseShip', locationId: 'loguetown', travelState: 'on_land' }], context);
+    expect(sold).toMatchObject({ ship: null, pendingShip: null });
+    expect(selectNextEvent(sold, contentCatalog).currentEventId).not.toBe('critical_ship_replacement');
+    const wrecked = applyEffects({ ...state, locationId: 'foosha_village', travelState: 'at_sea' }, contentCatalog, [{ type: 'beginMaritimeEmergency', cause: 'accident' }], context);
+    expect(wrecked).toMatchObject({ ship: null, pendingShip: null, maritimeEmergency: { cause: 'accident' } });
+    expect(selectNextEvent(wrecked, contentCatalog).currentEventId).not.toBe('critical_ship_replacement');
+  });
+
+  it('guards every known ship-damage source when no ship exists', () => {
+    const state = createInitialGameState(); state.careerPhase = 'active'; state.ageMonths = 180; state.travelState = 'at_sea';
+    for (const eventId of ['reefs', 'black_squall']) {
+      const event = contentCatalog.events.find(({ id }) => id === eventId)!;
+      expect(evaluateCondition(event.eligibility!, state, contentCatalog)).toBe(false);
+    }
+    const hunters = contentCatalog.events.find(({ id }) => id === 'mira_hunters')!;
+    const destructive = hunters.choices.find(({ id }) => id === 'outrun_hunters')!;
+    expect(getChoiceState(destructive, state, contentCatalog).available).toBe(false);
+  });
+
   it('reports invalid simulation state for HP, slots, quantities, and ShipId', () => {
-    const state = createInitialGameState();
+    const state = withShip();
     state.ship!.health = 31;
     expect(() => assertValidSimulationState(state, contentCatalog)).toThrow(/health/);
     state.ship!.health = 30;

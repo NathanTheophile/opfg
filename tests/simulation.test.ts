@@ -103,6 +103,7 @@ describe('simulation', () => {
       { id: 'b', kind: 'immediate', titleKey: 'x', textKey: 'x', choices: [{ id: 'go', textKey: 'x', resolution: { type: 'deterministic', outcome: outcome([]) } }] },
     ];
     const state = createInitialGameState(9); state.careerPhase = 'active'; state.ageMonths = 180;
+    state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
     const result = simulateRun({ seed: 9, catalog: baseCatalog(events), initialState: state });
     expect(result).toMatchObject({ normalEvents: 1, immediateEvents: 2, maximumImmediateChainLength: 2 });
     expect(result.finalState).toMatchObject({ ageMonths: 180, slotInMonth: 1, navigationDecisionAgeMonths: 180 });
