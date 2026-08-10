@@ -1,0 +1,103 @@
+{
+  "id": "active_civilian_01_civilian_title_review",
+  "titleKey": "event.active_civilian_01_civilian_title_review.title",
+  "textKey": "event.active_civilian_01_civilian_title_review.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 35
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerTitleIs",
+          "titleId": "veteran"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerTitleIs",
+          "titleId": "legend"
+        }
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "accept",
+      "textKey": "event.active_civilian_01_civilian_title_review.choice.accept.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_result",
+          "textKey": "event.active_civilian_01_civilian_title_review.choice.accept.outcome.accept_result.text",
+          "effects": [
+            {
+              "type": "setCareerTitle",
+              "titleId": "veteran"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline",
+      "textKey": "event.active_civilian_01_civilian_title_review.choice.decline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decline_result",
+          "textKey": "event.active_civilian_01_civilian_title_review.choice.decline.outcome.decline_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "redirect",
+      "textKey": "event.active_civilian_01_civilian_title_review.choice.redirect.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "redirect_result",
+          "textKey": "event.active_civilian_01_civilian_title_review.choice.redirect.outcome.redirect_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

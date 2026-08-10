@@ -1,0 +1,84 @@
+{
+  "id": "active_revolutionary_01_lantern_return_without_name",
+  "kind": "scheduled",
+  "titleKey": "event.active_revolutionary_01_lantern_return_without_name.title",
+  "textKey": "event.active_revolutionary_01_lantern_return_without_name.text",
+  "choices": [
+    {
+      "id": "let_leave",
+      "textKey": "event.active_revolutionary_01_lantern_return_without_name.choice.let_leave.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_lantern_return_without_name.choice.let_leave.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_revolutionary_01_lantern_rebuilt_oath",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "one_last_report",
+      "textKey": "event.active_revolutionary_01_lantern_return_without_name.choice.one_last_report.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_lantern_return_without_name.choice.one_last_report.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_revolutionary_01_lantern_rebuilt_oath",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "revolutionary"
+    }
+  },
+  "fallbackEventId": "active_revolutionary_01_lantern_after_departure"
+}

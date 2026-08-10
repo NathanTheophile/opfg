@@ -1,0 +1,111 @@
+{
+  "id": "active_bounty_hunter_01_phantom_warrants_s09_fixer_pressure",
+  "titleKey": "event.active_bounty_hunter_01_phantom_warrants_s09_fixer_pressure.title",
+  "textKey": "event.active_bounty_hunter_01_phantom_warrants_s09_fixer_pressure.text",
+  "choices": [
+    {
+      "id": "trap_copy",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s09_fixer_pressure.choice.trap_copy.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_bounty_hunter_01_phantom_warrants_s09_fixer_pressure.choice.trap_copy.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_phantom_warrants_s10_scapegoat",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_bounty_hunter_01_phantom_warrants_s09_fixer_pressure.choice.trap_copy.outcome.failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_phantom_warrants_s10_scapegoat",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_bounty_hunter_01_phantom_warrants_s09_fixer_pressure.choice.trap_copy.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_phantom_warrants_s10_scapegoat",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_bounty_hunter_01_phantom_warrants_s09_fixer_pressure.choice.trap_copy.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_phantom_warrants_s10_scapegoat",
+                "delayMonths": 18
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "watch_only",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s09_fixer_pressure.choice.watch_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s09_fixer_pressure.choice.watch_only.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s10_scapegoat",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "bounty_hunter"
+    }
+  },
+  "eligibility": {
+    "type": "isOnLand"
+  }
+}

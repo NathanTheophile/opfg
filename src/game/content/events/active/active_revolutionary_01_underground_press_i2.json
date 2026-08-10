@@ -1,0 +1,108 @@
+{
+  "id": "active_revolutionary_01_underground_press_i2",
+  "kind": "immediate",
+  "titleKey": "event.active_revolutionary_01_underground_press_i2.title",
+  "textKey": "event.active_revolutionary_01_underground_press_i2.text",
+  "choices": [
+    {
+      "id": "fix_press",
+      "textKey": "event.active_revolutionary_01_underground_press_i2.choice.fix_press.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_revolutionary_01_underground_press_i2.choice.fix_press.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_underground_press_i3"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_revolutionary_01_underground_press_i2.choice.fix_press.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_underground_press_i3"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_revolutionary_01_underground_press_i2.choice.fix_press.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_underground_press_i3"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_revolutionary_01_underground_press_i2.choice.fix_press.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_underground_press_i3"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "print_fewer",
+      "textKey": "event.active_revolutionary_01_underground_press_i2.choice.print_fewer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_underground_press_i2.choice.print_fewer.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_revolutionary_01_underground_press_i3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hand_copy",
+      "textKey": "event.active_revolutionary_01_underground_press_i2.choice.hand_copy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_underground_press_i2.choice.hand_copy.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_revolutionary_01_underground_press_i3"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

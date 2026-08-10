@@ -1,0 +1,89 @@
+{
+  "id": "active_civilian_01_dockside_triage_i3",
+  "titleKey": "event.active_civilian_01_dockside_triage_i3.title",
+  "textKey": "event.active_civilian_01_dockside_triage_i3.text",
+  "kind": "immediate",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "keep_order",
+      "textKey": "event.active_civilian_01_dockside_triage_i3.choice.keep_order.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_order_result",
+          "textKey": "event.active_civilian_01_dockside_triage_i3.choice.keep_order.outcome.keep_order_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_dockside_triage_i4"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_money",
+      "textKey": "event.active_civilian_01_dockside_triage_i3.choice.take_money.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_money_result",
+          "textKey": "event.active_civilian_01_dockside_triage_i3.choice.take_money.outcome.take_money_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 120
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_dockside_triage_i4"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "defer",
+      "textKey": "event.active_civilian_01_dockside_triage_i3.choice.defer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "defer_result",
+          "textKey": "event.active_civilian_01_dockside_triage_i3.choice.defer.outcome.defer_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_dockside_triage_i4"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

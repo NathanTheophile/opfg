@@ -1,0 +1,78 @@
+{
+  "id": "active_civilian_01_lt_civic_service",
+  "titleKey": "event.active_civilian_01_lt_civic_service.title",
+  "textKey": "event.active_civilian_01_lt_civic_service.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "prevention",
+      "textKey": "event.active_civilian_01_lt_civic_service.choice.prevention.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "prevention_result",
+          "textKey": "event.active_civilian_01_lt_civic_service.choice.prevention.outcome.prevention_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_doors_stay_open",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "training",
+      "textKey": "event.active_civilian_01_lt_civic_service.choice.training.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "training_result",
+          "textKey": "event.active_civilian_01_lt_civic_service.choice.training.outcome.training_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_doors_stay_open",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

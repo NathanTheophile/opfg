@@ -1,0 +1,77 @@
+{
+  "id": "active_civilian_01_lt_stable_months",
+  "titleKey": "event.active_civilian_01_lt_stable_months.title",
+  "textKey": "event.active_civilian_01_lt_stable_months.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "save_margin",
+      "textKey": "event.active_civilian_01_lt_stable_months.choice.save_margin.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "save_margin_result",
+          "textKey": "event.active_civilian_01_lt_stable_months.choice.save_margin.outcome.save_margin_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 180
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_public_offer",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lower_prices",
+      "textKey": "event.active_civilian_01_lt_stable_months.choice.lower_prices.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lower_prices_result",
+          "textKey": "event.active_civilian_01_lt_stable_months.choice.lower_prices.outcome.lower_prices_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_public_offer",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

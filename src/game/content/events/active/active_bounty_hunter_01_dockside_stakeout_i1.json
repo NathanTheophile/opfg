@@ -1,0 +1,76 @@
+{
+  "id": "active_bounty_hunter_01_dockside_stakeout_i1",
+  "titleKey": "event.active_bounty_hunter_01_dockside_stakeout_i1.title",
+  "textKey": "event.active_bounty_hunter_01_dockside_stakeout_i1.text",
+  "choices": [
+    {
+      "id": "keep_distance",
+      "textKey": "event.active_bounty_hunter_01_dockside_stakeout_i1.choice.keep_distance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_dockside_stakeout_i1.choice.keep_distance.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_bounty_hunter_01_dockside_stakeout_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "blend",
+      "textKey": "event.active_bounty_hunter_01_dockside_stakeout_i1.choice.blend.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_dockside_stakeout_i1.choice.blend.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_bounty_hunter_01_dockside_stakeout_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mobility_cut",
+      "textKey": "event.active_bounty_hunter_01_dockside_stakeout_i1.choice.mobility_cut.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_dockside_stakeout_i1.choice.mobility_cut.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_bounty_hunter_01_dockside_stakeout_i2"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "hasDevilFruit"
+          },
+          {
+            "type": "devilFruitHasTag",
+            "tagId": "mobility"
+          }
+        ]
+      }
+    }
+  ],
+  "kind": "immediate"
+}

@@ -1,0 +1,81 @@
+{
+  "id": "active_civilian_01_guildless_arbitration_i1",
+  "titleKey": "event.active_civilian_01_guildless_arbitration_i1.title",
+  "textKey": "event.active_civilian_01_guildless_arbitration_i1.text",
+  "kind": "immediate",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "compare",
+      "textKey": "event.active_civilian_01_guildless_arbitration_i1.choice.compare.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "compare_result",
+          "textKey": "event.active_civilian_01_guildless_arbitration_i1.choice.compare.outcome.compare_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_guildless_arbitration_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "witnesses",
+      "textKey": "event.active_civilian_01_guildless_arbitration_i1.choice.witnesses.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "witnesses_result",
+          "textKey": "event.active_civilian_01_guildless_arbitration_i1.choice.witnesses.outcome.witnesses_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_guildless_arbitration_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "split_slot",
+      "textKey": "event.active_civilian_01_guildless_arbitration_i1.choice.split_slot.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "split_slot_result",
+          "textKey": "event.active_civilian_01_guildless_arbitration_i1.choice.split_slot.outcome.split_slot_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_guildless_arbitration_i2"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

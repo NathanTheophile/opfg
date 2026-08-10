@@ -1,0 +1,76 @@
+{
+  "id": "active_civilian_01_lt_doors_stay_open",
+  "titleKey": "event.active_civilian_01_lt_doors_stay_open.title",
+  "textKey": "event.active_civilian_01_lt_doors_stay_open.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "step_back",
+      "textKey": "event.active_civilian_01_lt_doors_stay_open.choice.step_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "step_back_result",
+          "textKey": "event.active_civilian_01_lt_doors_stay_open.choice.step_back.outcome.step_back_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "addTrait",
+              "traitId": "protective"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "review",
+      "textKey": "event.active_civilian_01_lt_doors_stay_open.choice.review.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "review_result",
+          "textKey": "event.active_civilian_01_lt_doors_stay_open.choice.review.outcome.review_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

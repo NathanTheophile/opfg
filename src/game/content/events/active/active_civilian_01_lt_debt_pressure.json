@@ -1,0 +1,99 @@
+{
+  "id": "active_civilian_01_lt_debt_pressure",
+  "titleKey": "event.active_civilian_01_lt_debt_pressure.title",
+  "textKey": "event.active_civilian_01_lt_debt_pressure.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "renegotiate",
+      "textKey": "event.active_civilian_01_lt_debt_pressure.choice.renegotiate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "renegotiate_result",
+          "textKey": "event.active_civilian_01_lt_debt_pressure.choice.renegotiate.outcome.renegotiate_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_hard_choices",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pay_fast",
+      "textKey": "event.active_civilian_01_lt_debt_pressure.choice.pay_fast.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_fast_result",
+          "textKey": "event.active_civilian_01_lt_debt_pressure.choice.pay_fast.outcome.pay_fast_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -100
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_hard_choices",
+              "delayMonths": 18
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 100
+      }
+    },
+    {
+      "id": "fallback",
+      "textKey": "event.active_civilian_01_lt_debt_pressure.choice.fallback.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fallback_result",
+          "textKey": "event.active_civilian_01_lt_debt_pressure.choice.fallback.outcome.fallback_result.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_hard_choices",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

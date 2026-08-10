@@ -1,0 +1,92 @@
+{
+  "id": "active_revolutionary_01_promotion_agent",
+  "kind": "normal",
+  "titleKey": "event.active_revolutionary_01_promotion_agent.title",
+  "textKey": "event.active_revolutionary_01_promotion_agent.text",
+  "choices": [
+    {
+      "id": "accept_field",
+      "textKey": "event.active_revolutionary_01_promotion_agent.choice.accept_field.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_promotion_agent.choice.accept_field.outcome.done.text",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "revolutionary_agent"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_courier",
+      "textKey": "event.active_revolutionary_01_promotion_agent.choice.accept_courier.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_promotion_agent.choice.accept_courier.outcome.done.text",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "revolutionary_agent"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline",
+      "textKey": "event.active_revolutionary_01_promotion_agent.choice.decline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_promotion_agent.choice.decline.outcome.done.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "careerRankIs",
+        "rankId": "revolutionary_recruit"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 18
+      }
+    ]
+  }
+}

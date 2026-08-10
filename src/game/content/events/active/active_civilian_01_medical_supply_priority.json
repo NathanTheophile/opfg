@@ -1,0 +1,96 @@
+{
+  "id": "active_civilian_01_medical_supply_priority",
+  "titleKey": "event.active_civilian_01_medical_supply_priority.title",
+  "textKey": "event.active_civilian_01_medical_supply_priority.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "medical"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 15
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "reserve_complex",
+      "textKey": "event.active_civilian_01_medical_supply_priority.choice.reserve_complex.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reserve_complex_result",
+          "textKey": "event.active_civilian_01_medical_supply_priority.choice.reserve_complex.outcome.reserve_complex_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "equal_share",
+      "textKey": "event.active_civilian_01_medical_supply_priority.choice.equal_share.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "equal_share_result",
+          "textKey": "event.active_civilian_01_medical_supply_priority.choice.equal_share.outcome.equal_share_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "medic",
+      "textKey": "event.active_civilian_01_medical_supply_priority.choice.medic.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "medic_result",
+          "textKey": "event.active_civilian_01_medical_supply_priority.choice.medic.outcome.medic_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "medic"
+      }
+    }
+  ]
+}

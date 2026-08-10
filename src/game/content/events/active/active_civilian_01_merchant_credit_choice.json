@@ -1,0 +1,93 @@
+{
+  "id": "active_civilian_01_merchant_credit_choice",
+  "titleKey": "event.active_civilian_01_merchant_credit_choice.title",
+  "textKey": "event.active_civilian_01_merchant_credit_choice.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "extend",
+      "textKey": "event.active_civilian_01_merchant_credit_choice.choice.extend.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "extend_result",
+          "textKey": "event.active_civilian_01_merchant_credit_choice.choice.extend.outcome.extend_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -150
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_merchant_credit_return",
+              "delayMonths": 6
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 150
+      }
+    },
+    {
+      "id": "partial",
+      "textKey": "event.active_civilian_01_merchant_credit_choice.choice.partial.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "partial_result",
+          "textKey": "event.active_civilian_01_merchant_credit_choice.choice.partial.outcome.partial_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline",
+      "textKey": "event.active_civilian_01_merchant_credit_choice.choice.decline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decline_result",
+          "textKey": "event.active_civilian_01_merchant_credit_choice.choice.decline.outcome.decline_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

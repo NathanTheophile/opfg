@@ -1,0 +1,85 @@
+{
+  "id": "active_civilian_01_merchant_credit_return",
+  "titleKey": "event.active_civilian_01_merchant_credit_return.title",
+  "textKey": "event.active_civilian_01_merchant_credit_return.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "collect",
+      "textKey": "event.active_civilian_01_merchant_credit_return.choice.collect.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "collect_result",
+          "textKey": "event.active_civilian_01_merchant_credit_return.choice.collect.outcome.collect_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 180
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "extend_again",
+      "textKey": "event.active_civilian_01_merchant_credit_return.choice.extend_again.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "extend_again_result",
+          "textKey": "event.active_civilian_01_merchant_credit_return.choice.extend_again.outcome.extend_again_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "forgive_part",
+      "textKey": "event.active_civilian_01_merchant_credit_return.choice.forgive_part.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "forgive_part_result",
+          "textKey": "event.active_civilian_01_merchant_credit_return.choice.forgive_part.outcome.forgive_part_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 80
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

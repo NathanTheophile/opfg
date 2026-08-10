@@ -1,0 +1,108 @@
+{
+  "id": "active_revolutionary_01_registry_infiltration_i2",
+  "kind": "immediate",
+  "titleKey": "event.active_revolutionary_01_registry_infiltration_i2.title",
+  "textKey": "event.active_revolutionary_01_registry_infiltration_i2.text",
+  "choices": [
+    {
+      "id": "scan_register",
+      "textKey": "event.active_revolutionary_01_registry_infiltration_i2.choice.scan_register.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_revolutionary_01_registry_infiltration_i2.choice.scan_register.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_registry_infiltration_i3"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_revolutionary_01_registry_infiltration_i2.choice.scan_register.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_registry_infiltration_i3"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_revolutionary_01_registry_infiltration_i2.choice.scan_register.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_registry_infiltration_i3"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_revolutionary_01_registry_infiltration_i2.choice.scan_register.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_registry_infiltration_i3"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "copy_one_page",
+      "textKey": "event.active_revolutionary_01_registry_infiltration_i2.choice.copy_one_page.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_registry_infiltration_i2.choice.copy_one_page.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_revolutionary_01_registry_infiltration_i3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "memorize_codes",
+      "textKey": "event.active_revolutionary_01_registry_infiltration_i2.choice.memorize_codes.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_registry_infiltration_i2.choice.memorize_codes.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_revolutionary_01_registry_infiltration_i3"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

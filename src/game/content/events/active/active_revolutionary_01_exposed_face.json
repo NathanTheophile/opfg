@@ -1,0 +1,159 @@
+{
+  "id": "active_revolutionary_01_exposed_face",
+  "kind": "normal",
+  "titleKey": "event.active_revolutionary_01_exposed_face.title",
+  "textKey": "event.active_revolutionary_01_exposed_face.text",
+  "choices": [
+    {
+      "id": "own_statement",
+      "textKey": "event.active_revolutionary_01_exposed_face.choice.own_statement.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_revolutionary_01_exposed_face.choice.own_statement.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 5000000
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_revolutionary_01_exposed_face_echo",
+                "delayMonths": 8
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_revolutionary_01_exposed_face.choice.own_statement.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 3000000
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_revolutionary_01_exposed_face_echo",
+                "delayMonths": 8
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_revolutionary_01_exposed_face.choice.own_statement.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 2000000
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_revolutionary_01_exposed_face_echo",
+                "delayMonths": 8
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_revolutionary_01_exposed_face.choice.own_statement.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 6
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 3000000
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_revolutionary_01_exposed_face_echo",
+                "delayMonths": 8
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "go_quiet",
+      "textKey": "event.active_revolutionary_01_exposed_face.choice.go_quiet.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_exposed_face.choice.go_quiet.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "deceptive_blame",
+      "textKey": "event.active_revolutionary_01_exposed_face.choice.deceptive_blame.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_exposed_face.choice.deceptive_blame.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "deceptive"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 8
+      }
+    ]
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "id": "active_bounty_hunter_01_phantom_warrants_s03_quiet_trace",
+  "titleKey": "event.active_bounty_hunter_01_phantom_warrants_s03_quiet_trace.title",
+  "textKey": "event.active_bounty_hunter_01_phantom_warrants_s03_quiet_trace.text",
+  "choices": [
+    {
+      "id": "copy_numbers",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s03_quiet_trace.choice.copy_numbers.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s03_quiet_trace.choice.copy_numbers.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s04_quiet_archive",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "follow_payments",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s03_quiet_trace.choice.follow_payments.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s03_quiet_trace.choice.follow_payments.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s04_quiet_archive",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "bounty_hunter"
+    }
+  },
+  "eligibility": {
+    "type": "isOnLand"
+  }
+}

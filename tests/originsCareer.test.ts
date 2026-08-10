@@ -105,8 +105,19 @@ describe('complete pre-career pipeline', () => {
       ),
     ).toBe(true);
 
-    for (let adultEvents = 0; adultEvents < 3; adultEvents += 1) {
+    let adultSlotsConsumed = 0;
+    while (adultSlotsConsumed < 3) {
+      const ageBefore = state.ageMonths;
+      const slotBefore = state.slotInMonth;
+
       state = resolveFirst(state);
+
+      if (
+        state.ageMonths !== ageBefore ||
+        state.slotInMonth !== slotBefore
+      ) {
+        adultSlotsConsumed += 1;
+      }
     }
 
     expect(state).toMatchObject({

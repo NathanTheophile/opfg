@@ -1,0 +1,113 @@
+{
+  "id": "active_civilian_01_shared_workbench",
+  "titleKey": "event.active_civilian_01_shared_workbench.title",
+  "textKey": "event.active_civilian_01_shared_workbench.text",
+  "kind": "normal",
+  "lifetimeThreadSeed": true,
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "ship_repair"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "practical",
+      "textKey": "event.active_civilian_01_shared_workbench.choice.practical.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "practical_result",
+          "textKey": "event.active_civilian_01_shared_workbench.choice.practical.outcome.practical_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_first_backlog",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "paid",
+      "textKey": "event.active_civilian_01_shared_workbench.choice.paid.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paid_result",
+          "textKey": "event.active_civilian_01_shared_workbench.choice.paid.outcome.paid_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 60
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_first_backlog",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "teach",
+      "textKey": "event.active_civilian_01_shared_workbench.choice.teach.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "teach_result",
+          "textKey": "event.active_civilian_01_shared_workbench.choice.teach.outcome.teach_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_first_backlog",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "id": "active_bounty_hunter_01_phantom_warrants_s06_same_seal",
+  "titleKey": "event.active_bounty_hunter_01_phantom_warrants_s06_same_seal.title",
+  "textKey": "event.active_bounty_hunter_01_phantom_warrants_s06_same_seal.text",
+  "choices": [
+    {
+      "id": "compare_seal",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s06_same_seal.choice.compare_seal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s06_same_seal.choice.compare_seal.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s07_registry_test",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "trace_route",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s06_same_seal.choice.trace_route.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s06_same_seal.choice.trace_route.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s07_registry_test",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "scheduled",
+  "priority": 200,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "bounty_hunter"
+    }
+  },
+  "eligibility": {
+    "type": "isOnLand"
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "id": "active_bounty_hunter_01_promotion_confirmed",
+  "titleKey": "event.active_bounty_hunter_01_promotion_confirmed.title",
+  "textKey": "event.active_bounty_hunter_01_promotion_confirmed.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "bounty_hunter"
+      },
+      {
+        "type": "careerRankIs",
+        "rankId": "bounty_hunter_tracker"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 25
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "accept",
+      "textKey": "event.active_bounty_hunter_01_promotion_confirmed.choice.accept.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_promotion_confirmed.choice.accept.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "bounty_hunter_confirmed"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_humbly",
+      "textKey": "event.active_bounty_hunter_01_promotion_confirmed.choice.accept_humbly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_promotion_confirmed.choice.accept_humbly.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "bounty_hunter_confirmed"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

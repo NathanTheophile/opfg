@@ -1,0 +1,78 @@
+{
+  "id": "active_civilian_01_lt_public_trust",
+  "titleKey": "event.active_civilian_01_lt_public_trust.title",
+  "textKey": "event.active_civilian_01_lt_public_trust.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "preventive_days",
+      "textKey": "event.active_civilian_01_lt_public_trust.choice.preventive_days.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "preventive_days_result",
+          "textKey": "event.active_civilian_01_lt_public_trust.choice.preventive_days.outcome.preventive_days_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_outgrown_room",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "emergency_only",
+      "textKey": "event.active_civilian_01_lt_public_trust.choice.emergency_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "emergency_only_result",
+          "textKey": "event.active_civilian_01_lt_public_trust.choice.emergency_only.outcome.emergency_only_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_outgrown_room",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

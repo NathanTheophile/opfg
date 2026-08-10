@@ -1,0 +1,115 @@
+{
+  "id": "active_bounty_hunter_01_phantom_warrants_s04_public_reaction",
+  "titleKey": "event.active_bounty_hunter_01_phantom_warrants_s04_public_reaction.title",
+  "textKey": "event.active_bounty_hunter_01_phantom_warrants_s04_public_reaction.text",
+  "choices": [
+    {
+      "id": "defend_claim",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s04_public_reaction.choice.defend_claim.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_bounty_hunter_01_phantom_warrants_s04_public_reaction.choice.defend_claim.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_phantom_warrants_s05_public_cost",
+                "delayMonths": 14
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_bounty_hunter_01_phantom_warrants_s04_public_reaction.choice.defend_claim.outcome.failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_phantom_warrants_s05_public_cost",
+                "delayMonths": 14
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_bounty_hunter_01_phantom_warrants_s04_public_reaction.choice.defend_claim.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_phantom_warrants_s05_public_cost",
+                "delayMonths": 14
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_bounty_hunter_01_phantom_warrants_s04_public_reaction.choice.defend_claim.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_phantom_warrants_s05_public_cost",
+                "delayMonths": 14
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "step_back",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s04_public_reaction.choice.step_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s04_public_reaction.choice.step_back.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s05_public_cost",
+              "delayMonths": 14
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "bounty_hunter"
+    }
+  },
+  "eligibility": {
+    "type": "isOnLand"
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "id": "active_civilian_01_dockside_triage",
+  "titleKey": "event.active_civilian_01_dockside_triage.title",
+  "textKey": "event.active_civilian_01_dockside_triage.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "medical"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "triage",
+      "textKey": "event.active_civilian_01_dockside_triage.choice.triage.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "triage_criticalFailure",
+            "textKey": "event.active_civilian_01_dockside_triage.choice.triage.outcome.triage_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_dockside_triage_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "triage_failure",
+            "textKey": "event.active_civilian_01_dockside_triage.choice.triage.outcome.triage_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_dockside_triage_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "triage_success",
+            "textKey": "event.active_civilian_01_dockside_triage.choice.triage.outcome.triage_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_dockside_triage_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "triage_criticalSuccess",
+            "textKey": "event.active_civilian_01_dockside_triage.choice.triage.outcome.triage_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_dockside_triage_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "medic_role",
+      "textKey": "event.active_civilian_01_dockside_triage.choice.medic_role.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "medic_role_result",
+          "textKey": "event.active_civilian_01_dockside_triage.choice.medic_role.outcome.medic_role_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_dockside_triage_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "medic"
+      }
+    },
+    {
+      "id": "clear_floor",
+      "textKey": "event.active_civilian_01_dockside_triage.choice.clear_floor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "clear_floor_result",
+          "textKey": "event.active_civilian_01_dockside_triage.choice.clear_floor.outcome.clear_floor_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_dockside_triage_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

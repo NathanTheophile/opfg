@@ -1,0 +1,146 @@
+{
+  "id": "active_revolutionary_01_backroom_contact",
+  "kind": "normal",
+  "titleKey": "event.active_revolutionary_01_backroom_contact.title",
+  "textKey": "event.active_revolutionary_01_backroom_contact.text",
+  "choices": [
+    {
+      "id": "accept_quietly",
+      "textKey": "event.active_revolutionary_01_backroom_contact.choice.accept_quietly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_backroom_contact.choice.accept_quietly.outcome.done.text",
+          "effects": [
+            {
+              "type": "setCareerAffiliation",
+              "affiliationId": "revolutionary"
+            },
+            {
+              "type": "setCareerRank",
+              "rankId": "revolutionary_recruit"
+            },
+            {
+              "type": "clearCareerTitle"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_why",
+      "textKey": "event.active_revolutionary_01_backroom_contact.choice.ask_why.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_backroom_contact.choice.ask_why.outcome.done.text",
+          "effects": [
+            {
+              "type": "setCareerAffiliation",
+              "affiliationId": "revolutionary"
+            },
+            {
+              "type": "setCareerRank",
+              "rankId": "revolutionary_recruit"
+            },
+            {
+              "type": "clearCareerTitle"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "family_sign",
+      "textKey": "event.active_revolutionary_01_backroom_contact.choice.family_sign.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_backroom_contact.choice.family_sign.outcome.done.text",
+          "effects": [
+            {
+              "type": "setCareerAffiliation",
+              "affiliationId": "revolutionary"
+            },
+            {
+              "type": "setCareerRank",
+              "rankId": "revolutionary_recruit"
+            },
+            {
+              "type": "clearCareerTitle"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "affiliationIs",
+        "affiliationId": "revolutionary"
+      }
+    },
+    {
+      "id": "walk_away",
+      "textKey": "event.active_revolutionary_01_backroom_contact.choice.walk_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_backroom_contact.choice.walk_away.outcome.done.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "food"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          }
+        ]
+      }
+    ]
+  }
+}

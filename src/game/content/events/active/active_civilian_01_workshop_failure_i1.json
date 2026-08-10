@@ -1,0 +1,86 @@
+{
+  "id": "active_civilian_01_workshop_failure_i1",
+  "titleKey": "event.active_civilian_01_workshop_failure_i1.title",
+  "textKey": "event.active_civilian_01_workshop_failure_i1.text",
+  "kind": "immediate",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "trace",
+      "textKey": "event.active_civilian_01_workshop_failure_i1.choice.trace.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trace_result",
+          "textKey": "event.active_civilian_01_workshop_failure_i1.choice.trace.outcome.trace_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_workshop_failure_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "replace",
+      "textKey": "event.active_civilian_01_workshop_failure_i1.choice.replace.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "replace_result",
+          "textKey": "event.active_civilian_01_workshop_failure_i1.choice.replace.outcome.replace_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_workshop_failure_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "resourceful",
+      "textKey": "event.active_civilian_01_workshop_failure_i1.choice.resourceful.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resourceful_result",
+          "textKey": "event.active_civilian_01_workshop_failure_i1.choice.resourceful.outcome.resourceful_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_workshop_failure_i2"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "resourceful"
+      }
+    }
+  ]
+}

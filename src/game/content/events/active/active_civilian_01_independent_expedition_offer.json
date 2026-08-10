@@ -1,0 +1,169 @@
+{
+  "id": "active_civilian_01_independent_expedition_offer",
+  "titleKey": "event.active_civilian_01_independent_expedition_offer.title",
+  "textKey": "event.active_civilian_01_independent_expedition_offer.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "wilderness"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "isolated"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "research"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "survey",
+      "textKey": "event.active_civilian_01_independent_expedition_offer.choice.survey.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "survey_criticalFailure",
+            "textKey": "event.active_civilian_01_independent_expedition_offer.choice.survey.outcome.survey_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_civilian_01_independent_expedition_report",
+                "delayMonths": 4
+              }
+            ]
+          },
+          "failure": {
+            "id": "survey_failure",
+            "textKey": "event.active_civilian_01_independent_expedition_offer.choice.survey.outcome.survey_failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_civilian_01_independent_expedition_report",
+                "delayMonths": 4
+              }
+            ]
+          },
+          "success": {
+            "id": "survey_success",
+            "textKey": "event.active_civilian_01_independent_expedition_offer.choice.survey.outcome.survey_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_civilian_01_independent_expedition_report",
+                "delayMonths": 4
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "survey_criticalSuccess",
+            "textKey": "event.active_civilian_01_independent_expedition_offer.choice.survey.outcome.survey_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_civilian_01_independent_expedition_report",
+                "delayMonths": 4
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "scholar",
+      "textKey": "event.active_civilian_01_independent_expedition_offer.choice.scholar.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "scholar_result",
+          "textKey": "event.active_civilian_01_independent_expedition_offer.choice.scholar.outcome.scholar_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_independent_expedition_report",
+              "delayMonths": 4
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "scholar"
+      }
+    },
+    {
+      "id": "decline_risk",
+      "textKey": "event.active_civilian_01_independent_expedition_offer.choice.decline_risk.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decline_risk_result",
+          "textKey": "event.active_civilian_01_independent_expedition_offer.choice.decline_risk.outcome.decline_risk_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

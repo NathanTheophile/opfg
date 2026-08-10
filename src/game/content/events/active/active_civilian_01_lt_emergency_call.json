@@ -1,0 +1,78 @@
+{
+  "id": "active_civilian_01_lt_emergency_call",
+  "titleKey": "event.active_civilian_01_lt_emergency_call.title",
+  "textKey": "event.active_civilian_01_lt_emergency_call.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "drop_queue",
+      "textKey": "event.active_civilian_01_lt_emergency_call.choice.drop_queue.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "drop_queue_result",
+          "textKey": "event.active_civilian_01_lt_emergency_call.choice.drop_queue.outcome.drop_queue_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_night_shift",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "split_team",
+      "textKey": "event.active_civilian_01_lt_emergency_call.choice.split_team.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "split_team_result",
+          "textKey": "event.active_civilian_01_lt_emergency_call.choice.split_team.outcome.split_team_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_night_shift",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

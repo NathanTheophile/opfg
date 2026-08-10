@@ -1,0 +1,87 @@
+{
+  "id": "active_bounty_hunter_01_notice_at_counter",
+  "titleKey": "event.active_bounty_hunter_01_notice_at_counter.title",
+  "textKey": "event.active_bounty_hunter_01_notice_at_counter.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "take_notice",
+      "textKey": "event.active_bounty_hunter_01_notice_at_counter.choice.take_notice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_notice_at_counter.choice.take_notice.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "setCareerAffiliation",
+              "affiliationId": "bounty_hunter"
+            },
+            {
+              "type": "clearCareerTitle"
+            },
+            {
+              "type": "setCareerRank",
+              "rankId": "bounty_hunter_novice"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_terms",
+      "textKey": "event.active_bounty_hunter_01_notice_at_counter.choice.ask_terms.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_notice_at_counter.choice.ask_terms.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_it",
+      "textKey": "event.active_bounty_hunter_01_notice_at_counter.choice.leave_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_notice_at_counter.choice.leave_it.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

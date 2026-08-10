@@ -1,0 +1,90 @@
+{
+  "id": "active_bounty_hunter_01_phantom_warrants_s10_scapegoat",
+  "titleKey": "event.active_bounty_hunter_01_phantom_warrants_s10_scapegoat.title",
+  "textKey": "event.active_bounty_hunter_01_phantom_warrants_s10_scapegoat.text",
+  "choices": [
+    {
+      "id": "protect",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s10_scapegoat.choice.protect.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s10_scapegoat.choice.protect.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s11_protect_witness",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "bait",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s10_scapegoat.choice.bait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s10_scapegoat.choice.bait.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s11_bait_setup",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "sell_copy",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s10_scapegoat.choice.sell_copy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s10_scapegoat.choice.sell_copy.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 7000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s11_sell_copy",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "scheduled",
+  "priority": 200,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "bounty_hunter"
+    }
+  },
+  "eligibility": {
+    "type": "isOnLand"
+  }
+}

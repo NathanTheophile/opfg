@@ -1,0 +1,165 @@
+{
+  "id": "active_civilian_01_workshop_failure",
+  "titleKey": "event.active_civilian_01_workshop_failure.title",
+  "textKey": "event.active_civilian_01_workshop_failure.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "ship_repair"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "industrial"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "diagnose",
+      "textKey": "event.active_civilian_01_workshop_failure.choice.diagnose.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "diagnose_criticalFailure",
+            "textKey": "event.active_civilian_01_workshop_failure.choice.diagnose.outcome.diagnose_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_workshop_failure_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "diagnose_failure",
+            "textKey": "event.active_civilian_01_workshop_failure.choice.diagnose.outcome.diagnose_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_workshop_failure_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "diagnose_success",
+            "textKey": "event.active_civilian_01_workshop_failure.choice.diagnose.outcome.diagnose_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_workshop_failure_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "diagnose_criticalSuccess",
+            "textKey": "event.active_civilian_01_workshop_failure.choice.diagnose.outcome.diagnose_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_workshop_failure_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "shipwright",
+      "textKey": "event.active_civilian_01_workshop_failure.choice.shipwright.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shipwright_result",
+          "textKey": "event.active_civilian_01_workshop_failure.choice.shipwright.outcome.shipwright_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_workshop_failure_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    },
+    {
+      "id": "own_it",
+      "textKey": "event.active_civilian_01_workshop_failure.choice.own_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "own_it_result",
+          "textKey": "event.active_civilian_01_workshop_failure.choice.own_it.outcome.own_it_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_workshop_failure_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

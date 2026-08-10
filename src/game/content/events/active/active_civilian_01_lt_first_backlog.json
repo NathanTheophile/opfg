@@ -1,0 +1,100 @@
+{
+  "id": "active_civilian_01_lt_first_backlog",
+  "titleKey": "event.active_civilian_01_lt_first_backlog.title",
+  "textKey": "event.active_civilian_01_lt_first_backlog.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "essential_first",
+      "textKey": "event.active_civilian_01_lt_first_backlog.choice.essential_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "essential_first_result",
+          "textKey": "event.active_civilian_01_lt_first_backlog.choice.essential_first.outcome.essential_first_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_choose_shape",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "orderly_queue",
+      "textKey": "event.active_civilian_01_lt_first_backlog.choice.orderly_queue.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "orderly_queue_result",
+          "textKey": "event.active_civilian_01_lt_first_backlog.choice.orderly_queue.outcome.orderly_queue_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_choose_shape",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "paid_priority",
+      "textKey": "event.active_civilian_01_lt_first_backlog.choice.paid_priority.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paid_priority_result",
+          "textKey": "event.active_civilian_01_lt_first_backlog.choice.paid_priority.outcome.paid_priority_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 100
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_choose_shape",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

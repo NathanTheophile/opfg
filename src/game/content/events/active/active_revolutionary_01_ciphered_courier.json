@@ -1,0 +1,149 @@
+{
+  "id": "active_revolutionary_01_ciphered_courier",
+  "kind": "normal",
+  "titleKey": "event.active_revolutionary_01_ciphered_courier.title",
+  "textKey": "event.active_revolutionary_01_ciphered_courier.text",
+  "choices": [
+    {
+      "id": "read_spacing",
+      "textKey": "event.active_revolutionary_01_ciphered_courier.choice.read_spacing.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_revolutionary_01_ciphered_courier.choice.read_spacing.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_ciphered_courier_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_revolutionary_01_ciphered_courier.choice.read_spacing.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_ciphered_courier_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_revolutionary_01_ciphered_courier.choice.read_spacing.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_ciphered_courier_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_revolutionary_01_ciphered_courier.choice.read_spacing.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_ciphered_courier_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "carry_sealed",
+      "textKey": "event.active_revolutionary_01_ciphered_courier.choice.carry_sealed.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_ciphered_courier.choice.carry_sealed.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_revolutionary_01_ciphered_courier_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "deceptive_probe",
+      "textKey": "event.active_revolutionary_01_ciphered_courier.choice.deceptive_probe.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_ciphered_courier.choice.deceptive_probe.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_revolutionary_01_ciphered_courier_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "deceptive"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          }
+        ]
+      }
+    ]
+  }
+}

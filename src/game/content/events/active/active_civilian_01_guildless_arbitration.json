@@ -1,0 +1,152 @@
+{
+  "id": "active_civilian_01_guildless_arbitration",
+  "titleKey": "event.active_civilian_01_guildless_arbitration.title",
+  "textKey": "event.active_civilian_01_guildless_arbitration.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "mediate",
+      "textKey": "event.active_civilian_01_guildless_arbitration.choice.mediate.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "mediate_criticalFailure",
+            "textKey": "event.active_civilian_01_guildless_arbitration.choice.mediate.outcome.mediate_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_guildless_arbitration_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "mediate_failure",
+            "textKey": "event.active_civilian_01_guildless_arbitration.choice.mediate.outcome.mediate_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_guildless_arbitration_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "mediate_success",
+            "textKey": "event.active_civilian_01_guildless_arbitration.choice.mediate.outcome.mediate_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_guildless_arbitration_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "mediate_criticalSuccess",
+            "textKey": "event.active_civilian_01_guildless_arbitration.choice.mediate.outcome.mediate_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_guildless_arbitration_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "listen",
+      "textKey": "event.active_civilian_01_guildless_arbitration.choice.listen.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "listen_result",
+          "textKey": "event.active_civilian_01_guildless_arbitration.choice.listen.outcome.listen_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_guildless_arbitration_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cautious",
+      "textKey": "event.active_civilian_01_guildless_arbitration.choice.cautious.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cautious_result",
+          "textKey": "event.active_civilian_01_guildless_arbitration.choice.cautious.outcome.cautious_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_guildless_arbitration_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "cautious"
+      }
+    }
+  ]
+}

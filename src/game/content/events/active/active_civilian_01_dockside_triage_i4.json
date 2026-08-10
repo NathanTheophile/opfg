@@ -1,0 +1,89 @@
+{
+  "id": "active_civilian_01_dockside_triage_i4",
+  "titleKey": "event.active_civilian_01_dockside_triage_i4.title",
+  "textKey": "event.active_civilian_01_dockside_triage_i4.text",
+  "kind": "immediate",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "stabilize_inside",
+      "textKey": "event.active_civilian_01_dockside_triage_i4.choice.stabilize_inside.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stabilize_inside_result",
+          "textKey": "event.active_civilian_01_dockside_triage_i4.choice.stabilize_inside.outcome.stabilize_inside_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_dockside_triage_i5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "field_team",
+      "textKey": "event.active_civilian_01_dockside_triage_i4.choice.field_team.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "field_team_result",
+          "textKey": "event.active_civilian_01_dockside_triage_i4.choice.field_team.outcome.field_team_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_dockside_triage_i5"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "medic_team",
+      "textKey": "event.active_civilian_01_dockside_triage_i4.choice.medic_team.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "medic_team_result",
+          "textKey": "event.active_civilian_01_dockside_triage_i4.choice.medic_team.outcome.medic_team_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_dockside_triage_i5"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "medic"
+      }
+    }
+  ]
+}

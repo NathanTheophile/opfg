@@ -1,0 +1,110 @@
+{
+  "id": "active_civilian_01_repair_or_replace",
+  "titleKey": "event.active_civilian_01_repair_or_replace.title",
+  "textKey": "event.active_civilian_01_repair_or_replace.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "ship_repair"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "industrial"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "repair",
+      "textKey": "event.active_civilian_01_repair_or_replace.choice.repair.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "repair_result",
+          "textKey": "event.active_civilian_01_repair_or_replace.choice.repair.outcome.repair_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "replace",
+      "textKey": "event.active_civilian_01_repair_or_replace.choice.replace.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "replace_result",
+          "textKey": "event.active_civilian_01_repair_or_replace.choice.replace.outcome.replace_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "resourceful",
+      "textKey": "event.active_civilian_01_repair_or_replace.choice.resourceful.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resourceful_result",
+          "textKey": "event.active_civilian_01_repair_or_replace.choice.resourceful.outcome.resourceful_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "resourceful"
+      }
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "id": "active_civilian_01_lt_what_remains",
+  "titleKey": "event.active_civilian_01_lt_what_remains.title",
+  "textKey": "event.active_civilian_01_lt_what_remains.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "craft_house",
+      "textKey": "event.active_civilian_01_lt_what_remains.choice.craft_house.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "craft_house_result",
+          "textKey": "event.active_civilian_01_lt_what_remains.choice.craft_house.outcome.craft_house_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_craft_house",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "civic_service",
+      "textKey": "event.active_civilian_01_lt_what_remains.choice.civic_service.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "civic_service_result",
+          "textKey": "event.active_civilian_01_lt_what_remains.choice.civic_service.outcome.civic_service_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_civic_service",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "school_bench",
+      "textKey": "event.active_civilian_01_lt_what_remains.choice.school_bench.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "school_bench_result",
+          "textKey": "event.active_civilian_01_lt_what_remains.choice.school_bench.outcome.school_bench_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_school_bench",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

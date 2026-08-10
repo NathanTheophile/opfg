@@ -1,0 +1,164 @@
+{
+  "id": "active_civilian_01_lt_shortage_year",
+  "titleKey": "event.active_civilian_01_lt_shortage_year.title",
+  "textKey": "event.active_civilian_01_lt_shortage_year.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "rebalance",
+      "textKey": "event.active_civilian_01_lt_shortage_year.choice.rebalance.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rebalance_criticalFailure",
+            "textKey": "event.active_civilian_01_lt_shortage_year.choice.rebalance.outcome.rebalance_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_civilian_01_lt_debt_pressure",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "rebalance_failure",
+            "textKey": "event.active_civilian_01_lt_shortage_year.choice.rebalance.outcome.rebalance_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_civilian_01_lt_debt_pressure",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "rebalance_success",
+            "textKey": "event.active_civilian_01_lt_shortage_year.choice.rebalance.outcome.rebalance_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_civilian_01_lt_reserve_plan",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "rebalance_criticalSuccess",
+            "textKey": "event.active_civilian_01_lt_shortage_year.choice.rebalance.outcome.rebalance_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_civilian_01_lt_reserve_plan",
+                "delayMonths": 18
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "shrink",
+      "textKey": "event.active_civilian_01_lt_shortage_year.choice.shrink.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shrink_result",
+          "textKey": "event.active_civilian_01_lt_shortage_year.choice.shrink.outcome.shrink_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_reserve_plan",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "borrow",
+      "textKey": "event.active_civilian_01_lt_shortage_year.choice.borrow.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "borrow_result",
+          "textKey": "event.active_civilian_01_lt_shortage_year.choice.borrow.outcome.borrow_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -80
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_debt_pressure",
+              "delayMonths": 18
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 80
+      }
+    }
+  ]
+}

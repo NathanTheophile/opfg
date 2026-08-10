@@ -1,0 +1,179 @@
+{
+  "id": "active_bounty_hunter_01_rival_over_ledge",
+  "titleKey": "event.active_bounty_hunter_01_rival_over_ledge.title",
+  "textKey": "event.active_bounty_hunter_01_rival_over_ledge.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "bounty_hunter"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "mountain"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "industrial"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "rescue",
+      "textKey": "event.active_bounty_hunter_01_rival_over_ledge.choice.rescue.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_bounty_hunter_01_rival_over_ledge.choice.rescue.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_rival_over_ledge_debt",
+                "delayMonths": 6
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_bounty_hunter_01_rival_over_ledge.choice.rescue.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_rival_over_ledge_debt",
+                "delayMonths": 6
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_bounty_hunter_01_rival_over_ledge.choice.rescue.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_rival_over_ledge_debt",
+                "delayMonths": 6
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_bounty_hunter_01_rival_over_ledge.choice.rescue.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 1200
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_rival_over_ledge_debt",
+                "delayMonths": 6
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "take_target",
+      "textKey": "event.active_bounty_hunter_01_rival_over_ledge.choice.take_target.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_rival_over_ledge.choice.take_target.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 3200
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "haki_call",
+      "textKey": "event.active_bounty_hunter_01_rival_over_ledge.choice.haki_call.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_rival_over_ledge.choice.haki_call.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 2600
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_rival_over_ledge_debt",
+              "delayMonths": 6
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    }
+  ],
+  "kind": "normal"
+}

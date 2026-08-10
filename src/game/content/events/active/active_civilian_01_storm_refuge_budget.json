@@ -1,0 +1,127 @@
+{
+  "id": "active_civilian_01_storm_refuge_budget",
+  "titleKey": "event.active_civilian_01_storm_refuge_budget.title",
+  "textKey": "event.active_civilian_01_storm_refuge_budget.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "village"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "coastal"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "fund",
+      "textKey": "event.active_civilian_01_storm_refuge_budget.choice.fund.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fund_result",
+          "textKey": "event.active_civilian_01_storm_refuge_budget.choice.fund.outcome.fund_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -250
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_storm_refuge_audit",
+              "delayMonths": 8
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 250
+      }
+    },
+    {
+      "id": "targeted",
+      "textKey": "event.active_civilian_01_storm_refuge_budget.choice.targeted.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "targeted_result",
+          "textKey": "event.active_civilian_01_storm_refuge_budget.choice.targeted.outcome.targeted_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -100
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_storm_refuge_audit",
+              "delayMonths": 8
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 100
+      }
+    },
+    {
+      "id": "organize",
+      "textKey": "event.active_civilian_01_storm_refuge_budget.choice.organize.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "organize_result",
+          "textKey": "event.active_civilian_01_storm_refuge_budget.choice.organize.outcome.organize_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_storm_refuge_audit",
+              "delayMonths": 8
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

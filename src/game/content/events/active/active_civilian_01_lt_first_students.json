@@ -1,0 +1,78 @@
+{
+  "id": "active_civilian_01_lt_first_students",
+  "titleKey": "event.active_civilian_01_lt_first_students.title",
+  "textKey": "event.active_civilian_01_lt_first_students.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "practice_scrap",
+      "textKey": "event.active_civilian_01_lt_first_students.choice.practice_scrap.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "practice_scrap_result",
+          "textKey": "event.active_civilian_01_lt_first_students.choice.practice_scrap.outcome.practice_scrap_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_classroom_mistake",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "paired_work",
+      "textKey": "event.active_civilian_01_lt_first_students.choice.paired_work.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paired_work_result",
+          "textKey": "event.active_civilian_01_lt_first_students.choice.paired_work.outcome.paired_work_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_classroom_mistake",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

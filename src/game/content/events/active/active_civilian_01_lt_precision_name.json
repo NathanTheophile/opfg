@@ -1,0 +1,77 @@
+{
+  "id": "active_civilian_01_lt_precision_name",
+  "titleKey": "event.active_civilian_01_lt_precision_name.title",
+  "textKey": "event.active_civilian_01_lt_precision_name.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "method_not_name",
+      "textKey": "event.active_civilian_01_lt_precision_name.choice.method_not_name.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "method_not_name_result",
+          "textKey": "event.active_civilian_01_lt_precision_name.choice.method_not_name.outcome.method_not_name_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_outgrown_room",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "sign_work",
+      "textKey": "event.active_civilian_01_lt_precision_name.choice.sign_work.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sign_work_result",
+          "textKey": "event.active_civilian_01_lt_precision_name.choice.sign_work.outcome.sign_work_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_outgrown_room",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

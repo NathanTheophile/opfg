@@ -1,0 +1,153 @@
+{
+  "id": "active_revolutionary_01_underground_press",
+  "kind": "normal",
+  "titleKey": "event.active_revolutionary_01_underground_press.title",
+  "textKey": "event.active_revolutionary_01_underground_press.text",
+  "choices": [
+    {
+      "id": "edit_evidence",
+      "textKey": "event.active_revolutionary_01_underground_press.choice.edit_evidence.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_revolutionary_01_underground_press.choice.edit_evidence.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_underground_press_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_revolutionary_01_underground_press.choice.edit_evidence.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_underground_press_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_revolutionary_01_underground_press.choice.edit_evidence.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_underground_press_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_revolutionary_01_underground_press.choice.edit_evidence.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_underground_press_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "write_plain",
+      "textKey": "event.active_revolutionary_01_underground_press.choice.write_plain.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_underground_press.choice.write_plain.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_revolutionary_01_underground_press_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fund_ink",
+      "textKey": "event.active_revolutionary_01_underground_press.choice.fund_ink.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_underground_press.choice.fund_ink.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_revolutionary_01_underground_press_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      }
+    ]
+  }
+}

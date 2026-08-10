@@ -1,0 +1,92 @@
+{
+  "id": "active_revolutionary_01_lantern_three_doors",
+  "kind": "scheduled",
+  "titleKey": "event.active_revolutionary_01_lantern_three_doors.title",
+  "textKey": "event.active_revolutionary_01_lantern_three_doors.text",
+  "choices": [
+    {
+      "id": "compartment",
+      "textKey": "event.active_revolutionary_01_lantern_three_doors.choice.compartment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_lantern_three_doors.choice.compartment.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_revolutionary_01_lantern_blind_links",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shared_table",
+      "textKey": "event.active_revolutionary_01_lantern_three_doors.choice.shared_table.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_lantern_three_doors.choice.shared_table.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_revolutionary_01_lantern_shared_routes",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "local_stewards",
+      "textKey": "event.active_revolutionary_01_lantern_three_doors.choice.local_stewards.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_lantern_three_doors.choice.local_stewards.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_revolutionary_01_lantern_local_stewards",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "priority": 200,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "revolutionary"
+    }
+  },
+  "fallbackEventId": "active_revolutionary_01_lantern_after_departure"
+}

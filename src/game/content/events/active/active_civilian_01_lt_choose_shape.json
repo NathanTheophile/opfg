@@ -1,0 +1,101 @@
+{
+  "id": "active_civilian_01_lt_choose_shape",
+  "titleKey": "event.active_civilian_01_lt_choose_shape.title",
+  "textKey": "event.active_civilian_01_lt_choose_shape.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "precision",
+      "textKey": "event.active_civilian_01_lt_choose_shape.choice.precision.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "precision_result",
+          "textKey": "event.active_civilian_01_lt_choose_shape.choice.precision.outcome.precision_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_precision_queue",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "emergency",
+      "textKey": "event.active_civilian_01_lt_choose_shape.choice.emergency.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "emergency_result",
+          "textKey": "event.active_civilian_01_lt_choose_shape.choice.emergency.outcome.emergency_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_emergency_call",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "teaching",
+      "textKey": "event.active_civilian_01_lt_choose_shape.choice.teaching.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "teaching_result",
+          "textKey": "event.active_civilian_01_lt_choose_shape.choice.teaching.outcome.teaching_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_first_students",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

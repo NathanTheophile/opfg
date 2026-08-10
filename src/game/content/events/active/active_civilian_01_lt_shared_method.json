@@ -1,0 +1,78 @@
+{
+  "id": "active_civilian_01_lt_shared_method",
+  "titleKey": "event.active_civilian_01_lt_shared_method.title",
+  "textKey": "event.active_civilian_01_lt_shared_method.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "core_rules",
+      "textKey": "event.active_civilian_01_lt_shared_method.choice.core_rules.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "core_rules_result",
+          "textKey": "event.active_civilian_01_lt_shared_method.choice.core_rules.outcome.core_rules_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_outgrown_room",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "demonstrations",
+      "textKey": "event.active_civilian_01_lt_shared_method.choice.demonstrations.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "demonstrations_result",
+          "textKey": "event.active_civilian_01_lt_shared_method.choice.demonstrations.outcome.demonstrations_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_outgrown_room",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

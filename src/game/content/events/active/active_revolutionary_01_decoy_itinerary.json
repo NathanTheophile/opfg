@@ -1,0 +1,120 @@
+{
+  "id": "active_revolutionary_01_decoy_itinerary",
+  "kind": "normal",
+  "titleKey": "event.active_revolutionary_01_decoy_itinerary.title",
+  "textKey": "event.active_revolutionary_01_decoy_itinerary.text",
+  "choices": [
+    {
+      "id": "three_errands",
+      "textKey": "event.active_revolutionary_01_decoy_itinerary.choice.three_errands.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_decoy_itinerary.choice.three_errands.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "conflicting_times",
+      "textKey": "event.active_revolutionary_01_decoy_itinerary.choice.conflicting_times.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_decoy_itinerary.choice.conflicting_times.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "deceptive_route",
+      "textKey": "event.active_revolutionary_01_decoy_itinerary.choice.deceptive_route.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_decoy_itinerary.choice.deceptive_route.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "deceptive"
+      }
+    },
+    {
+      "id": "no_civilian_decoys",
+      "textKey": "event.active_revolutionary_01_decoy_itinerary.choice.no_civilian_decoys.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_decoy_itinerary.choice.no_civilian_decoys.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "id": "active_civilian_01_lt_competing_request",
+  "titleKey": "event.active_civilian_01_lt_competing_request.title",
+  "textKey": "event.active_civilian_01_lt_competing_request.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "refuse_monopoly",
+      "textKey": "event.active_civilian_01_lt_competing_request.choice.refuse_monopoly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_monopoly_result",
+          "textKey": "event.active_civilian_01_lt_competing_request.choice.refuse_monopoly.outcome.refuse_monopoly_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_shortage_year",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "limited_contract",
+      "textKey": "event.active_civilian_01_lt_competing_request.choice.limited_contract.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "limited_contract_result",
+          "textKey": "event.active_civilian_01_lt_competing_request.choice.limited_contract.outcome.limited_contract_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 250
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_shortage_year",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_contract",
+      "textKey": "event.active_civilian_01_lt_competing_request.choice.take_contract.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_contract_result",
+          "textKey": "event.active_civilian_01_lt_competing_request.choice.take_contract.outcome.take_contract_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 500
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_shortage_year",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

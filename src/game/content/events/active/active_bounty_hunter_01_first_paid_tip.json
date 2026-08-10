@@ -1,0 +1,168 @@
+{
+  "id": "active_bounty_hunter_01_first_paid_tip",
+  "titleKey": "event.active_bounty_hunter_01_first_paid_tip.title",
+  "textKey": "event.active_bounty_hunter_01_first_paid_tip.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "criminal"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "follow_tip",
+      "textKey": "event.active_bounty_hunter_01_first_paid_tip.choice.follow_tip.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_bounty_hunter_01_first_paid_tip.choice.follow_tip.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_bounty_hunter_01_first_paid_tip.choice.follow_tip.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_bounty_hunter_01_first_paid_tip.choice.follow_tip.outcome.success.text",
+            "effects": [
+              {
+                "type": "setCareerAffiliation",
+                "affiliationId": "bounty_hunter"
+              },
+              {
+                "type": "clearCareerTitle"
+              },
+              {
+                "type": "setCareerRank",
+                "rankId": "bounty_hunter_novice"
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 1200
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_bounty_hunter_01_first_paid_tip.choice.follow_tip.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setCareerAffiliation",
+                "affiliationId": "bounty_hunter"
+              },
+              {
+                "type": "clearCareerTitle"
+              },
+              {
+                "type": "setCareerRank",
+                "rankId": "bounty_hunter_novice"
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 1500
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "buy_details",
+      "textKey": "event.active_bounty_hunter_01_first_paid_tip.choice.buy_details.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_first_paid_tip.choice.buy_details.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "decline",
+      "textKey": "event.active_bounty_hunter_01_first_paid_tip.choice.decline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_first_paid_tip.choice.decline.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}
