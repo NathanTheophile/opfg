@@ -1,0 +1,156 @@
+.opfg-name-ornament {
+  --ornament-metal: color-mix(in srgb, var(--gold) 76%, #2a1810);
+  --ornament-soft: color-mix(in srgb, var(--gold) 48%, transparent);
+  --ornament-accent: var(--gold);
+  display: grid;
+  grid-template-columns: minmax(1rem, 1fr) clamp(2.3rem, 5vw, 3.4rem) minmax(0, auto) clamp(2.3rem, 5vw, 3.4rem) minmax(1rem, 1fr);
+  align-items: center;
+  width: 100%;
+  min-height: 2.85rem;
+  color: var(--ornament-metal);
+}
+
+.opfg-name-ornament[data-affiliation='marine'] {
+  --ornament-accent: color-mix(in srgb, var(--gold) 78%, #19333a);
+}
+
+.opfg-name-ornament[data-affiliation='revolutionary'] {
+  --ornament-accent: color-mix(in srgb, var(--gold) 72%, #7c332f);
+}
+
+.opfg-name-ornament[data-affiliation='bounty_hunter'] {
+  --ornament-accent: color-mix(in srgb, var(--gold) 72%, #2a1810);
+}
+
+.opfg-name-ornament__rail {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ornament-soft));
+}
+
+.opfg-name-ornament__rail.is-right {
+  transform: scaleX(-1);
+}
+
+.opfg-name-ornament__wing {
+  width: 100%;
+  height: 2.6rem;
+  overflow: visible;
+  fill: none;
+  stroke: var(--ornament-accent);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.2;
+  filter: drop-shadow(0 1px 1px rgb(18 14 11 / 0.7));
+}
+
+.opfg-name-ornament__wing.is-left {
+  transform: scaleX(-1);
+}
+
+.opfg-name-ornament__identity {
+  opacity: 0.74;
+  stroke-width: 1.35;
+}
+
+.opfg-name-ornament__layer {
+  opacity: 0;
+  transform-origin: 78px 22px;
+  transition: opacity 180ms ease, transform 220ms ease;
+}
+
+.opfg-name-ornament__layer.is-base {
+  opacity: 0.5;
+}
+
+.opfg-name-ornament[data-level='1'] .opfg-name-ornament__layer.is-1,
+.opfg-name-ornament[data-level='2'] .opfg-name-ornament__layer.is-1,
+.opfg-name-ornament[data-level='2'] .opfg-name-ornament__layer.is-2,
+.opfg-name-ornament[data-level='3'] .opfg-name-ornament__layer.is-1,
+.opfg-name-ornament[data-level='3'] .opfg-name-ornament__layer.is-2,
+.opfg-name-ornament[data-level='3'] .opfg-name-ornament__layer.is-3,
+.opfg-name-ornament[data-level='4'] .opfg-name-ornament__layer.is-1,
+.opfg-name-ornament[data-level='4'] .opfg-name-ornament__layer.is-2,
+.opfg-name-ornament[data-level='4'] .opfg-name-ornament__layer.is-3,
+.opfg-name-ornament[data-level='4'] .opfg-name-ornament__layer.is-4 {
+  opacity: 0.82;
+  transform: translateX(0) scale(1);
+}
+
+.opfg-name-ornament__layer.is-2,
+.opfg-name-ornament__layer.is-3,
+.opfg-name-ornament__layer.is-4 {
+  transform: translateX(-3px) scale(0.96);
+}
+
+.opfg-name-ornament[data-level='3'] .opfg-name-ornament__identity,
+.opfg-name-ornament[data-level='4'] .opfg-name-ornament__identity {
+  opacity: 0.94;
+}
+
+.opfg-name-ornament__name-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0.2rem 0.38rem;
+  isolation: isolate;
+}
+
+.opfg-name-ornament__name {
+  position: relative;
+  z-index: 2;
+  max-width: min(19rem, 42vw);
+  overflow: hidden;
+  color: var(--gold);
+  font-family: var(--font-display-family);
+  font-size: var(--ui-hud-name-size, 1.2rem);
+  font-weight: var(--font-display-weight, 700);
+  letter-spacing: 0.045em;
+  line-height: 1.08;
+  text-overflow: ellipsis;
+  text-shadow: 0 2px 10px rgb(18 14 11 / 0.72);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.opfg-name-ornament__sheen {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 30%, rgb(232 215 181 / 0.2) 48%, rgb(213 162 83 / 0.12) 55%, transparent 72%);
+  transform: translateX(-135%);
+  animation: opfg-name-ornament-threshold 520ms ease-out both;
+}
+
+@keyframes opfg-name-ornament-threshold {
+  from { transform: translateX(-135%); }
+  to { transform: translateX(135%); }
+}
+
+@media (max-width: 700px) {
+  .opfg-name-ornament {
+    grid-template-columns: minmax(0.35rem, 1fr) 2.2rem minmax(0, auto) 2.2rem minmax(0.35rem, 1fr);
+    min-height: 2.55rem;
+  }
+
+  .opfg-name-ornament__wing {
+    height: 2.25rem;
+  }
+
+  .opfg-name-ornament__name {
+    max-width: 48vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-name-ornament__layer {
+    transition: none;
+  }
+
+  .opfg-name-ornament__sheen {
+    display: none;
+    animation: none;
+  }
+}

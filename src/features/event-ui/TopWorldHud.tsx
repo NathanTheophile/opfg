@@ -27,6 +27,7 @@ import type {
 import type { LocaleId, Translator } from '@/game/localization';
 import { ContextTooltip } from './ContextTooltip';
 import { getUiTooltipKey } from './context-tooltip-copy';
+import { PlayerNameOrnament } from './PlayerNameOrnament';
 import './hud-panel-header.css';
 import './top-world-hud.css';
 
@@ -269,11 +270,11 @@ export function IdentityEnvironmentHudPanel({
   return (
     <Panel variant="strong" padding="none" className="opfg-hud-panel opfg-hud-panel--identity">
       <div className="opfg-hud-panel__body opfg-hud-identity">
-        <div className="opfg-hud-identity__nameplate">
-          <span aria-hidden="true" />
-          <strong>{state.player.profile.name ?? '—'}</strong>
-          <span aria-hidden="true" />
-        </div>
+        <PlayerNameOrnament
+          name={state.player.profile.name}
+          affiliationId={state.player.career.affiliationId}
+          reputation={state.player.career.reputation}
+        />
         <div className="opfg-hud-identity__title">{affiliationTitle}</div>
         <div className="opfg-hud-identity__separator" />
 
