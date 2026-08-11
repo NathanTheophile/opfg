@@ -1,0 +1,368 @@
+.opfg-audio-controls {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 100;
+  display: flex;
+  width: 14.4rem;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  user-select: none;
+}
+
+.opfg-utility-bar {
+  display: flex;
+  min-height: 2.5rem;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgb(253 230 138 / 0.2);
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.7rem;
+  background: rgb(12 10 9 / 0.82);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.28);
+  color: rgb(254 243 199 / 0.9);
+  backdrop-filter: blur(8px);
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease;
+}
+
+.opfg-utility-bar:hover {
+  border-color: rgb(253 230 138 / 0.36);
+  background: rgb(28 25 23 / 0.9);
+}
+
+.opfg-utility-bar__label {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.opfg-audio-mixer {
+  position: absolute;
+  right: calc(100% + 0.5rem);
+  bottom: 0;
+  width: 18rem;
+  border: 1px solid rgb(253 230 138 / 0.15);
+  border-radius: 0.65rem;
+  padding: 1rem;
+  background: rgb(12 10 9 / 0.96);
+  box-shadow: 0 18px 48px rgb(0 0 0 / 0.46);
+  backdrop-filter: blur(12px);
+}
+
+.opfg-music-player {
+  display: grid;
+  gap: 0.42rem;
+  width: 100%;
+  border: 1px solid rgb(253 230 138 / 0.15);
+  border-radius: 0.5rem;
+  padding: 0.58rem 0.7rem 0.62rem;
+  background: rgb(12 10 9 / 0.82);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.28);
+  color: rgb(254 243 199 / 0.9);
+  backdrop-filter: blur(8px);
+}
+
+.opfg-music-player__title-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.45rem;
+  color: rgb(252 211 77 / 0.82);
+}
+
+.opfg-music-title {
+  min-width: 0;
+  overflow: hidden;
+  color: rgb(254 243 199 / 0.95);
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+
+.opfg-music-title > span {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.opfg-music-title > span.is-scrolling {
+  animation:
+    opfg-track-title-scroll
+    6.5s
+    ease-in-out
+    0.8s
+    infinite
+    alternate;
+}
+
+.opfg-music-player__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.58rem;
+}
+
+.opfg-music-player__control {
+  display: grid;
+  width: 1.85rem;
+  height: 1.85rem;
+  place-items: center;
+  border-radius: 0.38rem;
+  color: rgb(254 243 199 / 0.72);
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+}
+
+.opfg-music-player__control:hover {
+  background: rgb(255 255 255 / 0.06);
+  color: rgb(254 243 199 / 1);
+}
+
+.opfg-music-player__control.is-primary {
+  border: 1px solid rgb(253 230 138 / 0.16);
+}
+
+.opfg-music-player__progress {
+  display: grid;
+  grid-template-columns:
+    2rem
+    minmax(0, 1fr)
+    2rem;
+  align-items: center;
+  gap: 0.42rem;
+  color: rgb(254 243 199 / 0.52);
+  font-size: 0.6rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.opfg-language-controls {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 10.6rem;
+  z-index: 100;
+  width: 14.4rem;
+  user-select: none;
+}
+
+.opfg-language-controls__button {
+  display: flex;
+  min-height: 2.5rem;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgb(253 230 138 / 0.2);
+  border-radius: 0.5rem;
+  padding: 0.45rem 0.7rem;
+  background: rgb(12 10 9 / 0.82);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.28);
+  color: rgb(254 243 199 / 0.9);
+  backdrop-filter: blur(8px);
+}
+
+.opfg-language-controls__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.opfg-language-controls__menu {
+  position: absolute;
+  right: calc(100% + 0.5rem);
+  bottom: 0;
+  width: 12rem;
+}
+
+@keyframes opfg-track-title-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform:
+      translateX(
+        calc(
+          -1 *
+          var(--opfg-track-scroll-distance)
+        )
+      );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-music-title > span.is-scrolling {
+    animation: none;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 48rem) {
+  .opfg-audio-controls,
+  .opfg-language-controls {
+    right: 0.75rem;
+  }
+}
+
+
+/* D1.7.1 square utility controls + compact player */
+
+.opfg-audio-controls {
+  width: 14.4rem;
+  align-items: flex-end;
+}
+
+/* Mixer trigger returns to the old square-panel language. */
+.opfg-utility-square {
+  display: grid;
+  width: 2.65rem;
+  height: 2.65rem;
+  place-items: center;
+  border: 1px solid rgb(253 230 138 / 0.2);
+  border-radius: 0.52rem;
+  background: rgb(12 10 9 / 0.82);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.28);
+  color: rgb(254 243 199 / 0.9);
+  backdrop-filter: blur(8px);
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease;
+}
+
+.opfg-utility-square:hover {
+  border-color: rgb(253 230 138 / 0.36);
+  background: rgb(28 25 23 / 0.9);
+}
+
+.opfg-language-controls {
+  width: 2.65rem !important;
+}
+
+.opfg-language-controls__button {
+  display: grid !important;
+  width: 2.65rem !important;
+  height: 2.65rem !important;
+  min-height: 2.65rem !important;
+  place-items: center !important;
+  padding: 0 !important;
+}
+
+.opfg-language-controls__label {
+  display: none !important;
+}
+
+/* Keep language -> mixer -> player vertically stacked on the same edge. */
+.opfg-language-controls {
+  bottom: 10.55rem;
+}
+
+.opfg-audio-controls {
+  bottom: 1.25rem;
+}
+
+.opfg-audio-controls > .opfg-utility-square {
+  margin-left: auto;
+  margin-bottom: 0;
+}
+
+/* Player buttons are deliberately small and secondary to the title/seekbar. */
+.opfg-music-player__controls {
+  gap: 0.42rem;
+}
+
+.opfg-music-player__control {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.32rem;
+}
+
+.opfg-music-player__control.is-primary {
+  width: 1.65rem;
+  height: 1.65rem;
+}
+
+/* Spotify-like seek: filled track, no visible knob. */
+.opfg-music-player__seek {
+  width: 100%;
+  min-width: 0;
+  height: 0.28rem;
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  border-radius: 999px;
+  outline: none;
+  background:
+    linear-gradient(
+      to right,
+      rgb(245 194 66 / 0.96)
+        0%,
+      rgb(245 194 66 / 0.96)
+        var(--opfg-seek-progress, 0%),
+      rgb(255 255 255 / 0.2)
+        var(--opfg-seek-progress, 0%),
+      rgb(255 255 255 / 0.2)
+        100%
+    );
+}
+
+.opfg-music-player__seek::-webkit-slider-runnable-track {
+  height: 0.28rem;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.opfg-music-player__seek::-webkit-slider-thumb {
+  width: 0;
+  height: 0;
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  background: transparent;
+}
+
+.opfg-music-player__seek::-moz-range-track {
+  height: 0.28rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.2);
+}
+
+.opfg-music-player__seek::-moz-range-progress {
+  height: 0.28rem;
+  border-radius: 999px;
+  background: rgb(245 194 66 / 0.96);
+}
+
+.opfg-music-player__seek::-moz-range-thumb {
+  width: 0;
+  height: 0;
+  border: 0;
+  background: transparent;
+}
+
+.opfg-music-player__seek:disabled {
+  cursor: default;
+  opacity: 0.42;
+}
+
+/* D1.8 flag centering + audio first-interaction polish ------------------ */
+
+.opfg-language-controls__button {
+  display: grid !important;
+  place-items: center !important;
+}
+
+.opfg-language-controls__button > img {
+  grid-area: 1 / 1;
+  display: block;
+  margin: 0 !important;
+  justify-self: center;
+  align-self: center;
+}

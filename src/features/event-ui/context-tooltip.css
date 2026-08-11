@@ -131,3 +131,81 @@
     animation-duration: 1ms;
   }
 }
+
+
+/* D1.7 default HUD tooltip repair
+ *
+ * Stat tooltips keep their coloured treatment.
+ * General HUD tooltips use a fully opaque dedicated surface.
+ */
+.opfg-context-tooltip {
+  z-index: 10000;
+}
+
+.opfg-context-tooltip[data-accented="false"] {
+  width: min(16.5rem, calc(100vw - 1.25rem));
+  max-width: min(16.5rem, calc(100vw - 1.25rem));
+  border-color: rgb(225 190 130 / 0.34);
+  background: #17100c !important;
+  box-shadow:
+    0 14px 38px rgb(0 0 0 / 0.58),
+    inset 0 1px 0 rgb(255 255 255 / 0.045);
+  backdrop-filter: none;
+}
+
+.opfg-context-tooltip[data-accented="false"]::before {
+  display: none;
+}
+
+.opfg-context-tooltip[data-accented="false"]
+  .opfg-context-tooltip__title {
+  color: #f0dfc0;
+}
+
+.opfg-context-tooltip[data-accented="false"]
+  .opfg-context-tooltip__detail {
+  color: rgb(231 216 194 / 0.72);
+}
+
+
+/* D1.7.1 general tooltip pointer + panel outline */
+
+.opfg-context-tooltip[data-accented="false"] {
+  border:
+    1px solid
+    var(--border-default) !important;
+  background:
+    #17100c !important;
+  box-shadow:
+    0 14px 38px rgb(0 0 0 / 0.52),
+    inset 0 1px 0 rgb(255 255 255 / 0.04);
+}
+
+/* Restore the same pointer language as stat tooltips. */
+.opfg-context-tooltip[data-accented="false"]::before {
+  display: block !important;
+  background: #17100c !important;
+  border-color:
+    var(--border-default) !important;
+}
+
+/* The placement rules already remove the two unwanted diamond borders. */
+.opfg-context-tooltip[data-accented="false"][data-placement="right"]::before {
+  border-top: 0 !important;
+  border-right: 0 !important;
+}
+
+.opfg-context-tooltip[data-accented="false"][data-placement="left"]::before {
+  border-bottom: 0 !important;
+  border-left: 0 !important;
+}
+
+.opfg-context-tooltip[data-accented="false"][data-placement="bottom"]::before {
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+}
+
+.opfg-context-tooltip[data-accented="false"][data-placement="top"]::before {
+  border-top: 0 !important;
+  border-left: 0 !important;
+}

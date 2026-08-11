@@ -6,6 +6,7 @@ import {
 } from '@/game/localization';
 import frFlag from './flags/fr.svg';
 import enFlag from './flags/en.svg';
+import '../audio/utility-controls.css';
 
 interface LanguageControlsProps {
   locale: LocaleId;
@@ -70,11 +71,11 @@ export function LanguageControls({
   return (
     <div
       ref={rootRef}
-      className="fixed bottom-5 right-[4.5rem] z-[100] select-none"
+      className="opfg-language-controls"
     >
       <button
         type="button"
-        className="grid size-10 place-items-center rounded-md border border-amber-200/20 bg-stone-950/75 shadow-lg backdrop-blur transition hover:border-amber-200/35 hover:bg-stone-900/85"
+        className="opfg-language-controls__button"
         aria-label={translate('ui.language.settings')}
         aria-expanded={open}
         onClick={() => setOpen((currentOpen) => !currentOpen)}
@@ -87,7 +88,7 @@ export function LanguageControls({
       </button>
 
       {open && (
-        <div className="absolute bottom-12 right-0 w-48 overflow-hidden rounded-lg border border-amber-200/15 bg-stone-950/92 p-2 shadow-2xl backdrop-blur-md">
+        <div className="opfg-language-controls__menu overflow-hidden rounded-lg border border-amber-200/15 bg-stone-950/95 p-2 shadow-2xl backdrop-blur-md">
           <div className="px-2 pb-2 pt-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-amber-100/55">
             {translate('ui.language.settings')}
           </div>

@@ -1,0 +1,116 @@
+{
+  "id": "ch_opening_household_revolutionary_01",
+  "kind": "normal",
+  "titleKey": "event.ch_opening_household_revolutionary_01.title",
+  "textKey": "event.ch_opening_household_revolutionary_01.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 12
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 23
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "familyStructureIs",
+          "familyStructureId": "orphan"
+        }
+      },
+      {
+        "type": "affiliationIs",
+        "affiliationId": "revolutionary"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "cover_paper",
+      "textKey": "event.ch_opening_household_revolutionary_01.choice.cover_paper.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paper_covered",
+          "textKey": "event.ch_opening_household_revolutionary_01.choice.cover_paper.outcome.paper_covered.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hand_paper",
+      "textKey": "event.ch_opening_household_revolutionary_01.choice.hand_paper.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paper_returned",
+          "textKey": "event.ch_opening_household_revolutionary_01.choice.hand_paper.outcome.paper_returned.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "point_door",
+      "textKey": "event.ch_opening_household_revolutionary_01.choice.point_door.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "warning_taken",
+          "textKey": "event.ch_opening_household_revolutionary_01.choice.point_door.outcome.warning_taken.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "crumple",
+      "textKey": "event.ch_opening_household_revolutionary_01.choice.crumple.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paper_ruined",
+          "textKey": "event.ch_opening_household_revolutionary_01.choice.crumple.outcome.paper_ruined.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "player_parent_1"
+  ]
+}

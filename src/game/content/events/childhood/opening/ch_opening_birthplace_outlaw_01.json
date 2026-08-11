@@ -1,0 +1,126 @@
+{
+  "id": "ch_opening_birthplace_outlaw_01",
+  "kind": "normal",
+  "titleKey": "event.ch_opening_birthplace_outlaw_01.title",
+  "textKey": "event.ch_opening_birthplace_outlaw_01.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 24
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 35
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "pirate_presence"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "criminal"
+          }
+        ]
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "locationHasTag",
+              "tagId": "marine_presence"
+            },
+            {
+              "type": "locationHasTag",
+              "tagId": "military"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "keep_half",
+      "textKey": "event.ch_opening_birthplace_outlaw_01.choice.keep_half.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "half_kept",
+          "textKey": "event.ch_opening_birthplace_outlaw_01.choice.keep_half.outcome.half_kept.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "point_runner",
+      "textKey": "event.ch_opening_birthplace_outlaw_01.choice.point_runner.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "runner_pointed",
+          "textKey": "event.ch_opening_birthplace_outlaw_01.choice.point_runner.outcome.runner_pointed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stick_half",
+      "textKey": "event.ch_opening_birthplace_outlaw_01.choice.stick_half.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "poster_crooked",
+          "textKey": "event.ch_opening_birthplace_outlaw_01.choice.stick_half.outcome.poster_crooked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hide_half",
+      "textKey": "event.ch_opening_birthplace_outlaw_01.choice.hide_half.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "half_hidden",
+          "textKey": "event.ch_opening_birthplace_outlaw_01.choice.hide_half.outcome.half_hidden.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "luck",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

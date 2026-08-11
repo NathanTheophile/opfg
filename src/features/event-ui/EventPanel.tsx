@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import {
+  AnimatePresence,
+  motion,
+} from 'motion/react';
+import {
   Panel,
   PanelBody,
   PanelHeader,
@@ -27,6 +31,29 @@ export interface EventPanelProps {
   selectedChoiceId?: string | null;
 }
 
+function isSameNarrative(
+  current: EventViewModel,
+  incoming: EventViewModel,
+): boolean {
+  if (
+    current.eyebrow !== incoming.eyebrow ||
+    current.title !== incoming.title ||
+    current.body !== incoming.body ||
+    current.choices.length !== incoming.choices.length
+  ) {
+    return false;
+  }
+
+  return current.choices.every((choice, index) => {
+    const next = incoming.choices[index];
+    return (
+      next !== undefined &&
+      choice.id === next.id &&
+      choice.label === next.label
+    );
+  });
+}
+
 export function EventPanel({
   event,
   onChoice,
@@ -51,42 +78,81 @@ export function EventPanel({
     useRef<number[]>([]);
 
   useEffect(() => {
+    const sameNarrative =
+      isSameNarrative(displayEvent, event);
+
+    /*
+     * Event -> Outcome is NOT a full panel transition.
+     *
+     * Header/body stay exactly where they are. Switching to resolved mode
+     * only removes the non-selected Choices; AnimatePresence handles their
+     * fade/collapse below.
+     */
+    if (
+      sameNarrative &&
+      mode === 'resolved' &&
+      displayMode !== 'resolved'
+    ) {
+      transitionTimerRef.current.forEach((timer) =>
+        window.clearTimeout(timer),
+      );
+      transitionTimerRef.current = [];
+
+      setDisplaySelectedChoiceId(
+        selectedChoiceId,
+      );
+      setDisplayMode('resolved');
+      return undefined;
+    }
+
     const presentationChanged =
       displayEvent !== event ||
       displayMode !== mode ||
-      displaySelectedChoiceId !== selectedChoiceId;
+      displaySelectedChoiceId !==
+        selectedChoiceId;
 
-    if (!presentationChanged) return undefined;
+    if (!presentationChanged) {
+      return undefined;
+    }
 
     transitionTimerRef.current.forEach((timer) =>
       window.clearTimeout(timer),
     );
     transitionTimerRef.current = [];
 
-    // 1. Fade only the existing panel contents. The Panel itself stays mounted.
+    /*
+     * Full Event -> Event transition:
+     * old copy fades -> hidden swap -> resize -> new copy fades in.
+     */
     setContentVisible(false);
 
-    const swapTimer = window.setTimeout(() => {
-      // 2. Swap Event + mode + selected Choice while everything is invisible.
-      setDisplayEvent(event);
-      setDisplayMode(mode);
-      setDisplaySelectedChoiceId(selectedChoiceId);
-      setInputs({});
+    const swapTimer =
+      window.setTimeout(() => {
+        setDisplayEvent(event);
+        setDisplayMode(mode);
+        setDisplaySelectedChoiceId(
+          selectedChoiceId,
+        );
+        setInputs({});
 
-      // 3. Leave the new contents invisible while layout/height settles.
-      const revealTimer = window.setTimeout(() => {
-        // 4. Fade the new contents back in.
-        setContentVisible(true);
-      }, 190);
+        const revealTimer =
+          window.setTimeout(() => {
+            setContentVisible(true);
+          }, 190);
 
-      transitionTimerRef.current.push(revealTimer);
-    }, 110);
+        transitionTimerRef.current.push(
+          revealTimer,
+        );
+      }, 110);
 
-    transitionTimerRef.current.push(swapTimer);
+    transitionTimerRef.current.push(
+      swapTimer,
+    );
 
     return () => {
-      transitionTimerRef.current.forEach((timer) =>
-        window.clearTimeout(timer),
+      transitionTimerRef.current.forEach(
+        (timer) =>
+          window.clearTimeout(timer),
       );
       transitionTimerRef.current = [];
     };
@@ -96,8 +162,37 @@ export function EventPanel({
     selectedChoiceId,
   ]);
 
-  const collapsed = displayMode === 'collapsed';
-  const resolved = displayMode === 'resolved';
+  const collapsed =
+    displayMode === 'collapsed';
+  const resolved =
+    displayMode === 'resolved';
+
+  const visibleChoices =
+    resolved &&
+    displaySelectedChoiceId !== null
+      ? displayEvent.choices.filter(
+          ({ id }) =>
+            id ===
+            displaySelectedChoiceId,
+        )
+      : displayEvent.choices;
+
+  /*
+   * AnimatePresence must persist while the SAME Event goes
+   * interactive -> resolved so unselected Choices can fade/collapse.
+   *
+   * But it must remount immediately when displayEvent itself changes.
+   * Otherwise exiting Choices from the previous Event coexist in layout
+   * with the new Event Choices and temporarily double the Panel height.
+   */
+  const choicePresenceKey = [
+    displayEvent.eyebrow ?? '',
+    displayEvent.title,
+    displayEvent.body,
+    ...displayEvent.choices.map(
+      ({ id }) => id,
+    ),
+  ].join('\u001f');
 
   return (
     <Panel
@@ -105,7 +200,9 @@ export function EventPanel({
       padding="none"
       className="opfg-event-panel w-full overflow-hidden shadow-overlay"
       data-mode={displayMode}
-      data-content-visible={contentVisible ? 'true' : 'false'}
+      data-content-visible={
+        contentVisible ? 'true' : 'false'
+      }
     >
       <PanelHeader className="opfg-event-panel__header mb-0 bg-gradient-to-b from-black/[0.38] to-black/[0.24] px-5 md:px-6">
         {displayEvent.eyebrow && (
@@ -140,73 +237,145 @@ export function EventPanel({
                 </p>
               )}
 
-              {displayEvent.choices.map((choice) => {
-                const selected =
-                  choice.id === displaySelectedChoiceId;
+              <AnimatePresence
+                key={choicePresenceKey}
+                initial={false}
+              >
+                {visibleChoices.map(
+                  (choice) => {
+                    const selected =
+                      choice.id ===
+                      displaySelectedChoiceId;
 
-                return (
-                  <div
-                    key={choice.id}
-                    className="opfg-event-panel__choice flex flex-col gap-2"
-                    data-selected={
-                      selected ? 'true' : 'false'
-                    }
-                    data-resolved={
-                      resolved ? 'true' : 'false'
-                    }
-                    aria-current={
-                      selected ? 'true' : undefined
-                    }
-                  >
-                    {choice.textInput && !resolved && (
-                      <input
-                        className="opfg-event-panel__input rounded-lg border border-[var(--border-subtle)] bg-black/20 px-4 py-3 text-fg"
-                        value={
-                          inputs[choice.id] ?? ''
+                    return (
+                      <motion.div
+                        key={choice.id}
+                        layout="position"
+                        initial={false}
+                        animate={{
+                          opacity: 1,
+                          height: 'auto',
+                        }}
+                        exit={{
+                          opacity: 0,
+                          height: 0,
+                          transition: {
+                            opacity: {
+                              duration: 0.1,
+                              ease: 'easeOut',
+                            },
+                            height: {
+                              duration: 0.17,
+                              delay: 0.09,
+                              ease: [
+                                0.16,
+                                1,
+                                0.3,
+                                1,
+                              ],
+                            },
+                          },
+                        }}
+                        transition={{
+                          layout: {
+                            duration: 0.17,
+                            ease: [
+                              0.16,
+                              1,
+                              0.3,
+                              1,
+                            ],
+                          },
+                        }}
+                        className="opfg-event-panel__choice flex flex-col gap-2 overflow-hidden"
+                        data-selected={
+                          selected
+                            ? 'true'
+                            : 'false'
                         }
-                        minLength={
-                          choice.textInput.minLength
+                        data-resolved={
+                          resolved
+                            ? 'true'
+                            : 'false'
                         }
-                        maxLength={
-                          choice.textInput.maxLength
+                        aria-current={
+                          selected
+                            ? 'true'
+                            : undefined
                         }
-                        placeholder={
-                          choice.textInput.placeholder
-                        }
-                        onChange={(inputEvent) =>
-                          setInputs((current) => ({
-                            ...current,
-                            [choice.id]:
-                              inputEvent.target.value,
-                          }))
-                        }
-                      />
-                    )}
-
-                    <div
-                      className={
-                        resolved
-                          ? 'pointer-events-none'
-                          : undefined
-                      }
-                    >
-                      <ChoiceButton
-                        choice={choice}
-                        onSelect={(selectedChoice) =>
-                          onChoice(
-                            selectedChoice,
-                            selectedChoice.textInput
-                              ? inputs[
-                                  selectedChoice.id
+                      >
+                        {choice.textInput &&
+                          !resolved && (
+                            <input
+                              className="opfg-event-panel__input rounded-lg border border-[var(--border-subtle)] bg-black/20 px-4 py-3 text-fg"
+                              value={
+                                inputs[
+                                  choice.id
                                 ] ?? ''
-                              : undefined,
-                          )
-                        }
-                      />
-                    </div>
-                  </div>
-                );
-              })}
+                              }
+                              minLength={
+                                choice
+                                  .textInput
+                                  .minLength
+                              }
+                              maxLength={
+                                choice
+                                  .textInput
+                                  .maxLength
+                              }
+                              placeholder={
+                                choice
+                                  .textInput
+                                  .placeholder
+                              }
+                              onChange={(
+                                inputEvent,
+                              ) =>
+                                setInputs(
+                                  (
+                                    current,
+                                  ) => ({
+                                    ...current,
+                                    [choice.id]:
+                                      inputEvent
+                                        .target
+                                        .value,
+                                  }),
+                                )
+                              }
+                            />
+                          )}
+
+                        <div
+                          className={
+                            resolved
+                              ? 'pointer-events-none'
+                              : undefined
+                          }
+                        >
+                          <ChoiceButton
+                            choice={choice}
+                            onSelect={(
+                              selectedChoice,
+                            ) =>
+                              onChoice(
+                                selectedChoice,
+                                selectedChoice
+                                  .textInput
+                                  ? inputs[
+                                      selectedChoice
+                                        .id
+                                    ] ?? ''
+                                  : undefined,
+                              )
+                            }
+                          />
+                        </div>
+                      </motion.div>
+                    );
+                  },
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </>

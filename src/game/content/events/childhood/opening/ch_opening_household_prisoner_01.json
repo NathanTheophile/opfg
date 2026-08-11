@@ -1,0 +1,121 @@
+{
+  "id": "ch_opening_household_prisoner_01",
+  "kind": "normal",
+  "titleKey": "event.ch_opening_household_prisoner_01.title",
+  "textKey": "event.ch_opening_household_prisoner_01.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 12
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 23
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "familyStructureIs",
+          "familyStructureId": "orphan"
+        }
+      },
+      {
+        "type": "affiliationIs",
+        "affiliationId": "prisoner"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "watch_key",
+      "textKey": "event.ch_opening_household_prisoner_01.choice.watch_key.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "key_pattern",
+          "textKey": "event.ch_opening_household_prisoner_01.choice.watch_key.outcome.key_pattern.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "tap_bars",
+      "textKey": "event.ch_opening_household_prisoner_01.choice.tap_bars.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "guard_annoyed",
+          "textKey": "event.ch_opening_household_prisoner_01.choice.tap_bars.outcome.guard_annoyed.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "point_key",
+      "textKey": "event.ch_opening_household_prisoner_01.choice.point_key.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "parent_notices",
+          "textKey": "event.ch_opening_household_prisoner_01.choice.point_key.outcome.parent_notices.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hide_face",
+      "textKey": "event.ch_opening_household_prisoner_01.choice.hide_face.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "held_close",
+          "textKey": "event.ch_opening_household_prisoner_01.choice.hide_face.outcome.held_close.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "player_parent_1"
+  ]
+}

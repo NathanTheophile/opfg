@@ -1,8 +1,15 @@
-import { useState, type ReactNode } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react';
 import {
   Music2,
   Pause,
   Play,
+  SkipBack,
   SkipForward,
   SlidersHorizontal,
   Volume2,
@@ -12,6 +19,7 @@ import {
 import { t } from '@/game/localization';
 import { useObservedUiLocale } from '@/features/settings/localeSync';
 import { useAudio } from './AudioProvider';
+import './utility-controls.css';
 
 type MixerRowProps = {
   icon: ReactNode;
@@ -51,12 +59,83 @@ function MixerRow({
 }
 
 function formatTime(seconds: number): string {
-  if (!Number.isFinite(seconds) || seconds < 0) return '--:--';
+  if (!Number.isFinite(seconds) || seconds < 0) {
+    return '--:--';
+  }
 
   const wholeSeconds = Math.floor(seconds);
   const minutes = Math.floor(wholeSeconds / 60);
   const remainingSeconds = wholeSeconds % 60;
   return `${minutes}:${String(remainingSeconds).padStart(2, '0')}`;
+}
+
+function ScrollingTrackTitle({
+  title,
+}: {
+  title: string;
+}) {
+  const viewportRef =
+    useRef<HTMLDivElement | null>(null);
+  const textRef =
+    useRef<HTMLSpanElement | null>(null);
+  const [distance, setDistance] =
+    useState(0);
+
+  useEffect(() => {
+    const measure = () => {
+      const viewport = viewportRef.current;
+      const text = textRef.current;
+      if (!viewport || !text) return;
+
+      setDistance(
+        Math.max(
+          0,
+          text.scrollWidth - viewport.clientWidth,
+        ),
+      );
+    };
+
+    measure();
+
+    const observer =
+      typeof ResizeObserver !== 'undefined'
+        ? new ResizeObserver(measure)
+        : null;
+
+    if (viewportRef.current) {
+      observer?.observe(viewportRef.current);
+    }
+    if (textRef.current) {
+      observer?.observe(textRef.current);
+    }
+
+    return () => observer?.disconnect();
+  }, [title]);
+
+  const style = {
+    '--opfg-track-scroll-distance':
+      `${distance}px`,
+  } as CSSProperties;
+
+  return (
+    <div
+      ref={viewportRef}
+      className="opfg-music-title"
+      title={title}
+    >
+      <span
+        ref={textRef}
+        className={
+          distance > 0
+            ? 'is-scrolling'
+            : undefined
+        }
+        style={style}
+      >
+        {title}
+      </span>
+    </div>
+  );
 }
 
 function MusicPlayer({
@@ -69,55 +148,95 @@ function MusicPlayer({
 
   if (!track) return null;
 
-  const hasDuration = Number.isFinite(audio.musicDuration) && audio.musicDuration > 0;
-  const progressMax = hasDuration ? audio.musicDuration : 1;
-  const progressValue = hasDuration
-    ? Math.min(audio.musicCurrentTime, audio.musicDuration)
-    : 0;
-  const PlaybackIcon = audio.isMusicPlaying ? Pause : Play;
+  const hasDuration =
+    Number.isFinite(audio.musicDuration) &&
+    audio.musicDuration > 0;
+  const progressMax =
+    hasDuration ? audio.musicDuration : 1;
+  const progressValue =
+    hasDuration
+      ? Math.min(
+          audio.musicCurrentTime,
+          audio.musicDuration,
+        )
+      : 0;
+  const progressPercent =
+    hasDuration
+      ? Math.max(
+          0,
+          Math.min(
+            100,
+            (progressValue / audio.musicDuration) * 100,
+          ),
+        )
+      : 0;
+  const PlaybackIcon =
+    audio.isMusicPlaying ? Pause : Play;
 
   return (
-    <div className="w-72 rounded-md border border-amber-200/15 bg-stone-950/75 px-3 py-2 text-amber-100 shadow-lg backdrop-blur">
-      <div className="flex items-center gap-2">
+    <div className="opfg-music-player">
+      <div className="opfg-music-player__title-row">
         <Music2
-          className="shrink-0 text-amber-300/80"
-          size={15}
+          size={14}
           aria-hidden="true"
         />
-
-        <span
-          className="min-w-0 flex-1 truncate text-xs font-medium"
+        <ScrollingTrackTitle
           title={track.title}
-        >
-          {track.title}
-        </span>
+        />
+      </div>
 
+      <div className="opfg-music-player__controls">
         <button
           type="button"
-          className="grid size-7 shrink-0 place-items-center rounded text-amber-100/75 transition hover:bg-white/5 hover:text-amber-100"
+          className="opfg-music-player__control"
           aria-label={audioLabel}
-          onClick={() => void audio.toggleMusicPlayback()}
+          onClick={() =>
+            void audio.previousMusic()
+          }
         >
-          <PlaybackIcon size={15} aria-hidden="true" />
+          <SkipBack size={15} aria-hidden="true" />
         </button>
 
         <button
           type="button"
-          className="grid size-7 shrink-0 place-items-center rounded text-amber-100/75 transition hover:bg-white/5 hover:text-amber-100"
+          className="opfg-music-player__control is-primary"
           aria-label={audioLabel}
-          onClick={() => void audio.nextMusic()}
+          onClick={() =>
+            void audio.toggleMusicPlayback()
+          }
         >
-          <SkipForward size={15} aria-hidden="true" />
+          <PlaybackIcon
+            size={16}
+            aria-hidden="true"
+          />
+        </button>
+
+        <button
+          type="button"
+          className="opfg-music-player__control"
+          aria-label={audioLabel}
+          onClick={() =>
+            void audio.nextMusic()
+          }
+        >
+          <SkipForward
+            size={15}
+            aria-hidden="true"
+          />
         </button>
       </div>
 
-      <div className="mt-1 grid grid-cols-[2.25rem_1fr_2.25rem] items-center gap-2">
-        <span className="text-[10px] tabular-nums text-amber-100/55">
+      <div className="opfg-music-player__progress">
+        <span>
           {formatTime(audio.musicCurrentTime)}
         </span>
 
         <input
-          className="h-1.5 w-full cursor-pointer accent-amber-400 disabled:cursor-default disabled:opacity-40"
+          className="opfg-music-player__seek"
+          style={{
+            '--opfg-seek-progress':
+              `${progressPercent}%`,
+          } as CSSProperties}
           type="range"
           min="0"
           max={progressMax}
@@ -125,11 +244,17 @@ function MusicPlayer({
           value={progressValue}
           disabled={!hasDuration}
           aria-label={audioLabel}
-          onChange={(event) => audio.seekMusic(Number(event.target.value))}
+          onChange={(event) =>
+            audio.seekMusic(
+              Number(event.target.value),
+            )
+          }
         />
 
-        <span className="text-right text-[10px] tabular-nums text-amber-100/55">
-          {hasDuration ? formatTime(audio.musicDuration) : '--:--'}
+        <span className="text-right">
+          {hasDuration
+            ? formatTime(audio.musicDuration)
+            : '--:--'}
         </span>
       </div>
     </div>
@@ -137,31 +262,41 @@ function MusicPlayer({
 }
 
 export function AudioControls() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] =
+    useState(false);
   const audio = useAudio();
   const locale = useObservedUiLocale();
-  const VolumeIcon = audio.muted ? VolumeX : Volume2;
-  const translate = (key: string) => t(key, locale);
+  const VolumeIcon =
+    audio.muted ? VolumeX : Volume2;
+  const translate = (key: string) =>
+    t(key, locale);
 
   return (
     <div
-      className="fixed bottom-5 right-5 z-[100] flex select-none items-end gap-2"
-      onClick={(event) => event.stopPropagation()}
+      className="opfg-audio-controls"
+      onClick={(event) =>
+        event.stopPropagation()
+      }
     >
-      <MusicPlayer audioLabel={translate('ui.audio.music')} />
-
       <button
         type="button"
-        className="grid size-10 shrink-0 place-items-center rounded-md border border-amber-200/20 bg-stone-950/75 text-amber-100 shadow-lg backdrop-blur transition hover:border-amber-200/35 hover:bg-stone-900/85"
-        aria-label={translate('ui.audio.settings')}
+        className="opfg-utility-square"
+        aria-label={translate(
+          'ui.audio.settings',
+        )}
         aria-expanded={open}
-        onClick={() => setOpen((current) => !current)}
+        onClick={() =>
+          setOpen((current) => !current)
+        }
       >
-        <VolumeIcon size={18} />
+        <SlidersHorizontal
+          size={17}
+          aria-hidden="true"
+        />
       </button>
 
       {open && (
-        <div className="absolute bottom-12 right-0 w-72 rounded-lg border border-amber-200/15 bg-stone-950/92 p-4 shadow-2xl backdrop-blur-md">
+        <div className="opfg-audio-mixer">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm font-semibold tracking-wide text-amber-100">
               <SlidersHorizontal size={15} />
@@ -206,6 +341,10 @@ export function AudioControls() {
           </div>
         </div>
       )}
+
+      <MusicPlayer
+        audioLabel={translate('ui.audio.music')}
+      />
     </div>
   );
 }

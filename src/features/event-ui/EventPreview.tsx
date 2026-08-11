@@ -34,6 +34,7 @@ import type {
 } from '@/game/model/schema';
 import { useGameSession } from '@/game/session/useGameSession';
 import { npcInterpolationParams } from '@/game/engine/npcNames';
+import { originNarrativeInterpolationParams } from '@/game/engine/originNarrative';
 import {
   DiceTableStage,
   type DiceTableStageStatus,
@@ -92,16 +93,6 @@ const RESULT_KEYS: Record<DiceResult, string> = {
   failure: 'dice.failure',
   success: 'dice.success',
   criticalSuccess: 'dice.criticalSuccess',
-};
-
-const PANEL_TRANSITION = {
-  duration: 0.28,
-  ease: [0.16, 1, 0.3, 1] as [
-    number,
-    number,
-    number,
-    number,
-  ],
 };
 
 const RESULT_HOLD_MS = 650;
@@ -185,6 +176,86 @@ function transitionEffects(
   return effects;
 }
 
+function renderNarrativeBody(
+  text: string,
+  cast: readonly string[] | undefined,
+  state: GameState,
+  catalog: ContentCatalog,
+  translate: Translator,
+) {
+  if (!cast || cast.length === 0) return text;
+
+  const entities = cast
+    .map((npcId) => {
+      const definition = catalog.npcs.find(({ id }) => id === npcId);
+      if (!definition) return null;
+
+      const name =
+        state.npcs[npcId]?.displayName ??
+        translate(definition.nameKey);
+
+      return {
+        npcId,
+        name,
+        relation:
+          npcId === 'player_parent_1' ||
+          npcId === 'player_parent_2'
+            ? translate('ui.npc.relation.parent')
+            : null,
+      };
+    })
+    .filter(
+      (
+        entity,
+      ): entity is {
+        npcId: string;
+        name: string;
+        relation: string | null;
+      } => entity !== null && entity.name.length > 0,
+    )
+    .sort((a, b) => b.name.length - a.name.length);
+
+  if (entities.length === 0) return text;
+
+  const escaped = entities.map(({ name }) =>
+    name.replace(/[.*+?^$\{\}()|[\]\\]/g, '\\export interface EventPreviewProps {'),
+  );
+
+  const matcher = new RegExp(
+    `(${escaped.join('|')})`,
+    'g',
+  );
+
+  const byName = new Map(
+    entities.map((entity) => [entity.name, entity]),
+  );
+
+  return (
+    <>
+      {text.split(matcher).map((part, index) => {
+        const entity = byName.get(part);
+        if (!entity) return part;
+
+        return (
+          <span
+            key={`${entity.npcId}-${index}`}
+            className="opfg-narrative-person"
+          >
+            <strong className="opfg-narrative-person__name">
+              {entity.name}
+            </strong>
+            {entity.relation && (
+              <span className="opfg-narrative-person__relation">
+                {' '}({entity.relation})
+              </span>
+            )}
+          </span>
+        );
+      })}
+    </>
+  );
+}
+
 export interface EventPreviewProps {
   catalog: ContentCatalog;
   storage: StorageLike;
@@ -213,6 +284,11 @@ export function EventPreview({
   const [showOutcome, setShowOutcome] =
     useState(false);
 
+  const [
+    outcomeRevealed,
+    setOutcomeRevealed,
+  ] = useState(false);
+
   const [pendingDice, setPendingDice] =
     useState<PendingDice | null>(null);
 
@@ -235,6 +311,16 @@ export function EventPreview({
   const translate: Translator = (key, params) =>
     t(key, locale, {
       playerName: session.gameState?.player.profile.name ?? '',
+      ...originNarrativeInterpolationParams(
+        session.gameState,
+        catalog,
+        (originKey, originParams) =>
+          t(
+            originKey,
+            locale,
+            originParams,
+          ),
+      ),
       ...npcInterpolationParams(
         session.gameState,
         catalog,
@@ -369,8 +455,14 @@ export function EventPreview({
         title: translate(
           session.currentEvent.titleKey,
         ),
-        body: translate(
-          session.currentEvent.textKey,
+        body: renderNarrativeBody(
+          translate(
+            session.currentEvent.textKey,
+          ),
+          session.currentEvent.cast,
+          state,
+          catalog,
+          translate,
         ),
         choices,
       };
@@ -426,22 +518,57 @@ export function EventPreview({
     ]);
 
   useEffect(() => {
-    if (!showOutcome || !outcomeView) return undefined;
+    if (!showOutcome || !outcomeView) {
+      setOutcomeRevealed(false);
+      return undefined;
+    }
 
-    const scrollTimer = window.setTimeout(() => {
-      const viewport = adventureScrollRef.current;
-      if (!viewport) return;
+    const reducedMotion =
+      window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
 
-      viewport.scrollTo({
-        top: viewport.scrollHeight,
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          ? 'auto'
-          : 'smooth',
-      });
-    }, 360);
+    const revealTimer =
+      window.setTimeout(
+        () => {
+          setOutcomeRevealed(true);
+        },
+        reducedMotion ? 1 : 310,
+      );
 
-    return () => window.clearTimeout(scrollTimer);
+    return () =>
+      window.clearTimeout(
+        revealTimer,
+      );
   }, [showOutcome, outcomeView]);
+
+  useEffect(() => {
+    if (!outcomeRevealed) {
+      return undefined;
+    }
+
+    const scrollTimer =
+      window.setTimeout(() => {
+        const viewport =
+          adventureScrollRef.current;
+        if (!viewport) return;
+
+        viewport.scrollTo({
+          top: viewport.scrollHeight,
+          behavior:
+            window.matchMedia(
+              '(prefers-reduced-motion: reduce)',
+            ).matches
+              ? 'auto'
+              : 'smooth',
+        });
+      }, 80);
+
+    return () =>
+      window.clearTimeout(
+        scrollTimer,
+      );
+  }, [outcomeRevealed]);
 
   const clearResolvedEventUi = () => {
     setResolvedEventView(null);
@@ -588,6 +715,7 @@ export function EventPreview({
 
   const continueFromOutcome = () => {
     adventureScrollRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+    setOutcomeRevealed(false);
     setShowOutcome(false);
     setPendingDice(null);
     clearResolvedEventUi();
@@ -595,6 +723,7 @@ export function EventPreview({
   };
 
   const restartRun = () => {
+    setOutcomeRevealed(false);
     setShowOutcome(false);
     setPendingDice(null);
     setInputError(null);
@@ -741,9 +870,7 @@ export function EventPreview({
             className="opfg-adventure-scroll"
           >
             <motion.div
-              layout="size"
               className="opfg-adventure-size-shell"
-              transition={{ layout: PANEL_TRANSITION }}
             >
               <div
                 className={
@@ -763,11 +890,41 @@ export function EventPreview({
                         />
                       )}
 
-                      <OutcomePanel
-                        outcome={outcomeView}
-                        onContinue={continueFromOutcome}
-                        translate={translate}
-                      />
+                      <AnimatePresence
+                        initial={false}
+                      >
+                        {outcomeRevealed && (
+                          <motion.div
+                            key="outcome"
+                            initial={{
+                              opacity: 0,
+                              y: -4,
+                            }}
+                            animate={{
+                              opacity: 1,
+                              y: 0,
+                            }}
+                            exit={{
+                              opacity: 0,
+                            }}
+                            transition={{
+                              duration: 0.16,
+                              ease: [
+                                0.16,
+                                1,
+                                0.3,
+                                1,
+                              ],
+                            }}
+                          >
+                            <OutcomePanel
+                              outcome={outcomeView}
+                              onContinue={continueFromOutcome}
+                              translate={translate}
+                            />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </>
                   ) : pendingDice ? (
                     <>

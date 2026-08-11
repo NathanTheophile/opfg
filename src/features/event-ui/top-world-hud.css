@@ -667,3 +667,98 @@
       );
   }
 }
+
+/* D1.6 HUD panel edge + height polish ------------------------------------ */
+
+/*
+ * Identity defines the visual top-HUD height. Side groups stretch to the same
+ * grid row instead of independently choosing a taller intrinsic height.
+ */
+.opfg-top-world-hud {
+  align-items: stretch !important;
+}
+
+.opfg-hud-panel--identity,
+.opfg-hud-panel--ship,
+.opfg-hud-inventory-stack {
+  height: 100%;
+}
+
+/*
+ * ContextTooltip content is portalled to document.body, so clipping these
+ * Panels is safe and fixes the square header backgrounds leaking through the
+ * rounded top corners.
+ */
+.opfg-hud-panel--inventory,
+.opfg-hud-panel--ship {
+  overflow: hidden !important;
+  background-clip: padding-box;
+}
+
+.opfg-hud-panel--inventory
+  > .opfg-hud-section-header,
+.opfg-hud-panel--ship
+  > .opfg-hud-section-header {
+  border-top-left-radius:
+    calc(var(--radius-panel) - 1px);
+  border-top-right-radius:
+    calc(var(--radius-panel) - 1px);
+  overflow: hidden;
+}
+
+/*
+ * Left group: Home + Inventory must fit inside the Identity panel height.
+ * Remove the old 8rem minimum from Inventory and compact only this panel.
+ */
+.opfg-hud-inventory-stack {
+  min-height: 0;
+  align-self: stretch !important;
+  grid-template-rows:
+    auto
+    minmax(0, 1fr);
+  gap: 0.3rem !important;
+}
+
+.opfg-hud-home-button {
+  min-height: 1.82rem !important;
+  padding: 0.28rem 0.6rem !important;
+  font-size: 0.63rem !important;
+}
+
+.opfg-hud-panel--inventory {
+  min-height: 0 !important;
+  height: 100%;
+  grid-template-rows:
+    auto
+    minmax(0, 1fr);
+}
+
+.opfg-hud-panel--inventory
+  .opfg-hud-section-header {
+  min-height: 2.18rem !important;
+}
+
+.opfg-hud-inventory__header {
+  padding:
+    0.28rem
+    0.55rem !important;
+}
+
+.opfg-hud-panel--inventory
+  .opfg-hud-panel__body {
+  min-height: 0;
+  padding:
+    0.42rem
+    0.62rem !important;
+}
+
+/* Right panel stretches to the same row instead of anchoring itself lower. */
+.opfg-hud-panel--ship {
+  align-self: stretch !important;
+}
+
+/* Keep the central panel as the stable visual reference for the row. */
+.opfg-hud-panel--identity {
+  align-self: stretch;
+  overflow: hidden;
+}

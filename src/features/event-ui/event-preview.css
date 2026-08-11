@@ -399,3 +399,281 @@
     transition-duration: 1ms !important;
   }
 }
+
+
+/* D1.4 outcome-only choice collapse
+ *
+ * Event -> Outcome keeps header/body perfectly still.
+ * Only unselected Choices leave; the selected button keeps its exact
+ * interactive dimensions. Outcome mounts afterwards.
+ */
+.opfg-event-panel[data-mode="resolved"]
+  .opfg-event-panel__header {
+  padding-top: 0.48rem !important;
+  padding-bottom: 0.42rem !important;
+}
+
+.opfg-event-panel[data-mode="resolved"]
+  .opfg-event-panel__body {
+  padding-top: 0.78rem !important;
+  padding-bottom: 0.82rem !important;
+}
+
+.opfg-event-panel[data-mode="resolved"]
+  .opfg-event-panel__choices {
+  padding: 0.5rem 0.62rem 0.58rem !important;
+}
+
+.opfg-event-panel[data-mode="resolved"]
+  .opfg-choice-button {
+  min-height: 2.45rem !important;
+  padding: 0.48rem 0.78rem !important;
+  opacity: 1;
+}
+
+/* Older D1.2 used display:none here, which would kill AnimatePresence
+ * before its fade/collapse exit animation can run.
+ */
+.opfg-event-panel[data-mode="resolved"]
+  .opfg-event-panel__choice:not(
+    [data-selected="true"]
+  ) {
+  display: flex !important;
+}
+
+/* The event itself stays visually anchored while the consequence appears. */
+.opfg-outcome-panel--inline {
+  transform-origin: top center;
+}
+
+
+/* D1.5 instant panel resize */
+
+/*
+ * Height changes between Event presentations are intentionally immediate.
+ * The copy still fades out/in, but the container itself must never FLIP,
+ * scale, spring, overshoot or interpolate through an artificial height.
+ */
+.opfg-event-panel {
+  transition:
+    none !important;
+}
+
+.opfg-adventure-size-shell {
+  transform:
+    none !important;
+}
+
+/*
+ * Preserve the intended copy fade. These are opacity/filter transitions,
+ * not size transitions.
+ */
+.opfg-event-panel__header,
+.opfg-event-panel__body,
+.opfg-event-panel__choices {
+  transition:
+    opacity 105ms ease,
+    filter 105ms ease !important;
+}
+
+/* D1.6 panel edge polish -------------------------------------------------- */
+
+/*
+ * The central scroll viewport used to leave almost no horizontal breathing
+ * room around full-width Panels. Their shadows were therefore clipped by the
+ * square scroll viewport and showed up as dark rectangular corner artefacts.
+ */
+.opfg-adventure-scroll {
+  padding-left: 0.7rem !important;
+  padding-right: 0.7rem !important;
+}
+
+.opfg-adventure-size-shell,
+.opfg-adventure-stack {
+  background: transparent !important;
+}
+
+.opfg-adventure-size-shell {
+  overflow: visible !important;
+}
+
+/*
+ * Avoid the double/overlay shadow band where Event and Outcome meet.
+ * Both remain raised, but use the normal rounded Panel shadow.
+ */
+.opfg-event-panel,
+.opfg-outcome-panel--inline {
+  box-shadow: var(--shadow-panel) !important;
+}
+
+/* Consequence should sit naturally below the Event instead of overlapping it. */
+.opfg-outcome-panel--inline {
+  margin-top: 0 !important;
+}
+
+/*
+ * Choice hover/focus effects need a little space on every side.
+ * This is padding around the whole button group, not only horizontal padding.
+ */
+.opfg-event-panel__choices,
+.opfg-event-panel[data-mode="resolved"]
+  .opfg-event-panel__choices {
+  padding:
+    0.7rem
+    0.82rem
+    0.74rem !important;
+}
+
+@media (max-width: 40rem) {
+  .opfg-adventure-scroll {
+    padding-left: 0.35rem !important;
+    padding-right: 0.35rem !important;
+  }
+
+  .opfg-event-panel__choices,
+  .opfg-event-panel[data-mode="resolved"]
+    .opfg-event-panel__choices {
+    padding:
+      0.58rem
+      0.65rem
+      0.62rem !important;
+  }
+}
+
+/* D1.6.1 central panel cleanup */
+
+/*
+ * Restore the compact pre-D1.6 breathing room.
+ * The larger padding exposed more of the Panel shadow while the scroll
+ * viewport still clipped that shadow on square boundaries.
+ */
+.opfg-adventure-scroll {
+  padding-left: 0.15rem !important;
+  padding-right: 0.15rem !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.opfg-adventure-size-shell,
+.opfg-adventure-stack {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/*
+ * The dark rectangular "panel behind the panel" was the Event / Outcome
+ * shadow being clipped by the rectangular scroll viewport.
+ * The actual Panel border remains; only this exterior shadow is removed.
+ */
+.opfg-event-panel,
+.opfg-outcome-panel,
+.opfg-outcome-panel--inline {
+  box-shadow: none !important;
+}
+
+/*
+ * Restore the compact Choice-area padding from D1.2.
+ * Extra padding did not solve the hover clipping because the cause is the
+ * glass button's horizontal scale animation.
+ */
+.opfg-event-panel__choices,
+.opfg-event-panel[data-mode="resolved"]
+  .opfg-event-panel__choices {
+  padding:
+    0.5rem
+    0.62rem
+    0.58rem !important;
+}
+
+/*
+ * Event Choice buttons are full-width. The shared glass hover animation grows
+ * to scaleX(1.017), which necessarily extends outside the Choice row and gets
+ * clipped by the collapse wrapper. Keep all hover material changes, but do
+ * not geometrically widen Event Choice buttons.
+ */
+.opfg-choice-button.opfg-button-glass:hover:not(:disabled) {
+  animation: none !important;
+  transform: none !important;
+  translate: 0 0 !important;
+}
+
+/* Avoid the same one-frame horizontal protrusion on click. */
+.opfg-choice-button.opfg-button-glass:active:not(:disabled) {
+  animation: none !important;
+  transform: none !important;
+  translate: 0 0 !important;
+}
+
+@media (max-width: 40rem) {
+  .opfg-event-panel__choices,
+  .opfg-event-panel[data-mode="resolved"]
+    .opfg-event-panel__choices {
+    padding:
+      0.5rem
+      0.62rem
+      0.58rem !important;
+  }
+}
+
+
+
+/* D1.7 final event micro-polish */
+
+/* Leave a few real pixels below the selected Choice after collapse. */
+.opfg-event-panel[data-mode="resolved"]
+  .opfg-event-panel__choices {
+  padding-bottom: 0.72rem !important;
+}
+
+.opfg-event-panel[data-mode="resolved"]
+  .opfg-event-panel__choice[data-selected="true"] {
+  overflow: visible !important;
+}
+
+/* Continue is a flow action: keep the pointer centred between Outcomes. */
+.opfg-outcome-panel__footer {
+  justify-content: center !important;
+}
+
+.opfg-outcome-continue {
+  margin-inline: auto;
+}
+
+/* D1.8 narrative opening polish ----------------------------------------- */
+
+/* Consequence prose uses the same visual language as Event prose:
+ * world/situation = light parchment, player action = dark interactive button.
+ */
+.opfg-outcome-panel--inline .opfg-outcome-panel__body {
+  background:
+    linear-gradient(
+      90deg,
+      rgb(240 218 177 / 0.92),
+      rgb(224 194 146 / 0.82) 62%,
+      rgb(201 162 111 / 0.72)
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.32),
+    inset 0 -1px 0 rgb(69 39 19 / 0.22);
+}
+
+.opfg-outcome-panel--inline .opfg-outcome-panel__body > p {
+  color: #21150d !important;
+  font-weight: 650 !important;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.18);
+}
+
+/* D1.8.1 narrative person labels */
+.opfg-narrative-person__name {
+  color: var(--gold);
+  font-weight: 850;
+}
+
+.opfg-narrative-person__relation {
+  color: rgb(91 62 41 / 0.7);
+  font-size: 0.84em;
+  font-weight: 700;
+  white-space: nowrap;
+}

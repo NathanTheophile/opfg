@@ -1,0 +1,120 @@
+{
+  "id": "ch_opening_friend_reclaim_01",
+  "kind": "normal",
+  "titleKey": "event.ch_opening_friend_reclaim_01.title",
+  "textKey": "event.ch_opening_friend_reclaim_01.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 59
+      },
+      {
+        "type": "hasChosen",
+        "eventId": "ch_opening_friend_intro_01",
+        "choiceId": "keep_boat"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "return_now",
+      "textKey": "event.ch_opening_friend_reclaim_01.choice.return_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "boat_given_back",
+          "textKey": "event.ch_opening_friend_reclaim_01.choice.return_now.outcome.boat_given_back.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 4
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "offer_trade",
+      "textKey": "event.ch_opening_friend_reclaim_01.choice.offer_trade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade_made",
+          "textKey": "event.ch_opening_friend_reclaim_01.choice.offer_trade.outcome.trade_made.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "race_for_it",
+      "textKey": "event.ch_opening_friend_reclaim_01.choice.race_for_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "race_agreed",
+          "textKey": "event.ch_opening_friend_reclaim_01.choice.race_for_it.outcome.race_agreed.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_again",
+      "textKey": "event.ch_opening_friend_reclaim_01.choice.refuse_again.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "friend_leaves",
+          "textKey": "event.ch_opening_friend_reclaim_01.choice.refuse_again.outcome.friend_leaves.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": -4
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "childhood_friend"
+  ]
+}

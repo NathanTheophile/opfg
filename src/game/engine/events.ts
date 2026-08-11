@@ -65,10 +65,33 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
       ? selectEvent({ ...state, scheduledEvents: scheduled.entries }, catalog, fallback)
       : { ...state, scheduledEvents: scheduled.entries, currentEventId: null };
   }
+  const openingCandidates =
+    state.careerPhase === 'childhood'
+      ? candidates.filter((event) =>
+          event.id.startsWith('ch_opening_'),
+        )
+      : [];
+
+  const selectionCandidates =
+    openingCandidates.length > 0
+      ? openingCandidates
+      : candidates;
+
   const normalPool = shouldGuaranteeLifetimeThread(state, catalog)
-    ? candidates.filter((event) => event.kind === 'normal' && event.lifetimeThreadSeed === true)
-    : candidates;
-  return selectUniformNormal(state, catalog, scheduled.entries, normalPool.length > 0 ? normalPool : candidates);
+    ? selectionCandidates.filter((event) =>
+        event.kind === 'normal' &&
+        event.lifetimeThreadSeed === true,
+      )
+    : selectionCandidates;
+
+  return selectUniformNormal(
+    state,
+    catalog,
+    scheduled.entries,
+    normalPool.length > 0
+      ? normalPool
+      : selectionCandidates,
+  );
 }
 
 function selectEvent(state: GameState, catalog: ContentCatalog, event: EventDefinition): GameState {

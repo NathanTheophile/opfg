@@ -1,0 +1,126 @@
+{
+  "id": "ch_opening_household_pirate_01",
+  "kind": "normal",
+  "titleKey": "event.ch_opening_household_pirate_01.title",
+  "textKey": "event.ch_opening_household_pirate_01.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 12
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 23
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "familyStructureIs",
+          "familyStructureId": "orphan"
+        }
+      },
+      {
+        "type": "affiliationIs",
+        "affiliationId": "pirate"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "wear_hat",
+      "textKey": "event.ch_opening_household_pirate_01.choice.wear_hat.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hat_too_large",
+          "textKey": "event.ch_opening_household_pirate_01.choice.wear_hat.outcome.hat_too_large.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shake_purse",
+      "textKey": "event.ch_opening_household_pirate_01.choice.shake_purse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "coins_answer",
+          "textKey": "event.ch_opening_household_pirate_01.choice.shake_purse.outcome.coins_answer.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "point_poster",
+      "textKey": "event.ch_opening_household_pirate_01.choice.point_poster.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "poster_named",
+          "textKey": "event.ch_opening_household_pirate_01.choice.point_poster.outcome.poster_named.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hide_purse",
+      "textKey": "event.ch_opening_household_pirate_01.choice.hide_purse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "purse_hidden",
+          "textKey": "event.ch_opening_household_pirate_01.choice.hide_purse.outcome.purse_hidden.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "luck",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "player_parent_1"
+  ]
+}

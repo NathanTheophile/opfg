@@ -43,6 +43,7 @@ type AudioContextValue = AudioSettings & {
   musicCurrentTime: number;
   musicDuration: number;
   toggleMusicPlayback: () => Promise<void>;
+  previousMusic: () => Promise<void>;
   nextMusic: () => Promise<void>;
   seekMusic: (seconds: number) => void;
 };
@@ -319,6 +320,16 @@ export function AudioProvider({
     [musicPlaylist, playChannel],
   );
 
+  const previousMusic = useCallback(
+    async () => {
+      if (musicPlaylist.length === 0) return;
+      await playPlaylistTrack(
+        musicIndexRef.current - 1,
+      );
+    },
+    [musicPlaylist, playPlaylistTrack],
+  );
+
   const nextMusic = useCallback(async () => {
     if (musicPlaylist.length === 0) return;
 
@@ -410,6 +421,86 @@ export function AudioProvider({
     [stopChannel],
   );
 
+  // D1.8 initial music bootstrap:
+  // attempt autoplay immediately, then retry on the first user gesture
+  // when browser autoplay policy blocks audible media.
+  useEffect(() => {
+    if (musicPlaylist.length === 0) {
+      return undefined;
+    }
+
+    let disposed = false;
+
+    const alreadyStarted = () =>
+      channelState.current.music.src !== null;
+
+    const start = () => {
+      if (disposed || alreadyStarted()) return;
+      void playPlaylistTrack(
+        musicIndexRef.current,
+      );
+    };
+
+    const removeGestureListeners = () => {
+      window.removeEventListener(
+        'pointerdown',
+        onPointerDown,
+        true,
+      );
+      window.removeEventListener(
+        'keydown',
+        onKeyDown,
+        true,
+      );
+    };
+
+    const onPointerDown = (
+      event: PointerEvent,
+    ) => {
+      const target =
+        event.target instanceof Element
+          ? event.target
+          : null;
+
+      // Manual player interaction keeps its own semantics.
+      if (
+        target?.closest(
+          '.opfg-audio-controls',
+        )
+      ) {
+        return;
+      }
+
+      start();
+      removeGestureListeners();
+    };
+
+    const onKeyDown = () => {
+      start();
+      removeGestureListeners();
+    };
+
+    // Works immediately where autoplay is allowed.
+    start();
+
+    // Reliable fallback for Chrome/Firefox/Safari autoplay policies.
+    window.addEventListener(
+      'pointerdown',
+      onPointerDown,
+      true,
+    );
+    window.addEventListener(
+      'keydown',
+      onKeyDown,
+      true,
+    );
+
+    return () => {
+      disposed = true;
+      removeGestureListeners();
+    };
+  }, [musicPlaylist, playPlaylistTrack]);
+
   useEffect(() => {
     if (!initialAmbienceSrc) return;
 
@@ -454,6 +545,7 @@ export function AudioProvider({
       musicCurrentTime,
       musicDuration,
       toggleMusicPlayback,
+      previousMusic,
       nextMusic,
       seekMusic,
     }),
@@ -463,6 +555,7 @@ export function AudioProvider({
       musicDuration,
       musicTrack,
       nextMusic,
+      previousMusic,
       playAmbience,
       playMusic,
       seekMusic,

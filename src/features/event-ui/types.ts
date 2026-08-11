@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { DiceResult, StatId } from '@/game/content/schema';
 
 export type PlayerDisplayStatId = 'health' | StatId;
@@ -28,7 +29,7 @@ export interface EventChoiceViewModel {
 export interface EventViewModel {
   eyebrow?: string;
   title: string;
-  body: string;
+  body: ReactNode;
   choices: EventChoiceViewModel[];
 }
 

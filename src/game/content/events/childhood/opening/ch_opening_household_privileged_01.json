@@ -1,0 +1,130 @@
+{
+  "id": "ch_opening_household_privileged_01",
+  "kind": "normal",
+  "titleKey": "event.ch_opening_household_privileged_01.title",
+  "textKey": "event.ch_opening_household_privileged_01.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 12
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 23
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "familyStructureIs",
+          "familyStructureId": "orphan"
+        }
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "affiliationIs",
+            "affiliationId": "celestial_dragon"
+          },
+          {
+            "type": "affiliationIs",
+            "affiliationId": "royal_family"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "point_door",
+      "textKey": "event.ch_opening_household_privileged_01.choice.point_door.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "door_explained",
+          "textKey": "event.ch_opening_household_privileged_01.choice.point_door.outcome.door_explained.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wave_guard",
+      "textKey": "event.ch_opening_household_privileged_01.choice.wave_guard.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "guard_bows",
+          "textKey": "event.ch_opening_household_privileged_01.choice.wave_guard.outcome.guard_bows.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_ribbon",
+      "textKey": "event.ch_opening_household_privileged_01.choice.take_ribbon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "servant_catches",
+          "textKey": "event.ch_opening_household_privileged_01.choice.take_ribbon.outcome.servant_catches.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "luck",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_hand",
+      "textKey": "event.ch_opening_household_privileged_01.choice.refuse_hand.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "parent_carries",
+          "textKey": "event.ch_opening_household_privileged_01.choice.refuse_hand.outcome.parent_carries.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "player_parent_1"
+  ]
+}

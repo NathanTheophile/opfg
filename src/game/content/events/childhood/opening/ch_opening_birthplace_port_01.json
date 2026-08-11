@@ -1,0 +1,138 @@
+{
+  "id": "ch_opening_birthplace_port_01",
+  "kind": "normal",
+  "titleKey": "event.ch_opening_birthplace_port_01.title",
+  "textKey": "event.ch_opening_birthplace_port_01.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 24
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 35
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "trade"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "shipyard"
+          }
+        ]
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "locationHasTag",
+              "tagId": "marine_presence"
+            },
+            {
+              "type": "locationHasTag",
+              "tagId": "military"
+            },
+            {
+              "type": "locationHasTag",
+              "tagId": "pirate_presence"
+            },
+            {
+              "type": "locationHasTag",
+              "tagId": "criminal"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "stop_fruit",
+      "textKey": "event.ch_opening_birthplace_port_01.choice.stop_fruit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fruit_stopped",
+          "textKey": "event.ch_opening_birthplace_port_01.choice.stop_fruit.outcome.fruit_stopped.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stack_fruit",
+      "textKey": "event.ch_opening_birthplace_port_01.choice.stack_fruit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fruit_stacked",
+          "textKey": "event.ch_opening_birthplace_port_01.choice.stack_fruit.outcome.fruit_stacked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "chase_fruit",
+      "textKey": "event.ch_opening_birthplace_port_01.choice.chase_fruit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fruit_caught",
+          "textKey": "event.ch_opening_birthplace_port_01.choice.chase_fruit.outcome.fruit_caught.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pocket_fruit",
+      "textKey": "event.ch_opening_birthplace_port_01.choice.pocket_fruit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fruit_kept",
+          "textKey": "event.ch_opening_birthplace_port_01.choice.pocket_fruit.outcome.fruit_kept.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "luck",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

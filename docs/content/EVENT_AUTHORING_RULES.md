@@ -1467,3 +1467,15 @@ The production question is no longer only:
 It is also:
 
 > **Would a player on a phone understand why this matters in two seconds and care enough to choose?**
+
+## Childhood Opening Spine
+
+The first Childhood years are identity-establishing content, not generic filler.
+
+- While an eligible `ch_opening_*` Normal Event exists, it is selected before the ordinary Childhood pool.
+- The opening spine should establish, in order: **household/milieu → Birth Location → first persistent friend → callback with that friend → first rival**.
+- These Events still consume the normal Childhood yearly slot. The opening spine does **not** increase Event frequency.
+- Origins choices must become visible fiction immediately. Family structure, affiliation, social class, Race and Birth Location should change what the player sees before generic Childhood begins.
+- World building belongs inside the concrete problem: uniforms, wanted posters, ration bowls, cargo, workshops, guards, Den Den Mushi, weather, markets, ships, local trades, etc. Do not add explanatory lore paragraphs.
+- A persistent Childhood NPC must receive an introduction scene before ordinary callback content assumes familiarity. A generated display name alone is not an introduction.
+- A callback should refer to a concrete object/action from the introduction whenever possible. The player should understand *why this person is back* without exposition.

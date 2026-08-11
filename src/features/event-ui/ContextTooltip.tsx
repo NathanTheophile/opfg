@@ -150,6 +150,7 @@ export function ContextTooltip({
             id={id}
             role="tooltip"
             className="opfg-context-tooltip"
+            data-accented={accent ? 'true' : 'false'}
             data-placement={position?.placement ?? 'right'}
             style={{
               ...style,

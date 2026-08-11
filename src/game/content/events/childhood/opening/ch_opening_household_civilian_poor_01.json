@@ -1,0 +1,125 @@
+{
+  "id": "ch_opening_household_civilian_poor_01",
+  "kind": "normal",
+  "titleKey": "event.ch_opening_household_civilian_poor_01.title",
+  "textKey": "event.ch_opening_household_civilian_poor_01.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 12
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 23
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "familyStructureIs",
+          "familyStructureId": "orphan"
+        }
+      },
+      {
+        "type": "affiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "socialClassIs",
+        "socialClassId": "poor"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "push_coin",
+      "textKey": "event.ch_opening_household_civilian_poor_01.choice.push_coin.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "coin_sorted",
+          "textKey": "event.ch_opening_household_civilian_poor_01.choice.push_coin.outcome.coin_sorted.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hide_coin",
+      "textKey": "event.ch_opening_household_civilian_poor_01.choice.hide_coin.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "coin_missing",
+          "textKey": "event.ch_opening_household_civilian_poor_01.choice.hide_coin.outcome.coin_missing.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "tap_list",
+      "textKey": "event.ch_opening_household_civilian_poor_01.choice.tap_list.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "list_read",
+          "textKey": "event.ch_opening_household_civilian_poor_01.choice.tap_list.outcome.list_read.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "give_coin",
+      "textKey": "event.ch_opening_household_civilian_poor_01.choice.give_coin.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "coin_taken",
+          "textKey": "event.ch_opening_household_civilian_poor_01.choice.give_coin.outcome.coin_taken.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "player_parent_1"
+  ]
+}

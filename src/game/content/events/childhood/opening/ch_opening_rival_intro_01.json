@@ -1,0 +1,131 @@
+{
+  "id": "ch_opening_rival_intro_01",
+  "kind": "normal",
+  "titleKey": "event.ch_opening_rival_intro_01.title",
+  "textKey": "event.ch_opening_rival_intro_01.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 71
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "run_straight",
+      "textKey": "event.ch_opening_rival_intro_01.choice.run_straight.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "straight_race",
+          "textKey": "event.ch_opening_rival_intro_01.choice.run_straight.outcome.straight_race.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 2
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "spot_shortcut",
+      "textKey": "event.ch_opening_rival_intro_01.choice.spot_shortcut.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shortcut_seen",
+          "textKey": "event.ch_opening_rival_intro_01.choice.spot_shortcut.outcome.shortcut_seen.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send_friend",
+      "textKey": "event.ch_opening_rival_intro_01.choice.send_friend.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "friend_runs",
+          "textKey": "event.ch_opening_rival_intro_01.choice.send_friend.outcome.friend_runs.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": -1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "change_challenge",
+      "textKey": "event.ch_opening_rival_intro_01.choice.change_challenge.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "new_challenge",
+          "textKey": "event.ch_opening_rival_intro_01.choice.change_challenge.outcome.new_challenge.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "childhood_friend",
+    "childhood_rival"
+  ]
+}
