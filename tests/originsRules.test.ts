@@ -80,9 +80,10 @@ describe('Origins V1 rules', () => {
     }
   });
 
-  it('supports unbounded player health and preserves the existing death Critical', () => {
-    const healed = apply({ type: 'modifyHealth', amount: 50 });
-    expect(healed.player.stats.health).toBe(85);
+  it('clamps player health to Race maximum and preserves the existing death Critical', () => {
+    const human = apply({ type: 'setRace', raceId: 'human' });
+    const healed = applyEffects(human, contentCatalog, [{ type: 'modifyHealth', amount: 50 }], context);
+    expect(healed.player.stats.health).toBe(35);
     const depleted = applyEffects(healed, contentCatalog, [{ type: 'modifyHealth', amount: -100 }], context);
     expect(selectNextEvent(depleted, contentCatalog).currentEventId).toBe('critical_player_death');
   });

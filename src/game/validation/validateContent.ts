@@ -282,8 +282,16 @@ function validateEvent(
   if (event.scheduledOnly !== undefined
     || (event.kind !== 'scheduled' && [event.priority, event.scheduledReach, event.cancelIf, event.fallbackEventId].some((value) => value !== undefined))
     || (event.kind !== 'critical' && event.trigger !== undefined)
-    || (event.kind !== 'normal' && event.lifetimeThreadSeed !== undefined)) errors.push({ path, message: 'Invalid Event kind field combination.' });
+    || (event.kind !== 'normal' && (event.lifetimeThreadSeed !== undefined || event.replay !== undefined))) errors.push({ path, message: 'Invalid Event kind field combination.' });
   if (event.kind === 'normal' && event.lifetimeThreadSeed !== undefined && event.lifetimeThreadSeed !== true) errors.push({ path: `${path}.lifetimeThreadSeed`, message: 'lifetimeThreadSeed must be true when present.' });
+  if (event.kind === 'normal' && event.replay !== undefined) {
+    if (!isRecord(event.replay)) errors.push({ path: `${path}.replay`, message: 'replay must be an object.' });
+    else {
+      if (!Number.isInteger(event.replay.cooldownMonths) || (event.replay.cooldownMonths as number) < 1) errors.push({ path: `${path}.replay.cooldownMonths`, message: 'replay cooldownMonths must be an integer of at least 1.' });
+      if (event.replay.maxOccurrences !== undefined && (!Number.isInteger(event.replay.maxOccurrences) || (event.replay.maxOccurrences as number) < 2)) errors.push({ path: `${path}.replay.maxOccurrences`, message: 'replay maxOccurrences must be an integer of at least 2.' });
+    }
+    if (event.lifetimeThreadSeed === true) errors.push({ path: `${path}.replay`, message: 'lifetimeThreadSeed Events cannot be replayable.' });
+  }
   if (event.kind === 'scheduled') {
     if (![50, 100, 200, 300].includes(Number(event.priority))) errors.push({ path, message: 'Scheduled priority must be 50, 100, 200, or 300.' });
     if (event.scheduledReach !== undefined && !['normal', 'unrestricted'].includes(String(event.scheduledReach))) errors.push({ path, message: 'Invalid scheduledReach.' });
@@ -294,9 +302,10 @@ function validateEvent(
     }
   }
   if (event.kind === 'critical') {
-    if (!isRecord(event.trigger) || !['playerHealthDepleted', 'npcHealthDepleted', 'shipDestroyed', 'shipMissingAtSea', 'shipReplacementPending', 'fallbackStreakAtLeast'].includes(String(event.trigger.type))) errors.push({ path: `${path}.trigger`, message: 'Invalid Critical trigger.' });
+    if (!isRecord(event.trigger) || !['playerHealthDepleted', 'npcHealthDepleted', 'shipDestroyed', 'shipMissingAtSea', 'shipReplacementPending', 'fallbackStreakAtLeast', 'careerAgeAtLeast'].includes(String(event.trigger.type))) errors.push({ path: `${path}.trigger`, message: 'Invalid Critical trigger.' });
     else if (event.trigger.type === 'npcHealthDepleted') validateReference(event.trigger.npcId, references.npcIds, 'NpcId', `${path}.trigger`, errors);
     else if (event.trigger.type === 'fallbackStreakAtLeast' && (!Number.isInteger(event.trigger.value) || (event.trigger.value as number) < 1)) errors.push({ path: `${path}.trigger`, message: 'fallbackStreakAtLeast trigger requires a positive integer.' });
+    else if (event.trigger.type === 'careerAgeAtLeast' && (!Number.isInteger(event.trigger.value) || (event.trigger.value as number) < 1)) errors.push({ path: `${path}.trigger`, message: 'careerAgeAtLeast trigger requires a positive integer.' });
   }
   if (event.eligibility !== undefined) {
     validateCondition(event.eligibility, `${path}.eligibility`, references, errors);

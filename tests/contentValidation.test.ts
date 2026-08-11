@@ -60,6 +60,23 @@ describe('validateContent', () => {
     expect(messages(invalidKind)).toContainEqual(expect.stringContaining('Invalid Event kind field combination'));
   });
 
+  it('validates replay only on non-lifetime Normal Events', () => {
+    const valid = cloneCatalog();
+    eventById(valid, 'departure').replay = { cooldownMonths: 24, maxOccurrences: 3 };
+    expect(validateContent(valid)).toEqual([]);
+
+    const invalid = cloneCatalog();
+    const event = eventById(invalid, 'departure');
+    event.replay = { cooldownMonths: 0, maxOccurrences: 1 };
+    event.lifetimeThreadSeed = true;
+    const errors = messages(invalid);
+    expect(errors).toEqual(expect.arrayContaining([
+      expect.stringContaining('cooldownMonths must be an integer of at least 1'),
+      expect.stringContaining('maxOccurrences must be an integer of at least 2'),
+      expect.stringContaining('lifetimeThreadSeed Events cannot be replayable'),
+    ]));
+  });
+
   it('validates ShipDefinition references, Location market capability, and stack quantities', () => {
     const catalog = cloneCatalog();
     catalog.locations[0].shipMarket = 'yes';

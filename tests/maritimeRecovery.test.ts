@@ -64,7 +64,7 @@ describe('Ship survival/recovery runtime', () => {
   });
 
   it('targets the Dice rescuer for both fatal raw-1 and successful shared damage outcomes', () => {
-    const state = createInitialGameState(); state.npcs.mira = crew(35);
+    const state = createInitialGameState(); state.player.profile.raceId = 'human'; state.npcs.mira = crew(35);
     const rolled = evaluateDiceRoll(rescuerRoll, state, 1);
     const dead = applyEffects(state, catalog, [
       { type: 'modifyHealth', amount: -99 }, { type: 'modifyNpcStat', npcSelector: 'diceActor', statId: 'health', amount: -99 },

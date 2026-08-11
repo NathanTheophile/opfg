@@ -7,7 +7,25 @@ export type DiagnosticCode =
   | 'flag-read-never-written'
   | 'flag-written-never-read'
   | 'location-no-entry-path'
-  | 'npc-never-referenced';
+  | 'npc-never-referenced'
+  | 'replay-persistent-effect'
+  | 'replay-self-history'
+  | 'health-no-restoration'
+  | 'health-high-damage'
+  | 'normal-pool-low'
+  | 'critical-player-death-missing'
+  | 'career-horizon-missing';
+
+const REPLAY_SUSPECT_EFFECTS = new Set([
+  'setFlag','clearFlag','addItem','removeItem','addTrait','removeTrait','modifyStat','modifyHealth',
+  'acquireShip','loseShip','modifyShipHealth','addCargoItem','removeCargoItem','resolveShipReplacement',
+  'modifyBerries','moveToLocation','setBirthLocation','setNpcStatus','setNpcPassenger','setLeadership',
+  'modifyNpcRelationship','modifyNpcStat','scheduleEvent','queueImmediateEvent','setCareerPhase','setRace',
+  'setOriginSea','setAffiliation','setFamilyStructure','setSocialClass','endCareer','consumeDevilFruit',
+  'increaseDevilFruitAwakening','awakenHaki','raiseConquerorHakiTo','setNpcDevilFruit',
+  'increaseNpcDevilFruitAwakening','raiseNpcHakiTo','setCareerAffiliation','modifyReputation','setBounty',
+  'modifyBounty','setCareerRank','setCareerTitle','clearCareerTitle','endCareerWithEnding',
+]);
 
 export interface ContentDiagnostic {
   severity: 'warning';
@@ -43,6 +61,16 @@ export function diagnoseContent(catalog: ContentCatalog): ContentDiagnostic[] {
     if (event.kind === 'scheduled' && !scheduledTargets.has(event.id)) {
       warnings.push(warning('scheduled-never-scheduled', event.id, `Scheduled Event "${event.id}" is never scheduled.`));
     }
+    if (event.kind === 'normal' && event.replay !== undefined) {
+      const suspectTypes = new Set<string>();
+      let selfHistory = false;
+      visit(event, (record) => {
+        if (typeof record.type === 'string' && REPLAY_SUSPECT_EFFECTS.has(record.type)) suspectTypes.add(record.type);
+        if (['hasPlayed', 'hasChosen', 'hasOutcome'].includes(String(record.type)) && record.eventId === event.id) selfHistory = true;
+      });
+      if (suspectTypes.size > 0) warnings.push(warning('replay-persistent-effect', event.id, `Replayable Event "${event.id}" contains persistent/suspect effects: ${[...suspectTypes].sort().join(', ')}.`));
+      if (selfHistory) warnings.push(warning('replay-self-history', event.id, `Replayable Event "${event.id}" depends on its own History.`));
+    }
   }
   for (const trait of catalog.traits) {
     if (!grantedTraits.has(trait.id)) warnings.push(warning('trait-never-granted', trait.id, `Trait "${trait.id}" is never granted.`));
@@ -62,6 +90,19 @@ export function diagnoseContent(catalog: ContentCatalog): ContentDiagnostic[] {
   for (const npc of catalog.npcs) {
     if (!referencedNpcs.has(npc.id)) warnings.push(warning('npc-never-referenced', npc.id, `NPC "${npc.id}" is never referenced by an Event.`));
   }
+  const healthAmounts: number[] = [];
+  visit(catalog.events, (record) => { if (record.type === 'modifyHealth' && typeof record.amount === 'number') healthAmounts.push(record.amount); });
+  if (!healthAmounts.some((amount) => amount > 0)) warnings.push(warning('health-no-restoration', 'player', 'No authored player Health restoration exists outside initialization (annual recovery still applies).'));
+  const maxHealth = Math.max(...catalog.races.map(({ initialHealth }) => initialHealth), 0);
+  if (healthAmounts.some((amount) => amount < -maxHealth)) warnings.push(warning('health-high-damage', 'player', `Some Health damage exceeds the highest racial max Health (${maxHealth}).`));
+  const activeNormals = catalog.events.filter((event) => event.kind === 'normal' && event.eligibility !== undefined && JSON.stringify(event.eligibility).includes('"phase":"active"'));
+  for (const travel of ['isAtSea', 'isOnLand'] as const) {
+    const count = activeNormals.filter((event) => JSON.stringify(event.eligibility).includes(`"type":"${travel}"`)).length;
+    if (count < 10) warnings.push(warning('normal-pool-low', travel, `Statically identified Active Normal pool for ${travel} is low (${count}).`));
+  }
+  if (!catalog.events.some((event) => event.kind === 'critical' && event.trigger.type === 'playerHealthDepleted')) warnings.push(warning('critical-player-death-missing', 'critical_player_death', 'Critical player death Event is missing.'));
+  const horizon = catalog.events.find((event) => event.kind === 'critical' && event.trigger.type === 'careerAgeAtLeast' && event.trigger.value === 420);
+  if (!horizon || !catalog.endings.some(({ id }) => id === 'v1_career_horizon')) warnings.push(warning('career-horizon-missing', 'v1_career_horizon', 'V1 career horizon Critical Event or Ending is missing.'));
   return warnings.sort((left, right) => left.code.localeCompare(right.code) || left.id.localeCompare(right.id));
 }
 

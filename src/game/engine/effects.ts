@@ -5,6 +5,7 @@ import { addStack, canAcquireShip, canRecruitNpc, cloneInventory, cloneShip, fin
 import { canConsumeDevilFruit, createDefaultPowerState, playerHakiSourceTotal, synchronizePlayerHaki } from './powers';
 import { movePlayerToLocation, recoverTravel } from './locations';
 import { beginMaritimeEmergency, findHighestRelationshipFruitCrew, moveToSameIslandPort, recoverToLandInCurrentSea, recoverToOtherRegion, resolveMaritimeEmergencyLandfall } from './maritime';
+import { modifyPlayerHealth } from './health';
 
 export interface EffectContext {
   sourceEventId: EventId;
@@ -75,7 +76,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       return;
     }
     case 'modifyHealth':
-      state.player.stats.health += effect.amount;
+      modifyPlayerHealth(state, catalog, effect.amount);
       return;
     case 'acquireShip': {
       if (!canAcquireShip(state, catalog, effect.shipId, effect.allowWithoutLeadership === true)) throw new Error(`Ship "${effect.shipId}" cannot be acquired with the current leadership, crew, passengers, or cargo.`);

@@ -39,7 +39,7 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
     careerAffiliations: (['civilian', 'pirate', 'marine', 'revolutionary', 'bounty_hunter'] as const).map((id) => ({ id, nameKey: careerAffiliationNameKey(id) })),
     careerRanks: Object.entries(rankLadders).flatMap(([affiliationId, ranks]) => ranks.map((id, sortOrder) => ({ id, nameKey: careerRankNameKey(id), affiliationId: affiliationId as 'marine' | 'revolutionary' | 'bounty_hunter', sortOrder }))),
     careerTitles: ['rookie', 'veteran', 'legend'].map((id) => ({ id, nameKey: careerTitleNameKey(id), descriptionKey: careerTitleDescriptionKey(id) })),
-    endings: ['career_complete', 'stranded', 'lost_at_sea'].map((id) => ({ id, nameKey: endingNameKey(id), descriptionKey: endingDescriptionKey(id) })),
+    endings: ['career_complete', 'stranded', 'lost_at_sea', 'v1_career_horizon'].map((id) => ({ id, nameKey: endingNameKey(id), descriptionKey: endingDescriptionKey(id) })),
     familyStructures: [
       { id: 'two_parents', nameKey: 'familyStructure.two_parents.name', attributeModifiers: { morale: 2, charisma: 1, observation: -1, agility: -2 } },
       { id: 'single_parent', nameKey: 'familyStructure.single_parent.name', attributeModifiers: { intelligence: 2, observation: 1, morale: -2, luck: -1 } },

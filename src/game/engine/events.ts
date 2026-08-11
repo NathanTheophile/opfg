@@ -25,7 +25,7 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     if (!immediate) throw new Error(`Pending Immediate Event "${immediateId}" is missing or is not immediate.`);
     if (!isEligible(immediate, state, catalog)) {
       const skipped = { ...state, immediateEventQueue: state.immediateEventQueue.slice(1) };
-      return selectNextEvent(skipped.immediateEventQueue.length === 0 ? finalizePendingSlot(skipped) : skipped, catalog);
+      return selectNextEvent(skipped.immediateEventQueue.length === 0 ? finalizePendingSlot(skipped, catalog) : skipped, catalog);
     }
     return { ...state, currentEventId: immediate.id };
   }
@@ -48,12 +48,11 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
   const scheduled = selectScheduledEvent(state, catalog);
   if (scheduled.event) return { ...state, scheduledEvents: scheduled.entries, currentEventId: scheduled.event.id };
 
-  const played = new Set(state.history.map(({ eventId }) => eventId));
   const candidates = catalog.events.filter((event) =>
     event.kind === 'normal'
       && event.id !== SHIP_MARKET_PURCHASE_EVENT_ID
       && !FALLBACK_EVENT_IDS.includes(event.id as typeof FALLBACK_EVENT_IDS[number])
-      && !played.has(event.id)
+      && isNormalOccurrenceEligible(event, state)
       && isEligible(event, state, catalog),
   );
   if (candidates.length === 0) {
@@ -101,7 +100,17 @@ export function findCriticalEvent(state: GameState, events: readonly EventDefini
   if (state.ship !== null && state.ship.health <= 0) return critical.find(({ trigger }) => trigger.type === 'shipDestroyed');
   if (state.ship === null && state.travelState === 'at_sea' && state.maritimeEmergency === null) return critical.find(({ trigger }) => trigger.type === 'shipMissingAtSea');
   if (state.pendingShip !== null) return critical.find(({ trigger }) => trigger.type === 'shipReplacementPending');
-  return critical.find(({ trigger }) => trigger.type === 'fallbackStreakAtLeast' && countFallbackStreak(state, events) >= trigger.value);
+  const fallback = critical.find(({ trigger }) => trigger.type === 'fallbackStreakAtLeast' && countFallbackStreak(state, events) >= trigger.value);
+  if (fallback) return fallback;
+  return critical.find(({ trigger }) => trigger.type === 'careerAgeAtLeast' && state.careerPhase === 'active' && state.ageMonths >= trigger.value);
+}
+
+export function isNormalOccurrenceEligible(event: Extract<EventDefinition, { kind: 'normal' }>, state: GameState): boolean {
+  const occurrences = state.history.filter(({ eventId }) => eventId === event.id);
+  if (event.replay === undefined) return occurrences.length === 0;
+  if (event.replay.maxOccurrences !== undefined && occurrences.length >= event.replay.maxOccurrences) return false;
+  const last = occurrences.at(-1);
+  return last === undefined || state.ageMonths - last.ageMonths >= event.replay.cooldownMonths;
 }
 
 function selectScheduledEvent(state: GameState, catalog: ContentCatalog): { event?: EventDefinition; entries: ScheduledEvent[] } {

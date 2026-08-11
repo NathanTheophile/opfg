@@ -8,7 +8,7 @@ Implemented and verified:
 
 - Content Contract v3 with Normal, Immediate, Scheduled, and Critical event variants;
 - one JSON file per Event, recursively auto-discovered and deterministically sorted by Event ID;
-- save/GameState v13 with v7-v11 migration, persisted Immediate queue/deferred slot/monthly navigation decision, unbounded player health, D20-only attribute IDs, complete Origins profile, leadership, passengers, `ageMonths`, Active `slotInMonth`, stack inventory, Berrys, persistent nullable ship instances, pending replacement, and NPC `dead` status;
+- save/GameState v13 with v7-v11 migration, persisted Immediate queue/deferred slot/monthly navigation decision, race-bounded player health, D20-only attribute IDs, complete Origins profile, leadership, passengers, `ageMonths`, Active `slotInMonth`, stack inventory, Berrys, persistent nullable ship instances, pending replacement, and NPC `dead` status;
 - seeded uniform normal selection and deterministic scheduled ordering;
 - scheduled location reach, cancellation, and fallback;
 - Immediate continuation chains with Critical preemption, eligibility pruning, cycle validation and runtime guard;
@@ -22,4 +22,4 @@ Implemented and verified:
 - exact JSON save round-trip and clean rejection of legacy saves.
 - reproducible headless run simulation, batch coverage metrics, static content diagnostics, and Node CLI validation.
 
-The UI remains deliberately minimal. Rich narrative batches, standalone authoring tools, 3D scenes/dice, repeatable events, cooldowns, rarity, and broader progression systems remain out of scope.
+The UI remains deliberately minimal. Rich narrative batches, standalone authoring tools, 3D scenes/dice, rarity, and broader progression systems remain out of scope. A conservative set of Active evergreen Normal Events supports History-derived replay cooldowns.

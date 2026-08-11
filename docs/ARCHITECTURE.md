@@ -14,7 +14,7 @@ The player owns a two-slot stack inventory and persistent Berrys. A nullable act
 
 Crew membership remains the existing persistent NPC status `crew`; the player never consumes capacity. `isLeader` gates ordinary crew/ship management while explicit narrative Effects may bypass it. `passengerNpcIds` is the only passenger state and reserves one cargo slot per NPC without adding physical-presence simulation. Immutable crew roles live in `NpcDefinition` and are referenced through a small `crewRoles` registry.
 
-History records the age after the resolved event consumed its slot. It is the authority for normal one-shot consumption. Critical events are recorded but consume neither time nor slots.
+History records the age of each resolved Event. It is the authority for normal one-shot consumption and replay cooldowns; no derived replay state is persisted. Critical Events are recorded but consume neither time nor slots.
 
 ## Selection pipeline
 
@@ -22,7 +22,7 @@ Each selection restarts from the current state:
 
 1. Critical: player, NPC by stable ID, then ship destruction, shipless-at-sea, or pending replacement. Exactly one is exposed to the UI.
 2. Scheduled: due occurrence, cancellation/fallback, location reach, eligibility, then priority descending, due age ascending, ID ascending.
-3. Normal: all eligible and unplayed definitions, uniformly selected with the seeded PRNG.
+3. Normal: all eligible one-shot definitions not yet played plus replayable definitions whose History-based cooldown and occurrence cap permit them, uniformly selected with the seeded PRNG.
 
 Scheduled selection never consumes RNG. A scheduled occurrence remains pending while ineligible or blocked by a location, and only the resolved occurrence is removed. Normal and scheduled events consume phase slots; critical events do not.
 

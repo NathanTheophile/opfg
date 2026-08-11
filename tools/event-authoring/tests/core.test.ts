@@ -64,7 +64,7 @@ describe('Content Schema v3', () => {
   it('uses schema v2 and accepts Normal, Scheduled, Critical, current NPC/location/trait contracts', () => {
     const project = createDemoProject();
     const catalog = toRuntimeCatalog(project);
-    expect(CONTENT_SCHEMA_VERSION).toBe(6);
+    expect(CONTENT_SCHEMA_VERSION).toBe(7);
     expect(catalog.events.map((event) => event.kind)).toEqual(expect.arrayContaining(['normal', 'scheduled', 'critical']));
     expect(catalog.npcs[0].initialStats).toHaveProperty('calm', 25);
     expect(catalog.events.find((event) => event.kind === 'critical')).toMatchObject({ trigger: { type: 'npcHealthDepleted', npcId: 'mira' } });
@@ -196,7 +196,7 @@ describe('Event import/export', () => {
     const project = createDemoProject();
     const bundle = createEventsArchive(project, { bundle: true, includeLocales: true });
     const read = await readEventsBundle(bundle);
-    expect(read.manifest).toMatchObject({ format: 'opfg-events-bundle', version: 1, schemaVersion: 6, eventCount: project.events.length });
+    expect(read.manifest).toMatchObject({ format: 'opfg-events-bundle', version: 1, schemaVersion: 7, eventCount: project.events.length });
     expect(read.eventFiles).toHaveLength(project.events.length);
     expect(read.dictionaries.fr['event.departure.title']).toBe(exportLocaleDictionary(project.localization, 'fr')['event.departure.title']);
     const imported = importEventFiles(emptyWorkspace(), read.eventFiles);
@@ -239,7 +239,7 @@ describe('v0.3 project migration and validation', () => {
     expect(result.project.registries.ships).toEqual([]);
     expect(result.project.registries.crewRoles).toEqual([]);
     expect(result.project.registries.locations[0]).toHaveProperty('shipMarket', 'none');
-    expect(result.project.gameSchemaVersion).toBe(6);
+    expect(result.project.gameSchemaVersion).toBe(7);
     expect(event.kind).toBe('normal');
     expect(event.eligibility).toBeUndefined();
     expect(event.priority).toBeUndefined();
@@ -253,7 +253,7 @@ describe('v0.3 project migration and validation', () => {
   it('keeps flags authoring-only and exports the current ContentCatalog', () => {
     const project = createDemoProject();
     const result = exportToGameCatalog(project);
-    expect(result.catalog?.schemaVersion).toBe(6);
+    expect(result.catalog?.schemaVersion).toBe(7);
     expect(result.catalog).not.toHaveProperty('flags');
     expect(result.catalog).not.toHaveProperty('nodes');
     expect(result.locales?.fr['event.departure.title']).toBeTruthy();

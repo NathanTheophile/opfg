@@ -85,11 +85,11 @@ function finalizeOutcome(
   } else if (event.kind === 'normal' || event.kind === 'scheduled') {
     resolvedState = resolvedState.immediateEventQueue.length > 0
       ? { ...resolvedState, pendingSlotPhase: state.careerPhase, immediateEventsResolvedInChain: 0 }
-      : consumePhaseSlot(resolvedState, state.careerPhase);
+      : consumePhaseSlot(resolvedState, state.careerPhase, catalog);
   }
 
   if (resolvedState.pendingSlotPhase !== null && resolvedState.immediateEventQueue.length === 0 && findCriticalEvent(resolvedState, catalog.events) === undefined) {
-    resolvedState = finalizePendingSlot(resolvedState);
+    resolvedState = finalizePendingSlot(resolvedState, catalog);
   }
 
   return {

@@ -33,6 +33,7 @@ describe('eventCatalog', () => {
       ]),
     );
     expect(eventCatalog.filter(({ kind }) => kind === 'critical').map(({ id }) => id)).toEqual([
+      'critical_career_horizon',
       'critical_mira_death',
       'critical_player_death',
       'critical_ship_destroyed',
@@ -52,4 +53,3 @@ describe('eventCatalog', () => {
     expect(loadNodeContentCatalog()).toEqual(contentCatalog);
   });
 });
-

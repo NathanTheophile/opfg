@@ -101,7 +101,7 @@ Les quatre mers sélectionnables dans Origins sont `east_blue`, `west_blue`, `no
 | Charisme | `charisma` |
 | Chance | `luck` |
 
-`health` est une réserve de points de vie non plafonnée. Elle peut dépasser 50, n’est jamais clampée entre 0 et 50, ne produit aucun modificateur D20 et ne peut jamais servir de `statId` à un DiceCheck. `health <= 0` conserve la règle de mort Critical existante.
+`health` est une réserve de points de vie distincte des attributs D20. Son maximum est `RaceDefinition.initialHealth` et toute modification est clampée entre `0` et ce maximum. Elle ne produit aucun modificateur D20 et ne peut jamais servir de `statId` à un DiceCheck. `health <= 0` conserve la règle de mort Critical existante.
 
 Les attributs D20 V1 sont `morale`, `strength`, `agility`, `observation`, `intelligence`, `navigation`, `charisma` et `luck`. Leur plage est `0–50` et leur base neutre avant Origins est `25`. L’Éveil d’un Fruit du Démon appartient exclusivement au PowerState et n’est pas une statistique D20.
 
@@ -212,7 +212,7 @@ Un Immediate se distingue d’un Scheduled : l’Immediate continue la scène ac
 
 Hors cette exception de garantie narrative, tous les Normal Events éligibles conservent exactement la même probabilité : aucun poids de rareté n’est introduit.
 
-Tous les Events normaux authorés sont **one-shot en V1**. Il n’existe ni `repeatable`, ni cooldown, ni compteur de répétition. Deux situations proches nécessitent deux Events distincts. Les deux Events système Active `dead_end_on_land` et `dead_end_at_sea` sont les seules exceptions répétables : ils rétablissent un contexte navigable quand le contenu normal est épuisé et restent un signal diagnostique de contenu manquant.
+Les Events normaux authorés sont **one-shot par défaut**. Un petit pool d’Events Active véritablement evergreen peut déclarer un cooldown et un nombre maximal d’occurrences ; l’éligibilité est dérivée de `history`, sans nouvel état persistant. Les Lifetime Threads, storylines, Signature Events et états uniques restent one-shot. Les deux Events système Active `dead_end_on_land` et `dead_end_at_sea` rétablissent un contexte navigable quand le contenu normal est épuisé et restent un signal diagnostique de contenu manquant.
 
 Il n’existe aucun poids de rareté (`weight`, common/uncommon/rare ou probabilité individuelle cachée). La rareté découle uniquement des Conditions d’éligibilité : âge, géographie, voyage, profil, statistiques, Traits, historique, flags, items, NPC et autres Conditions déclaratives supportées. Une fois éligibles, les Events ont la même probabilité.
 
@@ -542,7 +542,7 @@ Ne sont pas considérés comme décidés :
 - génération de fratrie systématique ou héritage détaillé au-delà des parents V1 ;
 - combat NPC autonome, DiceChecks NPC ou Traits NPC ;
 - système générique de quêtes ou `ArcState` ;
-- répétition et cooldown d’Events ;
+- framework générique de répétition au-delà du replay conservateur des Events evergreen ;
 - rareté pondérée ;
 - backend, comptes ou cloud ;
 - système complet de fallback déjà utilisé dans le contenu.
@@ -590,7 +590,7 @@ Les décisions suivantes sont verrouillées mais pas nécessairement implément�
 - statut NPC `dead` ;
 - Critical Events sans consommation de slot ;
 - re-check complet après chaque Critical Event ;
-- tous les Events normaux one-shot ;
+- Events normaux one-shot par défaut, avec replay History-based réservé aux evergreen explicitement taggés ;
 - sélection uniforme sans weights ;
 - instance de navire persistante et nullable, distincte de son type authoré ;
 - HP, nom et cale propres à l’instance du navire ;

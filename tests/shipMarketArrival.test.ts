@@ -114,23 +114,27 @@ describe('ship market arrival and annual income', () => {
   it('pays exactly 50 Berrys per birthday and reaches 750 Berrys at age 15', () => {
     let state = createInitialGameState(1);
     state.careerPhase = 'childhood';
-    state = consumePhaseSlot(state, 'origins');
+    state.player.profile.raceId = 'human';
+    state.player.stats.health = 20;
+    state = consumePhaseSlot(state, 'origins', contentCatalog);
 
-    expect(state).toMatchObject({ ageMonths: 12, berries: 50 });
+    expect(state).toMatchObject({ ageMonths: 12, berries: 50, player: { stats: { health: 21 } } });
 
-    while (state.careerPhase === 'childhood') state = consumePhaseSlot(state, 'childhood');
+    while (state.careerPhase === 'childhood') state = consumePhaseSlot(state, 'childhood', contentCatalog);
 
     expect(state).toMatchObject({
       ageMonths: 180,
       berries: 750,
       careerPhase: 'active',
       shipMarketArrivalPending: true,
+      player: { stats: { health: 35 } },
     });
 
     state.ageMonths = 191;
     state.slotInMonth = 1;
-    state = consumePhaseSlot(state, 'active');
-    expect(state).toMatchObject({ ageMonths: 192, berries: 800, slotInMonth: 0 });
+    state.player.stats.health = 30;
+    state = consumePhaseSlot(state, 'active', contentCatalog);
+    expect(state).toMatchObject({ ageMonths: 192, berries: 800, slotInMonth: 0, player: { stats: { health: 31 } } });
   });
 
   it('keeps departure ineligible without a ship and eligible with one', () => {
