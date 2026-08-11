@@ -5,7 +5,7 @@ const DEFAULT_SEED = 0x1a2b3c4d;
 
 export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
   return {
-    version: 17,
+    version: 18,
     rngState: seed >>> 0,
     careerPhase: 'origins',
     ageMonths: 0,

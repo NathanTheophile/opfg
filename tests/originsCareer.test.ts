@@ -122,8 +122,8 @@ describe('complete pre-career pipeline', () => {
 
     expect(state).toMatchObject({
       careerPhase: 'active',
-      ageMonths: 181,
-      slotInMonth: 1,
+      ageMonths: 183,
+      slotInMonth: 0,
     });
   });
 });

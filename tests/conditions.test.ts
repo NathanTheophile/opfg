@@ -25,4 +25,22 @@ describe('conditions v2', () => {
     state.player.stats.agility = 30;
     expect(evaluateCondition({ type: 'statAtLeast', statId: 'agility', value: 30 }, state)).toBe(true);
   });
+
+  it('supports NPC relationship upper bounds and interaction recency', () => {
+    const state = createInitialGameState();
+    state.ageMonths = 40;
+    state.npcs.mira.relationship = -10;
+    state.npcs.mira.lastInteractionAgeMonths = 28;
+    expect(evaluateCondition({ type: 'npcRelationshipAtMost', npcId: 'mira', value: -5 }, state)).toBe(true);
+    expect(evaluateCondition({ type: 'npcMonthsSinceInteractionAtLeast', npcId: 'mira', value: 12 }, state)).toBe(true);
+    expect(evaluateCondition({ type: 'npcMonthsSinceInteractionAtMost', npcId: 'mira', value: 12 }, state)).toBe(true);
+    expect(evaluateCondition({ type: 'npcMonthsSinceInteractionAtMost', npcId: 'mira', value: 11 }, state)).toBe(false);
+  });
+
+  it('returns false for both recency conditions when never interacted', () => {
+    const state = createInitialGameState();
+    state.npcs.mira.lastInteractionAgeMonths = null;
+    expect(evaluateCondition({ type: 'npcMonthsSinceInteractionAtLeast', npcId: 'mira', value: 0 }, state)).toBe(false);
+    expect(evaluateCondition({ type: 'npcMonthsSinceInteractionAtMost', npcId: 'mira', value: 999 }, state)).toBe(false);
+  });
 });

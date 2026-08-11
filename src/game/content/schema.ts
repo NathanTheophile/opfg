@@ -33,7 +33,7 @@ import type {
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 7;
+export const CONTENT_SCHEMA_VERSION = 8;
 
 export const V1_CAREER_HORIZON_MONTHS = 420;
 
@@ -90,6 +90,9 @@ export type Condition =
   | { type: 'canSellShip' }
   | { type: 'npcStatusIs'; npcId: NpcId; status: NpcStatus }
   | { type: 'npcRelationshipAtLeast'; npcId: NpcId; value: number }
+  | { type: 'npcRelationshipAtMost'; npcId: NpcId; value: number }
+  | { type: 'npcMonthsSinceInteractionAtLeast'; npcId: NpcId; value: number }
+  | { type: 'npcMonthsSinceInteractionAtMost'; npcId: NpcId; value: number }
   | { type: 'npcStatAtLeast'; npcId: NpcId; statId: NpcStatId; value: number }
   | { type: 'hasChosen'; eventId: EventId; choiceId: ChoiceId }
   | { type: 'hasPlayed'; eventId: EventId }
@@ -237,6 +240,7 @@ export interface ChoiceDefinition {
 
 interface EventBase {
   id: EventId;
+  cast?: NpcId[];
   titleKey: LocalizationKey;
   textKey: LocalizationKey;
   eligibility?: Condition;

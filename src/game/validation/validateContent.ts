@@ -68,6 +68,9 @@ const CONDITION_TYPES = new Set([
   'canSellShip',
   'npcStatusIs',
   'npcRelationshipAtLeast',
+  'npcRelationshipAtMost',
+  'npcMonthsSinceInteractionAtLeast',
+  'npcMonthsSinceInteractionAtMost',
   'npcStatAtLeast',
   'hasChosen',
   'hasPlayed',
@@ -310,6 +313,17 @@ function validateEvent(
   if (event.eligibility !== undefined) {
     validateCondition(event.eligibility, `${path}.eligibility`, references, errors);
   }
+  if (event.cast !== undefined) {
+    if (!Array.isArray(event.cast)) errors.push({ path: `${path}.cast`, message: 'Event cast must be an array of NpcIds.' });
+    else {
+      const seen = new Set<string>();
+      event.cast.forEach((npcId, index) => {
+        const id = validateReference(npcId, references.npcIds, 'NpcId', `${path}.cast[${index}]`, errors);
+        if (id && seen.has(id)) errors.push({ path: `${path}.cast[${index}]`, message: `Duplicate NpcId "${id}" in Event cast.` });
+        if (id) seen.add(id);
+      });
+    }
+  }
 
   const choices = readRecords(event.choices, `${path}.choices`, errors);
   const diceStatIds = new Set<string>();
@@ -390,8 +404,14 @@ function validateCondition(
   if (type === 'shipDestructionCauseIs' && !['enemy', 'accident'].includes(String(value.cause))) errors.push({ path, message: 'Invalid ship destruction cause.' });
   if (type === 'locationHasTag' && !VALID_LOCATION_TAGS.has(String(value.tagId) as never)) errors.push({ path, message: `Unknown Location tag "${String(value.tagId)}".` });
   if (type === 'locationHasService' && !VALID_LOCATION_SERVICES.has(String(value.serviceId) as never)) errors.push({ path, message: `Unknown Location service "${String(value.serviceId)}".` });
-  if (type === 'npcStatusIs' || type === 'npcRelationshipAtLeast' || type === 'npcStatAtLeast') {
+  if (['npcStatusIs', 'npcRelationshipAtLeast', 'npcRelationshipAtMost', 'npcMonthsSinceInteractionAtLeast', 'npcMonthsSinceInteractionAtMost', 'npcStatAtLeast'].includes(type)) {
     validateReference(value.npcId, references.npcIds, 'NpcId', path, errors);
+  }
+  if (['npcMonthsSinceInteractionAtLeast', 'npcMonthsSinceInteractionAtMost'].includes(type) && (!Number.isInteger(value.value) || (value.value as number) < 0)) {
+    errors.push({ path, message: `${type} requires a non-negative integer.` });
+  }
+  if (['npcRelationshipAtLeast', 'npcRelationshipAtMost'].includes(type) && !isNumberInRange(value.value, -100, 100)) {
+    errors.push({ path, message: `${type} value must be a finite number from -100 to 100.` });
   }
   if (type === 'npcStatAtLeast') {
     validateNpcStat(value.statId, path, errors);

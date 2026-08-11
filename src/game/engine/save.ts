@@ -2,7 +2,7 @@ import type { CareerEndReason, CareerPhase, GameState, ItemStack, MaritimeEmerge
 import { createDefaultPowerState } from './powers';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 17;
+const CURRENT_SAVE_VERSION = 18;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
@@ -239,6 +239,12 @@ function migrateLegacySave(value: unknown): unknown {
         && migrated.travelState === 'on_land',
     };
   }
+  if (isRecord(migrated) && migrated.version === 17) {
+    const npcs = isRecord(migrated.npcs)
+      ? Object.fromEntries(Object.entries(migrated.npcs).map(([id, npc]) => [id, isRecord(npc) ? { ...npc, lastInteractionAgeMonths: null } : npc]))
+      : migrated.npcs;
+    migrated = { ...migrated, version: 18, npcs };
+  }
   return migrated;
 }
 
@@ -300,7 +306,8 @@ function readNpcs(value: unknown): GameState['npcs'] | null {
     const powers = readPowerState(npc.powers);
     if (powers === null) return null;
     if (!isNullableString(npc.raceId)) return null;
-    npcs[npcId] = { status: npc.status, relationship: npc.relationship, raceId: npc.raceId, stats, powers };
+    if (!(npc.lastInteractionAgeMonths === null || isNonNegativeInteger(npc.lastInteractionAgeMonths))) return null;
+    npcs[npcId] = { status: npc.status, relationship: npc.relationship, lastInteractionAgeMonths: npc.lastInteractionAgeMonths, raceId: npc.raceId, stats, powers };
   }
   return npcs;
 }

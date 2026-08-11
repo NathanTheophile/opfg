@@ -59,11 +59,11 @@ describe('World V1 readiness', () => {
     expect(getLocationDisplayName(contentCatalog, 'water_seven', translate)).toBe('Water Seven');
   });
 
-  it('allows goToSea through a dockable ancestor and blocks inaccessible land', () => {
+  it('allows destination sailing through a dockable ancestor and blocks inaccessible land', () => {
     const ancestor = activeState('rainbase'); ancestor.navigationDecisionAgeMonths = null;
     const inaccessible = activeState('arlong_park'); inaccessible.navigationDecisionAgeMonths = null;
-    expect(getMonthlyNavigationOptions(ancestor, contentCatalog)).toContainEqual({ id: 'goToSea', available: true });
-    expect(getMonthlyNavigationOptions(inaccessible, contentCatalog)).toContainEqual({ id: 'goToSea', available: false });
+    expect(getMonthlyNavigationOptions(ancestor, contentCatalog)).toContainEqual({ id: 'sailTo:jaya_island', destinationId: 'jaya_island', available: true });
+    expect(getMonthlyNavigationOptions(inaccessible, contentCatalog).filter(({ id }) => id.startsWith('sailTo:')).every(({ available }) => !available)).toBe(true);
   });
 
   it('keeps seeded Normal selection uniform without route state', () => {

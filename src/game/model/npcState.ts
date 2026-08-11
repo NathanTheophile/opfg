@@ -18,6 +18,7 @@ export function createDefaultNpcState(): NpcState {
     raceId: null,
     status: 'known',
     relationship: 0,
+    lastInteractionAgeMonths: null,
     stats: createDefaultNpcStats(),
     powers: { devilFruitId: null, devilFruitAwakening: 0, haki: { observation: 0, armament: 0, conqueror: 0 } },
   };

@@ -68,7 +68,7 @@ describe('Content Authoring Readiness V1', () => {
     legacy.ship = { shipId: 'starter_sloop', name: 'Legacy Sloop', health: 30, cargo: [] };
     for (const npc of Object.values(legacy.npcs) as Record<string, any>[]) delete npc.raceId;
     expect(deserializeGameState(JSON.stringify(legacy))).toMatchObject({
-      version: 17,
+      version: 18,
       ship: { shipId: 'sloop' },
       player: { career: { affiliationId: 'marine', reputation: 100, rankId: 'marine_commodore' } },
       npcs: { mira: { raceId: null } },

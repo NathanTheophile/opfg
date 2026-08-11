@@ -77,6 +77,16 @@ describe('validateContent', () => {
     ]));
   });
 
+  it('validates Event cast NPC references', () => {
+    const valid = cloneCatalog();
+    eventById(valid, 'departure').cast = ['mira'];
+    expect(validateContent(valid)).toEqual([]);
+
+    const invalid = cloneCatalog();
+    eventById(invalid, 'departure').cast = ['missing_npc'];
+    expect(messages(invalid)).toContainEqual(expect.stringContaining('Unknown NpcId "missing_npc"'));
+  });
+
   it('validates ShipDefinition references, Location market capability, and stack quantities', () => {
     const catalog = cloneCatalog();
     catalog.locations[0].shipMarket = 'yes';

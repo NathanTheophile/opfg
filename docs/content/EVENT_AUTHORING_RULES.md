@@ -396,6 +396,8 @@ If a future Event only needs to know what happened in one prior Event, prefer `h
 
 ## 8. Persistent NPC and recurring-cast rules
 
+Every persistent NPC who actually participates in a scene must be listed in that Event's `cast`. This metadata does not change NPC status or relationship; it records the interaction date automatically and supports recurrence Conditions. An NPC merely referenced or tested by a Condition need not be cast unless directly participating in the scene.
+
 ### 8.1 Recurring cast is preferred over anonymous emotional stakes
 
 When a scene asks the player to care about a person, **reuse a person the player can remember whenever plausible**.
@@ -1451,4 +1453,3 @@ The production question is no longer only:
 It is also:
 
 > **Would a player on a phone understand why this matters in two seconds and care enough to choose?**
-

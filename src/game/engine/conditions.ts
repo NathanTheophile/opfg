@@ -90,6 +90,16 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
       return state.npcs[condition.npcId]?.status === condition.status;
     case 'npcRelationshipAtLeast':
       return (state.npcs[condition.npcId]?.relationship ?? Number.NEGATIVE_INFINITY) >= condition.value;
+    case 'npcRelationshipAtMost':
+      return (state.npcs[condition.npcId]?.relationship ?? Number.POSITIVE_INFINITY) <= condition.value;
+    case 'npcMonthsSinceInteractionAtLeast': {
+      const age = state.npcs[condition.npcId]?.lastInteractionAgeMonths;
+      return age !== null && age !== undefined && state.ageMonths - age >= condition.value;
+    }
+    case 'npcMonthsSinceInteractionAtMost': {
+      const age = state.npcs[condition.npcId]?.lastInteractionAgeMonths;
+      return age !== null && age !== undefined && state.ageMonths - age <= condition.value;
+    }
     case 'npcStatAtLeast':
       return (state.npcs[condition.npcId]?.stats[condition.statId] ?? Number.NEGATIVE_INFINITY) >= condition.value;
     case 'hasChosen':

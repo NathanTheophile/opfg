@@ -106,6 +106,7 @@ export interface NpcState {
   raceId: RaceId | null;
   status: NpcStatus;
   relationship: number;
+  lastInteractionAgeMonths: number | null;
   stats: NpcStats;
   powers: PowerState;
 }

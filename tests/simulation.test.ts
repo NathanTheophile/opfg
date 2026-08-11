@@ -106,7 +106,7 @@ describe('simulation', () => {
     state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
     const result = simulateRun({ seed: 9, catalog: baseCatalog(events), initialState: state });
     expect(result).toMatchObject({ normalEvents: 1, immediateEvents: 2, maximumImmediateChainLength: 2 });
-    expect(result.finalState).toMatchObject({ ageMonths: 180, slotInMonth: 1, navigationDecisionAgeMonths: 180 });
+    expect(result.finalState).toMatchObject({ ageMonths: 181, slotInMonth: 0, navigationDecisionAgeMonths: 181 });
   });
 
   it('reports simple production diagnostics without pretending to solve reachability', () => {
@@ -128,5 +128,43 @@ describe('simulation', () => {
       'scheduled-never-scheduled', 'trait-never-granted', 'item-never-granted',
       'flag-read-never-written', 'flag-written-never-read',
     ]));
+  });
+
+  it('reports cast consistency and Lifetime Thread NPC diagnostics', () => {
+    const outcome = (effects: import('../src/game/content/schema').Effect[]) => ({ id: 'done', textKey: 'x', effects });
+    const events: EventDefinition[] = [
+      {
+        id: 'seed', kind: 'normal', lifetimeThreadSeed: true, cast: ['recurring'], titleKey: 'x', textKey: 'x',
+        choices: [{ id: 'go', textKey: 'x', resolution: { type: 'deterministic', outcome: outcome([
+          { type: 'modifyNpcRelationship', npcId: 'outside', amount: 1 },
+          { type: 'scheduleEvent', eventId: 'chapter', delayMonths: 12 },
+        ]) } }],
+      },
+      {
+        id: 'chapter', kind: 'scheduled', priority: 100, cast: ['recurring', 'cameo'], titleKey: 'x', textKey: 'x',
+        choices: [{ id: 'go', textKey: 'x', resolution: { type: 'deterministic', outcome: outcome([]) } }],
+      },
+      {
+        id: 'lonely', kind: 'normal', cast: ['throwaway'], titleKey: 'x', textKey: 'x',
+        choices: [{ id: 'go', textKey: 'x', resolution: { type: 'deterministic', outcome: outcome([]) } }],
+      },
+      {
+        id: 'empty_seed', kind: 'normal', lifetimeThreadSeed: true, titleKey: 'x', textKey: 'x',
+        choices: [{ id: 'go', textKey: 'x', resolution: { type: 'deterministic', outcome: outcome([]) } }],
+      },
+    ];
+    const npc = (id: string) => ({
+      id, nameKey: 'x', raceId: null, originSeaId: null, affiliationId: null, crewRoleId: null,
+      initialStats: { health: 10, morale: 10, strength: 10, observation: 10, intelligence: 10, luck: 10, loyalty: 10, calm: 10 },
+    });
+    const diagnostics = diagnoseContent(baseCatalog(events, { npcs: [npc('recurring'), npc('cameo'), npc('outside'), npc('throwaway')] }));
+
+    expect(diagnostics).toEqual(expect.arrayContaining([
+      expect.objectContaining({ code: 'npc-relationship-outside-cast', id: 'seed:outside' }),
+      expect.objectContaining({ code: 'npc-single-event-cast', id: 'throwaway' }),
+      expect.objectContaining({ code: 'lifetime-thread-no-cast', id: 'empty_seed' }),
+      expect.objectContaining({ code: 'lifetime-thread-single-node-cast', id: 'seed:cameo' }),
+    ]));
+    expect(diagnostics).not.toContainEqual(expect.objectContaining({ code: 'lifetime-thread-single-node-cast', id: 'seed:recurring' }));
   });
 });

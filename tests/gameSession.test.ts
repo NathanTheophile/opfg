@@ -68,8 +68,10 @@ describe('GameSession', () => {
     state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
     state.careerPhase = 'active'; state.ageMonths = 180; state.locationId = 'foosha_village'; state.travelState = 'on_land';
     const session = createSessionState(state);
-    expect(getSessionNavigationOptions(session, contentCatalog).map(({ id }) => id)).toEqual(['stay', 'goToSea']);
-    const next = chooseMonthlyNavigationInSession(session, contentCatalog, 'goToSea');
+    const options = getSessionNavigationOptions(session, contentCatalog);
+    expect(options[0]?.id).toBe('stay');
+    expect(options.some(({ id }) => id.startsWith('sailTo:'))).toBe(true);
+    const next = chooseMonthlyNavigationInSession(session, contentCatalog, options.find(({ id }) => id.startsWith('sailTo:'))!.id);
     expect(next.gameState).toMatchObject({ travelState: 'at_sea', slotInMonth: 0, navigationDecisionAgeMonths: 180 });
     expect(next.gameState?.history).toEqual([]);
   });

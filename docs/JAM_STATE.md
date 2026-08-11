@@ -2,7 +2,7 @@
 
 Implemented and verified:
 
-- Content authoring foundation implemented on Save v15 / Content Schema v5: generic Marine/Revolutionary/Bounty Hunter ranks, Reputation `0..100`, exact V1 Traits/Crew Roles/Ships, 188 runtime World V1 Locations with hierarchy and controlled tags/services/ship markets, 20 playable plus 25 reference-only Devil Fruits, and persistent same-race Origins parents. Career history/maxBounty, Ending variants and final score remain intentionally out of scope;
+- Content authoring foundation implemented on Save v18 / Content Schema v8: generic Marine/Revolutionary/Bounty Hunter ranks, Reputation `0..100`, exact V1 Traits/Crew Roles/Ships, 188 runtime World V1 Locations with hierarchy and controlled tags/services/ship markets, 20 playable plus 25 reference-only Devil Fruits, persistent same-race Origins parents, and Event cast metadata. Career history/maxBounty, Ending variants and final score remain intentionally out of scope;
 - Powers V1: shared Player/NPC PowerState, central Devil Fruit catalog and controlled tags, protected Item consumption, monotone Awakening, Event-awakened Haki with automatic post-awakening Player tiers, declarative Conditions/Effects, UI/localization, validator and Tool authoring support;
 - Content Contract v3 and save/GameState v13 (Powers migration defaults from v12);
 

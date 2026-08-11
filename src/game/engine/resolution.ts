@@ -64,10 +64,11 @@ function finalizeOutcome(
     sourceChoiceId: choiceId,
     ...(dice?.actorNpcId ? { diceActorNpcId: dice.actorNpcId } : {}),
   });
+  const afterCastInteraction = updateCastInteractions(afterEffects, event);
   const afterSystemResolution =
     event.id === 'origin_sea'
-      ? assignRandomBirthLocation(afterEffects, catalog)
-      : afterEffects;
+      ? assignRandomBirthLocation(afterCastInteraction, catalog)
+      : afterCastInteraction;
   let resolvedState: GameState = {
     ...afterSystemResolution,
     history: [
@@ -97,6 +98,19 @@ function finalizeOutcome(
     outcome,
     dice,
   };
+}
+
+function updateCastInteractions(state: GameState, event: EventDefinition): GameState {
+  if (event.cast === undefined || event.cast.length === 0) return state;
+  const npcs = { ...state.npcs };
+  let changed = false;
+  for (const npcId of event.cast) {
+    const npc = npcs[npcId];
+    if (npc === undefined) continue;
+    npcs[npcId] = { ...npc, lastInteractionAgeMonths: state.ageMonths };
+    changed = true;
+  }
+  return changed ? { ...state, npcs } : state;
 }
 
 function assignRandomBirthLocation(state: GameState, catalog: ContentCatalog): GameState {
