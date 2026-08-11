@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Panel,
   PanelBody,
@@ -37,25 +37,85 @@ export function EventPanel({
   const [inputs, setInputs] =
     useState<Record<string, string>>({});
 
-  const collapsed = mode === 'collapsed';
-  const resolved = mode === 'resolved';
+  const [displayEvent, setDisplayEvent] =
+    useState(event);
+  const [displayMode, setDisplayMode] =
+    useState(mode);
+  const [
+    displaySelectedChoiceId,
+    setDisplaySelectedChoiceId,
+  ] = useState(selectedChoiceId);
+  const [contentVisible, setContentVisible] =
+    useState(true);
+  const transitionTimerRef =
+    useRef<number[]>([]);
+
+  useEffect(() => {
+    const presentationChanged =
+      displayEvent !== event ||
+      displayMode !== mode ||
+      displaySelectedChoiceId !== selectedChoiceId;
+
+    if (!presentationChanged) return undefined;
+
+    transitionTimerRef.current.forEach((timer) =>
+      window.clearTimeout(timer),
+    );
+    transitionTimerRef.current = [];
+
+    // 1. Fade only the existing panel contents. The Panel itself stays mounted.
+    setContentVisible(false);
+
+    const swapTimer = window.setTimeout(() => {
+      // 2. Swap Event + mode + selected Choice while everything is invisible.
+      setDisplayEvent(event);
+      setDisplayMode(mode);
+      setDisplaySelectedChoiceId(selectedChoiceId);
+      setInputs({});
+
+      // 3. Leave the new contents invisible while layout/height settles.
+      const revealTimer = window.setTimeout(() => {
+        // 4. Fade the new contents back in.
+        setContentVisible(true);
+      }, 190);
+
+      transitionTimerRef.current.push(revealTimer);
+    }, 110);
+
+    transitionTimerRef.current.push(swapTimer);
+
+    return () => {
+      transitionTimerRef.current.forEach((timer) =>
+        window.clearTimeout(timer),
+      );
+      transitionTimerRef.current = [];
+    };
+  }, [
+    event,
+    mode,
+    selectedChoiceId,
+  ]);
+
+  const collapsed = displayMode === 'collapsed';
+  const resolved = displayMode === 'resolved';
 
   return (
     <Panel
       variant="strong"
       padding="none"
       className="opfg-event-panel w-full overflow-hidden shadow-overlay"
-      data-mode={mode}
+      data-mode={displayMode}
+      data-content-visible={contentVisible ? 'true' : 'false'}
     >
-      <PanelHeader className="opfg-event-panel__header mb-0 bg-gradient-to-b from-black/[0.38] to-black/[0.24] px-5 pb-3 pt-3 md:px-7 md:pb-3 md:pt-4">
-        {event.eyebrow && (
+      <PanelHeader className="opfg-event-panel__header mb-0 bg-gradient-to-b from-black/[0.38] to-black/[0.24] px-5 md:px-6">
+        {displayEvent.eyebrow && (
           <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-gold">
-            {event.eyebrow}
+            {displayEvent.eyebrow}
           </p>
         )}
 
-        <PanelTitle className="opfg-event-panel__title text-xl md:text-2xl">
-          {event.title}
+        <PanelTitle className="opfg-event-panel__title">
+          {displayEvent.title}
         </PanelTitle>
       </PanelHeader>
 
@@ -63,9 +123,9 @@ export function EventPanel({
         <>
           <div className="h-px bg-[var(--border-subtle)]" />
 
-          <PanelBody className="opfg-event-panel__body px-5 pb-4 pt-3 md:px-7 md:pb-5 md:pt-4">
-            <p className="opfg-event-panel__body-copy max-w-[68ch] text-sm leading-6 text-fg-secondary md:text-[0.94rem] md:leading-6">
-              {event.body}
+          <PanelBody className="opfg-event-panel__body px-5 md:px-6">
+            <p className="opfg-event-panel__body-copy">
+              {displayEvent.body}
             </p>
           </PanelBody>
 
@@ -80,9 +140,9 @@ export function EventPanel({
                 </p>
               )}
 
-              {event.choices.map((choice) => {
+              {displayEvent.choices.map((choice) => {
                 const selected =
-                  choice.id === selectedChoiceId;
+                  choice.id === displaySelectedChoiceId;
 
                 return (
                   <div

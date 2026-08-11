@@ -229,6 +229,9 @@ export function EventPreview({
   const timerRef =
     useRef<number | null>(null);
 
+  const adventureScrollRef =
+    useRef<HTMLDivElement | null>(null);
+
   const translate: Translator = (key, params) =>
     t(key, locale, {
       playerName: session.gameState?.player.profile.name ?? '',
@@ -422,6 +425,24 @@ export function EventPreview({
       session.previousState,
     ]);
 
+  useEffect(() => {
+    if (!showOutcome || !outcomeView) return undefined;
+
+    const scrollTimer = window.setTimeout(() => {
+      const viewport = adventureScrollRef.current;
+      if (!viewport) return;
+
+      viewport.scrollTo({
+        top: viewport.scrollHeight,
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ? 'auto'
+          : 'smooth',
+      });
+    }, 360);
+
+    return () => window.clearTimeout(scrollTimer);
+  }, [showOutcome, outcomeView]);
+
   const clearResolvedEventUi = () => {
     setResolvedEventView(null);
     setSelectedChoiceId(null);
@@ -566,6 +587,7 @@ export function EventPreview({
   };
 
   const continueFromOutcome = () => {
+    adventureScrollRef.current?.scrollTo({ top: 0, behavior: 'auto' });
     setShowOutcome(false);
     setPendingDice(null);
     clearResolvedEventUi();
@@ -681,23 +703,12 @@ export function EventPreview({
     outcomePresentationState?.ageMonths ??
     displayState.ageMonths;
 
-  const monthEventProgress =
-    displayState.careerPhase === 'active'
-      ? outcomePresentationState
-        ? Math.min(
-            2,
-            outcomePresentationState.slotInMonth + 1,
-          )
-        : displayState.slotInMonth
-      : 0;
-
   const hudProps = {
     state: displayState,
     catalog,
     translate,
     locale,
     calendarAgeMonths,
-    monthEventProgress,
   };
 
   return (
@@ -725,135 +736,82 @@ export function EventPreview({
             {crewRail}
           </div>
 
-          <AnimatePresence
-            mode="wait"
-            initial={false}
+          <div
+            ref={adventureScrollRef}
+            className="opfg-adventure-scroll"
           >
-            {showOutcome &&
-            outcomeView ? (
-              <motion.div
-                key="adventure-panel"
-                layout
-                initial={{
-                  opacity: 0,
-                  y: 12,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                exit={{
-                  opacity: 0,
-                  y: -8,
-                }}
-                transition={
-                  PANEL_TRANSITION
+            <motion.div
+              layout="size"
+              className="opfg-adventure-size-shell"
+              transition={{ layout: PANEL_TRANSITION }}
+            >
+              <div
+                className={
+                  showOutcome || pendingDice
+                    ? 'opfg-adventure-stack'
+                    : undefined
                 }
               >
-                <OutcomePanel
-                  outcome={outcomeView}
-                  onContinue={
-                    continueFromOutcome
-                  }
-                  translate={translate}
-                />
-              </motion.div>
-            ) : pendingDice ? (
-              <motion.div
-                key="adventure-panel"
-                layout
-                className="opfg-adventure-stack"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={
-                  PANEL_TRANSITION
-                }
-              >
-                {resolvedEventView && (
-                  <EventPanel
-                    event={
-                      resolvedEventView
-                    }
-                    onChoice={() => {}}
-                    mode="collapsed"
-                    selectedChoiceId={
-                      selectedChoiceId
-                    }
-                  />
-                )}
+                  {showOutcome && outcomeView ? (
+                    <>
+                      {resolvedEventView && (
+                        <EventPanel
+                          event={resolvedEventView}
+                          onChoice={() => {}}
+                          mode="resolved"
+                          selectedChoiceId={selectedChoiceId}
+                        />
+                      )}
 
-                <div
-                  className="min-h-[14rem]"
-                  aria-hidden="true"
-                />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="adventure-panel"
-                layout
-                initial={{
-                  opacity: 0,
-                  y: 12,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                exit={{
-                  opacity: 0,
-                  y: -8,
-                }}
-                transition={
-                  PANEL_TRANSITION
-                }
-              >
-                {session
-                  .navigationOptions
-                  .length > 0 ? (
-                  <NavigationPanel
-                    travelState={
-                      state.travelState
-                    }
-                    options={
-                      session.navigationOptions
-                    }
-                    catalog={catalog}
-                    translate={
-                      translate
-                    }
-                    onChoice={
-                      session.chooseNavigation
-                    }
-                  />
-                ) : eventView ? (
-                  <EventPanel
-                    event={eventView}
-                    onChoice={
-                      selectChoice
-                    }
-                    error={
-                      inputError
-                    }
-                  />
-                ) : (
-                  <Panel
-                    variant="strong"
-                    className="text-center"
-                  >
-                    {state.careerStatus ===
-                    'ended'
-                      ? translate(
-                          'ui.careerComplete',
-                        )
-                      : translate(
-                          'ui.noEvent',
-                        )}
-                  </Panel>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
+                      <OutcomePanel
+                        outcome={outcomeView}
+                        onContinue={continueFromOutcome}
+                        translate={translate}
+                      />
+                    </>
+                  ) : pendingDice ? (
+                    <>
+                      {resolvedEventView && (
+                        <EventPanel
+                          event={resolvedEventView}
+                          onChoice={() => {}}
+                          mode="collapsed"
+                          selectedChoiceId={selectedChoiceId}
+                        />
+                      )}
+
+                      <div
+                        className="min-h-[14rem]"
+                        aria-hidden="true"
+                      />
+                    </>
+                  ) : session.navigationOptions.length > 0 ? (
+                    <NavigationPanel
+                      travelState={state.travelState}
+                      options={session.navigationOptions}
+                      catalog={catalog}
+                      translate={translate}
+                      onChoice={session.chooseNavigation}
+                    />
+                  ) : eventView ? (
+                    <EventPanel
+                      event={eventView}
+                      onChoice={selectChoice}
+                      error={inputError}
+                    />
+                  ) : (
+                    <Panel
+                      variant="strong"
+                      className="text-center"
+                    >
+                      {state.careerStatus === 'ended'
+                        ? translate('ui.careerComplete')
+                        : translate('ui.noEvent')}
+                    </Panel>
+                  )}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
 

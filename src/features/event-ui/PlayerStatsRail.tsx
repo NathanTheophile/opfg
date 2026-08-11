@@ -14,34 +14,29 @@ import {
   Sparkles,
   type LucideIcon,
 } from 'lucide-react';
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Panel } from '@/components/ui';
 import type { Translator } from '@/game/localization';
 import { ContextTooltip } from './ContextTooltip';
 import { getStatTooltipKey, STAT_TOOLTIP_COLORS } from './context-tooltip-copy';
 import { statToDiceModifier } from '@/game/engine/dice';
 import type { GameState } from '@/game/model/schema';
-import healthMeatIcon from './assets/stat-icons/health-meat.svg';
-import observationEyeballIcon from './assets/stat-icons/observation-eyeball.svg';
 import './player-stats-rail.css';
-import './custom-stat-icons.css';
 
 type PlayerStatId = keyof GameState['player']['stats'];
 const STAT_IMPACT_EVENT = 'opfg:stat-impact';
 const STAT_IDS: PlayerStatId[] = ['health', 'morale', 'strength', 'agility', 'observation', 'intelligence', 'navigation', 'charisma', 'luck'];
 const STAT_ICONS: Record<PlayerStatId, LucideIcon> = { health: Heart, morale: Smile, strength: Dumbbell, agility: Footprints, observation: Eye, intelligence: Brain, navigation: Compass, charisma: MessageCircle, luck: Clover };
-const CUSTOM_STAT_ICONS: Partial<Record<PlayerStatId, string>> = { health: healthMeatIcon, observation: observationEyeballIcon };
-
-function StatGlyph({ statId, Icon, watermark = false }: { statId: PlayerStatId; Icon: LucideIcon; watermark?: boolean }) {
-  const customIcon = CUSTOM_STAT_ICONS[statId];
-  if (customIcon) {
-    return <span
-      className={watermark ? 'opfg-custom-stat-glyph opfg-custom-stat-glyph--watermark' : 'opfg-custom-stat-glyph'}
-      style={{ '--opfg-custom-stat-mask': `url("${customIcon}")` } as CSSProperties}
-      aria-hidden="true"
-    />;
-  }
-  return watermark ? <Icon /> : <Icon className="size-[1.05rem]" />;
+function StatGlyph({
+  Icon,
+  watermark = false,
+}: {
+  Icon: LucideIcon;
+  watermark?: boolean;
+}) {
+  return watermark
+    ? <Icon />
+    : <Icon className="size-[1.05rem]" />;
 }
 
 function signed(value: number): string { return value > 0 ? `+${value}` : String(value); }
@@ -105,7 +100,7 @@ export function PlayerStatsRail({ state, previousState, statLabel, traitLabel, t
             return (
               <div key={id} className="opfg-player-stat has-rich-tooltip" data-stat={id} data-tooltip={label}>
                 <span className="opfg-player-stat__watermark" aria-hidden="true">
-                  <StatGlyph statId={id} Icon={Icon} watermark />
+                  <StatGlyph Icon={Icon} watermark />
                 </span>
                 <ContextTooltip
                   className="opfg-player-stat__tooltip-hitbox"
@@ -119,7 +114,7 @@ export function PlayerStatsRail({ state, previousState, statLabel, traitLabel, t
                   <span className="sr-only">{label}</span>
                 </ContextTooltip>
                 <span className="opfg-player-stat__icon" aria-hidden="true">
-                  <StatGlyph statId={id} Icon={Icon} />
+                  <StatGlyph Icon={Icon} />
                 </span>
                 <span className="opfg-player-stat__label">{label}</span>
                 <strong className="opfg-player-stat__value">{value}</strong>

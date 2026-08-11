@@ -18,8 +18,6 @@ import {
   Panel,
   PanelBody,
   PanelFooter,
-  PanelHeader,
-  PanelTitle,
 } from '@/components/ui';
 import type { DiceResult } from '@/game/content/schema';
 import type { Translator } from '@/game/localization';
@@ -390,20 +388,9 @@ export function OutcomePanel({
     <Panel
       variant="strong"
       padding="none"
-      className="opfg-outcome-panel w-full overflow-hidden shadow-overlay"
+      className="opfg-outcome-panel opfg-outcome-panel--inline w-full overflow-hidden shadow-overlay"
     >
-      <PanelHeader className="opfg-outcome-panel__header mb-0 px-5 pb-4 pt-5 md:px-7 md:pb-5 md:pt-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold">
-          {translate('ui.outcome.eyebrow')}
-        </p>
-        <PanelTitle className="text-2xl md:text-[1.75rem]">
-          {outcome.title ?? translate('ui.outcome.defaultTitle')}
-        </PanelTitle>
-      </PanelHeader>
-
-      <div className="h-px bg-[var(--border-subtle)]" />
-
-      <PanelBody className="opfg-outcome-panel__body px-5 py-5 md:px-7 md:py-6">
+      <PanelBody className="opfg-outcome-panel__body px-4 py-3 md:px-5 md:py-3">
         <p className="max-w-[68ch] text-[0.98rem] leading-7 text-fg-secondary md:text-base md:leading-7">
           {outcome.body}
         </p>
@@ -492,11 +479,11 @@ export function OutcomePanel({
         )}
       </PanelBody>
 
-      <PanelFooter className="opfg-outcome-panel__footer mt-0 border-t border-[var(--border-subtle)] bg-black/[0.08] px-4 py-4 md:px-6">
+      <PanelFooter className="opfg-outcome-panel__footer mt-0 border-t border-[var(--border-subtle)] bg-black/[0.06] px-3 py-2 md:px-4">
         <Button
           variant="glass"
-          size="lg"
           onClick={onContinue}
+          className="opfg-outcome-continue"
         >
           {translate('ui.action.continue')}
           <ArrowRight

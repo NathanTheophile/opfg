@@ -594,3 +594,13 @@ After each reviewed/accepted batch:
 5. update batch summaries/dedup notes as needed.
 
 Do not add rejected drafts, discarded alternatives, Immediate descendants or Scheduled descendants as independent root concepts.
+
+## D1.1 supplemental early-childhood roots — 2026-08-11
+
+These roots were added after human playtest specifically to prevent `ch_family_social_01_shared_bowl` from being the sole generic opening at age 1 and to increase scene-specific Choice variety.
+
+| Batch | Root Event ID | conceptKey | Age band | Domain | Primary context | One-line premise |
+| --- | --- | --- | --- | --- | --- | --- |
+| CH_GENERIC_EARLY_01 | `ch_generic_early_01_den_den_ring` | `denDenRing` | 1–2 ans | generic | générique | Un Den Den Mushi oublié sonne hors de portée des adultes ; le très jeune joueur peut répondre, l’imiter, le déplacer ou l’étouffer. |
+| CH_GENERIC_EARLY_01 | `ch_generic_early_01_crab_in_basket` | `crabInBasket` | 1–2 ans | generic | générique | Un petit crabe s’empare du lacet d’une personne endormie et transforme un détail banal en problème immédiatement lisible. |
+| CH_GENERIC_EARLY_01 | `ch_generic_early_01_red_mask` | `redMask` | 1–2 ans | generic | générique | Un masque de voyage peint roule jusqu’au joueur pendant que son propriétaire continue sa route sans s’en apercevoir. |

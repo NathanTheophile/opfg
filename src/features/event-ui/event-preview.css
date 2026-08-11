@@ -65,3 +65,337 @@
     display: none;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* D1.1 playtest readability pass                                     */
+/* ------------------------------------------------------------------ */
+
+.opfg-adventure-scroll {
+  max-height: calc(100dvh - 16.75rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 0.15rem 1.25rem;
+  scrollbar-width: none;
+}
+
+.opfg-adventure-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.opfg-adventure-size-shell {
+  overflow: hidden;
+}
+
+.opfg-event-panel__header {
+  padding-top: 0.72rem !important;
+  padding-bottom: 0.62rem !important;
+}
+
+.opfg-event-panel__header > p {
+  font-size: 0.62rem !important;
+  letter-spacing: 0.15em !important;
+}
+
+.opfg-event-panel__title {
+  font-size: 1.16rem !important;
+  line-height: 1.15 !important;
+}
+
+.opfg-event-panel__body {
+  position: relative;
+  padding-top: 1.15rem !important;
+  padding-bottom: 1.25rem !important;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--gold) 5%, transparent), transparent 62%);
+}
+
+.opfg-event-panel__body-copy {
+  position: relative;
+  max-width: 62ch !important;
+  padding-left: 1rem;
+  color: color-mix(in srgb, var(--text-primary) 92%, var(--gold)) !important;
+  font-size: 1.04rem !important;
+  font-weight: 520;
+  line-height: 1.68 !important;
+  text-wrap: pretty;
+}
+
+.opfg-event-panel__body-copy::before {
+  content: "";
+  position: absolute;
+  top: 0.16rem;
+  bottom: 0.16rem;
+  left: 0;
+  width: 2px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--gold) 62%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--gold) 18%, transparent);
+}
+
+.opfg-event-panel__choice-list {
+  gap: 0.55rem !important;
+}
+
+.opfg-outcome-panel--inline {
+  border-color: color-mix(in srgb, var(--gold) 24%, var(--border-default));
+}
+
+.opfg-outcome-panel--inline .opfg-outcome-panel__body {
+  padding-top: 1.15rem !important;
+  padding-bottom: 1.15rem !important;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--gold) 4%, transparent), transparent 58%);
+}
+
+.opfg-outcome-panel--inline .opfg-outcome-panel__body > p {
+  color: var(--text-primary);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.opfg-hud-reputation strong {
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 79.999rem) {
+  .opfg-adventure-scroll {
+    max-height: none;
+    overflow: visible;
+    padding-inline: 0;
+  }
+}
+
+@media (max-width: 40rem) {
+  .opfg-event-panel__body-copy {
+    padding-left: 0.78rem;
+    font-size: 0.98rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-adventure-size-shell {
+    transition: none !important;
+  }
+}
+
+
+/* D1.2 persistent-panel compact readability pass */
+
+/* Keep the actual panel mounted. Only its contents fade. */
+.opfg-event-panel {
+  transition:
+    height 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    min-height 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.opfg-event-panel__header,
+.opfg-event-panel__body,
+.opfg-event-panel__choices {
+  transition:
+    opacity 105ms ease,
+    filter 105ms ease;
+}
+
+.opfg-event-panel[data-content-visible="false"] .opfg-event-panel__header,
+.opfg-event-panel[data-content-visible="false"] .opfg-event-panel__body,
+.opfg-event-panel[data-content-visible="false"] .opfg-event-panel__choices {
+  opacity: 0;
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.opfg-event-panel[data-content-visible="true"] .opfg-event-panel__header,
+.opfg-event-panel[data-content-visible="true"] .opfg-event-panel__body,
+.opfg-event-panel[data-content-visible="true"] .opfg-event-panel__choices {
+  opacity: 1;
+  filter: none;
+}
+
+/* More vertical room for the central story viewport. */
+.opfg-adventure-scroll {
+  max-height: calc(100dvh - 14.5rem);
+  padding-bottom: 0.65rem;
+}
+
+/* Compact typography across the story flow. */
+.opfg-event-panel {
+  font-size: 0.9rem;
+}
+
+.opfg-event-panel__header {
+  padding-top: 0.48rem !important;
+  padding-bottom: 0.42rem !important;
+}
+
+.opfg-event-panel__header > p {
+  margin-bottom: 0.08rem;
+  font-size: 0.54rem !important;
+  letter-spacing: 0.13em !important;
+}
+
+.opfg-event-panel__title {
+  font-size: 1.02rem !important;
+  line-height: 1.08 !important;
+}
+
+/* Deliberate high-contrast narrative surface: parchment + near-black copy. */
+.opfg-event-panel__body {
+  padding-top: 0.78rem !important;
+  padding-bottom: 0.82rem !important;
+  background:
+    linear-gradient(
+      90deg,
+      rgb(240 218 177 / 0.92),
+      rgb(224 194 146 / 0.82) 62%,
+      rgb(201 162 111 / 0.72)
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.32),
+    inset 0 -1px 0 rgb(69 39 19 / 0.22);
+}
+
+.opfg-event-panel__body-copy {
+  max-width: 66ch !important;
+  padding-left: 0.72rem;
+  color: #21150d !important;
+  font-size: 0.92rem !important;
+  font-weight: 650;
+  line-height: 1.48 !important;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.18);
+}
+
+.opfg-event-panel__body-copy::before {
+  top: 0.08rem;
+  bottom: 0.08rem;
+  width: 2px;
+  background: rgb(82 46 21 / 0.58);
+  box-shadow: none;
+}
+
+.opfg-event-panel__choices {
+  padding: 0.5rem 0.62rem 0.58rem !important;
+}
+
+.opfg-event-panel__choice-list {
+  gap: 0.4rem !important;
+}
+
+.opfg-choice-button {
+  min-height: 2.45rem !important;
+  padding: 0.48rem 0.78rem !important;
+  font-size: 0.84rem !important;
+  line-height: 1.22 !important;
+}
+
+.opfg-choice-button .opfg-choice-stat-effects {
+  margin-top: 0.22rem;
+}
+
+.opfg-choice-button [class*="Badge"],
+.opfg-choice-button .badge {
+  font-size: 0.66rem !important;
+}
+
+/* Resolved Event is intentionally denser so the consequence reads as an
+   extension of the same card rather than a second full-screen section. */
+.opfg-event-panel[data-mode="resolved"] .opfg-event-panel__header {
+  padding-top: 0.38rem !important;
+  padding-bottom: 0.34rem !important;
+}
+
+.opfg-event-panel[data-mode="resolved"] .opfg-event-panel__body {
+  padding-top: 0.55rem !important;
+  padding-bottom: 0.58rem !important;
+}
+
+.opfg-event-panel[data-mode="resolved"] .opfg-event-panel__choices {
+  padding-top: 0.38rem !important;
+  padding-bottom: 0.4rem !important;
+}
+
+.opfg-event-panel[data-mode="resolved"] .opfg-event-panel__choice:not([data-selected="true"]) {
+  display: none;
+}
+
+.opfg-event-panel[data-mode="resolved"] .opfg-choice-button {
+  min-height: 2.15rem !important;
+  padding-block: 0.36rem !important;
+  opacity: 0.78;
+}
+
+/* Consequence = compact continuation, not another full Event panel. */
+.opfg-outcome-panel--inline {
+  margin-top: -0.18rem;
+  border-top-left-radius: calc(var(--radius-panel) * 0.72);
+  border-top-right-radius: calc(var(--radius-panel) * 0.72);
+}
+
+.opfg-outcome-panel--inline .opfg-outcome-panel__body {
+  padding: 0.68rem 0.9rem !important;
+  background:
+    linear-gradient(
+      90deg,
+      rgb(0 0 0 / 0.08),
+      transparent 72%
+    ) !important;
+}
+
+.opfg-outcome-panel--inline .opfg-outcome-panel__body > p {
+  max-width: 72ch;
+  font-size: 0.82rem !important;
+  font-weight: 560;
+  line-height: 1.4 !important;
+}
+
+.opfg-outcome-panel--inline .opfg-outcome-feedback-row {
+  gap: 0.32rem;
+  margin-top: 0.45rem;
+}
+
+.opfg-outcome-panel--inline .opfg-outcome-stat-effect,
+.opfg-outcome-panel--inline .opfg-outcome-dice-result {
+  min-height: 1.65rem;
+  padding-top: 0.28rem;
+  padding-bottom: 0.28rem;
+  font-size: 0.66rem;
+}
+
+.opfg-outcome-panel--inline .opfg-outcome-stat-effect__label {
+  font-size: 0.66rem;
+}
+
+.opfg-outcome-panel--inline .opfg-outcome-panel__footer {
+  min-height: 0;
+  padding: 0.42rem 0.62rem !important;
+}
+
+.opfg-outcome-continue {
+  min-height: 2rem !important;
+  padding: 0.32rem 0.72rem !important;
+  font-size: 0.76rem !important;
+}
+
+.opfg-adventure-stack {
+  gap: 0.42rem !important;
+}
+
+@media (max-width: 40rem) {
+  .opfg-event-panel__body-copy {
+    font-size: 0.88rem !important;
+    line-height: 1.43 !important;
+  }
+
+  .opfg-choice-button {
+    font-size: 0.8rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-event-panel,
+  .opfg-event-panel__header,
+  .opfg-event-panel__body,
+  .opfg-event-panel__choices {
+    transition-duration: 1ms !important;
+  }
+}
