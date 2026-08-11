@@ -243,3 +243,7 @@ Rendez-vous physiques Scheduled : `s01_first_measure` → Immediate d2 ; `s04a/s
 - `playfightRedLine` se distingue de `rules_of_game` : la scène commence après le franchissement corporel d’une limite et traite retenue, sortie du contact et réparation, pas une dispute abstraite de règles.
 - `rivalAcrossYears` ne duplique aucune Lifetime acceptée : elle suit une rivalité corporelle anonyme qui évolue vers domination, maîtrise, protection ou évitement, avec trois mini-arcs physiques séparés puis transmission à distance ; aucune thread existante n’utilise cette progression relationnelle/combat.
 - Aucun root ne reprend les incidents de manutention, signaux météo, atlas, registre familial, chaîne de faveurs, carnet collectif ou autres anchors déjà indexés.
+
+## D1 RENOVATION — 2026-08-11
+
+The former anonymous `rivalAcrossYears` rival is now the persistent role NPC `childhood_rival`, with a seeded display name per run. `childhood_younger` and `childhood_friend` anchor selected protection/escape scenes. Thread topology, IDs, delays and branch structure are preserved.

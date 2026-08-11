@@ -195,3 +195,7 @@
 - Vocabulaire Condition/Effect comparé au `schema.ts`: aucun type hors contrat.
 - Aucun Flag, Item, NPC, Location exacte, Ship, Fruit, Haki ou Career ID nouveau.
 - Les scripts du repository n’ont **pas** été exécutés; validation locale structurelle uniquement.
+
+## D1 RENOVATION — 2026-08-11
+
+Recurring role NPCs introduced in existing roots: `childhood_friend`, `childhood_rival`, `childhood_younger` and `neighborhood_merchant`. Their display names are seeded and persisted per run by D0.5. Copy follows the B Situation → Reaction contract. Selected overbuilt Immediate chains were shortened; no new Event IDs were created.

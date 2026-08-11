@@ -33,6 +33,7 @@ import type {
   NpcStatId,
 } from '@/game/model/schema';
 import { useGameSession } from '@/game/session/useGameSession';
+import { npcInterpolationParams } from '@/game/engine/npcNames';
 import {
   DiceTableStage,
   type DiceTableStageStatus,
@@ -231,6 +232,11 @@ export function EventPreview({
   const translate: Translator = (key, params) =>
     t(key, locale, {
       playerName: session.gameState?.player.profile.name ?? '',
+      ...npcInterpolationParams(
+        session.gameState,
+        catalog,
+        (nameKey) => t(nameKey, locale),
+      ),
       ...params,
     });
 

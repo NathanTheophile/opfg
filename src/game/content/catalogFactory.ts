@@ -76,7 +76,11 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
     crewRoles: ['navigator','medic','cook','shipwright','helmsman','gunner','musician','scholar','fighter','quartermaster'].map((id) => ({ id, nameKey: crewRoleNameKey(id) })),
     npcs: [
       { id: 'mira', nameKey: npcNameKey('mira'), raceId: null, originSeaId: null, affiliationId: null, crewRoleId: 'navigator', initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } },
-      ...['player_parent_1', 'player_parent_2'].map((id) => ({ id, nameKey: npcNameKey(id), raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } })),
+      { id: 'childhood_friend', nameKey: npcNameKey('childhood_friend'), namePoolId: 'childhood_male', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } },
+      { id: 'childhood_rival', nameKey: npcNameKey('childhood_rival'), namePoolId: 'childhood_female', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } },
+      { id: 'childhood_younger', nameKey: npcNameKey('childhood_younger'), namePoolId: 'childhood_female', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } },
+      { id: 'neighborhood_merchant', nameKey: npcNameKey('neighborhood_merchant'), namePoolId: 'childhood_male', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } },
+      ...['player_parent_1', 'player_parent_2'].map((id) => ({ id, nameKey: npcNameKey(id), namePoolId: 'blue_common', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } })),
     ],
     events,
   };

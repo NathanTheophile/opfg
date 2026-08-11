@@ -16,6 +16,7 @@ export function createDefaultNpcStats(): NpcStats {
 export function createDefaultNpcState(): NpcState {
   return {
     raceId: null,
+    displayName: null,
     status: 'known',
     relationship: 0,
     lastInteractionAgeMonths: null,
