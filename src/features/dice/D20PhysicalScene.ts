@@ -21,7 +21,7 @@ const FACE_VALUES = [20, 2, 18, 4, 16, 6, 14, 8, 12, 10, 17, 3, 19, 1, 5, 9, 11,
 
 const RADIUS = 1.12;
 const FACE_INSET = 0.84;
-const LABEL_INSET = 0.535;
+const LABEL_INSET = 0.625;
 const FRAME_OUTER_INSET = 0.77;
 const FRAME_INNER_INSET = 0.72;
 const TABLE_REST_SCALE = 0.38;
@@ -780,13 +780,17 @@ export class D20Scene {
         map: texture,
         color: LABEL_BASE,
         transparent: true,
-        opacity: 0.96,
+        opacity: 1,
         alphaTest: 0.02,
         depthWrite: false,
         polygonOffset: true,
         polygonOffsetFactor: -5,
         polygonOffsetUnits: -5,
         side: THREE.FrontSide,
+        // The numbers are a readability layer baked into the die rather than
+        // a light-reactive surface. ACES was crushing the small gold glyphs
+        // against the dark face at gameplay scale.
+        toneMapped: false,
       });
 
       this.labelMaterials.set(value, material);
@@ -954,17 +958,17 @@ function createNumberTexture(value: number): THREE.CanvasTexture {
   context.clearRect(0, 0, 256, 256);
   context.textAlign = 'center';
   context.textBaseline = 'middle';
-  context.font = `800 ${value >= 10 ? 70 : 82}px "Cake Mono", "Comic Sans MS", cursive`;
+  context.font = `800 ${value >= 10 ? 86 : 104}px "Cake Mono", "Comic Sans MS", cursive`;
 
   const text = String(value);
   const textX = 128;
   const textY = 153;
 
-  const gold = context.createLinearGradient(0, 98, 0, 204);
-  gold.addColorStop(0, '#ffe49a');
-  gold.addColorStop(0.24, '#dcae55');
-  gold.addColorStop(0.62, '#bc7624');
-  gold.addColorStop(1, '#7c4315');
+  const gold = context.createLinearGradient(0, 92, 0, 210);
+  gold.addColorStop(0, '#fff3bd');
+  gold.addColorStop(0.26, '#f0c96b');
+  gold.addColorStop(0.62, '#d79a35');
+  gold.addColorStop(1, '#b66c20');
   context.fillStyle = gold;
   context.fillText(text, textX, textY);
 
@@ -972,12 +976,12 @@ function createNumberTexture(value: number): THREE.CanvasTexture {
   context.globalCompositeOperation = 'source-atop';
   context.lineCap = 'round';
   for (let i = 0; i < 24; i += 1) {
-    const y = 104 + i * 4.35 + Math.sin((i + value * 2) * 1.41) * 2;
+    const y = 96 + i * 4.8 + Math.sin((i + value * 2) * 1.41) * 2;
     context.beginPath();
     context.moveTo(72, y);
     context.lineTo(184, y + Math.sin((i + value) * 0.77) * 3.2);
     context.lineWidth = 0.9 + (i % 3) * 0.32;
-    context.strokeStyle = `rgba(255, 233, 160, ${0.045 + (i % 4) * 0.013})`;
+    context.strokeStyle = `rgba(255, 244, 194, ${0.055 + (i % 4) * 0.014})`;
     context.stroke();
   }
   context.restore();
@@ -985,23 +989,23 @@ function createNumberTexture(value: number): THREE.CanvasTexture {
   // Centered inner shadow: dark only at the inner contour, with no X/Y offset.
   context.save();
   context.globalCompositeOperation = 'source-atop';
-  context.filter = 'blur(1.65px)';
-  context.lineWidth = 4.1;
+  context.filter = 'blur(1.35px)';
+  context.lineWidth = 3.5;
   context.lineJoin = 'round';
-  context.strokeStyle = 'rgba(5, 3, 2, 0.76)';
+  context.strokeStyle = 'rgba(5, 3, 2, 0.68)';
   context.strokeText(text, textX, textY);
   context.restore();
 
   if (value === 6 || value === 9) {
-    const markerY = 201;
+    const markerY = 211;
     const markerGold = context.createLinearGradient(0, markerY - 4, 0, markerY + 4);
-    markerGold.addColorStop(0, '#e7ba62');
-    markerGold.addColorStop(1, '#8f531d');
+    markerGold.addColorStop(0, '#f4d27d');
+    markerGold.addColorStop(1, '#bd7624');
 
     context.beginPath();
-    context.moveTo(113, markerY);
-    context.lineTo(143, markerY);
-    context.lineWidth = 4;
+    context.moveTo(109, markerY);
+    context.lineTo(147, markerY);
+    context.lineWidth = 4.5;
     context.lineCap = 'round';
     context.strokeStyle = markerGold;
     context.stroke();
