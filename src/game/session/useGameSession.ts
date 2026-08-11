@@ -4,6 +4,7 @@ import { clearGameState, loadGameState, saveGameState, type StorageLike } from '
 import { findCurrentEvent } from '../engine/events';
 import { chooseInSession, chooseMonthlyNavigationInSession, createSessionState, dismissResolution, getSessionNavigationOptions, startNewRun } from './gameSession';
 import type { MonthlyNavigationChoice } from '../engine/navigation';
+import type { GameState } from '../model/schema';
 
 let fallbackSeed = Date.now() >>> 0;
 function generateSeed(): number {
@@ -36,5 +37,15 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
     setSession(next);
   };
 
-  return { ...session, currentEvent, navigationOptions, startNewRun: start, restartRun: start, choose, chooseNavigation, continueAfterResolution };
+  const debugPatchGameState = (patch: (state: GameState) => GameState) => {
+    if (!import.meta.env.DEV) return;
+
+    setSession((current) => {
+      if (!current.gameState) return current;
+      const gameState = patch(current.gameState);
+      return { ...current, gameState };
+    });
+  };
+
+  return { ...session, currentEvent, navigationOptions, startNewRun: start, restartRun: start, choose, chooseNavigation, continueAfterResolution, debugPatchGameState };
 }
