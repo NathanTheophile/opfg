@@ -1,0 +1,150 @@
+diff --git a/src/main.tsx b/src/main.tsx
+--- a/src/main.tsx
++++ b/src/main.tsx
+@@ -10,5 +10,6 @@ import { GameShell } from './features/game-shell/GameShell';
+ import './styles/globals.css';
+ import './styles/ui-system.css';
++import './styles/typography.css';
+ export const INITIAL_AMBIENCE: string | undefined = undefined;
+
+ const DevUITuner = import.meta.env.DEV
+diff --git a/src/styles/tokens.css b/src/styles/tokens.css
+--- a/src/styles/tokens.css
++++ b/src/styles/tokens.css
+@@ -73,9 +73,12 @@
+   --ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+-  /* Typography roles. External fonts can replace these later without changing components. */
+-  --font-ui: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+-  --font-display-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
++  /* Typography roles — OPFG visual identity. */
++  --font-ui: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
++  --font-display-family: "Cinzel", ui-serif, Georgia, Cambria, "Times New Roman", serif;
++  --font-ui-weight-regular: 400;
++  --font-ui-weight-semibold: 600;
++  --font-display-weight: 700;
+
+   /* shadcn/Base UI bridge. */
+   --background: var(--surface-canvas-fallback);
+diff --git a/src/styles/typography.css b/src/styles/typography.css
+new file mode 100644
+--- /dev/null
++++ b/src/styles/typography.css
+@@ -0,0 +1,94 @@
++/*
++ * OPFG TYPOGRAPHY
++ * ---------------------------------------------------------------------------
++ * Art direction:
++ * - Titles / hooks: Cinzel Bold (700)
++ * - Information / body: Inter Regular (400)
++ * - Controls / emphasis: Inter SemiBold (600)
++ *
++ * Expected local assets:
++ *   public/fonts/Cinzel-Bold.woff2
++ *   public/fonts/Inter-Regular.woff2
++ *   public/fonts/Inter-SemiBold.woff2
++ *
++ * TTF fallbacks with the same basename are also supported.
++ */
++
++@font-face {
++  font-family: "Cinzel";
++  src:
++    local("Cinzel Bold"),
++    local("Cinzel-Bold"),
++    url("/fonts/Cinzel-Bold.woff2") format("woff2"),
++    url("/fonts/Cinzel-Bold.ttf") format("truetype");
++  font-style: normal;
++  font-weight: 700;
++  font-display: swap;
++}
++
++@font-face {
++  font-family: "Inter";
++  src:
++    local("Inter Regular"),
++    local("Inter-Regular"),
++    url("/fonts/Inter-Regular.woff2") format("woff2"),
++    url("/fonts/Inter-Regular.ttf") format("truetype");
++  font-style: normal;
++  font-weight: 400;
++  font-display: swap;
++}
++
++@font-face {
++  font-family: "Inter";
++  src:
++    local("Inter SemiBold"),
++    local("Inter-SemiBold"),
++    url("/fonts/Inter-SemiBold.woff2") format("woff2"),
++    url("/fonts/Inter-SemiBold.ttf") format("truetype");
++  font-style: normal;
++  font-weight: 600;
++  font-display: swap;
++}
++
++/*
++ * Keep typography semantic and centralized.
++ * These rules are intentionally unlayered: they are imported after Tailwind
++ * and the shared UI system so title/control roles stay authoritative even when
++ * a component still carries an older font-weight utility.
++ */
++body {
++  font-family: var(--font-ui);
++  font-weight: var(--font-ui-weight-regular);
++}
++
++h1,
++h2,
++h3,
++h4,
++h5,
++h6,
++.font-display {
++  font-family: var(--font-display-family);
++  font-weight: var(--font-display-weight);
++}
++
++button,
++[role="button"],
++label,
++legend,
++summary,
++strong,
++b {
++  font-family: var(--font-ui);
++  font-weight: var(--font-ui-weight-semibold);
++}
++
++h1 strong,
++h2 strong,
++h3 strong,
++h4 strong,
++h5 strong,
++h6 strong {
++  font-family: inherit;
++  font-weight: inherit;
++}
+diff --git a/public/fonts/README.md b/public/fonts/README.md
+new file mode 100644
+--- /dev/null
++++ b/public/fonts/README.md
+@@ -0,0 +1,17 @@
++# OPFG fonts
++
++The UI typography expects these local assets:
++
++- `Cinzel-Bold.woff2` — weight 700
++- `Inter-Regular.woff2` — weight 400
++- `Inter-SemiBold.woff2` — weight 600
++
++Equivalent `.ttf` files with the same basenames are also accepted by
++`src/styles/typography.css`.
++
++Typography roles:
++
++- titles / hooks → Cinzel Bold
++- body / information → Inter Regular
++- controls / emphasized information → Inter SemiBold
++

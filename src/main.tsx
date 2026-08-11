@@ -10,6 +10,7 @@ import { AUDIO_TRACKS, MUSIC_PLAYLIST } from './features/audio/audioConfig';
 import { GameShell } from './features/game-shell/GameShell';
 import './styles/globals.css';
 import './styles/ui-system.css';
+import './styles/typography.css';
 export const INITIAL_AMBIENCE: string | undefined = undefined;
 
 const DevUITuner = import.meta.env.DEV
