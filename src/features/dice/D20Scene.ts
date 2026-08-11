@@ -896,7 +896,7 @@ function createNumberTexture(value: number): THREE.CanvasTexture {
   context.clearRect(0, 0, 256, 256);
   context.textAlign = 'center';
   context.textBaseline = 'middle';
-  context.font = `800 ${value >= 10 ? 78 : 90}px "Cake Mono", "Comic Sans MS", cursive`;
+  context.font = `700 ${value >= 10 ? 78 : 90}px "Cinzel", Georgia, serif`;
 
   const text = String(value);
   const textX = 128;
