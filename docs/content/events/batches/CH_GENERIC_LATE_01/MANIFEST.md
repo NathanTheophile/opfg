@@ -219,3 +219,6 @@ L’`EVENT_CONCEPT_INDEX.md` autoritaire courant est le baseline de régénérat
 - Vérifications : types Condition/Effect connus du `schema.ts`, 4 Outcomes sur chaque DiceCheck, références Immediate/Scheduled existantes, préfixes/IDs uniques, localisation française complète, profondeur des graphes, reachability, âge Childhood, contraintes du safety seed et couverture géographique des quatre Blues.
 - Aucun script du repository n’a été prétendu/exécuté dans cette génération ; l’intégration finale devra encore passer le validateur runtime du projet après import.
 
+## D1 RENOVATION — 2026-08-11
+
+The recurring childhood roles now carry several existing social roots through Event `cast` and NPC Relationship effects. Runtime names vary by run but identity remains stable within the career. Existing graphs and Event IDs are preserved. `harbor_signals` was compressed to a single decisive root because the former continuation exceeded its narrative weight.

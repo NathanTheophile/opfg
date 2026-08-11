@@ -62,7 +62,7 @@ export function CrewRail({ state, catalog, translate, statLabel }: CrewRailProps
             <UsersRound className="size-[1.05rem]" aria-hidden="true" />
           </ContextTooltip>
 
-          <strong className="opfg-crew-member__name">{definition ? translate(definition.nameKey) : translate('ui.crew.member')}</strong>
+          <strong className="opfg-crew-member__name">{npc.displayName ?? (definition ? translate(definition.nameKey) : translate('ui.crew.member'))}</strong>
           <ChevronRight className="opfg-crew-member__chevron size-4" aria-hidden="true" />
         </button>
 

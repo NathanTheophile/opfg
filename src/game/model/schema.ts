@@ -104,6 +104,7 @@ export type NpcStatId = keyof NpcStats;
 
 export interface NpcState {
   raceId: RaceId | null;
+  displayName: string | null;
   status: NpcStatus;
   relationship: number;
   lastInteractionAgeMonths: number | null;

@@ -6,7 +6,7 @@ import {
   Clock3,
   Coins,
   House,
-  ListChecks,
+  Star,
   LockKeyhole,
   MapPin,
   Navigation,
@@ -32,7 +32,6 @@ import './top-world-hud.css';
 
 const INVENTORY_PREVIEW_SLOTS = 2;
 const CARGO_PREVIEW_SLOTS = 7;
-const MONTH_EVENT_SLOTS = 1;
 const CALENDAR_START_YEAR = 1507;
 
 type CargoOccupant =
@@ -55,18 +54,11 @@ export interface TopWorldHudProps {
   locale: LocaleId;
 
   /**
-   * Optional presentation override used while an Outcome is visible.
-   * The engine may already have advanced to the next month after the
-   * second monthly Event, but the HUD should keep showing the month in
-   * which the displayed Event actually happened until Continue.
+   * Presentation override while a resolved Outcome is still visible.
+   * Keeps the HUD on the age/date where the displayed Event happened.
    */
   calendarAgeMonths?: number;
 
-  /**
-   * Number of resolved root Events to show in the current
-   * monthly one-slot progress indicator: 0 or 1.
-   */
-  monthEventProgress?: number;
 }
 
 function getItemLabel(
@@ -262,7 +254,6 @@ export function IdentityEnvironmentHudPanel({
   catalog,
   translate,
   calendarAgeMonths,
-  monthEventProgress,
 }: TopWorldHudProps) {
   const locationPath = getLocationPath(state, catalog);
   const rootLocation = locationPath[0];
@@ -272,7 +263,6 @@ export function IdentityEnvironmentHudPanel({
   const locationLabel = rootLocation ? translate(rootLocation.nameKey) : state.locationId;
   const subLocationLabel = subLocations.length > 0 ? subLocations.map((location) => translate(location.nameKey)).join(' › ') : '—';
   const shownAgeMonths = calendarAgeMonths ?? state.ageMonths;
-  const progress = Math.max(0, Math.min(MONTH_EVENT_SLOTS, monthEventProgress ?? (state.careerPhase === 'active' ? state.slotInMonth : 0)));
   const affiliationTitle = getAffiliationTitle(state, catalog, translate);
   const calendarLabel = getCalendarLabel(shownAgeMonths, translate);
 
@@ -320,18 +310,14 @@ export function IdentityEnvironmentHudPanel({
             </ContextTooltip>
 
             <ContextTooltip
-              className="opfg-hud-info-row opfg-hud-month-progress"
-              title={translate('ui.monthEvents')}
-              detail={translate('ui.monthEvents.description')}
-              meta={`${progress}/${MONTH_EVENT_SLOTS}`}
+              className="opfg-hud-info-row opfg-hud-reputation"
+              title={translate('ui.reputation')}
+              detail={translate('ui.reputation.description')}
+              meta={`${state.player.career.reputation}/100`}
               side="bottom"
             >
-              <ListChecks className="size-4" aria-hidden="true" />
-              <span className="opfg-hud-month-progress__pips">
-                {Array.from({ length: MONTH_EVENT_SLOTS }, (_, index) => (
-                  <span key={`month-event-${index}`} className="opfg-hud-month-progress__pip" data-filled={index < progress ? 'true' : 'false'} aria-hidden="true" />
-                ))}
-              </span>
+              <Star className="size-4" aria-hidden="true" />
+              <strong>{state.player.career.reputation}/100</strong>
             </ContextTooltip>
           </div>
         </div>

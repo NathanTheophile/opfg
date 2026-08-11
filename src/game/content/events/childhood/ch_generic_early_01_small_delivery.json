@@ -20,13 +20,24 @@
                 "type": "modifyStat",
                 "statId": "intelligence",
                 "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": -1
               }
             ]
           },
           "failure": {
             "id": "need_help",
             "textKey": "event.ch_generic_early_01_small_delivery.choice.memorize_route.outcome.need_help.text",
-            "effects": []
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": 1
+              }
+            ]
           },
           "success": {
             "id": "delivered",
@@ -41,6 +52,11 @@
                 "type": "modifyStat",
                 "statId": "intelligence",
                 "amount": 1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": 3
               }
             ]
           },
@@ -57,6 +73,11 @@
                 "type": "modifyStat",
                 "statId": "intelligence",
                 "amount": 2
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": 4
               }
             ]
           }
@@ -81,6 +102,11 @@
               "type": "modifyStat",
               "statId": "charisma",
               "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 2
             }
           ]
         }
@@ -94,7 +120,13 @@
         "outcome": {
           "id": "declined",
           "textKey": "event.ch_generic_early_01_small_delivery.choice.decline.outcome.declined.text",
-          "effects": []
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -1
+            }
+          ]
         }
       }
     }
@@ -115,5 +147,8 @@
         "value": 107
       }
     ]
-  }
+  },
+  "cast": [
+    "neighborhood_merchant"
+  ]
 }

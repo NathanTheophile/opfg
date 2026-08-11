@@ -17,7 +17,9 @@ Pure helpers in `src/game/localization/keys.ts` generate these keys. IDs are nev
 
 Interpolation supports only named `{{placeholder}}` values. Secondary translations must preserve exactly the source placeholder set. No HTML, expressions, conditions, ICU, or pluralization is evaluated.
 
-`CONTENT_SCHEMA_VERSION = 8` versions the authoring/runtime content contract independently from save `GameState.version = 18`. Runtime content validation rejects unsupported schema versions and missing source-French keys. Missing English entries are valid.
+Runtime-named NPCs use `{{npc_<npcId>}}` placeholders (for example `{{npc_childhood_friend}}`). The value comes from the run-persistent `NpcState.displayName`; fixed-name NPCs fall back to their normal `nameKey`.
+
+`CONTENT_SCHEMA_VERSION = 9` versions the authoring/runtime content contract independently from save `GameState.version = 19`. Runtime content validation rejects unsupported schema versions and missing source-French keys. Missing English entries are valid.
 
 The UI locale is stored separately under `jam-op-fan-game.locale`; it is never part of career state.
 

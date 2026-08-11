@@ -195,3 +195,17 @@
 - Vocabulaire Condition/Effect comparé au `schema.ts`: aucun type hors contrat.
 - Aucun Flag, Item, NPC, Location exacte, Ship, Fruit, Haki ou Career ID nouveau.
 - Les scripts du repository n’ont **pas** été exécutés; validation locale structurelle uniquement.
+
+## D1 RENOVATION — 2026-08-11
+
+Recurring role NPCs introduced in existing roots: `childhood_friend`, `childhood_rival`, `childhood_younger` and `neighborhood_merchant`. Their display names are seeded and persisted per run by D0.5. Copy follows the B Situation → Reaction contract. Selected overbuilt Immediate chains were shortened; no new Event IDs were created.
+
+## D1.1 PLAYTEST SUPPLEMENT — 2026-08-11
+
+Three additional age-1/2 Normal roots were added to the generic-early pool after human playtest:
+
+- `ch_generic_early_01_den_den_ring`
+- `ch_generic_early_01_crab_in_basket`
+- `ch_generic_early_01_red_mask`
+
+Purpose: the first Childhood slot must not deterministically collapse to `ch_family_social_01_shared_bowl`, and very-early Choices should already demonstrate premise-specific intentions rather than the recurring generic fallback quartet.

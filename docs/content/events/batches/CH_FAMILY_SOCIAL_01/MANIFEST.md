@@ -188,3 +188,7 @@ Le `EVENT_CONCEPT_INDEX` courant ne contient aucun batch accepté après reset. 
 - Aucune Condition/Effect hors contrat V6 utilisée; aucune nouvelle définition persistante silencieuse.
 - Acquisition de Traits opposés protégée par `availableIf`; aucun remplacement silencieux.
 - Aucun script du repository n’a été exécuté; validation effectuée localement sur les JSON générés selon le contrat fourni.
+
+## D1 RENOVATION — 2026-08-11
+
+Childhood relationship spine applied with run-randomized persistent names. The role NPC `neighborhood_merchant` is now a recurring local adult and participates through Event `cast`; `player_parent_1` is explicitly cast in physical parent scenes. `ledger_of_obligations` is humanized through that recurring merchant while preserving its existing graph, IDs and delays. Selected low-value Immediate cascades were shortened where their old depth exceeded the dramatic weight of the scene.

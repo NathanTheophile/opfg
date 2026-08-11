@@ -33,7 +33,7 @@ import type {
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 8;
+export const CONTENT_SCHEMA_VERSION = 9;
 
 export const V1_CAREER_HORIZON_MONTHS = 420;
 
@@ -295,6 +295,7 @@ export interface ShipDefinition {
 export interface NpcDefinition {
   id: NpcId;
   nameKey: LocalizationKey;
+  namePoolId?: string;
   raceId: RaceId | null;
   originSeaId: SeaId | null;
   affiliationId: AffiliationId | null;

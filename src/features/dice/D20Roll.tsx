@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Translator } from '@/game/localization';
-import { D20Scene } from './D20Scene';
+import { D20Scene } from './D20PhysicalScene';
 import './d20-roll.css';
 
 export interface D20RollProps {

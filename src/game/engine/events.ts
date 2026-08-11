@@ -3,6 +3,7 @@ type ScheduledDefinition = Extract<EventDefinition, { kind: 'scheduled' }>;
 import type { GameState, ScheduledEvent } from '../model/schema';
 import { evaluateCondition } from './conditions';
 import { nextRandom } from './rng';
+import { materializeEventCast } from './npcNames';
 import { needsMonthlyNavigationDecision } from './navigation';
 import { finalizePendingSlot } from './time';
 import { findDockableAccess } from './locations';
@@ -15,7 +16,7 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
   if (state.careerStatus !== 'active') return { ...state, currentEventId: null };
 
   const critical = findCriticalEvent(state, catalog.events);
-  if (critical) return { ...state, currentEventId: critical.id };
+  if (critical) return selectEvent(state, catalog, critical);
 
   if (needsMonthlyNavigationDecision(state)) return { ...state, currentEventId: null };
 
@@ -27,7 +28,7 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
       const skipped = { ...state, immediateEventQueue: state.immediateEventQueue.slice(1) };
       return selectNextEvent(skipped.immediateEventQueue.length === 0 ? finalizePendingSlot(skipped, catalog) : skipped, catalog);
     }
-    return { ...state, currentEventId: immediate.id };
+    return selectEvent(state, catalog, immediate);
   }
 
   if (state.shipMarketArrivalPending) {
@@ -42,11 +43,11 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
       && location.shipMarket !== 'none'
       && purchase !== undefined
       && isEligible(purchase, state, catalog)
-    ) return { ...state, currentEventId: purchase.id };
+    ) return selectEvent(state, catalog, purchase);
   }
 
   const scheduled = selectScheduledEvent(state, catalog);
-  if (scheduled.event) return { ...state, scheduledEvents: scheduled.entries, currentEventId: scheduled.event.id };
+  if (scheduled.event) return selectEvent({ ...state, scheduledEvents: scheduled.entries }, catalog, scheduled.event);
 
   const candidates = catalog.events.filter((event) =>
     event.kind === 'normal'
@@ -60,12 +61,18 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     const fallbackId = state.travelState === 'at_sea' ? 'dead_end_at_sea' : 'dead_end_on_land';
     const fallback = catalog.events.find((event) => event.id === fallbackId && event.kind === 'normal');
     const accessible = state.travelState === 'at_sea' || findDockableAccess(catalog, state.locationId) !== undefined;
-    return { ...state, scheduledEvents: scheduled.entries, currentEventId: fallback && accessible ? fallback.id : null };
+    return fallback && accessible
+      ? selectEvent({ ...state, scheduledEvents: scheduled.entries }, catalog, fallback)
+      : { ...state, scheduledEvents: scheduled.entries, currentEventId: null };
   }
   const normalPool = shouldGuaranteeLifetimeThread(state, catalog)
     ? candidates.filter((event) => event.kind === 'normal' && event.lifetimeThreadSeed === true)
     : candidates;
-  return selectUniformNormal(state, scheduled.entries, normalPool.length > 0 ? normalPool : candidates);
+  return selectUniformNormal(state, catalog, scheduled.entries, normalPool.length > 0 ? normalPool : candidates);
+}
+
+function selectEvent(state: GameState, catalog: ContentCatalog, event: EventDefinition): GameState {
+  return materializeEventCast({ ...state, currentEventId: event.id }, catalog, event);
 }
 
 export function hasStartedLifetimeThread(state: GameState, catalog: ContentCatalog): boolean {
@@ -79,15 +86,15 @@ function shouldGuaranteeLifetimeThread(state: GameState, catalog: ContentCatalog
   return state.careerPhase === 'childhood' && state.ageMonths >= 120 && !hasStartedLifetimeThread(state, catalog);
 }
 
-function selectUniformNormal(state: GameState, scheduledEvents: ScheduledEvent[], candidates: EventDefinition[]): GameState {
-  if (candidates.length === 1) return { ...state, scheduledEvents, currentEventId: candidates[0].id };
+function selectUniformNormal(state: GameState, catalog: ContentCatalog, scheduledEvents: ScheduledEvent[], candidates: EventDefinition[]): GameState {
+  if (candidates.length === 1) return selectEvent({ ...state, scheduledEvents }, catalog, candidates[0]);
   const random = nextRandom(state.rngState);
-  return {
+  const selected = candidates[Math.floor(random.value * candidates.length)];
+  return selectEvent({
     ...state,
     scheduledEvents,
     rngState: random.nextState,
-    currentEventId: candidates[Math.floor(random.value * candidates.length)].id,
-  };
+  }, catalog, selected);
 }
 
 export function findCriticalEvent(state: GameState, events: readonly EventDefinition[]): EventDefinition | undefined {

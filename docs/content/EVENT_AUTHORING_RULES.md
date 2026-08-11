@@ -203,6 +203,20 @@ Avoid:
 
 Use verbs and concrete intentions. Do not prefix Choices with filler such as `Décider de`, `Essayer de`, or `Choisir de` unless grammatically necessary.
 
+### 3.4 bis Choice-set diversity
+
+A scene-specific Choice list must not collapse into a reusable default quartet such as **act / call an adult / move people away / do nothing**.
+
+For every ordinary Event:
+
+- at least **two Choices must be scene-specific enough that they could not be pasted unchanged into an unrelated Event**;
+- vary player intentions across direct action, bargaining, bluffing, curiosity, improvisation, self-interest, protection, obedience, provocation, retreat, observation, social alignment, concealment, sabotage, exchange, or another premise-specific intention;
+- `call/get an adult`, `wait`, `leave`, and `do nothing` are fallback intentions, not default mandatory slots;
+- age-appropriate limited agency is not an excuse for generic wording: a very young child can point, imitate, hide, offer an object, cling, make noise, trade one object for another, stare, refuse, or copy someone;
+- across a batch, repeatedly using the same three or four intention families is a rewrite signal even when the nouns differ.
+
+**Transplant test:** if changing only the nouns would let the same Choice list fit several unrelated Events, the Choices are too generic.
+
 ### 3.5 Locked Choices
 
 For V1, special or blocked Choices should normally remain **visible but disabled** through `availableIf`, especially for Race, Trait, Haki, Devil Fruit, career, crew-role, ship/resource, or understandable contextual requirements.

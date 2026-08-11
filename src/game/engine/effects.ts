@@ -6,6 +6,7 @@ import { canConsumeDevilFruit, createDefaultPowerState, playerHakiSourceTotal, s
 import { movePlayerToLocation, recoverTravel } from './locations';
 import { beginMaritimeEmergency, findHighestRelationshipFruitCrew, moveToSameIslandPort, recoverToLandInCurrentSea, recoverToOtherRegion, resolveMaritimeEmergencyLandfall } from './maritime';
 import { modifyPlayerHealth } from './health';
+import { ensureNpcMaterialized } from './npcNames';
 
 export interface EffectContext {
   sourceEventId: EventId;
@@ -238,8 +239,10 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       if (effect.familyStructureId !== 'orphan') {
         const parentCount = effect.familyStructureId === 'two_parents' ? 2 : 1;
         for (let index = 1; index <= parentCount; index += 1) {
-          state.npcs[`player_parent_${index}`] = {
-            ...createDefaultNpcState(),
+          const parentId = `player_parent_${index}`;
+          const parent = ensureNpcMaterialized(state, catalog, parentId);
+          state.npcs[parentId] = {
+            ...parent,
             raceId: state.player.profile.raceId,
           };
         }
