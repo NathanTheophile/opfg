@@ -1,0 +1,240 @@
+.opfg-debug-toggle,
+.opfg-debug-panel {
+  position: fixed;
+  left: max(0.75rem, var(--safe-area-left));
+  bottom: max(0.75rem, var(--safe-area-bottom));
+  z-index: 1000;
+}
+
+.opfg-debug-toggle {
+  border: 1px solid color-mix(in srgb, var(--gold) 52%, var(--border-strong));
+  border-radius: 0.4rem;
+  padding: 0.42rem 0.58rem;
+  background: rgb(18 14 11 / 0.92);
+  box-shadow: var(--shadow-overlay);
+  color: var(--gold);
+  font-family: var(--font-ui);
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+}
+
+.opfg-debug-panel {
+  display: grid;
+  width: min(22rem, calc(100vw - 1.5rem));
+  max-height: min(48rem, calc(100dvh - 1.5rem));
+  grid-template-rows: auto auto minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--gold) 38%, var(--border-strong));
+  border-radius: var(--radius-panel);
+  background:
+    linear-gradient(160deg, rgb(213 162 83 / 0.05), transparent 34%),
+    rgb(18 14 11 / 0.97);
+  box-shadow: var(--shadow-overlay);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  text-align: left;
+}
+
+.opfg-debug-panel button,
+.opfg-debug-panel input {
+  font: inherit;
+}
+
+.opfg-debug-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border-default);
+  padding: 0.7rem 0.8rem;
+  background: color-mix(in srgb, var(--surface-raised) 78%, transparent);
+}
+
+.opfg-debug-panel__header > div {
+  display: grid;
+  gap: 0.08rem;
+}
+
+.opfg-debug-panel__header strong {
+  color: var(--gold);
+  font-size: 0.82rem;
+}
+
+.opfg-debug-panel__header span {
+  color: var(--text-muted);
+  font-size: 0.58rem;
+}
+
+.opfg-debug-panel__header button {
+  display: grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  place-items: center;
+  border: 1px solid var(--border-default);
+  border-radius: 0.35rem;
+  background: var(--surface-soft);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.opfg-debug-panel__warning {
+  border-bottom: 1px solid color-mix(in srgb, #7c332f 70%, var(--border-default));
+  padding: 0.55rem 0.8rem;
+  background: rgb(124 51 47 / 0.18);
+  color: var(--text-secondary);
+  font-size: 0.64rem;
+}
+
+.opfg-debug-panel__scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.opfg-debug-panel__scroll[aria-disabled="true"] {
+  opacity: 0.62;
+}
+
+.opfg-debug-section {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.78rem 0.8rem;
+}
+
+.opfg-debug-section + .opfg-debug-section {
+  border-top: 1px solid var(--border-default);
+}
+
+.opfg-debug-section h2 {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.opfg-debug-section__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.opfg-debug-field,
+.opfg-debug-range {
+  display: grid;
+  gap: 0.28rem;
+}
+
+.opfg-debug-field > span,
+.opfg-debug-range > span,
+.opfg-debug-stat > span {
+  color: var(--text-muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+.opfg-debug-range > span {
+  display: flex;
+  justify-content: space-between;
+}
+
+.opfg-debug-range strong {
+  color: var(--gold);
+}
+
+.opfg-debug-field input,
+.opfg-debug-stat input[type="number"] {
+  min-width: 0;
+  border: 1px solid var(--border-default);
+  border-radius: 0.32rem;
+  padding: 0.38rem 0.46rem;
+  background: var(--surface-soft);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.opfg-debug-actions,
+.opfg-debug-careers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem;
+}
+
+.opfg-debug-actions button,
+.opfg-debug-careers button,
+.opfg-debug-presets button {
+  border: 1px solid var(--border-default);
+  border-radius: 0.32rem;
+  padding: 0.28rem 0.4rem;
+  background: var(--surface-soft);
+  color: var(--text-secondary);
+  font-size: 0.58rem;
+  font-weight: 720;
+  cursor: pointer;
+}
+
+.opfg-debug-careers button[data-active="true"],
+.opfg-debug-presets button[data-active="true"] {
+  border-color: color-mix(in srgb, var(--gold) 65%, var(--border-strong));
+  background: color-mix(in srgb, var(--gold) 12%, var(--surface-raised));
+  color: var(--gold);
+}
+
+.opfg-debug-panel button:disabled,
+.opfg-debug-panel input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.opfg-debug-presets {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.28rem;
+}
+
+.opfg-debug-range input[type="range"],
+.opfg-debug-stat input[type="range"] {
+  width: 100%;
+  accent-color: var(--gold);
+}
+
+.opfg-debug-stats {
+  display: grid;
+  gap: 0.38rem;
+}
+
+.opfg-debug-stat {
+  display: grid;
+  grid-template-columns: 5.7rem minmax(0, 1fr) 3.1rem;
+  align-items: center;
+  gap: 0.42rem;
+}
+
+.opfg-debug-stat input[type="number"] {
+  width: 3.1rem;
+  padding-inline: 0.3rem;
+  text-align: right;
+  font-size: 0.62rem;
+}
+
+.opfg-debug-economy {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+@media (max-width: 40rem) {
+  .opfg-debug-toggle,
+  .opfg-debug-panel {
+    left: max(0.5rem, var(--safe-area-left));
+    bottom: max(0.5rem, var(--safe-area-bottom));
+  }
+
+  .opfg-debug-panel {
+    width: calc(100vw - 1rem);
+    max-height: calc(100dvh - 1rem);
+  }
+}

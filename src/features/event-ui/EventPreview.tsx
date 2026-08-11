@@ -41,6 +41,7 @@ import {
 } from '@/features/dice/DiceTableStage';
 import { LanguageControls } from '@/features/settings/LanguageControls';
 import { notifyUiLocaleChanged } from '@/features/settings/localeSync';
+import { DebugPanel } from '@/features/debug/DebugPanel';
 import { PlayerStatsRail } from './PlayerStatsRail';
 import {
   InventoryHudPanel,
@@ -842,6 +843,14 @@ export function EventPreview({
 
   return (
     <main className="min-h-dvh w-full overflow-x-hidden overflow-y-auto pl-[max(var(--layout-gutter),var(--safe-area-left))] pr-[max(var(--layout-gutter),var(--safe-area-right))] pt-[max(var(--layout-gutter),var(--safe-area-top))] pb-[max(var(--layout-gutter),var(--safe-area-bottom))]">
+      {import.meta.env.DEV && (
+        <DebugPanel
+          state={state}
+          disabled={showOutcome || pendingDice !== null}
+          onPatch={session.debugPatchGameState}
+        />
+      )}
+
       <div className="mx-auto w-full max-w-[78rem]">
         <div className="mb-3 flex items-center justify-end gap-3 px-1">
           <button
