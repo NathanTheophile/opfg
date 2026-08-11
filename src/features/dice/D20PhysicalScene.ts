@@ -32,7 +32,6 @@ const MOTION_SAMPLE_COUNT = 540;
 
 const LABEL_BASE = new THREE.Color(0xffffff);
 const LABEL_REVEAL = new THREE.Color(0xfff0bd);
-const REVEAL_EMISSIVE = new THREE.Color(0xffa32a);
 const TMP_COLOR = new THREE.Color();
 
 interface FaceData {
@@ -98,7 +97,7 @@ export class D20Scene {
   private readonly camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
   private readonly die = new THREE.Group();
   private readonly faceMap = new Map<number, FaceData>();
-  private readonly labelMaterials = new Map<number, THREE.MeshStandardMaterial>();
+  private readonly labelMaterials = new Map<number, THREE.MeshBasicMaterial>();
   private readonly textures: THREE.Texture[] = [];
   private readonly bodyVertices = BASE_VERTICES.map(([x, y, z]) =>
     new THREE.Vector3(x, y, z).normalize().multiplyScalar(RADIUS));
@@ -528,17 +527,13 @@ export class D20Scene {
     if (!material) return;
 
     material.color.copy(TMP_COLOR.copy(LABEL_BASE).lerp(LABEL_REVEAL, amount));
-    material.emissive.copy(REVEAL_EMISSIVE);
-    material.emissiveIntensity = THREE.MathUtils.lerp(0, 0.26, amount);
-    material.opacity = THREE.MathUtils.lerp(0.94, 1, amount);
+    material.opacity = THREE.MathUtils.lerp(0.96, 1, amount);
   }
 
   private resetLabelColors(): void {
     this.labelMaterials.forEach((material) => {
       material.color.copy(LABEL_BASE);
-      material.emissive.set(0x000000);
-      material.emissiveIntensity = 0;
-      material.opacity = 0.94;
+      material.opacity = 0.96;
     });
   }
 
@@ -576,7 +571,6 @@ export class D20Scene {
     this.die.scale.setScalar(TABLE_REST_SCALE);
     this.scene.add(this.die);
 
-    this.buildOutline();
     this.buildBody(this.bodyVertices);
     this.buildLabels(this.bodyVertices);
     this.buildLighting();
@@ -588,22 +582,6 @@ export class D20Scene {
 
     this.revealLight.position.set(0, 1.15, 1.15);
     this.scene.add(this.revealLight);
-  }
-
-  private buildOutline(): void {
-    // Smooth back-face shell: only a subtle rounded silhouette survives around
-    // the gold geometry, avoiding sharp black spikes at the icosahedron corners.
-    const geometry = new THREE.IcosahedronGeometry(RADIUS * 1.018, 2);
-    geometry.computeVertexNormals();
-
-    const material = new THREE.MeshBasicMaterial({
-      color: 0x080503,
-      side: THREE.BackSide,
-      transparent: true,
-      opacity: 0.82,
-    });
-
-    this.die.add(new THREE.Mesh(geometry, material));
   }
 
   private buildBody(vertices: THREE.Vector3[]): void {
@@ -795,21 +773,19 @@ export class D20Scene {
       const texture = createNumberTexture(value);
       this.textures.push(texture);
 
-      // PBR labels darken naturally on side faces like the reference board,
-      // instead of staying flat-white regardless of orientation.
-      const material = new THREE.MeshStandardMaterial({
+      // The gold, brushed texture and engraved inner shadow are already baked
+      // into the canvas texture. Keep labels unlit so they remain readable on
+      // every face instead of disappearing when a face turns away from the key.
+      const material = new THREE.MeshBasicMaterial({
         map: texture,
         color: LABEL_BASE,
         transparent: true,
-        opacity: 0.94,
-        roughness: 0.36,
-        metalness: 0.42,
-        emissive: 0x000000,
-        emissiveIntensity: 0,
+        opacity: 0.96,
+        alphaTest: 0.02,
         depthWrite: false,
         polygonOffset: true,
-        polygonOffsetFactor: -4,
-        polygonOffsetUnits: -4,
+        polygonOffsetFactor: -5,
+        polygonOffsetUnits: -5,
         side: THREE.FrontSide,
       });
 
@@ -847,9 +823,9 @@ export class D20Scene {
     context.translate(128, 64);
     context.scale(1, 0.44);
     const gradient = context.createRadialGradient(0, 0, 0, 0, 0, 84);
-    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.82)');
-    gradient.addColorStop(0.32, 'rgba(0, 0, 0, 0.48)');
-    gradient.addColorStop(0.72, 'rgba(0, 0, 0, 0.16)');
+    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.48)');
+    gradient.addColorStop(0.3, 'rgba(0, 0, 0, 0.22)');
+    gradient.addColorStop(0.66, 'rgba(0, 0, 0, 0.06)');
     gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
     context.fillStyle = gradient;
     context.fillRect(-128, -128, 256, 256);
@@ -864,7 +840,7 @@ export class D20Scene {
       map: texture,
       color: 0x000000,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.22,
       depthWrite: false,
       depthTest: false,
       side: THREE.DoubleSide,
@@ -889,10 +865,10 @@ export class D20Scene {
     shadow.position.x = this.die.position.x;
     shadow.position.z = this.die.position.z;
 
-    const width = THREE.MathUtils.lerp(1.02, 1.42, lift);
-    const depth = THREE.MathUtils.lerp(0.58, 0.82, lift);
+    const width = THREE.MathUtils.lerp(0.88, 1.24, lift);
+    const depth = THREE.MathUtils.lerp(0.42, 0.64, lift);
     shadow.scale.set(width, depth, 1);
-    shadow.material.opacity = THREE.MathUtils.lerp(0.36, 0.075, lift);
+    shadow.material.opacity = THREE.MathUtils.lerp(0.22, 0.045, lift);
   }
 
   private render(): void {
