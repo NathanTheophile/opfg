@@ -727,7 +727,6 @@ export function EventPreview({
             outcomeView ? (
               <motion.div
                 key="event-outcome"
-                className="opfg-adventure-stack"
                 initial={{
                   opacity: 0,
                   y: 12,
@@ -744,19 +743,6 @@ export function EventPreview({
                   PANEL_TRANSITION
                 }
               >
-                {resolvedEventView && (
-                  <EventPanel
-                    event={
-                      resolvedEventView
-                    }
-                    onChoice={() => {}}
-                    mode="resolved"
-                    selectedChoiceId={
-                      selectedChoiceId
-                    }
-                  />
-                )}
-
                 <OutcomePanel
                   outcome={outcomeView}
                   onContinue={
