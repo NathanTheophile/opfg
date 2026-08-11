@@ -32,7 +32,7 @@ import './top-world-hud.css';
 
 const INVENTORY_PREVIEW_SLOTS = 2;
 const CARGO_PREVIEW_SLOTS = 7;
-const MONTH_EVENT_SLOTS = 2;
+const MONTH_EVENT_SLOTS = 1;
 const CALENDAR_START_YEAR = 1507;
 
 type CargoOccupant =
@@ -63,8 +63,8 @@ export interface TopWorldHudProps {
   calendarAgeMonths?: number;
 
   /**
-   * Number of resolved normal/scheduled Events to show in the current
-   * monthly two-slot progress indicator: 0, 1 or 2.
+   * Number of resolved root Events to show in the current
+   * monthly one-slot progress indicator: 0 or 1.
    */
   monthEventProgress?: number;
 }

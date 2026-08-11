@@ -18,15 +18,13 @@ describe('deterministic event loop v2', () => {
     expect(resolved.currentEventId).not.toBe(first.currentEventId);
   });
 
-  it('consumes two active normal events per month', () => {
+  it('consumes one active root event per month', () => {
     const content = catalog([event('a'), event('b'), event('c')]);
     let state = createInitialGameState(1);
     state.careerPhase = 'active';
     state.ageMonths = 180;
     state.navigationDecisionAgeMonths = 180;
     state = selectNextEvent(state, content);
-    state = resolveChoice(state, content, state.currentEventId!, 'go').state;
-    expect(state).toMatchObject({ ageMonths: 180, slotInMonth: 1 });
     state = resolveChoice(state, content, state.currentEventId!, 'go').state;
     expect(state).toMatchObject({ ageMonths: 181, slotInMonth: 0 });
   });

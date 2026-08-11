@@ -179,21 +179,17 @@ Aucun `ArcState`, `questState`, compteur de chapitre ou identifiant de thread n�
 
 ## 5. Active
 
-Active commence toujours à **15 ans** et utilise **2 slots d’Event par mois**, soit au maximum 24 Events consommant un slot par année complète, hors Critical Events.
+Active commence toujours à **15 ans** et utilise **1 root Event par mois**, soit au maximum 12 Events consommant le slot mensuel par année complète, hors Critical et continuations Immediate.
 
 ### Navigation mensuelle
 
-Au début de chaque mois Active, avant le premier slot, un joueur Leader disposant d’un navire choisit une seule fois son contexte initial : rester à terre ou prendre la mer, rester en mer ou accoster lorsque la Location autorise l’accostage. Cette décision ne consomme ni Event ni slot et reste acquise pour le mois, même si un Event change ensuite le contexte de voyage. Un joueur non-Leader ou sans navire ne reçoit pas ce choix. La destination reste contrôlée exclusivement par les Events et leurs Effects.
+Au début de chaque mois Active, avant l’unique root Event, un joueur Leader disposant d’un navire choisit une seule fois son contexte de navigation. À terre, il peut rester ou prendre la mer vers une destination accessible ; en mer, il peut rester en mer, changer de cap vers une destination accessible ou accoster lorsque la Location l’autorise. Cette décision ne consomme aucun Event et reste acquise pour le mois. Dans les quatre Blues, le joueur choisit directement parmi les destinations dockables d’une autre île de la même mer. Paradise conserve la progression avant imposée par son graphe de routes ; les régions qui n’autorisent pas la navigation directe restent déplacées par Events. Un joueur non-Leader ou sans navire ne reçoit pas ce choix.
 
-Un slot peut être consommé par un Event normal, Scheduled, une conséquence future ou une rencontre programmée. La provenance ne change pas son coût. Les continuations `immediate` définies ci-dessous constituent l’exception explicite : elles prolongent le même slot sans coût supplémentaire.
+Le root slot mensuel peut être consommé par un Event Normal ou Scheduled. La provenance ne change pas son coût. Les continuations `immediate` prolongent explicitement ce même root sans coût temporel supplémentaire ; les Critical ne consomment aucun mois.
 
-Le GameState doit conceptuellement suivre `slotInMonth: 0 | 1` :
+Le GameState conserve `slotInMonth: 0 | 1` pour compatibilité de Save, mais la boucle Active V1 utilise désormais uniquement le slot 0 : une fois le root et toutes ses continuations Immediate terminés, l’âge avance immédiatement d’un mois et `slotInMonth` reste ou revient à 0. Une ancienne Save chargée avec `slotInMonth = 1` est naturellement normalisée au prochain root consommé.
 
-- mois 0, slot 0 ;
-- mois 0, slot 1 ;
-- puis mois 1, slot 0.
-
-Deux slots consommés font avancer l’âge biologique d’un mois. Comme en Childhood, le temps appartient à la boucle de phase, pas à l’Outcome.
+Comme en Childhood, le temps appartient à la boucle de phase, pas à l’Outcome.
 
 ### Continuous / Immediate Events
 

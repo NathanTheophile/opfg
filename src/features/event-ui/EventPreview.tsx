@@ -726,7 +726,8 @@ export function EventPreview({
             {showOutcome &&
             outcomeView ? (
               <motion.div
-                key="event-outcome"
+                key="adventure-panel"
+                layout
                 initial={{
                   opacity: 0,
                   y: 12,
@@ -753,7 +754,8 @@ export function EventPreview({
               </motion.div>
             ) : pendingDice ? (
               <motion.div
-                key="dice-pending"
+                key="adventure-panel"
+                layout
                 className="opfg-adventure-stack"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -782,15 +784,8 @@ export function EventPreview({
               </motion.div>
             ) : (
               <motion.div
-                key={
-                  session.navigationOptions
-                    .length > 0
-                    ? 'navigation'
-                    : session
-                        .currentEvent
-                        ?.id ??
-                      'no-event'
-                }
+                key="adventure-panel"
+                layout
                 initial={{
                   opacity: 0,
                   y: 12,
@@ -817,6 +812,7 @@ export function EventPreview({
                     options={
                       session.navigationOptions
                     }
+                    catalog={catalog}
                     translate={
                       translate
                     }

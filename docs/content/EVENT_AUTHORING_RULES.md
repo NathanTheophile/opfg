@@ -4,6 +4,8 @@
 >
 > **Scope:** rules for producing, reviewing, validating, and batching authored Events for OPFG V1.
 >
+> **Editorial revision B:** dramatic density, mobile readability, meaningful stakes, recurring cast, age coherence, and Situation → Reaction writing are hard authoring requirements.
+>
 > This document complements `docs/GAME_DESIGN.md` and `docs/content/CONTENT_BIBLE.md`. `GAME_DESIGN.md` remains the master gameplay authority; this document is authoritative for Event-production rules.
 
 ---
@@ -109,6 +111,61 @@ The batch manifest must explicitly identify:
 
 ## 3. Event scene structure
 
+### 3.0 Core scene contract — Situation → Reaction
+
+An OPFG Event is not a summary card. It is a **specific situation already happening** that requires a reaction from the player.
+
+The default information order is:
+
+```text
+QUI
+→ fait QUOI
+→ OÙ / dans quel contexte concret
+→ quel est le PROBLÈME ou l'ENJEU immédiat
+→ le joueur RÉAGIT
+```
+
+The scene must normally begin **at the moment of friction**, not with background exposition.
+
+Bad:
+
+> Une tension inhabituelle semble s'être installée dans le quartier après plusieurs incidents récents.
+
+Good:
+
+> Rémy cache un pain sous sa chemise. Le boulanger vient de fermer la porte et commence à fouiller les enfants.
+
+The second version gives a person, an action, a place/situation, an immediate threat, and therefore a reason to choose.
+
+**Situation → Reaction is the default rhythm for Root, Immediate and Scheduled Events.**
+
+### 3.0 bis Instant-comprehension contract
+
+Before seeing the Choices, a player scanning the Event for approximately **two seconds** should be able to answer:
+
+1. **Who is involved?**
+2. **What is happening right now?**
+3. **Why does it matter / what can go wrong?**
+
+`WHERE` must also be clear whenever geography materially affects the situation. It may be inferred from the HUD/current Location when repeating the exact place name would be redundant, but the physical scene must remain spatially understandable.
+
+If a reviewer cannot answer these questions without rereading the text, the Event requires rewriting.
+
+### 3.0 ter Text budget
+
+For ordinary production:
+
+- standard Root Event body: **20–45 words**, normally **1–2 sentences**;
+- ordinary Immediate/Scheduled body: **12–40 words**, normally **1–2 sentences**;
+- ordinary Outcome text: **5–25 words**, normally **one sentence**;
+- Choice label: normally **2–10 words**, beginning with a concrete intention/action where possible.
+
+A major reveal, Signature scene, emotional climax or canon-heavy setup may exceed these targets, but **60 words / 3 sentences before Choices is a practical exceptional ceiling**, not a new default.
+
+These are authoring targets, not runtime schema limits. Exceeding them must buy real information, emotion or dramatic clarity.
+
+Do not spend the text budget explaining mechanics already visible in effects/UI.
+
 ### 3.1 Standard number of Choices
 
 A normal Event should generally contain **3–5 Choices**.
@@ -126,6 +183,25 @@ Five or six Choices are acceptable when they remain readable and mechanically di
 ### 3.4 Choice identity
 
 Choices must represent different player intentions, not cosmetic paraphrases of the same action.
+
+A Choice label should communicate the player's intention **without requiring the body text to be reread**.
+
+Prefer:
+
+- `Mentir pour Rémy`
+- `Le dénoncer`
+- `Créer une diversion`
+- `Partir avant l'orage`
+
+Avoid:
+
+- `Intervenir`
+- `Faire quelque chose`
+- `Réagir prudemment`
+- `Choisir une autre approche`
+- `Réfléchir à la situation`
+
+Use verbs and concrete intentions. Do not prefix Choices with filler such as `Décider de`, `Essayer de`, or `Choisir de` unless grammatically necessary.
 
 ### 3.5 Locked Choices
 
@@ -177,7 +253,56 @@ Do not mention or invoke a Stat merely to justify adding a roll. The scene must 
 
 Traits may affect a DiceCheck only when the specific DiceCheck explicitly authors that interaction. Do not create universal Trait bonuses.
 
-## 5. Mechanical effect scale
+## 5. Mechanical stakes and effect scale
+
+### 5.0 Stakes are mandatory when the fiction promises risk
+
+A dangerous, confrontational, competitive, criminal, social or otherwise uncertain scene must be capable of producing a **meaningful downside**.
+
+The playtest failure pattern to avoid is:
+
+```text
+success → +1
+failure → +0
+criticalFailure → +0 or cosmetic text
+```
+
+If an action is risky enough to justify a DiceCheck, ordinary `failure` must normally cost or worsen **something the player can care about**.
+
+Valid costs include, depending on context:
+
+- Health;
+- Berrys or another resource;
+- Reputation or bounty consequence;
+- NPC Relationship;
+- loss of an opportunity;
+- a worse Scheduled branch;
+- a persistent NPC status change;
+- ship damage / travel complication;
+- Trait or other existing persistent state where genuinely justified;
+- being forced into a more dangerous Immediate situation.
+
+A failure may be mechanically neutral only when **the missed opportunity itself is clearly meaningful** and the player receives no compensating positive reward.
+
+`criticalFailure` should be visibly worse than ordinary failure unless the scene has an exceptional authored reason.
+
+### 5.0 bis No automatic positivity
+
+OPFG is not a treadmill where every Event increases the character.
+
+An ordinary conflict/challenge Root where **every reachable branch only gives positive Stats/resources/reputation** should normally be rejected or redesigned.
+
+Good Events may contain:
+
+- benefit versus cost;
+- loyalty versus safety;
+- money versus relationship;
+- immediate victory versus future trouble;
+- safe retreat versus lost opportunity;
+- success with collateral cost;
+- two valid choices that protect different things.
+
+Pure reward, recovery, celebration and milestone Events are valid when the fiction explicitly makes them reward scenes. They must not become the baseline.
 
 ### 5.1 Player Stats
 
@@ -188,9 +313,13 @@ Typical Stat change:
 
 V1 Events should not give ±4 or ±5 Stat changes in one Outcome.
 
+Stat gain is not required merely because the Event was resolved successfully.
+
 ### 5.2 Multiple Stats
 
 An Outcome may modify multiple Stats, but should generally affect **no more than two**.
+
+Do not use several small positive Stat changes as a substitute for a meaningful narrative consequence.
 
 ### 5.3 Reputation
 
@@ -209,9 +338,27 @@ Reputation measures notoriety quantity, not morality.
 | Ordinary meaningful interaction | ±3 to ±5 |
 | Major personal event | ±8 to ±15 |
 
+A Relationship change should identify a relationship the player has reason to remember. Avoid spending persistent relationship mechanics on characters who will never matter again.
+
 ### 5.5 Berrys
 
 Berry values remain authored per Event. Batches must remain internally coherent, but V1 does not require a universal economic simulation.
+
+### 5.6 Consequence readability
+
+Outcome prose states **what happened in the fiction**. Mechanical chips/UI state what changed numerically.
+
+Good:
+
+> Rémy file par la fenêtre. Le boulanger te reconnaîtra.
+
+Then UI/effects may show:
+
+```text
+Rémy +10 · Réputation locale -3
+```
+
+Do not restate every numeric effect inside the Outcome sentence.
 
 ## 6. Trait authoring
 
@@ -247,25 +394,83 @@ Flags are a last resort. Before creating a Flag, check whether the information i
 
 If a future Event only needs to know what happened in one prior Event, prefer `hasChosen` or `hasOutcome` over creating a dedicated Flag.
 
-## 8. Persistent NPC rules
+## 8. Persistent NPC and recurring-cast rules
 
-### 8.1 When an NPC deserves persistence
+### 8.1 Recurring cast is preferred over anonymous emotional stakes
+
+When a scene asks the player to care about a person, **reuse a person the player can remember whenever plausible**.
+
+Prefer:
+
+> Rémy hasn't eaten since yesterday. He watches your bread without asking.
+
+over:
+
+> A hungry child watches your ration.
+
+The anonymous version is valid only when anonymity is the point or the character is genuinely disposable.
+
+Childhood, Family, Social, Crew, Rival, Mentor and long-form content should actively build a **small recurring cast**, not a procession of interchangeable strangers.
+
+### 8.2 When an NPC deserves persistence
 
 Create or propose a persistent NPC only when that character can materially matter after the current scene, for example by returning later, carrying a relationship, joining the crew, becoming a passenger, dying persistently, becoming unavailable/departed, carrying a Scheduled consequence, or participating in a mini-arc.
 
-### 8.2 Throwaway characters
+A proposed persistent NPC should normally have **at least three meaningful authored touchpoints** across Root, Immediate and/or Scheduled Events, unless one exceptional appearance produces a genuinely permanent consequence.
 
-Throwaway characters should usually remain anonymous, role-named, or named only in localized scene text.
+### 8.3 Cast economy
 
-### 8.3 New NPC proposals per batch
+Do not solve memorability by inventing dozens of names.
 
-A normal batch should propose no more than **2–3 new persistent NPCs**. They remain proposals until reviewed and added to the authoritative catalog.
+A strong batch normally prefers:
 
-### 8.4 Major canon NPCs
+```text
+1 recurring NPC used meaningfully 4 times
+```
+
+over:
+
+```text
+4 unrelated NPCs used once each
+```
+
+The existing normal ceiling of approximately **2–3 new persistent NPC proposals per batch** remains. Reuse accepted NPCs before proposing new ones.
+
+For relationship-heavy batches, the manifest must identify the **recurring cast anchors** and list where they return.
+
+### 8.4 Throwaway characters
+
+Throwaway characters should remain anonymous, role-named, or locally named only when they are genuinely functional:
+
+- guard;
+- shopkeeper;
+- passer-by;
+- sailor in the background;
+- one-scene opponent whose identity will never matter.
+
+Do **not** give the emotional center of a scene to `un enfant`, `un marin`, `une femme`, `un homme`, `quelqu'un` when an established recurring character can carry the same role more effectively.
+
+### 8.5 Callback recognition
+
+When a recurring NPC or prior choice returns, the callback should be recognizable **immediately**.
+
+Prefer:
+
+> Rémy is waiting behind the same bakery. This time, the bread is for his little sister.
+
+Avoid:
+
+> Someone from your past appears again and reminds you of an earlier incident.
+
+Use the person's name early. Recall the prior cause with one concrete detail rather than a paragraph of exposition.
+
+### 8.6 Major canon NPCs
 
 Major canon characters must remain rare. A major canon meeting requires plausible player age, valid timeline, plausible geography, valid character status, a real narrative/gameplay reason, and no contradiction with protected canon outcomes.
 
 Do not use major canon characters as ambient fan-service.
+
+Recognizable original recurring NPCs are the ordinary solution for emotional continuity; famous canon characters are not.
 
 ## 9. Immediate continuations and mini-arcs
 
@@ -656,9 +861,13 @@ Batch review must include a Birth Location coverage pass for geography-sensitive
 
 ## 12. Travel and world progression
 
-### 12.1 Movement must be narrated
+### 12.1 Routine navigation versus authored movement
 
-Moving to another Location should normally be the result of an authored travel Choice/Event. Do not use `moveToLocation` as an unexplained teleport.
+Routine V1 navigation in the four Blues is handled by the monthly navigation flow: a Leader with a ship may choose an accessible destination and the current `locationId` changes accordingly. Paradise ordinary progression follows the available forward route graph.
+
+Authored Events should therefore use `moveToLocation` for **exceptional, forced or narratively meaningful movement** — diversion, escape, rescue, capture, transport, special passage — not to imitate routine navigation.
+
+Event narration must use the **current** Location/Sea. Do not keep writing the player's Birth Location as their physical location after they have travelled, and do not treat `originSeaId` as the current sea.
 
 ### 12.2 Grand Line entry
 
@@ -730,29 +939,155 @@ A major canon character should appear only when there is a real narrative/gamepl
 
 Pure narrative Events are allowed. They do not need to grant a numeric or persistent reward if they materially build personality, relationships, atmosphere, life history, setup, payoff, meaningful choice, or a memorable scene.
 
+Pure narrative does **not** mean vague atmosphere. It still needs a concrete scene, person, revelation, decision, joke, conflict or emotional beat.
+
 ### 16.2 Meaningful Event requirement
 
 An Event does not always need to mutate GameState, but it must create at least one meaningful contribution: information, relationship, decision, characterization, setup, payoff, atmosphere with narrative value, or a memorable life moment.
+
+The author should be able to finish this sentence:
+
+> **This Event matters because…**
+
+If the answer is only `it gives +1 Stat`, the Event is not yet strong enough.
 
 ### 16.3 Anti-reskin rule
 
 Do not duplicate an Event structure and merely change the decoration. A reskin is acceptable only when Conditions, Choices, consequences, context, or future implications materially change the experience.
 
-### 16.4 Text density
+### 16.4 Dramatic density
 
-Event writing should be **short but embodied**. The player should feel that a scene is happening, not that they are reading an abstract card description. Avoid both dry mechanical summaries and excessively long prose.
+The target is **maximum dramatic information per word**, not literary compression for its own sake.
 
-### 16.5 Tone
+Every sentence should preferably do at least one of the following:
+
+- identify a person;
+- show an action;
+- reveal a concrete object/fact;
+- establish immediate danger/opportunity;
+- change the player's understanding;
+- create a reason to choose.
+
+Delete sentences that merely announce that a situation exists.
+
+Bad:
+
+> Une situation tendue se développe dans le port et plusieurs personnes semblent inquiètes.
+
+Good:
+
+> Mara has your stolen compass in one hand. Two dock guards are walking straight toward her.
+
+The second version is shorter **and contains more usable information**.
+
+### 16.5 Concrete-language rule
+
+Prefer **specific nouns + active verbs**.
+
+Prefer:
+
+- `Rémy vole`
+- `Mara bloque la porte`
+- `la corde casse`
+- `le Marine reconnaît ton pavillon`
+- `trois caisses prennent feu`
+
+Avoid defaulting to abstract/administrative phrasing such as:
+
+- `une situation se présente`;
+- `une tension apparaît`;
+- `certaines personnes`;
+- `plusieurs habitants semblent`;
+- `un problème survient`;
+- `la situation se complique`;
+- `les choses prennent une tournure`;
+- `une opportunité se présente`;
+- `il semble que`;
+- `il paraît que`;
+- `quelque chose attire ton attention`.
+
+These phrases are not globally forbidden when uncertainty itself matters, but they are a **rewrite signal**.
+
+### 16.6 No redundant explanation
+
+Do not explain an emotion already shown by an action.
+
+Weak:
+
+> Rémy est très inquiet et a peur que le boulanger le découvre.
+
+Stronger:
+
+> Rémy serre le pain contre sa poitrine quand le boulanger verrouille la porte.
+
+Do not summarize the moral meaning of a choice before the player makes it.
+
+Do not explain numeric consequences that the UI already displays.
+
+### 16.7 Outcome density
+
+An Outcome should answer:
+
+> **What happened because I chose that?**
+
+Prefer one concrete sentence.
+
+Good:
+
+> Rémy s'échappe par la fenêtre. Le boulanger mémorise ton visage.
+
+Weak:
+
+> Ton intervention a des conséquences mitigées sur les personnes impliquées.
+
+For delayed consequences, the current Outcome may intentionally leave uncertainty, but something observable should still change now.
+
+### 16.8 Age-coherence / agency contract
+
+Review every Childhood Event against the **youngest age that can actually reach it**, not the age the author vaguely imagines.
+
+Ordinary agency expectations:
+
+| Age | Plausible default agency |
+|---|---|
+| 1–3 | observe, attach, share/refuse, imitate, cry/call, hide or hand over a small object, choose whom to trust |
+| 4–7 | lie, hide, run, fetch an adult, distract, sneak locally, warn someone, small physical intervention |
+| 8–11 | broader local independence, climbing, simple rescue/theft, defending a peer, following someone, taking manageable physical risks |
+| 12–14 | substantial adolescent autonomy, dangerous errands, serious confrontation, preparation for sea/career where context supports it |
+| 15+ | full Active agency subject to Stats, Race, career, equipment and situation |
+
+A six-year-old should not casually overpower an adult, command a crew, survive implausible travel alone, or physically interpose against an armed criminal as if they were an adult protagonist.
+
+Race, Traits, extraordinary context or explicit adult assistance may justify exceptions, but the Event must make the justification visible.
+
+### 16.9 Phone-scan test
+
+Human review must include a mobile-speed pass.
+
+For each ordinary Event, ask:
+
+1. Can the situation be understood on first scan?
+2. Can the meaningful difference between Choices be understood without rereading?
+3. Is there a person/object/problem the player can picture?
+4. Would removing one sentence lose real information?
+
+If question 1 or 2 is `no`, rewrite.
+
+If question 4 is `no`, delete the sentence.
+
+### 16.10 Tone
 
 Target an adventurous One Piece-like tonal range: light, strange, funny, warm, tense, occasionally tragic, and occasionally epic. Do not write every Event as maximal drama or prophecy.
 
-### 16.6 French voice
+Direct writing does **not** mean every scene is grim. Comedy also benefits from concrete setup and fast payoff.
+
+### 16.11 French voice
 
 For French source localization, **prefer singular informal address (`tu`, `te`, `toi`, `ton`, `ta`, `tes`)** in narrative text and Choices that address the player directly.
 
 Text that does not address the player directly remains naturally free. Dialogue spoken by characters to the player should also follow the character, relationship, situation, and social register: a character may therefore use either `tu` or `vous` when appropriate.
 
-Do not mechanically normalize pronouns or possessives solely to match the player's address form when their grammatical referent is different (for example, a shared relationship involving the player and another character).
+Do not mechanically normalize pronouns or possessives solely to match the player's address form when their grammatical referent is different.
 
 ## 17. Batch variety rules
 
@@ -779,7 +1114,14 @@ A batch is accepted only after:
 11. review of Lifetime Thread authored depth: exact depth 10 is valid but should not become the systematic production default; substantial threads should generally have a longest meaningful path in the 10–20 range, with 12–16 preferred when justified;
 12. review that graph-size and branching requirements were not satisfied through filler, unreachable nodes or shallow cosmetic forks;
 13. review that new-production Lifetime Threads preferentially widen toward **24–30 reachable Scheduled nodes** and **3+ meaningful divergences** without increasing lived depth solely to hit breadth;
-14. verification that every reachable Event remains Choice-resolvable: at least one unconditional Choice or an exhaustive set of `availableIf` branches in every reachable Event state.
+14. verification that every reachable Event remains Choice-resolvable: at least one unconditional Choice or an exhaustive set of `availableIf` branches in every reachable Event state;
+15. **instant-comprehension review**: ordinary scenes identify who/what/stakes on first scan;
+16. **text-budget review**: ordinary Root/Immediate/Scheduled/Outcome copy follows §3.0 ter or the exception is narratively justified;
+17. **concrete-language review**: vague administrative/abstract phrasing identified in §16.5 is rewritten when it carries no intentional uncertainty;
+18. **stakes review**: risky Dice failures and dangerous Choices have credible negative or opportunity-cost consequences; batches dominated by `failure → +0` or positive-only branches are rejected;
+19. **age-coherence review** for every Childhood Event using its youngest reachable age;
+20. **recurring-cast review**: relationship-heavy scenes reuse meaningful named NPCs where possible, and proposed persistent NPCs have planned return touchpoints;
+21. **callback review**: returning NPC/thread chapters identify the recurring person/cause quickly enough that the player can recognize why the scene matters.
 
 Compilation alone is not sufficient.
 
@@ -825,7 +1167,13 @@ Every Event-generation conversation should receive:
 18. Lifetime topology requirement: **at least two meaningful long-term divergence points**, with at least one structurally persistent split rather than an immediate cosmetic reconvergence; for new production, **3+ meaningful divergences are preferred** when natural;
 19. an explicit reminder that different Choices/Dice outcomes may and should schedule different future chapters when their long-term consequences differ;
 20. vertical scheduling and multi-year narrative evolution requirements;
-21. the current accepted Lifetime Thread / Immediate Arc concept index so parallel batches do not create near-identical long-form stories.
+21. the current accepted Lifetime Thread / Immediate Arc concept index so parallel batches do not create near-identical long-form stories;
+22. the **Situation → Reaction** contract and QUI / QUOI / OÙ / ENJEU scan test;
+23. ordinary prose targets: Root **20–45 words / 1–2 sentences**, Immediate/Scheduled **12–40 words**, Outcome **5–25 words**, Choice **2–10 words**;
+24. the concrete-language / anti-vagueness rules from §16;
+25. the age-coherence table for Childhood;
+26. the requirement that risky failures have real downside/opportunity cost rather than defaulting to `+0`;
+27. the recurring-cast rule: reuse a small number of named persistent NPCs instead of replacing emotional continuity with anonymous strangers.
 
 A batch prompt must define scope narrowly enough that another GPT conversation can work on a different batch without collision.
 
@@ -855,6 +1203,8 @@ The goal is not to create a large deck of disconnected random cards.
 
 The goal is to create a coherent, replayable life history where origin, personality, geography, career, relationships, powers, and prior decisions meaningfully alter what happens later.
 
+**The player must care before the system asks them to remember.** Recurring people, concrete stakes and readable consequences take priority over abstract variety. One memorable named relationship returning several times is more valuable than several disconnected anonymous situations.
+
 For V1 production, this principle is measurable: every standard batch contributes **at least one depth-5 Signature Immediate Arc, at least three distinct depth-3 Secondary Immediate Arcs, and at least one multi-year Lifetime Thread with 10+ reachable Scheduled depth, 20+ distinct reachable Scheduled nodes in its complete authored graph, and meaningful long-term branching**, while every completed Childhood run is guaranteed to have initiated at least one Lifetime Thread. For new batches, **24–30 reachable Scheduled nodes and 3+ meaningful divergences are the preferred ordinary breadth target**, without increasing the preferred lived depth of 12–16 merely to inflate graph size.
 
 # 22. World travel authoring contract
@@ -865,20 +1215,16 @@ Do not add `routeId`, `paradiseRouteId`, or equivalent persistent GameState for 
 
 Routes are reconstructed from current Location, History, authored Conditions, and the World V1 route graph.
 
-## 22.2 Paradise route selection is random
+## 22.2 Paradise route progression
 
-After Reverse Mountain / Twin Capes, the initial Paradise route is selected randomly through the seeded Event-selection system.
+No persistent route ID is required.
 
-The player does **not** choose a route from a menu.
+At Paradise ingress, the navigation flow may expose eligible forward destinations from the authored route graph. Once the player moves to a route Location, the current Location plus the route graph determines the ordinary forward options.
 
-Preferred content pattern:
+Routine route movement should therefore use the navigation system rather than creating generic departure Events solely to change `locationId`.
 
-- one route-start Normal Event per eligible route;
-- all valid route-start Events are simultaneously eligible;
-- seeded uniform Event selection chooses one;
-- moving to that route's first Location makes the others ineligible.
+Rare cross-route moves, forced diversions, exceptional passages and canon-sensitive travel remain Event-driven when narratively justified.
 
-Do not add weights unless the design is explicitly revised.
 
 ## 22.3 Locations are not board-game tiles
 
@@ -1081,3 +1427,28 @@ A non-null `parentLocationId` must:
 Travel Events must preserve coherent current sea, hierarchy, docking, and access rules.
 
 The World V1 authority may retain reference-only geographic relationships in notes, but runtime hierarchy uses runtime IDs only.
+
+---
+
+## Editorial Revision B — acceptance summary
+
+For all new batches and all rewrites of existing Events, the following failures are now **authoring blockers**:
+
+- the player cannot identify the concrete situation on first scan;
+- ordinary Root copy is padded beyond the dramatic information it carries;
+- anonymous characters carry emotional stakes that an established recurring NPC could carry better;
+- a risky failure is effectively `nothing happens` / `+0` without meaningful lost opportunity;
+- every branch of an ordinary challenge is positive;
+- Childhood agency is implausible for the youngest reachable age;
+- an Outcome does not clearly state what happened;
+- a callback returns as vague exposition instead of a recognizable person/cause;
+- Event prose uses abstract filler where a concrete noun and active verb would be clearer.
+
+The production question is no longer only:
+
+> Is this Event valid and varied?
+
+It is also:
+
+> **Would a player on a phone understand why this matters in two seconds and care enough to choose?**
+

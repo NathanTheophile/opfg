@@ -1,6 +1,6 @@
 import worldData from '../content/data/locationsV1.json';
 import type { ContentCatalog, LocationDefinition } from '../content/schema';
-import type { GameState, LocationId, TravelState } from '../model/schema';
+import type { GameState, LocationId, SeaId, TravelState } from '../model/schema';
 import { nextRandom } from './rng';
 
 export function findLocation(catalog: ContentCatalog, locationId: LocationId): LocationDefinition | undefined {
@@ -34,6 +34,25 @@ export function isLocationWithin(catalog: ContentCatalog, currentId: LocationId,
 export function findDockableAccess(catalog: ContentCatalog, locationId: LocationId): LocationDefinition | undefined {
   const current = findLocation(catalog, locationId);
   return [current, ...getLocationAncestors(catalog, locationId)].find((location) => location?.allowsDocking);
+}
+
+const PLAYER_DIRECT_NAVIGATION_SEAS = new Set<SeaId>([
+  'east_blue',
+  'west_blue',
+  'north_blue',
+  'south_blue',
+  'grand_line_paradise',
+]);
+
+export function getNavigableDestinationIds(currentId: LocationId, catalog: ContentCatalog): LocationId[] {
+  const current = findLocation(catalog, currentId);
+  if (!current || !PLAYER_DIRECT_NAVIGATION_SEAS.has(current.seaId)) return [];
+
+  return fallbackDestinationIds(currentId, catalog)
+    .filter((id) => {
+      const destination = findLocation(catalog, id);
+      return destination !== undefined && destination.islandId !== current.islandId;
+    });
 }
 
 export function getLocationDisplayName(catalog: ContentCatalog, locationId: LocationId, translate: (key: string) => string): string {

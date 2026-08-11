@@ -27,11 +27,11 @@ describe('Immediate Event chains', () => {
     expect(state).toMatchObject({ currentEventId: 'b', ageMonths: 180, slotInMonth: 0 });
     expect(state.scheduledEvents).toContainEqual(expect.objectContaining({ eventId: 'later', dueAgeMonths: 183 }));
     state = resolveChoice(state, content, 'b', 'go').state;
-    expect(state).toMatchObject({ ageMonths: 180, slotInMonth: 1, pendingSlotPhase: null });
+    expect(state).toMatchObject({ ageMonths: 181, slotInMonth: 0, pendingSlotPhase: null });
     expect(state.history.map(({ eventId }) => eventId)).toEqual(['root', 'a', 'b']);
   });
 
-  it('finishes a slot-2 chain before advancing the month', () => {
+  it('normalizes a legacy slot-1 chain by advancing the month once', () => {
     const content = catalog([event('root', 'normal', [{ type: 'queueImmediateEvent', eventId: 'a' }]), event('a', 'immediate', [{ type: 'queueImmediateEvent', eventId: 'b' }]), event('b', 'immediate')]);
     let state = selectNextEvent(activeState(1), content);
     state = resolveChoice(state, content, 'root', 'go').state;
@@ -50,7 +50,7 @@ describe('Immediate Event chains', () => {
     state = resolveChoice(state, content, 'ship_critical', 'go').state;
     expect(state).toMatchObject({ currentEventId: 'b', ageMonths: 180, slotInMonth: 0, ship: null });
     state = resolveChoice(state, content, 'b', 'go').state;
-    expect(state.slotInMonth).toBe(1);
+    expect(state).toMatchObject({ ageMonths: 181, slotInMonth: 0 });
   });
 
   it('skips an Immediate continuation whose eligibility no longer holds', () => {
@@ -58,7 +58,7 @@ describe('Immediate Event chains', () => {
     const content = catalog([event('root', 'normal', [{ type: 'queueImmediateEvent', eventId: 'a' }]), followup]);
     const root = selectNextEvent(activeState(), content);
     const state = resolveChoice(root, content, 'root', 'go').state;
-    expect(state).toMatchObject({ ageMonths: 180, slotInMonth: 1, pendingSlotPhase: null });
+    expect(state).toMatchObject({ ageMonths: 181, slotInMonth: 0, pendingSlotPhase: null });
     expect(state.history.map(({ eventId }) => eventId)).toEqual(['root']);
   });
 

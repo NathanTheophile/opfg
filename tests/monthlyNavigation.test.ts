@@ -12,11 +12,26 @@ const activeState = () => {
 };
 
 describe('monthly navigation', () => {
-  it('offers stay/go to sea on land and consumes no slot', () => {
+  it('offers real destinations on land and sailing changes Location without consuming time', () => {
     const state = activeState();
-    expect(getMonthlyNavigationOptions(state, contentCatalog).map(({ id, available }) => [id, available])).toEqual([['stay', true], ['goToSea', true]]);
-    const next = applyMonthlyNavigationChoice(state, contentCatalog, 'goToSea');
-    expect(next).toMatchObject({ travelState: 'at_sea', ageMonths: 180, slotInMonth: 0, navigationDecisionAgeMonths: 180 });
+    const options = getMonthlyNavigationOptions(state, contentCatalog);
+    expect(options).toContainEqual({ id: 'stay', available: true });
+
+    const sail = options.find((option) => option.destinationId !== undefined && option.available);
+    expect(sail?.destinationId).toBeTruthy();
+
+    const origin = contentCatalog.locations.find(({ id }) => id === state.locationId)!;
+    const destination = contentCatalog.locations.find(({ id }) => id === sail!.destinationId)!;
+    expect(destination.islandId).not.toBe(origin.islandId);
+
+    const next = applyMonthlyNavigationChoice(state, contentCatalog, sail!.id);
+    expect(next).toMatchObject({
+      travelState: 'at_sea',
+      locationId: sail!.destinationId,
+      ageMonths: 180,
+      slotInMonth: 0,
+      navigationDecisionAgeMonths: 180,
+    });
     expect(needsMonthlyNavigationDecision(next)).toBe(false);
   });
 
@@ -39,9 +54,7 @@ describe('monthly navigation', () => {
     let state = applyMonthlyNavigationChoice(activeState(), contentCatalog, 'stay');
     const restored = deserializeGameState(serializeGameState(state))!;
     expect(needsMonthlyNavigationDecision(restored)).toBe(false);
-    state = { ...restored, travelState: 'at_sea', slotInMonth: 1 };
-    expect(needsMonthlyNavigationDecision(state)).toBe(false);
-    state = { ...state, slotInMonth: 0, ageMonths: 181, pendingSlotPhase: 'active', immediateEventQueue: ['continuation'] };
+    state = { ...restored, ageMonths: 181, pendingSlotPhase: 'active', immediateEventQueue: ['continuation'] };
     expect(needsMonthlyNavigationDecision(state)).toBe(false);
     state = { ...state, pendingSlotPhase: null, immediateEventQueue: [] };
     expect(needsMonthlyNavigationDecision(state)).toBe(true);

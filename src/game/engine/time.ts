@@ -18,9 +18,7 @@ export function consumePhaseSlot(state: GameState, phaseBeforeResolution: GameSt
       shipMarketArrivalPending: careerPhase === 'active' ? true : state.shipMarketArrivalPending,
     };
   }
-  return state.slotInMonth === 0
-    ? { ...state, slotInMonth: 1 }
-    : { ...advanceAge(state, state.ageMonths + 1, catalog), slotInMonth: 0 };
+  return { ...advanceAge(state, state.ageMonths + 1, catalog), slotInMonth: 0 };
 }
 
 export function finalizePendingSlot(state: GameState, catalog: ContentCatalog): GameState {
