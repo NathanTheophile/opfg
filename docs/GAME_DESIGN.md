@@ -602,3 +602,100 @@ Les décisions suivantes sont verrouillées mais pas nécessairement implément�
 - leadership persistant et protection runtime des opérations de gestion.
 
 Cette liste prépare la prochaine passe technique ; elle ne décrit pas l’état actuel du code.
+
+## D1.9 — Early Childhood Origin Echo architecture
+
+> **Authoritative amendment.** This section supersedes the fixed D1.8 age-by-age opening sequence while preserving its validated design goal.
+
+### Design goal
+
+Origins are not a questionnaire that ends before Childhood. They define recurring sources of lived situations.
+
+During early Childhood, the player should repeatedly feel that what they selected in Origins changes what happens to them:
+
+- Race;
+- family structure;
+- family affiliation;
+- social class;
+- Birth Location and its tags;
+- strong intersections between several of these axes.
+
+The same is true of persistent childhood relationships. Friend/rival content remains important, but it alternates with family, Race and local-world content instead of replacing them.
+
+### Early Childhood window
+
+The D1.9 opening-selection layer applies to Childhood slots from **1 through 5 years inclusive** (`ageMonths` 12–71).
+
+It does not add slots and does not change time progression:
+
+- ages 1–5 remain ordinary Childhood slots;
+- an Opening Event consumes the same yearly slot as any other Childhood Normal Event;
+- Immediate, Scheduled and Critical priority remains unchanged.
+
+### Event narrative metadata
+
+Normal Events participating in this layer may declare:
+
+```ts
+narrativeFamily?:
+  | 'origin_family'
+  | 'origin_race'
+  | 'origin_birthplace'
+  | 'origin_cross'
+  | 'child_peer';
+
+openingRole?:
+  | 'origin_echo'
+  | 'friend_intro'
+  | 'friend_callback'
+  | 'rival_intro';
+```
+
+`narrativeFamily` tells the selector what lived-content family the scene belongs to.
+
+`openingRole` tells the selector whether the Event participates in the early-childhood composition guarantees.
+
+The metadata does not create ArcState, quest state, chapter counters or new GameState persistence. Played roles/families are reconstructed from `History` plus EventDefinitions.
+
+### Selection guarantees
+
+When eligible Opening Events exist, the runtime uses seeded selection with the following constraints:
+
+1. **Age-one Origin Anchor.** At the first Childhood slot (12–23 months), an eligible `origin_echo` is preferred/required over peer content.
+2. **Origins must echo again.** By the age-four selection checkpoint (`ageMonths >= 48`), if fewer than two `origin_echo` Events have been played, an eligible `origin_echo` receives priority.
+3. **A child must actually be introduced.** By the age-three checkpoint (`ageMonths >= 36`), if no `friend_intro` has been played, an eligible `friend_intro` receives priority.
+4. **No anonymous familiarity.** Once any `friend_intro` has been played, other `friend_intro` alternatives are removed from that run's Opening pool. The same applies to `rival_intro`.
+5. **Peer callbacks require a meeting.** `friend_callback` content is not selected before a `friend_intro` has occurred.
+6. **No peer-content tunnel.** If the two most recent metadata-bearing Events are both `child_peer`, a third consecutive `child_peer` is avoided whenever any eligible non-peer Opening Event exists.
+7. **Family alternation.** When no hard guarantee is currently due, repeating the same `narrativeFamily` as the most recent metadata-bearing Event is avoided whenever another eligible family exists.
+8. **Seeded, not scripted.** After the above constraints, the final candidate is selected seededly and uniformly from the remaining eligible candidates.
+
+If content coverage makes a guarantee impossible, the selector must not deadlock. It falls back to the eligible pool; validation/playtest must treat such a case as a content-coverage defect.
+
+### Narrative target by age five
+
+By the end of the age-five window, a healthy run should normally have shown:
+
+- at least two situations materially caused by Origins;
+- a recognizable family/social/local environment;
+- at least one persistent child introduced through an actual scene;
+- a mixture of Origin/world scenes and peer scenes;
+- no obvious fixed sequence repeated across runs.
+
+`friend_intro`, `friend_callback` and `rival_intro` use age windows, not fixed canonical ages.
+
+### Race-derived Childhood content
+
+Race content must represent a range of lived experiences. Discrimination/prejudice is valid and important where contextually justified, but Race must not become synonymous with suffering.
+
+Across representative Race content, include a mixture of:
+
+- prejudice, exclusion or fear;
+- curiosity or unfamiliarity;
+- positive fascination and friendship;
+- physical/body-scale consequences;
+- practical advantages or constraints;
+- family/community belonging;
+- misunderstandings that can resolve positively or negatively.
+
+Do not equate Race with personality or morality.

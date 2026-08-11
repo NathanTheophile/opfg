@@ -1479,3 +1479,147 @@ The first Childhood years are identity-establishing content, not generic filler.
 - World building belongs inside the concrete problem: uniforms, wanted posters, ration bowls, cargo, workshops, guards, Den Den Mushi, weather, markets, ships, local trades, etc. Do not add explanatory lore paragraphs.
 - A persistent Childhood NPC must receive an introduction scene before ordinary callback content assumes familiarity. A generated display name alone is not an introduction.
 - A callback should refer to a concrete object/action from the introduction whenever possible. The player should understand *why this person is back* without exposition.
+
+## 23. Early Childhood Origin Echo authoring
+
+### 23.1 Narrative metadata
+
+Content Schema 10 adds two optional EventDefinition fields:
+
+```ts
+narrativeFamily?:
+  | 'origin_family'
+  | 'origin_race'
+  | 'origin_birthplace'
+  | 'origin_cross'
+  | 'child_peer';
+
+openingRole?:
+  | 'origin_echo'
+  | 'friend_intro'
+  | 'friend_callback'
+  | 'rival_intro';
+```
+
+Rules:
+
+- `openingRole` is valid only on Normal Events.
+- An Event with `openingRole` must also declare `narrativeFamily`.
+- `openingRole: 'origin_echo'` requires one of the four `origin_*` narrative families.
+- `friend_intro`, `friend_callback` and `rival_intro` require `narrativeFamily: 'child_peer'`.
+- Metadata is semantic, not decorative. The premise must genuinely belong to the declared family/role.
+
+### 23.2 Origin Echo scene standard
+
+The question is not “can this Event technically test an Origins Condition?”
+
+The question is:
+
+> **Would this situation still exist in substantially the same form if the relevant Origins choice were different?**
+
+If yes, it is probably not a strong Origin Echo.
+
+Examples:
+
+Weak Race Event:
+> Un enfant te propose un jeu. `raceIs: mink`.
+
+Strong Race Event:
+> Deux enfants veulent toucher ta fourrure avant de te laisser entrer dans leur cachette. L’un demande la permission ; l’autre a déjà tendu la main.
+
+Weak Royal Family Event:
+> Un ballon roule dans un couloir du château.
+
+Strong Royal Family Event:
+> Un serviteur s’agenouille pour ramasser ton jouet avant toi. Un autre enfant noble le réprimande parce qu’il t’a laissé attendre.
+
+### 23.3 Opening Breadth Batch — exception to standard batch depth quotas
+
+D1.9 mass-production uses the specialized **Opening Breadth Batch** contract.
+
+This contract explicitly overrides §2.5 long-form quota requirements for these batches.
+
+An Opening Breadth Batch:
+
+- targets **16 Normal root Events** unless its prompt says otherwise;
+- produces standalone early-Childhood roots;
+- has **no mandatory Signature Immediate Arc**;
+- has **no mandatory Secondary Immediate Arcs**;
+- has **no mandatory Lifetime Thread**;
+- should normally produce **zero Immediate Events and zero Scheduled Events**;
+- must not invent depth merely to satisfy ordinary batch quotas;
+- optimizes for breadth, specificity, Origins reactivity and replay variation.
+
+This exception applies only to batches explicitly identified as `OPENING_BREADTH`.
+
+### 23.4 Early-childhood age and agency
+
+D1.9 Opening Breadth roots target ages 1–5.
+
+The existing age-coherence rules remain blocking requirements.
+
+Especially:
+
+- ages 1–3: pointing, offering, hiding, copying, clinging, making noise, moving small objects, simple exchange, watching, refusing;
+- ages 4–5: running, small lies, simple bargaining, deliberate hiding, games with rules, fetching someone, minor physical intervention, basic plans.
+
+Do not give a toddler adult social analysis, sophisticated deception, weapon competence or implausible physical agency.
+
+### 23.5 Choice diversity for Opening Breadth
+
+Opening Breadth content is particularly vulnerable to repeated answer sets.
+
+Reject repeated templates such as:
+
+```text
+help
+call an adult
+watch
+do nothing
+```
+
+Choices must emerge from the actual props/people/problem in the scene.
+
+Across a 16-root batch:
+
+- do not repeat the same four intention families mechanically;
+- at least two Choices per root must fail the transplant test;
+- “watch” is valid for a young child only when *what they choose to watch* is specific and interesting;
+- a non-action can be meaningful, but “do nothing” is not a mandatory slot.
+
+### 23.6 Effect discipline
+
+Early Childhood is not a stat vending machine.
+
+For Opening Breadth batches:
+
+- Stats remain ±1 normally;
+- relationship-only or purely narrative Outcomes are valid;
+- not every Choice needs a positive reward;
+- family/peer relationship changes should use persistent NPCs only when those NPCs are actually in `cast`;
+- negative social experiences may affect Morale/Relationship or simply branch fiction; do not mechanically punish every unpleasant interaction;
+- DiceChecks should be uncommon at ages 1–3 and used only when uncertainty genuinely benefits the scene.
+
+### 23.7 Cross-Origin Events
+
+`origin_cross` Events must depend materially on at least two Origins axes, for example:
+
+- Race × family affiliation;
+- Race × Birth Location tags;
+- family structure × social class;
+- inherited affiliation × Birth Location institution;
+- Race × royal/wealthy household context.
+
+Do not make exhaustive combinatorial coverage. Select combinations with high dramatic yield.
+
+### 23.8 Batch acceptance test
+
+Before accepting an Opening Breadth batch, reviewers must be able to answer:
+
+1. Which Origins choices create each Event?
+2. What concrete world detail does each Event teach through action?
+3. Could the scene be transplanted to another Origin with only noun swaps? If yes, rewrite.
+4. Are the Choices age-plausible and scene-specific?
+5. Does the batch contain emotional-tone variety?
+6. Does it duplicate a D1.8 opening concept or another D1.9 batch?
+7. Does every persistent NPC appearance respect `cast` and introduction semantics?

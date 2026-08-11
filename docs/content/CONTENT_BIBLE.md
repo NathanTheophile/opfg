@@ -217,3 +217,82 @@ Follow [World Timeline & Canon](../design/WORLD_TIMELINE_AND_CANON.md).
 - Freedom belongs mainly in narrative interstices.
 - Major canon-character encounters are rare and meaningful.
 - Temporal metadata must prevent use of characters, organizations and Location states before/after their valid windows.
+
+## 14. Origin Echo content
+
+Origins are persistent content inputs.
+
+A player's Race, family structure, inherited affiliation, social class and Birth Location must continue to create authored situations after character creation. Content should make these choices *felt* in fiction rather than merely testable by Conditions.
+
+### Origin Echo families
+
+Early-Childhood Origin Echo content is organized into:
+
+- `origin_family` — household, parents, inherited affiliation, social class, domestic/work environment;
+- `origin_race` — lived consequences of Race;
+- `origin_birthplace` — Birth Location metadata, institutions, trades, climate and local habits;
+- `origin_cross` — scenes whose premise materially requires at least two Origins axes at once.
+
+An `origin_cross` Event must not be a generic scene with two decorative Conditions. Removing either axis should materially weaken or change the premise.
+
+### World building through friction
+
+World building belongs inside the situation, not in an added lore paragraph.
+
+Good early-childhood props and institutions include, where contextually valid:
+
+- Marine uniforms, barracks routines and drill equipment;
+- wanted posters, contraband, pirate guests and hidden loot;
+- ration bowls, locked doors, debt ledgers and workshop tools;
+- castle servants, guards, heraldry and court routines;
+- docks, cargo, shipyards, market bells and fishing gear;
+- local weather, medicines, crops, industry and transport;
+- social rules made visible through what another person does to the child.
+
+The Event must still begin with a concrete situation and stay within the normal text budget.
+
+### Race content balance
+
+Race-specific content may include racism, prejudice and exclusion, including situations inspired by the social tensions of the setting. It must also include non-hostile experiences such as curiosity, practical adaptation, admiration, belonging, humor or positive contact.
+
+For any substantial Race batch:
+
+- hostility/discrimination must not be the only lens;
+- avoid modern explanatory/social-science vocabulary inside Event prose;
+- show prejudice through concrete behavior, restrictions, words and choices;
+- do not use Race as shorthand for personality;
+- do not reveal canon secrets merely to make a Race Event feel important.
+
+### Childhood persistent NPC introduction
+
+A generated display name is not an introduction.
+
+Before ordinary Childhood content assumes familiarity with `childhood_friend` or `childhood_rival`, the run must contain a dedicated introduction scene.
+
+A good introduction gives the player at least one memorable anchor:
+
+- an object;
+- a small conflict;
+- a shared activity;
+- a favor;
+- a mistake;
+- a challenge;
+- a secret;
+- a distinctive action.
+
+Callbacks should reuse that anchor whenever practical.
+
+### D1.9 persistent definitions
+
+D1.9 Opening Breadth batches should reuse the current persistent cast unless a genuinely necessary new role is proposed:
+
+- `player_parent_1`
+- `player_parent_2`
+- `childhood_friend`
+- `childhood_rival`
+- `childhood_younger`
+- `neighborhood_merchant`
+
+Throwaway adults/children remain local prose.
+
+Do not proliferate persistent NPC definitions merely to increase breadth.

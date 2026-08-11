@@ -49,7 +49,7 @@ describe('localization runtime', () => {
     const source = { ...dictionaries.fr };
     delete source[eventTitleKey('black_squall')];
     expect(validateContent(contentCatalog, source)).toContainEqual(expect.objectContaining({ message: expect.stringContaining('Missing source localization key') }));
-    expect(validateContent({ ...contentCatalog, schemaVersion: 99 })).toContainEqual(expect.objectContaining({ path: 'schemaVersion' }));
+    expect(validateContent({ ...contentCatalog, schemaVersion: 109 })).toContainEqual(expect.objectContaining({ path: 'schemaVersion' }));
   });
 
   it('persists locale independently from GameState', () => {

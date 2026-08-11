@@ -33,6 +33,23 @@ const LOCATION_TYPES = new Set(['city', 'facility', 'island', 'kingdom', 'marine
 const SHIP_MARKETS = new Set(['none', 'small_craft', 'full']);
 const VALID_LOCATION_SERVICES = new Set(LOCATION_SERVICES);
 const VALID_LOCATION_TAGS = new Set(LOCATION_TAGS);
+
+const VALID_NARRATIVE_FAMILIES =
+  new Set([
+    'origin_family',
+    'origin_race',
+    'origin_birthplace',
+    'origin_cross',
+    'child_peer',
+  ]);
+
+const VALID_OPENING_ROLES =
+  new Set([
+    'origin_echo',
+    'friend_intro',
+    'friend_callback',
+    'rival_intro',
+  ]);
 const CONDITION_TYPES = new Set([
   'all',
   'any',
@@ -287,6 +304,85 @@ function validateEvent(
     || (event.kind !== 'critical' && event.trigger !== undefined)
     || (event.kind !== 'normal' && (event.lifetimeThreadSeed !== undefined || event.replay !== undefined))) errors.push({ path, message: 'Invalid Event kind field combination.' });
   if (event.kind === 'normal' && event.lifetimeThreadSeed !== undefined && event.lifetimeThreadSeed !== true) errors.push({ path: `${path}.lifetimeThreadSeed`, message: 'lifetimeThreadSeed must be true when present.' });
+  if (
+    event.narrativeFamily !== undefined &&
+    !VALID_NARRATIVE_FAMILIES.has(
+      String(event.narrativeFamily),
+    )
+  ) {
+    errors.push({
+      path: `${path}.narrativeFamily`,
+      message:
+        `Invalid narrativeFamily "${String(event.narrativeFamily)}".`,
+    });
+  }
+
+  if (
+    event.openingRole !== undefined &&
+    !VALID_OPENING_ROLES.has(
+      String(event.openingRole),
+    )
+  ) {
+    errors.push({
+      path: `${path}.openingRole`,
+      message:
+        `Invalid openingRole "${String(event.openingRole)}".`,
+    });
+  }
+
+  if (
+    event.openingRole !== undefined &&
+    event.kind !== 'normal'
+  ) {
+    errors.push({
+      path: `${path}.openingRole`,
+      message:
+        'openingRole is valid only on Normal Events.',
+    });
+  }
+
+  if (
+    event.openingRole !== undefined &&
+    event.narrativeFamily === undefined
+  ) {
+    errors.push({
+      path: `${path}.openingRole`,
+      message:
+        'Opening role requires narrativeFamily.',
+    });
+  }
+
+  if (
+    event.openingRole === 'origin_echo' &&
+    !String(
+      event.narrativeFamily ?? '',
+    ).startsWith('origin_')
+  ) {
+    errors.push({
+      path: `${path}.openingRole`,
+      message:
+        'origin_echo requires an origin_* narrativeFamily.',
+    });
+  }
+
+  if (
+    [
+      'friend_intro',
+      'friend_callback',
+      'rival_intro',
+    ].includes(
+      String(event.openingRole),
+    ) &&
+    event.narrativeFamily !==
+      'child_peer'
+  ) {
+    errors.push({
+      path: `${path}.openingRole`,
+      message:
+        'Peer opening roles require narrativeFamily "child_peer".',
+    });
+  }
+
   if (event.kind === 'normal' && event.replay !== undefined) {
     if (!isRecord(event.replay)) errors.push({ path: `${path}.replay`, message: 'replay must be an object.' });
     else {

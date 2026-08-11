@@ -66,11 +66,11 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
       : { ...state, scheduledEvents: scheduled.entries, currentEventId: null };
   }
   const openingCandidates =
-    state.careerPhase === 'childhood'
-      ? candidates.filter((event) =>
-          event.id.startsWith('ch_opening_'),
-        )
-      : [];
+    selectEarlyChildhoodOpeningCandidates(
+      state,
+      catalog,
+      candidates,
+    );
 
   const selectionCandidates =
     openingCandidates.length > 0
@@ -92,6 +92,225 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
       ? normalPool
       : selectionCandidates,
   );
+}
+
+const EARLY_CHILDHOOD_MIN_MONTHS = 12;
+const EARLY_CHILDHOOD_MAX_MONTHS = 71;
+
+function metadataEventHistory(
+  state: GameState,
+  catalog: ContentCatalog,
+): EventDefinition[] {
+  const byId = new Map(
+    catalog.events.map(
+      (event) => [
+        event.id,
+        event,
+      ] as const,
+    ),
+  );
+
+  return state.history
+    .map(({ eventId }) =>
+      byId.get(eventId),
+    )
+    .filter(
+      (
+        event,
+      ): event is EventDefinition =>
+        event !== undefined &&
+        event.narrativeFamily !== undefined,
+    );
+}
+
+function selectEarlyChildhoodOpeningCandidates(
+  state: GameState,
+  catalog: ContentCatalog,
+  candidates: EventDefinition[],
+): EventDefinition[] {
+  if (
+    state.careerPhase !== 'childhood' ||
+    state.ageMonths <
+      EARLY_CHILDHOOD_MIN_MONTHS ||
+    state.ageMonths >
+      EARLY_CHILDHOOD_MAX_MONTHS
+  ) {
+    return [];
+  }
+
+  const opening =
+    candidates.filter(
+      (event) =>
+        event.kind === 'normal' &&
+        event.openingRole !== undefined,
+    );
+
+  if (opening.length === 0) {
+    return [];
+  }
+
+  const history =
+    metadataEventHistory(
+      state,
+      catalog,
+    );
+
+  const playedRoles =
+    new Set(
+      history.map(
+        ({ openingRole }) =>
+          openingRole,
+      ),
+    );
+
+  const friendIntroduced =
+    playedRoles.has(
+      'friend_intro',
+    );
+
+  const rivalIntroduced =
+    playedRoles.has(
+      'rival_intro',
+    );
+
+  const originEchoCount =
+    history.filter(
+      ({ openingRole }) =>
+        openingRole ===
+        'origin_echo',
+    ).length;
+
+  let pool =
+    opening.filter((event) => {
+      if (
+        event.openingRole ===
+          'friend_intro' &&
+        friendIntroduced
+      ) {
+        return false;
+      }
+
+      if (
+        event.openingRole ===
+          'rival_intro' &&
+        rivalIntroduced
+      ) {
+        return false;
+      }
+
+      if (
+        event.openingRole ===
+          'friend_callback' &&
+        !friendIntroduced
+      ) {
+        return false;
+      }
+
+      return true;
+    });
+
+  const originEchoes =
+    pool.filter(
+      ({ openingRole }) =>
+        openingRole ===
+        'origin_echo',
+    );
+
+  // The first lived Childhood scene must still visibly come from Origins.
+  if (
+    state.ageMonths < 24 &&
+    originEchoes.length > 0
+  ) {
+    return originEchoes;
+  }
+
+  // By the age-three checkpoint, the run must have actually met
+  // the persistent friend rather than merely seeing a generated name.
+  if (
+    state.ageMonths >= 36 &&
+    !friendIntroduced
+  ) {
+    const introductions =
+      pool.filter(
+        ({ openingRole }) =>
+          openingRole ===
+          'friend_intro',
+      );
+
+    if (
+      introductions.length > 0
+    ) {
+      return introductions;
+    }
+  }
+
+  // D1.9 target: at least two directly Origins-caused scenes by age four.
+  if (
+    state.ageMonths >= 48 &&
+    originEchoCount < 2 &&
+    originEchoes.length > 0
+  ) {
+    return originEchoes;
+  }
+
+  const recentFamilies =
+    history
+      .map(
+        ({ narrativeFamily }) =>
+          narrativeFamily,
+      )
+      .filter(
+        (
+          family,
+        ): family is NonNullable<
+          EventDefinition[
+            'narrativeFamily'
+          ]
+        > =>
+          family !== undefined,
+      );
+
+  const lastTwo =
+    recentFamilies.slice(-2);
+
+  if (
+    lastTwo.length === 2 &&
+    lastTwo.every(
+      (family) =>
+        family === 'child_peer',
+    )
+  ) {
+    const nonPeer =
+      pool.filter(
+        ({ narrativeFamily }) =>
+          narrativeFamily !==
+          'child_peer',
+      );
+
+    if (nonPeer.length > 0) {
+      pool = nonPeer;
+    }
+  }
+
+  const lastFamily =
+    recentFamilies.at(-1);
+
+  if (lastFamily) {
+    const alternatives =
+      pool.filter(
+        ({ narrativeFamily }) =>
+          narrativeFamily !==
+          lastFamily,
+      );
+
+    if (
+      alternatives.length > 0
+    ) {
+      pool = alternatives;
+    }
+  }
+
+  return pool;
 }
 
 function selectEvent(state: GameState, catalog: ContentCatalog, event: EventDefinition): GameState {

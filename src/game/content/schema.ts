@@ -33,9 +33,30 @@ import type {
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 9;
+export const CONTENT_SCHEMA_VERSION = 10;
 
 export const V1_CAREER_HORIZON_MONTHS = 420;
+
+export const NARRATIVE_FAMILIES = [
+  'origin_family',
+  'origin_race',
+  'origin_birthplace',
+  'origin_cross',
+  'child_peer',
+] as const;
+
+export type NarrativeFamily =
+  typeof NARRATIVE_FAMILIES[number];
+
+export const OPENING_ROLES = [
+  'origin_echo',
+  'friend_intro',
+  'friend_callback',
+  'rival_intro',
+] as const;
+
+export type OpeningRole =
+  typeof OPENING_ROLES[number];
 
 export const DEVIL_FRUIT_TYPES = ['paramecia', 'zoan', 'logia'] as const;
 export type DevilFruitType = typeof DEVIL_FRUIT_TYPES[number];
@@ -241,6 +262,8 @@ export interface ChoiceDefinition {
 interface EventBase {
   id: EventId;
   cast?: NpcId[];
+  narrativeFamily?: NarrativeFamily;
+  openingRole?: OpeningRole;
   titleKey: LocalizationKey;
   textKey: LocalizationKey;
   eligibility?: Condition;
