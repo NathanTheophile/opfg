@@ -320,8 +320,7 @@ const report = {
     terminalEpisodes,
     terminalEpisodesPct: pct(terminalEpisodes, totalEpisodes),
 
-    maxStreakObserved: Math.max(...maxStreakPerRun),
-    maxStreakP50: quantile(maxStreakPerRun, 0.50),
+    maxStreakObserved: maxStreakPerRun.reduce((max, value) => Math.max(max, value), 0),    maxStreakP50: quantile(maxStreakPerRun, 0.50),
     maxStreakP90: quantile(maxStreakPerRun, 0.90),
     maxStreakP95: quantile(maxStreakPerRun, 0.95),
     maxStreakP99: quantile(maxStreakPerRun, 0.99),
@@ -330,7 +329,7 @@ const report = {
     episodeLengthP50: quantile(episodeLengths, 0.50),
     episodeLengthP90: quantile(episodeLengths, 0.90),
     episodeLengthP99: quantile(episodeLengths, 0.99),
-    episodeLengthMax: episodeLengths.length ? Math.max(...episodeLengths) : 0,
+    episodeLengthMax: episodeLengths.reduce((max, value) => Math.max(max, value), 0),
 
     fallbackOccurrencesInside5PlusEpisodes,
     fallbackOccurrencesInside5PlusEpisodesPct: pct(fallbackOccurrencesInside5PlusEpisodes, totalFallbacks),
@@ -388,7 +387,7 @@ console.log('OPFG Specialized Simulation — FALLBACK LOOPS / RECOVERY v2.0');
 console.log(`Runs: ${args.runs}`);
 console.log(`Fallback occurrences: ${totalFallbacks} | episodes: ${totalEpisodes}`);
 console.log(`Episodes/run: ${average(episodeCountPerRun).toFixed(2)} | episodes/Active-year: ${average(episodesPerActiveYear).toFixed(2)}`);
-console.log(`Max streak p50/p90/p99/max: ${quantile(maxStreakPerRun, 0.50)} / ${quantile(maxStreakPerRun, 0.90)} / ${quantile(maxStreakPerRun, 0.99)} / ${Math.max(...maxStreakPerRun)}`);
+console.log(`Max streak p50/p90/p99/max: ${quantile(maxStreakPerRun, 0.50)} / ${quantile(maxStreakPerRun, 0.90)} / ${quantile(maxStreakPerRun, 0.99)} / ${maxStreakPerRun.reduce((max, value) => Math.max(max, value), 0)}`);
 for (const threshold of streakThresholds) {
   const row = runsByMaxStreakThreshold[`${threshold}+`];
   console.log(`Runs with streak >= ${String(threshold).padStart(3)}: ${row.runs} (${row.pct.toFixed(2)}%)`);
@@ -611,7 +610,7 @@ function stats(values: number[]) {
     p50: quantile(values, 0.50),
     p90: quantile(values, 0.90),
     p99: quantile(values, 0.99),
-    min: values.length ? Math.min(...values) : null,
-    max: values.length ? Math.max(...values) : null,
+    min: values.length ? values.reduce((min, value) => Math.min(min, value), Infinity) : null,
+    max: values.length ? values.reduce((max, value) => Math.max(max, value), -Infinity) : null,
   };
 }

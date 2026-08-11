@@ -158,6 +158,7 @@ export interface GameState {
   pendingSlotPhase: CareerPhase | null;
   immediateEventsResolvedInChain: number;
   navigationDecisionAgeMonths: number | null;
+  shipMarketArrivalPending: boolean;
   currentEventId: EventId | null;
   careerStatus: CareerStatus;
   careerEndReason: CareerEndReason | null;

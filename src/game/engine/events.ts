@@ -9,6 +9,7 @@ import { findDockableAccess } from './locations';
 import { countFallbackStreak } from './maritime';
 
 export const FALLBACK_EVENT_IDS = ['dead_end_on_land', 'dead_end_at_sea'] as const;
+const SHIP_MARKET_PURCHASE_EVENT_ID = 'active_port_trade_01_ship_purchase_offer';
 
 export function selectNextEvent(state: GameState, catalog: ContentCatalog): GameState {
   if (state.careerStatus !== 'active') return { ...state, currentEventId: null };
@@ -29,12 +30,31 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     return { ...state, currentEventId: immediate.id };
   }
 
+  if (state.shipMarketArrivalPending) {
+    state = { ...state, shipMarketArrivalPending: false };
+    const location = catalog.locations.find(({ id }) => id === state.locationId);
+    const purchase = catalog.events.find((event) => event.id === SHIP_MARKET_PURCHASE_EVENT_ID && event.kind === 'normal');
+    if (
+      state.careerPhase === 'active'
+      && state.ship === null
+      && state.travelState === 'on_land'
+      && location !== undefined
+      && location.shipMarket !== 'none'
+      && purchase !== undefined
+      && isEligible(purchase, state, catalog)
+    ) return { ...state, currentEventId: purchase.id };
+  }
+
   const scheduled = selectScheduledEvent(state, catalog);
   if (scheduled.event) return { ...state, scheduledEvents: scheduled.entries, currentEventId: scheduled.event.id };
 
   const played = new Set(state.history.map(({ eventId }) => eventId));
   const candidates = catalog.events.filter((event) =>
-    event.kind === 'normal' && !FALLBACK_EVENT_IDS.includes(event.id as typeof FALLBACK_EVENT_IDS[number]) && !played.has(event.id) && isEligible(event, state, catalog),
+    event.kind === 'normal'
+      && event.id !== SHIP_MARKET_PURCHASE_EVENT_ID
+      && !FALLBACK_EVENT_IDS.includes(event.id as typeof FALLBACK_EVENT_IDS[number])
+      && !played.has(event.id)
+      && isEligible(event, state, catalog),
   );
   if (candidates.length === 0) {
     if (state.careerPhase !== 'active') return { ...state, scheduledEvents: scheduled.entries, currentEventId: null };

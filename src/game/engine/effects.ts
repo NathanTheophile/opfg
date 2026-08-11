@@ -3,7 +3,7 @@ import type { ChoiceId, EventId, GameState, NpcState } from '../model/schema';
 import { createDefaultNpcState } from '../model/npcState';
 import { addStack, canAcquireShip, canRecruitNpc, cloneInventory, cloneShip, findShipDefinition, removeStack } from './ship';
 import { canConsumeDevilFruit, createDefaultPowerState, playerHakiSourceTotal, synchronizePlayerHaki } from './powers';
-import { recoverTravel } from './locations';
+import { movePlayerToLocation, recoverTravel } from './locations';
 import { beginMaritimeEmergency, findHighestRelationshipFruitCrew, moveToSameIslandPort, recoverToLandInCurrentSea, recoverToOtherRegion, resolveMaritimeEmergencyLandfall } from './maritime';
 
 export interface EffectContext {
@@ -130,12 +130,10 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       requireLeadership(state, effect.allowWithoutLeadership);
       state.ship = state.pendingShip;
       state.pendingShip = null;
-      state.locationId = effect.locationId;
-      state.travelState = effect.travelState;
+      movePlayerToLocation(state, effect.locationId, effect.travelState);
       return;
     case 'moveToLocation':
-      state.locationId = effect.locationId;
-      state.travelState = effect.travelState;
+      movePlayerToLocation(state, effect.locationId, effect.travelState);
       return;
     case 'setBirthLocation': {
       const location = catalog.locations.find(({ id }) => id === effect.locationId);

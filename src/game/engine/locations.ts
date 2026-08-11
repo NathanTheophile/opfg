@@ -1,10 +1,16 @@
 import worldData from '../content/data/locationsV1.json';
 import type { ContentCatalog, LocationDefinition } from '../content/schema';
-import type { GameState, LocationId } from '../model/schema';
+import type { GameState, LocationId, TravelState } from '../model/schema';
 import { nextRandom } from './rng';
 
 export function findLocation(catalog: ContentCatalog, locationId: LocationId): LocationDefinition | undefined {
   return catalog.locations.find(({ id }) => id === locationId);
+}
+
+export function movePlayerToLocation(state: GameState, locationId: LocationId, travelState: TravelState): void {
+  if (state.locationId !== locationId) state.shipMarketArrivalPending = true;
+  state.locationId = locationId;
+  state.travelState = travelState;
 }
 
 export function getLocationAncestors(catalog: ContentCatalog, locationId: LocationId): LocationDefinition[] {
@@ -56,8 +62,7 @@ function moveToFallbackDestination(state: GameState, catalog: ContentCatalog): v
   if (destinationIds.length === 0) throw new Error(`No safe fallback destination from "${state.locationId}".`);
   const random = nextRandom(state.rngState);
   state.rngState = random.nextState;
-  state.locationId = destinationIds[Math.floor(random.value * destinationIds.length)];
-  state.travelState = 'on_land';
+  movePlayerToLocation(state, destinationIds[Math.floor(random.value * destinationIds.length)], 'on_land');
 }
 
 function fallbackDestinationIds(currentId: LocationId, catalog: ContentCatalog): LocationId[] {

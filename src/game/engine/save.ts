@@ -2,7 +2,7 @@ import type { CareerEndReason, CareerPhase, GameState, ItemStack, MaritimeEmerge
 import { createDefaultPowerState } from './powers';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 16;
+const CURRENT_SAVE_VERSION = 17;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
@@ -88,6 +88,7 @@ function readGameState(value: unknown): GameState | null {
   if (!(value.pendingSlotPhase === null || isCareerPhase(value.pendingSlotPhase))) return null;
   if (!isNonNegativeInteger(value.immediateEventsResolvedInChain) || value.immediateEventsResolvedInChain > 1000) return null;
   if (!(value.navigationDecisionAgeMonths === null || (isNonNegativeInteger(value.navigationDecisionAgeMonths) && value.navigationDecisionAgeMonths <= value.ageMonths))) return null;
+  if (typeof value.shipMarketArrivalPending !== 'boolean') return null;
   if (value.passengerNpcIds.some((npcId) => npcs[npcId] === undefined || npcs[npcId].status === 'crew' || npcs[npcId].status === 'dead')) return null;
   if (!(value.currentEventId === null || isString(value.currentEventId))) return null;
   if (!(value.careerStatus === 'active' || value.careerStatus === 'ended')) return null;
@@ -139,6 +140,7 @@ function readGameState(value: unknown): GameState | null {
     pendingSlotPhase: value.pendingSlotPhase,
     immediateEventsResolvedInChain: value.immediateEventsResolvedInChain,
     navigationDecisionAgeMonths: value.navigationDecisionAgeMonths,
+    shipMarketArrivalPending: value.shipMarketArrivalPending,
     currentEventId: value.currentEventId,
     careerStatus: value.careerStatus,
     careerEndReason: value.careerEndReason,
@@ -226,6 +228,16 @@ function migrateLegacySave(value: unknown): unknown {
   }
   if (isRecord(migrated) && migrated.version === 15) {
     migrated = { ...migrated, version: 16, maritimeEmergency: null };
+  }
+  if (isRecord(migrated) && migrated.version === 16) {
+    migrated = {
+      ...migrated,
+      version: 17,
+      shipMarketArrivalPending:
+        migrated.careerPhase === 'active'
+        && migrated.ship === null
+        && migrated.travelState === 'on_land',
+    };
   }
   return migrated;
 }

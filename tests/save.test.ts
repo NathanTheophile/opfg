@@ -3,14 +3,14 @@ import { createInitialGameState } from '../src/game/model/initialState';
 import { deserializeGameState, serializeGameState } from '../src/game/engine/save';
 import { createDefaultPowerState } from '../src/game/engine/powers';
 
-describe('save v16', () => {
+describe('save v17', () => {
   it('migrates v13 through v15 Career defaults and Ending state', () => {
     const legacy = structuredClone(createInitialGameState(13)) as unknown as Record<string, unknown>;
     legacy.version = 13;
     delete legacy.endingId;
     delete (legacy.player as Record<string, unknown>).career;
     expect(deserializeGameState(JSON.stringify(legacy))).toMatchObject({
-      version: 16,
+      version: 17,
       player: { career: { affiliationId: 'civilian', reputation: 0, bounty: 0, rankId: null, titleId: null } },
       endingId: null,
     });
@@ -31,7 +31,7 @@ describe('save v16', () => {
     const restored = deserializeGameState(JSON.stringify(legacy));
 
     expect(restored).toMatchObject({
-      version: 16,
+      version: 17,
       immediateEventQueue: [],
       pendingSlotPhase: null,
       immediateEventsResolvedInChain: 0,
@@ -52,12 +52,26 @@ describe('save v16', () => {
 
     const restored = deserializeGameState(JSON.stringify(legacy));
 
-    expect(restored?.version).toBe(16);
+    expect(restored?.version).toBe(17);
     expect(restored?.player.powers).toEqual(createDefaultPowerState());
     expect(restored?.npcs.mira.powers).toEqual(createDefaultPowerState());
     expect(restored?.player.stats).not.toHaveProperty('awakening');
   });
 
+  it('migrates v16 ship-market arrival tracking without duplicating resolved arrivals', () => {
+    const legacy = structuredClone(createInitialGameState(16)) as unknown as Record<string, unknown>;
+    legacy.version = 16;
+    legacy.careerPhase = 'active';
+    legacy.ageMonths = 180;
+    legacy.ship = null;
+    legacy.travelState = 'on_land';
+    delete legacy.shipMarketArrivalPending;
+
+    expect(deserializeGameState(JSON.stringify(legacy))).toMatchObject({
+      version: 17,
+      shipMarketArrivalPending: true,
+    });
+  });
   it('round-trips every v11 field including Origins profile, unbounded health, leadership, passengers, and inventories', () => {
     const state = createInitialGameState(123);
     state.careerPhase = 'active';
@@ -87,18 +101,18 @@ describe('save v16', () => {
     const current = createInitialGameState();
     const v7 = { ...current, version: 7, player: { ...current.player, inventory: undefined }, ship: { condition: 2 }, items: ['sealed_chart'], pendingShip: undefined, berries: undefined };
     const migrated = deserializeGameState(JSON.stringify(v7));
-    expect(migrated).toMatchObject({ version: 16, ship: { shipId: 'sloop', health: 20 }, isLeader: true, passengerNpcIds: [], berries: 0, player: { career: { affiliationId: 'civilian', reputation: 0, bounty: 0 } }, endingId: null });
+    expect(migrated).toMatchObject({ version: 17, ship: { shipId: 'sloop', health: 20 }, isLeader: true, passengerNpcIds: [], berries: 0, player: { career: { affiliationId: 'civilian', reputation: 0, bounty: 0 } }, endingId: null });
     expect(migrated?.player.stats.agility).toBe(25);
     expect(migrated?.player.inventory.stacks).toEqual([{ itemId: 'sealed_chart', quantity: 1 }]);
     const v8 = { ...createInitialGameState(), version: 8, isLeader: undefined, passengerNpcIds: undefined };
-    expect(deserializeGameState(JSON.stringify(v8))).toMatchObject({ version: 16, isLeader: true, passengerNpcIds: [] });
+    expect(deserializeGameState(JSON.stringify(v8))).toMatchObject({ version: 17, isLeader: true, passengerNpcIds: [] });
     const v9 = JSON.parse(JSON.stringify({ ...createInitialGameState(), version: 9 })) as { player: { stats: Record<string, unknown> } };
     delete v9.player.stats.agility;
-    expect(deserializeGameState(JSON.stringify(v9))).toMatchObject({ version: 16, player: { stats: { agility: 25 }, profile: { familyStructureId: null, socialClassId: null } } });
+    expect(deserializeGameState(JSON.stringify(v9))).toMatchObject({ version: 17, player: { stats: { agility: 25 }, profile: { familyStructureId: null, socialClassId: null } } });
     const v10 = JSON.parse(JSON.stringify({ ...createInitialGameState(), version: 10 })) as { player: { profile: Record<string, unknown> } };
     delete v10.player.profile.familyStructureId;
     delete v10.player.profile.socialClassId;
-    expect(deserializeGameState(JSON.stringify(v10))).toMatchObject({ version: 16, player: { profile: { familyStructureId: null, socialClassId: null } } });
+    expect(deserializeGameState(JSON.stringify(v10))).toMatchObject({ version: 17, player: { profile: { familyStructureId: null, socialClassId: null } } });
     const legacy = { ...createInitialGameState(), version: 6 };
     expect(deserializeGameState(JSON.stringify(legacy))).toBeNull();
     const invalid = { ...createInitialGameState(), slotInMonth: 1 };

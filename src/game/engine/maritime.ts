@@ -2,6 +2,7 @@ import worldData from '../content/data/locationsV1.json';
 import type { ContentCatalog, EventDefinition } from '../content/schema';
 import type { GameState, LocationId, MaritimeEmergencyState, NpcId, ShipDamageCause } from '../model/schema';
 import { nextRandom } from './rng';
+import { movePlayerToLocation } from './locations';
 
 const FALLBACK_IDS = new Set(['dead_end_on_land', 'dead_end_at_sea']);
 const EXCLUDED_EXTREME_SEAS = new Set(['sky', 'underwater', 'red_line']);
@@ -59,8 +60,7 @@ export function currentSeaPorts(state: GameState, catalog: ContentCatalog) {
 export function moveToSameIslandPort(state: GameState, catalog: ContentCatalog): void {
   const port = sameIslandPorts(state, catalog)[0];
   if (!port) throw new Error(`No same-island port exists for "${state.locationId}".`);
-  state.locationId = port.id;
-  state.travelState = 'on_land';
+  movePlayerToLocation(state, port.id, 'on_land');
 }
 
 export function recoverToLandInCurrentSea(state: GameState, catalog: ContentCatalog): void {
@@ -101,8 +101,7 @@ function moveSeeded(state: GameState, candidateIds: LocationId[]): void {
   if (ids.length === 0) throw new Error(`No valid recovery destination from "${state.locationId}".`);
   const random = nextRandom(state.rngState);
   state.rngState = random.nextState;
-  state.locationId = ids[Math.floor(random.value * ids.length)];
-  state.travelState = 'on_land';
+  movePlayerToLocation(state, ids[Math.floor(random.value * ids.length)], 'on_land');
 }
 
 function isNormalAccess(locationId: string): boolean {

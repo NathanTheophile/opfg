@@ -5,7 +5,7 @@ const DEFAULT_SEED = 0x1a2b3c4d;
 
 export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
   return {
-    version: 16,
+    version: 17,
     rngState: seed >>> 0,
     careerPhase: 'origins',
     ageMonths: 0,
@@ -50,6 +50,7 @@ export function createInitialGameState(seed: number = DEFAULT_SEED): GameState {
     pendingSlotPhase: null,
     immediateEventsResolvedInChain: 0,
     navigationDecisionAgeMonths: null,
+    shipMarketArrivalPending: false,
     currentEventId: null,
     careerStatus: 'active',
     careerEndReason: null,

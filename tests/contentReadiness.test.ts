@@ -61,14 +61,14 @@ describe('Content Authoring Readiness V1', () => {
     expect(deserializeGameState(JSON.stringify(state))?.npcs.player_parent_2.raceId).toBe('mink');
   });
 
-  it('migrates v14 rank, Reputation, NPC race, and legacy ship IDs to v15', () => {
+  it('migrates v14 rank, Reputation, NPC race, and legacy ship IDs to the current save version', () => {
     const legacy = structuredClone(createInitialGameState()) as unknown as Record<string, any>;
     legacy.version = 14;
     legacy.player.career = { affiliationId: 'marine', reputation: 140, bounty: 0, marineRankId: 'captain', titleId: null };
     legacy.ship = { shipId: 'starter_sloop', name: 'Legacy Sloop', health: 30, cargo: [] };
     for (const npc of Object.values(legacy.npcs) as Record<string, any>[]) delete npc.raceId;
     expect(deserializeGameState(JSON.stringify(legacy))).toMatchObject({
-      version: 16,
+      version: 17,
       ship: { shipId: 'sloop' },
       player: { career: { affiliationId: 'marine', reputation: 100, rankId: 'marine_commodore' } },
       npcs: { mira: { raceId: null } },
