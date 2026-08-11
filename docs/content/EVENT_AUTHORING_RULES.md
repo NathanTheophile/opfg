@@ -1115,6 +1115,14 @@ Avoid batches where nearly every challenge is Strength, every success gives Repu
 
 ### 18.1 Acceptance criteria
 
+> **OPENING_BREADTH scope:** §18.1 is written for standard production batches.
+> For an `OPENING_BREADTH` pack, long-form checks 4–13 are waived and §23.8 is the
+> specialized content acceptance test. Reachability/simulation in item 2 is performed by
+> the integration conversation after the parallel packs are merged; the generation
+> conversation itself must not run simulations. Schema correctness, Choice resolvability,
+> text/age/stakes/cast quality and human review remain applicable.
+
+
 A batch is accepted only after:
 
 1. schema/content validation;
@@ -1160,6 +1168,11 @@ Parallel GPT conversations must not rely on their own memory for deduplication.
 The central concept index must also track accepted Signature Immediate Arcs, Secondary Immediate Arcs and Lifetime Threads at the **root/thread-concept level**. Do not add every Immediate or Scheduled descendant as an independent root concept.
 
 ## 19. Multi-GPT production protocol
+
+> **Specialized batch override:** the numbered checklist below describes standard production
+> batches. For `OPENING_BREADTH`, §23 plus the dedicated batch prompt override all
+> Signature/Secondary/Lifetime/Scheduled requirements and defer simulation to integration.
+
 
 Every Event-generation conversation should receive:
 
@@ -1468,17 +1481,15 @@ It is also:
 
 > **Would a player on a phone understand why this matters in two seconds and care enough to choose?**
 
-## Childhood Opening Spine
+## Childhood Opening Spine — D1.8 legacy note
 
-The first Childhood years are identity-establishing content, not generic filler.
+The fixed D1.8 sequence **household → Birth Location → friend intro → friend callback → rival intro**
+was a validation scaffold and is superseded by the D1.9 architecture in `GAME_DESIGN.md`
+and §23 below.
 
-- While an eligible `ch_opening_*` Normal Event exists, it is selected before the ordinary Childhood pool.
-- The opening spine should establish, in order: **household/milieu → Birth Location → first persistent friend → callback with that friend → first rival**.
-- These Events still consume the normal Childhood yearly slot. The opening spine does **not** increase Event frequency.
-- Origins choices must become visible fiction immediately. Family structure, affiliation, social class, Race and Birth Location should change what the player sees before generic Childhood begins.
-- World building belongs inside the concrete problem: uniforms, wanted posters, ration bowls, cargo, workshops, guards, Den Den Mushi, weather, markets, ships, local trades, etc. Do not add explanatory lore paragraphs.
-- A persistent Childhood NPC must receive an introduction scene before ordinary callback content assumes familiarity. A generated display name alone is not an introduction.
-- A callback should refer to a concrete object/action from the introduction whenever possible. The player should understand *why this person is back* without exposition.
+The accepted D1.8 Events remain valid content in the D1.9 Opening pool, but their former
+age-by-age order is not an authoring requirement. D1.9 uses narrative families, opening roles,
+age windows, seeded selection and composition guarantees instead.
 
 ## 23. Early Childhood Origin Echo authoring
 
