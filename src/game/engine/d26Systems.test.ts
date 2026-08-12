@@ -134,6 +134,13 @@ describe('D2.6 systems hardening', () => {
     state.npcs.mira.stats.health = 0;
     expect(() => setActiveCompanion(state, catalog, 'mira')).toThrow(/living companion-capable/);
     state.npcs.mira.stats.health = 25;
+
+    for (const status of ['departed', 'unavailable', 'crew'] as const) {
+      state.npcs.mira.status = status;
+      expect(() => setActiveCompanion(state, catalog, 'mira')).toThrow(/living companion-capable/);
+    }
+
+    state.npcs.mira.status = 'known';
     mira.companionCapable = false;
     expect(() => setActiveCompanion(state, catalog, 'mira')).toThrow(/living companion-capable/);
   });

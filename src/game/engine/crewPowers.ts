@@ -34,7 +34,7 @@ export function navigatorDestinations(state: GameState, catalog: ContentCatalog)
 export function isCompanionCandidate(state: GameState, catalog: ContentCatalog, npcId: NpcId): boolean {
   const npc = state.npcs[npcId];
   const definition = catalog.npcs.find(({ id }) => id === npcId);
-  return npc !== undefined && npc.status !== 'dead' && npc.stats.health > 0 && definition?.companionCapable === true;
+  return npc !== undefined && npc.status === 'known' && npc.stats.health > 0 && definition?.companionCapable === true;
 }
 
 export function setActiveCompanion(state: GameState, catalog: ContentCatalog, npcId: NpcId | null): void {

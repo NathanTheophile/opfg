@@ -60,4 +60,18 @@ describe('conditions v2', () => {
     expect(evaluateCondition({ type: 'hasActiveCompanion' }, state, contentCatalog)).toBe(true);
     expect(evaluateCondition({ type: 'activeCompanionIs', npcId: 'mira' }, state, contentCatalog)).toBe(true);
   });
+
+  it('uses the real economy rule for canSellShip without requiring pendingShip', () => {
+    const state = createInitialGameState();
+    const fullShipMarket = contentCatalog.locations.find(({ shipMarket }) => shipMarket === 'full');
+    expect(fullShipMarket).toBeDefined();
+
+    state.locationId = fullShipMarket!.id;
+    state.isLeader = true;
+    state.pendingShip = null;
+    state.passengerNpcIds = [];
+    state.ship = { shipId: 'dinghy', name: 'Test', health: 18, cargo: [] };
+
+    expect(evaluateCondition({ type: 'canSellShip' }, state, contentCatalog)).toBe(true);
+  });
 });
