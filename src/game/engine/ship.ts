@@ -33,13 +33,16 @@ export function canRecruitNpc(state: GameState, catalog: ContentCatalog, npcId: 
   return countCurrentCrew(state) + 1 <= findShipDefinition(catalog, state.ship.shipId).crewCapacity;
 }
 
-export function addStack(stacks: ItemStack[], itemId: ItemId, quantity: number, capacity: number): void {
+export function addStack(stacks: ItemStack[], itemId: ItemId, quantity: number, capacity: number, stackLimit = Number.MAX_SAFE_INTEGER): void {
   assertQuantity(quantity);
+  if (!Number.isInteger(stackLimit) || stackLimit <= 0) throw new Error('Item stack limit must be a positive integer.');
   const existing = stacks.find((stack) => stack.itemId === itemId);
   if (existing) {
+    if (existing.quantity + quantity > stackLimit) throw new Error(`Item "${itemId}" exceeds stack limit ${stackLimit}.`);
     existing.quantity += quantity;
     return;
   }
+  if (quantity > stackLimit) throw new Error(`Item "${itemId}" exceeds stack limit ${stackLimit}.`);
   if (stacks.length >= capacity) throw new Error(`No free inventory slot for Item "${itemId}".`);
   stacks.push({ itemId, quantity });
 }

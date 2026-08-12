@@ -58,6 +58,10 @@ const CONDITION_TYPES = new Set([
   'statAtLeast',
   'hasFlag',
   'hasItem',
+  'itemQuantityAtLeast',
+  'inventoryFreeSlotsAtLeast',
+  'canBuyItem',
+  'canSellItem',
   'berriesAtLeast',
   'hasCrew',
   'crewSizeAtLeast',
@@ -93,8 +97,10 @@ const CONDITION_TYPES = new Set([
   'hasPlayed',
   'hasOutcome',
   'raceIs',
+  'racePlayableV1',
   'originSeaIs',
   'affiliationIs',
+  'affiliationPlayableV1',
   'familyStructureIs',
   'socialClassIs',
   'hasDevilFruit','canConsumeDevilFruit','devilFruitIs','devilFruitTypeIs','devilFruitHasTag','devilFruitAwakeningAtLeast','devilFruitIsAwakened','hakiAtLeast','hakiIsAwakened','hakiSourceTotalAtLeast','npcHasDevilFruit','npcDevilFruitIs','npcDevilFruitTypeIs','npcDevilFruitHasTag','npcDevilFruitAwakeningAtLeast','npcHakiAtLeast','npcHakiIsAwakened',
@@ -105,6 +111,8 @@ const EFFECT_TYPES = new Set([
   'clearFlag',
   'addItem',
   'removeItem',
+  'buyItem',
+  'sellItem',
   'addTrait',
   'removeTrait',
   'modifyStat',
@@ -148,7 +156,10 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   const eventIds = collectIds(events, 'events', errors);
   const traits = readRecords(catalog.traits, 'traits', errors);
   const traitIds = collectIds(traits, 'traits', errors);
-  const itemIds = collectIds(readRecords(catalog.items, 'items', errors), 'items', errors);
+  const items = readRecords(catalog.items, 'items', errors);
+  const itemIds = collectIds(items, 'items', errors);
+  const majorTracks = readRecords(catalog.majorNarrativeTracks, 'majorNarrativeTracks', errors);
+  const majorTrackIds = collectIds(majorTracks, 'majorNarrativeTracks', errors);
   const devilFruits = readRecords(catalog.devilFruits, 'devilFruits', errors);
   const devilFruitIds = collectIds(devilFruits, 'devilFruits', errors);
   const ships = readRecords(catalog.ships, 'ships', errors);
@@ -196,7 +207,7 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   }
 
   validateTraitOpposites(traits, traitIds, errors);
-  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, devilFruitIds, shipIds, crewRoleIds, npcIds, raceIds, seaIds, affiliationIds, careerAffiliationIds, careerRankIds, careerTitleIds, endingIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds, immediateEventIds };
+  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, devilFruitIds, shipIds, crewRoleIds, npcIds, raceIds, seaIds, affiliationIds, careerAffiliationIds, careerRankIds, careerTitleIds, endingIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds, immediateEventIds, majorTrackIds, majorTracks };
   devilFruits.forEach((fruit, index) => {
     const path = `devilFruits[${index}]`;
     if (typeof fruit.playableV1 !== 'boolean') errors.push({ path: `${path}.playableV1`, message: 'Devil Fruit requires playableV1.' });
@@ -207,8 +218,10 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
     else fruit.tags.forEach((tag, tagIndex) => { if (!FRUIT_TAGS.has(String(tag))) errors.push({ path: `${path}.tags[${tagIndex}]`, message: `Unknown Devil Fruit tag "${String(tag)}".` }); });
   });
   validateNamedDefinitions(races, 'races', errors);
+  races.forEach((race, index) => { if (typeof race.playableV1 !== 'boolean') errors.push({ path: `races[${index}].playableV1`, message: 'Race requires playableV1.' }); });
   validateNamedDefinitions(seas, 'seas', errors);
   validateNamedDefinitions(affiliations, 'affiliations', errors);
+  affiliations.forEach((affiliation, index) => { if (typeof affiliation.playableV1 !== 'boolean') errors.push({ path: `affiliations[${index}].playableV1`, message: 'Affiliation requires playableV1.' }); });
   validateNamedDefinitions(careerAffiliations, 'careerAffiliations', errors);
   validateNamedDefinitions(careerRanks, 'careerRanks', errors);
   validateNamedDefinitions(careerTitles, 'careerTitles', errors);
@@ -221,6 +234,8 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
     if (!['marine', 'revolutionary', 'bounty_hunter'].includes(String(rank.affiliationId))) errors.push({ path: `${path}.affiliationId`, message: 'Career rank requires a ranked affiliation.' });
     if (!Number.isInteger(rank.sortOrder) || (rank.sortOrder as number) < 0) errors.push({ path: `${path}.sortOrder`, message: 'Career rank sortOrder must be a non-negative integer.' });
   });
+  validateItemEconomy(catalog, items, errors);
+  validateMajorNarrativeTracks(majorTracks, events, references, errors);
   validateNamedDefinitions(familyStructures, 'familyStructures', errors);
   validateNamedDefinitions(socialClasses, 'socialClasses', errors);
   validateNamedDefinitions(crewRoles, 'crewRoles', errors);
@@ -261,6 +276,56 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   return errors;
 }
 
+function validateItemEconomy(catalog: UnknownRecord, items: UnknownRecord[], errors: ContentValidationError[]): void {
+  const economy = catalog.economy;
+  if (!isRecord(economy) || !Number.isInteger(economy.defaultSellRatePercent) || (economy.defaultSellRatePercent as number) < 0 || (economy.defaultSellRatePercent as number) > 100) {
+    errors.push({ path: 'economy.defaultSellRatePercent', message: 'Economy defaultSellRatePercent must be an integer from 0 to 100.' });
+  }
+  const categories = new Set(['key', 'document', 'material', 'trade_good', 'consumable', 'equipment', 'treasure', 'devil_fruit']);
+  items.forEach((item, index) => {
+    const path = `items[${index}]`;
+    if (!categories.has(String(item.category))) errors.push({ path: `${path}.category`, message: 'Invalid Item category.' });
+    if (!Number.isInteger(item.stackLimit) || (item.stackLimit as number) <= 0) errors.push({ path: `${path}.stackLimit`, message: 'Item stackLimit must be a positive integer.' });
+    if (item.market !== null) {
+      if (!isRecord(item.market)) errors.push({ path: `${path}.market`, message: 'Item market must be null or an object.' });
+      else {
+        if (!VALID_LOCATION_SERVICES.has(String(item.market.serviceId))) errors.push({ path: `${path}.market.serviceId`, message: 'Unknown market service.' });
+        if (!Number.isInteger(item.market.basePriceBerries) || (item.market.basePriceBerries as number) <= 0) errors.push({ path: `${path}.market.basePriceBerries`, message: 'Item basePriceBerries must be a positive integer.' });
+      }
+    }
+  });
+}
+
+function validateMajorNarrativeTracks(tracks: UnknownRecord[], events: UnknownRecord[], references: References, errors: ContentValidationError[]): void {
+  const validTypes = new Set(['family_legacy', 'personal_affiliation']);
+  tracks.forEach((track, index) => {
+    const path = `majorNarrativeTracks[${index}]`;
+    if (!validTypes.has(String(track.type))) errors.push({ path: `${path}.type`, message: 'Invalid Major Narrative Track type.' });
+    validateCondition(track.eligibility, `${path}.eligibility`, references, errors);
+    const chapters = readRecords(track.chapters, `${path}.chapters`, errors);
+    const chapterIds = collectIds(chapters, `${path}.chapters`, errors);
+    let previousDue = -1;
+    chapters.forEach((chapter, chapterIndex) => {
+      const chapterPath = `${path}.chapters[${chapterIndex}]`;
+      if (!['origins', 'childhood', 'active'].includes(String(chapter.phase))) errors.push({ path: `${chapterPath}.phase`, message: 'Invalid chapter phase.' });
+      if (!Number.isInteger(chapter.dueAgeMonths) || (chapter.dueAgeMonths as number) < 0) errors.push({ path: `${chapterPath}.dueAgeMonths`, message: 'Chapter dueAgeMonths must be a non-negative integer.' });
+      else if ((chapter.dueAgeMonths as number) <= previousDue) errors.push({ path: `${chapterPath}.dueAgeMonths`, message: 'Major Track chapter checkpoints must be strictly increasing.' });
+      previousDue = Number(chapter.dueAgeMonths);
+    });
+    if (track.type === 'family_legacy') {
+      const childhood = chapters.filter((chapter) => chapter.phase === 'childhood');
+      if (childhood.length !== 5) errors.push({ path: `${path}.chapters`, message: 'Family Legacy Track must define exactly 5 Childhood chapters.' });
+      if (childhood.some((chapter) => Number(chapter.dueAgeMonths) >= 180)) errors.push({ path: `${path}.chapters`, message: 'Family Childhood chapters must be due before age 15.' });
+    }
+    for (const chapterId of chapterIds) {
+      const variants = events.filter((event) => isRecord(event.majorTrack) && event.majorTrack.trackId === track.id && event.majorTrack.chapterId === chapterId);
+      if (variants.length === 0) continue; // infrastructure may exist before content production
+      const fallbacks = variants.filter((event) => isRecord(event.majorTrack) && event.majorTrack.fallback === true);
+      if (fallbacks.length !== 1) errors.push({ path: `${path}.chapters`, message: `Chapter "${chapterId}" must have exactly one fallback once variants exist.` });
+    }
+  });
+}
+
 export function assertValidContent(catalog: unknown): void {
   const errors = validateContent(catalog);
   if (errors.length > 0) {
@@ -290,6 +355,8 @@ interface References {
   locationIds: Set<string>;
   scheduledEventIds: Set<string>;
   immediateEventIds: Set<string>;
+  majorTrackIds: Set<string>;
+  majorTracks: UnknownRecord[];
 }
 
 function validateEvent(
@@ -302,8 +369,23 @@ function validateEvent(
   if (event.scheduledOnly !== undefined
     || (event.kind !== 'scheduled' && [event.priority, event.scheduledReach, event.cancelIf, event.fallbackEventId].some((value) => value !== undefined))
     || (event.kind !== 'critical' && event.trigger !== undefined)
-    || (event.kind !== 'normal' && (event.lifetimeThreadSeed !== undefined || event.replay !== undefined))) errors.push({ path, message: 'Invalid Event kind field combination.' });
+    || (event.kind !== 'normal' && (event.lifetimeThreadSeed !== undefined || event.majorTrack !== undefined || event.replay !== undefined))) errors.push({ path, message: 'Invalid Event kind field combination.' });
   if (event.kind === 'normal' && event.lifetimeThreadSeed !== undefined && event.lifetimeThreadSeed !== true) errors.push({ path: `${path}.lifetimeThreadSeed`, message: 'lifetimeThreadSeed must be true when present.' });
+  if (event.majorTrack !== undefined) {
+    if (event.kind !== 'normal' || !isRecord(event.majorTrack)) errors.push({ path: `${path}.majorTrack`, message: 'majorTrack is valid only on Normal Events and must be an object.' });
+    else {
+      const trackId = validateReference(event.majorTrack.trackId, references.majorTrackIds, 'Major Track ID', `${path}.majorTrack.trackId`, errors);
+      const track = trackId ? references.majorTracks.find((candidate) => candidate.id === trackId) : undefined;
+      if (track && Array.isArray(track.chapters)) {
+        const chapterIds = new Set(track.chapters.filter(isRecord).map((chapter) => stringValue(chapter.id)).filter((id): id is string => id !== undefined));
+        validateReference(event.majorTrack.chapterId, chapterIds, 'Major Track chapter ID', `${path}.majorTrack.chapterId`, errors);
+      }
+      if (event.majorTrack.fallback !== undefined && event.majorTrack.fallback !== true) errors.push({ path: `${path}.majorTrack.fallback`, message: 'majorTrack.fallback must be true when present.' });
+      if (event.replay !== undefined) errors.push({ path: `${path}.majorTrack`, message: 'Major Track Events cannot be replayable.' });
+      if (event.lifetimeThreadSeed === true) errors.push({ path: `${path}.majorTrack`, message: 'Major Track Events cannot also be lifetimeThreadSeed.' });
+      if (event.openingRole !== undefined) errors.push({ path: `${path}.majorTrack`, message: 'Major Track Events cannot also use legacy openingRole.' });
+    }
+  }
   if (
     event.narrativeFamily !== undefined &&
     !VALID_NARRATIVE_FAMILIES.has(
@@ -522,8 +604,12 @@ function validateCondition(
   if ((type === 'ageAtLeastMonths' || type === 'ageAtMostMonths') && !isNonNegativeNumber(value.value)) {
     errors.push({ path, message: `${type} requires a non-negative number.` });
   }
-  if (['berriesAtLeast', 'crewSizeAtLeast', 'shipHealthAtLeast', 'shipHealthAtMost', 'shipCrewCapacityAtLeast', 'shipCargoSpaceAtLeast'].includes(type) && !isNonNegativeNumber(value.value)) {
+  if (['berriesAtLeast', 'inventoryFreeSlotsAtLeast', 'crewSizeAtLeast', 'shipHealthAtLeast', 'shipHealthAtMost', 'shipCrewCapacityAtLeast', 'shipCargoSpaceAtLeast'].includes(type) && !isNonNegativeNumber(value.value)) {
     errors.push({ path, message: `${type} requires a non-negative number.` });
+  }
+  if (type === 'itemQuantityAtLeast' || type === 'canBuyItem' || type === 'canSellItem') {
+    validateReference(value.itemId, references.itemIds, 'ItemId', path, errors);
+    if (!Number.isInteger(value.quantity) || (value.quantity as number) <= 0) errors.push({ path, message: `${type} quantity must be a positive integer.` });
   }
   if (type === 'hasChosen') {
     const eventId = validateReference(value.eventId, references.eventIds, 'EventId', path, errors);
@@ -540,9 +626,9 @@ function validateCondition(
       validateReference(value.outcomeId, references.outcomesByEvent.get(eventId) ?? new Set(), 'OutcomeId', path, errors);
     }
   }
-  if (type === 'raceIs') validateReference(value.raceId, references.raceIds, 'RaceId', path, errors);
+  if (type === 'raceIs' || type === 'racePlayableV1') validateReference(value.raceId, references.raceIds, 'RaceId', path, errors);
   if (type === 'originSeaIs') validateReference(value.seaId, references.seaIds, 'SeaId', path, errors);
-  if (type === 'affiliationIs') validateReference(value.affiliationId, references.affiliationIds, 'AffiliationId', path, errors);
+  if (type === 'affiliationIs' || type === 'affiliationPlayableV1') validateReference(value.affiliationId, references.affiliationIds, 'AffiliationId', path, errors);
   if (type === 'familyStructureIs') validateReference(value.familyStructureId, references.familyStructureIds, 'FamilyStructureId', path, errors);
   if (type === 'socialClassIs') validateReference(value.socialClassId, references.socialClassIds, 'SocialClassId', path, errors);
   if (type === 'canConsumeDevilFruit' || type === 'devilFruitIs' || type === 'npcDevilFruitIs') validateReference(value.fruitId, references.devilFruitIds, 'DevilFruitId', path, errors);
@@ -673,7 +759,7 @@ function validateEffect(
     errors.push({ path, message: `Unknown Effect type "${String(effect.type)}".` });
     return;
   }
-  if (type === 'addItem' || type === 'removeItem') {
+  if (['addItem', 'removeItem', 'buyItem', 'sellItem'].includes(type)) {
     validateReference(effect.itemId, references.itemIds, 'ItemId', path, errors);
     validatePositiveQuantity(effect.quantity, path, errors);
   }

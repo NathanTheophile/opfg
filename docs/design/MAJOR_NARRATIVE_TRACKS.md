@@ -260,3 +260,18 @@ The read-only runtime audit recommends:
 - the broader physical Content Reset should intentionally move to a new save generation (recommended Save 20 / new run) because legacy current/Immediate/Scheduled/history Event IDs may no longer exist.
 
 These are implementation requirements for the D2 runtime pass, not claims about the currently shipped schema/save version.
+
+## Implementation checkpoint — Wave 3
+
+Content Schema 11 implements the generic Major Narrative Track contract without adding Saga state to GameState. Track progression is reconstructed from History; Major variants remain Normal Events but are excluded from the ordinary Normal pool.
+
+Priority is:
+
+1. Critical / system gates;
+2. Immediate;
+3. overdue Major chapter;
+4. due Scheduled;
+5. newly due Major chapter;
+6. ordinary Normal.
+
+A chapter selects specialized eligible variants first and uses its single fallback only when no specialized variant is currently eligible. The D1.9 opening selector and mandatory Lifetime Thread selection guarantee are removed from runtime orchestration.

@@ -334,3 +334,14 @@ Origin Cross content recognizes unusually specific combinations. It is secondary
 - Deliberate reuse is recorded in `docs/content/events/migration/V2_CONCEPT_MIGRATION_LEDGER.md`.
 
 See `docs/design/MAJOR_NARRATIVE_TRACKS.md` for the orchestration contract.
+
+## 15. D2 V2 economy handoff
+
+The specialized authority for Item persistence, stack limits, Berrys and generic market pricing is [Economy & Items](../design/ECONOMY_AND_ITEMS.md).
+
+For V2 production:
+
+- do not invent item prices independently in batches when a generic market definition exists;
+- use atomic `buyItem` / `sellItem` for ordinary generic transactions;
+- unique story objects and Devil Fruits remain non-market unless explicitly designed otherwise;
+- Childhood social class is household context, not an automatic personal wallet.

@@ -33,7 +33,7 @@ import type {
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 10;
+export const CONTENT_SCHEMA_VERSION = 11;
 
 export const V1_CAREER_HORIZON_MONTHS = 420;
 
@@ -58,6 +58,40 @@ export const OPENING_ROLES = [
 export type OpeningRole =
   typeof OPENING_ROLES[number];
 
+export const MAJOR_NARRATIVE_TRACK_TYPES = ['family_legacy', 'personal_affiliation'] as const;
+export type MajorNarrativeTrackType = typeof MAJOR_NARRATIVE_TRACK_TYPES[number];
+
+export interface MajorNarrativeChapterDefinition {
+  id: string;
+  phase: CareerPhase;
+  dueAgeMonths: number;
+}
+
+export interface MajorNarrativeTrackDefinition {
+  id: string;
+  type: MajorNarrativeTrackType;
+  eligibility: Condition;
+  chapters: MajorNarrativeChapterDefinition[];
+}
+
+export interface MajorTrackEventRef {
+  trackId: string;
+  chapterId: string;
+  fallback?: true;
+}
+
+export const ITEM_CATEGORIES = ['key', 'document', 'material', 'trade_good', 'consumable', 'equipment', 'treasure', 'devil_fruit'] as const;
+export type ItemCategory = typeof ITEM_CATEGORIES[number];
+
+export interface ItemMarketDefinition {
+  serviceId: LocationServiceId;
+  basePriceBerries: number;
+}
+
+export interface EconomyDefinition {
+  defaultSellRatePercent: number;
+}
+
 export const DEVIL_FRUIT_TYPES = ['paramecia', 'zoan', 'logia'] as const;
 export type DevilFruitType = typeof DEVIL_FRUIT_TYPES[number];
 export const DEVIL_FRUIT_TAGS = ['flight', 'fire', 'cold', 'electricity', 'mobility', 'intangibility', 'transformation', 'enhanced_strength', 'healing', 'barrier', 'ranged', 'environmental'] as const satisfies readonly DevilFruitTagId[];
@@ -78,6 +112,10 @@ export type Condition =
   | { type: 'statAtLeast'; statId: StatId; value: number }
   | { type: 'hasFlag'; flagId: FlagId }
   | { type: 'hasItem'; itemId: ItemId }
+  | { type: 'itemQuantityAtLeast'; itemId: ItemId; quantity: number }
+  | { type: 'inventoryFreeSlotsAtLeast'; value: number }
+  | { type: 'canBuyItem'; itemId: ItemId; quantity: number }
+  | { type: 'canSellItem'; itemId: ItemId; quantity: number }
   | { type: 'berriesAtLeast'; value: number }
   | { type: 'hasCrew' }
   | { type: 'crewSizeAtLeast'; value: number }
@@ -119,8 +157,10 @@ export type Condition =
   | { type: 'hasPlayed'; eventId: EventId }
   | { type: 'hasOutcome'; eventId: EventId; outcomeId: OutcomeId }
   | { type: 'raceIs'; raceId: RaceId }
+  | { type: 'racePlayableV1'; raceId: RaceId }
   | { type: 'originSeaIs'; seaId: SeaId }
   | { type: 'affiliationIs'; affiliationId: AffiliationId }
+  | { type: 'affiliationPlayableV1'; affiliationId: AffiliationId }
   | { type: 'familyStructureIs'; familyStructureId: FamilyStructureId }
   | { type: 'socialClassIs'; socialClassId: SocialClassId }
   | { type: 'hasDevilFruit' }
@@ -153,6 +193,8 @@ export type Effect =
   | { type: 'clearFlag'; flagId: FlagId }
   | { type: 'addItem'; itemId: ItemId; quantity: number }
   | { type: 'removeItem'; itemId: ItemId; quantity: number }
+  | { type: 'buyItem'; itemId: ItemId; quantity: number }
+  | { type: 'sellItem'; itemId: ItemId; quantity: number }
   | { type: 'addTrait'; traitId: TraitId }
   | { type: 'removeTrait'; traitId: TraitId }
   | { type: 'modifyStat'; statId: StatId; amount: number }
@@ -281,7 +323,7 @@ export type CriticalTrigger =
   | { type: 'careerAgeAtLeast'; value: number }
   | { type: 'fallbackStreakAtLeast'; value: number };
 export type EventDefinition =
-  | (EventBase & { kind: 'normal'; lifetimeThreadSeed?: true; replay?: { cooldownMonths: number; maxOccurrences?: number } })
+  | (EventBase & { kind: 'normal'; lifetimeThreadSeed?: true; majorTrack?: MajorTrackEventRef; replay?: { cooldownMonths: number; maxOccurrences?: number } })
   | (EventBase & { kind: 'immediate' })
   | (EventBase & { kind: 'scheduled'; priority: ScheduledPriority; scheduledReach?: ScheduledReach; cancelIf?: Condition; fallbackEventId?: EventId })
   | (EventBase & { kind: 'critical'; trigger: CriticalTrigger });
@@ -296,6 +338,9 @@ export interface TraitDefinition {
 export interface ItemDefinition {
   id: ItemId;
   nameKey: LocalizationKey;
+  category: ItemCategory;
+  stackLimit: number;
+  market: ItemMarketDefinition | null;
 }
 
 export interface DevilFruitDefinition {
@@ -328,9 +373,9 @@ export interface NpcDefinition {
 
 export interface CrewRoleDefinition { id: CrewRoleId; nameKey: LocalizationKey }
 
-export interface RaceDefinition { id: RaceId; nameKey: LocalizationKey; initialHealth: number; attributeModifiers: Partial<Record<StatId, number>> }
+export interface RaceDefinition { id: RaceId; nameKey: LocalizationKey; playableV1: boolean; initialHealth: number; attributeModifiers: Partial<Record<StatId, number>> }
 export interface SeaDefinition { id: SeaId; nameKey: LocalizationKey }
-export interface AffiliationDefinition { id: AffiliationId; nameKey: LocalizationKey }
+export interface AffiliationDefinition { id: AffiliationId; nameKey: LocalizationKey; playableV1: boolean }
 export interface FamilyStructureDefinition { id: FamilyStructureId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
 export interface SocialClassDefinition { id: SocialClassId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
 export interface LocationDefinition { id: LocationId; nameKey: LocalizationKey; seaId: SeaId; islandId: IslandId; type: LocationType; parentLocationId: LocationId | null; canBeBirthLocation: boolean; blocksScheduledEvents: boolean; allowsDocking: boolean; shipMarket: ShipMarket; services: LocationServiceId[]; tags: LocationTagId[] }
@@ -352,10 +397,12 @@ export interface ContentCatalog {
   socialClasses: SocialClassDefinition[];
   locations: LocationDefinition[];
   traits: TraitDefinition[];
+  economy: EconomyDefinition;
   items: ItemDefinition[];
   devilFruits: DevilFruitDefinition[];
   ships: ShipDefinition[];
   crewRoles: CrewRoleDefinition[];
   npcs: NpcDefinition[];
+  majorNarrativeTracks: MajorNarrativeTrackDefinition[];
   events: EventDefinition[];
 }

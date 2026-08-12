@@ -7,6 +7,7 @@ import { movePlayerToLocation, recoverTravel } from './locations';
 import { beginMaritimeEmergency, findHighestRelationshipFruitCrew, moveToSameIslandPort, recoverToLandInCurrentSea, recoverToOtherRegion, resolveMaritimeEmergencyLandfall } from './maritime';
 import { modifyPlayerHealth } from './health';
 import { ensureNpcMaterialized } from './npcNames';
+import { buyItem, findItemDefinition, sellItem } from './economy';
 
 export interface EffectContext {
   sourceEventId: EventId;
@@ -55,11 +56,19 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
     case 'clearFlag':
       state.flags = state.flags.filter((flagId) => flagId !== effect.flagId);
       return;
-    case 'addItem':
-      addStack(state.player.inventory.stacks, effect.itemId, effect.quantity, state.player.inventory.capacity);
+    case 'addItem': {
+      const definition = findItemDefinition(catalog, effect.itemId);
+      addStack(state.player.inventory.stacks, effect.itemId, effect.quantity, state.player.inventory.capacity, definition.stackLimit);
       return;
+    }
     case 'removeItem':
       removeStack(state.player.inventory.stacks, effect.itemId, effect.quantity);
+      return;
+    case 'buyItem':
+      buyItem(state, catalog, effect.itemId, effect.quantity);
+      return;
+    case 'sellItem':
+      sellItem(state, catalog, effect.itemId, effect.quantity);
       return;
     case 'addTrait':
       if (state.player.traits.includes(effect.traitId)) return;
@@ -99,7 +108,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
     case 'addCargoItem': {
       requireLeadership(state, effect.allowWithoutLeadership);
       if (state.ship === null) throw new Error('Cannot add cargo without a ship.');
-      addStack(state.ship.cargo, effect.itemId, effect.quantity, findShipDefinition(catalog, state.ship.shipId).cargoSlots - state.passengerNpcIds.length);
+      addStack(state.ship.cargo, effect.itemId, effect.quantity, findShipDefinition(catalog, state.ship.shipId).cargoSlots - state.passengerNpcIds.length, findItemDefinition(catalog, effect.itemId).stackLimit);
       return;
     }
     case 'removeCargoItem':
@@ -219,6 +228,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       if (state.player.profile.raceId !== null) throw new Error('Race can only be set once.');
       const race = catalog.races.find(({ id }) => id === effect.raceId);
       if (!race) throw new Error(`Unknown Race "${effect.raceId}".`);
+      if (!race.playableV1) throw new Error(`Race "${effect.raceId}" is locked for the current V1 content surface.`);
       state.player.profile.raceId = effect.raceId;
       state.player.stats.health = race.initialHealth;
       applyAttributeModifiers(state, race.attributeModifiers);
@@ -227,9 +237,13 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
     case 'setOriginSea':
       state.player.profile.originSeaId = effect.seaId;
       return;
-    case 'setAffiliation':
+    case 'setAffiliation': {
+      const affiliation = catalog.affiliations.find(({ id }) => id === effect.affiliationId);
+      if (!affiliation) throw new Error(`Unknown Affiliation "${effect.affiliationId}".`);
+      if (!affiliation.playableV1) throw new Error(`Affiliation "${effect.affiliationId}" is locked for the current V1 content surface.`);
       state.player.profile.affiliationId = effect.affiliationId;
       return;
+    }
     case 'setFamilyStructure': {
       if (state.player.profile.familyStructureId !== null) throw new Error('Family structure can only be set once.');
       const definition = catalog.familyStructures.find(({ id }) => id === effect.familyStructureId);

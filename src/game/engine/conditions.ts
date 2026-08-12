@@ -2,6 +2,7 @@ import type { ChoiceDefinition } from '../content/schema';
 import type { Condition } from '../content/schema';
 import type { GameState } from '../model/schema';
 import { availableCargoSlots, canAcquireShip, canRecruitNpc, countCurrentCrew, findShipDefinition } from './ship';
+import { canBuyItem, canSellItem, inventoryFreeSlots, itemQuantity } from './economy';
 import { canConsumeDevilFruit, playerHakiSourceTotal } from './powers';
 import { isLocationWithin } from './locations';
 import { countFallbackStreak, currentSeaPorts, currentShipDestructionCause, findBestSwimmingRescuer, findHighestRelationshipFruitCrew, sameIslandPorts } from './maritime';
@@ -28,7 +29,15 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
     case 'hasFlag':
       return state.flags.includes(condition.flagId);
     case 'hasItem':
-      return state.player.inventory.stacks.some(({ itemId }) => itemId === condition.itemId);
+      return itemQuantity(state.player.inventory.stacks, condition.itemId) > 0;
+    case 'itemQuantityAtLeast':
+      return itemQuantity(state.player.inventory.stacks, condition.itemId) >= condition.quantity;
+    case 'inventoryFreeSlotsAtLeast':
+      return inventoryFreeSlots(state.player.inventory) >= condition.value;
+    case 'canBuyItem':
+      return catalog !== undefined && canBuyItem(state, catalog, condition.itemId, condition.quantity);
+    case 'canSellItem':
+      return catalog !== undefined && canSellItem(state, catalog, condition.itemId, condition.quantity);
     case 'berriesAtLeast':
       return state.berries >= condition.value;
     case 'hasCrew':
@@ -114,10 +123,14 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
       );
     case 'raceIs':
       return state.player.profile.raceId !== null && state.player.profile.raceId === condition.raceId;
+    case 'racePlayableV1':
+      return catalog?.races.find(({ id }) => id === condition.raceId)?.playableV1 === true;
     case 'originSeaIs':
       return state.player.profile.originSeaId !== null && state.player.profile.originSeaId === condition.seaId;
     case 'affiliationIs':
       return state.player.profile.affiliationId !== null && state.player.profile.affiliationId === condition.affiliationId;
+    case 'affiliationPlayableV1':
+      return catalog?.affiliations.find(({ id }) => id === condition.affiliationId)?.playableV1 === true;
     case 'familyStructureIs':
       return state.player.profile.familyStructureId !== null && state.player.profile.familyStructureId === condition.familyStructureId;
     case 'socialClassIs':

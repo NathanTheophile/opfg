@@ -2,7 +2,7 @@ import type { CareerEndReason, CareerPhase, GameState, ItemStack, MaritimeEmerge
 import { createDefaultPowerState } from './powers';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 19;
+const CURRENT_SAVE_VERSION = 20;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {

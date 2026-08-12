@@ -11,6 +11,7 @@ Ce document consolide les décisions Game Design validées pour la jam. Les docu
 `GAME_DESIGN.md` reste l’autorité gameplay maîtresse et délègue les domaines spécialisés suivants :
 
 - [Carrières, réputation et Endings](design/CAREER_AND_ENDINGS.md) ;
+- [Economy & Items](design/ECONOMY_AND_ITEMS.md) ;
 - [timeline mondiale et politique canon](design/WORLD_TIMELINE_AND_CANON.md) ;
 - [Major Narrative Tracks / D2 narrative architecture](design/MAJOR_NARRATIVE_TRACKS.md) ;
 - [règles de production du contenu](content/CONTENT_BIBLE.md) ;

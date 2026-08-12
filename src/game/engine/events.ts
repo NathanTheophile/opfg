@@ -1,5 +1,6 @@
-import type { ContentCatalog, EventDefinition } from '../content/schema';
+import type { ContentCatalog, EventDefinition, MajorNarrativeTrackDefinition } from '../content/schema';
 type ScheduledDefinition = Extract<EventDefinition, { kind: 'scheduled' }>;
+type NormalDefinition = Extract<EventDefinition, { kind: 'normal' }>;
 import type { GameState, ScheduledEvent } from '../model/schema';
 import { evaluateCondition } from './conditions';
 import { nextRandom } from './rng';
@@ -11,6 +12,11 @@ import { countFallbackStreak } from './maritime';
 
 export const FALLBACK_EVENT_IDS = ['dead_end_on_land', 'dead_end_at_sea'] as const;
 const SHIP_MARKET_PURCHASE_EVENT_ID = 'active_port_trade_01_ship_purchase_offer';
+
+interface DueMajorSelection {
+  candidates: NormalDefinition[];
+  overdue: boolean;
+}
 
 export function selectNextEvent(state: GameState, catalog: ContentCatalog): GameState {
   if (state.careerStatus !== 'active') return { ...state, currentEventId: null };
@@ -34,7 +40,7 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
   if (state.shipMarketArrivalPending) {
     state = { ...state, shipMarketArrivalPending: false };
     const location = catalog.locations.find(({ id }) => id === state.locationId);
-    const purchase = catalog.events.find((event) => event.id === SHIP_MARKET_PURCHASE_EVENT_ID && event.kind === 'normal');
+    const purchase = catalog.events.find((event): event is NormalDefinition => event.id === SHIP_MARKET_PURCHASE_EVENT_ID && event.kind === 'normal');
     if (
       state.careerPhase === 'active'
       && state.ship === null
@@ -42,15 +48,22 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
       && location !== undefined
       && location.shipMarket !== 'none'
       && purchase !== undefined
+      && purchase.majorTrack === undefined
       && isEligible(purchase, state, catalog)
     ) return selectEvent(state, catalog, purchase);
   }
 
+  const major = findDueMajorNarrativeCandidates(state, catalog);
+  if (major?.overdue) return selectUniformNormal(state, catalog, state.scheduledEvents, major.candidates);
+
   const scheduled = selectScheduledEvent(state, catalog);
   if (scheduled.event) return selectEvent({ ...state, scheduledEvents: scheduled.entries }, catalog, scheduled.event);
 
-  const candidates = catalog.events.filter((event) =>
+  if (major) return selectUniformNormal(state, catalog, scheduled.entries, major.candidates);
+
+  const candidates = catalog.events.filter((event): event is NormalDefinition =>
     event.kind === 'normal'
+      && event.majorTrack === undefined
       && event.id !== SHIP_MARKET_PURCHASE_EVENT_ID
       && !FALLBACK_EVENT_IDS.includes(event.id as typeof FALLBACK_EVENT_IDS[number])
       && isNormalOccurrenceEligible(event, state)
@@ -65,270 +78,50 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
       ? selectEvent({ ...state, scheduledEvents: scheduled.entries }, catalog, fallback)
       : { ...state, scheduledEvents: scheduled.entries, currentEventId: null };
   }
-  const openingCandidates =
-    selectEarlyChildhoodOpeningCandidates(
-      state,
-      catalog,
-      candidates,
-    );
 
-  const selectionCandidates =
-    openingCandidates.length > 0
-      ? openingCandidates
-      : candidates;
-
-  const normalPool = shouldGuaranteeLifetimeThread(state, catalog)
-    ? selectionCandidates.filter((event) =>
-        event.kind === 'normal' &&
-        event.lifetimeThreadSeed === true,
-      )
-    : selectionCandidates;
-
-  return selectUniformNormal(
-    state,
-    catalog,
-    scheduled.entries,
-    normalPool.length > 0
-      ? normalPool
-      : selectionCandidates,
-  );
+  return selectUniformNormal(state, catalog, scheduled.entries, candidates);
 }
 
-const EARLY_CHILDHOOD_MIN_MONTHS = 12;
-const EARLY_CHILDHOOD_MAX_MONTHS = 71;
+function findDueMajorNarrativeCandidates(state: GameState, catalog: ContentCatalog): DueMajorSelection | undefined {
+  const eligibleTracks = catalog.majorNarrativeTracks
+    .filter((track) => evaluateCondition(track.eligibility, state, catalog))
+    .map((track) => ({ track, chapter: firstIncompleteChapter(state, catalog, track) }))
+    .filter((entry): entry is { track: MajorNarrativeTrackDefinition; chapter: MajorNarrativeTrackDefinition['chapters'][number] } => entry.chapter !== undefined)
+    .filter(({ chapter }) => chapter.phase === state.careerPhase && state.ageMonths >= chapter.dueAgeMonths)
+    .sort((a, b) => a.chapter.dueAgeMonths - b.chapter.dueAgeMonths || a.track.id.localeCompare(b.track.id));
 
-function metadataEventHistory(
-  state: GameState,
-  catalog: ContentCatalog,
-): EventDefinition[] {
-  const byId = new Map(
-    catalog.events.map(
-      (event) => [
-        event.id,
-        event,
-      ] as const,
-    ),
+  if (eligibleTracks.length === 0) return undefined;
+  const selected = eligibleTracks[0];
+  const variants = catalog.events.filter((event): event is NormalDefinition =>
+    event.kind === 'normal'
+      && event.majorTrack?.trackId === selected.track.id
+      && event.majorTrack.chapterId === selected.chapter.id
+      && isNormalOccurrenceEligible(event, state)
+      && isEligible(event, state, catalog),
   );
-
-  return state.history
-    .map(({ eventId }) =>
-      byId.get(eventId),
-    )
-    .filter(
-      (
-        event,
-      ): event is EventDefinition =>
-        event !== undefined &&
-        event.narrativeFamily !== undefined,
-    );
+  const specialized = variants.filter((event) => event.majorTrack?.fallback !== true);
+  const fallbacks = variants.filter((event) => event.majorTrack?.fallback === true);
+  const candidates = specialized.length > 0 ? specialized : fallbacks;
+  if (candidates.length === 0) return undefined;
+  return { candidates, overdue: state.ageMonths > selected.chapter.dueAgeMonths };
 }
 
-function selectEarlyChildhoodOpeningCandidates(
-  state: GameState,
-  catalog: ContentCatalog,
-  candidates: EventDefinition[],
-): EventDefinition[] {
-  if (
-    state.careerPhase !== 'childhood' ||
-    state.ageMonths <
-      EARLY_CHILDHOOD_MIN_MONTHS ||
-    state.ageMonths >
-      EARLY_CHILDHOOD_MAX_MONTHS
-  ) {
-    return [];
+function firstIncompleteChapter(state: GameState, catalog: ContentCatalog, track: MajorNarrativeTrackDefinition): MajorNarrativeTrackDefinition['chapters'][number] | undefined {
+  const eventById = new Map(catalog.events.map((event) => [event.id, event] as const));
+  const playedChapters = new Set<string>();
+  for (const { eventId } of state.history) {
+    const event = eventById.get(eventId);
+    const ref = event?.kind === 'normal' ? event.majorTrack : undefined;
+    if (ref?.trackId === track.id) playedChapters.add(ref.chapterId);
   }
-
-  const opening =
-    candidates.filter(
-      (event) =>
-        event.kind === 'normal' &&
-        event.openingRole !== undefined,
-    );
-
-  if (opening.length === 0) {
-    return [];
-  }
-
-  const history =
-    metadataEventHistory(
-      state,
-      catalog,
-    );
-
-  const playedRoles =
-    new Set(
-      history.map(
-        ({ openingRole }) =>
-          openingRole,
-      ),
-    );
-
-  const friendIntroduced =
-    playedRoles.has(
-      'friend_intro',
-    );
-
-  const rivalIntroduced =
-    playedRoles.has(
-      'rival_intro',
-    );
-
-  const originEchoCount =
-    history.filter(
-      ({ openingRole }) =>
-        openingRole ===
-        'origin_echo',
-    ).length;
-
-  let pool =
-    opening.filter((event) => {
-      if (
-        event.openingRole ===
-          'friend_intro' &&
-        friendIntroduced
-      ) {
-        return false;
-      }
-
-      if (
-        event.openingRole ===
-          'rival_intro' &&
-        rivalIntroduced
-      ) {
-        return false;
-      }
-
-      if (
-        event.openingRole ===
-          'friend_callback' &&
-        !friendIntroduced
-      ) {
-        return false;
-      }
-
-      return true;
-    });
-
-  const originEchoes =
-    pool.filter(
-      ({ openingRole }) =>
-        openingRole ===
-        'origin_echo',
-    );
-
-  // The first lived Childhood scene must still visibly come from Origins.
-  if (
-    state.ageMonths < 24 &&
-    originEchoes.length > 0
-  ) {
-    return originEchoes;
-  }
-
-  // By the age-three checkpoint, the run must have actually met
-  // the persistent friend rather than merely seeing a generated name.
-  if (
-    state.ageMonths >= 36 &&
-    !friendIntroduced
-  ) {
-    const introductions =
-      pool.filter(
-        ({ openingRole }) =>
-          openingRole ===
-          'friend_intro',
-      );
-
-    if (
-      introductions.length > 0
-    ) {
-      return introductions;
-    }
-  }
-
-  // D1.9 target: at least two directly Origins-caused scenes by age four.
-  if (
-    state.ageMonths >= 48 &&
-    originEchoCount < 2 &&
-    originEchoes.length > 0
-  ) {
-    return originEchoes;
-  }
-
-  const recentFamilies =
-    history
-      .map(
-        ({ narrativeFamily }) =>
-          narrativeFamily,
-      )
-      .filter(
-        (
-          family,
-        ): family is NonNullable<
-          EventDefinition[
-            'narrativeFamily'
-          ]
-        > =>
-          family !== undefined,
-      );
-
-  const lastTwo =
-    recentFamilies.slice(-2);
-
-  if (
-    lastTwo.length === 2 &&
-    lastTwo.every(
-      (family) =>
-        family === 'child_peer',
-    )
-  ) {
-    const nonPeer =
-      pool.filter(
-        ({ narrativeFamily }) =>
-          narrativeFamily !==
-          'child_peer',
-      );
-
-    if (nonPeer.length > 0) {
-      pool = nonPeer;
-    }
-  }
-
-  const lastFamily =
-    recentFamilies.at(-1);
-
-  if (lastFamily) {
-    const alternatives =
-      pool.filter(
-        ({ narrativeFamily }) =>
-          narrativeFamily !==
-          lastFamily,
-      );
-
-    if (
-      alternatives.length > 0
-    ) {
-      pool = alternatives;
-    }
-  }
-
-  return pool;
+  return track.chapters.find(({ id }) => !playedChapters.has(id));
 }
 
 function selectEvent(state: GameState, catalog: ContentCatalog, event: EventDefinition): GameState {
   return materializeEventCast({ ...state, currentEventId: event.id }, catalog, event);
 }
 
-export function hasStartedLifetimeThread(state: GameState, catalog: ContentCatalog): boolean {
-  const lifetimeSeedIds = new Set(catalog.events
-    .filter((event) => event.kind === 'normal' && event.lifetimeThreadSeed === true)
-    .map(({ id }) => id));
-  return state.history.some(({ eventId }) => lifetimeSeedIds.has(eventId));
-}
-
-function shouldGuaranteeLifetimeThread(state: GameState, catalog: ContentCatalog): boolean {
-  return state.careerPhase === 'childhood' && state.ageMonths >= 120 && !hasStartedLifetimeThread(state, catalog);
-}
-
-function selectUniformNormal(state: GameState, catalog: ContentCatalog, scheduledEvents: ScheduledEvent[], candidates: EventDefinition[]): GameState {
+function selectUniformNormal(state: GameState, catalog: ContentCatalog, scheduledEvents: ScheduledEvent[], candidates: NormalDefinition[]): GameState {
   if (candidates.length === 1) return selectEvent({ ...state, scheduledEvents }, catalog, candidates[0]);
   const random = nextRandom(state.rngState);
   const selected = candidates[Math.floor(random.value * candidates.length)];
@@ -337,6 +130,12 @@ function selectUniformNormal(state: GameState, catalog: ContentCatalog, schedule
     scheduledEvents,
     rngState: random.nextState,
   }, catalog, selected);
+}
+
+/** @deprecated Lifetime Threads remain optional secondary content; they are no longer a Childhood guarantee. */
+export function hasStartedLifetimeThread(state: GameState, catalog: ContentCatalog): boolean {
+  const seedIds = new Set(catalog.events.filter((event) => event.kind === 'normal' && event.lifetimeThreadSeed === true).map(({ id }) => id));
+  return state.history.some(({ eventId }) => seedIds.has(eventId));
 }
 
 export function findCriticalEvent(state: GameState, events: readonly EventDefinition[]): EventDefinition | undefined {
@@ -354,7 +153,7 @@ export function findCriticalEvent(state: GameState, events: readonly EventDefini
   return critical.find(({ trigger }) => trigger.type === 'careerAgeAtLeast' && state.careerPhase === 'active' && state.ageMonths >= trigger.value);
 }
 
-export function isNormalOccurrenceEligible(event: Extract<EventDefinition, { kind: 'normal' }>, state: GameState): boolean {
+export function isNormalOccurrenceEligible(event: NormalDefinition, state: GameState): boolean {
   const occurrences = state.history.filter(({ eventId }) => eventId === event.id);
   if (event.replay === undefined) return occurrences.length === 0;
   if (event.replay.maxOccurrences !== undefined && occurrences.length >= event.replay.maxOccurrences) return false;
