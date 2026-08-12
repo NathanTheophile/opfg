@@ -41,7 +41,10 @@ export interface PowerState {
 export interface ItemStack {
   itemId: ItemId;
   quantity: number;
+  provenance: ItemProvenanceBatch[];
 }
+
+export interface ItemProvenanceBatch { locationId: LocationId | null; quantity: number }
 
 export interface InventoryState {
   capacity: number;
@@ -77,6 +80,8 @@ export interface PlayerState {
   stats: PlayerStats;
   traits: TraitId[];
   inventory: InventoryState;
+  equipment: [ItemStack | null, ItemStack | null];
+  logPose: ItemStack | null;
   powers: PowerState;
 }
 
@@ -93,11 +98,12 @@ export interface NpcStats {
   health: number;
   morale: number;
   strength: number;
+  agility: number;
   observation: number;
   intelligence: number;
+  navigation: number;
+  charisma: number;
   luck: number;
-  loyalty: number;
-  calm: number;
 }
 
 export type NpcStatId = keyof NpcStats;
@@ -136,6 +142,7 @@ export interface MaritimeEmergencyState {
   seaId: SeaId;
   cause: ShipDamageCause | 'ship_missing' | 'sea_monster';
 }
+export interface PendingOverflowState { itemId: ItemId; quantity: number; locationId: LocationId | null; mandatory: boolean }
 
 export interface GameState {
   version: number;
@@ -151,6 +158,9 @@ export interface GameState {
   maritimeEmergency: MaritimeEmergencyState | null;
   isLeader: boolean;
   passengerNpcIds: NpcId[];
+  companionNpcId: NpcId | null;
+  crewRoleLastUsedYear: Partial<Record<CrewRoleId, number>>;
+  pendingOverflow: PendingOverflowState | null;
   berries: number;
   flags: FlagId[];
   npcs: Record<NpcId, NpcState>;

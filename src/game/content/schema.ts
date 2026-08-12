@@ -33,7 +33,7 @@ import type {
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 11;
+export const CONTENT_SCHEMA_VERSION = 12;
 
 export const V1_CAREER_HORIZON_MONTHS = 420;
 
@@ -80,17 +80,18 @@ export interface MajorTrackEventRef {
   fallback?: true;
 }
 
-export const ITEM_CATEGORIES = ['key', 'document', 'material', 'trade_good', 'consumable', 'equipment', 'treasure', 'devil_fruit'] as const;
+export const ITEM_CATEGORIES = ['item', 'equipment'] as const;
 export type ItemCategory = typeof ITEM_CATEGORIES[number];
 
 export interface ItemMarketDefinition {
-  serviceId: LocationServiceId;
   basePriceBerries: number;
 }
 
-export interface EconomyDefinition {
-  defaultSellRatePercent: number;
-}
+export interface EconomyDefinition {}
+export type MarketMode = 'none' | 'buy_sell' | 'buy_only' | 'sell_only';
+export type WeaponDamageType = 'cutting' | 'blunt' | 'explosive';
+export type WeaponRangeType = 'melee' | 'ranged';
+export type LogPoseType = 'paradise' | 'new_world';
 
 export const DEVIL_FRUIT_TYPES = ['paramecia', 'zoan', 'logia'] as const;
 export type DevilFruitType = typeof DEVIL_FRUIT_TYPES[number];
@@ -112,6 +113,8 @@ export type Condition =
   | { type: 'statAtLeast'; statId: StatId; value: number }
   | { type: 'hasFlag'; flagId: FlagId }
   | { type: 'hasItem'; itemId: ItemId }
+  | { type: 'hasEquipped'; itemId: ItemId }
+  | { type: 'hasEquippedWeapon'; damageType?: WeaponDamageType; rangeType?: WeaponRangeType }
   | { type: 'itemQuantityAtLeast'; itemId: ItemId; quantity: number }
   | { type: 'inventoryFreeSlotsAtLeast'; value: number }
   | { type: 'canBuyItem'; itemId: ItemId; quantity: number }
@@ -191,7 +194,7 @@ export type Condition =
 export type Effect =
   | { type: 'setFlag'; flagId: FlagId }
   | { type: 'clearFlag'; flagId: FlagId }
-  | { type: 'addItem'; itemId: ItemId; quantity: number }
+  | { type: 'addItem'; itemId: ItemId; quantity: number; mandatory?: boolean }
   | { type: 'removeItem'; itemId: ItemId; quantity: number }
   | { type: 'buyItem'; itemId: ItemId; quantity: number }
   | { type: 'sellItem'; itemId: ItemId; quantity: number }
@@ -279,7 +282,7 @@ export interface DiceResolution {
   modifiers?: ConditionalDiceModifier[];
   traitOverrides?: TraitResultOverride[];
   outcomes: Record<DiceResult, Outcome>;
-  actor?: { type: 'player' } | { type: 'bestCrew'; statId: NpcStatId; requireNoDevilFruit?: boolean };
+  actor?: { type: 'player' } | { type: 'bestCrew'; statId: NpcStatId; requireNoDevilFruit?: boolean } | { type: 'crewRole'; roleId: CrewRoleId; statId: NpcStatId };
 }
 
 export type Resolution = DeterministicResolution | DiceResolution;
@@ -341,6 +344,11 @@ export interface ItemDefinition {
   category: ItemCategory;
   stackLimit: number;
   market: ItemMarketDefinition | null;
+  modifiers?: Partial<Record<keyof import('../model/schema').PlayerStats, number>>;
+  weapon?: { damageType: WeaponDamageType; rangeType: WeaponRangeType };
+  twoHanded?: boolean;
+  unique?: boolean;
+  logPoseType?: LogPoseType;
 }
 
 export interface DevilFruitDefinition {
@@ -358,6 +366,7 @@ export interface ShipDefinition {
   maxHealth: number;
   crewCapacity: number;
   cargoSlots: number;
+  priceBerries: number;
 }
 
 export interface NpcDefinition {
@@ -369,16 +378,18 @@ export interface NpcDefinition {
   affiliationId: AffiliationId | null;
   crewRoleId: CrewRoleId | null;
   initialStats: NpcStats;
+  companionCapable?: boolean;
+  companionModifiers?: Partial<Record<NpcStatId, number>>;
 }
 
-export interface CrewRoleDefinition { id: CrewRoleId; nameKey: LocalizationKey }
+export interface CrewRoleDefinition { id: CrewRoleId; nameKey: LocalizationKey; annualPower?: 'medic' | 'shipwright' | 'navigator' }
 
 export interface RaceDefinition { id: RaceId; nameKey: LocalizationKey; playableV1: boolean; initialHealth: number; attributeModifiers: Partial<Record<StatId, number>> }
 export interface SeaDefinition { id: SeaId; nameKey: LocalizationKey }
 export interface AffiliationDefinition { id: AffiliationId; nameKey: LocalizationKey; playableV1: boolean }
 export interface FamilyStructureDefinition { id: FamilyStructureId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
 export interface SocialClassDefinition { id: SocialClassId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
-export interface LocationDefinition { id: LocationId; nameKey: LocalizationKey; seaId: SeaId; islandId: IslandId; type: LocationType; parentLocationId: LocationId | null; canBeBirthLocation: boolean; blocksScheduledEvents: boolean; allowsDocking: boolean; shipMarket: ShipMarket; services: LocationServiceId[]; tags: LocationTagId[] }
+export interface LocationDefinition { id: LocationId; nameKey: LocalizationKey; seaId: SeaId; islandId: IslandId; type: LocationType; parentLocationId: LocationId | null; canBeBirthLocation: boolean; blocksScheduledEvents: boolean; allowsDocking: boolean; shipMarket: ShipMarket; services: LocationServiceId[]; tags: LocationTagId[]; hasMarketHub?: boolean; marketMode?: MarketMode; marketItemIds?: ItemId[] }
 export interface CareerAffiliationDefinition { id: CareerAffiliationId; nameKey: LocalizationKey }
 export interface CareerRankDefinition { id: CareerRankId; nameKey: LocalizationKey; affiliationId: Extract<CareerAffiliationId, 'marine' | 'revolutionary' | 'bounty_hunter'>; sortOrder: number }
 export interface CareerTitleDefinition { id: CareerTitleId; nameKey: LocalizationKey; descriptionKey: LocalizationKey }

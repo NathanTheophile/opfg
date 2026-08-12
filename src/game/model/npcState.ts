@@ -5,11 +5,12 @@ export function createDefaultNpcStats(): NpcStats {
     health: 25,
     morale: 25,
     strength: 25,
+    agility: 25,
     observation: 25,
     intelligence: 25,
+    navigation: 25,
+    charisma: 25,
     luck: 25,
-    loyalty: 25,
-    calm: 25,
   };
 }
 

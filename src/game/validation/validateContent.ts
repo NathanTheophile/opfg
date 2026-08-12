@@ -22,8 +22,9 @@ const NPC_STAT_IDS = new Set([
   'observation',
   'intelligence',
   'luck',
-  'loyalty',
-  'calm',
+  'agility',
+  'navigation',
+  'charisma',
 ]);
 const HAKI_TYPES = new Set(['observation', 'armament', 'conqueror']);
 const FRUIT_TYPES = new Set(['paramecia', 'zoan', 'logia']);
@@ -277,11 +278,8 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
 }
 
 function validateItemEconomy(catalog: UnknownRecord, items: UnknownRecord[], errors: ContentValidationError[]): void {
-  const economy = catalog.economy;
-  if (!isRecord(economy) || !Number.isInteger(economy.defaultSellRatePercent) || (economy.defaultSellRatePercent as number) < 0 || (economy.defaultSellRatePercent as number) > 100) {
-    errors.push({ path: 'economy.defaultSellRatePercent', message: 'Economy defaultSellRatePercent must be an integer from 0 to 100.' });
-  }
-  const categories = new Set(['key', 'document', 'material', 'trade_good', 'consumable', 'equipment', 'treasure', 'devil_fruit']);
+  if (!isRecord(catalog.economy)) errors.push({ path: 'economy', message: 'Economy must be an object.' });
+  const categories = new Set(['item', 'equipment']);
   items.forEach((item, index) => {
     const path = `items[${index}]`;
     if (!categories.has(String(item.category))) errors.push({ path: `${path}.category`, message: 'Invalid Item category.' });
@@ -289,10 +287,11 @@ function validateItemEconomy(catalog: UnknownRecord, items: UnknownRecord[], err
     if (item.market !== null) {
       if (!isRecord(item.market)) errors.push({ path: `${path}.market`, message: 'Item market must be null or an object.' });
       else {
-        if (!VALID_LOCATION_SERVICES.has(String(item.market.serviceId))) errors.push({ path: `${path}.market.serviceId`, message: 'Unknown market service.' });
         if (!Number.isInteger(item.market.basePriceBerries) || (item.market.basePriceBerries as number) <= 0) errors.push({ path: `${path}.market.basePriceBerries`, message: 'Item basePriceBerries must be a positive integer.' });
       }
     }
+    const equipmentOnly = ['modifiers', 'weapon', 'twoHanded'];
+    if (item.category === 'item' && equipmentOnly.some((field) => item[field] !== undefined)) errors.push({ path, message: 'Equipment-only fields are forbidden on item.' });
   });
 }
 

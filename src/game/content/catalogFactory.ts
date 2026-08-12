@@ -2,6 +2,9 @@ import locationsData from './data/locationsV1.json';
 import fruitsData from './data/devilFruitsV1.json';
 import { CONTENT_SCHEMA_VERSION, type ContentCatalog, type DevilFruitDefinition, type EventDefinition, type LocationDefinition } from './schema';
 import { affiliationNameKey, careerAffiliationNameKey, careerRankNameKey, careerTitleDescriptionKey, careerTitleNameKey, crewRoleNameKey, devilFruitNameKey, endingDescriptionKey, endingNameKey, itemNameKey, locationNameKey, npcNameKey, raceNameKey, seaNameKey, traitDescriptionKey, traitNameKey } from '../localization/keys';
+import { createDefaultNpcStats } from '../model/npcState';
+
+const defaultNpcStats = createDefaultNpcStats;
 
 const oppositePairs = [
   ['audacious', 'cautious'], ['merciful', 'ruthless'], ['generous', 'greedy'], ['disciplined', 'rebellious'], ['sociable', 'solitary'],
@@ -58,30 +61,32 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
       ]),
       ...independentTraits.map((id) => ({ id, nameKey: traitNameKey(id), descriptionKey: traitDescriptionKey(id) })),
     ],
-    economy: { defaultSellRatePercent: 50 },
+    economy: {},
     items: [
-      { id: 'sealed_chart', nameKey: itemNameKey('sealed_chart'), category: 'document', stackLimit: 1, market: null },
-      { id: 'mira_letter_of_passage', nameKey: itemNameKey('mira_letter_of_passage'), category: 'document', stackLimit: 1, market: null },
-      { id: 'timber', nameKey: itemNameKey('timber'), category: 'material', stackLimit: 20, market: { serviceId: 'trade', basePriceBerries: 500 } },
-      ...devilFruits.filter(({ playableV1 }) => playableV1).map(({ itemId }) => ({ id: itemId!, nameKey: itemNameKey(itemId!), category: 'devil_fruit' as const, stackLimit: 1, market: null })),
+      { id: 'sealed_chart', nameKey: itemNameKey('sealed_chart'), category: 'item', stackLimit: 1, market: null },
+      { id: 'mira_letter_of_passage', nameKey: itemNameKey('mira_letter_of_passage'), category: 'item', stackLimit: 1, market: null },
+      { id: 'timber', nameKey: itemNameKey('timber'), category: 'item', stackLimit: 20, market: { basePriceBerries: 500 } },
+      { id: 'paradise_log_pose', nameKey: itemNameKey('paradise_log_pose'), category: 'item', stackLimit: 1, market: null, unique: true, logPoseType: 'paradise' },
+      { id: 'triple_log_pose', nameKey: itemNameKey('triple_log_pose'), category: 'item', stackLimit: 1, market: null, unique: true, logPoseType: 'new_world' },
+      ...devilFruits.filter(({ playableV1 }) => playableV1).map(({ itemId }) => ({ id: itemId!, nameKey: itemNameKey(itemId!), category: 'item' as const, stackLimit: 1, market: null })),
     ],
     devilFruits,
     ships: [
-      { id: 'dinghy', nameKey: 'ship.dinghy.name', maxHealth: 18, crewCapacity: 1, cargoSlots: 1 },
-      { id: 'sloop', nameKey: 'ship.sloop.name', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 },
-      { id: 'caravel', nameKey: 'ship.caravel.name', maxHealth: 38, crewCapacity: 5, cargoSlots: 3 },
-      { id: 'brig', nameKey: 'ship.brig.name', maxHealth: 50, crewCapacity: 7, cargoSlots: 2 },
-      { id: 'merchant_ship', nameKey: 'ship.merchant_ship.name', maxHealth: 42, crewCapacity: 5, cargoSlots: 7 },
-      { id: 'galleon', nameKey: 'ship.galleon.name', maxHealth: 65, crewCapacity: 9, cargoSlots: 5 },
+      { id: 'dinghy', nameKey: 'ship.dinghy.name', maxHealth: 18, crewCapacity: 1, cargoSlots: 1, priceBerries: 5000 },
+      { id: 'sloop', nameKey: 'ship.sloop.name', maxHealth: 30, crewCapacity: 3, cargoSlots: 2, priceBerries: 25000 },
+      { id: 'caravel', nameKey: 'ship.caravel.name', maxHealth: 38, crewCapacity: 5, cargoSlots: 4, priceBerries: 150000 },
+      { id: 'brig', nameKey: 'ship.brig.name', maxHealth: 50, crewCapacity: 7, cargoSlots: 3, priceBerries: 75000 },
+      { id: 'merchant_ship', nameKey: 'ship.merchant_ship.name', maxHealth: 42, crewCapacity: 5, cargoSlots: 8, priceBerries: 300000 },
+      { id: 'galleon', nameKey: 'ship.galleon.name', maxHealth: 65, crewCapacity: 9, cargoSlots: 6, priceBerries: 400000 },
     ],
-    crewRoles: ['navigator','medic','cook','shipwright','helmsman','gunner','musician','scholar','fighter','quartermaster'].map((id) => ({ id, nameKey: crewRoleNameKey(id) })),
+    crewRoles: ['navigator','medic','cook','shipwright','helmsman','gunner','musician','scholar','fighter','quartermaster'].map((id) => ({ id, nameKey: crewRoleNameKey(id), annualPower: id === 'navigator' || id === 'medic' || id === 'shipwright' ? id : undefined })),
     npcs: [
-      { id: 'mira', nameKey: npcNameKey('mira'), raceId: null, originSeaId: null, affiliationId: null, crewRoleId: 'navigator', initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } },
-      { id: 'childhood_friend', nameKey: npcNameKey('childhood_friend'), namePoolId: 'childhood_male', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } },
-      { id: 'childhood_rival', nameKey: npcNameKey('childhood_rival'), namePoolId: 'childhood_female', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } },
-      { id: 'childhood_younger', nameKey: npcNameKey('childhood_younger'), namePoolId: 'childhood_female', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } },
-      { id: 'neighborhood_merchant', nameKey: npcNameKey('neighborhood_merchant'), namePoolId: 'childhood_male', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } },
-      ...['player_parent_1', 'player_parent_2'].map((id) => ({ id, nameKey: npcNameKey(id), namePoolId: 'blue_common', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: { health: 25, morale: 25, strength: 25, observation: 25, intelligence: 25, luck: 25, loyalty: 25, calm: 25 } })),
+      { id: 'mira', nameKey: npcNameKey('mira'), raceId: null, originSeaId: null, affiliationId: null, crewRoleId: 'navigator', initialStats: defaultNpcStats() },
+      { id: 'childhood_friend', nameKey: npcNameKey('childhood_friend'), namePoolId: 'childhood_male', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: defaultNpcStats() },
+      { id: 'childhood_rival', nameKey: npcNameKey('childhood_rival'), namePoolId: 'childhood_female', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: defaultNpcStats() },
+      { id: 'childhood_younger', nameKey: npcNameKey('childhood_younger'), namePoolId: 'childhood_female', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: defaultNpcStats() },
+      { id: 'neighborhood_merchant', nameKey: npcNameKey('neighborhood_merchant'), namePoolId: 'childhood_male', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: defaultNpcStats() },
+      ...['player_parent_1', 'player_parent_2'].map((id) => ({ id, nameKey: npcNameKey(id), namePoolId: 'blue_common', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: defaultNpcStats() })),
     ],
     majorNarrativeTracks: [],
     events,
