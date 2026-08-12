@@ -202,3 +202,20 @@ Must display at least:
 - Accepted dedicated helper: `maxBounty`.
 - No dedicated `maxReputation` required.
 - Highest rank reached must remain available/reconstructible.
+
+<!-- D2.9_FAMILY_TO_ACTIVE_HANDOFF -->
+## 12. Family inheritance → starting Active career
+
+The final Childhood Family inheritance may determine the personal affiliation with which Active begins.
+
+This never rewrites `player.profile.affiliationId`; Family origin remains historical.
+
+For the Marine Family Saga:
+
+- an inheritance Outcome that accepts/claims Marine service may start Active with personal career affiliation `marine`;
+- an Outcome that rejects, postpones or leaves service undecided starts Active as `civilian`;
+- disagreement with the parent is not enough by itself to choose either result.
+
+Ranked careers receive their first rank on entry. Direct Marine entry therefore also starts at `marine_recruit`.
+
+The handoff occurs at the Childhood → Active boundary, not early enough to make unrelated late-Childhood Events treat the player as professionally enlisted.

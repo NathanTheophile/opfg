@@ -439,3 +439,18 @@ A graph fails review when:
 - crossings erase callbacks/history;
 - a previous-layer node has no safe continuation;
 - a broad eligible node can randomly steal a deliberately authored high-specificity route.
+
+<!-- D2.9_FAMILY_PRODUCTION_LOCK -->
+## D2.9 — Family Saga production consequences, terminal rewards and Active handoff
+
+Family Major Events may shape the character more strongly than ordinary Childhood filler. Typical meaningful Outcome packages may include `+2/-2`, `+2/-1`, `+2/-2/+1`, or `+2/+1/-1` across relevant player Stats when each change is justified by the Choice. Avoid purely positive multi-Stat packages. `±3` on one Stat remains exceptional.
+
+NPC Relationship consequences may accompany those Stat packages when the Family relationship is directly at stake.
+
+Every reachable Outcome of every Childhood Layer-5 Family node must grant at least one persistent gameplay reward: Item, Equipment, Trait, Companion/state unlock, Reputation, or another supported persistent asset. A `milestoneId` / future Achievement never counts as that gameplay reward.
+
+Inherited Family affiliation remains historical origin and is never rewritten by Layer 5. A Layer-5 Outcome may determine the personal affiliation with which the character enters Active. For `family_marine`, an accepted Marine inheritance may start Active as `marine`; a rejected/deferred inheritance may start Active as `civilian`. Conflict with a Marine parent does not automatically imply rejection of the Marine institution, and affection for the parent does not automatically imply enlistment.
+
+When Active begins directly in a ranked career, the entry state includes that career's first rank. Marine entry therefore begins at `marine_recruit`.
+
+The runtime implementation of this handoff must occur at the Childhood → Active boundary rather than making unrelated remaining Childhood content treat the character as already professionally enlisted.

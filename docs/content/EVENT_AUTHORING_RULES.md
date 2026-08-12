@@ -1935,3 +1935,25 @@ Do not use priority as probability or quality scoring.
 Milestones are stable semantic IDs. They are derived from played History and are the future bridge to account-level achievements.
 
 Do not award Berrys, Stats, Traits, or other gameplay rewards merely because a meta achievement exists unless the Event itself narratively warrants them.
+
+<!-- D2.9_FAMILY_MECHANICAL_AUTHORING -->
+## 27. Family Major mechanical weight and terminal rewards
+
+Family Major Events may use stronger archetype-shaping consequences than ordinary Childhood Events.
+
+Preferred balanced packages include:
+
+```text
++2 / -2
++2 / -1
++2 / -2 / +1
++2 / +1 / -1
+```
+
+Use a third Stat effect only when it expresses a genuinely distinct secondary consequence. Do not turn Family nodes into pure progression dispensers.
+
+A meaningful Family relationship may change alongside the Stat package. Ordinary significant movement is around `±5`; major fracture/reconciliation may reach roughly `±8..12`.
+
+Every reachable Layer-5 Outcome requires at least one persistent gameplay reward. Achievements/milestones are meta recognition and do not satisfy that requirement.
+
+Layer-5 career inheritance is Outcome-specific. For Marine Family content, an Outcome may make Active begin as Marine or Civilian. Do not equate disagreement with a parent to automatic anti-Marine belief.

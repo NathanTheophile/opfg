@@ -671,3 +671,12 @@ The five Childhood Family checkpoints are temporal layers of one connected DAG, 
 - Progress, previous node and completed milestones are derived from History + Event metadata; no Saga progress field is added to GameState.
 
 The Marine × Giant case is the reference example for a high-value Special Association Path: a Giant child in a Marine family can receive bespoke institutional/military-pressure continuations when the earlier response makes that route relevant.
+
+<!-- D2.9_FAMILY_PRODUCTION_LOCK -->
+## D2.9 — Family Saga production lock
+
+Family Major decisions are intentionally more formative than ordinary Childhood filler: balanced `±2`-scale Stat packages are normal when supported by the fiction, and a third `±1` may be used for a distinct secondary consequence.
+
+Every reachable final Childhood Family Outcome grants at least one persistent gameplay reward. A Special Association milestone/Achievement is additional recognition and never substitutes for that reward.
+
+The final Family inheritance may determine the starting personal Active affiliation without rewriting inherited Family affiliation. A Marine-family child may therefore enter Active directly as Marine, including `marine_recruit`, or enter as Civilian depending on the actual Layer-5 Outcome.

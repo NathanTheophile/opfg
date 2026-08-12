@@ -13,7 +13,7 @@ import type { NpcSex } from './schema';
  */
 export const SINGLE_PARENT_SEX_BY_AFFILIATION: Readonly<Record<string, NpcSex | null>> = {
   civilian: null,
-  marine: null,
+  marine: 'male',
   pirate: null,
   revolutionary: null,
   royal_family: null,
