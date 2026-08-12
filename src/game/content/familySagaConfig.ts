@@ -17,7 +17,7 @@ export const SINGLE_PARENT_SEX_BY_AFFILIATION: Readonly<Record<string, NpcSex | 
   marine: 'male',
   pirate: 'female',
   revolutionary: null,
-  royal_family: null,
+  royal_family: 'female',
 
   // Reference-only / locked affiliations stay null until they receive a
   // complete authored Family Saga.
