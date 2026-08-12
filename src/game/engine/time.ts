@@ -1,6 +1,7 @@
 import type { ContentCatalog } from '../content/schema';
 import type { GameState } from '../model/schema';
 import { modifyPlayerHealth } from './health';
+import { deriveFamilyActiveCareerHandoff } from '../content/familySagaConfig';
 
 const CHILDHOOD_INCOME: Record<string, number> = { poor: 500, modest: 750, wealthy: 1500 };
 
@@ -11,8 +12,21 @@ export function consumePhaseSlot(state: GameState, phaseBeforeResolution: GameSt
   if (phaseBeforeResolution === 'childhood') {
     const ageMonths = Math.min(180, state.ageMonths + (state.ageMonths < 108 ? 12 : 6));
     const careerPhase = ageMonths >= 180 ? 'active' : 'childhood';
+    const advanced = advanceAge(state, ageMonths, catalog);
+    const careerHandoff = careerPhase === 'active' ? deriveFamilyActiveCareerHandoff(advanced.history) : null;
+    const withCareerHandoff = careerHandoff === null ? advanced : {
+      ...advanced,
+      player: {
+        ...advanced.player,
+        career: {
+          ...advanced.player.career,
+          affiliationId: careerHandoff.affiliationId,
+          rankId: careerHandoff.rankId,
+        },
+      },
+    };
     return {
-      ...advanceAge(state, ageMonths, catalog),
+      ...withCareerHandoff,
       careerPhase,
       slotInMonth: 0,
       shipMarketArrivalPending: careerPhase === 'active' ? true : state.shipMarketArrivalPending,

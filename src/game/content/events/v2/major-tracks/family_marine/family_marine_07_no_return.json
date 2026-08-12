@@ -1,0 +1,112 @@
+{
+  "id": "family_marine_07_no_return",
+  "kind": "normal",
+  "titleKey": "event.family_marine_07_no_return.title",
+  "textKey": "event.family_marine_07_no_return.text",
+  "majorTrack": {
+    "trackId": "family_marine",
+    "chapterId": "childhood_03",
+    "nodeId": "family_marine_07_no_return",
+    "parentNodeIds": [
+      "family_marine_04_empty_chair",
+      "family_marine_04_you_come_to_base",
+      "family_marine_04_fallback_home"
+    ],
+    "selectionPriority": 20
+  },
+  "choices": [
+    {
+      "id": "wait",
+      "textKey": "event.family_marine_07_no_return.choice.wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait",
+          "textKey": "event.family_marine_07_no_return.choice.wait.outcome.wait.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_07_no_return_i01_rumor"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "go_base",
+      "textKey": "event.family_marine_07_no_return.choice.go_base.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "go_base",
+          "textKey": "event.family_marine_07_no_return.choice.go_base.outcome.go_base.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_07_no_return_i01_rumor"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hold_home",
+      "textKey": "event.family_marine_07_no_return.choice.hold_home.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hold_home",
+          "textKey": "event.family_marine_07_no_return.choice.hold_home.outcome.hold_home.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_07_no_return_i01_rumor"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "originParentPresent",
+        "role": "father"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasOutcome",
+            "eventId": "family_marine_04_empty_chair_i02_too_late",
+            "outcomeId": "confront"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "family_marine_04_empty_chair_i02_too_late",
+            "outcomeId": "leave"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "family_marine_04_you_come_to_base_i02_short_alarm",
+            "outcomeId": "find_cf"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "family_marine_04_you_come_to_base_i02_short_alarm",
+            "outcomeId": "find_f"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "family_marine_04_fallback_home_i01_choice",
+            "outcomeId": "held_home"
+          }
+        ]
+      }
+    ]
+  },
+  "cast": [
+    "player_parent_1"
+  ]
+}

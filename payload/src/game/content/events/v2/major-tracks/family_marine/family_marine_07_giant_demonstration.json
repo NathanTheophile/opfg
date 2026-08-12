@@ -1,0 +1,113 @@
+{
+  "id": "family_marine_07_giant_demonstration",
+  "kind": "normal",
+  "titleKey": "event.family_marine_07_giant_demonstration.title",
+  "textKey": "event.family_marine_07_giant_demonstration.text",
+  "majorTrack": {
+    "trackId": "family_marine",
+    "chapterId": "childhood_03",
+    "nodeId": "family_marine_07_giant_demonstration",
+    "parentNodeIds": [
+      "family_marine_04_quartermaster_measure"
+    ],
+    "selectionPriority": 30,
+    "specialPathId": "marine_giant"
+  },
+  "choices": [
+    {
+      "id": "as_asked",
+      "textKey": "event.family_marine_07_giant_demonstration.choice.as_asked.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "as_asked",
+          "textKey": "event.family_marine_07_giant_demonstration.choice.as_asked.outcome.as_asked.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_07_giant_demonstration_i01_test"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "safer",
+      "textKey": "event.family_marine_07_giant_demonstration.choice.safer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safer",
+          "textKey": "event.family_marine_07_giant_demonstration.choice.safer.outcome.safer.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_07_giant_demonstration_i01_test"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_purpose",
+      "textKey": "event.family_marine_07_giant_demonstration.choice.ask_purpose.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "purpose_cf",
+            "textKey": "event.family_marine_07_giant_demonstration.choice.ask_purpose.outcome.purpose_cf.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_giant_demonstration_i01_test"
+              }
+            ]
+          },
+          "failure": {
+            "id": "purpose_f",
+            "textKey": "event.family_marine_07_giant_demonstration.choice.ask_purpose.outcome.purpose_f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_giant_demonstration_i01_test"
+              }
+            ]
+          },
+          "success": {
+            "id": "purpose_s",
+            "textKey": "event.family_marine_07_giant_demonstration.choice.ask_purpose.outcome.purpose_s.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_giant_demonstration_i01_test"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "purpose_cs",
+            "textKey": "event.family_marine_07_giant_demonstration.choice.ask_purpose.outcome.purpose_cs.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_giant_demonstration_i01_test"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_04_quartermaster_measure_i03_before_father",
+        "outcomeId": "giant_claims_choice"
+      }
+    ]
+  }
+}

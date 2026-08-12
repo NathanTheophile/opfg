@@ -1,0 +1,107 @@
+{
+  "id": "family_marine_04_off_drill_square",
+  "kind": "normal",
+  "titleKey": "event.family_marine_04_off_drill_square.title",
+  "textKey": "event.family_marine_04_off_drill_square.text",
+  "majorTrack": {
+    "trackId": "family_marine",
+    "chapterId": "childhood_02",
+    "nodeId": "family_marine_04_off_drill_square",
+    "parentNodeIds": [
+      "family_marine_01_no_box_on_form"
+    ],
+    "selectionPriority": 10
+  },
+  "choices": [
+    {
+      "id": "draw_own",
+      "textKey": "event.family_marine_04_off_drill_square.choice.draw_own.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "draw_own",
+          "textKey": "event.family_marine_04_off_drill_square.choice.draw_own.outcome.draw_own.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_04_off_drill_square_i01_game_stops"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "enter_anyway",
+      "textKey": "event.family_marine_04_off_drill_square.choice.enter_anyway.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "enter_cf",
+            "textKey": "event.family_marine_04_off_drill_square.choice.enter_anyway.outcome.enter_cf.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_04_off_drill_square_i01_game_stops"
+              }
+            ]
+          },
+          "failure": {
+            "id": "enter_f",
+            "textKey": "event.family_marine_04_off_drill_square.choice.enter_anyway.outcome.enter_f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_04_off_drill_square_i01_game_stops"
+              }
+            ]
+          },
+          "success": {
+            "id": "enter_s",
+            "textKey": "event.family_marine_04_off_drill_square.choice.enter_anyway.outcome.enter_s.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_04_off_drill_square_i01_game_stops"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "enter_cs",
+            "textKey": "event.family_marine_04_off_drill_square.choice.enter_anyway.outcome.enter_cs.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_04_off_drill_square_i01_game_stops"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "watch",
+      "textKey": "event.family_marine_04_off_drill_square.choice.watch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "watch",
+          "textKey": "event.family_marine_04_off_drill_square.choice.watch.outcome.watch.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_04_off_drill_square_i01_game_stops"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "hasOutcome",
+    "eventId": "family_marine_01_no_box_on_form",
+    "outcomeId": "push_away"
+  }
+}

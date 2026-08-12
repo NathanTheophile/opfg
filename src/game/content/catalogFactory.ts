@@ -67,6 +67,11 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
     economy: {},
     items: [
       { id: 'sealed_chart', nameKey: itemNameKey('sealed_chart'), category: 'item', stackLimit: 1, market: null },
+      { id: 'family_marine_insignia', nameKey: itemNameKey('family_marine_insignia'), category: 'item', stackLimit: 1, market: null, unique: true },
+      { id: 'family_marine_service_journal', nameKey: itemNameKey('family_marine_service_journal'), category: 'item', stackLimit: 1, market: null, unique: true },
+      { id: 'family_marine_field_compass', nameKey: itemNameKey('family_marine_field_compass'), category: 'item', stackLimit: 1, market: null, unique: true },
+      { id: 'family_marine_sealed_report', nameKey: itemNameKey('family_marine_sealed_report'), category: 'item', stackLimit: 1, market: null, unique: true },
+      { id: 'giant_marine_training_bracer', nameKey: itemNameKey('giant_marine_training_bracer'), category: 'equipment', stackLimit: 1, market: null, unique: true, modifiers: { strength: 1 } },
       { id: 'mira_letter_of_passage', nameKey: itemNameKey('mira_letter_of_passage'), category: 'item', stackLimit: 1, market: null },
       { id: 'timber', nameKey: itemNameKey('timber'), category: 'item', stackLimit: 20, market: { basePriceBerries: 5000, mode: 'buy_sell' } },
       { id: 'paradise_log_pose', nameKey: itemNameKey('paradise_log_pose'), category: 'item', stackLimit: 1, market: null, unique: true, logPoseType: 'paradise' },

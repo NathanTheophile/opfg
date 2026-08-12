@@ -1,0 +1,118 @@
+{
+  "id": "family_marine_10_giant_offer_too_early",
+  "kind": "normal",
+  "titleKey": "event.family_marine_10_giant_offer_too_early.title",
+  "textKey": "event.family_marine_10_giant_offer_too_early.text",
+  "majorTrack": {
+    "trackId": "family_marine",
+    "chapterId": "childhood_04",
+    "nodeId": "family_marine_10_giant_offer_too_early",
+    "parentNodeIds": [
+      "family_marine_07_giant_demonstration"
+    ],
+    "selectionPriority": 30,
+    "specialPathId": "marine_giant"
+  },
+  "choices": [
+    {
+      "id": "meeting",
+      "textKey": "event.family_marine_10_giant_offer_too_early.choice.meeting.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "meeting",
+          "textKey": "event.family_marine_10_giant_offer_too_early.choice.meeting.outcome.meeting.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_10_giant_offer_too_early_i01_program"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "terms",
+      "textKey": "event.family_marine_10_giant_offer_too_early.choice.terms.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 13,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "terms_cf",
+            "textKey": "event.family_marine_10_giant_offer_too_early.choice.terms.outcome.terms_cf.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_10_giant_offer_too_early_i01_program"
+              }
+            ]
+          },
+          "failure": {
+            "id": "terms_f",
+            "textKey": "event.family_marine_10_giant_offer_too_early.choice.terms.outcome.terms_f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_10_giant_offer_too_early_i01_program"
+              }
+            ]
+          },
+          "success": {
+            "id": "terms_s",
+            "textKey": "event.family_marine_10_giant_offer_too_early.choice.terms.outcome.terms_s.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_10_giant_offer_too_early_i01_program"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "terms_cs",
+            "textKey": "event.family_marine_10_giant_offer_too_early.choice.terms.outcome.terms_cs.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_10_giant_offer_too_early_i01_program"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "refuse",
+      "textKey": "event.family_marine_10_giant_offer_too_early.choice.refuse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse",
+          "textKey": "event.family_marine_10_giant_offer_too_early.choice.refuse.outcome.refuse.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_10_giant_offer_too_early_i01_program"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_07_giant_demonstration_i04_officers",
+        "outcomeId": "protects_over_score"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_07_giant_demonstration_i04_officers",
+        "outcomeId": "judgment_first"
+      }
+    ]
+  }
+}
