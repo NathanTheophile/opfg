@@ -4,6 +4,7 @@ import { clearGameState, loadGameState, saveGameState, type StorageLike } from '
 import { findCurrentEvent } from '../engine/events';
 import { chooseInSession, chooseMonthlyNavigationInSession, createSessionState, dismissResolution, getSessionNavigationOptions, startNewRun } from './gameSession';
 import type { MonthlyNavigationChoice } from '../engine/navigation';
+import type { GameState } from '../model/schema';
 
 let fallbackSeed = Date.now() >>> 0;
 function generateSeed(): number {
@@ -13,8 +14,8 @@ function generateSeed(): number {
 }
 
 export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
-  const [session, setSession] = useState(() => createSessionState(loadGameState(storage)));
-  const currentEvent = useMemo(() => session.gameState === null ? null : findCurrentEvent(session.gameState, catalog), [catalog, session.gameState]);
+  const [session, setSession] = useState(() => createSessionState(loadGameState(storage), catalog));
+  const currentEvent = useMemo(() => session.systemEvent ?? (session.gameState === null ? null : findCurrentEvent(session.gameState, catalog)), [catalog, session.gameState, session.systemEvent]);
 
   const start = (seed = generateSeed()) => {
     clearGameState(storage);
@@ -28,13 +29,27 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
     setSession(next);
     return next.lastResolution;
   };
-  const continueAfterResolution = () => setSession((current) => dismissResolution(current));
+  const continueAfterResolution = () => setSession((current) => {
+    const next = dismissResolution(current, catalog);
+    if (next.gameState) saveGameState(storage, next.gameState);
+    return next;
+  });
   const navigationOptions = useMemo(() => getSessionNavigationOptions(session, catalog), [catalog, session]);
   const chooseNavigation = (choice: MonthlyNavigationChoice) => {
     const next = chooseMonthlyNavigationInSession(session, catalog, choice);
     if (next.gameState) saveGameState(storage, next.gameState);
     setSession(next);
   };
-
-  return { ...session, currentEvent, navigationOptions, startNewRun: start, restartRun: start, choose, chooseNavigation, continueAfterResolution };
+  const applySystemAction = (action: (state: GameState) => void) => {
+    if (!session.gameState) return false;
+    const nextState = structuredClone(session.gameState);
+    action(nextState);
+    const next = session.systemEvent
+      ? { ...session, gameState: { ...nextState, currentEventId: session.systemEvent.id }, previousState: null, lastResolution: null }
+      : createSessionState(nextState, catalog);
+    if (next.gameState) saveGameState(storage, next.gameState);
+    setSession(next);
+    return true;
+  };
+  return { ...session, currentEvent, navigationOptions, startNewRun: start, restartRun: start, choose, chooseNavigation, applySystemAction, continueAfterResolution };
 }

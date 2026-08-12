@@ -1,14 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { contentCatalog } from '../src/game/content/definitions';
 import type { ContentCatalog, EventDefinition } from '../src/game/content/schema';
-import { evaluateCondition } from '../src/game/engine/conditions';
 import { selectNextEvent } from '../src/game/engine/events';
 import { movePlayerToLocation } from '../src/game/engine/locations';
-import { resolveChoice } from '../src/game/engine/resolution';
 import { consumePhaseSlot } from '../src/game/engine/time';
 import { createInitialGameState } from '../src/game/model/initialState';
-
-const PURCHASE_EVENT_ID = 'active_port_trade_01_ship_purchase_offer';
+import { chooseInSession, createSessionState, dismissResolution } from '../src/game/session/gameSession';
 
 function activeShiplessState() {
   const state = createInitialGameState(1);
@@ -46,33 +43,25 @@ function fixtureEvent(id: string, kind: 'immediate' | 'scheduled'): EventDefinit
 }
 
 describe('ship market arrival and annual income', () => {
-  it('offers the ship market from shipMarket metadata even when the Location has no port tag', () => {
+  it('opens the no-slot Hub from explicit arrival metadata', () => {
     const state = activeShiplessState();
     state.shipMarketArrivalPending = true;
-
+    state.navigationDecisionAgeMonths = state.ageMonths;
     const selected = selectNextEvent(state, contentCatalog);
-
-    expect(selected.currentEventId).toBe(PURCHASE_EVENT_ID);
-    expect(selected.shipMarketArrivalPending).toBe(false);
+    expect(selected.currentEventId).toBeNull();
+    expect(selected.shipMarketArrivalPending).toBe(true);
   });
 
-  it('consumes the offer once per arrival, then offers it again after leaving and returning', () => {
-    let state = activeShiplessState();
+  it('loops through Merchant and resumes real selection only on Explore', () => {
+    const state = activeShiplessState();
     state.shipMarketArrivalPending = true;
-    state = selectNextEvent(state, contentCatalog);
-
-    const refused = resolveChoice(state, contentCatalog, PURCHASE_EVENT_ID, 'rien').state;
-    expect(refused.shipMarketArrivalPending).toBe(false);
-    expect(refused.currentEventId).not.toBe(PURCHASE_EVENT_ID);
-
-    state = { ...refused, currentEventId: null };
-    movePlayerToLocation(state, 'loguetown', 'on_land');
-    state.shipMarketArrivalPending = false;
-    movePlayerToLocation(state, 'foosha_village', 'on_land');
-
-    const returned = selectNextEvent(state, contentCatalog);
-    expect(returned.currentEventId).toBe(PURCHASE_EVENT_ID);
-    expect(returned.shipMarketArrivalPending).toBe(false);
+    state.navigationDecisionAgeMonths = state.ageMonths;
+    let session = createSessionState(state, contentCatalog);
+    session = dismissResolution(chooseInSession(session, contentCatalog, 'market:merchant'), contentCatalog);
+    expect(session.systemEvent?.id).toBe('system_market:merchant');
+    session = dismissResolution(chooseInSession(session, contentCatalog, 'market:explore'), contentCatalog);
+    expect(session.systemEvent).toBeNull();
+    expect(session.gameState?.shipMarketArrivalPending).toBe(false);
   });
 
   it('does not create a new arrival when only travelState changes at the same Location', () => {
@@ -83,7 +72,7 @@ describe('ship market arrival and annual income', () => {
     expect(state.shipMarketArrivalPending).toBe(false);
   });
 
-  it('keeps Immediate ahead of the arrival offer and the arrival offer ahead of due Scheduled Events', () => {
+  it('keeps Immediate ahead of the arrival Hub and the Hub ahead of due Scheduled Events', () => {
     const immediate = fixtureEvent('test_ship_market_immediate', 'immediate');
     const scheduled = fixtureEvent('test_ship_market_scheduled', 'scheduled');
     const catalog: ContentCatalog = { ...contentCatalog, events: [...contentCatalog.events, immediate, scheduled] };
@@ -99,6 +88,7 @@ describe('ship market arrival and annual income', () => {
 
     const withScheduled = activeShiplessState();
     withScheduled.shipMarketArrivalPending = true;
+    withScheduled.navigationDecisionAgeMonths = withScheduled.ageMonths;
     withScheduled.scheduledEvents = [{
       eventId: scheduled.id,
       dueAgeMonths: 180,
@@ -106,25 +96,26 @@ describe('ship market arrival and annual income', () => {
       sourceChoiceId: 'choice',
     }];
     expect(selectNextEvent(withScheduled, catalog)).toMatchObject({
-      currentEventId: PURCHASE_EVENT_ID,
-      shipMarketArrivalPending: false,
+      currentEventId: null,
+      shipMarketArrivalPending: true,
     });
   });
 
-  it('pays exactly 50 Berrys per birthday and reaches 750 Berrys at age 15', () => {
+  it('pays poor Childhood income on birthdays ages 5 through 14 only', () => {
     let state = createInitialGameState(1);
     state.careerPhase = 'childhood';
     state.player.profile.raceId = 'human';
+    state.player.profile.socialClassId = 'poor';
     state.player.stats.health = 20;
     state = consumePhaseSlot(state, 'origins', contentCatalog);
 
-    expect(state).toMatchObject({ ageMonths: 12, berries: 50, player: { stats: { health: 21 } } });
+    expect(state).toMatchObject({ ageMonths: 12, berries: 0, player: { stats: { health: 21 } } });
 
     while (state.careerPhase === 'childhood') state = consumePhaseSlot(state, 'childhood', contentCatalog);
 
     expect(state).toMatchObject({
       ageMonths: 180,
-      berries: 750,
+      berries: 5000,
       careerPhase: 'active',
       shipMarketArrivalPending: true,
       player: { stats: { health: 35 } },
@@ -134,17 +125,6 @@ describe('ship market arrival and annual income', () => {
     state.slotInMonth = 1;
     state.player.stats.health = 30;
     state = consumePhaseSlot(state, 'active', contentCatalog);
-    expect(state).toMatchObject({ ageMonths: 192, berries: 800, slotInMonth: 0, player: { stats: { health: 31 } } });
-  });
-
-  it('keeps departure ineligible without a ship and eligible with one', () => {
-    const departure = contentCatalog.events.find(({ id }) => id === 'departure');
-    expect(departure?.eligibility).toBeDefined();
-
-    const state = activeShiplessState();
-    expect(evaluateCondition(departure!.eligibility!, state, contentCatalog)).toBe(false);
-
-    state.ship = { shipId: 'dinghy', name: 'Test Dinghy', health: 10, cargo: [] };
-    expect(evaluateCondition(departure!.eligibility!, state, contentCatalog)).toBe(true);
+    expect(state).toMatchObject({ ageMonths: 192, berries: 5000, slotInMonth: 0, player: { stats: { health: 31 } } });
   });
 });

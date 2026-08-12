@@ -15,6 +15,7 @@ import {
   UserRound,
   Waves,
 } from 'lucide-react';
+import { useState } from 'react';
 import { Panel } from '@/components/ui';
 import type {
   ContentCatalog,
@@ -25,13 +26,15 @@ import type {
   ItemStack,
 } from '@/game/model/schema';
 import type { LocaleId, Translator } from '@/game/localization';
+import type { StorageSlot } from '@/game/engine/inventory';
+import { isCompanionCandidate } from '@/game/engine/crewPowers';
 import { ContextTooltip } from './ContextTooltip';
 import { getUiTooltipKey } from './context-tooltip-copy';
 import './hud-panel-header.css';
 import './top-world-hud.css';
 
 const INVENTORY_PREVIEW_SLOTS = 2;
-const CARGO_PREVIEW_SLOTS = 7;
+const CARGO_PREVIEW_SLOTS = 8;
 const CALENDAR_START_YEAR = 1507;
 
 type CargoOccupant =
@@ -58,7 +61,25 @@ export interface TopWorldHudProps {
    * Keeps the HUD on the age/date where the displayed Event happened.
    */
   calendarAgeMonths?: number;
+  selectedStorageSlot?: StorageSlot | null;
+  onStorageSlot?: (slot: StorageSlot) => void;
+  onSelectCompanion?: (npcId: string | null) => void;
 
+}
+
+function storageKey(slot: StorageSlot): string { return slot.type === 'logPose' ? 'logPose' : `${slot.type}-${slot.index}`; }
+function interactionProps(slot: StorageSlot, selected: StorageSlot | null | undefined, onSlot?: (slot: StorageSlot) => void) {
+  return {
+    draggable: true,
+    'data-selected': selected && storageKey(selected) === storageKey(slot) ? 'true' : undefined,
+    onClick: () => onSlot?.(slot),
+    onDragStart: (event: React.DragEvent) => event.dataTransfer.setData('application/x-opfg-storage', JSON.stringify(slot)),
+    onDragOver: (event: React.DragEvent) => { if (onSlot) event.preventDefault(); },
+    onDrop: (event: React.DragEvent) => {
+      event.preventDefault();
+      try { onSlot?.(JSON.parse(event.dataTransfer.getData('application/x-opfg-storage')) as StorageSlot); onSlot?.(slot); } catch { /* Ignore foreign drags. */ }
+    },
+  };
 }
 
 function getItemLabel(
@@ -162,6 +183,8 @@ export function InventoryHudPanel({
   catalog,
   translate,
   locale,
+  selectedStorageSlot,
+  onStorageSlot,
 }: TopWorldHudProps) {
   const inventoryCapacity = state.player.inventory.capacity;
   const inventoryStacks = state.player.inventory.stacks;
@@ -209,7 +232,7 @@ export function InventoryHudPanel({
               }
 
               if (!stack) {
-                return <span key={`inventory-${index}`} className="opfg-hud-slot is-empty" aria-label={translate('ui.slot.empty')} />;
+                return <button key={`inventory-${index}`} type="button" className="opfg-hud-slot is-empty" aria-label={translate('ui.slot.empty')} {...interactionProps({ type: 'pocket', index: index as 0 | 1 }, selectedStorageSlot, onStorageSlot)} />;
               }
 
               const label = getItemLabel(stack, catalog, translate);
@@ -223,12 +246,21 @@ export function InventoryHudPanel({
                   side="bottom"
                   focusable
                 >
-                  <span className="opfg-hud-slot is-filled">
+                  <span className="opfg-hud-slot is-filled" {...interactionProps({ type: 'pocket', index: index as 0 | 1 }, selectedStorageSlot, onStorageSlot)}>
                     <Package className="size-4" aria-hidden="true" />
                     {stack.quantity > 1 && <strong className="opfg-hud-slot__quantity">{stack.quantity}</strong>}
                   </span>
                 </ContextTooltip>
               );
+            })}
+          </div>
+
+          <div className="opfg-hud-equipment" aria-label={translate('ui.equipment')}>
+            {state.player.equipment.map((stack, index) => {
+              const slot = { type: 'equipment' as const, index: index as 0 | 1 };
+              return <button key={`equipment-${index}`} type="button" className={`opfg-hud-slot ${stack ? 'is-filled' : 'is-empty'}`} aria-label={stack ? getItemLabel(stack, catalog, translate) : translate('ui.equipment.empty')} {...interactionProps(slot, selectedStorageSlot, onStorageSlot)}>
+                <ShieldCheck className="size-4" aria-hidden="true" />
+              </button>;
             })}
           </div>
 
@@ -326,13 +358,26 @@ export function IdentityEnvironmentHudPanel({
   );
 }
 
-export function ShipHudPanel({ state, catalog, translate }: TopWorldHudProps) {
+export function ShipHudPanel({ state, catalog, translate, selectedStorageSlot, onStorageSlot, onSelectCompanion }: TopWorldHudProps) {
+  const [companionPickerOpen, setCompanionPickerOpen] = useState(false);
   const shipDefinition = state.ship ? catalog.ships.find(({ id }) => id === state.ship?.shipId) : undefined;
   const shipHealth = state.ship?.health ?? 0;
   const shipMaxHealth = shipDefinition?.maxHealth ?? 0;
   const shipType = shipDefinition ? translate(shipDefinition.nameKey) : '—';
   const cargoCapacity = shipDefinition?.cargoSlots ?? 0;
   const cargoOccupants = buildCargoOccupants(state, catalog, translate);
+  const activeCompanion = state.companionNpcId ? state.npcs[state.companionNpcId] : undefined;
+  const activeCompanionDefinition = state.companionNpcId
+    ? catalog.npcs.find(({ id }) => id === state.companionNpcId)
+    : undefined;
+  const activeCompanionLabel = activeCompanion
+    ? activeCompanion.displayName ?? (activeCompanionDefinition ? translate(activeCompanionDefinition.nameKey) : state.companionNpcId)
+    : null;
+  const companionCandidates = Object.keys(state.npcs)
+    .filter((npcId) => npcId !== state.companionNpcId
+      && state.npcs[npcId]?.status === 'known'
+      && isCompanionCandidate(state, catalog, npcId))
+    .sort((left, right) => left.localeCompare(right));
 
   return (
     <Panel variant="strong" padding="none" className="opfg-hud-panel opfg-hud-panel--ship">
@@ -395,7 +440,7 @@ export function ShipHudPanel({ state, catalog, translate }: TopWorldHudProps) {
               );
             }
             if (!occupant) {
-              return <span key={`cargo-${index}`} className="opfg-hud-slot is-empty" aria-label={translate('ui.cargo.slotEmpty')} />;
+              return <button key={`cargo-${index}`} type="button" className="opfg-hud-slot is-empty" aria-label={translate('ui.cargo.slotEmpty')} {...interactionProps({ type: 'cargo', index }, selectedStorageSlot, onStorageSlot)} />;
             }
 
             return (
@@ -408,7 +453,7 @@ export function ShipHudPanel({ state, catalog, translate }: TopWorldHudProps) {
                 side="bottom"
                 focusable
               >
-                <span className="opfg-hud-slot is-filled">
+                <span className="opfg-hud-slot is-filled" {...(occupant.kind === 'item' ? interactionProps({ type: 'cargo', index }, selectedStorageSlot, onStorageSlot) : {})}>
                   {occupant.kind === 'item'
                     ? <Package className="size-4" aria-hidden="true" />
                     : <UserRound className="size-4" aria-hidden="true" />}
@@ -417,6 +462,72 @@ export function ShipHudPanel({ state, catalog, translate }: TopWorldHudProps) {
               </ContextTooltip>
             );
           })}
+        </div>
+
+        <div className="opfg-hud-special-slots" aria-label={translate('ui.specialSlots')}>
+          <ContextTooltip
+            className="opfg-hud-slot-wrap"
+            title={translate('ui.logPose.title')}
+            detail={state.player.logPose ? getItemLabel(state.player.logPose, catalog, translate) : translate('ui.logPose.empty')}
+            side="bottom"
+            focusable
+          >
+            <button
+              type="button"
+              className={`opfg-hud-slot ${state.player.logPose ? 'is-filled' : 'is-empty'}`}
+              aria-label={state.player.logPose ? getItemLabel(state.player.logPose, catalog, translate) : translate('ui.logPose.empty')}
+              {...interactionProps({ type: 'logPose' }, selectedStorageSlot, onStorageSlot)}
+            >
+              <Navigation className="size-4" aria-hidden="true" />
+            </button>
+          </ContextTooltip>
+
+          <div className="opfg-hud-companion">
+            <ContextTooltip
+              className="opfg-hud-slot-wrap"
+              title={translate('ui.companion.title')}
+              detail={activeCompanionLabel ?? translate('ui.companion.empty')}
+              side="bottom"
+              focusable
+            >
+              <button
+                type="button"
+                className={`opfg-hud-slot ${activeCompanionLabel ? 'is-filled' : 'is-empty'}`}
+                aria-label={activeCompanionLabel ?? translate('ui.companion.empty')}
+                aria-expanded={companionPickerOpen}
+                disabled={!onSelectCompanion}
+                onClick={() => setCompanionPickerOpen((open) => !open)}
+              >
+                <UserRound className="size-4" aria-hidden="true" />
+              </button>
+            </ContextTooltip>
+
+            {companionPickerOpen && (
+              <Panel variant="strong" padding="none" className="opfg-hud-companion-picker" aria-label={translate('ui.companion.title')}>
+                <strong>{translate('ui.companion.title')}</strong>
+                {activeCompanionLabel && (
+                  <button type="button" onClick={() => { onSelectCompanion?.(null); setCompanionPickerOpen(false); }}>
+                    {translate('ui.companion.remove')}
+                  </button>
+                )}
+                {companionCandidates.map((npcId) => {
+                  const npc = state.npcs[npcId];
+                  const definition = catalog.npcs.find(({ id }) => id === npcId);
+                  const label = npc.displayName ?? (definition ? translate(definition.nameKey) : npcId);
+                  return (
+                    <button
+                      key={npcId}
+                      type="button"
+                      onClick={() => { onSelectCompanion?.(npcId); setCompanionPickerOpen(false); }}
+                    >
+                      {label} · {translate('ui.companion.select')}
+                    </button>
+                  );
+                })}
+                {companionCandidates.length === 0 && !activeCompanionLabel && <span>{translate('ui.companion.noneAvailable')}</span>}
+              </Panel>
+            )}
+          </div>
         </div>
       </div>
     </Panel>

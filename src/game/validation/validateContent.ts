@@ -22,8 +22,9 @@ const NPC_STAT_IDS = new Set([
   'observation',
   'intelligence',
   'luck',
-  'loyalty',
-  'calm',
+  'agility',
+  'navigation',
+  'charisma',
 ]);
 const HAKI_TYPES = new Set(['observation', 'armament', 'conqueror']);
 const FRUIT_TYPES = new Set(['paramecia', 'zoan', 'logia']);
@@ -58,6 +59,11 @@ const CONDITION_TYPES = new Set([
   'statAtLeast',
   'hasFlag',
   'hasItem',
+  'activeLogPoseIs',
+  'hasActiveCompanion',
+  'activeCompanionIs',
+  'hasEquipped',
+  'hasEquippedWeapon',
   'itemQuantityAtLeast',
   'inventoryFreeSlotsAtLeast',
   'canBuyItem',
@@ -113,6 +119,8 @@ const EFFECT_TYPES = new Set([
   'removeItem',
   'buyItem',
   'sellItem',
+  'buyShip',
+  'sellShip',
   'addTrait',
   'removeTrait',
   'modifyStat',
@@ -158,6 +166,7 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   const traitIds = collectIds(traits, 'traits', errors);
   const items = readRecords(catalog.items, 'items', errors);
   const itemIds = collectIds(items, 'items', errors);
+  const equipmentItemIds = new Set(items.filter((item) => item.category === 'equipment').map((item) => String(item.id)));
   const majorTracks = readRecords(catalog.majorNarrativeTracks, 'majorNarrativeTracks', errors);
   const majorTrackIds = collectIds(majorTracks, 'majorNarrativeTracks', errors);
   const devilFruits = readRecords(catalog.devilFruits, 'devilFruits', errors);
@@ -168,6 +177,7 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   const crewRoleIds = collectIds(crewRoles, 'crewRoles', errors);
   const npcs = readRecords(catalog.npcs, 'npcs', errors);
   const npcIds = collectIds(npcs, 'npcs', errors);
+  const companionNpcIds = new Set(npcs.filter((npc) => npc.companionCapable === true).map((npc) => String(npc.id)));
   const races = readRecords(catalog.races, 'races', errors);
   const raceIds = collectIds(races, 'races', errors);
   const seas = readRecords(catalog.seas, 'seas', errors);
@@ -207,7 +217,7 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   }
 
   validateTraitOpposites(traits, traitIds, errors);
-  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, devilFruitIds, shipIds, crewRoleIds, npcIds, raceIds, seaIds, affiliationIds, careerAffiliationIds, careerRankIds, careerTitleIds, endingIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds, immediateEventIds, majorTrackIds, majorTracks };
+  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, equipmentItemIds, devilFruitIds, shipIds, crewRoleIds, npcIds, companionNpcIds, raceIds, seaIds, affiliationIds, careerAffiliationIds, careerRankIds, careerTitleIds, endingIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds, immediateEventIds, majorTrackIds, majorTracks };
   devilFruits.forEach((fruit, index) => {
     const path = `devilFruits[${index}]`;
     if (typeof fruit.playableV1 !== 'boolean') errors.push({ path: `${path}.playableV1`, message: 'Devil Fruit requires playableV1.' });
@@ -239,6 +249,9 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   validateNamedDefinitions(familyStructures, 'familyStructures', errors);
   validateNamedDefinitions(socialClasses, 'socialClasses', errors);
   validateNamedDefinitions(crewRoles, 'crewRoles', errors);
+  crewRoles.forEach((role, index) => {
+    if (role.annualPower !== undefined && !['medic', 'shipwright', 'navigator'].includes(String(role.annualPower))) errors.push({ path: `crewRoles[${index}].annualPower`, message: 'Unknown annual Crew Role power.' });
+  });
   locations.forEach((location, index) => {
     const path = `locations[${index}]`;
     validateReference(location.seaId, seaIds, 'SeaId', `${path}.seaId`, errors);
@@ -255,6 +268,14 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
     if (typeof location.canBeBirthLocation !== 'boolean') errors.push({ path: `${path}.canBeBirthLocation`, message: 'Location requires canBeBirthLocation.' });
     if (typeof location.blocksScheduledEvents !== 'boolean') errors.push({ path: `locations[${index}].blocksScheduledEvents`, message: 'Location requires blocksScheduledEvents.' });
     if (typeof location.allowsDocking !== 'boolean') errors.push({ path: `locations[${index}].allowsDocking`, message: 'Location requires allowsDocking.' });
+    if (typeof location.hasMarketHub !== 'boolean') errors.push({ path: `${path}.hasMarketHub`, message: 'Location requires hasMarketHub.' });
+    if (!Array.isArray(location.marketItemIds)) errors.push({ path: `${path}.marketItemIds`, message: 'Location requires an authored market catalogue array.' });
+    else location.marketItemIds.forEach((itemId, itemIndex) => {
+        validateReference(itemId, itemIds, 'ItemId', `${path}.marketItemIds[${itemIndex}]`, errors);
+        const definition = items.find((item) => item.id === itemId);
+        if (definition && (!isRecord(definition.market) || !['buy_sell', 'buy_only'].includes(String(definition.market.mode)))) errors.push({ path: `${path}.marketItemIds[${itemIndex}]`, message: 'Merchant catalogue Item must support purchase.' });
+    });
+    if (location.hasMarketHub === true && (!Array.isArray(location.marketItemIds) || location.marketItemIds.length === 0) && location.shipMarket === 'none') errors.push({ path, message: 'Market Hub requires an authored item or ship catalogue.' });
   });
   validateLocationParentCycles(locations, errors);
   races.forEach((race, index) => validateOriginModifierDefinition(race, `races[${index}]`, true, errors));
@@ -266,6 +287,9 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
     for (const field of ['maxHealth', 'crewCapacity', 'cargoSlots'] as const) {
       if (!Number.isInteger(ship[field]) || (ship[field] as number) < (field === 'maxHealth' ? 1 : 0)) errors.push({ path: `${path}.${field}`, message: `${field} must be a valid non-negative integer${field === 'maxHealth' ? ' greater than zero' : ''}.` });
     }
+    if (!Number.isInteger(ship.priceBerries) || (ship.priceBerries as number) <= 0) errors.push({ path: `${path}.priceBerries`, message: 'Ship priceBerries must be a positive integer.' });
+    const exact = ({ dinghy: [1, 5000], sloop: [2, 25000], brig: [3, 75000], caravel: [4, 150000], galleon: [6, 400000], merchant_ship: [8, 300000] } as Record<string, [number, number]>)[String(ship.id)];
+    if (exact && (ship.cargoSlots !== exact[0] || ship.priceBerries !== exact[1])) errors.push({ path, message: `Ship "${String(ship.id)}" requires cargo ${exact[0]} and price ${exact[1]}.` });
   });
   validateNpcDefinitions(npcs, references, errors);
   for (const [eventIndex, event] of events.entries()) {
@@ -277,11 +301,8 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
 }
 
 function validateItemEconomy(catalog: UnknownRecord, items: UnknownRecord[], errors: ContentValidationError[]): void {
-  const economy = catalog.economy;
-  if (!isRecord(economy) || !Number.isInteger(economy.defaultSellRatePercent) || (economy.defaultSellRatePercent as number) < 0 || (economy.defaultSellRatePercent as number) > 100) {
-    errors.push({ path: 'economy.defaultSellRatePercent', message: 'Economy defaultSellRatePercent must be an integer from 0 to 100.' });
-  }
-  const categories = new Set(['key', 'document', 'material', 'trade_good', 'consumable', 'equipment', 'treasure', 'devil_fruit']);
+  if (!isRecord(catalog.economy)) errors.push({ path: 'economy', message: 'Economy must be an object.' });
+  const categories = new Set(['item', 'equipment']);
   items.forEach((item, index) => {
     const path = `items[${index}]`;
     if (!categories.has(String(item.category))) errors.push({ path: `${path}.category`, message: 'Invalid Item category.' });
@@ -289,10 +310,32 @@ function validateItemEconomy(catalog: UnknownRecord, items: UnknownRecord[], err
     if (item.market !== null) {
       if (!isRecord(item.market)) errors.push({ path: `${path}.market`, message: 'Item market must be null or an object.' });
       else {
-        if (!VALID_LOCATION_SERVICES.has(String(item.market.serviceId))) errors.push({ path: `${path}.market.serviceId`, message: 'Unknown market service.' });
         if (!Number.isInteger(item.market.basePriceBerries) || (item.market.basePriceBerries as number) <= 0) errors.push({ path: `${path}.market.basePriceBerries`, message: 'Item basePriceBerries must be a positive integer.' });
+        if (!['buy_sell', 'buy_only', 'sell_only'].includes(String(item.market.mode))) errors.push({ path: `${path}.market.mode`, message: 'Invalid Item market mode.' });
       }
     }
+    const equipmentOnly = ['modifiers', 'weapon', 'twoHanded'];
+    if (item.category === 'item' && equipmentOnly.some((field) => item[field] !== undefined)) errors.push({ path, message: 'Equipment-only fields are forbidden on item.' });
+    if (item.modifiers !== undefined) {
+      if (!isRecord(item.modifiers)) errors.push({ path: `${path}.modifiers`, message: 'Equipment modifiers must be an object.' });
+      else Object.entries(item.modifiers).forEach(([statId, amount]) => {
+        if (statId !== 'health') validateStat(statId, `${path}.modifiers.${statId}`, errors);
+        if (typeof amount !== 'number' || !Number.isFinite(amount)) errors.push({ path: `${path}.modifiers.${statId}`, message: 'Equipment modifier must be finite.' });
+      });
+    }
+    if (item.weapon !== undefined) {
+      if (!isRecord(item.weapon)) errors.push({ path: `${path}.weapon`, message: 'Weapon metadata must be an object.' });
+      else {
+        if (!['cutting', 'blunt', 'explosive'].includes(String(item.weapon.damageType))) errors.push({ path: `${path}.weapon.damageType`, message: 'Invalid weapon damage type.' });
+        if (!['melee', 'ranged'].includes(String(item.weapon.rangeType))) errors.push({ path: `${path}.weapon.rangeType`, message: 'Invalid weapon range type.' });
+      }
+    }
+    if (item.twoHanded !== undefined && (item.category !== 'equipment' || typeof item.twoHanded !== 'boolean')) errors.push({ path: `${path}.twoHanded`, message: 'twoHanded is only valid as a boolean on equipment.' });
+    if (item.unique !== undefined && typeof item.unique !== 'boolean') errors.push({ path: `${path}.unique`, message: 'unique must be boolean.' });
+    if (item.logPoseType !== undefined && (!['paradise', 'new_world'].includes(String(item.logPoseType)) || item.category !== 'item')) errors.push({ path: `${path}.logPoseType`, message: 'Log Pose identity must be paradise/new_world on an item.' });
+    if (item.logPoseType !== undefined && (item.unique !== true || item.stackLimit !== 1)) errors.push({ path, message: 'Log Pose must be unique with stackLimit 1.' });
+    const expectedPoseType = ({ paradise_log_pose: 'paradise', triple_log_pose: 'new_world' } as Record<string, string>)[String(item.id)];
+    if (expectedPoseType && item.logPoseType !== expectedPoseType) errors.push({ path: `${path}.logPoseType`, message: `Log Pose "${String(item.id)}" requires type "${expectedPoseType}".` });
   });
 }
 
@@ -339,10 +382,12 @@ interface References {
   outcomesByEvent: Map<string, Set<string>>;
   traitIds: Set<string>;
   itemIds: Set<string>;
+  equipmentItemIds: Set<string>;
   devilFruitIds: Set<string>;
   shipIds: Set<string>;
   crewRoleIds: Set<string>;
   npcIds: Set<string>;
+  companionNpcIds: Set<string>;
   raceIds: Set<string>;
   seaIds: Set<string>;
   affiliationIds: Set<string>;
@@ -365,7 +410,7 @@ function validateEvent(
   references: References,
   errors: ContentValidationError[],
 ): void {
-  if (!['normal', 'immediate', 'scheduled', 'critical'].includes(String(event.kind))) errors.push({ path, message: `Invalid Event kind "${String(event.kind)}".` });
+  if (!['system', 'normal', 'immediate', 'scheduled', 'critical'].includes(String(event.kind))) errors.push({ path, message: `Invalid Event kind "${String(event.kind)}".` });
   if (event.scheduledOnly !== undefined
     || (event.kind !== 'scheduled' && [event.priority, event.scheduledReach, event.cancelIf, event.fallbackEventId].some((value) => value !== undefined))
     || (event.kind !== 'critical' && event.trigger !== undefined)
@@ -573,6 +618,13 @@ function validateCondition(
 
   if (type === 'hasTrait') validateReference(value.traitId, references.traitIds, 'TraitId', path, errors);
   if (type === 'hasItem') validateReference(value.itemId, references.itemIds, 'ItemId', path, errors);
+  if (type === 'activeLogPoseIs' && !['paradise', 'new_world'].includes(String(value.logPoseType))) errors.push({ path: `${path}.logPoseType`, message: 'Invalid Log Pose type.' });
+  if (type === 'activeCompanionIs') validateReference(value.npcId, references.companionNpcIds, 'companion-capable NpcId', path, errors);
+  if (type === 'hasEquipped') validateReference(value.itemId, references.equipmentItemIds, 'Equipment ItemId', path, errors);
+  if (type === 'hasEquippedWeapon') {
+    if (value.damageType !== undefined && !['cutting', 'blunt', 'explosive'].includes(String(value.damageType))) errors.push({ path: `${path}.damageType`, message: 'Invalid equipped weapon damage type.' });
+    if (value.rangeType !== undefined && !['melee', 'ranged'].includes(String(value.rangeType))) errors.push({ path: `${path}.rangeType`, message: 'Invalid equipped weapon range type.' });
+  }
   if (type === 'shipIs' || type === 'canAcquireShip') validateReference(value.shipId, references.shipIds, 'ShipId', path, errors);
   if (type === 'hasCrewRole') validateReference(value.roleId, references.crewRoleIds, 'CrewRoleId', path, errors);
   if (type === 'canRecruitNpc') validateReference(value.npcId, references.npcIds, 'NpcId', path, errors);
@@ -678,10 +730,13 @@ function validateDiceResolution(
   }
   validateStat(value.statId, path, errors);
   if (value.actor !== undefined) {
-    if (!isRecord(value.actor) || !['player', 'bestCrew'].includes(String(value.actor.type))) errors.push({ path: `${path}.actor`, message: 'Invalid Dice actor.' });
+    if (!isRecord(value.actor) || !['player', 'bestCrew', 'crewRole'].includes(String(value.actor.type))) errors.push({ path: `${path}.actor`, message: 'Invalid Dice actor.' });
     else if (value.actor.type === 'bestCrew') {
       validateNpcStat(value.actor.statId, `${path}.actor`, errors);
       if (value.actor.requireNoDevilFruit !== undefined && typeof value.actor.requireNoDevilFruit !== 'boolean') errors.push({ path: `${path}.actor`, message: 'requireNoDevilFruit must be boolean.' });
+    } else if (value.actor.type === 'crewRole') {
+      validateReference(value.actor.roleId, references.crewRoleIds, 'CrewRoleId', `${path}.actor.roleId`, errors);
+      validateNpcStat(value.actor.statId, `${path}.actor.statId`, errors);
     }
   }
   if (!Number.isInteger(value.successThreshold) || (value.successThreshold as number) < 2 || (value.successThreshold as number) > 19) {
@@ -763,6 +818,8 @@ function validateEffect(
     validateReference(effect.itemId, references.itemIds, 'ItemId', path, errors);
     validatePositiveQuantity(effect.quantity, path, errors);
   }
+  if (type === 'buyShip') validateReference(effect.shipId, references.shipIds, 'ShipId', path, errors);
+  if (['buyItem', 'sellItem', 'buyShip', 'sellShip'].includes(type) && effect.negotiation !== undefined && !['criticalFailure', 'failure', 'success', 'criticalSuccess'].includes(String(effect.negotiation))) errors.push({ path, message: 'Invalid market negotiation result.' });
   if (type === 'addCargoItem' || type === 'removeCargoItem') {
     validateReference(effect.itemId, references.itemIds, 'ItemId', path, errors);
     validatePositiveQuantity(effect.quantity, path, errors);
@@ -988,6 +1045,20 @@ function validateNpcDefinitions(npcs: UnknownRecord[], references: References, e
     validateNullableReference(npc.originSeaId, references.seaIds, 'SeaId', `${path}.originSeaId`, errors);
     validateNullableReference(npc.affiliationId, references.affiliationIds, 'AffiliationId', `${path}.affiliationId`, errors);
     validateNullableReference(npc.crewRoleId, references.crewRoleIds, 'CrewRoleId', `${path}.crewRoleId`, errors);
+    if (npc.companionCapable !== undefined && typeof npc.companionCapable !== 'boolean') errors.push({ path: `${path}.companionCapable`, message: 'companionCapable must be boolean.' });
+    if (npc.companionModifiers !== undefined) {
+      if (npc.companionCapable !== true) errors.push({ path: `${path}.companionModifiers`, message: 'Companion modifiers require companionCapable.' });
+      if (!isRecord(npc.companionModifiers)) errors.push({ path: `${path}.companionModifiers`, message: 'Companion modifiers must be an object.' });
+      else {
+        let absoluteTotal = 0;
+        Object.entries(npc.companionModifiers).forEach(([statId, amount]) => {
+          validateNpcStat(statId, `${path}.companionModifiers.${statId}`, errors);
+          if (typeof amount !== 'number' || !Number.isFinite(amount)) errors.push({ path: `${path}.companionModifiers.${statId}`, message: 'Companion modifier must be finite.' });
+          else absoluteTotal += Math.abs(amount);
+        });
+        if (absoluteTotal > 3) errors.push({ path: `${path}.companionModifiers`, message: 'Companion modifier absolute total cannot exceed 3.' });
+      }
+    }
     if (!isRecord(npc.initialStats)) {
       errors.push({ path: `${path}.initialStats`, message: 'NPC initialStats must be an object.' });
       return;

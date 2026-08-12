@@ -7,7 +7,8 @@ import { movePlayerToLocation, recoverTravel } from './locations';
 import { beginMaritimeEmergency, findHighestRelationshipFruitCrew, moveToSameIslandPort, recoverToLandInCurrentSea, recoverToOtherRegion, resolveMaritimeEmergencyLandfall } from './maritime';
 import { modifyPlayerHealth } from './health';
 import { ensureNpcMaterialized } from './npcNames';
-import { buyItem, findItemDefinition, sellItem } from './economy';
+import { buyItem, buyShip, findItemDefinition, sellItem, sellShip } from './economy';
+import { tryAutoPlaceReward } from './inventory';
 
 export interface EffectContext {
   sourceEventId: EventId;
@@ -25,11 +26,14 @@ export function applyEffects(state: GameState, catalog: ContentCatalog, effects:
       stats: { ...state.player.stats },
       traits: [...state.player.traits],
       inventory: cloneInventory(state.player.inventory),
+      equipment: state.player.equipment.map((stack) => stack ? ({ ...stack, provenance: stack.provenance.map((batch) => ({ ...batch })) }) : null) as GameState['player']['equipment'],
+      logPose: state.player.logPose ? { ...state.player.logPose, provenance: state.player.logPose.provenance.map((batch) => ({ ...batch })) } : null,
       powers: { ...state.player.powers, haki: { ...state.player.powers.haki } },
     },
     ship: cloneShip(state.ship),
     pendingShip: cloneShip(state.pendingShip),
     passengerNpcIds: [...state.passengerNpcIds],
+    crewRoleLastUsedYear: { ...state.crewRoleLastUsedYear },
     flags: [...state.flags],
     berries: state.berries,
     npcs: Object.fromEntries(
@@ -57,18 +61,31 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       state.flags = state.flags.filter((flagId) => flagId !== effect.flagId);
       return;
     case 'addItem': {
-      const definition = findItemDefinition(catalog, effect.itemId);
-      addStack(state.player.inventory.stacks, effect.itemId, effect.quantity, state.player.inventory.capacity, definition.stackLimit);
+      if (!tryAutoPlaceReward(state, catalog, effect.itemId, effect.quantity)) state.pendingOverflow = { itemId: effect.itemId, quantity: effect.quantity, locationId: state.locationId, mandatory: effect.mandatory === true };
       return;
     }
-    case 'removeItem':
-      removeStack(state.player.inventory.stacks, effect.itemId, effect.quantity);
+    case 'removeItem': {
+      let remaining = effect.quantity;
+      const pocketQuantity = state.player.inventory.stacks.find(({ itemId }) => itemId === effect.itemId)?.quantity ?? 0;
+      const fromPocket = Math.min(remaining, pocketQuantity);
+      if (fromPocket > 0) { removeStack(state.player.inventory.stacks, effect.itemId, fromPocket); remaining -= fromPocket; }
+      const cargoQuantity = state.ship?.cargo.find(({ itemId }) => itemId === effect.itemId)?.quantity ?? 0;
+      const fromCargo = Math.min(remaining, cargoQuantity);
+      if (fromCargo > 0 && state.ship) { removeStack(state.ship.cargo, effect.itemId, fromCargo); remaining -= fromCargo; }
+      if (remaining > 0) throw new Error(`Not enough Item "${effect.itemId}" to remove ${effect.quantity}.`);
       return;
+    }
     case 'buyItem':
-      buyItem(state, catalog, effect.itemId, effect.quantity);
+      buyItem(state, catalog, effect.itemId, effect.quantity, effect.negotiation);
       return;
     case 'sellItem':
-      sellItem(state, catalog, effect.itemId, effect.quantity);
+      sellItem(state, catalog, effect.itemId, effect.quantity, effect.negotiation);
+      return;
+    case 'buyShip':
+      buyShip(state, catalog, effect.shipId, effect.shipId, effect.negotiation);
+      return;
+    case 'sellShip':
+      sellShip(state, catalog, effect.negotiation);
       return;
     case 'addTrait':
       if (state.player.traits.includes(effect.traitId)) return;
@@ -171,6 +188,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       if (effect.status === 'crew' && npc.status !== 'crew' && !canRecruitNpc(state, catalog, npcId, effect.allowWithoutLeadership === true)) throw new Error(`Cannot recruit NPC "${npcId}" without leadership or free crew capacity.`);
       if (effect.status === 'crew') state.passengerNpcIds = state.passengerNpcIds.filter((id) => id !== npcId);
       state.npcs[npcId] = { ...npc, status: effect.status };
+      if (state.companionNpcId === npcId && (effect.status === 'dead' || effect.status === 'departed')) state.companionNpcId = null;
       return;
     }
     case 'setNpcPassenger': {

@@ -11,7 +11,7 @@ import { createDefaultNpcState } from '../src/game/model/npcState';
 
 const catalog = createContentCatalog([]);
 const context = { sourceEventId: 'wreck', sourceChoiceId: 'survive' };
-const ship = { shipId: 'sloop', name: 'Test Sloop', health: 1, cargo: [{ itemId: 'sealed_chart', quantity: 2 }] };
+const ship = { shipId: 'sloop', name: 'Test Sloop', health: 1, cargo: [{ itemId: 'timber', quantity: 2, provenance: [{ locationId: 'foosha_village', quantity: 2 }] }] };
 const rescuerRoll: DiceResolution = {
   type: 'dice', statId: 'strength', actor: { type: 'bestCrew', statId: 'strength', requireNoDevilFruit: true }, successThreshold: 10,
   outcomes: Object.fromEntries(['criticalFailure', 'failure', 'success', 'criticalSuccess'].map((result) => [result, { id: result, textKey: result, effects: [] }])) as DiceResolution['outcomes'],
@@ -25,7 +25,7 @@ describe('Ship survival/recovery runtime', () => {
   it('persists and clears maritimeEmergency while wrecking only ship-owned state', () => {
     const state = createInitialGameState(7);
     state.locationId = 'foosha_village'; state.travelState = 'at_sea'; state.ship = ship;
-    state.player.inventory.stacks = [{ itemId: 'mira_letter_of_passage', quantity: 1 }]; state.berries = 42;
+    state.player.inventory.stacks = [{ itemId: 'mira_letter_of_passage', quantity: 1, provenance: [{ locationId: 'foosha_village', quantity: 1 }] }]; state.berries = 42;
     const wrecked = applyEffects(state, catalog, [{ type: 'beginMaritimeEmergency', cause: 'accident' }], context);
     expect(wrecked).toMatchObject({ ship: null, pendingShip: null, berries: 42, maritimeEmergency: { kind: 'shipwreck', seaId: 'east_blue', cause: 'accident' } });
     expect(wrecked.player.inventory.stacks).toEqual(state.player.inventory.stacks);

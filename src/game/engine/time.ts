@@ -2,7 +2,7 @@ import type { ContentCatalog } from '../content/schema';
 import type { GameState } from '../model/schema';
 import { modifyPlayerHealth } from './health';
 
-const BERRIES_PER_BIRTHDAY = 50;
+const CHILDHOOD_INCOME: Record<string, number> = { poor: 500, modest: 750, wealthy: 1500 };
 
 export function consumePhaseSlot(state: GameState, phaseBeforeResolution: GameState['careerPhase'], catalog: ContentCatalog): GameState {
   if (phaseBeforeResolution === 'origins') {
@@ -31,11 +31,19 @@ export function finalizePendingSlot(state: GameState, catalog: ContentCatalog): 
 }
 function advanceAge(state: GameState, ageMonths: number, catalog: ContentCatalog): GameState {
   const birthdays = Math.floor(ageMonths / 12) - Math.floor(state.ageMonths / 12);
+  const startYear = Math.floor(state.ageMonths / 12);
+  const income = Array.from({ length: birthdays }, (_, index) => startYear + index + 1)
+    .filter((age) => age >= 5 && age <= 14)
+    .reduce((sum) => sum + (CHILDHOOD_INCOME[state.player.profile.socialClassId ?? ''] ?? 0), 0);
   const advanced = {
     ...state,
     player: { ...state.player, stats: { ...state.player.stats } },
     ageMonths,
-    berries: state.berries + birthdays * BERRIES_PER_BIRTHDAY,
+    npcs: Object.fromEntries(Object.entries(state.npcs).map(([id, npc]) => [id, npc.status !== 'crew' || birthdays === 0 ? npc : {
+      ...npc,
+      stats: Object.fromEntries(Object.entries(npc.stats).map(([statId, value]) => [statId, Math.min(50, value + birthdays)])) as unknown as typeof npc.stats,
+    }])),
+    berries: state.berries + income,
   };
   if (birthdays > 0 && advanced.player.profile.raceId !== null && advanced.player.stats.health > 0) {
     modifyPlayerHealth(advanced, catalog, birthdays);

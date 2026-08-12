@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { contentCatalog } from '../src/game/content/definitions';
+import type { EventDefinition } from '../src/game/content/schema';
 import { resolveChoice } from '../src/game/engine/resolution';
 import { createInitialGameState } from '../src/game/model/initialState';
 import { chooseInSession, chooseMonthlyNavigationInSession, createSessionState, getSessionNavigationOptions, startNewRun, type GameSessionState } from '../src/game/session/gameSession';
@@ -48,16 +49,19 @@ describe('GameSession', () => {
   });
 
   it('exposes the exact Dice resolution returned by the engine', () => {
+    const outcome = (id: string) => ({ id, textKey: 'fixture.outcome', effects: [{ type: 'setFlag' as const, flagId: 'dice_session_resolved' }] });
+    const event: EventDefinition = { id: 'dice_session_fixture', kind: 'normal', titleKey: 'fixture.title', textKey: 'fixture.text', choices: [{ id: 'roll', textKey: 'fixture.choice', resolution: { type: 'dice', statId: 'charisma', successThreshold: 10, outcomes: { criticalFailure: outcome('critical_failure'), failure: outcome('failure'), success: outcome('success'), criticalSuccess: outcome('critical_success') } } }] };
+    const catalog = { ...contentCatalog, events: [...contentCatalog.events, event] };
     const state = createInitialGameState(123);
     state.careerPhase = 'active';
     state.ageMonths = 180;
     state.locationId = 'open_sea';
     state.travelState = 'at_sea';
     state.flags = ['castaway_resolved'];
-    state.currentEventId = 'black_squall';
-    const expected = resolveChoice(structuredClone(state), contentCatalog, 'black_squall', 'cut_through_squall');
+    state.currentEventId = 'dice_session_fixture';
+    const expected = resolveChoice(structuredClone(state), catalog, 'dice_session_fixture', 'roll');
 
-    const actual = choose(createSessionState(state), 'cut_through_squall');
+    const actual = chooseInSession(createSessionState(state), catalog, 'roll');
 
     expect(actual.lastResolution).toEqual(expected);
     expect(actual.gameState).toEqual(expected.state);

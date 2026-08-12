@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { DiceResolution, Outcome } from '../src/game/content/schema';
+import type { DiceResolution, EventDefinition, Outcome } from '../src/game/content/schema';
 import { contentCatalog } from '../src/game/content/definitions';
 import {
   evaluateDiceRoll,
@@ -139,16 +139,16 @@ describe('DiceResolution integration', () => {
   });
 
   it('applies one of four Outcomes and exposes transient diagnostics', () => {
+    const effects = [{ type: 'setFlag' as const, flagId: 'dice_resolved' }];
+    const event: EventDefinition = { id: 'dice_fixture', kind: 'normal', titleKey: 'fixture.title', textKey: 'fixture.text', choices: [{ id: 'roll', textKey: 'fixture.choice', resolution: resolution({ outcomes: { criticalFailure: { ...outcome('critical_failure'), effects }, failure: { ...outcome('failure'), effects }, success: { ...outcome('success'), effects }, criticalSuccess: { ...outcome('critical_success'), effects } } }) }] };
+    const catalog = { ...contentCatalog, events: [...contentCatalog.events, event] };
     const state = createInitialGameState(123);
-    state.currentEventId = 'reefs';
-    state.locationId = 'open_sea';
-    state.flags = ['wreck_resolved'];
+    state.currentEventId = 'dice_fixture';
     const rngBeforeRoll = state.rngState;
 
-    const result = resolveChoice(state, contentCatalog, 'reefs', 'force_passage');
+    const result = resolveChoice(state, catalog, 'dice_fixture', 'roll');
 
-    expect(result.state.locationId).toBe('loguetown');
-    expect(result.state.flags).toContain('reefs_crossed');
+    expect(result.state.flags).toContain('dice_resolved');
     expect(result.state.rngState).not.toBe(rngBeforeRoll);
     expect(result.dice).toMatchObject({ statId: 'navigation', statValue: 25, outcomeId: result.outcome.id });
     expect(['criticalFailure', 'failure', 'success', 'criticalSuccess']).toContain(result.dice?.result);

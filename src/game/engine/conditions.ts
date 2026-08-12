@@ -2,10 +2,11 @@ import type { ChoiceDefinition } from '../content/schema';
 import type { Condition } from '../content/schema';
 import type { GameState } from '../model/schema';
 import { availableCargoSlots, canAcquireShip, canRecruitNpc, countCurrentCrew, findShipDefinition } from './ship';
-import { canBuyItem, canSellItem, inventoryFreeSlots, itemQuantity } from './economy';
+import { canBuyItem, canSellItem, canSellShip as canSellShipAtMarket, inventoryFreeSlots, itemQuantity } from './economy';
 import { canConsumeDevilFruit, playerHakiSourceTotal } from './powers';
 import { isLocationWithin } from './locations';
 import { countFallbackStreak, currentSeaPorts, currentShipDestructionCause, findBestSwimmingRescuer, findHighestRelationshipFruitCrew, sameIslandPorts } from './maritime';
+import { effectivePlayerStat } from './stats';
 
 export interface ChoiceState {
   visible: boolean;
@@ -23,15 +24,28 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
     case 'hasTrait':
       return state.player.traits.includes(condition.traitId);
     case 'statAtLeast': {
-      const stat = state.player.stats[condition.statId];
+      const stat = catalog ? effectivePlayerStat(state, catalog, condition.statId) : state.player.stats[condition.statId];
       return stat !== null && stat >= condition.value;
     }
     case 'hasFlag':
       return state.flags.includes(condition.flagId);
     case 'hasItem':
-      return itemQuantity(state.player.inventory.stacks, condition.itemId) > 0;
+      return itemQuantity(state.player.inventory.stacks, condition.itemId) + itemQuantity(state.ship?.cargo ?? [], condition.itemId) > 0;
+    case 'activeLogPoseIs':
+      return catalog?.items.find(({ id }) => id === state.player.logPose?.itemId)?.logPoseType === condition.logPoseType;
+    case 'hasActiveCompanion':
+      return state.companionNpcId !== null;
+    case 'activeCompanionIs':
+      return state.companionNpcId === condition.npcId;
+    case 'hasEquipped':
+      return state.player.equipment.some((stack) => stack?.itemId === condition.itemId);
+    case 'hasEquippedWeapon':
+      return catalog !== undefined && state.player.equipment.some((stack) => {
+        const weapon = catalog.items.find(({ id }) => id === stack?.itemId)?.weapon;
+        return weapon !== undefined && (condition.damageType === undefined || weapon.damageType === condition.damageType) && (condition.rangeType === undefined || weapon.rangeType === condition.rangeType);
+      });
     case 'itemQuantityAtLeast':
-      return itemQuantity(state.player.inventory.stacks, condition.itemId) >= condition.quantity;
+      return itemQuantity(state.player.inventory.stacks, condition.itemId) + itemQuantity(state.ship?.cargo ?? [], condition.itemId) >= condition.quantity;
     case 'inventoryFreeSlotsAtLeast':
       return inventoryFreeSlots(state.player.inventory) >= condition.value;
     case 'canBuyItem':
@@ -92,8 +106,12 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
     case 'canAcquireShip':
       return catalog !== undefined && canAcquireShip(state, catalog, condition.shipId);
     case 'canSellShip': {
-      const market = catalog?.locations.find(({ id }) => id === state.locationId)?.shipMarket;
-      return state.ship !== null && state.pendingShip !== null && market !== undefined && market !== 'none';
+      if (catalog === undefined || state.ship === null) return false;
+      if (state.pendingShip !== null) {
+        const market = catalog.locations.find(({ id }) => id === state.locationId)?.shipMarket ?? 'none';
+        return market !== 'none';
+      }
+      return canSellShipAtMarket(state, catalog);
     }
     case 'npcStatusIs':
       return state.npcs[condition.npcId]?.status === condition.status;

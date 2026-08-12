@@ -19,7 +19,7 @@ Interpolation supports only named `{{placeholder}}` values. Secondary translatio
 
 Runtime-named NPCs use `{{npc_<npcId>}}` placeholders (for example `{{npc_childhood_friend}}`). The value comes from the run-persistent `NpcState.displayName`; fixed-name NPCs fall back to their normal `nameKey`.
 
-`CONTENT_SCHEMA_VERSION = 11` versions the authoring/runtime content contract independently from save `GameState.version = 20`. Runtime content validation rejects unsupported schema versions and missing source-French keys. Missing English entries are valid.
+`CONTENT_SCHEMA_VERSION = 12` versions the authoring/runtime content contract independently from save `GameState.version = 21`. Runtime content validation rejects unsupported schema versions and missing source-French keys. New D2.6 system UI copy is authored in both French and English; older missing English entries may still fall back to French.
 
 The UI locale is stored separately under `jam-op-fan-game.locale`; it is never part of career state.
 

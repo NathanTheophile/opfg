@@ -53,6 +53,9 @@ export const createCondition = (type: Condition['type']): Condition => {
     case 'statAtLeast': return { type, statId: 'luck', value: 20 };
     case 'hasFlag': return { type, flagId: '' };
     case 'hasItem': return { type, itemId: '' };
+    case 'activeLogPoseIs': return { type, logPoseType: 'paradise' };
+    case 'hasActiveCompanion': return { type };
+    case 'activeCompanionIs': return { type, npcId: '' };
     case 'berriesAtLeast': return { type, value: 0 };
     case 'hasCrew': return { type };
     case 'crewSizeAtLeast': return { type, value: 1 };

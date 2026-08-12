@@ -30,16 +30,19 @@ describe('Ship System V1', () => {
   it('keeps personal stacks separate from cargo and enforces slots and quantities', () => {
     const state = withShip();
     const stacked = applyEffects(state, contentCatalog, [
-      { type: 'addItem', itemId: 'sealed_chart', quantity: 2 },
-      { type: 'addItem', itemId: 'sealed_chart', quantity: 3 },
-      { type: 'addCargoItem', itemId: 'mira_letter_of_passage', quantity: 4 },
+      { type: 'addItem', itemId: 'timber', quantity: 2 },
+      { type: 'addItem', itemId: 'timber', quantity: 3 },
+      { type: 'addCargoItem', itemId: 'timber', quantity: 4 },
       { type: 'modifyBerries', amount: 10 },
     ], context);
-    expect(stacked.player.inventory.stacks).toEqual([{ itemId: 'sealed_chart', quantity: 5 }]);
-    expect(stacked.ship?.cargo).toEqual([{ itemId: 'mira_letter_of_passage', quantity: 4 }]);
+    expect(stacked.player.inventory.stacks).toEqual([
+      { itemId: 'timber', quantity: 2, provenance: [{ locationId: 'foosha_village', quantity: 2 }] },
+      { itemId: 'timber', quantity: 3, provenance: [{ locationId: 'foosha_village', quantity: 3 }] },
+    ]);
+    expect(stacked.ship?.cargo).toEqual([{ itemId: 'timber', quantity: 4, provenance: [{ locationId: null, quantity: 4 }] }]);
     expect(stacked.berries).toBe(10);
     expect(state.player.inventory.stacks).toEqual([]);
-    expect(() => applyEffects(stacked, contentCatalog, [{ type: 'removeItem', itemId: 'sealed_chart', quantity: 6 }], context)).toThrow(/Not enough/);
+    expect(() => applyEffects(stacked, contentCatalog, [{ type: 'removeItem', itemId: 'timber', quantity: 10 }], context)).toThrow(/Not enough/);
   });
 
   it('blocks acquisition when the authored ship cannot accommodate current NPC crew', () => {
@@ -54,7 +57,7 @@ describe('Ship System V1', () => {
   it('queues replacement, transfers cargo, and resolves abandon or location-gated sale through the Critical pipeline', () => {
     const state = withShip();
     state.locationId = 'loguetown';
-    state.ship!.cargo = [{ itemId: 'sealed_chart', quantity: 2 }];
+    state.ship!.cargo = [{ itemId: 'timber', quantity: 2, provenance: [{ locationId: 'foosha_village', quantity: 2 }] }];
     const pending = applyEffects(state, contentCatalog, [{ type: 'acquireShip', shipId: 'merchant_ship', name: 'New Dawn' }], context);
     expect(pending.ship?.shipId).toBe('sloop');
     expect(pending.pendingShip?.shipId).toBe('merchant_ship');
@@ -63,7 +66,7 @@ describe('Ship System V1', () => {
     const atPort = selectNextEvent(pending, contentCatalog);
     const sold = resolveChoice(atPort, contentCatalog, 'critical_ship_replacement', 'sell_old_ship').state;
     expect(sold).toMatchObject({ pendingShip: null, berries: 25, ship: { shipId: 'merchant_ship', name: 'New Dawn' } });
-    expect(sold.ship?.cargo).toEqual([{ itemId: 'sealed_chart', quantity: 2 }]);
+    expect(sold.ship?.cargo).toEqual([{ itemId: 'timber', quantity: 2, provenance: [{ locationId: 'foosha_village', quantity: 2 }] }]);
 
     const atSea = { ...pending, locationId: 'open_sea', travelState: 'at_sea' as const };
     const selected = selectNextEvent(atSea, contentCatalog);
@@ -99,15 +102,10 @@ describe('Ship System V1', () => {
     expect(selectNextEvent(wrecked, contentCatalog).currentEventId).not.toBe('critical_ship_replacement');
   });
 
-  it('guards every known ship-damage source when no ship exists', () => {
-    const state = createInitialGameState(); state.careerPhase = 'active'; state.ageMonths = 180; state.travelState = 'at_sea';
-    for (const eventId of ['reefs', 'black_squall']) {
-      const event = contentCatalog.events.find(({ id }) => id === eventId)!;
-      expect(evaluateCondition(event.eligibility!, state, contentCatalog)).toBe(false);
-    }
-    const hunters = contentCatalog.events.find(({ id }) => id === 'mira_hunters')!;
-    const destructive = hunters.choices.find(({ id }) => id === 'outrun_hunters')!;
-    expect(getChoiceState(destructive, state, contentCatalog).available).toBe(false);
+  it('guards ship damage when no ship exists after the Content Reset', () => {
+    const state = createInitialGameState();
+    expect(evaluateCondition({ type: 'hasShip' }, state, contentCatalog)).toBe(false);
+    expect(() => applyEffects(state, contentCatalog, [{ type: 'modifyShipHealth', amount: -1 }], context)).toThrow(/ship/i);
   });
 
   it('reports invalid simulation state for HP, slots, quantities, and ShipId', () => {
@@ -115,7 +113,7 @@ describe('Ship System V1', () => {
     state.ship!.health = 31;
     expect(() => assertValidSimulationState(state, contentCatalog)).toThrow(/health/);
     state.ship!.health = 30;
-    state.ship!.cargo = [{ itemId: 'sealed_chart', quantity: 0 }];
+    state.ship!.cargo = [{ itemId: 'sealed_chart', quantity: 0, provenance: [] }];
     expect(() => assertValidSimulationState(state, contentCatalog)).toThrow(/invalid stacks/);
     state.ship!.cargo = [];
     state.ship!.shipId = 'missing_ship';

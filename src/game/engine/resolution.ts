@@ -71,7 +71,7 @@ function finalizeOutcome(
       : afterCastInteraction;
   let resolvedState: GameState = {
     ...afterSystemResolution,
-    history: [
+    history: event.kind === 'system' ? afterSystemResolution.history : [
       ...afterSystemResolution.history,
       { eventId: event.id, choiceId, outcomeId: outcome.id, ageMonths: afterSystemResolution.ageMonths },
     ],

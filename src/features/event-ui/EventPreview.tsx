@@ -33,6 +33,8 @@ import type {
   NpcStatId,
 } from '@/game/model/schema';
 import { useGameSession } from '@/game/session/useGameSession';
+import { moveItem, resolveOverflow, type StorageSlot } from '@/game/engine/inventory';
+import { setActiveCompanion, useCrewRolePower } from '@/game/engine/crewPowers';
 import { npcInterpolationParams } from '@/game/engine/npcNames';
 import { originNarrativeInterpolationParams } from '@/game/engine/originNarrative';
 import {
@@ -84,8 +86,9 @@ const NPC_STAT_KEYS: Record<NpcStatId, string> = {
   observation: 'stat.observation',
   intelligence: 'stat.intelligence',
   luck: 'stat.luck',
-  loyalty: 'npcStat.loyalty',
-  calm: 'npcStat.calm',
+  agility: 'stat.agility',
+  navigation: 'stat.navigation',
+  charisma: 'stat.charisma',
 };
 
 const RESULT_KEYS: Record<DiceResult, string> = {
@@ -304,6 +307,8 @@ export function EventPreview({
 
   const timerRef =
     useRef<number | null>(null);
+  const [selectedStorageSlot, setSelectedStorageSlot] = useState<StorageSlot | null>(null);
+  const selectedStorageSlotRef = useRef<StorageSlot | null>(null);
 
   const adventureScrollRef =
     useRef<HTMLDivElement | null>(null);
@@ -384,9 +389,7 @@ export function EventPreview({
             return [
               {
                 id: choice.id,
-                label: translate(
-                  choice.textKey,
-                ),
+                label: translate(choice.textKey, choice.interpolation),
                 disabled:
                   !choiceState.available,
                 requirement:
@@ -452,13 +455,9 @@ export function EventPreview({
               )}`
             : ''
         }`,
-        title: translate(
-          session.currentEvent.titleKey,
-        ),
+        title: translate(session.currentEvent.titleKey),
         body: renderNarrativeBody(
-          translate(
-            session.currentEvent.textKey,
-          ),
+          translate(session.currentEvent.textKey, session.currentEvent.interpolation),
           session.currentEvent.cast,
           state,
           catalog,
@@ -731,6 +730,18 @@ export function EventPreview({
     session.restartRun();
   };
 
+  const handleStorageSlot = (slot: StorageSlot) => {
+    const source = selectedStorageSlotRef.current;
+    if (!source) {
+      selectedStorageSlotRef.current = slot;
+      setSelectedStorageSlot(slot);
+      return;
+    }
+    session.applySystemAction((next) => { moveItem(next, catalog, source, slot); });
+    selectedStorageSlotRef.current = null;
+    setSelectedStorageSlot(null);
+  };
+
   const changeLocale = (
     next: LocaleId,
   ) => {
@@ -789,6 +800,7 @@ export function EventPreview({
   const statsRail = (
     <PlayerStatsRail
       state={displayState}
+      catalog={catalog}
       previousState={
         displayPreviousState
       }
@@ -820,6 +832,7 @@ export function EventPreview({
           NPC_STAT_KEYS[id],
         )
       }
+      onUseRolePower={(roleId, destinationId) => session.applySystemAction((next) => useCrewRolePower(next, catalog, roleId, destinationId))}
     />
   );
 
@@ -838,6 +851,9 @@ export function EventPreview({
     translate,
     locale,
     calendarAgeMonths,
+    selectedStorageSlot,
+    onStorageSlot: handleStorageSlot,
+    onSelectCompanion: (npcId: string | null) => session.applySystemAction((next) => setActiveCompanion(next, catalog, npcId)),
   };
 
   return (
@@ -879,7 +895,19 @@ export function EventPreview({
                     : undefined
                 }
               >
-                  {showOutcome && outcomeView ? (
+                  {state.pendingOverflow ? (
+                    <Panel variant="strong" className="opfg-overflow-panel" aria-label={translate('ui.overflow.title')}>
+                      <h2>{translate('ui.overflow.title')}</h2>
+                      <p>{translate('ui.overflow.description')}</p>
+                      {[...state.player.inventory.stacks.map((stack, index) => ({ stack, storage: 'pocket' as const, index })), ...(state.ship?.cargo ?? []).map((stack, index) => ({ stack, storage: 'cargo' as const, index }))].map(({ stack, storage, index }) => {
+                        const definition = catalog.items.find(({ id }) => id === stack.itemId);
+                        return <Button key={`${storage}-${index}`} onClick={() => session.applySystemAction((next) => resolveOverflow(next, catalog, { type: 'discardStored', storage, index }))}>
+                          {translate('ui.overflow.replace', { item: definition ? translate(definition.nameKey) : stack.itemId })}
+                        </Button>;
+                      })}
+                      {!state.pendingOverflow.mandatory && <Button onClick={() => session.applySystemAction((next) => resolveOverflow(next, catalog, { type: 'abandonIncoming' }))}>{translate('ui.overflow.abandon')}</Button>}
+                    </Panel>
+                  ) : showOutcome && outcomeView ? (
                     <>
                       {resolvedEventView && (
                         <EventPanel

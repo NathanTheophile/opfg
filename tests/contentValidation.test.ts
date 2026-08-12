@@ -17,6 +17,74 @@ function eventById(catalog: Record<string, any>, eventId: string): Record<string
 }
 
 describe('validateContent', () => {
+  it('validates D2.6 equipment Conditions and crew-role Dice actors', () => {
+    const catalog = cloneCatalog();
+    const key = catalog.races[0].nameKey;
+    const outcome = { id: 'outcome', textKey: key, effects: [] };
+    catalog.events.push({
+      id: 'd26_validator_fixture', kind: 'normal', phase: 'active', titleKey: key, textKey: key,
+      eligibility: { type: 'hasEquipped', itemId: 'missing_equipment' },
+      choices: [{ id: 'choice', textKey: key, visibleIf: { type: 'hasEquippedWeapon', damageType: 'laser', rangeType: 'remote' }, resolution: {
+      type: 'dice', statId: 'navigation', successThreshold: 10,
+      actor: { type: 'crewRole', roleId: 'missing_role', statId: 'calm' },
+      outcomes: { criticalFailure: outcome, failure: outcome, success: outcome, criticalSuccess: outcome },
+      }}],
+    });
+    const errors = messages(catalog);
+    expect(errors).toEqual(expect.arrayContaining([
+      expect.stringContaining('Unknown Equipment ItemId "missing_equipment"'),
+      expect.stringContaining('Invalid equipped weapon damage type'),
+      expect.stringContaining('Invalid equipped weapon range type'),
+      expect.stringContaining('Unknown CrewRoleId "missing_role"'),
+      expect.stringContaining('Invalid NpcStatId "calm"'),
+    ]));
+  });
+
+  it('validates active Log Pose and companion Condition metadata', () => {
+    const catalog = cloneCatalog();
+    const key = catalog.races[0].nameKey;
+    const outcome = { id: 'outcome', textKey: key, effects: [] };
+    catalog.events.push({
+      id: 'd26_special_slot_conditions', kind: 'normal', phase: 'active', titleKey: key, textKey: key,
+      eligibility: { type: 'activeLogPoseIs', logPoseType: 'eternal' },
+      choices: [{
+        id: 'choice', textKey: key, availableIf: { type: 'activeCompanionIs', npcId: 'mira' },
+        resolution: { type: 'deterministic', outcome },
+      }],
+    });
+
+    const errors = messages(catalog);
+    expect(errors).toEqual(expect.arrayContaining([
+      expect.stringContaining('Invalid Log Pose type'),
+      expect.stringContaining('Unknown companion-capable NpcId "mira"'),
+    ]));
+  });
+
+  it('validates D2.6 Item, companion, Market Hub and exact Ship contracts', () => {
+    const catalog = cloneCatalog();
+    catalog.items.push({
+      id: 'broken_item', nameKey: 'item.sealed_chart.name', category: 'item', stackLimit: 1, market: { basePriceBerries: -1, mode: 'dynamic' },
+      modifiers: { calm: 1 }, weapon: { damageType: 'laser', rangeType: 'remote' }, twoHanded: true, logPoseType: 'eternal',
+    });
+    catalog.npcs[0].companionModifiers = { navigation: 4 };
+    catalog.locations[0].hasMarketHub = true;
+    catalog.locations[0].shipMarket = 'none';
+    catalog.locations[0].marketItemIds = [];
+    catalog.ships.find((ship: Record<string, any>) => ship.id === 'dinghy').cargoSlots = 2;
+    const errors = messages(catalog);
+    expect(errors).toEqual(expect.arrayContaining([
+      expect.stringContaining('Item basePriceBerries must be a positive integer'),
+      expect.stringContaining('Invalid Item market mode'),
+      expect.stringContaining('Equipment-only fields are forbidden'),
+      expect.stringContaining('Invalid weapon damage type'),
+      expect.stringContaining('Log Pose identity'),
+      expect.stringContaining('Companion modifiers require companionCapable'),
+      expect.stringContaining('absolute total cannot exceed 3'),
+      expect.stringContaining('Market Hub requires an authored'),
+      expect.stringContaining('requires cargo 1 and price 5000'),
+    ]));
+  });
+
   it('validates Devil Fruit registries and Powers primitives', () => {
     const catalog = cloneCatalog();
     catalog.devilFruits.push({ id: 'broken_fruit', nameKey: 'devilFruit.yuki_yuki.name', type: 'mystery', playableV1: true, itemId: 'missing_item', tags: ['unknown_tag'] });

@@ -23,7 +23,7 @@ describe('Powers V1', () => {
     expect(carrying.player.powers.devilFruitId).toBeNull();
     expect(evaluateCondition({ type: 'canConsumeDevilFruit', fruitId: 'yuki_yuki' }, carrying, catalog)).toBe(true);
     const consumed = apply(carrying, [{ type: 'consumeDevilFruit', fruitId: 'yuki_yuki' }]);
-    expect(consumed.player.inventory.stacks).toEqual([{ itemId: 'yuki_yuki_fruit_item', quantity: 1 }]);
+    expect(consumed.player.inventory.stacks).toEqual([{ itemId: 'yuki_yuki_fruit_item', quantity: 1, provenance: [{ locationId: 'foosha_village', quantity: 1 }] }]);
     expect(consumed.player.powers.devilFruitId).toBe('yuki_yuki');
     expect(consumed.player.powers.devilFruitAwakening).toBe(0);
     expect(() => apply(consumed, [{ type: 'consumeDevilFruit', fruitId: 'tori_tori_falcon' }])).toThrow('cannot be consumed');
@@ -78,7 +78,7 @@ describe('Powers V1', () => {
     expect(() => apply(state, [{ type: 'raiseConquerorHakiTo', level: 3 }])).toThrow('monotonically');
   });
 
-  it('persists Player and NPC Powers and migrates v12 defaults', () => {
+  it('persists Player and NPC Powers and rejects pre-reset Save v12', () => {
     const state = createInitialGameState();
     state.player.powers.haki.conqueror = 2;
     state.npcs.mira.powers.devilFruitId = 'tori_tori_falcon';
@@ -89,9 +89,7 @@ describe('Powers V1', () => {
     const stats = player.stats as Record<string, unknown>; stats.awakening = null;
     for (const npc of Object.values(legacy.npcs as Record<string, Record<string, unknown>>)) delete npc.powers;
     const restored = deserializeGameState(JSON.stringify(legacy));
-    expect(restored?.player.powers.devilFruitId).toBeNull();
-    expect(restored?.npcs.mira.powers.haki.conqueror).toBe(0);
-    expect('awakening' in (restored?.player.stats ?? {})).toBe(false);
+    expect(restored).toBeNull();
   });
 
   it('keeps NPC Fruit assignment monotone and rejects replacing a different Fruit', () => {

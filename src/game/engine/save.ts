@@ -2,7 +2,7 @@ import type { CareerEndReason, CareerPhase, GameState, ItemStack, MaritimeEmerge
 import { createDefaultPowerState } from './powers';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-const CURRENT_SAVE_VERSION = 20;
+export const CURRENT_SAVE_VERSION = 21;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
@@ -60,6 +60,9 @@ function readGameState(value: unknown): GameState | null {
   if (!isRecord(value.player) || !isRecord(value.player.stats) || !isStringArray(value.player.traits)) return null;
   const inventory = readInventory(value.player.inventory);
   if (inventory === null || inventory.capacity !== 2) return null;
+  const equipment = readEquipment(value.player.equipment);
+  const logPose = readOptionalStack(value.player.logPose);
+  if (equipment === null || logPose === undefined) return null;
   const profile = readPlayerProfile(value.player.profile);
   if (profile === null) return null;
   const career = readCareerState(value.player.career);
@@ -79,6 +82,9 @@ function readGameState(value: unknown): GameState | null {
   const pendingShip = readShip(value.pendingShip);
   const maritimeEmergency = readMaritimeEmergency(value.maritimeEmergency);
   if (ship === undefined || pendingShip === undefined || maritimeEmergency === undefined || typeof value.isLeader !== 'boolean' || !isUniqueStringArray(value.passengerNpcIds) || !isNonNegativeInteger(value.berries)) return null;
+  if (!isNullableString(value.companionNpcId) || !isRecord(value.crewRoleLastUsedYear) || !Object.values(value.crewRoleLastUsedYear).every(isNonNegativeInteger)) return null;
+  const pendingOverflow = readPendingOverflow(value.pendingOverflow);
+  if (pendingOverflow === undefined) return null;
   if (!isStringArray(value.flags)) return null;
 
   const npcs = readNpcs(value.npcs);
@@ -124,6 +130,8 @@ function readGameState(value: unknown): GameState | null {
       },
       traits: [...value.player.traits],
       inventory,
+      equipment,
+      logPose,
       powers: playerPowers,
     },
     ship,
@@ -131,6 +139,9 @@ function readGameState(value: unknown): GameState | null {
     maritimeEmergency,
     isLeader: value.isLeader,
     passengerNpcIds: [...value.passengerNpcIds],
+    companionNpcId: value.companionNpcId,
+    crewRoleLastUsedYear: Object.fromEntries(Object.entries(value.crewRoleLastUsedYear).map(([key, year]) => [key, year as number])),
+    pendingOverflow,
     berries: value.berries,
     flags: [...value.flags],
     npcs,
@@ -293,9 +304,11 @@ function readStacks(value: unknown): ItemStack[] | null {
   const seen = new Set<string>();
   const stacks: ItemStack[] = [];
   for (const entry of value) {
-    if (!isRecord(entry) || !isString(entry.itemId) || !Number.isInteger(entry.quantity) || (entry.quantity as number) <= 0 || seen.has(entry.itemId)) return null;
+    if (!isRecord(entry) || !isString(entry.itemId) || !Number.isInteger(entry.quantity) || (entry.quantity as number) <= 0 || seen.has(entry.itemId) || !Array.isArray(entry.provenance)) return null;
+    const provenance = entry.provenance.flatMap((batch) => isRecord(batch) && (batch.locationId === null || isString(batch.locationId)) && Number.isInteger(batch.quantity) && (batch.quantity as number) > 0 ? [{ locationId: batch.locationId as string | null, quantity: batch.quantity as number }] : []);
+    if (provenance.length !== entry.provenance.length || provenance.reduce((sum, batch) => sum + batch.quantity, 0) !== entry.quantity) return null;
     seen.add(entry.itemId);
-    stacks.push({ itemId: entry.itemId, quantity: entry.quantity as number });
+    stacks.push({ itemId: entry.itemId, quantity: entry.quantity as number, provenance });
   }
   return stacks;
 }
@@ -329,18 +342,37 @@ function readPowerState(value: unknown): PowerState | null {
 function readNpcStats(value: unknown): NpcStats | null {
   if (!isRecord(value)) return null;
   if (!isStatValue(value.health) || !isStatValue(value.morale) || !isStatValue(value.strength)) return null;
-  if (!isStatValue(value.observation) || !isStatValue(value.intelligence) || !isStatValue(value.luck)) return null;
-  if (!isStatValue(value.loyalty) || !isStatValue(value.calm)) return null;
+  if (!isStatValue(value.agility) || !isStatValue(value.observation) || !isStatValue(value.intelligence) || !isStatValue(value.navigation) || !isStatValue(value.charisma) || !isStatValue(value.luck)) return null;
   return {
     health: value.health,
     morale: value.morale,
     strength: value.strength,
+    agility: value.agility,
     observation: value.observation,
     intelligence: value.intelligence,
+    navigation: value.navigation,
+    charisma: value.charisma,
     luck: value.luck,
-    loyalty: value.loyalty,
-    calm: value.calm,
   };
+}
+
+function readOptionalStack(value: unknown): ItemStack | null | undefined {
+  if (value === null) return null;
+  const stacks = readStacks([value]);
+  return stacks?.[0];
+}
+
+function readEquipment(value: unknown): GameState['player']['equipment'] | null {
+  if (!Array.isArray(value) || value.length !== 2) return null;
+  const first = readOptionalStack(value[0]);
+  const second = readOptionalStack(value[1]);
+  return first === undefined || second === undefined ? null : [first, second];
+}
+
+function readPendingOverflow(value: unknown): GameState['pendingOverflow'] | undefined {
+  if (value === null) return null;
+  if (!isRecord(value) || !isString(value.itemId) || !isNonNegativeInteger(value.quantity) || value.quantity === 0 || !(value.locationId === null || isString(value.locationId)) || typeof value.mandatory !== 'boolean') return undefined;
+  return { itemId: value.itemId, quantity: value.quantity, locationId: value.locationId, mandatory: value.mandatory };
 }
 
 function readHistory(value: unknown): GameState['history'] | null {

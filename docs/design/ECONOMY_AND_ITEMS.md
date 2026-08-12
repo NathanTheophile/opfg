@@ -1,5 +1,13 @@
 # OPFG — Economy & Items
 
+> **D2.6 authoritative amendment.** Content Schema 12 / Save 21 replaces the temporary economy below. The only Item categories are `item` and `equipment`. There are no consumables, crafting, durability, ammunition, rarity, weight, local price multipliers, or passive maintenance.
+
+Players have two pockets, two equipment slots, one active Log Pose slot, and one active companion slot. Equipment is inert while stored; equipped modifiers are derived and capped at 50. Two-handed equipment occupies both equipment slots. Owned stacks carry provenance batches whose quantities sum to the stack quantity.
+
+Marketable objects and ships use fixed catalog prices for both purchase and base resale. Resale applies `max(0, 1 + 0.10 × (Charisma d20 modifier + Luck d20 modifier))`; optional negotiation then applies ±20%. Quantities acquired at the seller's current Location cannot be resold there. Locations explicitly author their market mode and catalog.
+
+Ship prices/cargo slots are: Chaloupe 5,000/1; Sloop 25,000/2; Brick 75,000/3; Caravelle 150,000/4; Galion 400,000/6; Navire marchand 300,000/8.
+
 > **Status: validated D2 engine/design authority for the V2 content rebuild.**
 
 ## 1. Purpose
