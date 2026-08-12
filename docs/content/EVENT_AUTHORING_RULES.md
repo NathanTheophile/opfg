@@ -3,6 +3,8 @@
 > **Status: validated specialized content authority**
 >
 > **Scope:** rules for producing, reviewing, validating, and batching authored Events for OPFG V1.
+> **D2 V2 authority note:** §24 is the current override for V2 narrative production. Legacy standard-batch Lifetime quotas and §23 D1.9 Opening Breadth remain historical reference only where §24 says they are superseded.
+
 >
 > **Editorial revision B:** dramatic density, mobile readability, meaningful stakes, recurring cast, age coherence, and Situation → Reaction writing are hard authoring requirements.
 >
@@ -1491,7 +1493,9 @@ The accepted D1.8 Events remain valid content in the D1.9 Opening pool, but thei
 age-by-age order is not an authoring requirement. D1.9 uses narrative families, opening roles,
 age windows, seeded selection and composition guarantees instead.
 
-## 23. Early Childhood Origin Echo authoring
+## 23. Early Childhood Origin Echo authoring — LEGACY D1.9 REFERENCE
+
+> **Superseded for V2 runtime production.** The D1.9 metadata/Opening Breadth rules below document the final pre-reset architecture and remain useful only when mining archived seeds. They do not define the V2 Childhood selector or an accepted V2 batch contract.
 
 ### 23.1 Narrative metadata
 
@@ -1634,3 +1638,107 @@ Before accepting an Opening Breadth batch, reviewers must be able to answer:
 5. Does the batch contain emotional-tone variety?
 6. Does it duplicate a D1.8 opening concept or another D1.9 batch?
 7. Does every persistent NPC appearance respect `cast` and introduction semantics?
+
+## 24. D2 V2 Narrative Reset and Major Saga authoring
+
+<!-- D2_WAVE2_NARRATIVE_RESET:AUTHORING_V2 -->
+This section is the authoritative V2 override for narrative production after the D2 Content Reset.
+
+### 24.1 Superseded legacy production requirements
+
+For V2 batches, the following old mandatory-production rules are **not global requirements** unless a future dedicated batch prompt explicitly opts into them:
+
+- §2.5 mandatory Signature Immediate + three Secondary Immediate + Lifetime Thread quotas;
+- §10.8 mandatory Childhood Lifetime Thread start;
+- §18.1 items 4–13 when they exist solely to enforce those old quotas;
+- §18.3's zero-runs-without-Lifetime criterion;
+- §19's mandatory Lifetime/Immediate quota inputs;
+- §21's old measurable requirement that every standard batch contain those structures;
+- §23 D1.9 Opening Breadth runtime composition.
+
+The quality rules on concrete scenes, text budget, stakes, age coherence, Choice resolvability, recurring cast, callbacks, geography and localization remain fully active.
+
+### 24.2 V2 concept authority
+
+The only accepted-concept ledger for new production is:
+
+`docs/content/events/v2/EVENT_CONCEPT_INDEX_V2.md`
+
+The old pre-V2 index and narrative seed archives are non-authoritative. Search them deliberately only when mining ideas. Do not append to them and do not give them wholesale to parallel production conversations.
+
+### 24.3 Family Legacy Saga batch contract
+
+Family Saga content follows `docs/design/MAJOR_NARRATIVE_TRACKS.md`.
+
+Each of the five Childhood chapters is a mutually exclusive horizontal variant pool. A Family batch must document for every variant:
+
+- track ID and chapter ID;
+- concrete premise and family-specific conflict;
+- exact axes that materially cause this variant (Race, initial family structure, current parent state, class, History, etc.);
+- why the same scene would not be equivalent under a generic fallback;
+- cast and persistent relationships used;
+- prior Choice/Outcome dependencies;
+- whether it is the chapter fallback.
+
+Exactly one fallback is required per chapter across the assembled saga. Fallbacks are safety content and must remain less specific than the variants they protect.
+
+A batch fails horizontal review if most variants are noun-swaps of one common scene or if Race/parents/class are expressed only as locked bonus Choices inside otherwise identical roots.
+
+### 24.4 Five lived roots, broad authored pools
+
+The player lives exactly five Family root chapters in Childhood. The authored saga may contain dozens of mutually exclusive root variants. Production planning may target roughly 45–70 root variants across a mature five-chapter Family Saga, but this is not a hard quota.
+
+Do not pad chapter pools to hit a number. A smaller set of genuinely different states is preferable to superficial combinatorial coverage.
+
+### 24.5 Origins and current state
+
+Initial structure and current reality are separate. For example, `familyStructureIs(two_parents)` does not prove both parents are currently alive/present. Late variants must inspect the relevant NPC status/relationship when current presence matters.
+
+The selector evaluates the state at chapter resolution time. Do not pre-author a fixed future chapter ID merely because an earlier Family Event occurred.
+
+### 24.6 Immediate and Scheduled under V2
+
+Immediate and Scheduled remain valuable and retain their semantics:
+
+- Immediate = continuation of the current scene, no new root slot/time advance;
+- Scheduled = a specific future consequence, consumes a future root slot when resolved.
+
+Use them for mini-arcs, callbacks and consequences. Do **not** use Scheduled A→B→C as the progression mechanism for Major Saga chapters.
+
+### 24.7 Origin Cross mini-arcs
+
+Origin Cross mini-arcs are secondary stories tied to high-yield combinations, especially the playable 5 Affiliation × 4 Race surface. They may reuse selected archived seeds after deliberate review.
+
+Normal target when justified:
+
+`Root → 1–3 Immediate → optional Scheduled callback`
+
+They should end or resolve. They are not disguised Family Major Sagas.
+
+### 24.8 Production-source hygiene
+
+A V2 production conversation receives:
+
+1. current V2 authorities;
+2. the relevant Family Saga blueprint or mini-arc brief;
+3. the V2 Concept Index;
+4. current schema/runtime vocabulary;
+5. a **curated small subset** of legacy/D1.9 seeds relevant to the task.
+
+It must not receive the complete frozen legacy index by default. This prevents old catalogue assumptions from becoming accidental V2 authority.
+
+### 24.9 V2 acceptance focus
+
+In addition to ordinary schema/editorial validation, review V2 Family content for:
+
+- exact chapter membership and one-chapter-per-run semantics;
+- fallback safety;
+- meaningful horizontal reactivity;
+- diversity between representative Origins profiles;
+- callbacks that remember prior Choices rather than merely mentioning them;
+- preservation of room for the 15 non-Family Childhood roots;
+- compatibility with future adult Family continuation.
+
+The prototype acceptance question is:
+
+> Do characters with very different Origins clearly live different versions of the same family story, rather than the same five Events with cosmetic variation?

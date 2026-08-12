@@ -12,6 +12,7 @@ Ce document consolide les décisions Game Design validées pour la jam. Les docu
 
 - [Carrières, réputation et Endings](design/CAREER_AND_ENDINGS.md) ;
 - [timeline mondiale et politique canon](design/WORLD_TIMELINE_AND_CANON.md) ;
+- [Major Narrative Tracks / D2 narrative architecture](design/MAJOR_NARRATIVE_TRACKS.md) ;
 - [règles de production du contenu](content/CONTENT_BIBLE.md) ;
 - [catalogue V1 des 28 Traits](content/TRAITS_CATALOG.md) ;
 - [vocabulaire contrôlé des tags de Locations](content/locations/OPFG_LOCATION_TAGS.md).
@@ -53,6 +54,9 @@ Tous les attributs D20 commencent à `25`. La race fixe directement la Santé in
 
 La race crée un archétype sans RaceSystem dédié. Le contenu utilise `raceIs` pour les situations exclusives, aquatiques ou morphologiques. Il n’existe pas de sous-races. Peuple du Ciel, Lunarien et Tontatta sont réservés pour plus tard.
 
+<!-- D2_WAVE2_NARRATIVE_RESET:ORIGIN_RACE_AVAILABILITY -->
+**Disponibilité narrative D2 V1 :** Humain, Homme-poisson, Mink et Géant sont jouables. Long-bras et Boucanier restent visibles dans Origins mais verrouillés jusqu'à une future passe de contenu dédiée. Le verrouillage réduit la surface de production ; il ne supprime ni leurs définitions ni leur place future dans le monde.
+
 ### Structure familiale
 
 - Deux parents (`two_parents`) : Moral +2, Charisme +1, Observation -1, Agilité -2.
@@ -64,6 +68,9 @@ La structure reste persistante et testable par les Events. Origins instancie imm
 ### Affiliation familiale
 
 Les affiliations V1 sont `civilian`, `marine`, `pirate`, `revolutionary`, `bandit`, `prisoner`, `slave`, `celestial_dragon` et `royal_family`. Elles ne modifient aucune stat. `player.profile.affiliationId` désigne exclusivement l’affiliation familiale héritée, pas une affiliation de carrière Active.
+
+<!-- D2_WAVE2_NARRATIVE_RESET:ORIGIN_FAMILY_AVAILABILITY -->
+**Disponibilité narrative D2 V1 :** les affiliations familiales jouables sont `civilian`, `marine`, `pirate`, `revolutionary` et `royal_family`. `bandit`, `prisoner`, `slave` et `celestial_dragon` restent visibles dans Origins mais verrouillées. Elles seront rouvertes uniquement lorsqu'un traitement narratif suffisamment complet pourra les accompagner.
 
 ## Carrière V1, réputation et fins
 
@@ -159,23 +166,22 @@ Tous les Events n’accordent pas nécessairement une récompense numérique. Po
 
 Cette répartition guide la production de contenu ; ce n’est pas un quota construit par le runtime. Une enfance complète doit permettre l’acquisition d’au moins **2 Traits**.
 
-### Lifetime Threads — garantie narrative de run
+### Family Legacy Saga — garantie narrative V2
 
-Une **Lifetime Thread** est une ligne narrative longue initiée par un root Event Childhood `normal` explicitement marqué `lifetimeThreadSeed: true`. Elle est conçue pour revenir à travers une chaîne verticale de Scheduled Events espacés dans le temps, potentiellement de Childhood jusqu’à Active et aux années suivantes.
+<!-- D2_WAVE2_NARRATIVE_RESET:FAMILY_GUARANTEE -->
+La garantie narrative obligatoire de Childhood n'est plus l'initiation d'une ancienne `Lifetime Thread`. Chaque personnage reçoit la **Family Legacy Saga correspondant à son affiliation familiale héritée**.
 
-Chaque run qui atteint Active doit avoir **initié au moins une Lifetime Thread** pendant Childhood.
+Une Childhood complète contient **exactement cinq root Events de Family Saga**, dus aux checkpoints 12, 48, 84, 120 et 156 mois. Chaque chapitre est un pool horizontal de variantes et évalue l'état **actuel** du personnage au moment de sa résolution : Race, structure familiale initiale, statut/présence des parents, relations, classe sociale, History, Traits et autres Conditions réellement pertinentes.
 
-La garantie de sélection fonctionne ainsi :
+Une seule variante est vécue par chapitre. Le chapitre entier est ensuite considéré comme terminé via History. Chaque chapitre doit posséder exactement un fallback universel, utilisé seulement lorsqu'aucune variante spécialisée n'est éligible.
 
-- avant `ageMonths = 120`, les Lifetime Thread seeds restent des Normal Events ordinaires et peuvent être tirés naturellement ;
-- à la première opportunité de sélection d’un **Normal Event Childhood** avec `ageMonths >= 120`, si aucun Event `lifetimeThreadSeed` n’existe encore dans History, le moteur tire de manière seedée et uniforme parmi les Lifetime Thread seeds actuellement éligibles ;
-- Critical, Immediate et Scheduled conservent toujours leur priorité existante ; la garantie n’intervient qu’au moment où le moteur allait sélectionner un Normal Event ;
-- si aucun Lifetime Thread seed n’est éligible au checkpoint, le runtime ne doit pas crasher ni bloquer la run : il poursuit le pool Normal, mais cette situation constitue une **erreur de couverture narrative** que validation/simulation doivent rendre visible ;
-- une fois une Lifetime Thread initiée, les autres seeds ne reçoivent plus aucune priorité spéciale et redeviennent des Normal Events ordinaires.
+Les variantes Family restent des Normal Events mais sont exclues du pool Normal ordinaire ; seul l'orchestrateur Major Narrative Track peut les sélectionner. La progression ne nécessite aucun `ArcState` ni compteur persistant dédié.
 
-La garantie porte sur **l’initiation** d’une trame, pas sur sa survie jusqu’à son dernier chapitre. Les choix du joueur, la mort, les relations, la géographie, un `cancelIf`, un fallback ou une rupture narrative peuvent écourter ou transformer la ligne.
+La Family Saga est conçue pour continuer après 15 ans et réagir plus tard à l'affiliation personnelle choisie par le joueur. Son authoring adulte est différé, pas annulé.
 
-Aucun `ArcState`, `questState`, compteur de chapitre ou identifiant de thread n’est ajouté au GameState. Le fait qu’une Lifetime Thread ait commencé se reconstruit depuis History et le metadata des EventDefinitions.
+Les anciennes `Lifetime Thread` deviennent du matériau legacy ou, si elles sont reconstruites plus tard, des trames secondaires facultatives. Elles ne portent plus la garantie principale d'une run.
+
+Voir `docs/design/MAJOR_NARRATIVE_TRACKS.md` pour le contrat complet.
 
 ## 5. Active
 
@@ -603,99 +609,27 @@ Les décisions suivantes sont verrouillées mais pas nécessairement implément�
 
 Cette liste prépare la prochaine passe technique ; elle ne décrit pas l’état actuel du code.
 
-## D1.9 — Early Childhood Origin Echo architecture
+## D2 — Major Narrative Tracks and Content Reset V2
 
-> **Authoritative amendment.** This section supersedes the fixed D1.8 age-by-age opening sequence while preserving its validated design goal.
+<!-- D2_WAVE2_NARRATIVE_RESET:D2_AMENDMENT -->
+> **Authoritative amendment.** This section supersedes the D1.8/D1.9 early-Childhood orchestration and any earlier rule that treats the old narrative Event catalogue as automatically accepted runtime content.
 
-### Design goal
+The complete architecture is delegated to [Major Narrative Tracks](design/MAJOR_NARRATIVE_TRACKS.md).
 
-Origins are not a questionnaire that ends before Childhood. They define recurring sources of lived situations.
+### Content Reset
 
-During early Childhood, the player should repeatedly feel that what they selected in Origins changes what happens to them:
+Pre-V2 narrative EventDefinitions are legacy reference material. D1.9 is preserved as a high-quality narrative seed archive, not migrated as runtime EventDefinitions. The pre-V2 Event Concept Index is frozen; the V2 accepted-content ledger starts empty.
 
-- Race;
-- family structure;
-- family affiliation;
-- social class;
-- Birth Location and its tags;
-- strong intersections between several of these axes.
+### Childhood spine
 
-The same is true of persistent childhood relationships. Friend/rival content remains important, but it alternates with family, Race and local-world content instead of replacing them.
+For the current V2 target, Childhood has 20 root slots, of which exactly 5 belong to the inherited Family Legacy Saga. The remaining 15 slots preserve room for Race, Birthplace, Origin Cross mini-arcs, peer relationships, Traits, generic adventures and secondary callbacks.
 
-### Early Childhood window
+The former representative `12 stat / 3 Trait / 5 narrative` mix is no longer a blocking quota when it conflicts with the five-chapter Family spine; future balancing is evaluated across the assembled V2 Childhood corpus.
 
-The D1.9 opening-selection layer applies to Childhood slots from **1 through 5 years inclusive** (`ageMonths` 12–71).
+### Major-track priority target
 
-It does not add slots and does not change time progression:
+Once implemented, the target ordering is: Critical/system gates → Immediate → mandatory system injections → overdue Major chapter → due Scheduled → newly due Major chapter → ordinary Normal. This permits a due Scheduled Event to take the exact checkpoint slot while preventing Family chapters from being starved afterward.
 
-- ages 1–5 remain ordinary Childhood slots;
-- an Opening Event consumes the same yearly slot as any other Childhood Normal Event;
-- Immediate, Scheduled and Critical priority remains unchanged.
+### Future Active spine
 
-### Event narrative metadata
-
-Normal Events participating in this layer may declare:
-
-```ts
-narrativeFamily?:
-  | 'origin_family'
-  | 'origin_race'
-  | 'origin_birthplace'
-  | 'origin_cross'
-  | 'child_peer';
-
-openingRole?:
-  | 'origin_echo'
-  | 'friend_intro'
-  | 'friend_callback'
-  | 'rival_intro';
-```
-
-`narrativeFamily` tells the selector what lived-content family the scene belongs to.
-
-`openingRole` tells the selector whether the Event participates in the early-childhood composition guarantees.
-
-The metadata does not create ArcState, quest state, chapter counters or new GameState persistence. Played roles/families are reconstructed from `History` plus EventDefinitions.
-
-### Selection guarantees
-
-When eligible Opening Events exist, the runtime uses seeded selection with the following constraints:
-
-1. **Age-one Origin Anchor.** At the first Childhood slot (12–23 months), an eligible `origin_echo` is preferred/required over peer content.
-2. **Origins must echo again.** By the age-four selection checkpoint (`ageMonths >= 48`), if fewer than two `origin_echo` Events have been played, an eligible `origin_echo` receives priority.
-3. **A child must actually be introduced.** By the age-three checkpoint (`ageMonths >= 36`), if no `friend_intro` has been played, an eligible `friend_intro` receives priority.
-4. **No anonymous familiarity.** Once any `friend_intro` has been played, other `friend_intro` alternatives are removed from that run's Opening pool. The same applies to `rival_intro`.
-5. **Peer callbacks require a meeting.** `friend_callback` content is not selected before a `friend_intro` has occurred.
-6. **No peer-content tunnel.** If the two most recent metadata-bearing Events are both `child_peer`, a third consecutive `child_peer` is avoided whenever any eligible non-peer Opening Event exists.
-7. **Family alternation.** When no hard guarantee is currently due, repeating the same `narrativeFamily` as the most recent metadata-bearing Event is avoided whenever another eligible family exists.
-8. **Seeded, not scripted.** After the above constraints, the final candidate is selected seededly and uniformly from the remaining eligible candidates.
-
-If content coverage makes a guarantee impossible, the selector must not deadlock. It falls back to the eligible pool; validation/playtest must treat such a case as a content-coverage defect.
-
-### Narrative target by age five
-
-By the end of the age-five window, a healthy run should normally have shown:
-
-- at least two situations materially caused by Origins;
-- a recognizable family/social/local environment;
-- at least one persistent child introduced through an actual scene;
-- a mixture of Origin/world scenes and peer scenes;
-- no obvious fixed sequence repeated across runs.
-
-`friend_intro`, `friend_callback` and `rival_intro` use age windows, not fixed canonical ages.
-
-### Race-derived Childhood content
-
-Race content must represent a range of lived experiences. Discrimination/prejudice is valid and important where contextually justified, but Race must not become synonymous with suffering.
-
-Across representative Race content, include a mixture of:
-
-- prejudice, exclusion or fear;
-- curiosity or unfamiliarity;
-- positive fascination and friendship;
-- physical/body-scale consequences;
-- practical advantages or constraints;
-- family/community belonging;
-- misunderstandings that can resolve positively or negatively.
-
-Do not equate Race with personality or morality.
+At age 15 the Family Legacy Saga is intended to continue. A second Major Narrative Track — Personal Affiliation Saga — will later begin around the player's chosen Active affiliation and represent the career the character decides to build. Adult cadence and career-change semantics remain deliberately open until the Active redesign.

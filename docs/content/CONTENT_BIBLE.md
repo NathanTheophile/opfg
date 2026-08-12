@@ -296,3 +296,41 @@ D1.9 Opening Breadth batches should reuse the current persistent cast unless a g
 Throwaway adults/children remain local prose.
 
 Do not proliferate persistent NPC definitions merely to increase breadth.
+
+## 15. D2 V2 narrative-content architecture
+
+<!-- D2_WAVE2_NARRATIVE_RESET:CONTENT_BIBLE_V2 -->
+The D2 Content Reset separates **accepted V2 runtime concepts** from **legacy creative archives**.
+
+### Major Family content
+
+- Childhood guarantees exactly five Family Legacy chapters for the inherited playable affiliation.
+- A chapter is a horizontal variant pool, not a fixed Scheduled chain.
+- Race, family structure, current parent state, social class, History and location may select different variants when they materially change the scene.
+- Do not create Cartesian coverage. Create a specialized variant only when the fiction is substantially different.
+- Every chapter requires one safety fallback, but the fallback must not compete with eligible specialized variants.
+- Five Family roots reserve 25% of Childhood; the rest of Childhood must remain broad.
+
+### Current playable narrative surface
+
+Family affiliations: `civilian`, `marine`, `pirate`, `revolutionary`, `royal_family`.
+
+Visible but locked: `bandit`, `prisoner`, `slave`, `celestial_dragon`.
+
+Races: `human`, `fishman`, `mink`, `giant`.
+
+Visible but locked: `longarm`, `buccaneer`.
+
+### Origin Cross mini-arcs
+
+Origin Cross content recognizes unusually specific combinations. It is secondary biography, not the career-long spine. Typical shape: one concrete root, 1–3 Immediate continuations when justified, and optionally a later Scheduled callback. The 5 × 4 playable Affiliation/Race surface gives 20 useful eventual pairings, but no batch should create filler simply to tick a matrix cell.
+
+### Archive policy
+
+- `docs/content/events/v2/EVENT_CONCEPT_INDEX_V2.md` is the accepted V2 ledger.
+- `docs/content/events/legacy/` is non-authoritative reference material.
+- D1.9 seeds preserve premise/friction/world detail only; they are not accepted V2 EventDefinitions.
+- Production GPT conversations must not receive the complete legacy index/archive by default. Curate only the small seed subset relevant to the batch.
+- Deliberate reuse is recorded in `docs/content/events/migration/V2_CONCEPT_MIGRATION_LEDGER.md`.
+
+See `docs/design/MAJOR_NARRATIVE_TRACKS.md` for the orchestration contract.
