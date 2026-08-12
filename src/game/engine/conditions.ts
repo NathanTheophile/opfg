@@ -6,6 +6,7 @@ import { canBuyItem, canSellItem, inventoryFreeSlots, itemQuantity } from './eco
 import { canConsumeDevilFruit, playerHakiSourceTotal } from './powers';
 import { isLocationWithin } from './locations';
 import { countFallbackStreak, currentSeaPorts, currentShipDestructionCause, findBestSwimmingRescuer, findHighestRelationshipFruitCrew, sameIslandPorts } from './maritime';
+import { effectivePlayerStat } from './stats';
 
 export interface ChoiceState {
   visible: boolean;
@@ -23,13 +24,20 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
     case 'hasTrait':
       return state.player.traits.includes(condition.traitId);
     case 'statAtLeast': {
-      const stat = state.player.stats[condition.statId];
+      const stat = catalog ? effectivePlayerStat(state, catalog, condition.statId) : state.player.stats[condition.statId];
       return stat !== null && stat >= condition.value;
     }
     case 'hasFlag':
       return state.flags.includes(condition.flagId);
     case 'hasItem':
-      return itemQuantity(state.player.inventory.stacks, condition.itemId) > 0;
+      return itemQuantity(state.player.inventory.stacks, condition.itemId) + itemQuantity(state.ship?.cargo ?? [], condition.itemId) > 0;
+    case 'hasEquipped':
+      return state.player.equipment.some((stack) => stack?.itemId === condition.itemId);
+    case 'hasEquippedWeapon':
+      return catalog !== undefined && state.player.equipment.some((stack) => {
+        const weapon = catalog.items.find(({ id }) => id === stack?.itemId)?.weapon;
+        return weapon !== undefined && (condition.damageType === undefined || weapon.damageType === condition.damageType) && (condition.rangeType === undefined || weapon.rangeType === condition.rangeType);
+      });
     case 'itemQuantityAtLeast':
       return itemQuantity(state.player.inventory.stacks, condition.itemId) >= condition.quantity;
     case 'inventoryFreeSlotsAtLeast':

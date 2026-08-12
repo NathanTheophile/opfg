@@ -8,6 +8,7 @@ import { beginMaritimeEmergency, findHighestRelationshipFruitCrew, moveToSameIsl
 import { modifyPlayerHealth } from './health';
 import { ensureNpcMaterialized } from './npcNames';
 import { buyItem, findItemDefinition, sellItem } from './economy';
+import { tryAutoPlaceReward } from './inventory';
 
 export interface EffectContext {
   sourceEventId: EventId;
@@ -25,11 +26,14 @@ export function applyEffects(state: GameState, catalog: ContentCatalog, effects:
       stats: { ...state.player.stats },
       traits: [...state.player.traits],
       inventory: cloneInventory(state.player.inventory),
+      equipment: state.player.equipment.map((stack) => stack ? ({ ...stack, provenance: stack.provenance.map((batch) => ({ ...batch })) }) : null) as GameState['player']['equipment'],
+      logPose: state.player.logPose ? { ...state.player.logPose, provenance: state.player.logPose.provenance.map((batch) => ({ ...batch })) } : null,
       powers: { ...state.player.powers, haki: { ...state.player.powers.haki } },
     },
     ship: cloneShip(state.ship),
     pendingShip: cloneShip(state.pendingShip),
     passengerNpcIds: [...state.passengerNpcIds],
+    crewRoleLastUsedYear: { ...state.crewRoleLastUsedYear },
     flags: [...state.flags],
     berries: state.berries,
     npcs: Object.fromEntries(
@@ -57,8 +61,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       state.flags = state.flags.filter((flagId) => flagId !== effect.flagId);
       return;
     case 'addItem': {
-      const definition = findItemDefinition(catalog, effect.itemId);
-      addStack(state.player.inventory.stacks, effect.itemId, effect.quantity, state.player.inventory.capacity, definition.stackLimit);
+      if (!tryAutoPlaceReward(state, catalog, effect.itemId, effect.quantity)) state.pendingOverflow = { itemId: effect.itemId, quantity: effect.quantity, locationId: state.locationId, mandatory: effect.mandatory === true };
       return;
     }
     case 'removeItem':
