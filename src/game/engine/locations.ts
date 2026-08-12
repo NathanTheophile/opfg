@@ -44,6 +44,11 @@ const PLAYER_DIRECT_NAVIGATION_SEAS = new Set<SeaId>([
   'grand_line_paradise',
 ]);
 
+const ORDINARY_ACCESS_LOCATION_IDS = new Set<LocationId>([
+  ...worldData.blueLocations.map(({ id }) => id),
+  ...worldData.outsideBlueLocations.filter(({ access }) => access === 'normal').map(({ id }) => id),
+]);
+
 export function getNavigableDestinationIds(currentId: LocationId, catalog: ContentCatalog): LocationId[] {
   const current = findLocation(catalog, currentId);
   if (!current || !PLAYER_DIRECT_NAVIGATION_SEAS.has(current.seaId)) return [];
@@ -53,6 +58,20 @@ export function getNavigableDestinationIds(currentId: LocationId, catalog: Conte
       const destination = findLocation(catalog, id);
       return destination !== undefined && destination.islandId !== current.islandId;
     });
+}
+
+/** Destinations a Navigator may reach directly: dockable, ordinary and in the current sea. */
+export function getOrdinaryDestinationIds(currentId: LocationId, catalog: ContentCatalog): LocationId[] {
+  const current = findLocation(catalog, currentId);
+  if (!current) return [];
+
+  return catalog.locations
+    .filter((location) => location.seaId === current.seaId
+      && location.islandId !== current.islandId
+      && location.allowsDocking
+      && ORDINARY_ACCESS_LOCATION_IDS.has(location.id))
+    .map(({ id }) => id)
+    .sort();
 }
 
 export function getLocationDisplayName(catalog: ContentCatalog, locationId: LocationId, translate: (key: string) => string): string {

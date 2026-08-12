@@ -31,6 +31,12 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
       return state.flags.includes(condition.flagId);
     case 'hasItem':
       return itemQuantity(state.player.inventory.stacks, condition.itemId) + itemQuantity(state.ship?.cargo ?? [], condition.itemId) > 0;
+    case 'activeLogPoseIs':
+      return catalog?.items.find(({ id }) => id === state.player.logPose?.itemId)?.logPoseType === condition.logPoseType;
+    case 'hasActiveCompanion':
+      return state.companionNpcId !== null;
+    case 'activeCompanionIs':
+      return state.companionNpcId === condition.npcId;
     case 'hasEquipped':
       return state.player.equipment.some((stack) => stack?.itemId === condition.itemId);
     case 'hasEquippedWeapon':

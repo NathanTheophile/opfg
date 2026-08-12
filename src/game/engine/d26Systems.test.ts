@@ -6,7 +6,7 @@ import { deserializeGameState, serializeGameState } from './save';
 import { equipFromStorage, activateLogPose, activeLogPoseNavigationBonus, resolveOverflow, tryAutoPlaceReward } from './inventory';
 import { effectiveNpcStat, effectivePlayerStat } from './stats';
 import { itemSellPrice, negotiationMultiplier } from './economy';
-import { canUseCrewRolePower, setActiveCompanion, useCrewRolePower } from './crewPowers';
+import { canUseCrewRolePower, navigatorDestinations, setActiveCompanion, useCrewRolePower } from './crewPowers';
 import { findCrewRoleActor } from './dice';
 import { getPlayerMaxHealth } from './health';
 import { moveItem } from './inventory';
@@ -89,6 +89,29 @@ describe('D2.6 systems hardening', () => {
     state.passengerNpcIds = ['guest']; state.companionNpcId = 'mira'; state.player.logPose = { itemId: 'paradise_log_pose', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] };
     beginMaritimeEmergency(state, contentCatalog, 'accident');
     expect(state.ship).toBeNull(); expect(state.npcs.guest.status).toBe('dead'); expect(state.npcs.mira.status).toBe('dead'); expect(state.companionNpcId).toBeNull(); expect(state.player.logPose?.itemId).toBe('paradise_log_pose');
+  });
+
+  it('moves Navigator through the arrival pipeline and excludes gated destinations', () => {
+    const state = createInitialGameState();
+    state.locationId = 'dressrosa';
+    state.npcs.mira = { ...createDefaultNpcState(), status: 'crew' };
+    state.shipMarketArrivalPending = false;
+    const destinations = navigatorDestinations(state, contentCatalog);
+    const marketDestination = destinations.find(({ hasMarketHub }) => hasMarketHub);
+
+    expect(destinations.some(({ id }) => id === 'egghead_island')).toBe(false);
+    expect(destinations.some(({ id }) => id === 'raijin_island')).toBe(true);
+    expect(marketDestination).toBeDefined();
+
+    const ageMonths = state.ageMonths;
+    const slotInMonth = state.slotInMonth;
+    useCrewRolePower(state, contentCatalog, 'navigator', marketDestination!.id);
+
+    expect(state.locationId).toBe(marketDestination!.id);
+    expect(state.travelState).toBe('on_land');
+    expect(state.shipMarketArrivalPending).toBe(true);
+    expect(state.ageMonths).toBe(ageMonths);
+    expect(state.slotInMonth).toBe(slotInMonth);
   });
 
   it('selects only living companion-capable NPCs without treating them as crew or cargo', () => {

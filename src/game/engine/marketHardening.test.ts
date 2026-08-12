@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { createContentCatalog } from '../content/catalogFactory';
 import type { EventDefinition } from '../content/schema';
 import { createInitialGameState } from '../model/initialState';
-import { createSessionState, exploreFromMarketHub, openMarketHubView, returnToMarketHub } from '../session/gameSession';
-import { buyItem, buyShip, canBuyItem, canSellItem, rollMarketNegotiation, sellItem, shipBuyPrice, shipSellPrice } from './economy';
+import { chooseInSession, createSessionState, dismissResolution } from '../session/gameSession';
+import { buyItem, buyShip, canBuyItem, canSellItem, sellItem, shipBuyPrice, shipSellPrice } from './economy';
 
 const event: EventDefinition = {
   id: 'market_test_event', kind: 'normal', titleKey: 'x', textKey: 'x',
@@ -60,17 +60,6 @@ describe('D2.6 fixed markets and Arrival Hub', () => {
     expect(state.berries).toBe(96_000);
   });
 
-  it('rolls a real Charisma d20 negotiation without consuming time', () => {
-    const { catalog, state } = marketState();
-    const before = { rngState: state.rngState, ageMonths: state.ageMonths, slotInMonth: state.slotInMonth };
-    const roll = rollMarketNegotiation(state, catalog);
-    expect(roll.rawRoll).toBeGreaterThanOrEqual(1);
-    expect(roll.rawRoll).toBeLessThanOrEqual(20);
-    expect(['criticalFailure', 'failure', 'success', 'criticalSuccess']).toContain(roll.result);
-    expect(state.rngState).not.toBe(before.rngState);
-    expect(state).toMatchObject({ ageMonths: before.ageMonths, slotInMonth: before.slotInMonth });
-  });
-
   it('uses fixed ship prices with the same resale and negotiation rules', () => {
     const { catalog, state } = marketState();
     const full = catalog.locations.find(({ shipMarket }) => shipMarket === 'full')!;
@@ -81,15 +70,22 @@ describe('D2.6 fixed markets and Arrival Hub', () => {
     expect(shipSellPrice(state, catalog, 'dinghy', 'success')).toBe(6000);
   });
 
-  it('loops Merchant/Port without consuming a slot and Explore resumes selection', () => {
+  it('runs Arrival, Merchant, confirmation, Dice negotiation and Explore as slotless System Events', () => {
     const { catalog, state } = marketState();
     state.shipMarketArrivalPending = true;
-    const before = { ageMonths: state.ageMonths, slotInMonth: state.slotInMonth };
-    let session = createSessionState(state);
-    session = openMarketHubView(session, catalog, 'merchant');
-    session = returnToMarketHub(session, catalog);
-    session = exploreFromMarketHub(session, catalog);
-    expect(session.marketHubView).toBeNull();
-    expect(session.gameState).toMatchObject({ ...before, shipMarketArrivalPending: false, currentEventId: event.id });
+    const before = { ageMonths: state.ageMonths, slotInMonth: state.slotInMonth, historyLength: state.history.length };
+    let session = createSessionState(state, catalog);
+    expect(session.systemEvent?.kind).toBe('system');
+    session = dismissResolution(chooseInSession(session, catalog, 'market:merchant'), catalog);
+    session = dismissResolution(chooseInSession(session, catalog, 'market:buy:list'), catalog);
+    session = dismissResolution(chooseInSession(session, catalog, 'market:item:buy:timber'), catalog);
+    const negotiated = chooseInSession(session, catalog, 'market:negotiate');
+    expect(negotiated.lastResolution?.dice?.rawRoll).toBeGreaterThanOrEqual(1);
+    session = dismissResolution(negotiated, catalog);
+    expect(session.systemEvent?.id).toBe('system_market:merchant');
+    session = dismissResolution(chooseInSession(session, catalog, 'market:explore'), catalog);
+    expect(session.systemEvent).toBeNull();
+    expect(session.gameState).toMatchObject({ ageMonths: before.ageMonths, slotInMonth: before.slotInMonth, shipMarketArrivalPending: false, currentEventId: event.id });
+    expect(session.gameState?.history).toHaveLength(before.historyLength);
   });
 });

@@ -59,6 +59,9 @@ const CONDITION_TYPES = new Set([
   'statAtLeast',
   'hasFlag',
   'hasItem',
+  'activeLogPoseIs',
+  'hasActiveCompanion',
+  'activeCompanionIs',
   'hasEquipped',
   'hasEquippedWeapon',
   'itemQuantityAtLeast',
@@ -116,6 +119,8 @@ const EFFECT_TYPES = new Set([
   'removeItem',
   'buyItem',
   'sellItem',
+  'buyShip',
+  'sellShip',
   'addTrait',
   'removeTrait',
   'modifyStat',
@@ -172,6 +177,7 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   const crewRoleIds = collectIds(crewRoles, 'crewRoles', errors);
   const npcs = readRecords(catalog.npcs, 'npcs', errors);
   const npcIds = collectIds(npcs, 'npcs', errors);
+  const companionNpcIds = new Set(npcs.filter((npc) => npc.companionCapable === true).map((npc) => String(npc.id)));
   const races = readRecords(catalog.races, 'races', errors);
   const raceIds = collectIds(races, 'races', errors);
   const seas = readRecords(catalog.seas, 'seas', errors);
@@ -211,7 +217,7 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   }
 
   validateTraitOpposites(traits, traitIds, errors);
-  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, equipmentItemIds, devilFruitIds, shipIds, crewRoleIds, npcIds, raceIds, seaIds, affiliationIds, careerAffiliationIds, careerRankIds, careerTitleIds, endingIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds, immediateEventIds, majorTrackIds, majorTracks };
+  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, equipmentItemIds, devilFruitIds, shipIds, crewRoleIds, npcIds, companionNpcIds, raceIds, seaIds, affiliationIds, careerAffiliationIds, careerRankIds, careerTitleIds, endingIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds, immediateEventIds, majorTrackIds, majorTracks };
   devilFruits.forEach((fruit, index) => {
     const path = `devilFruits[${index}]`;
     if (typeof fruit.playableV1 !== 'boolean') errors.push({ path: `${path}.playableV1`, message: 'Devil Fruit requires playableV1.' });
@@ -381,6 +387,7 @@ interface References {
   shipIds: Set<string>;
   crewRoleIds: Set<string>;
   npcIds: Set<string>;
+  companionNpcIds: Set<string>;
   raceIds: Set<string>;
   seaIds: Set<string>;
   affiliationIds: Set<string>;
@@ -403,7 +410,7 @@ function validateEvent(
   references: References,
   errors: ContentValidationError[],
 ): void {
-  if (!['normal', 'immediate', 'scheduled', 'critical'].includes(String(event.kind))) errors.push({ path, message: `Invalid Event kind "${String(event.kind)}".` });
+  if (!['system', 'normal', 'immediate', 'scheduled', 'critical'].includes(String(event.kind))) errors.push({ path, message: `Invalid Event kind "${String(event.kind)}".` });
   if (event.scheduledOnly !== undefined
     || (event.kind !== 'scheduled' && [event.priority, event.scheduledReach, event.cancelIf, event.fallbackEventId].some((value) => value !== undefined))
     || (event.kind !== 'critical' && event.trigger !== undefined)
@@ -611,6 +618,8 @@ function validateCondition(
 
   if (type === 'hasTrait') validateReference(value.traitId, references.traitIds, 'TraitId', path, errors);
   if (type === 'hasItem') validateReference(value.itemId, references.itemIds, 'ItemId', path, errors);
+  if (type === 'activeLogPoseIs' && !['paradise', 'new_world'].includes(String(value.logPoseType))) errors.push({ path: `${path}.logPoseType`, message: 'Invalid Log Pose type.' });
+  if (type === 'activeCompanionIs') validateReference(value.npcId, references.companionNpcIds, 'companion-capable NpcId', path, errors);
   if (type === 'hasEquipped') validateReference(value.itemId, references.equipmentItemIds, 'Equipment ItemId', path, errors);
   if (type === 'hasEquippedWeapon') {
     if (value.damageType !== undefined && !['cutting', 'blunt', 'explosive'].includes(String(value.damageType))) errors.push({ path: `${path}.damageType`, message: 'Invalid equipped weapon damage type.' });
@@ -809,6 +818,8 @@ function validateEffect(
     validateReference(effect.itemId, references.itemIds, 'ItemId', path, errors);
     validatePositiveQuantity(effect.quantity, path, errors);
   }
+  if (type === 'buyShip') validateReference(effect.shipId, references.shipIds, 'ShipId', path, errors);
+  if (['buyItem', 'sellItem', 'buyShip', 'sellShip'].includes(type) && effect.negotiation !== undefined && !['criticalFailure', 'failure', 'success', 'criticalSuccess'].includes(String(effect.negotiation))) errors.push({ path, message: 'Invalid market negotiation result.' });
   if (type === 'addCargoItem' || type === 'removeCargoItem') {
     validateReference(effect.itemId, references.itemIds, 'ItemId', path, errors);
     validatePositiveQuantity(effect.quantity, path, errors);

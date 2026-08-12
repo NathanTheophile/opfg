@@ -1,7 +1,7 @@
 import type { ContentCatalog, DiceResult, ItemDefinition } from '../content/schema';
 import type { GameState, InventoryState, ItemId, ItemStack, ShipId } from '../model/schema';
 import { addStack, availableCargoSlots, findShipDefinition } from './ship';
-import { resolveDiceCheck, statToDiceModifier } from './dice';
+import { statToDiceModifier } from './dice';
 import { effectivePlayerStat } from './stats';
 
 export function findItemDefinition(catalog: ContentCatalog, itemId: ItemId): ItemDefinition {
@@ -34,16 +34,6 @@ export function negotiationMultiplier(kind: 'purchase' | 'resale', result?: Dice
   if (result === 'criticalFailure') return kind === 'purchase' ? 1.2 : 0.8;
   if (result === 'success' || result === 'criticalSuccess') return kind === 'purchase' ? 0.8 : 1.2;
   return 1;
-}
-
-export function rollMarketNegotiation(state: GameState, catalog: ContentCatalog): { result: DiceResult; rawRoll: number; total: number } {
-  const outcome = (id: DiceResult) => ({ id, textKey: 'ui.market.negotiation' as const, effects: [] });
-  const check = resolveDiceCheck({
-    type: 'dice', statId: 'charisma', successThreshold: 10,
-    outcomes: { criticalFailure: outcome('criticalFailure'), failure: outcome('failure'), success: outcome('success'), criticalSuccess: outcome('criticalSuccess') },
-  }, state, catalog);
-  state.rngState = check.nextRngState;
-  return { result: check.dice.result, rawRoll: check.dice.rawRoll, total: check.dice.total };
 }
 
 export function itemSellPrice(catalog: ContentCatalog, itemId: ItemId, quantity = 1, state?: GameState, negotiation?: DiceResult): number {

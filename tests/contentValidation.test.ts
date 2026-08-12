@@ -40,6 +40,26 @@ describe('validateContent', () => {
     ]));
   });
 
+  it('validates active Log Pose and companion Condition metadata', () => {
+    const catalog = cloneCatalog();
+    const key = catalog.races[0].nameKey;
+    const outcome = { id: 'outcome', textKey: key, effects: [] };
+    catalog.events.push({
+      id: 'd26_special_slot_conditions', kind: 'normal', phase: 'active', titleKey: key, textKey: key,
+      eligibility: { type: 'activeLogPoseIs', logPoseType: 'eternal' },
+      choices: [{
+        id: 'choice', textKey: key, availableIf: { type: 'activeCompanionIs', npcId: 'mira' },
+        resolution: { type: 'deterministic', outcome },
+      }],
+    });
+
+    const errors = messages(catalog);
+    expect(errors).toEqual(expect.arrayContaining([
+      expect.stringContaining('Invalid Log Pose type'),
+      expect.stringContaining('Unknown companion-capable NpcId "mira"'),
+    ]));
+  });
+
   it('validates D2.6 Item, companion, Market Hub and exact Ship contracts', () => {
     const catalog = cloneCatalog();
     catalog.items.push({

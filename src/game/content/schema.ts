@@ -114,6 +114,9 @@ export type Condition =
   | { type: 'statAtLeast'; statId: StatId; value: number }
   | { type: 'hasFlag'; flagId: FlagId }
   | { type: 'hasItem'; itemId: ItemId }
+  | { type: 'activeLogPoseIs'; logPoseType: LogPoseType }
+  | { type: 'hasActiveCompanion' }
+  | { type: 'activeCompanionIs'; npcId: NpcId }
   | { type: 'hasEquipped'; itemId: ItemId }
   | { type: 'hasEquippedWeapon'; damageType?: WeaponDamageType; rangeType?: WeaponRangeType }
   | { type: 'itemQuantityAtLeast'; itemId: ItemId; quantity: number }
@@ -197,8 +200,10 @@ export type Effect =
   | { type: 'clearFlag'; flagId: FlagId }
   | { type: 'addItem'; itemId: ItemId; quantity: number; mandatory?: boolean }
   | { type: 'removeItem'; itemId: ItemId; quantity: number }
-  | { type: 'buyItem'; itemId: ItemId; quantity: number }
-  | { type: 'sellItem'; itemId: ItemId; quantity: number }
+  | { type: 'buyItem'; itemId: ItemId; quantity: number; negotiation?: DiceResult }
+  | { type: 'sellItem'; itemId: ItemId; quantity: number; negotiation?: DiceResult }
+  | { type: 'buyShip'; shipId: ShipId; negotiation?: DiceResult }
+  | { type: 'sellShip'; negotiation?: DiceResult }
   | { type: 'addTrait'; traitId: TraitId }
   | { type: 'removeTrait'; traitId: TraitId }
   | { type: 'modifyStat'; statId: StatId; amount: number }
@@ -299,6 +304,7 @@ export interface TextChoiceInput {
 export interface ChoiceDefinition {
   id: ChoiceId;
   textKey: LocalizationKey;
+  interpolation?: Record<string, string | number>;
   visibleIf?: Condition;
   availableIf?: Condition;
   input?: TextChoiceInput;
@@ -312,6 +318,7 @@ interface EventBase {
   openingRole?: OpeningRole;
   titleKey: LocalizationKey;
   textKey: LocalizationKey;
+  interpolation?: Record<string, string | number>;
   eligibility?: Condition;
   choices: ChoiceDefinition[];
 }
@@ -327,6 +334,7 @@ export type CriticalTrigger =
   | { type: 'careerAgeAtLeast'; value: number }
   | { type: 'fallbackStreakAtLeast'; value: number };
 export type EventDefinition =
+  | (EventBase & { kind: 'system' })
   | (EventBase & { kind: 'normal'; lifetimeThreadSeed?: true; majorTrack?: MajorTrackEventRef; replay?: { cooldownMonths: number; maxOccurrences?: number } })
   | (EventBase & { kind: 'immediate' })
   | (EventBase & { kind: 'scheduled'; priority: ScheduledPriority; scheduledReach?: ScheduledReach; cancelIf?: Condition; fallbackEventId?: EventId })

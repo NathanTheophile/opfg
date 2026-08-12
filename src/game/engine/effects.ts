@@ -7,7 +7,7 @@ import { movePlayerToLocation, recoverTravel } from './locations';
 import { beginMaritimeEmergency, findHighestRelationshipFruitCrew, moveToSameIslandPort, recoverToLandInCurrentSea, recoverToOtherRegion, resolveMaritimeEmergencyLandfall } from './maritime';
 import { modifyPlayerHealth } from './health';
 import { ensureNpcMaterialized } from './npcNames';
-import { buyItem, findItemDefinition, sellItem } from './economy';
+import { buyItem, buyShip, findItemDefinition, sellItem, sellShip } from './economy';
 import { tryAutoPlaceReward } from './inventory';
 
 export interface EffectContext {
@@ -76,10 +76,16 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       return;
     }
     case 'buyItem':
-      buyItem(state, catalog, effect.itemId, effect.quantity);
+      buyItem(state, catalog, effect.itemId, effect.quantity, effect.negotiation);
       return;
     case 'sellItem':
-      sellItem(state, catalog, effect.itemId, effect.quantity);
+      sellItem(state, catalog, effect.itemId, effect.quantity, effect.negotiation);
+      return;
+    case 'buyShip':
+      buyShip(state, catalog, effect.shipId, effect.shipId, effect.negotiation);
+      return;
+    case 'sellShip':
+      sellShip(state, catalog, effect.negotiation);
       return;
     case 'addTrait':
       if (state.player.traits.includes(effect.traitId)) return;

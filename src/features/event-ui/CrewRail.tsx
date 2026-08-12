@@ -9,7 +9,7 @@ import { getStatTooltipKey, getUiTooltipKey, STAT_TOOLTIP_COLORS } from './conte
 import './hud-panel-header.css';
 import './crew-rail.css';
 import { effectiveNpcStat } from '@/game/engine/stats';
-import { canUseCrewRolePower, isCompanionCandidate, navigatorDestinations } from '@/game/engine/crewPowers';
+import { canUseCrewRolePower, navigatorDestinations } from '@/game/engine/crewPowers';
 import type { CrewRoleId, LocationId } from '@/game/model/schema';
 
 const NPC_STAT_IDS: NpcStatId[] = ['health', 'morale', 'strength', 'agility', 'observation', 'intelligence', 'navigation', 'charisma', 'luck'];
@@ -21,16 +21,12 @@ export interface CrewRailProps {
   translate: Translator;
   statLabel: (statId: NpcStatId) => string;
   onUseRolePower?: (roleId: CrewRoleId, destinationId?: LocationId) => void;
-  onSelectCompanion?: (npcId: string | null) => void;
 }
 
-export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower, onSelectCompanion }: CrewRailProps) {
+export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower }: CrewRailProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [navigatorRoleId, setNavigatorRoleId] = useState<CrewRoleId | null>(null);
   const crew = Object.entries(state.npcs).filter(([, npc]) => npc.status === 'crew');
-  const companionCandidates = Object.keys(state.npcs)
-    .filter((npcId) => isCompanionCandidate(state, catalog, npcId))
-    .sort();
   const shipDefinition = state.ship ? catalog.ships.find(({ id }) => id === state.ship?.shipId) : undefined;
   const capacity = shipDefinition?.crewCapacity ?? 0;
 
@@ -117,27 +113,6 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower,
         </div>
       </Panel>;
     })}
-    {companionCandidates.length > 0 && (
-      <Panel variant="strong" padding="none" className="opfg-companion-selector" aria-label={translate('ui.companion.title')}>
-        <strong>{translate('ui.companion.title')}</strong>
-        {companionCandidates.map((npcId) => {
-          const npc = state.npcs[npcId];
-          const definition = catalog.npcs.find(({ id }) => id === npcId);
-          const active = state.companionNpcId === npcId;
-          return <button
-            key={npcId}
-            type="button"
-            className="opfg-crew-action"
-            disabled={!onSelectCompanion}
-            aria-pressed={active}
-            title={translate('ui.companion.tooltip')}
-            onClick={() => onSelectCompanion?.(active ? null : npcId)}
-          >
-            {npc.displayName ?? (definition ? translate(definition.nameKey) : npcId)} · {translate(active ? 'ui.companion.remove' : 'ui.companion.select')}
-          </button>;
-        })}
-      </Panel>
-    )}
     {navigatorRoleId && (
       <Panel variant="strong" padding="none" className="opfg-crew-destinations" aria-label={translate('ui.crew.power.navigator.destination')}>
         <strong>{translate('ui.crew.power.navigator.destination')}</strong>

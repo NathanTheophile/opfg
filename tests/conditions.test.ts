@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { evaluateCondition } from '../src/game/engine/conditions';
 import { createInitialGameState } from '../src/game/model/initialState';
+import { contentCatalog } from '../src/game/content/definitions';
 
 describe('conditions v2', () => {
   it('evaluates recursive composition and history conditions', () => {
@@ -42,5 +43,21 @@ describe('conditions v2', () => {
     state.npcs.mira.lastInteractionAgeMonths = null;
     expect(evaluateCondition({ type: 'npcMonthsSinceInteractionAtLeast', npcId: 'mira', value: 0 }, state)).toBe(false);
     expect(evaluateCondition({ type: 'npcMonthsSinceInteractionAtMost', npcId: 'mira', value: 999 }, state)).toBe(false);
+  });
+
+  it('queries only the active Log Pose and companion slots', () => {
+    const state = createInitialGameState();
+    state.player.inventory.stacks = [{ itemId: 'triple_log_pose', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] }];
+    state.player.logPose = { itemId: 'paradise_log_pose', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] };
+    state.npcs.mira.status = 'known';
+
+    expect(evaluateCondition({ type: 'activeLogPoseIs', logPoseType: 'paradise' }, state, contentCatalog)).toBe(true);
+    expect(evaluateCondition({ type: 'activeLogPoseIs', logPoseType: 'new_world' }, state, contentCatalog)).toBe(false);
+    expect(evaluateCondition({ type: 'hasActiveCompanion' }, state, contentCatalog)).toBe(false);
+    expect(evaluateCondition({ type: 'activeCompanionIs', npcId: 'mira' }, state, contentCatalog)).toBe(false);
+
+    state.companionNpcId = 'mira';
+    expect(evaluateCondition({ type: 'hasActiveCompanion' }, state, contentCatalog)).toBe(true);
+    expect(evaluateCondition({ type: 'activeCompanionIs', npcId: 'mira' }, state, contentCatalog)).toBe(true);
   });
 });

@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import type { ContentCatalog } from '../content/schema';
 import { clearGameState, loadGameState, saveGameState, type StorageLike } from '../engine/save';
 import { findCurrentEvent } from '../engine/events';
-import { chooseInSession, chooseMonthlyNavigationInSession, createSessionState, dismissResolution, exploreFromMarketHub, getSessionNavigationOptions, openMarketHubView, returnToMarketHub, startNewRun } from './gameSession';
+import { chooseInSession, chooseMonthlyNavigationInSession, createSessionState, dismissResolution, getSessionNavigationOptions, startNewRun } from './gameSession';
 import type { MonthlyNavigationChoice } from '../engine/navigation';
 import type { GameState } from '../model/schema';
 
@@ -14,8 +14,8 @@ function generateSeed(): number {
 }
 
 export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
-  const [session, setSession] = useState(() => createSessionState(loadGameState(storage)));
-  const currentEvent = useMemo(() => session.gameState === null ? null : findCurrentEvent(session.gameState, catalog), [catalog, session.gameState]);
+  const [session, setSession] = useState(() => createSessionState(loadGameState(storage), catalog));
+  const currentEvent = useMemo(() => session.systemEvent ?? (session.gameState === null ? null : findCurrentEvent(session.gameState, catalog)), [catalog, session.gameState, session.systemEvent]);
 
   const start = (seed = generateSeed()) => {
     clearGameState(storage);
@@ -29,7 +29,11 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
     setSession(next);
     return next.lastResolution;
   };
-  const continueAfterResolution = () => setSession((current) => dismissResolution(current));
+  const continueAfterResolution = () => setSession((current) => {
+    const next = dismissResolution(current, catalog);
+    if (next.gameState) saveGameState(storage, next.gameState);
+    return next;
+  });
   const navigationOptions = useMemo(() => getSessionNavigationOptions(session, catalog), [catalog, session]);
   const chooseNavigation = (choice: MonthlyNavigationChoice) => {
     const next = chooseMonthlyNavigationInSession(session, catalog, choice);
@@ -40,14 +44,12 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
     if (!session.gameState) return false;
     const nextState = structuredClone(session.gameState);
     action(nextState);
-    saveGameState(storage, nextState);
-    setSession({ gameState: nextState, previousState: null, lastResolution: null, marketHubView: nextState.shipMarketArrivalPending ? 'hub' : null });
+    const next = session.systemEvent
+      ? { ...session, gameState: { ...nextState, currentEventId: session.systemEvent.id }, previousState: null, lastResolution: null }
+      : createSessionState(nextState, catalog);
+    if (next.gameState) saveGameState(storage, next.gameState);
+    setSession(next);
     return true;
   };
-  const updateHub = (next: ReturnType<typeof createSessionState>) => { if (next.gameState) saveGameState(storage, next.gameState); setSession(next); };
-  const openHubView = (view: 'merchant' | 'port') => updateHub(openMarketHubView(session, catalog, view));
-  const backToHub = () => updateHub(returnToMarketHub(session, catalog));
-  const exploreHub = () => updateHub(exploreFromMarketHub(session, catalog));
-
-  return { ...session, currentEvent, navigationOptions, startNewRun: start, restartRun: start, choose, chooseNavigation, applySystemAction, openHubView, backToHub, exploreHub, continueAfterResolution };
+  return { ...session, currentEvent, navigationOptions, startNewRun: start, restartRun: start, choose, chooseNavigation, applySystemAction, continueAfterResolution };
 }

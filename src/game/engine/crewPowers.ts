@@ -1,6 +1,7 @@
 import type { ContentCatalog } from '../content/schema';
 import type { CrewRoleId, GameState, LocationId, NpcId } from '../model/schema';
 import { effectivePlayerStat } from './stats';
+import { getOrdinaryDestinationIds, movePlayerToLocation } from './locations';
 
 export const currentYearIndex = (state: GameState) => Math.floor(state.ageMonths / 12);
 
@@ -20,15 +21,14 @@ export function useCrewRolePower(state: GameState, catalog: ContentCatalog, role
     state.ship.health = Math.min(maximum, state.ship.health + 10);
   } else if (power === 'navigator') {
     if (!destinationId || !navigatorDestinations(state, catalog).some(({ id }) => id === destinationId)) throw new Error('Navigator power requires a valid destination.');
-    state.locationId = destinationId;
-    state.travelState = 'on_land';
+    movePlayerToLocation(state, destinationId, 'on_land');
   } else throw new Error(`Crew role "${roleId}" has no annual power.`);
   state.crewRoleLastUsedYear[roleId] = currentYearIndex(state);
 }
 
 export function navigatorDestinations(state: GameState, catalog: ContentCatalog) {
-  const seaId = catalog.locations.find(({ id }) => id === state.locationId)?.seaId;
-  return catalog.locations.filter(({ id, seaId: candidateSea, allowsDocking, tags }) => id !== state.locationId && candidateSea === seaId && allowsDocking && !tags.includes('prison') && !tags.includes('government'));
+  const destinationIds = new Set(getOrdinaryDestinationIds(state.locationId, catalog));
+  return catalog.locations.filter(({ id }) => destinationIds.has(id));
 }
 
 export function isCompanionCandidate(state: GameState, catalog: ContentCatalog, npcId: NpcId): boolean {

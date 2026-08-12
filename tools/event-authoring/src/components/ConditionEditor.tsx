@@ -3,7 +3,7 @@ import { DEVIL_FRUIT_TAGS, DEVIL_FRUIT_TYPES, HAKI_TYPES, LOCATION_SERVICES, LOC
 import { IdSelect, NumberInput } from './EditorPrimitives';
 
 const TYPES: Condition['type'][] = [
-  'all','any','not','hasTrait','statAtLeast','hasFlag','hasItem','berriesAtLeast','hasCrew','crewSizeAtLeast','hasCrewRole','canRecruitNpc','isLeader','locationIs','locationWithin','currentSeaIs','locationHasTag','locationHasService','isAtSea','isOnLand','careerPhaseIs',
+  'all','any','not','hasTrait','statAtLeast','hasFlag','hasItem','activeLogPoseIs','hasActiveCompanion','activeCompanionIs','berriesAtLeast','hasCrew','crewSizeAtLeast','hasCrewRole','canRecruitNpc','isLeader','locationIs','locationWithin','currentSeaIs','locationHasTag','locationHasService','isAtSea','isOnLand','careerPhaseIs',
   'ageAtLeastMonths','ageAtMostMonths','hasShip','shipIs','shipHealthAtLeast','shipHealthAtMost','shipCrewCapacityAtLeast','shipCargoSpaceAtLeast','canAcquireShip','canSellShip','npcStatusIs','npcRelationshipAtLeast',
   'npcStatAtLeast','hasChosen','hasPlayed','hasOutcome','raceIs','originSeaIs','affiliationIs','familyStructureIs','socialClassIs',
   'hasDevilFruit','canConsumeDevilFruit','devilFruitIs','devilFruitTypeIs','devilFruitHasTag','devilFruitAwakeningAtLeast','devilFruitIsAwakened','hakiAtLeast','hakiIsAwakened','hakiSourceTotalAtLeast','npcHasDevilFruit','npcDevilFruitIs','npcDevilFruitTypeIs','npcDevilFruitHasTag','npcDevilFruitAwakeningAtLeast','npcHakiAtLeast','npcHakiIsAwakened',
@@ -23,6 +23,8 @@ export default function ConditionEditor({ value, onChange, registries, eventIds 
       case 'statAtLeast': return <div className="inline-fields"><select value={value.statId} onChange={(e) => onChange({ ...value, statId: e.target.value as typeof value.statId })}>{PLAYER_STAT_IDS.map((id) => <option key={id}>{id}</option>)}</select><NumberInput value={value.value} onChange={(next) => onChange({ ...value, value: next })} /></div>;
       case 'hasFlag': return <IdSelect value={value.flagId} options={registries.flags} onChange={(flagId) => onChange({ ...value, flagId })} />;
       case 'hasItem': return <IdSelect value={value.itemId} options={registries.items} onChange={(itemId) => onChange({ ...value, itemId })} />;
+      case 'activeLogPoseIs': return <select value={value.logPoseType} onChange={(e) => onChange({ ...value, logPoseType: e.target.value as typeof value.logPoseType })}><option value="paradise">paradise</option><option value="new_world">new_world</option></select>;
+      case 'activeCompanionIs': return <IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} />;
       case 'hasCrewRole': return <IdSelect value={value.roleId} options={registries.crewRoles} onChange={(roleId) => onChange({ ...value, roleId })} />;
       case 'canRecruitNpc': return <IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} />;
       case 'shipIs': case 'canAcquireShip': return <IdSelect value={value.shipId} options={registries.ships} onChange={(shipId) => onChange({ ...value, shipId })} />;
@@ -35,7 +37,7 @@ export default function ConditionEditor({ value, onChange, registries, eventIds 
       case 'currentSeaIs': return <IdSelect value={value.seaId} options={registries.seas} onChange={(seaId) => onChange({ ...value, seaId })} />;
       case 'locationHasTag': return <select value={value.tagId} onChange={(e) => onChange({ ...value, tagId: e.target.value as typeof value.tagId })}>{LOCATION_TAGS.map((id) => <option key={id}>{id}</option>)}</select>;
       case 'locationHasService': return <select value={value.serviceId} onChange={(e) => onChange({ ...value, serviceId: e.target.value as typeof value.serviceId })}>{LOCATION_SERVICES.map((id) => <option key={id}>{id}</option>)}</select>;
-      case 'isAtSea': case 'isOnLand': case 'hasShip': case 'canSellShip': case 'hasCrew': case 'isLeader': case 'hasDevilFruit': case 'devilFruitIsAwakened': return <span className="muted">No parameters</span>;
+      case 'isAtSea': case 'isOnLand': case 'hasShip': case 'canSellShip': case 'hasCrew': case 'isLeader': case 'hasActiveCompanion': case 'hasDevilFruit': case 'devilFruitIsAwakened': return <span className="muted">No parameters</span>;
       case 'canConsumeDevilFruit': case 'devilFruitIs': return <IdSelect value={value.fruitId} options={registries.devilFruits} onChange={(fruitId) => onChange({ ...value, fruitId })} />;
       case 'devilFruitTypeIs': return <select value={value.fruitType} onChange={(e) => onChange({ ...value, fruitType: e.target.value as typeof value.fruitType })}>{DEVIL_FRUIT_TYPES.map((x) => <option key={x}>{x}</option>)}</select>;
       case 'devilFruitHasTag': return <select value={value.tagId} onChange={(e) => onChange({ ...value, tagId: e.target.value })}>{DEVIL_FRUIT_TAGS.map((x) => <option key={x}>{x}</option>)}</select>;

@@ -5,7 +5,7 @@ import { selectNextEvent } from '../src/game/engine/events';
 import { movePlayerToLocation } from '../src/game/engine/locations';
 import { consumePhaseSlot } from '../src/game/engine/time';
 import { createInitialGameState } from '../src/game/model/initialState';
-import { createSessionState, exploreFromMarketHub, openMarketHubView, returnToMarketHub } from '../src/game/session/gameSession';
+import { chooseInSession, createSessionState, dismissResolution } from '../src/game/session/gameSession';
 
 function activeShiplessState() {
   const state = createInitialGameState(1);
@@ -56,12 +56,11 @@ describe('ship market arrival and annual income', () => {
     const state = activeShiplessState();
     state.shipMarketArrivalPending = true;
     state.navigationDecisionAgeMonths = state.ageMonths;
-    let session = createSessionState(state);
-    session = openMarketHubView(session, contentCatalog, 'merchant');
-    expect(session.marketHubView).toBe('merchant');
-    session = returnToMarketHub(session, contentCatalog);
-    session = exploreFromMarketHub(session, contentCatalog);
-    expect(session.marketHubView).toBeNull();
+    let session = createSessionState(state, contentCatalog);
+    session = dismissResolution(chooseInSession(session, contentCatalog, 'market:merchant'), contentCatalog);
+    expect(session.systemEvent?.id).toBe('system_market:merchant');
+    session = dismissResolution(chooseInSession(session, contentCatalog, 'market:explore'), contentCatalog);
+    expect(session.systemEvent).toBeNull();
     expect(session.gameState?.shipMarketArrivalPending).toBe(false);
   });
 
