@@ -31,7 +31,7 @@ import './hud-panel-header.css';
 import './top-world-hud.css';
 
 const INVENTORY_PREVIEW_SLOTS = 2;
-const CARGO_PREVIEW_SLOTS = 7;
+const CARGO_PREVIEW_SLOTS = 8;
 const CALENDAR_START_YEAR = 1507;
 
 type CargoOccupant =

@@ -21,6 +21,8 @@ import { ContextTooltip } from './ContextTooltip';
 import { getStatTooltipKey, STAT_TOOLTIP_COLORS } from './context-tooltip-copy';
 import { statToDiceModifier } from '@/game/engine/dice';
 import type { GameState } from '@/game/model/schema';
+import type { ContentCatalog } from '@/game/content/schema';
+import { effectivePlayerStat } from '@/game/engine/stats';
 import './player-stats-rail.css';
 
 type PlayerStatId = keyof GameState['player']['stats'];
@@ -58,9 +60,10 @@ export interface PlayerStatsRailProps {
   statLabel: (statId: PlayerStatId) => string;
   traitLabel: (traitId: string) => string;
   translate: Translator;
+  catalog: ContentCatalog;
 }
 
-export function PlayerStatsRail({ state, previousState, statLabel, traitLabel, translate }: PlayerStatsRailProps) {
+export function PlayerStatsRail({ state, previousState, statLabel, traitLabel, translate, catalog }: PlayerStatsRailProps) {
   const [expanded, setExpanded] = useState(false);
   const [displayedStats, setDisplayedStats] = useState<GameState['player']['stats']>(() => buildPresentationStats(state, previousState));
   const stateRef = useRef(state);
@@ -87,7 +90,7 @@ export function PlayerStatsRail({ state, previousState, statLabel, traitLabel, t
       <Panel variant="strong" padding="none" className="opfg-player-stats-rail" aria-label={translate('ui.stats.playerAria')}>
         <div className="opfg-player-stats-rail__list">
           {STAT_IDS.map((id) => {
-            const value = displayedStats[id];
+            const value = previousState ? displayedStats[id] : effectivePlayerStat(state, catalog, id);
             if (value === null) return null;
             const Icon = STAT_ICONS[id];
             const label = statLabel(id);

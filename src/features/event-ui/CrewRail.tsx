@@ -1,4 +1,4 @@
-import { Brain, ChevronRight, Clover, Compass, Dumbbell, Eye, Heart, ShieldCheck, Smile, UsersRound, type LucideIcon } from 'lucide-react';
+import { Brain, ChevronRight, Clover, Compass, Dumbbell, Eye, Heart, Gauge, MessageCircle, Smile, UsersRound, type LucideIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Panel } from '@/components/ui';
 import type { ContentCatalog } from '@/game/content/schema';
@@ -8,9 +8,10 @@ import { ContextTooltip } from './ContextTooltip';
 import { getStatTooltipKey, getUiTooltipKey, STAT_TOOLTIP_COLORS } from './context-tooltip-copy';
 import './hud-panel-header.css';
 import './crew-rail.css';
+import { effectiveNpcStat } from '@/game/engine/stats';
 
-const NPC_STAT_IDS: NpcStatId[] = ['health', 'morale', 'strength', 'observation', 'intelligence', 'luck', 'loyalty', 'calm'];
-const ICONS: Record<NpcStatId, LucideIcon> = { health: Heart, morale: Smile, strength: Dumbbell, observation: Eye, intelligence: Brain, luck: Clover, loyalty: ShieldCheck, calm: Compass };
+const NPC_STAT_IDS: NpcStatId[] = ['health', 'morale', 'strength', 'agility', 'observation', 'intelligence', 'navigation', 'charisma', 'luck'];
+const ICONS: Record<NpcStatId, LucideIcon> = { health: Heart, morale: Smile, strength: Dumbbell, agility: Gauge, observation: Eye, intelligence: Brain, navigation: Compass, charisma: MessageCircle, luck: Clover };
 
 export interface CrewRailProps { state: GameState; catalog: ContentCatalog; translate: Translator; statLabel: (statId: NpcStatId) => string }
 
@@ -75,12 +76,12 @@ export function CrewRail({ state, catalog, translate, statLabel }: CrewRailProps
               className="opfg-crew-stat has-rich-tooltip"
               title={label}
               detail={translate(getStatTooltipKey(statId))}
-              meta={translate('ui.stats.valueMeta', { value: npc.stats[statId] })}
+              meta={translate('ui.stats.valueMeta', { value: effectiveNpcStat(state, catalog, npcId, statId) })}
               accent={STAT_TOOLTIP_COLORS[statId]}
               side="left"
             >
               <Icon className="size-3" aria-hidden="true" />
-              <b>{npc.stats[statId]}</b>
+              <b>{effectiveNpcStat(state, catalog, npcId, statId)}</b>
             </ContextTooltip>;
           })}
         </div>

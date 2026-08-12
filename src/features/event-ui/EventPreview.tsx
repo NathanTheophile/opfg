@@ -84,8 +84,9 @@ const NPC_STAT_KEYS: Record<NpcStatId, string> = {
   observation: 'stat.observation',
   intelligence: 'stat.intelligence',
   luck: 'stat.luck',
-  loyalty: 'npcStat.loyalty',
-  calm: 'npcStat.calm',
+  agility: 'stat.agility',
+  navigation: 'stat.navigation',
+  charisma: 'stat.charisma',
 };
 
 const RESULT_KEYS: Record<DiceResult, string> = {
@@ -789,6 +790,7 @@ export function EventPreview({
   const statsRail = (
     <PlayerStatsRail
       state={displayState}
+      catalog={catalog}
       previousState={
         displayPreviousState
       }

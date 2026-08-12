@@ -1,5 +1,7 @@
 # OPFG — Game Design
 
+> **D2.6 systems amendment.** Schema 12 / Save 21 establishes the simple Item/Equipment, fixed-price market, Log Pose, companion and annual crew-role systems described in `design/ECONOMY_AND_ITEMS.md`. It supersedes older passages that list numeric Loyalty/Calm NPC Stats, a 50% resale rate, legacy Item categories, passive universal income, or crew roles without powers. NPC base Stats now exactly match the player's nine Stats. Childhood income is paid on birthdays ages 5–14 only: poor 500, modest 750, wealthy 1,500 Berrys.
+
 > **Status: Game Design authority for the current jam scope**
 >
 > Toute règle de gameplay non présente ici doit être considérée comme non verrouillée, sauf si explicitement définie par un document spécialisé référencé.
@@ -315,17 +317,17 @@ Un NPC persistant possède actuellement :
 
 - `status` ;
 - `relationship` entre -100 et 100 ;
-- des statistiques `health`, `morale`, `strength`, `observation`, `intelligence`, `luck`, `loyalty` et `calm`, entre 0 et 50.
+- les neuf statistiques joueur/NPC `health`, `morale`, `strength`, `agility`, `observation`, `intelligence`, `navigation`, `charisma` et `luck`, entre 0 et 50.
 
-`loyalty` décrit une caractéristique du NPC. `relationship` décrit sa relation avec le joueur. Ces valeurs sont indépendantes.
+`relationship` reste une valeur relationnelle séparée des neuf Stats du NPC.
 
 ### Mort d’un NPC
 
 Le statut `dead` est prévu. Si un membre d’équipage ou NPC critique atteint `health <= 0`, un Critical Event NPC se déclenche. Son issue V1 est la mort définitive et le passage au statut `dead`. Cette mort peut rendre des Scheduled Events annulables via `cancelIf`.
 
-### Relationship et loyalty
+### Relationship
 
-`relationship` mesure la relation entre le NPC et le joueur et évolue selon ses actes. `loyalty` est une caractéristique intrinsèque distincte : fidélité, stabilité, opportunisme ou propension à trahir. Une bonne relation n’implique donc pas une forte loyauté. Aucun seuil de loyauté ne provoque automatiquement un départ ; seuls des Events explicitement authorés peuvent la tester ou la modifier et produire une conséquence.
+`relationship` mesure la relation entre le NPC et le joueur et évolue selon ses actes. La fidélité, la stabilité, l’opportunisme ou la trahison restent des faits narratifs authorés ; aucune Stat cachée ne provoque automatiquement un départ.
 
 ## 12. Crew System
 

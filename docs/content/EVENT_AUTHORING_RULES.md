@@ -1,5 +1,7 @@
 # OPFG — Event Authoring Rules
 
+> **D2.6 contract.** `hasItem` inspects ordinary stored Items; equipment-use Choices must use `hasEquipped` or equipped weapon metadata Conditions. A stored weapon never satisfies an equipped-weapon requirement. Dice may name a `crewRole` actor; runtime selects the matching active crew NPC with the highest requested effective Stat, stable NPC ID as tie-break. Narrative continuations must support Items being sold, lost, stored, or unequipped.
+
 > **Status: validated specialized content authority**
 >
 > **Scope:** rules for producing, reviewing, validating, and batching authored Events for OPFG V1.

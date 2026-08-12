@@ -7,9 +7,7 @@ export type ContextStatId =
   | 'intelligence'
   | 'navigation'
   | 'charisma'
-  | 'luck'
-  | 'loyalty'
-  | 'calm';
+  | 'luck';
 
 export const STAT_TOOLTIP_COLORS: Record<ContextStatId, string> = {
   health: '#C94F4A',
@@ -21,8 +19,6 @@ export const STAT_TOOLTIP_COLORS: Record<ContextStatId, string> = {
   navigation: '#397FA8',
   charisma: '#BD6687',
   luck: '#D1A33C',
-  loyalty: '#D0A84B',
-  calm: '#62A5C5',
 };
 
 const STAT_TOOLTIP_KEYS: Record<ContextStatId, string> = {
@@ -35,8 +31,6 @@ const STAT_TOOLTIP_KEYS: Record<ContextStatId, string> = {
   navigation: 'stat.navigation.description',
   charisma: 'stat.charisma.description',
   luck: 'stat.luck.description',
-  loyalty: 'npcStat.loyalty.description',
-  calm: 'npcStat.calm.description',
 };
 
 const UI_TOOLTIP_KEYS = {
