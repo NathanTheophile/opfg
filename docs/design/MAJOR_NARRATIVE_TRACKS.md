@@ -428,7 +428,7 @@ The graph is expected to widen.
 
 A mature Family Saga may still reach roughly **45–70 root nodes across all five layers** if those nodes represent materially different situations and crossings. This is not a quota.
 
-The player still sees only five Family roots in Childhood.
+The player starts only five Family Major roots in Childhood, but each lived root may unfold through an Immediate mini-arc before that root slot is finalized.
 
 A graph fails review when:
 
@@ -454,3 +454,100 @@ Inherited Family affiliation remains historical origin and is never rewritten by
 When Active begins directly in a ranked career, the entry state includes that career's first rank. Marine entry therefore begins at `marine_recruit`.
 
 The runtime implementation of this handoff must occur at the Childhood → Active boundary rather than making unrelated remaining Childhood content treat the character as already professionally enlisted.
+
+<!-- D2.10_FAMILY_MAJOR_MINIARC_LOCK -->
+## D2.10 — Family Major node = mini-arc, not single-card beat
+
+This amendment clarifies the narrative unit represented by a Family Major node.
+
+### 17.1 Structural node vs lived story
+
+A `majorTrack.nodeId` identifies the **structural root of one Family mini-arc** inside the layered DAG. It does **not** imply that the whole layer beat should resolve in one Event panel.
+
+The normal production shape is:
+
+```text
+Major node / Layer beat
+-> 1 Normal root carrying `majorTrack`
+-> 1..N Immediate continuations
+-> mini-arc resolution
+-> later temporal layer
+```
+
+Only the Normal root carries `majorTrack` metadata and participates in `parentNodeIds`, route-local fallback coverage, `selectionPriority`, `specialPathId`, and `milestoneId`.
+
+Immediate descendants are part of the same lived node. They do not receive another Major node ID and do not consume another Childhood root slot.
+
+### 17.2 Expected depth
+
+For production Family content:
+
+- a meaningful specialized node normally resolves across **2–4 visible Event panels total**: one Normal root plus roughly 1–3 Immediate continuations;
+- high-value crossings, fractures, Special Associations, and Layer-5 inheritance nodes should normally receive enough beats to feel like a short scene sequence rather than a single decision card;
+- a route-local fallback may be shorter, including a single Normal root when deliberately appropriate, but must still be a concrete situation rather than filler;
+- depth is driven by dramatic need, not a fixed panel quota.
+
+The five guaranteed Childhood Family roots therefore mean **five guaranteed Family mini-arcs**, not merely five isolated cards.
+
+### 17.3 Internal branching
+
+Immediate descendants may branch, reconverge, contain DiceChecks, and queue further Immediate Events.
+
+Example:
+
+```text
+Normal root
+├─ Choice A
+│  -> Immediate A1
+│     ├─ Dice success -> Immediate A2
+│     └─ Dice failure -> Immediate A3
+├─ Choice B
+│  -> Immediate B1
+└─ Choice C
+   -> Immediate C1
+```
+
+The mini-arc should end when the immediate dramatic situation has genuinely resolved.
+
+Do not use `scheduleEvent` merely to create the next beat of the same scene. Use Immediate Events for zero-time scene continuation.
+
+### 17.4 History carries the fine-grained route
+
+The next temporal layer is structurally reachable through the previous Major root's `nodeId`, but its specialized descendants may additionally inspect **any History produced inside that node's mini-arc**.
+
+Later eligibility may therefore use:
+
+- `hasPlayed` on an Immediate descendant;
+- `hasChosen` on a root or Immediate Event;
+- `hasOutcome` on a root or Immediate Event;
+- NPC state / Relationship changed during the chain;
+- Traits, Items, Flags, or other persistent consequences when genuinely needed.
+
+This is how two players who lived the same structural Major node can leave it on different narrative trajectories.
+
+### 17.5 Consequence placement
+
+Do not dump the entire Family consequence package onto the opening root by default.
+
+Spread consequence where the fiction earns it:
+
+- root Choice may establish intent;
+- an Immediate confrontation may carry the DiceCheck;
+- a later Immediate outcome may apply the strongest Stat / Relationship consequence;
+- the final beat should leave a clear History signature for future layers.
+
+A Family mini-arc as a whole should usually feel materially formative even if one or more individual panels are mechanically neutral.
+
+### 17.6 Scheduled callbacks remain distinct
+
+A Family mini-arc may still author a Scheduled consequence when the fiction requires a real delay after the scene.
+
+That Scheduled Event is a **later callback**, not an internal beat required to make the current Major node feel complete. It must not be used as a substitute for Immediate scene development.
+
+### 17.7 Breadth accounting
+
+The existing estimate of roughly **45–70 Major root nodes** for a mature Family Saga counts structural mini-arc roots.
+
+It does not count their Immediate descendants.
+
+A complete mature Saga may therefore contain well over 100 EventDefinitions while a single run still starts exactly five Childhood Family Major roots and sees only the Immediate branches belonging to those five lived mini-arcs.

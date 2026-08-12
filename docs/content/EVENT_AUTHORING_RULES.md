@@ -1957,3 +1957,85 @@ A meaningful Family relationship may change alongside the Stat package. Ordinary
 Every reachable Layer-5 Outcome requires at least one persistent gameplay reward. Achievements/milestones are meta recognition and do not satisfy that requirement.
 
 Layer-5 career inheritance is Outcome-specific. For Marine Family content, an Outcome may make Active begin as Marine or Civilian. Do not equate disagreement with a parent to automatic anti-Marine belief.
+
+<!-- D2.10_FAMILY_MINIARC_AUTHORING -->
+## 28. Family Major mini-arc authoring
+
+A Family Major root is the **opening beat of a short mini-story**, not normally the whole story.
+
+### 28.1 Default production form
+
+Prefer:
+
+```text
+Normal Major root
+-> Immediate reaction
+-> optional Immediate branch / Dice beat
+-> Immediate resolution
+```
+
+Typical specialized Family node: **2–4 visible panels total**.
+
+Crossings, fracture nodes, Special Associations, and inheritance finales should usually receive enough Immediate development to justify their structural importance. Fallbacks may be shorter when appropriate.
+
+Only the Normal root has `majorTrack`. Immediate descendants belong to that node narratively but remain ordinary Immediate Events.
+
+### 28.2 Immediate, not Scheduled, for the same scene
+
+Use `queueImmediateEvent` when:
+
+- no meaningful time passes;
+- the same people/situation are still active;
+- the next panel is a reaction, confrontation, reveal, Dice beat, or resolution of the current scene.
+
+Use `scheduleEvent` only when the consequence genuinely occurs later.
+
+Never stretch one continuous Family scene across Scheduled Events merely to make it feel longer.
+
+### 28.3 Internal branches must matter later
+
+A mini-arc should leave distinct History when its internal choices are meaningfully different.
+
+Later Major nodes may gate on the root **and** on the exact Immediate branch/outcome previously lived.
+
+Good:
+
+```text
+Layer-2 root reached from Layer 1
++ hasOutcome(layer_1_immediate_test, protected_someone)
+-> specialized Layer-2 descendant
+```
+
+Weak:
+
+```text
+three Immediate branches
+-> identical effects
+-> identical later eligibility
+-> no callback ever
+```
+
+Not every branch requires a unique future node, but important differences should remain available to future authoring.
+
+### 28.4 Mechanical rhythm
+
+Family consequence budgets apply to the **mini-arc as a whole**, not to every panel.
+
+A strong pattern is:
+
+```text
+Root          -> intent / small or no effect
+Immediate 1   -> reaction / relationship shift
+Immediate 2   -> Dice or hard decision
+Resolution    -> main +2/-2(/+1) consequence
+```
+
+Do not stack a full `+2/-2/+1` package on every beat.
+
+### 28.5 Final inheritance
+
+For Layer 5, the guaranteed persistent gameplay reward should normally be granted on the actual resolution beat of the mini-arc, after the inheritance decision is known.
+
+Likewise, the Marine/Civilian Active-start decision belongs to the resolved inheritance Outcome, not to the opening panel merely because the terminal node was selected.
+
+Achievements/milestones remain additional recognition and never count as the gameplay reward.

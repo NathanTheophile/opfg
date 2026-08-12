@@ -382,3 +382,18 @@ Rules:
 - merge back into shared Family nodes when the special pressure no longer changes the situation;
 - do not require a Special Association for every affiliation × Race pair;
 - record notable endpoints with stable `milestoneId` metadata when a future achievement should be able to recognize the route.
+
+<!-- D2.10_FAMILY_MINIARC_CONTENT -->
+## 10.1 Family Major mini-arcs
+
+The general rule that individual Events may be purely narrative still applies.
+
+Family Major content is judged at the **mini-arc level**:
+
+- one structural Normal root usually opens 1–3 Immediate continuations;
+- individual panels may be mechanically neutral;
+- the complete mini-arc should normally leave a meaningful mechanical, relational, narrative, or persistent consequence;
+- the five guaranteed Family roots represent five lived Family mini-stories during Childhood;
+- Layer-5 mini-arcs are the exception to optional rewards: every reachable terminal Outcome grants at least one persistent gameplay reward, excluding Achievements/milestones.
+
+Immediate descendants do not need persistent NPC definitions for throwaway actors; the existing NPC rules still apply.

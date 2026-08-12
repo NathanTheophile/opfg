@@ -680,3 +680,19 @@ Family Major decisions are intentionally more formative than ordinary Childhood 
 Every reachable final Childhood Family Outcome grants at least one persistent gameplay reward. A Special Association milestone/Achievement is additional recognition and never substitutes for that reward.
 
 The final Family inheritance may determine the starting personal Active affiliation without rewriting inherited Family affiliation. A Marine-family child may therefore enter Active directly as Marine, including `marine_recruit`, or enter as Civilian depending on the actual Layer-5 Outcome.
+
+<!-- D2.10_FAMILY_MAJOR_MINIARC_LOCK -->
+## D2.10 — Family Major mini-arc lock
+
+A Childhood Family checkpoint guarantees one **Family mini-arc**, not one isolated Event card.
+
+- The Major DAG still contains one structural Normal root per lived node.
+- That Normal root may and usually should open a chain of Immediate Events.
+- Typical specialized Family nodes span about 2–4 visible panels total.
+- Only the root carries `majorTrack`; Immediate descendants do not become extra Major nodes or consume extra root slots.
+- Same-scene development uses Immediate Events, never Scheduled Events merely for pacing.
+- Internal Immediate Choices/Outcomes remain in History and may specialize descendants in later temporal layers.
+- Consequences are distributed across the mini-arc rather than front-loaded onto every root.
+- Crossings, Special Associations, fracture beats and Layer-5 inheritance should receive enough internal development to feel like short stories.
+- Route-local fallbacks may be shorter but must still be concrete.
+- The 45–70 mature-root estimate counts mini-arc roots only; total EventDefinition count may be substantially higher.
