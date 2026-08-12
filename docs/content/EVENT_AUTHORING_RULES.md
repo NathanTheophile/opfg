@@ -1832,3 +1832,106 @@ Do not create separate EventDefinitions for:
 Use NPC grammar interpolation and locale-local `select:` fragments documented in `docs/LOCALIZATION.md`.
 
 Conversely, if father versus mother changes the relationship, authority, history, occupation, conflict, or stakes of the scene, that is narrative content and belongs in the selected complete Family tree, not in a translation selector.
+
+<!-- D2.8_LAYERED_SAGA_AUTHORING -->
+## 26. Layered Major Saga graph authoring — D2.8 authority
+
+Family Saga authoring uses the layered pyramidal graph contract from `docs/design/MAJOR_NARRATIVE_TRACKS.md`.
+
+### 26.1 Think in nodes and descendants
+
+Before writing prose, every Family Saga blueprint must show:
+
+1. the three-ish major entry pyramids for Layer 1;
+2. every Layer 4 / 8 / 12 / 15 node;
+3. parent-node links;
+4. explicit crossings;
+5. route-local fallbacks;
+6. special association sub-paths and milestone endpoints.
+
+Each Event is a concrete node in that graph, not an independent “variant of chapter N”.
+
+### 26.2 Node metadata
+
+Every Major Family Event must declare:
+
+```ts
+majorTrack: {
+  trackId,
+  chapterId,
+  nodeId,
+  parentNodeIds?,
+  selectionPriority?,
+  fallback?,
+  specialPathId?,
+  milestoneId?
+}
+```
+
+`parentNodeIds` is structural reachability only. If descent depends on a specific Choice/Outcome, add `hasChosen` / `hasOutcome` to the target Event eligibility as well.
+
+### 26.3 Crossing standard
+
+A crossing node is justified when characters from different earlier pyramids now face the **same concrete situation for different historical reasons**.
+
+The Event must acknowledge those reasons through callbacks, conditional Choices, NPC state, or localized/history-aware text where useful. A crossing must not erase the player's route.
+
+### 26.4 Special Association standard
+
+A bespoke combination path is allowed when the combination produces unusually strong One Piece-specific dramatic material.
+
+Good:
+
+```text
+Giant × Marine family
+-> Marine institutional interest in Giant military strength
+-> Giant-specific response
+-> one or more bespoke descendants
+-> optional unique inheritance milestone
+```
+
+Weak:
+
+```text
+Mink × Marine
+-> same generic scene
+-> add fur reference
+-> call it a special path
+```
+
+No coverage quota exists for Special Associations. Discover them during affiliation/race research and author only the high-yield ones.
+
+### 26.5 Fallback and dead ends
+
+Narrative **sub-paths** may dead-end. The Family Saga may not.
+
+A special sub-path can end by:
+
+- joining a shared node;
+- falling back to its route-local continuation;
+- converging into another pyramid.
+
+Every previous-layer node needs one fallback continuation at the next layer once that next layer is production-complete.
+
+### 26.6 Priority is specificity, not rarity
+
+`selectionPriority` is used only to resolve overlapping eligible nodes.
+
+Default `0`. Prefer small readable tiers such as:
+
+```text
+0   ordinary specialized node
+10  broad high-value intersection
+20  deliberately specific association
+30  exceptional authored continuation
+```
+
+Do not use priority as probability or quality scoring.
+
+### 26.7 Milestones / future achievements
+
+`milestoneId` may appear only on a node belonging to a `specialPathId`.
+
+Milestones are stable semantic IDs. They are derived from played History and are the future bridge to account-level achievements.
+
+Do not award Berrys, Stats, Traits, or other gameplay rewards merely because a meta achievement exists unless the Event itself narratively warrants them.

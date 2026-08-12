@@ -358,3 +358,27 @@ For V2 production:
 - use atomic `buyItem` / `sellItem` for ordinary generic transactions;
 - unique story objects and Devil Fruits remain non-market unless explicitly designed otherwise;
 - Childhood social class is household context, not an automatic personal wallet.
+
+<!-- D2.8_SPECIAL_ASSOCIATIONS -->
+## Family Saga special associations
+
+Family Saga coverage is not Cartesian. However, some intersections deserve bespoke sub-paths when One Piece world logic makes the combination unusually consequential.
+
+Call these **Special Associations**.
+
+A Special Association can involve:
+
+- inherited affiliation × Race;
+- inherited affiliation × family structure;
+- affiliation × Race × a prior Saga Choice/Outcome;
+- another compact combination with unusually strong world/narrative consequences.
+
+The reference V1 example is `Marine × Giant`: Marine institutional interest in Giant military strength can justify Giant-only responses, descendants and a unique inheritance milestone.
+
+Rules:
+
+- begin from a concrete situation, never from coverage bookkeeping;
+- allow bespoke nodes only while the combination continues to change actor/action/stake;
+- merge back into shared Family nodes when the special pressure no longer changes the situation;
+- do not require a Special Association for every affiliation × Race pair;
+- record notable endpoints with stable `milestoneId` metadata when a future achievement should be able to recognize the route.

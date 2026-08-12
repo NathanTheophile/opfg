@@ -65,6 +65,8 @@ const runtimeCatalog = (project: AuthoringProject) => ({
   ships: project.registries.ships,
   crewRoles: project.registries.crewRoles,
   npcs: project.registries.npcs,
+  economy: {},
+  majorNarrativeTracks: project.registries.majorNarrativeTracks,
   events: project.events,
 });
 

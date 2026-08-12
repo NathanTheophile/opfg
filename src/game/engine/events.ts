@@ -86,18 +86,50 @@ function findDueMajorNarrativeCandidates(state: GameState, catalog: ContentCatal
 
   if (eligibleTracks.length === 0) return undefined;
   const selected = eligibleTracks[0];
-  const variants = catalog.events.filter((event): event is NormalDefinition =>
-    event.kind === 'normal'
-      && event.majorTrack?.trackId === selected.track.id
-      && event.majorTrack.chapterId === selected.chapter.id
-      && isNormalOccurrenceEligible(event, state)
-      && isEligible(event, state, catalog),
-  );
-  const specialized = variants.filter((event) => event.majorTrack?.fallback !== true);
-  const fallbacks = variants.filter((event) => event.majorTrack?.fallback === true);
-  const candidates = specialized.length > 0 ? specialized : fallbacks;
-  if (candidates.length === 0) return undefined;
+  const chapterIndex = selected.track.chapters.findIndex(({ id }) => id === selected.chapter.id);
+  const previousNodeId = chapterIndex > 0
+    ? playedMajorNodeId(state, catalog, selected.track.id, selected.track.chapters[chapterIndex - 1].id)
+    : undefined;
+
+  const reachable = catalog.events.filter((event): event is NormalDefinition => {
+    if (
+      event.kind !== 'normal'
+      || event.majorTrack?.trackId !== selected.track.id
+      || event.majorTrack.chapterId !== selected.chapter.id
+      || !isNormalOccurrenceEligible(event, state)
+      || !isEligible(event, state, catalog)
+    ) return false;
+
+    const parents = event.majorTrack.parentNodeIds ?? [];
+    return chapterIndex === 0
+      ? parents.length === 0
+      : previousNodeId !== undefined && parents.includes(previousNodeId);
+  });
+
+  const specialized = reachable.filter((event) => event.majorTrack?.fallback !== true);
+  const basePool = specialized.length > 0
+    ? specialized
+    : reachable.filter((event) => event.majorTrack?.fallback === true);
+  if (basePool.length === 0) return undefined;
+
+  const highestPriority = Math.max(...basePool.map((event) => event.majorTrack?.selectionPriority ?? 0));
+  const candidates = basePool.filter((event) => (event.majorTrack?.selectionPriority ?? 0) === highestPriority);
   return { candidates, overdue: state.ageMonths > selected.chapter.dueAgeMonths };
+}
+
+function playedMajorNodeId(
+  state: GameState,
+  catalog: ContentCatalog,
+  trackId: string,
+  chapterId: string,
+): string | undefined {
+  const eventById = new Map(catalog.events.map((event) => [event.id, event] as const));
+  for (let index = state.history.length - 1; index >= 0; index -= 1) {
+    const event = eventById.get(state.history[index].eventId);
+    const ref = event?.kind === 'normal' ? event.majorTrack : undefined;
+    if (ref?.trackId === trackId && ref.chapterId === chapterId) return ref.nodeId;
+  }
+  return undefined;
 }
 
 function firstIncompleteChapter(state: GameState, catalog: ContentCatalog, track: MajorNarrativeTrackDefinition): MajorNarrativeTrackDefinition['chapters'][number] | undefined {
@@ -109,6 +141,15 @@ function firstIncompleteChapter(state: GameState, catalog: ContentCatalog, track
     if (ref?.trackId === track.id) playedChapters.add(ref.chapterId);
   }
   return track.chapters.find(({ id }) => !playedChapters.has(id));
+}
+
+export function completedMajorNarrativeMilestones(state: GameState, catalog: ContentCatalog): string[] {
+  const eventById = new Map(catalog.events.map((event) => [event.id, event] as const));
+  return [...new Set(state.history.flatMap(({ eventId }) => {
+    const event = eventById.get(eventId);
+    const milestoneId = event?.kind === 'normal' ? event.majorTrack?.milestoneId : undefined;
+    return milestoneId ? [milestoneId] : [];
+  }))];
 }
 
 function selectEvent(state: GameState, catalog: ContentCatalog, event: EventDefinition): GameState {

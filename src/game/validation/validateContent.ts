@@ -352,12 +352,14 @@ function validateItemEconomy(catalog: UnknownRecord, items: UnknownRecord[], err
 
 function validateMajorNarrativeTracks(tracks: UnknownRecord[], events: UnknownRecord[], references: References, errors: ContentValidationError[]): void {
   const validTypes = new Set(['family_legacy', 'personal_affiliation']);
+
   tracks.forEach((track, index) => {
     const path = `majorNarrativeTracks[${index}]`;
     if (!validTypes.has(String(track.type))) errors.push({ path: `${path}.type`, message: 'Invalid Major Narrative Track type.' });
     validateCondition(track.eligibility, `${path}.eligibility`, references, errors);
     const chapters = readRecords(track.chapters, `${path}.chapters`, errors);
-    const chapterIds = collectIds(chapters, `${path}.chapters`, errors);
+    collectIds(chapters, `${path}.chapters`, errors);
+
     let previousDue = -1;
     chapters.forEach((chapter, chapterIndex) => {
       const chapterPath = `${path}.chapters[${chapterIndex}]`;
@@ -366,17 +368,93 @@ function validateMajorNarrativeTracks(tracks: UnknownRecord[], events: UnknownRe
       else if ((chapter.dueAgeMonths as number) <= previousDue) errors.push({ path: `${chapterPath}.dueAgeMonths`, message: 'Major Track chapter checkpoints must be strictly increasing.' });
       previousDue = Number(chapter.dueAgeMonths);
     });
+
     if (track.type === 'family_legacy') {
       const childhood = chapters.filter((chapter) => chapter.phase === 'childhood');
-      if (childhood.length !== 5) errors.push({ path: `${path}.chapters`, message: 'Family Legacy Track must define exactly 5 Childhood chapters.' });
-      if (childhood.some((chapter) => Number(chapter.dueAgeMonths) >= 180)) errors.push({ path: `${path}.chapters`, message: 'Family Childhood chapters must be due before age 15.' });
+      if (childhood.length !== 5) errors.push({ path: `${path}.chapters`, message: 'Family Legacy Track must define exactly 5 Childhood temporal layers.' });
+      if (childhood.some((chapter) => Number(chapter.dueAgeMonths) >= 180)) errors.push({ path: `${path}.chapters`, message: 'Family Childhood layers must be due before age 15.' });
     }
-    for (const chapterId of chapterIds) {
-      const variants = events.filter((event) => isRecord(event.majorTrack) && event.majorTrack.trackId === track.id && event.majorTrack.chapterId === chapterId);
-      if (variants.length === 0) continue; // infrastructure may exist before content production
-      const fallbacks = variants.filter((event) => isRecord(event.majorTrack) && event.majorTrack.fallback === true);
-      if (fallbacks.length !== 1) errors.push({ path: `${path}.chapters`, message: `Chapter "${chapterId}" must have exactly one fallback once variants exist.` });
+
+    const trackEvents = events.filter((event) => isRecord(event.majorTrack) && event.majorTrack.trackId === track.id);
+    if (trackEvents.length === 0) return; // infrastructure can precede authored Saga content
+
+    const nodeToChapter = new Map<string, string>();
+    const milestoneIds = new Set<string>();
+
+    for (const event of trackEvents) {
+      if (!isRecord(event.majorTrack)) continue;
+      const nodeId = stringValue(event.majorTrack.nodeId);
+      const chapterId = stringValue(event.majorTrack.chapterId);
+      if (!nodeId || !chapterId) continue;
+      if (nodeToChapter.has(nodeId)) errors.push({ path, message: `Duplicate Major nodeId "${nodeId}" in track "${String(track.id)}".` });
+      nodeToChapter.set(nodeId, chapterId);
+
+      if (event.majorTrack.selectionPriority !== undefined && (!Number.isInteger(event.majorTrack.selectionPriority) || (event.majorTrack.selectionPriority as number) < 0 || (event.majorTrack.selectionPriority as number) > 100)) {
+        errors.push({ path, message: `Major node "${nodeId}" selectionPriority must be an integer from 0 to 100.` });
+      }
+      if (event.majorTrack.specialPathId !== undefined && !stringValue(event.majorTrack.specialPathId)) errors.push({ path, message: `Major node "${nodeId}" specialPathId must be a non-empty string.` });
+      if (event.majorTrack.milestoneId !== undefined) {
+        const milestoneId = stringValue(event.majorTrack.milestoneId);
+        if (!milestoneId) errors.push({ path, message: `Major node "${nodeId}" milestoneId must be a non-empty string.` });
+        else {
+          if (!stringValue(event.majorTrack.specialPathId)) errors.push({ path, message: `Major node "${nodeId}" milestoneId requires specialPathId.` });
+          if (milestoneIds.has(milestoneId)) errors.push({ path, message: `Duplicate Major milestoneId "${milestoneId}".` });
+          milestoneIds.add(milestoneId);
+        }
+      }
     }
+
+    chapters.forEach((chapter, chapterIndex) => {
+      const chapterId = stringValue(chapter.id);
+      if (!chapterId) return;
+      const layerEvents = trackEvents.filter((event) => isRecord(event.majorTrack) && event.majorTrack.chapterId === chapterId);
+      if (layerEvents.length === 0) return;
+
+      if (chapterIndex === 0) {
+        const rootsWithParents = layerEvents.filter((event) => isRecord(event.majorTrack) && Array.isArray(event.majorTrack.parentNodeIds) && event.majorTrack.parentNodeIds.length > 0);
+        if (rootsWithParents.length > 0) errors.push({ path, message: `First Major layer "${chapterId}" nodes cannot declare parentNodeIds.` });
+        const rootFallbacks = layerEvents.filter((event) => isRecord(event.majorTrack) && event.majorTrack.fallback === true);
+        if (rootFallbacks.length !== 1) errors.push({ path, message: `First Major layer "${chapterId}" must have exactly one generic fallback root once authored.` });
+        return;
+      }
+
+      const previousChapterId = stringValue(chapters[chapterIndex - 1]?.id);
+      if (!previousChapterId) return;
+      const previousNodeIds = new Set(
+        trackEvents
+          .filter((event) => isRecord(event.majorTrack) && event.majorTrack.chapterId === previousChapterId)
+          .map((event) => isRecord(event.majorTrack) ? stringValue(event.majorTrack.nodeId) : undefined)
+          .filter((id): id is string => id !== undefined),
+      );
+
+      for (const event of layerEvents) {
+        if (!isRecord(event.majorTrack)) continue;
+        const nodeId = stringValue(event.majorTrack.nodeId) ?? String(event.id);
+        if (!Array.isArray(event.majorTrack.parentNodeIds) || event.majorTrack.parentNodeIds.length === 0) {
+          errors.push({ path, message: `Major node "${nodeId}" in layer "${chapterId}" requires parentNodeIds from the immediately previous layer.` });
+          continue;
+        }
+        const seenParents = new Set<string>();
+        for (const rawParent of event.majorTrack.parentNodeIds) {
+          const parent = stringValue(rawParent);
+          if (!parent || !previousNodeIds.has(parent)) errors.push({ path, message: `Major node "${nodeId}" references parent "${String(rawParent)}" outside immediately previous layer "${previousChapterId}".` });
+          if (parent && seenParents.has(parent)) errors.push({ path, message: `Major node "${nodeId}" repeats parentNodeId "${parent}".` });
+          if (parent) seenParents.add(parent);
+        }
+      }
+
+      if (previousNodeIds.size > 0) {
+        for (const previousNodeId of previousNodeIds) {
+          const coveringFallbacks = layerEvents.filter((event) =>
+            isRecord(event.majorTrack)
+            && event.majorTrack.fallback === true
+            && Array.isArray(event.majorTrack.parentNodeIds)
+            && event.majorTrack.parentNodeIds.includes(previousNodeId),
+          );
+          if (coveringFallbacks.length !== 1) errors.push({ path, message: `Previous Major node "${previousNodeId}" must have exactly one route-local fallback continuation in layer "${chapterId}"; found ${coveringFallbacks.length}.` });
+        }
+      }
+    });
   });
 }
 
@@ -436,7 +514,10 @@ function validateEvent(
         const chapterIds = new Set(track.chapters.filter(isRecord).map((chapter) => stringValue(chapter.id)).filter((id): id is string => id !== undefined));
         validateReference(event.majorTrack.chapterId, chapterIds, 'Major Track chapter ID', `${path}.majorTrack.chapterId`, errors);
       }
+      if (!stringValue(event.majorTrack.nodeId)) errors.push({ path: `${path}.majorTrack.nodeId`, message: 'Major Track Event requires a non-empty nodeId.' });
+      if (event.majorTrack.parentNodeIds !== undefined && !Array.isArray(event.majorTrack.parentNodeIds)) errors.push({ path: `${path}.majorTrack.parentNodeIds`, message: 'majorTrack.parentNodeIds must be an array when present.' });
       if (event.majorTrack.fallback !== undefined && event.majorTrack.fallback !== true) errors.push({ path: `${path}.majorTrack.fallback`, message: 'majorTrack.fallback must be true when present.' });
+      if (event.majorTrack.selectionPriority !== undefined && (!Number.isInteger(event.majorTrack.selectionPriority) || (event.majorTrack.selectionPriority as number) < 0 || (event.majorTrack.selectionPriority as number) > 100)) errors.push({ path: `${path}.majorTrack.selectionPriority`, message: 'majorTrack.selectionPriority must be an integer from 0 to 100.' });
       if (event.replay !== undefined) errors.push({ path: `${path}.majorTrack`, message: 'Major Track Events cannot be replayable.' });
       if (event.lifetimeThreadSeed === true) errors.push({ path: `${path}.majorTrack`, message: 'Major Track Events cannot also be lifetimeThreadSeed.' });
       if (event.openingRole !== undefined) errors.push({ path: `${path}.majorTrack`, message: 'Major Track Events cannot also use legacy openingRole.' });

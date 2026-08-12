@@ -33,7 +33,7 @@ import type {
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 13;
+export const CONTENT_SCHEMA_VERSION = 14;
 
 export const V1_CAREER_HORIZON_MONTHS = 420;
 
@@ -77,7 +77,17 @@ export interface MajorNarrativeTrackDefinition {
 export interface MajorTrackEventRef {
   trackId: string;
   chapterId: string;
+  nodeId: string;
+  /** OR reachability from node IDs in the immediately previous temporal layer. */
+  parentNodeIds?: string[];
+  /** Highest eligible value wins; ties stay seeded-uniform. Default 0. */
+  selectionPriority?: number;
+  /** Route-local safety continuation, considered only when no specialized descendant is eligible. */
   fallback?: true;
+  /** High-yield authored intersection such as Marine × Giant. */
+  specialPathId?: string;
+  /** Stable notable endpoint; future achievement systems may map this ID account-wide. */
+  milestoneId?: string;
 }
 
 export const ITEM_CATEGORIES = ['item', 'equipment'] as const;

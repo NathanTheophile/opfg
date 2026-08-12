@@ -36,7 +36,7 @@ const localeFromFile = (name: string, path?: string): string => {
   return basename.replace(/\.json$/i, '').replace(/^locales[-_]/i, '').toLowerCase();
 };
 
-const emptyRegistries = (): GameRegistries => ({ races: [], seas: [], affiliations: [], careerAffiliations: [], careerRanks: [], careerTitles: [], endings: [], familyStructures: [], socialClasses: [], traits: [], items: [], devilFruits: [], ships: [], crewRoles: [], npcs: [], locations: [], flags: [] });
+const emptyRegistries = (): GameRegistries => ({ races: [], seas: [], affiliations: [], careerAffiliations: [], careerRanks: [], careerTitles: [], endings: [], familyStructures: [], socialClasses: [], traits: [], items: [], devilFruits: [], ships: [], crewRoles: [], npcs: [], locations: [], majorNarrativeTracks: [], flags: [] });
 const blankProject = (): AuthoringProject => {
   const now = new Date().toISOString();
   return { authoringVersion: AUTHORING_VERSION, gameSchemaVersion: CONTENT_SCHEMA_VERSION, name: 'OPFG Events', sourceLocale: 'fr', supportedLocales: ['fr', 'en'], events: [], nodes: [], edges: [], registries: emptyRegistries(), localization: {}, metadata: { createdAt: now, updatedAt: now } };
@@ -78,7 +78,7 @@ const catalogToProject = (catalog: ContentCatalog, dictionaries: Record<string, 
     races: structuredClone(catalog.races), seas: structuredClone(catalog.seas), affiliations: structuredClone(catalog.affiliations), careerAffiliations: structuredClone(catalog.careerAffiliations), careerRanks: structuredClone(catalog.careerRanks), careerTitles: structuredClone(catalog.careerTitles), endings: structuredClone(catalog.endings),
     familyStructures: structuredClone(catalog.familyStructures), socialClasses: structuredClone(catalog.socialClasses),
     traits: structuredClone(catalog.traits), items: structuredClone(catalog.items), devilFruits: structuredClone(catalog.devilFruits), ships: structuredClone(catalog.ships), crewRoles: structuredClone(catalog.crewRoles), npcs: structuredClone(catalog.npcs),
-    locations: structuredClone(catalog.locations), flags: collectFlagIds(events).map((id) => ({ id })),
+    locations: structuredClone(catalog.locations), majorNarrativeTracks: structuredClone(catalog.majorNarrativeTracks), flags: collectFlagIds(events).map((id) => ({ id })),
   };
   const temp: AuthoringProject = {
     authoringVersion: AUTHORING_VERSION, gameSchemaVersion: CONTENT_SCHEMA_VERSION, name: 'Imported Catalog', sourceLocale: 'fr',
@@ -178,7 +178,33 @@ function EditorApp() {
   }), [project, eventMap, validation.errorEventIds, filters, search, selectedEventId, localizationFilterLocale]);
 
   const visibleEventIds = useMemo(() => new Set(flowNodes.filter((node) => !node.hidden).map((node) => node.id)), [flowNodes]);
-  const flowEdges = useMemo<Edge[]>(() => project.edges.map((edge) => ({ id: edge.id, source: edge.sourceEventId, target: edge.targetEventId, hidden: !visibleEventIds.has(edge.sourceEventId) || !visibleEventIds.has(edge.targetEventId) })).filter((edge) => eventMap.has(edge.source) && eventMap.has(edge.target)), [project.edges, visibleEventIds, eventMap]);
+  const flowEdges = useMemo<Edge[]>(() => {
+    const ordinary = project.edges
+      .map((edge) => ({ id: edge.id, source: edge.sourceEventId, target: edge.targetEventId, hidden: !visibleEventIds.has(edge.sourceEventId) || !visibleEventIds.has(edge.targetEventId) }))
+      .filter((edge) => eventMap.has(edge.source) && eventMap.has(edge.target));
+
+    const eventByMajorNode = new Map<string, string>();
+    for (const event of project.events) {
+      if (event.kind === 'normal' && event.majorTrack) eventByMajorNode.set(`${event.majorTrack.trackId}:${event.majorTrack.nodeId}`, event.id);
+    }
+
+    const major = project.events.flatMap((event): Edge[] => {
+      if (event.kind !== 'normal' || !event.majorTrack?.parentNodeIds?.length) return [];
+      return event.majorTrack.parentNodeIds.flatMap((parentNodeId) => {
+        const source = eventByMajorNode.get(`${event.majorTrack!.trackId}:${parentNodeId}`);
+        if (!source) return [];
+        return [{
+          id: `major:${event.majorTrack!.trackId}:${parentNodeId}->${event.majorTrack!.nodeId}`,
+          source,
+          target: event.id,
+          hidden: !visibleEventIds.has(source) || !visibleEventIds.has(event.id),
+          label: event.majorTrack!.specialPathId ? `★ ${event.majorTrack!.specialPathId}` : undefined,
+        }];
+      });
+    });
+
+    return [...ordinary, ...major];
+  }, [project.edges, project.events, visibleEventIds, eventMap]);
 
   const deleteEvents = (eventIdsToDelete: Set<string>) => {
     touch((current) => {
@@ -242,7 +268,33 @@ function EditorApp() {
     }); setSelectedEventId(id);
   };
 
-  const onConnect = (connection: Connection) => { if (!connection.source || !connection.target || connection.source === connection.target) return; touch((current) => ({ ...current, edges: [...current.edges, { id: uniqueId(`${connection.source}-${connection.target}`, current.edges.map((edge) => edge.id)), sourceEventId: connection.source!, targetEventId: connection.target! }] })); };
+  const onConnect = (connection: Connection) => {
+    if (!connection.source || !connection.target || connection.source === connection.target) return;
+    const source = eventMap.get(connection.source);
+    const target = eventMap.get(connection.target);
+
+    if (
+      source?.kind === 'normal'
+      && target?.kind === 'normal'
+      && source.majorTrack
+      && target.majorTrack
+      && source.majorTrack.trackId === target.majorTrack.trackId
+    ) {
+      touch((current) => ({
+        ...current,
+        events: current.events.map((event) => event.id !== connection.target ? event : {
+          ...event,
+          majorTrack: event.kind === 'normal' && event.majorTrack ? {
+            ...event.majorTrack,
+            parentNodeIds: [...new Set([...(event.majorTrack.parentNodeIds ?? []), source.majorTrack!.nodeId])],
+          } : undefined,
+        } as EventDefinition),
+      }));
+      return;
+    }
+
+    touch((current) => ({ ...current, edges: [...current.edges, { id: uniqueId(`${connection.source}-${connection.target}`, current.edges.map((edge) => edge.id)), sourceEventId: connection.source!, targetEventId: connection.target! }] }));
+  };
   const onLocalizedTextChange = (key: string, locale: string, text: string) => touch((current) => ({ ...current, localization: setLocalizedText(current.localization, key, locale, text, current.sourceLocale) }));
 
   const assertWorkspaceExportable = (): boolean => {

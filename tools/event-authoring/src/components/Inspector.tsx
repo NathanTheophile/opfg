@@ -43,6 +43,9 @@ export default function Inspector(props: Props) {
   const { event, contentFolder, notes, status, issues, registries, eventIds, scheduledEventIds, immediateEventIds, localization, activeLocale, sourceLocale, supportedLocales, onLocaleChange, onLocalizedTextChange, onChange, onContentFolderChange, onRename, onNotesChange, onStatusChange } = props;
   if (!event) return <aside className="inspector empty-panel"><span>Select an Event card.</span></aside>;
   const normalFolders: ContentFolder[] = ['origins','childhood','active','fixtures/childhood'];
+  const selectedMajorTrack = event.kind === 'normal' && event.majorTrack
+    ? registries.majorNarrativeTracks.find(({ id }) => id === event.majorTrack?.trackId)
+    : undefined;
   return <aside className="inspector"><div className="inspector-scroll">
     <div className="locale-tabs">{supportedLocales.map((locale) => <button key={locale} className={activeLocale === locale ? 'active' : ''} onClick={() => onLocaleChange(locale)}>{locale.toUpperCase()}</button>)}</div>
     <Section title="General">
@@ -66,6 +69,55 @@ export default function Inspector(props: Props) {
         {event.trigger.type === 'npcHealthDepleted' && <Field label="NPC"><IdSelect value={event.trigger.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...event, trigger: { type: 'npcHealthDepleted', npcId } })} /></Field>}
       </div>}
     </Section>
+    {event.kind === 'normal' && <Section title="Major Narrative">
+      {event.majorTrack === undefined ? (
+        <button className="primary subtle" disabled={registries.majorNarrativeTracks.length === 0} onClick={() => {
+          const track = registries.majorNarrativeTracks[0];
+          const chapter = track?.chapters[0];
+          if (!track || !chapter) return;
+          onChange({ ...event, majorTrack: { trackId: track.id, chapterId: chapter.id, nodeId: event.id } });
+        }}>Attach to Major Track</button>
+      ) : <div className="stack compact-block">
+        <Field label="Track">
+          <select value={event.majorTrack.trackId} onChange={(e) => {
+            const track = registries.majorNarrativeTracks.find(({ id }) => id === e.target.value);
+            const chapterId = track?.chapters[0]?.id ?? event.majorTrack!.chapterId;
+            onChange({ ...event, majorTrack: { ...event.majorTrack!, trackId: e.target.value, chapterId, parentNodeIds: undefined } });
+          }}>
+            {registries.majorNarrativeTracks.map((track) => <option key={track.id} value={track.id}>{track.id}</option>)}
+          </select>
+        </Field>
+        <div className="two-columns">
+          <Field label="Temporal layer">
+            <select value={event.majorTrack.chapterId} onChange={(e) => onChange({ ...event, majorTrack: { ...event.majorTrack!, chapterId: e.target.value, parentNodeIds: undefined } })}>
+              {(selectedMajorTrack?.chapters ?? []).map((chapter) => <option key={chapter.id} value={chapter.id}>{chapter.id} · {chapter.dueAgeMonths}m</option>)}
+            </select>
+          </Field>
+          <Field label="Node ID"><input value={event.majorTrack.nodeId} onChange={(e) => onChange({ ...event, majorTrack: { ...event.majorTrack!, nodeId: e.target.value } })} /></Field>
+        </div>
+        <Field label="Parent node IDs (comma-separated)">
+          <input value={(event.majorTrack.parentNodeIds ?? []).join(', ')} placeholder="previous_node_a, previous_node_b" onChange={(e) => onChange({
+            ...event,
+            majorTrack: {
+              ...event.majorTrack!,
+              parentNodeIds: e.target.value.split(',').map((value) => value.trim()).filter(Boolean).length
+                ? e.target.value.split(',').map((value) => value.trim()).filter(Boolean)
+                : undefined,
+            },
+          })} />
+        </Field>
+        <div className="two-columns">
+          <Field label="Selection priority"><input type="number" min={0} max={100} value={event.majorTrack.selectionPriority ?? 0} onChange={(e) => onChange({ ...event, majorTrack: { ...event.majorTrack!, selectionPriority: Number(e.target.value) || undefined } })} /></Field>
+          <Field label="Route fallback"><input type="checkbox" checked={event.majorTrack.fallback === true} onChange={(e) => onChange({ ...event, majorTrack: { ...event.majorTrack!, fallback: e.target.checked ? true : undefined } })} /></Field>
+        </div>
+        <div className="two-columns">
+          <Field label="Special path ID"><input value={event.majorTrack.specialPathId ?? ''} placeholder="marine_giant" onChange={(e) => onChange({ ...event, majorTrack: { ...event.majorTrack!, specialPathId: e.target.value || undefined, milestoneId: e.target.value ? event.majorTrack!.milestoneId : undefined } })} /></Field>
+          <Field label="Milestone ID"><input value={event.majorTrack.milestoneId ?? ''} disabled={!event.majorTrack.specialPathId} placeholder="marine_giant_inheritance" onChange={(e) => onChange({ ...event, majorTrack: { ...event.majorTrack!, milestoneId: e.target.value || undefined } })} /></Field>
+        </div>
+        <div className="hint">Connect two Major nodes in the graph to add the source node as a structural parent. Use hasChosen/hasOutcome in Eligibility for Choice-specific descent.</div>
+        <button className="danger-text" onClick={() => { const { majorTrack: _majorTrack, ...rest } = event; onChange(rest as EventDefinition); }}>Detach Major Track</button>
+      </div>}
+    </Section>}
     <Section title="Eligibility"><ConditionEditor value={event.eligibility} onChange={(eligibility) => onChange({ ...event, eligibility })} registries={registries} eventIds={eventIds} /></Section>
     <Section title={`Choices · ${event.choices.length}`}><div className="stack">
       {event.choices.map((choice, index) => <ChoiceEditor key={`${choice.id}-${index}`} eventId={event.id} value={choice} registries={registries} eventIds={eventIds} scheduledEventIds={scheduledEventIds} immediateEventIds={immediateEventIds} localization={localization} activeLocale={activeLocale} sourceLocale={sourceLocale} onLocalizedTextChange={onLocalizedTextChange} onChange={(next) => { const choices = [...event.choices]; choices[index] = next; onChange({ ...event, choices }); }} onRemove={() => onChange({ ...event, choices: event.choices.filter((_, i) => i !== index) })} />)}

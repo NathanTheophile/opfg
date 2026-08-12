@@ -275,3 +275,167 @@ Priority is:
 6. ordinary Normal.
 
 A chapter selects specialized eligible variants first and uses its single fallback only when no specialized variant is currently eligible. The D1.9 opening selector and mandatory Lifetime Thread selection guarantee are removed from runtime orchestration.
+
+<!-- D2.8_LAYERED_FAMILY_SAGA_GRAPH -->
+## D2.8 — Layered pyramidal Family Saga graph
+
+> **Authoritative amendment.** This section supersedes §§4–6 and any wording elsewhere that describes a Family chapter as an independent horizontal pool. It also clarifies §12: the 45–70 mature-root estimate refers to nodes distributed across a connected five-layer graph, not 45–70 interchangeable variants per chapter.
+
+### 16.1 Five temporal layers, not five independent subjects
+
+Childhood still guarantees exactly five Family Legacy roots, due at 12 / 48 / 84 / 120 / 156 months.
+
+Each checkpoint is a **temporal layer** of one connected narrative graph:
+
+```text
+Layer 1y  -> Layer 4y -> Layer 8y -> Layer 12y -> Layer 15y inheritance
+```
+
+The player resolves exactly one Major Family node in each layer.
+
+A Family Saga must preserve dramatic continuity across layers. A later node is selected from descendants of the node actually lived in the previous layer, then filtered by current GameState and History. The selector must never behave as five independent rerolls from the whole affiliation corpus.
+
+Family Major nodes remain Normal Events. They are **not Scheduled Events** and must not be chained with `scheduleEvent`. Their due checkpoints are handled only by the Major Narrative selector.
+
+### 16.2 Pyramids and crossings
+
+A Family Saga contains several entry pyramids inside the same inherited-affiliation track.
+
+Typical first-layer roots can represent high-yield starting situations such as:
+
+- single-parent household;
+- broad/default family situation;
+- non-human lived context;
+- another affiliation-specific starting premise.
+
+A root may branch through its Choices/Outcomes. Later layers widen into several descendants.
+
+Pyramids are intentionally allowed to **cross**. One later node may declare parents from several earlier pyramids when those histories now create the same concrete dramatic situation.
+
+Crossing does not erase memory. The shared node may still use `hasChosen`, `hasOutcome`, NPC state, relationship, Traits or other Conditions to change available Choices, lines or outcomes.
+
+### 16.3 Runtime node metadata
+
+Every Family Major Event is one graph node:
+
+```ts
+majorTrack: {
+  trackId: 'family_marine',
+  chapterId: 'childhood_03',
+  nodeId: 'marine_08_accusation',
+
+  parentNodeIds: [
+    'marine_04_single_parent_base',
+    'marine_04_uniform_doubt'
+  ],
+
+  selectionPriority: 20,
+  fallback: true,
+
+  specialPathId: 'marine_giant',
+  milestoneId: 'marine_giant_inheritance'
+}
+```
+
+Rules:
+
+- `nodeId` is unique inside the track.
+- First-layer roots have no `parentNodeIds`.
+- Every later node lists one or more node IDs from the **immediately previous temporal layer**.
+- `parentNodeIds` are OR reachability: any listed parent makes the node structurally reachable.
+- Choice/Outcome-specific descent remains authored with ordinary History Conditions such as `hasChosen` / `hasOutcome`.
+- A node can list parents from several pyramids: that is an explicit crossing.
+- A branch cannot jump over a temporal layer.
+
+### 16.4 Route-local fallback
+
+The old “exactly one universal fallback per chapter” rule is removed.
+
+Layer 1 keeps one generic fallback root once content exists.
+
+From layer 2 onward, fallback is **route-local**:
+
+- every node in the previous layer must be covered by exactly one reachable fallback continuation in the next layer;
+- one fallback node may cover several previous nodes, creating a deliberate convergence;
+- specialized descendants are evaluated first;
+- fallback is used only when no specialized reachable descendant is eligible.
+
+This prevents a special branch from deadlocking while allowing its bespoke portion to end and rejoin another pyramid.
+
+### 16.5 Specificity priority
+
+Among reachable, eligible non-fallback nodes, the highest `selectionPriority` wins. Default is `0`. Ties remain seeded-uniform.
+
+This is not a weight.
+
+Use it only to make a deliberately more specific authored association outrank a broader eligible node. Example:
+
+```text
+non-human Marine path       priority 10
+Giant-specific continuation priority 20
+```
+
+A Giant can therefore receive the bespoke continuation instead of being diluted into the broader non-human pool.
+
+### 16.6 Special association paths
+
+Some combinations deserve a short bespoke sub-pyramid because One Piece world logic makes the intersection unusually meaningful.
+
+These are **Special Association Paths**, not mandatory Cartesian coverage.
+
+Example:
+
+```text
+Marine family
+  + Giant
+  + a specific earlier response
+      -> Giant-only continuation(s)
+      -> bespoke payoff
+      -> milestone: marine_giant_inheritance
+```
+
+A Special Association Path:
+
+- may begin from a Choice/Outcome inside a broader root;
+- may own several personal nodes across later layers;
+- may cross back into generic/family nodes;
+- may terminate before Layer 15 by joining another route;
+- may end on a unique Layer-15 inheritance node;
+- must never be created merely because a combination is technically testable.
+
+`specialPathId` is structural/authoring metadata. `milestoneId` marks a notable terminal node. Runtime can derive completed milestones from History; a future global Achievement system may map those milestone IDs to account-level achievements without adding Saga progress state to GameState.
+
+### 16.7 Selection algorithm
+
+For the first incomplete Family layer:
+
+```text
+track from inherited affiliation
+-> previous layer node from History (none for Layer 1)
+-> structurally reachable nodes
+-> evaluate current eligibility / History
+-> reachable eligible non-fallback nodes
+-> keep highest selectionPriority
+-> seeded-uniform tie break
+-> if none: route-local fallback
+```
+
+Progress remains History-derived. Do not add `currentSagaNode`, `familySagaProgress`, `ArcState` or a quest counter.
+
+### 16.8 Authoring breadth
+
+The graph is expected to widen.
+
+A mature Family Saga may still reach roughly **45–70 root nodes across all five layers** if those nodes represent materially different situations and crossings. This is not a quota.
+
+The player still sees only five Family roots in Childhood.
+
+A graph fails review when:
+
+- layers feel like unrelated subjects;
+- descendants ignore prior lived nodes;
+- every Origins combination receives its own copy;
+- special combinations are decorative reskins;
+- crossings erase callbacks/history;
+- a previous-layer node has no safe continuation;
+- a broad eligible node can randomly steal a deliberately authored high-specificity route.

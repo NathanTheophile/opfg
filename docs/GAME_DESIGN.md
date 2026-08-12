@@ -652,3 +652,22 @@ Family Legacy content uses explicit NPC sex and canonical family roles.
 - Family Saga production must avoid cartesian branching: Race, class, place, structure and history produce authored variants only when they materially alter actor/action/stake.
 
 Runtime Conditions `originParentPresent`, `singleParentSexIs`, and `npcSexIs` express this contract without repeating compound Conditions in every Event.
+
+<!-- D2.8_FAMILY_SAGA_GRAPH_LOCK -->
+## D2.8 — Family Saga graph lock
+
+The five Childhood Family checkpoints are temporal layers of one connected DAG, not five independent horizontal pools.
+
+- Layer 1 may contain several entry pyramids.
+- Later nodes descend only from nodes actually lived in the immediately previous layer.
+- Pyramids may cross and reconverge.
+- Crossings preserve History callbacks instead of resetting narrative context.
+- Specialized descendants outrank route-local fallbacks.
+- `selectionPriority` resolves overlapping specialized nodes by authored specificity, not weighting.
+- High-yield affiliation × Race × family-state combinations may form short `specialPathId` sub-pyramids.
+- Special paths may merge back into the main graph or finish on a unique `milestoneId`.
+- Narrative sub-paths may end; the guaranteed five-layer Family Saga may not deadlock.
+- Major Family nodes remain Normal Events. Major due checkpoints are not Scheduled Events and must not be represented with `scheduleEvent`.
+- Progress, previous node and completed milestones are derived from History + Event metadata; no Saga progress field is added to GameState.
+
+The Marine × Giant case is the reference example for a high-value Special Association Path: a Giant child in a Marine family can receive bespoke institutional/military-pressure continuations when the earlier response makes that route relevant.

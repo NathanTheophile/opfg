@@ -92,7 +92,24 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
       { id: 'player_parent_1', nameKey: npcNameKey('player_parent_1'), sex: 'male', familyRole: 'father', namePoolId: 'childhood_male', raceId: null, originSeaId: null, affiliationId: null, crewRoleId: null, initialStats: defaultNpcStats() },
       { id: 'player_parent_2', nameKey: npcNameKey('player_parent_2'), sex: 'female', familyRole: 'mother', namePoolId: 'childhood_female', raceId: null, originSeaId: null, affiliationId: null, crewRoleId: null, initialStats: defaultNpcStats() },
     ],
-    majorNarrativeTracks: [],
+    majorNarrativeTracks: [
+      ['family_civilian', 'civilian'],
+      ['family_marine', 'marine'],
+      ['family_pirate', 'pirate'],
+      ['family_revolutionary', 'revolutionary'],
+      ['family_royal', 'royal_family'],
+    ].map(([id, affiliationId]) => ({
+      id,
+      type: 'family_legacy' as const,
+      eligibility: { type: 'affiliationIs' as const, affiliationId },
+      chapters: [
+        { id: 'childhood_01', phase: 'childhood' as const, dueAgeMonths: 12 },
+        { id: 'childhood_02', phase: 'childhood' as const, dueAgeMonths: 48 },
+        { id: 'childhood_03', phase: 'childhood' as const, dueAgeMonths: 84 },
+        { id: 'childhood_04', phase: 'childhood' as const, dueAgeMonths: 120 },
+        { id: 'childhood_05', phase: 'childhood' as const, dueAgeMonths: 156 },
+      ],
+    })),
     events,
   };
 }

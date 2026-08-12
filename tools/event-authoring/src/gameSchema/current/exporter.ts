@@ -28,6 +28,8 @@ export const toRuntimeCatalog = (project: AuthoringProject): ContentCatalog => (
   ships: structuredClone(project.registries.ships),
   crewRoles: structuredClone(project.registries.crewRoles),
   npcs: structuredClone(project.registries.npcs),
+  economy: {},
+  majorNarrativeTracks: structuredClone(project.registries.majorNarrativeTracks),
   events: structuredClone(project.events),
 });
 

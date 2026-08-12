@@ -19,6 +19,8 @@ export {
   type EventDefinition,
   type FamilyStructureDefinition,
   type ItemDefinition,
+  type MajorNarrativeTrackDefinition,
+  type MajorTrackEventRef,
   type DevilFruitDefinition,
   type LocationDefinition,
   type NpcDefinition,
@@ -72,6 +74,7 @@ import type {
   ConditionalDiceModifier,
   CrewRoleDefinition,
   ItemDefinition,
+  MajorNarrativeTrackDefinition,
   DevilFruitDefinition,
   LocationDefinition,
   NpcDefinition,
@@ -95,8 +98,8 @@ export const PLAYER_STAT_IDS = [
 export type PlayerStatId = StatId;
 
 export const NPC_STAT_IDS = [
-  'health', 'morale', 'strength', 'observation', 'intelligence',
-  'luck', 'loyalty', 'calm',
+  'health', 'morale', 'strength', 'agility', 'observation', 'intelligence',
+  'navigation', 'charisma', 'luck',
 ] as const satisfies readonly NpcStatId[];
 
 export const NPC_STATUSES = ['known', 'crew', 'departed', 'unavailable', 'dead'] as const satisfies readonly NpcStatus[];
@@ -125,5 +128,6 @@ export interface GameRegistries {
   ships: ShipDefinition[];
   crewRoles: CrewRoleDefinition[];
   npcs: NpcDefinition[];
+  majorNarrativeTracks: MajorNarrativeTrackDefinition[];
   flags: FlagDefinition[];
 }
