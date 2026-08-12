@@ -47,7 +47,7 @@ describe('localization runtime', () => {
     expect(contentCatalog.schemaVersion).toBe(CONTENT_SCHEMA_VERSION);
     expect(validateContent(contentCatalog)).toEqual([]);
     const source = { ...dictionaries.fr };
-    delete source[eventTitleKey('black_squall')];
+    delete source[eventTitleKey('origin_name')];
     expect(validateContent(contentCatalog, source)).toContainEqual(expect.objectContaining({ message: expect.stringContaining('Missing source localization key') }));
     expect(validateContent({ ...contentCatalog, schemaVersion: 109 })).toContainEqual(expect.objectContaining({ path: 'schemaVersion' }));
   });

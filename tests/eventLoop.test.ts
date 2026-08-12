@@ -5,7 +5,7 @@ import { resolveChoice } from '../src/game/engine/resolution';
 import { createInitialGameState } from '../src/game/model/initialState';
 
 const event = (id: string): EventDefinition => ({ id, kind: 'normal', titleKey: 'fixture.childhood.title', textKey: 'fixture.childhood.text', choices: [{ id: 'go', textKey: 'fixture.childhood.choice', resolution: { type: 'deterministic', outcome: { id: 'done', textKey: 'fixture.childhood.outcome', effects: [] } } }] });
-const catalog = (events: EventDefinition[]): ContentCatalog => ({ schemaVersion: 4, races: [], seas: [], affiliations: [], careerAffiliations: [], marineRanks: [], careerTitles: [], endings: [], familyStructures: [], socialClasses: [], locations: [{ id: 'starter_port', seaId: null, blocksScheduledEvents: false, allowsShipSale: true, allowsDocking: true }], traits: [], items: [], devilFruits: [], ships: [{ id: 'starter_sloop', nameKey: 'x', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 }], crewRoles: [], npcs: [], events });
+const catalog = (events: EventDefinition[]): ContentCatalog => ({ schemaVersion: 4, races: [], seas: [], affiliations: [], careerAffiliations: [], marineRanks: [], careerTitles: [], endings: [], majorNarrativeTracks: [], familyStructures: [], socialClasses: [], locations: [{ id: 'starter_port', seaId: null, blocksScheduledEvents: false, allowsShipSale: true, allowsDocking: true }], traits: [], items: [], devilFruits: [], ships: [{ id: 'starter_sloop', nameKey: 'x', maxHealth: 30, crewCapacity: 3, cargoSlots: 2 }], crewRoles: [], npcs: [], events });
 
 describe('deterministic event loop v2', () => {
   it('selects normal events uniformly through the seeded RNG and only once', () => {

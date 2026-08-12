@@ -182,6 +182,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       if (effect.status === 'crew' && npc.status !== 'crew' && !canRecruitNpc(state, catalog, npcId, effect.allowWithoutLeadership === true)) throw new Error(`Cannot recruit NPC "${npcId}" without leadership or free crew capacity.`);
       if (effect.status === 'crew') state.passengerNpcIds = state.passengerNpcIds.filter((id) => id !== npcId);
       state.npcs[npcId] = { ...npc, status: effect.status };
+      if (state.companionNpcId === npcId && (effect.status === 'dead' || effect.status === 'departed')) state.companionNpcId = null;
       return;
     }
     case 'setNpcPassenger': {

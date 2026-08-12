@@ -13,8 +13,10 @@ describe('eventCatalog', () => {
       'origin_name',
       'origin_family_structure',
       'origin_social_class',
-      'departure',
-      'mira_returns_favor',
+      'origin_affiliation',
+      'origin_race',
+      'origin_sea',
+      'origin_to_childhood',
       'critical_player_death',
       'critical_mira_death',
       'critical_ship_destroyed',
@@ -25,13 +27,7 @@ describe('eventCatalog', () => {
 
 
   it('keeps Scheduled and Critical variants and validates the assembled catalog', () => {
-    expect(
-      eventCatalog.filter(({ kind }) => kind === 'scheduled').map(({ id }) => id),
-    ).toEqual(
-      expect.arrayContaining([
-          'mira_returns_favor',
-      ]),
-    );
+    expect(eventCatalog.filter(({ kind }) => kind === 'scheduled')).toEqual([]);
     expect(eventCatalog.filter(({ kind }) => kind === 'critical').map(({ id }) => id)).toEqual([
       'critical_career_horizon',
       'critical_mira_death',

@@ -51,9 +51,9 @@ describe('Crew System V1', () => {
     const state = withShip();
     const related = applyEffects(state, contentCatalog, [{ type: 'modifyNpcRelationship', npcId: 'mira', amount: 20 }], context);
     expect(related.npcs.mira.relationship).toBe(20);
-    expect(related.npcs.mira.stats.loyalty).toBe(25);
-    const loyal = applyEffects(related, contentCatalog, [{ type: 'modifyNpcStat', npcId: 'mira', statId: 'loyalty', amount: -5 }], context);
-    expect(loyal.npcs.mira).toMatchObject({ relationship: 20, stats: { loyalty: 20 } });
+    expect(related.npcs.mira.stats.morale).toBe(25);
+    const loyal = applyEffects(related, contentCatalog, [{ type: 'modifyNpcStat', npcId: 'mira', statId: 'morale', amount: -5 }], context);
+    expect(loyal.npcs.mira).toMatchObject({ relationship: 20, stats: { morale: 20 } });
   });
 
   it('tests immutable authored roles and allows several crew NPCs with the same role', () => {

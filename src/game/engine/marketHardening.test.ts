@@ -3,7 +3,7 @@ import { createContentCatalog } from '../content/catalogFactory';
 import type { EventDefinition } from '../content/schema';
 import { createInitialGameState } from '../model/initialState';
 import { createSessionState, exploreFromMarketHub, openMarketHubView, returnToMarketHub } from '../session/gameSession';
-import { buyItem, buyShip, canBuyItem, canSellItem, sellItem, shipBuyPrice, shipSellPrice } from './economy';
+import { buyItem, buyShip, canBuyItem, canSellItem, rollMarketNegotiation, sellItem, shipBuyPrice, shipSellPrice } from './economy';
 
 const event: EventDefinition = {
   id: 'market_test_event', kind: 'normal', titleKey: 'x', textKey: 'x',
@@ -58,6 +58,17 @@ describe('D2.6 fixed markets and Arrival Hub', () => {
     const { catalog, state } = marketState();
     buyItem(state, catalog, 'timber', 1, 'success');
     expect(state.berries).toBe(96_000);
+  });
+
+  it('rolls a real Charisma d20 negotiation without consuming time', () => {
+    const { catalog, state } = marketState();
+    const before = { rngState: state.rngState, ageMonths: state.ageMonths, slotInMonth: state.slotInMonth };
+    const roll = rollMarketNegotiation(state, catalog);
+    expect(roll.rawRoll).toBeGreaterThanOrEqual(1);
+    expect(roll.rawRoll).toBeLessThanOrEqual(20);
+    expect(['criticalFailure', 'failure', 'success', 'criticalSuccess']).toContain(roll.result);
+    expect(state.rngState).not.toBe(before.rngState);
+    expect(state).toMatchObject({ ageMonths: before.ageMonths, slotInMonth: before.slotInMonth });
   });
 
   it('uses fixed ship prices with the same resale and negotiation rules', () => {

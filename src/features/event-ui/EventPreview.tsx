@@ -35,7 +35,7 @@ import type {
 import { useGameSession } from '@/game/session/useGameSession';
 import { moveItem, resolveOverflow, type StorageSlot } from '@/game/engine/inventory';
 import { setActiveCompanion, useCrewRolePower } from '@/game/engine/crewPowers';
-import { buyItem, buyShip, canBuyItem, canBuyShip, canSellItem, canSellShip, itemBuyPrice, itemSellPrice, sellItem, sellShip, shipBuyPrice, shipSellPrice } from '@/game/engine/economy';
+import { buyItem, buyShip, canBuyItem, canBuyShip, canSellItem, canSellShip, itemBuyPrice, itemSellPrice, rollMarketNegotiation, sellItem, sellShip, shipBuyPrice, shipSellPrice } from '@/game/engine/economy';
 import { npcInterpolationParams } from '@/game/engine/npcNames';
 import { originNarrativeInterpolationParams } from '@/game/engine/originNarrative';
 import {
@@ -309,10 +309,16 @@ export function EventPreview({
   const timerRef =
     useRef<number | null>(null);
   const [selectedStorageSlot, setSelectedStorageSlot] = useState<StorageSlot | null>(null);
+  const [marketNegotiation, setMarketNegotiation] = useState<{ kind: 'itemBuy' | 'itemSell' | 'shipBuy' | 'shipSell'; id: string; result: DiceResult; rawRoll: number; total: number } | null>(null);
   const selectedStorageSlotRef = useRef<StorageSlot | null>(null);
 
   const adventureScrollRef =
     useRef<HTMLDivElement | null>(null);
+
+  const negotiate = (kind: 'itemBuy' | 'itemSell' | 'shipBuy' | 'shipSell', id: string) => session.applySystemAction((next) => {
+    const roll = rollMarketNegotiation(next, catalog);
+    setMarketNegotiation({ kind, id, ...roll });
+  });
 
   const translate: Translator = (key, params) =>
     t(key, locale, {
@@ -840,7 +846,7 @@ export function EventPreview({
         )
       }
       onUseRolePower={(roleId, destinationId) => session.applySystemAction((next) => useCrewRolePower(next, catalog, roleId, destinationId))}
-      onSelectCompanion={(npcId) => session.applySystemAction((next) => setActiveCompanion(next, npcId))}
+      onSelectCompanion={(npcId) => session.applySystemAction((next) => setActiveCompanion(next, catalog, npcId))}
     />
   );
 
@@ -909,8 +915,8 @@ export function EventPreview({
                         {catalog.locations.find(({ id }) => id === state.locationId)?.marketItemIds.length ? <Button onClick={() => session.openHubView('merchant')}>{translate('ui.marketHub.merchant')}</Button> : null}
                         {catalog.locations.find(({ id }) => id === state.locationId)?.shipMarket !== 'none' ? <Button onClick={() => session.openHubView('port')}>{translate('ui.marketHub.port')}</Button> : null}
                         <Button onClick={session.exploreHub}>{translate('ui.marketHub.explore')}</Button></div>}
-                      {session.marketHubView === 'merchant' && <div className="grid gap-2">{(catalog.locations.find(({ id }) => id === state.locationId)?.marketItemIds ?? []).map((itemId) => { const item = catalog.items.find(({ id }) => id === itemId)!; return <div key={itemId}><strong>{translate(item.nameKey)}</strong> · {itemBuyPrice(catalog, itemId)} B <Button disabled={!canBuyItem(state, catalog, itemId)} onClick={() => session.applySystemAction((next) => buyItem(next, catalog, itemId))}>{translate('ui.market.buy')}</Button> <Button disabled={!canSellItem(state, catalog, itemId)} onClick={() => session.applySystemAction((next) => sellItem(next, catalog, itemId))}>{translate('ui.market.sell')} ({itemSellPrice(catalog, itemId, 1, state)} B)</Button></div>; })}<Button onClick={session.backToHub}>{translate('ui.marketHub.back')}</Button><Button onClick={session.exploreHub}>{translate('ui.marketHub.explore')}</Button></div>}
-                      {session.marketHubView === 'port' && <div className="grid gap-2">{catalog.ships.map((ship) => <div key={ship.id}><strong>{translate(ship.nameKey)}</strong> · {shipBuyPrice(catalog, ship.id)} B <Button disabled={!canBuyShip(state, catalog, ship.id)} onClick={() => session.applySystemAction((next) => buyShip(next, catalog, ship.id, translate(ship.nameKey)))}>{translate('ui.market.buy')}</Button></div>)}{state.ship && <Button disabled={!canSellShip(state, catalog)} onClick={() => session.applySystemAction((next) => sellShip(next, catalog))}>{translate('ui.market.sell')} ({shipSellPrice(state, catalog, state.ship.shipId)} B)</Button>}<Button onClick={session.backToHub}>{translate('ui.marketHub.back')}</Button><Button onClick={session.exploreHub}>{translate('ui.marketHub.explore')}</Button></div>}
+                      {session.marketHubView === 'merchant' && <div className="grid gap-2">{(catalog.locations.find(({ id }) => id === state.locationId)?.marketItemIds ?? []).map((itemId) => { const item = catalog.items.find(({ id }) => id === itemId)!; const buyRoll = marketNegotiation?.kind === 'itemBuy' && marketNegotiation.id === itemId ? marketNegotiation : null; const sellRoll = marketNegotiation?.kind === 'itemSell' && marketNegotiation.id === itemId ? marketNegotiation : null; return <div key={itemId}><strong>{translate(item.nameKey)}</strong> · {itemBuyPrice(catalog, itemId)} B <Button disabled={!canBuyItem(state, catalog, itemId)} onClick={() => session.applySystemAction((next) => buyItem(next, catalog, itemId))}>{translate('ui.market.buy')}</Button> <Button onClick={() => negotiate('itemBuy', itemId)}>{translate('ui.market.negotiate')}</Button>{buyRoll && <Button disabled={!canBuyItem(state, catalog, itemId, 1, buyRoll.result)} onClick={() => { session.applySystemAction((next) => buyItem(next, catalog, itemId, 1, buyRoll.result)); setMarketNegotiation(null); }}>{translate('ui.market.confirm')} {itemBuyPrice(catalog, itemId, 1, buyRoll.result)} B ({translate(`ui.dice.${buyRoll.result}`)})</Button>} <Button disabled={!canSellItem(state, catalog, itemId)} onClick={() => session.applySystemAction((next) => sellItem(next, catalog, itemId))}>{translate('ui.market.sell')} ({itemSellPrice(catalog, itemId, 1, state)} B)</Button> <Button disabled={!canSellItem(state, catalog, itemId)} onClick={() => negotiate('itemSell', itemId)}>{translate('ui.market.negotiate')}</Button>{sellRoll && <Button onClick={() => { session.applySystemAction((next) => sellItem(next, catalog, itemId, 1, sellRoll.result)); setMarketNegotiation(null); }}>{translate('ui.market.confirm')} {itemSellPrice(catalog, itemId, 1, state, sellRoll.result)} B ({translate(`ui.dice.${sellRoll.result}`)})</Button>}</div>; })}<Button onClick={session.backToHub}>{translate('ui.marketHub.back')}</Button><Button onClick={session.exploreHub}>{translate('ui.marketHub.explore')}</Button></div>}
+                      {session.marketHubView === 'port' && <div className="grid gap-2">{catalog.ships.map((ship) => { const roll = marketNegotiation?.kind === 'shipBuy' && marketNegotiation.id === ship.id ? marketNegotiation : null; return <div key={ship.id}><strong>{translate(ship.nameKey)}</strong> · {shipBuyPrice(catalog, ship.id)} B <Button disabled={!canBuyShip(state, catalog, ship.id)} onClick={() => session.applySystemAction((next) => buyShip(next, catalog, ship.id, translate(ship.nameKey)))}>{translate('ui.market.buy')}</Button> <Button onClick={() => negotiate('shipBuy', ship.id)}>{translate('ui.market.negotiate')}</Button>{roll && <Button disabled={!canBuyShip(state, catalog, ship.id, roll.result)} onClick={() => { session.applySystemAction((next) => buyShip(next, catalog, ship.id, translate(ship.nameKey), roll.result)); setMarketNegotiation(null); }}>{translate('ui.market.confirm')} {shipBuyPrice(catalog, ship.id, roll.result)} B ({translate(`ui.dice.${roll.result}`)})</Button>}</div>; })}{state.ship && (() => { const roll = marketNegotiation?.kind === 'shipSell' && marketNegotiation.id === state.ship!.shipId ? marketNegotiation : null; return <div><Button disabled={!canSellShip(state, catalog)} onClick={() => session.applySystemAction((next) => sellShip(next, catalog))}>{translate('ui.market.sell')} ({shipSellPrice(state, catalog, state.ship!.shipId)} B)</Button> <Button disabled={!canSellShip(state, catalog)} onClick={() => negotiate('shipSell', state.ship!.shipId)}>{translate('ui.market.negotiate')}</Button>{roll && <Button onClick={() => { session.applySystemAction((next) => sellShip(next, catalog, roll.result)); setMarketNegotiation(null); }}>{translate('ui.market.confirm')} {shipSellPrice(state, catalog, state.ship!.shipId, roll.result)} B ({translate(`ui.dice.${roll.result}`)})</Button>}</div>; })()}<Button onClick={session.backToHub}>{translate('ui.marketHub.back')}</Button><Button onClick={session.exploreHub}>{translate('ui.marketHub.explore')}</Button></div>}
                     </Panel>
                   ) : state.pendingOverflow ? (
                     <Panel variant="strong" className="opfg-overflow-panel" aria-label={translate('ui.overflow.title')}>

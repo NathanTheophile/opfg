@@ -31,12 +31,17 @@ export function navigatorDestinations(state: GameState, catalog: ContentCatalog)
   return catalog.locations.filter(({ id, seaId: candidateSea, allowsDocking, tags }) => id !== state.locationId && candidateSea === seaId && allowsDocking && !tags.includes('prison') && !tags.includes('government'));
 }
 
-export function setActiveCompanion(state: GameState, npcId: NpcId | null): void {
+export function isCompanionCandidate(state: GameState, catalog: ContentCatalog, npcId: NpcId): boolean {
+  const npc = state.npcs[npcId];
+  const definition = catalog.npcs.find(({ id }) => id === npcId);
+  return npc !== undefined && npc.status !== 'dead' && npc.stats.health > 0 && definition?.companionCapable === true;
+}
+
+export function setActiveCompanion(state: GameState, catalog: ContentCatalog, npcId: NpcId | null): void {
   if (npcId === null) {
     state.companionNpcId = null;
     return;
   }
-  const npc = state.npcs[npcId];
-  if (!npc || npc.status !== 'crew') throw new Error(`Companion "${npcId}" must be a living crew NPC.`);
+  if (!isCompanionCandidate(state, catalog, npcId)) throw new Error(`Companion "${npcId}" must be a living companion-capable NPC.`);
   state.companionNpcId = npcId;
 }

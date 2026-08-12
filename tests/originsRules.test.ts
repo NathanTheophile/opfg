@@ -22,10 +22,16 @@ function apply(effect: Effect) {
 }
 
 describe('Origins V1 rules', () => {
-  it.each(Object.entries(expectedRaces))('applies exact %s race health and modifiers', (raceId, expected) => {
+  it.each(Object.entries(expectedRaces).filter(([raceId]) => !['longarm', 'buccaneer'].includes(raceId)))('applies exact %s race health and modifiers', (raceId, expected) => {
     const state = apply({ type: 'setRace', raceId });
     expect(state.player.stats.health).toBe(expected.health);
     for (const statId of attributes) expect(state.player.stats[statId]).toBe(25 + (expected.modifiers[statId] ?? 0));
+  });
+
+  it.each(['longarm', 'buccaneer'])('keeps exact %s metadata but rejects the locked race during Origins', (raceId) => {
+    const definition = contentCatalog.races.find(({ id }) => id === raceId)!;
+    expect(definition).toMatchObject({ playableV1: false, initialHealth: expectedRaces[raceId].health, attributeModifiers: expectedRaces[raceId].modifiers });
+    expect(() => apply({ type: 'setRace', raceId })).toThrow(/locked/);
   });
 
   it.each([
