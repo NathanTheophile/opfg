@@ -1,6 +1,10 @@
 /** Canonical runtime contract from OPFG. Keep authoring-only helpers in this adapter. */
 export {
   CONTENT_SCHEMA_VERSION,
+  NPC_SEXES,
+  NPC_FAMILY_ROLES,
+  type NpcSex,
+  type NpcFamilyRole,
   type AffiliationDefinition,
   type ChoiceDefinition,
   type Condition,

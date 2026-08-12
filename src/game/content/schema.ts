@@ -33,7 +33,7 @@ import type {
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 12;
+export const CONTENT_SCHEMA_VERSION = 13;
 
 export const V1_CAREER_HORIZON_MONTHS = 420;
 
@@ -106,6 +106,12 @@ export type LocationType = 'city' | 'facility' | 'island' | 'kingdom' | 'marine_
 
 export type StatId = PlayerAttributeId;
 
+export const NPC_SEXES = ['male', 'female'] as const;
+export type NpcSex = typeof NPC_SEXES[number];
+
+export const NPC_FAMILY_ROLES = ['father', 'mother'] as const;
+export type NpcFamilyRole = typeof NPC_FAMILY_ROLES[number];
+
 export type Condition =
   | { type: 'all'; conditions: Condition[] }
   | { type: 'any'; conditions: Condition[] }
@@ -160,6 +166,9 @@ export type Condition =
   | { type: 'npcMonthsSinceInteractionAtLeast'; npcId: NpcId; value: number }
   | { type: 'npcMonthsSinceInteractionAtMost'; npcId: NpcId; value: number }
   | { type: 'npcStatAtLeast'; npcId: NpcId; statId: NpcStatId; value: number }
+  | { type: 'npcSexIs'; npcId: NpcId; sex: NpcSex }
+  | { type: 'singleParentSexIs'; sex: NpcSex }
+  | { type: 'originParentPresent'; role: NpcFamilyRole }
   | { type: 'hasChosen'; eventId: EventId; choiceId: ChoiceId }
   | { type: 'hasPlayed'; eventId: EventId }
   | { type: 'hasOutcome'; eventId: EventId; outcomeId: OutcomeId }
@@ -381,6 +390,8 @@ export interface ShipDefinition {
 export interface NpcDefinition {
   id: NpcId;
   nameKey: LocalizationKey;
+  sex: NpcSex;
+  familyRole?: NpcFamilyRole;
   namePoolId?: string;
   raceId: RaceId | null;
   originSeaId: SeaId | null;
@@ -395,7 +406,7 @@ export interface CrewRoleDefinition { id: CrewRoleId; nameKey: LocalizationKey; 
 
 export interface RaceDefinition { id: RaceId; nameKey: LocalizationKey; playableV1: boolean; initialHealth: number; attributeModifiers: Partial<Record<StatId, number>> }
 export interface SeaDefinition { id: SeaId; nameKey: LocalizationKey }
-export interface AffiliationDefinition { id: AffiliationId; nameKey: LocalizationKey; playableV1: boolean }
+export interface AffiliationDefinition { id: AffiliationId; nameKey: LocalizationKey; playableV1: boolean; singleParentSex: NpcSex | null }
 export interface FamilyStructureDefinition { id: FamilyStructureId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
 export interface SocialClassDefinition { id: SocialClassId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
 export interface LocationDefinition { id: LocationId; nameKey: LocalizationKey; seaId: SeaId; islandId: IslandId; type: LocationType; parentLocationId: LocationId | null; canBeBirthLocation: boolean; blocksScheduledEvents: boolean; allowsDocking: boolean; shipMarket: ShipMarket; services: LocationServiceId[]; tags: LocationTagId[]; hasMarketHub: boolean; marketItemIds: ItemId[] }

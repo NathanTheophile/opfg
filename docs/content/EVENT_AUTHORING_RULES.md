@@ -1744,3 +1744,91 @@ In addition to ordinary schema/editorial validation, review V2 Family content fo
 The prototype acceptance question is:
 
 > Do characters with very different Origins clearly live different versions of the same family story, rather than the same five Events with cosmetic variation?
+
+<!-- D2.7_FAMILY_SAGA_AUTHORITY -->
+## 25. Family Saga identity, NPC sex and anti-cartesian branching — D2.7 authority
+
+This section overrides older guidance that treats the player's parents as anonymous `parent_1 / parent_2` narrative roles.
+
+### 25.1 Canonical father and mother
+
+The catalog contains exactly one canonical `familyRole: "father"` NPC and one canonical `familyRole: "mother"` NPC.
+
+- `father` has `sex: "male"`;
+- `mother` has `sex: "female"`;
+- internal NPC IDs may remain stable for compatibility, but player-facing copy must use the actual name, **père/mère**, **father/mother**, or the equivalent localized relationship;
+- every NPC, not only family NPCs, must declare `sex: "male" | "female"`;
+- sex-specific name pools must agree with the NPC sex.
+
+Sex metadata exists to keep identity, naming, pronouns and localization coherent. It does not require a distinct narrative branch merely because two NPCs have different sexes.
+
+### 25.2 Single-parent sex belongs to the parental affiliation tree
+
+Each parental `AffiliationDefinition` owns `singleParentSex: "male" | "female" | null`.
+
+`null` means the corresponding Family Saga has not locked its single-parent identity yet. Before production Events for that Family Legacy tree are accepted, the affiliation must lock a non-null value.
+
+Once locked:
+
+- the single-parent sex is fixed for the complete Family Saga tree;
+- it is never rerolled between chapters or Events;
+- `two_parents` exposes father + mother;
+- `single_parent` exposes only the canonical parent matching the affiliation's locked `singleParentSex`;
+- `orphan` exposes neither parent.
+
+Preferred authoring primitive:
+
+```json
+{ "type": "originParentPresent", "role": "father" }
+```
+
+Use `singleParentSexIs` when selecting or auditing a whole father-centered/mother-centered path. Use `npcSexIs` only when an NPC's sex materially changes the fiction beyond grammar.
+
+`originParentPresent` is state-aware: after a parent has been materialized, `dead`, `departed`, or `unavailable` makes that parent absent for later Saga selection.
+
+### 25.3 Future alternative father/mother trees
+
+If an affiliation later receives two complete Family Saga trees, one father-centered and one mother-centered, the random choice happens once at birth/origin setup. That choice selects which complete track enters the run's pool and must be persisted by the future track-selection system.
+
+Do not:
+
+- reroll parent sex per chapter;
+- splice half of a father tree with half of a mother tree;
+- create localization-time story logic;
+- duplicate every Event only to change pronouns.
+
+### 25.4 Horizontal does not mean cartesian
+
+Family Saga variants are sparse authored overrides over a shared dramatic spine.
+
+Never multiply automatically:
+
+```text
+family structure × race × social class × birthplace × prior choices × parent sex
+```
+
+Create a separate variant only when a parameter materially changes **WHO acts, WHAT happens, or the immediate STAKE**.
+
+Preferred hierarchy:
+
+1. chapter dramatic function / shared spine;
+2. Family Structure when parent presence changes the scene;
+3. durable prior Family choices/relationships;
+4. high-value Race or social exceptions when they genuinely change the situation;
+5. place/class flavour through localization/interpolation when it does not change the scene.
+
+When several exceptions apply, the chapter may choose the most narratively important one. Every identity axis does not need to appear in every Event.
+
+Ordinary target remains approximately **2–4 meaningful variants per Family chapter**, not one variant for every state combination. Every chapter with authored variants still requires one valid fallback according to the Major Narrative Track contract.
+
+### 25.5 Grammar is localization, not Event branching
+
+Do not create separate EventDefinitions for:
+
+- `il/elle`, `he/she`;
+- `revenu/revenue`;
+- equivalent purely grammatical differences.
+
+Use NPC grammar interpolation and locale-local `select:` fragments documented in `docs/LOCALIZATION.md`.
+
+Conversely, if father versus mother changes the relationship, authority, history, occupation, conflict, or stakes of the scene, that is narrative content and belongs in the selected complete Family tree, not in a translation selector.

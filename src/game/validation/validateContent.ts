@@ -27,6 +27,8 @@ const NPC_STAT_IDS = new Set([
   'charisma',
 ]);
 const HAKI_TYPES = new Set(['observation', 'armament', 'conqueror']);
+const NPC_SEX_VALUES = new Set(['male', 'female']);
+const NPC_FAMILY_ROLE_VALUES = new Set(['father', 'mother']);
 const FRUIT_TYPES = new Set(['paramecia', 'zoan', 'logia']);
 const FRUIT_TAGS = new Set(['flight', 'fire', 'cold', 'electricity', 'mobility', 'intangibility', 'transformation', 'enhanced_strength', 'healing', 'barrier', 'ranged', 'environmental']);
 const CAREER_AFFILIATION_IDS = new Set(['civilian', 'pirate', 'marine', 'revolutionary', 'bounty_hunter']);
@@ -99,6 +101,9 @@ const CONDITION_TYPES = new Set([
   'npcMonthsSinceInteractionAtLeast',
   'npcMonthsSinceInteractionAtMost',
   'npcStatAtLeast',
+  'npcSexIs',
+  'singleParentSexIs',
+  'originParentPresent',
   'hasChosen',
   'hasPlayed',
   'hasOutcome',
@@ -231,7 +236,13 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   races.forEach((race, index) => { if (typeof race.playableV1 !== 'boolean') errors.push({ path: `races[${index}].playableV1`, message: 'Race requires playableV1.' }); });
   validateNamedDefinitions(seas, 'seas', errors);
   validateNamedDefinitions(affiliations, 'affiliations', errors);
-  affiliations.forEach((affiliation, index) => { if (typeof affiliation.playableV1 !== 'boolean') errors.push({ path: `affiliations[${index}].playableV1`, message: 'Affiliation requires playableV1.' }); });
+  affiliations.forEach((affiliation, index) => {
+    const path = `affiliations[${index}]`;
+    if (typeof affiliation.playableV1 !== 'boolean') errors.push({ path: `${path}.playableV1`, message: 'Affiliation requires playableV1.' });
+    if (!(affiliation.singleParentSex === null || NPC_SEX_VALUES.has(String(affiliation.singleParentSex)))) {
+      errors.push({ path: `${path}.singleParentSex`, message: 'singleParentSex must be male, female, or null until the Family Saga is locked.' });
+    }
+  });
   validateNamedDefinitions(careerAffiliations, 'careerAffiliations', errors);
   validateNamedDefinitions(careerRanks, 'careerRanks', errors);
   validateNamedDefinitions(careerTitles, 'careerTitles', errors);
@@ -649,6 +660,12 @@ function validateCondition(
       errors.push({ path, message: 'npcStatAtLeast value must be a finite number from 0 to 50.' });
     }
   }
+  if ((type === 'npcSexIs' || type === 'singleParentSexIs') && !NPC_SEX_VALUES.has(String(value.sex))) {
+    errors.push({ path: `${path}.sex`, message: 'Sex Condition requires male or female.' });
+  }
+  if (type === 'originParentPresent' && !NPC_FAMILY_ROLE_VALUES.has(String(value.role))) {
+    errors.push({ path: `${path}.role`, message: 'originParentPresent role must be father or mother.' });
+  }
   if (type === 'statAtLeast') validateStat(value.statId, path, errors);
   if (type === 'careerPhaseIs' && !['origins', 'childhood', 'active'].includes(String(value.phase))) {
     errors.push({ path, message: `Invalid CareerPhase "${String(value.phase)}".` });
@@ -1038,9 +1055,33 @@ function validateLocationParentCycles(locations: UnknownRecord[], errors: Conten
 }
 
 function validateNpcDefinitions(npcs: UnknownRecord[], references: References, errors: ContentValidationError[]): void {
+  const claimedFamilyRoles = new Set<string>();
+
   npcs.forEach((npc, index) => {
     const path = `npcs[${index}]`;
     if (!stringValue(npc.nameKey)) errors.push({ path: `${path}.nameKey`, message: 'NPC nameKey must be a non-empty string.' });
+    if (!NPC_SEX_VALUES.has(String(npc.sex))) errors.push({ path: `${path}.sex`, message: 'NPC sex must be male or female.' });
+
+    if (npc.familyRole !== undefined) {
+      const role = String(npc.familyRole);
+      if (!NPC_FAMILY_ROLE_VALUES.has(role)) {
+        errors.push({ path: `${path}.familyRole`, message: 'NPC familyRole must be father or mother.' });
+      } else {
+        if (claimedFamilyRoles.has(role)) errors.push({ path: `${path}.familyRole`, message: `Duplicate canonical family role "${role}".` });
+        claimedFamilyRoles.add(role);
+        if (role === 'father' && npc.sex !== 'male') errors.push({ path: `${path}.sex`, message: 'Canonical father must have sex male.' });
+        if (role === 'mother' && npc.sex !== 'female') errors.push({ path: `${path}.sex`, message: 'Canonical mother must have sex female.' });
+      }
+    }
+
+    if (npc.namePoolId !== undefined) {
+      const poolId = stringValue(npc.namePoolId);
+      if (!poolId || NPC_NAME_POOLS[poolId] === undefined) {
+        errors.push({ path: `${path}.namePoolId`, message: `Unknown NPC name pool "${String(npc.namePoolId)}".` });
+      }
+      if (poolId?.endsWith('_male') && npc.sex !== 'male') errors.push({ path: `${path}.namePoolId`, message: 'A *_male name pool requires NPC sex male.' });
+      if (poolId?.endsWith('_female') && npc.sex !== 'female') errors.push({ path: `${path}.namePoolId`, message: 'A *_female name pool requires NPC sex female.' });
+    }
     validateNullableReference(npc.raceId, references.raceIds, 'RaceId', `${path}.raceId`, errors);
     validateNullableReference(npc.originSeaId, references.seaIds, 'SeaId', `${path}.originSeaId`, errors);
     validateNullableReference(npc.affiliationId, references.affiliationIds, 'AffiliationId', `${path}.affiliationId`, errors);
@@ -1069,6 +1110,12 @@ function validateNpcDefinitions(npcs: UnknownRecord[], references: References, e
       }
     }
   });
+
+  for (const role of NPC_FAMILY_ROLE_VALUES) {
+    if (!claimedFamilyRoles.has(role)) {
+      errors.push({ path: 'npcs', message: `Missing canonical family role "${role}".` });
+    }
+  }
 }
 
 function validateNamedDefinitions(definitions: UnknownRecord[], path: string, errors: ContentValidationError[]): void {
@@ -1165,4 +1212,5 @@ function isIntegerInRange(value: unknown, minimum: number, maximum: number): val
   return Number.isInteger(value) && (value as number) >= minimum && (value as number) <= maximum;
 }
 import { CONTENT_SCHEMA_VERSION, LOCATION_SERVICES, LOCATION_TAGS } from '../content/schema';
+import { NPC_NAME_POOLS } from '../content/npcNamePools';
 import { dictionaries, SOURCE_LOCALE, type LocalizationDictionary } from '../localization';

@@ -83,6 +83,9 @@ export const createCondition = (type: Condition['type']): Condition => {
     case 'npcStatusIs': return { type, npcId: '', status: 'known' };
     case 'npcRelationshipAtLeast': return { type, npcId: '', value: 0 };
     case 'npcStatAtLeast': return { type, npcId: '', statId: 'loyalty', value: 0 };
+    case 'npcSexIs': return { type, npcId: '', sex: 'male' };
+    case 'singleParentSexIs': return { type, sex: 'male' };
+    case 'originParentPresent': return { type, role: 'father' };
     case 'hasChosen': return { type, eventId: '', choiceId: '' };
     case 'hasPlayed': return { type, eventId: '' };
     case 'hasOutcome': return { type, eventId: '', outcomeId: '' };

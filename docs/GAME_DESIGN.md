@@ -636,3 +636,19 @@ Once implemented, the target ordering is: Critical/system gates → Immediate �
 ### Future Active spine
 
 At age 15 the Family Legacy Saga is intended to continue. A second Major Narrative Track — Personal Affiliation Saga — will later begin around the player's chosen Active affiliation and represent the career the character decides to build. Adult cadence and career-change semantics remain deliberately open until the Active redesign.
+
+<!-- D2.7_FAMILY_IDENTITY_LOCK -->
+## D2.7 — Family identity lock
+
+Family Legacy content uses explicit NPC sex and canonical family roles.
+
+- Every `NpcDefinition` declares `sex: male | female`.
+- The player's canonical parents are a father-role NPC and a mother-role NPC.
+- `two_parents` means both are structurally present; `orphan` means neither; `single_parent` resolves its sole parent from the parental affiliation's `singleParentSex`.
+- After a parent exists in runtime state, death/departure/unavailability can make that parent absent for later horizontal Family Saga selection.
+- `singleParentSex` is fixed once for an affiliation's complete Family Saga and never rerolled chapter-by-chapter.
+- Future affiliations may own multiple complete father/mother Family trees; a future birth-time selection chooses exactly one complete track for the run.
+- Grammar differences use localization interpolation/selectors. They do not justify duplicate EventDefinitions.
+- Family Saga production must avoid cartesian branching: Race, class, place, structure and history produce authored variants only when they materially alter actor/action/stake.
+
+Runtime Conditions `originParentPresent`, `singleParentSexIs`, and `npcSexIs` express this contract without repeating compound Conditions in every Event.

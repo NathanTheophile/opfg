@@ -38,7 +38,7 @@ export function ensureNpcMaterialized(
 
   const npc: NpcState = {
     ...base,
-    raceId: definition.raceId,
+    raceId: definition.familyRole !== undefined ? state.player.profile.raceId ?? definition.raceId : definition.raceId,
     displayName,
     stats: { ...definition.initialStats },
   };
@@ -69,8 +69,26 @@ export function npcInterpolationParams(
   catalog: ContentCatalog,
   fallbackName: (nameKey: string) => string,
 ): Record<string, string> {
-  return Object.fromEntries(catalog.npcs.map((definition) => [
-    `npc_${definition.id.replace(/[^A-Za-z0-9_]/g, '_')}`,
-    state?.npcs[definition.id]?.displayName ?? fallbackName(definition.nameKey),
-  ]));
+  return Object.fromEntries(catalog.npcs.flatMap((definition) => {
+    const prefix = `npc_${definition.id.replace(/[^A-Za-z0-9_]/g, '_')}`;
+    const sex = definition.sex;
+    const entries: [string, string][] = [
+      [prefix, state?.npcs[definition.id]?.displayName ?? fallbackName(definition.nameKey)],
+      [`${prefix}_sex`, sex],
+      [`${prefix}_subject`, fallbackName(`grammar.npc.${sex}.subject`)],
+      [`${prefix}_subject_cap`, fallbackName(`grammar.npc.${sex}.subjectCap`)],
+      [`${prefix}_direct_object`, fallbackName(`grammar.npc.${sex}.directObject`)],
+      [`${prefix}_tonic`, fallbackName(`grammar.npc.${sex}.tonic`)],
+      [`${prefix}_reflexive`, fallbackName(`grammar.npc.${sex}.reflexive`)],
+    ];
+
+    if (definition.familyRole !== undefined) {
+      entries.push([
+        `${prefix}_role`,
+        fallbackName(`grammar.npc.familyRole.${definition.familyRole}`),
+      ]);
+    }
+
+    return entries;
+  }));
 }

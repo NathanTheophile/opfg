@@ -7,6 +7,7 @@ import { canConsumeDevilFruit, playerHakiSourceTotal } from './powers';
 import { isLocationWithin } from './locations';
 import { countFallbackStreak, currentSeaPorts, currentShipDestructionCause, findBestSwimmingRescuer, findHighestRelationshipFruitCrew, sameIslandPorts } from './maritime';
 import { effectivePlayerStat } from './stats';
+import { getSingleParentSex, isOriginParentPresent } from './family';
 
 export interface ChoiceState {
   visible: boolean;
@@ -129,6 +130,14 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
     }
     case 'npcStatAtLeast':
       return (state.npcs[condition.npcId]?.stats[condition.statId] ?? Number.NEGATIVE_INFINITY) >= condition.value;
+    case 'npcSexIs':
+      return catalog?.npcs.find(({ id }) => id === condition.npcId)?.sex === condition.sex;
+    case 'singleParentSexIs':
+      return state.player.profile.familyStructureId === 'single_parent'
+        && catalog !== undefined
+        && getSingleParentSex(state, catalog) === condition.sex;
+    case 'originParentPresent':
+      return catalog !== undefined && isOriginParentPresent(state, catalog, condition.role);
     case 'hasChosen':
       return state.history.some(
         (entry) => entry.eventId === condition.eventId && entry.choiceId === condition.choiceId,

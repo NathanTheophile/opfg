@@ -127,17 +127,30 @@ No automatic Fruit respawn after owner death; reappearance remains Event-driven.
 
 ### Origins family
 
-Family structure instantiates persistent parent NPCs immediately:
+Family structure uses two canonical persistent family identities:
 
-- `two_parents` → 2 parents;
-- `single_parent` → 1 parent;
-- `orphan` → 0 parent NPCs by default.
+- `father` — male;
+- `mother` — female.
 
-V1 parents use the same Race as the player; no hybrid parent system yet.
+Runtime IDs may remain stable internally, but authored/player-facing content uses father/mother semantics rather than anonymous parent numbering.
+
+Family structure resolves structural parent presence as follows:
+
+- `two_parents` → father + mother;
+- `single_parent` → exactly one parent, determined by the parental affiliation's locked `singleParentSex`;
+- `orphan` → neither canonical parent by default.
+
+The single-parent sex belongs to the complete Family Saga for that affiliation and is never rerolled per Event/chapter. It may remain `null` only while that affiliation has no production Family Saga; lock it before that Saga's Events are accepted.
+
+V1 canonical parents inherit the player's Race when materialized; no hybrid parent system yet. Their inherited family affiliation is the player's parental affiliation, not a fixed generic NPC affiliation.
+
+Once a parent has been materialized, current NPC status matters: `dead`, `departed`, and `unavailable` count as absent for later Family Saga variant selection.
 
 Siblings are not generated systematically and appear only through authored content.
 
-Do not enforce controlled culture/race name pools in V1. Family naming should remain free rather than prescriptively constrained.
+Do not enforce controlled culture/race name pools in V1. Sex-specific pools are allowed and must agree with the NPC's explicit sex; family naming otherwise remains free rather than prescriptively constrained.
+
+Do not multiply Family Saga variants across every combination of family structure, Race, class, birthplace and history. A separate variant is justified only when an axis materially changes who acts, what happens, or the immediate stakes. Pure pronoun/agreement differences belong to localization.
 
 ## 6. Crew Roles
 

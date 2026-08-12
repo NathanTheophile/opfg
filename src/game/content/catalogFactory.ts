@@ -3,6 +3,7 @@ import fruitsData from './data/devilFruitsV1.json';
 import { CONTENT_SCHEMA_VERSION, type ContentCatalog, type DevilFruitDefinition, type EventDefinition, type LocationDefinition } from './schema';
 import { affiliationNameKey, careerAffiliationNameKey, careerRankNameKey, careerTitleDescriptionKey, careerTitleNameKey, crewRoleNameKey, devilFruitNameKey, endingDescriptionKey, endingNameKey, itemNameKey, locationNameKey, npcNameKey, raceNameKey, seaNameKey, traitDescriptionKey, traitNameKey } from '../localization/keys';
 import { createDefaultNpcStats } from '../model/npcState';
+import { SINGLE_PARENT_SEX_BY_AFFILIATION } from './familySagaConfig';
 
 const defaultNpcStats = createDefaultNpcStats;
 
@@ -40,7 +41,7 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
       { id: 'buccaneer', nameKey: raceNameKey('buccaneer'), playableV1: false, initialHealth: 50, attributeModifiers: { strength: 4, agility: -3, observation: 1, intelligence: -1, navigation: -2, charisma: -1, luck: -2, morale: 4 } },
     ],
     seas: ['east_blue', 'west_blue', 'north_blue', 'south_blue', 'grand_line_paradise', 'new_world', 'sky', 'underwater', 'calm_belt', 'red_line'].map((id) => ({ id, nameKey: seaNameKey(id) })),
-    affiliations: ['civilian', 'marine', 'pirate', 'revolutionary', 'bandit', 'prisoner', 'slave', 'celestial_dragon', 'royal_family'].map((id) => ({ id, nameKey: affiliationNameKey(id), playableV1: ['civilian', 'marine', 'pirate', 'revolutionary', 'royal_family'].includes(id) })),
+    affiliations: ['civilian', 'marine', 'pirate', 'revolutionary', 'bandit', 'prisoner', 'slave', 'celestial_dragon', 'royal_family'].map((id) => ({ id, nameKey: affiliationNameKey(id), playableV1: ['civilian', 'marine', 'pirate', 'revolutionary', 'royal_family'].includes(id), singleParentSex: SINGLE_PARENT_SEX_BY_AFFILIATION[id] ?? null })),
     careerAffiliations: (['civilian', 'pirate', 'marine', 'revolutionary', 'bounty_hunter'] as const).map((id) => ({ id, nameKey: careerAffiliationNameKey(id) })),
     careerRanks: Object.entries(rankLadders).flatMap(([affiliationId, ranks]) => ranks.map((id, sortOrder) => ({ id, nameKey: careerRankNameKey(id), affiliationId: affiliationId as 'marine' | 'revolutionary' | 'bounty_hunter', sortOrder }))),
     careerTitles: ['rookie', 'veteran', 'legend'].map((id) => ({ id, nameKey: careerTitleNameKey(id), descriptionKey: careerTitleDescriptionKey(id) })),
@@ -83,12 +84,13 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
     ],
     crewRoles: ['navigator','medic','cook','shipwright','helmsman','gunner','musician','scholar','fighter','quartermaster'].map((id) => ({ id, nameKey: crewRoleNameKey(id), annualPower: id === 'navigator' || id === 'medic' || id === 'shipwright' ? id : undefined })),
     npcs: [
-      { id: 'mira', nameKey: npcNameKey('mira'), raceId: null, originSeaId: null, affiliationId: null, crewRoleId: 'navigator', initialStats: defaultNpcStats() },
-      { id: 'childhood_friend', nameKey: npcNameKey('childhood_friend'), namePoolId: 'childhood_male', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: defaultNpcStats() },
-      { id: 'childhood_rival', nameKey: npcNameKey('childhood_rival'), namePoolId: 'childhood_female', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: defaultNpcStats() },
-      { id: 'childhood_younger', nameKey: npcNameKey('childhood_younger'), namePoolId: 'childhood_female', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: defaultNpcStats() },
-      { id: 'neighborhood_merchant', nameKey: npcNameKey('neighborhood_merchant'), namePoolId: 'childhood_male', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: defaultNpcStats() },
-      ...['player_parent_1', 'player_parent_2'].map((id) => ({ id, nameKey: npcNameKey(id), namePoolId: 'blue_common', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: defaultNpcStats() })),
+      { id: 'mira', nameKey: npcNameKey('mira'), sex: 'female', raceId: null, originSeaId: null, affiliationId: null, crewRoleId: 'navigator', initialStats: defaultNpcStats() },
+      { id: 'childhood_friend', nameKey: npcNameKey('childhood_friend'), sex: 'male', namePoolId: 'childhood_male', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: defaultNpcStats() },
+      { id: 'childhood_rival', nameKey: npcNameKey('childhood_rival'), sex: 'female', namePoolId: 'childhood_female', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: defaultNpcStats() },
+      { id: 'childhood_younger', nameKey: npcNameKey('childhood_younger'), sex: 'female', namePoolId: 'childhood_female', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: defaultNpcStats() },
+      { id: 'neighborhood_merchant', nameKey: npcNameKey('neighborhood_merchant'), sex: 'male', namePoolId: 'childhood_male', raceId: null, originSeaId: null, affiliationId: 'civilian', crewRoleId: null, initialStats: defaultNpcStats() },
+      { id: 'player_parent_1', nameKey: npcNameKey('player_parent_1'), sex: 'male', familyRole: 'father', namePoolId: 'childhood_male', raceId: null, originSeaId: null, affiliationId: null, crewRoleId: null, initialStats: defaultNpcStats() },
+      { id: 'player_parent_2', nameKey: npcNameKey('player_parent_2'), sex: 'female', familyRole: 'mother', namePoolId: 'childhood_female', raceId: null, originSeaId: null, affiliationId: null, crewRoleId: null, initialStats: defaultNpcStats() },
     ],
     majorNarrativeTracks: [],
     events,
