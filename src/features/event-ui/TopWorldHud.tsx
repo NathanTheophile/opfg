@@ -265,6 +265,12 @@ export function IdentityEnvironmentHudPanel({
   const subLocationLabel = subLocations.length > 0 ? subLocations.map((location) => translate(location.nameKey)).join(' › ') : '—';
   const shownAgeMonths = calendarAgeMonths ?? state.ageMonths;
   const affiliationTitle = getAffiliationTitle(state, catalog, translate);
+  const careerTitle = state.player.career.titleId
+    ? catalog.careerTitles.find(({ id }) => id === state.player.career.titleId)
+    : undefined;
+  const playerTitle = careerTitle
+    ? translate(careerTitle.nameKey)
+    : affiliationTitle;
   const calendarLabel = getCalendarLabel(shownAgeMonths, translate);
 
   return (
@@ -272,10 +278,10 @@ export function IdentityEnvironmentHudPanel({
       <div className="opfg-hud-panel__body opfg-hud-identity">
         <PlayerNameOrnament
           name={state.player.profile.name}
+          title={playerTitle}
           affiliationId={state.player.career.affiliationId}
           reputation={state.player.career.reputation}
         />
-        <div className="opfg-hud-identity__title">{affiliationTitle}</div>
         <div className="opfg-hud-identity__separator" />
 
         <div className="opfg-hud-identity__grid">
