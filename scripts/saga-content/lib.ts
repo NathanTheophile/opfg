@@ -27,18 +27,26 @@ export interface SagaScenarioHistoryEntry {
   eventId: string;
   choiceId: string;
   outcomeId: string;
-  ageMonths: number;
+  ageMonths?: number;
 }
 
 export interface SagaScenario {
   id: string;
-  expectedEventId: string;
-  ageMonths: number;
+
+  // Canonical V1 shape.
+  expectedEventId?: string;
+  ageMonths?: number;
   raceId?: string;
   familyStructureId?: string;
+  socialClassId?: string;
   profileAffiliationId?: string;
   careerAffiliationId?: string;
   npcStatuses?: Record<string, NpcStatus>;
+
+  // Compact worker-output compatibility shape.
+  expectNodeId?: string;
+  given?: Array<Record<string, unknown>>;
+
   history: SagaScenarioHistoryEntry[];
 }
 
@@ -454,32 +462,125 @@ function runScenario(
   source: SagaAuthoringSource,
   scenario: SagaScenario,
 ): void {
+  const expectedEventId = scenarioExpectedEventId(scenario);
   const state = createInitialGameState(0x5a6a);
   state.careerPhase = 'childhood';
-  state.ageMonths = scenario.ageMonths;
+  state.ageMonths = scenario.ageMonths ?? inferHistoryEntryAgeMonths(catalog, source, expectedEventId);
   state.player.profile.affiliationId =
     (scenario.profileAffiliationId ?? affiliationFromTrack(catalog, source.trackId) ?? 'civilian') as never;
   if (scenario.raceId) state.player.profile.raceId = scenario.raceId as never;
   if (scenario.familyStructureId) state.player.profile.familyStructureId = scenario.familyStructureId as never;
+  if (scenario.socialClassId) state.player.profile.socialClassId = scenario.socialClassId as never;
   if (scenario.careerAffiliationId) state.player.career.affiliationId = scenario.careerAffiliationId as never;
+
+  for (const given of scenario.given ?? []) {
+    applyScenarioGiven(state, catalog, given);
+  }
+
   state.currentEventId = null;
   state.immediateEventQueue = [];
   state.scheduledEvents = [];
-  state.history = scenario.history as GameState['history'];
+  state.history = scenario.history.map((entry) => ({
+    ...entry,
+    ageMonths: entry.ageMonths ?? inferHistoryEntryAgeMonths(catalog, source, entry.eventId),
+  })) as GameState['history'];
 
   for (const [npcId, status] of Object.entries(scenario.npcStatuses ?? {})) {
-    state.npcs[npcId] = {
-      ...(state.npcs[npcId] ?? createDefaultNpcState()),
-      status,
-    };
+    setScenarioNpcStatus(state, npcId, status);
   }
 
   const selected = selectNextEvent(state, catalog).currentEventId;
-  if (selected !== scenario.expectedEventId) {
+  if (selected !== expectedEventId) {
     throw new Error(
-      `Scenario "${source.sagaId}/${scenario.id}" expected "${scenario.expectedEventId}" but selected "${String(selected)}".`,
+      `Scenario "${source.sagaId}/${scenario.id}" expected "${expectedEventId}" but selected "${String(selected)}".`,
     );
   }
+}
+
+function scenarioExpectedEventId(scenario: SagaScenario): string {
+  const expected = scenario.expectedEventId ?? scenario.expectNodeId;
+  if (!expected) throw new Error(`Scenario "${scenario.id}" requires expectedEventId or expectNodeId.`);
+  return expected;
+}
+
+function inferHistoryEntryAgeMonths(
+  catalog: ReturnType<typeof loadNodeContentCatalog>,
+  source: SagaAuthoringSource,
+  eventId: string,
+): number {
+  const event = catalog.events.find(({ id }) => id === eventId);
+  const chapterId = event?.majorTrack?.trackId === source.trackId ? event.majorTrack.chapterId : undefined;
+  const track = catalog.majorNarrativeTracks.find(({ id }) => id === source.trackId);
+  const dueAgeMonths = track?.chapters.find(({ id }) => id === chapterId)?.dueAgeMonths;
+  if (dueAgeMonths === undefined) {
+    throw new Error(`Cannot infer ageMonths for History Event "${eventId}" in Saga "${source.sagaId}".`);
+  }
+  return dueAgeMonths;
+}
+
+function applyScenarioGiven(
+  state: GameState,
+  catalog: ReturnType<typeof loadNodeContentCatalog>,
+  given: Record<string, unknown>,
+): void {
+  const type = String(given.type ?? '');
+
+  if (type === 'raceIs') {
+    state.player.profile.raceId = String(given.raceId) as never;
+    return;
+  }
+  if (type === 'familyStructureIs') {
+    state.player.profile.familyStructureId = String(given.familyStructureId) as never;
+    return;
+  }
+  if (type === 'socialClassIs') {
+    state.player.profile.socialClassId = String(given.socialClassId) as never;
+    return;
+  }
+  if (type === 'originSeaIs') {
+    state.player.profile.originSeaId = String(given.seaId) as never;
+    return;
+  }
+  if (type === 'affiliationIs') {
+    state.player.profile.affiliationId = String(given.affiliationId) as never;
+    return;
+  }
+  if (type === 'careerAffiliationIs') {
+    state.player.career.affiliationId = String(given.affiliationId) as never;
+    return;
+  }
+  if (type === 'npcStatusIs') {
+    setScenarioNpcStatus(state, String(given.npcId), String(given.status) as NpcStatus);
+    return;
+  }
+  if (type === 'originParentPresent') {
+    const npcId = catalog.npcs.find(({ familyRole }) => familyRole === given.role)?.id;
+    if (!npcId) throw new Error(`Scenario given originParentPresent references unknown role "${String(given.role)}".`);
+    setScenarioNpcStatus(state, npcId, 'known');
+    return;
+  }
+  if (
+    type === 'not'
+    && typeof given.condition === 'object'
+    && given.condition !== null
+    && !Array.isArray(given.condition)
+    && (given.condition as Record<string, unknown>).type === 'originParentPresent'
+  ) {
+    const role = (given.condition as Record<string, unknown>).role;
+    const npcId = catalog.npcs.find(({ familyRole }) => familyRole === role)?.id;
+    if (!npcId) throw new Error(`Scenario given not(originParentPresent) references unknown role "${String(role)}".`);
+    setScenarioNpcStatus(state, npcId, 'departed');
+    return;
+  }
+
+  throw new Error(`Unsupported compact Saga scenario given Condition "${type}". Use canonical explicit scenario fields for this case.`);
+}
+
+function setScenarioNpcStatus(state: GameState, npcId: string, status: NpcStatus): void {
+  state.npcs[npcId] = {
+    ...(state.npcs[npcId] ?? createDefaultNpcState()),
+    status,
+  };
 }
 
 function validateFallbackCoverage(
@@ -519,7 +620,7 @@ function validateScenarioCoverage(
   errors: string[],
   warnings: string[],
 ): void {
-  const expectedIds = new Set(source.scenarios.map(({ expectedEventId }) => expectedEventId));
+  const expectedIds = new Set(source.scenarios.map((scenario) => scenario.expectedEventId ?? scenario.expectNodeId).filter((id): id is string => typeof id === 'string'));
   const uncovered = roots.filter((event) => {
     const major = event.majorTrack as Record<string, unknown>;
     const hasParents = arrayOfStrings(major.parentNodeIds).length > 0;
