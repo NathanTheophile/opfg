@@ -1,5 +1,5 @@
 import type { ContentCatalog } from '../content/schema';
-import type { CrewRoleId, GameState, LocationId } from '../model/schema';
+import type { CrewRoleId, GameState, LocationId, NpcId } from '../model/schema';
 import { effectivePlayerStat } from './stats';
 
 export const currentYearIndex = (state: GameState) => Math.floor(state.ageMonths / 12);
@@ -29,4 +29,14 @@ export function useCrewRolePower(state: GameState, catalog: ContentCatalog, role
 export function navigatorDestinations(state: GameState, catalog: ContentCatalog) {
   const seaId = catalog.locations.find(({ id }) => id === state.locationId)?.seaId;
   return catalog.locations.filter(({ id, seaId: candidateSea, allowsDocking, tags }) => id !== state.locationId && candidateSea === seaId && allowsDocking && !tags.includes('prison') && !tags.includes('government'));
+}
+
+export function setActiveCompanion(state: GameState, npcId: NpcId | null): void {
+  if (npcId === null) {
+    state.companionNpcId = null;
+    return;
+  }
+  const npc = state.npcs[npcId];
+  if (!npc || npc.status !== 'crew') throw new Error(`Companion "${npcId}" must be a living crew NPC.`);
+  state.companionNpcId = npcId;
 }

@@ -64,9 +64,17 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       if (!tryAutoPlaceReward(state, catalog, effect.itemId, effect.quantity)) state.pendingOverflow = { itemId: effect.itemId, quantity: effect.quantity, locationId: state.locationId, mandatory: effect.mandatory === true };
       return;
     }
-    case 'removeItem':
-      removeStack(state.player.inventory.stacks, effect.itemId, effect.quantity);
+    case 'removeItem': {
+      let remaining = effect.quantity;
+      const pocketQuantity = state.player.inventory.stacks.find(({ itemId }) => itemId === effect.itemId)?.quantity ?? 0;
+      const fromPocket = Math.min(remaining, pocketQuantity);
+      if (fromPocket > 0) { removeStack(state.player.inventory.stacks, effect.itemId, fromPocket); remaining -= fromPocket; }
+      const cargoQuantity = state.ship?.cargo.find(({ itemId }) => itemId === effect.itemId)?.quantity ?? 0;
+      const fromCargo = Math.min(remaining, cargoQuantity);
+      if (fromCargo > 0 && state.ship) { removeStack(state.ship.cargo, effect.itemId, fromCargo); remaining -= fromCargo; }
+      if (remaining > 0) throw new Error(`Not enough Item "${effect.itemId}" to remove ${effect.quantity}.`);
       return;
+    }
     case 'buyItem':
       buyItem(state, catalog, effect.itemId, effect.quantity);
       return;

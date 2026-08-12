@@ -33,6 +33,9 @@ import type {
   NpcStatId,
 } from '@/game/model/schema';
 import { useGameSession } from '@/game/session/useGameSession';
+import { moveItem, resolveOverflow, type StorageSlot } from '@/game/engine/inventory';
+import { setActiveCompanion, useCrewRolePower } from '@/game/engine/crewPowers';
+import { buyItem, buyShip, canBuyItem, canBuyShip, canSellItem, canSellShip, itemBuyPrice, itemSellPrice, sellItem, sellShip, shipBuyPrice, shipSellPrice } from '@/game/engine/economy';
 import { npcInterpolationParams } from '@/game/engine/npcNames';
 import { originNarrativeInterpolationParams } from '@/game/engine/originNarrative';
 import {
@@ -305,6 +308,8 @@ export function EventPreview({
 
   const timerRef =
     useRef<number | null>(null);
+  const [selectedStorageSlot, setSelectedStorageSlot] = useState<StorageSlot | null>(null);
+  const selectedStorageSlotRef = useRef<StorageSlot | null>(null);
 
   const adventureScrollRef =
     useRef<HTMLDivElement | null>(null);
@@ -732,6 +737,18 @@ export function EventPreview({
     session.restartRun();
   };
 
+  const handleStorageSlot = (slot: StorageSlot) => {
+    const source = selectedStorageSlotRef.current;
+    if (!source) {
+      selectedStorageSlotRef.current = slot;
+      setSelectedStorageSlot(slot);
+      return;
+    }
+    session.applySystemAction((next) => { moveItem(next, catalog, source, slot); });
+    selectedStorageSlotRef.current = null;
+    setSelectedStorageSlot(null);
+  };
+
   const changeLocale = (
     next: LocaleId,
   ) => {
@@ -822,6 +839,8 @@ export function EventPreview({
           NPC_STAT_KEYS[id],
         )
       }
+      onUseRolePower={(roleId, destinationId) => session.applySystemAction((next) => useCrewRolePower(next, catalog, roleId, destinationId))}
+      onSelectCompanion={(npcId) => session.applySystemAction((next) => setActiveCompanion(next, npcId))}
     />
   );
 
@@ -840,6 +859,8 @@ export function EventPreview({
     translate,
     locale,
     calendarAgeMonths,
+    selectedStorageSlot,
+    onStorageSlot: handleStorageSlot,
   };
 
   return (
@@ -881,7 +902,29 @@ export function EventPreview({
                     : undefined
                 }
               >
-                  {showOutcome && outcomeView ? (
+                  {session.marketHubView ? (
+                    <Panel variant="strong" className="opfg-system-panel" aria-label={translate('ui.marketHub.title')}>
+                      <h2>{translate('ui.marketHub.title')}</h2><p>{translate(state.history.length > 0 ? 'ui.marketHub.returning' : 'ui.marketHub.arrival')}</p>
+                      {session.marketHubView === 'hub' && <div className="grid gap-2">
+                        {catalog.locations.find(({ id }) => id === state.locationId)?.marketItemIds.length ? <Button onClick={() => session.openHubView('merchant')}>{translate('ui.marketHub.merchant')}</Button> : null}
+                        {catalog.locations.find(({ id }) => id === state.locationId)?.shipMarket !== 'none' ? <Button onClick={() => session.openHubView('port')}>{translate('ui.marketHub.port')}</Button> : null}
+                        <Button onClick={session.exploreHub}>{translate('ui.marketHub.explore')}</Button></div>}
+                      {session.marketHubView === 'merchant' && <div className="grid gap-2">{(catalog.locations.find(({ id }) => id === state.locationId)?.marketItemIds ?? []).map((itemId) => { const item = catalog.items.find(({ id }) => id === itemId)!; return <div key={itemId}><strong>{translate(item.nameKey)}</strong> · {itemBuyPrice(catalog, itemId)} B <Button disabled={!canBuyItem(state, catalog, itemId)} onClick={() => session.applySystemAction((next) => buyItem(next, catalog, itemId))}>{translate('ui.market.buy')}</Button> <Button disabled={!canSellItem(state, catalog, itemId)} onClick={() => session.applySystemAction((next) => sellItem(next, catalog, itemId))}>{translate('ui.market.sell')} ({itemSellPrice(catalog, itemId, 1, state)} B)</Button></div>; })}<Button onClick={session.backToHub}>{translate('ui.marketHub.back')}</Button><Button onClick={session.exploreHub}>{translate('ui.marketHub.explore')}</Button></div>}
+                      {session.marketHubView === 'port' && <div className="grid gap-2">{catalog.ships.map((ship) => <div key={ship.id}><strong>{translate(ship.nameKey)}</strong> · {shipBuyPrice(catalog, ship.id)} B <Button disabled={!canBuyShip(state, catalog, ship.id)} onClick={() => session.applySystemAction((next) => buyShip(next, catalog, ship.id, translate(ship.nameKey)))}>{translate('ui.market.buy')}</Button></div>)}{state.ship && <Button disabled={!canSellShip(state, catalog)} onClick={() => session.applySystemAction((next) => sellShip(next, catalog))}>{translate('ui.market.sell')} ({shipSellPrice(state, catalog, state.ship.shipId)} B)</Button>}<Button onClick={session.backToHub}>{translate('ui.marketHub.back')}</Button><Button onClick={session.exploreHub}>{translate('ui.marketHub.explore')}</Button></div>}
+                    </Panel>
+                  ) : state.pendingOverflow ? (
+                    <Panel variant="strong" className="opfg-overflow-panel" aria-label={translate('ui.overflow.title')}>
+                      <h2>{translate('ui.overflow.title')}</h2>
+                      <p>{translate('ui.overflow.description')}</p>
+                      {[...state.player.inventory.stacks.map((stack, index) => ({ stack, storage: 'pocket' as const, index })), ...(state.ship?.cargo ?? []).map((stack, index) => ({ stack, storage: 'cargo' as const, index }))].map(({ stack, storage, index }) => {
+                        const definition = catalog.items.find(({ id }) => id === stack.itemId);
+                        return <Button key={`${storage}-${index}`} onClick={() => session.applySystemAction((next) => resolveOverflow(next, catalog, { type: 'discardStored', storage, index }))}>
+                          {translate('ui.overflow.replace', { item: definition ? translate(definition.nameKey) : stack.itemId })}
+                        </Button>;
+                      })}
+                      {!state.pendingOverflow.mandatory && <Button onClick={() => session.applySystemAction((next) => resolveOverflow(next, catalog, { type: 'abandonIncoming' }))}>{translate('ui.overflow.abandon')}</Button>}
+                    </Panel>
+                  ) : showOutcome && outcomeView ? (
                     <>
                       {resolvedEventView && (
                         <EventPanel

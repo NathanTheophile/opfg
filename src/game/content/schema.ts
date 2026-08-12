@@ -85,6 +85,7 @@ export type ItemCategory = typeof ITEM_CATEGORIES[number];
 
 export interface ItemMarketDefinition {
   basePriceBerries: number;
+  mode: MarketMode;
 }
 
 export interface EconomyDefinition {}
@@ -389,7 +390,7 @@ export interface SeaDefinition { id: SeaId; nameKey: LocalizationKey }
 export interface AffiliationDefinition { id: AffiliationId; nameKey: LocalizationKey; playableV1: boolean }
 export interface FamilyStructureDefinition { id: FamilyStructureId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
 export interface SocialClassDefinition { id: SocialClassId; nameKey: LocalizationKey; attributeModifiers: Partial<Record<StatId, number>> }
-export interface LocationDefinition { id: LocationId; nameKey: LocalizationKey; seaId: SeaId; islandId: IslandId; type: LocationType; parentLocationId: LocationId | null; canBeBirthLocation: boolean; blocksScheduledEvents: boolean; allowsDocking: boolean; shipMarket: ShipMarket; services: LocationServiceId[]; tags: LocationTagId[]; hasMarketHub?: boolean; marketMode?: MarketMode; marketItemIds?: ItemId[] }
+export interface LocationDefinition { id: LocationId; nameKey: LocalizationKey; seaId: SeaId; islandId: IslandId; type: LocationType; parentLocationId: LocationId | null; canBeBirthLocation: boolean; blocksScheduledEvents: boolean; allowsDocking: boolean; shipMarket: ShipMarket; services: LocationServiceId[]; tags: LocationTagId[]; hasMarketHub: boolean; marketItemIds: ItemId[] }
 export interface CareerAffiliationDefinition { id: CareerAffiliationId; nameKey: LocalizationKey }
 export interface CareerRankDefinition { id: CareerRankId; nameKey: LocalizationKey; affiliationId: Extract<CareerAffiliationId, 'marine' | 'revolutionary' | 'bounty_hunter'>; sortOrder: number }
 export interface CareerTitleDefinition { id: CareerTitleId; nameKey: LocalizationKey; descriptionKey: LocalizationKey }

@@ -8,6 +8,10 @@ import { effectivePlayerStat } from './stats';
 import { itemSellPrice, negotiationMultiplier } from './economy';
 import { canUseCrewRolePower, useCrewRolePower } from './crewPowers';
 import { findCrewRoleActor } from './dice';
+import { getPlayerMaxHealth } from './health';
+import { moveItem } from './inventory';
+import { beginMaritimeEmergency } from './maritime';
+import { consumePhaseSlot } from './time';
 
 describe('D2.6 systems hardening', () => {
   it('uses Save 21 and rejects Save 20', () => {
@@ -29,10 +33,10 @@ describe('D2.6 systems hardening', () => {
 
   it('uses fixed resale, passive multiplier floor, and negotiation deltas', () => {
     const state = createInitialGameState();
-    expect(itemSellPrice(contentCatalog, 'timber', 1, state)).toBe(500);
+    expect(itemSellPrice(contentCatalog, 'timber', 1, state)).toBe(5000);
     state.player.stats.charisma = 50;
     state.player.stats.luck = 50;
-    expect(itemSellPrice(contentCatalog, 'timber', 1, state)).toBe(1000);
+    expect(itemSellPrice(contentCatalog, 'timber', 1, state)).toBe(10000);
     expect(negotiationMultiplier('purchase', 'success')).toBe(.8);
     expect(negotiationMultiplier('resale', 'criticalFailure')).toBe(.8);
   });
@@ -55,5 +59,41 @@ describe('D2.6 systems hardening', () => {
     resolveOverflow(state, contentCatalog, { type: 'discardStored', storage: 'pocket', index: 0 });
     expect(state.pendingOverflow).toBeNull();
     expect(state.player.inventory.stacks.some(({ itemId }) => itemId === 'timber')).toBe(true);
+  });
+
+  it('keeps Giant Health above 50 and treats equipment Health as max Health', () => {
+    const catalog = structuredClone(contentCatalog);
+    catalog.items.push({ id: 'coat', nameKey: 'item.sealed_chart.name', category: 'equipment', stackLimit: 1, market: null, modifiers: { health: 10 } });
+    const state = createInitialGameState();
+    state.player.profile.raceId = 'giant'; state.player.stats.health = 60;
+    state.player.inventory.stacks = [{ itemId: 'coat', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] }];
+    equipFromStorage(state, catalog, { type: 'pocket', index: 0 });
+    expect(getPlayerMaxHealth(state, catalog)).toBe(70); expect(state.player.stats.health).toBe(60);
+    state.player.stats.health = 70;
+    expect(moveItem(state, catalog, { type: 'equipment', index: 0 }, { type: 'pocket', index: 0 })).toBe(true);
+    expect(state.player.stats.health).toBe(60);
+  });
+
+  it('moves and swaps ordinary storage', () => {
+    const state = createInitialGameState();
+    state.ship = { shipId: 'sloop', name: 'Test', health: 30, cargo: [{ itemId: 'timber', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] }] };
+    state.player.inventory.stacks = [{ itemId: 'sealed_chart', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] }];
+    expect(moveItem(state, contentCatalog, { type: 'pocket', index: 0 }, { type: 'cargo', index: 0 })).toBe(true);
+    expect(state.player.inventory.stacks[0].itemId).toBe('timber'); expect(state.ship.cargo[0].itemId).toBe('sealed_chart');
+  });
+
+  it('wrecks cargo, passengers and companion but preserves Log Pose', () => {
+    const state = createInitialGameState();
+    state.ship = { shipId: 'sloop', name: 'Test', health: 0, cargo: [{ itemId: 'timber', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] }] };
+    state.npcs.mira = { ...createDefaultNpcState(), status: 'crew' }; state.npcs.guest = createDefaultNpcState();
+    state.passengerNpcIds = ['guest']; state.companionNpcId = 'mira'; state.player.logPose = { itemId: 'paradise_log_pose', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] };
+    beginMaritimeEmergency(state, contentCatalog, 'accident');
+    expect(state.ship).toBeNull(); expect(state.npcs.guest.status).toBe('dead'); expect(state.npcs.mira.status).toBe('dead'); expect(state.companionNpcId).toBeNull(); expect(state.player.logPose?.itemId).toBe('paradise_log_pose');
+  });
+
+  it.each([['poor', 5000], ['modest', 7500], ['wealthy', 15000]] as const)('pays %s Childhood income', (socialClassId, expected) => {
+    let state = createInitialGameState(); state.careerPhase = 'childhood'; state.player.profile.raceId = 'human'; state.player.profile.socialClassId = socialClassId;
+    while (state.careerPhase === 'childhood') state = consumePhaseSlot(state, 'childhood', contentCatalog);
+    expect(state.berries).toBe(expected);
   });
 });

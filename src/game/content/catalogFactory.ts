@@ -20,6 +20,8 @@ const rankLadders = {
 const locations = [...locationsData.blueLocations.map((location) => ({ ...location, seaId: location.seaId, canBeBirthLocation: location.canBeBirthLocation, blocksScheduledEvents: location.blocksScheduledEvents })), ...locationsData.outsideBlueLocations.map((location) => ({ ...location, seaId: location.zone, canBeBirthLocation: false, blocksScheduledEvents: false }))]
   .map(({ id, seaId, islandId, type, parentLocationId, canBeBirthLocation, allowsDocking, shipMarket, services, tags, blocksScheduledEvents }) => ({
     id, nameKey: locationNameKey(id), seaId, islandId, type, parentLocationId, canBeBirthLocation, allowsDocking, shipMarket, services, tags, blocksScheduledEvents,
+    hasMarketHub: (services as readonly string[]).includes('trade') || shipMarket !== 'none',
+    marketItemIds: (services as readonly string[]).includes('trade') ? ['timber'] : [],
   })) as LocationDefinition[];
 
 const devilFruits = fruitsData.fruits.map(({ id, type, playableV1, tags }) => ({
@@ -65,7 +67,7 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
     items: [
       { id: 'sealed_chart', nameKey: itemNameKey('sealed_chart'), category: 'item', stackLimit: 1, market: null },
       { id: 'mira_letter_of_passage', nameKey: itemNameKey('mira_letter_of_passage'), category: 'item', stackLimit: 1, market: null },
-      { id: 'timber', nameKey: itemNameKey('timber'), category: 'item', stackLimit: 20, market: { basePriceBerries: 500 } },
+      { id: 'timber', nameKey: itemNameKey('timber'), category: 'item', stackLimit: 20, market: { basePriceBerries: 5000, mode: 'buy_sell' } },
       { id: 'paradise_log_pose', nameKey: itemNameKey('paradise_log_pose'), category: 'item', stackLimit: 1, market: null, unique: true, logPoseType: 'paradise' },
       { id: 'triple_log_pose', nameKey: itemNameKey('triple_log_pose'), category: 'item', stackLimit: 1, market: null, unique: true, logPoseType: 'new_world' },
       ...devilFruits.filter(({ playableV1 }) => playableV1).map(({ itemId }) => ({ id: itemId!, nameKey: itemNameKey(itemId!), category: 'item' as const, stackLimit: 1, market: null })),

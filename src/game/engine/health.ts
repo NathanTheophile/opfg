@@ -7,7 +7,11 @@ export function getPlayerMaxHealth(state: GameState, catalog: ContentCatalog): n
 
   const race = catalog.races.find(({ id }) => id === raceId);
   if (!race) throw new Error(`Unknown Player Race "${raceId}".`);
-  return race.initialHealth;
+  const equipmentModifier = state.player.equipment.reduce((total, stack, index) => {
+    const definition = catalog.items.find(({ id }) => id === stack?.itemId);
+    return total + (index === 1 && definition?.twoHanded ? 0 : definition?.modifiers?.health ?? 0);
+  }, 0);
+  return Math.max(1, race.initialHealth + equipmentModifier);
 }
 
 export function modifyPlayerHealth(state: GameState, catalog: ContentCatalog, amount: number): void {

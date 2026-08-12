@@ -2,8 +2,9 @@ import { useMemo, useState } from 'react';
 import type { ContentCatalog } from '../content/schema';
 import { clearGameState, loadGameState, saveGameState, type StorageLike } from '../engine/save';
 import { findCurrentEvent } from '../engine/events';
-import { chooseInSession, chooseMonthlyNavigationInSession, createSessionState, dismissResolution, getSessionNavigationOptions, startNewRun } from './gameSession';
+import { chooseInSession, chooseMonthlyNavigationInSession, createSessionState, dismissResolution, exploreFromMarketHub, getSessionNavigationOptions, openMarketHubView, returnToMarketHub, startNewRun } from './gameSession';
 import type { MonthlyNavigationChoice } from '../engine/navigation';
+import type { GameState } from '../model/schema';
 
 let fallbackSeed = Date.now() >>> 0;
 function generateSeed(): number {
@@ -35,6 +36,18 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
     if (next.gameState) saveGameState(storage, next.gameState);
     setSession(next);
   };
+  const applySystemAction = (action: (state: GameState) => void) => {
+    if (!session.gameState) return false;
+    const nextState = structuredClone(session.gameState);
+    action(nextState);
+    saveGameState(storage, nextState);
+    setSession({ gameState: nextState, previousState: null, lastResolution: null, marketHubView: nextState.shipMarketArrivalPending ? 'hub' : null });
+    return true;
+  };
+  const updateHub = (next: ReturnType<typeof createSessionState>) => { if (next.gameState) saveGameState(storage, next.gameState); setSession(next); };
+  const openHubView = (view: 'merchant' | 'port') => updateHub(openMarketHubView(session, catalog, view));
+  const backToHub = () => updateHub(returnToMarketHub(session, catalog));
+  const exploreHub = () => updateHub(exploreFromMarketHub(session, catalog));
 
-  return { ...session, currentEvent, navigationOptions, startNewRun: start, restartRun: start, choose, chooseNavigation, continueAfterResolution };
+  return { ...session, currentEvent, navigationOptions, startNewRun: start, restartRun: start, choose, chooseNavigation, applySystemAction, openHubView, backToHub, exploreHub, continueAfterResolution };
 }

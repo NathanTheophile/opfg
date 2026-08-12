@@ -1,6 +1,6 @@
 import type { ContentCatalog, ItemDefinition } from '../content/schema';
 import type { GameState, ItemId, ItemStack } from '../model/schema';
-import { effectivePlayerStat } from './stats';
+import { getPlayerMaxHealth } from './health';
 
 export type StorageSlot =
   | { type: 'pocket'; index: 0 | 1 }
@@ -28,9 +28,95 @@ export function unequipToPocket(state: GameState, catalog: ContentCatalog, index
   const definition = catalog.items.find(({ id }) => id === stack.itemId);
   state.player.equipment = definition?.twoHanded ? [null, null] : state.player.equipment.map((entry, slot) => slot === index ? null : entry) as GameState['player']['equipment'];
   state.player.inventory.stacks.push(stack);
-  state.player.stats.health = Math.max(1, Math.min(state.player.stats.health, effectivePlayerStat(state, catalog, 'health')));
+  state.player.stats.health = Math.max(1, Math.min(state.player.stats.health, getPlayerMaxHealth(state, catalog)));
   return true;
 }
+
+export function moveItem(state: GameState, catalog: ContentCatalog, source: StorageSlot, destination: StorageSlot): boolean {
+  if (sameSlot(source, destination)) return true;
+  const snapshot = structuredClone(state);
+  try {
+    const sourceStack = slotValue(state, source);
+    if (!sourceStack) return false;
+    if (destination.type === 'equipment') return moveToEquipment(state, catalog, source, destination.index);
+    if (destination.type === 'logPose') return moveToLogPose(state, catalog, source);
+    if (source.type === 'equipment') return moveEquipmentToStorage(state, catalog, source.index, destination);
+    if (source.type === 'logPose') return moveLogPoseToStorage(state, destination);
+    return swapStorage(state, catalog, source, destination);
+  } catch {
+    Object.assign(state, snapshot);
+    return false;
+  }
+}
+
+function moveToEquipment(state: GameState, catalog: ContentCatalog, source: StorageSlot, destinationIndex: 0 | 1): boolean {
+  if (source.type !== 'pocket' && source.type !== 'cargo') return false;
+  const stacks = storage(state, source.type);
+  const stack = stacks?.[source.index];
+  const definition = stack && catalog.items.find(({ id }) => id === stack.itemId);
+  if (!stack || definition?.category !== 'equipment' || state.player.equipment[destinationIndex] !== null) return false;
+  if (definition.unique && state.player.equipment.some((entry) => entry?.itemId === stack.itemId)) return false;
+  if (definition.twoHanded && state.player.equipment.some((entry) => entry !== null)) return false;
+  const equipped = takeOne(stack, stacks!);
+  state.player.equipment[destinationIndex] = equipped;
+  if (definition.twoHanded) state.player.equipment[destinationIndex === 0 ? 1 : 0] = structuredClone(equipped);
+  return true;
+}
+
+function moveEquipmentToStorage(state: GameState, catalog: ContentCatalog, index: 0 | 1, destination: StorageSlot): boolean {
+  if (destination.type !== 'pocket' && destination.type !== 'cargo') return false;
+  const equipped = state.player.equipment[index];
+  const target = storage(state, destination.type);
+  if (!equipped || !target || destination.index > target.length || (target[destination.index] && target.length >= capacity(state, catalog, destination.type))) return false;
+  const definition = catalog.items.find(({ id }) => id === equipped.itemId);
+  const displaced = target[destination.index] ?? null;
+  if (displaced) return false;
+  target.splice(destination.index, 0, equipped);
+  state.player.equipment = definition?.twoHanded ? [null, null] : state.player.equipment.map((entry, slot) => slot === index ? null : entry) as GameState['player']['equipment'];
+  state.player.stats.health = Math.max(1, Math.min(state.player.stats.health, getPlayerMaxHealth(state, catalog)));
+  return true;
+}
+
+function moveToLogPose(state: GameState, catalog: ContentCatalog, source: StorageSlot): boolean {
+  if (state.player.logPose || (source.type !== 'pocket' && source.type !== 'cargo')) return false;
+  return activateLogPose(state, catalog, source);
+}
+
+function moveLogPoseToStorage(state: GameState, destination: StorageSlot): boolean {
+  if ((destination.type !== 'pocket' && destination.type !== 'cargo') || !state.player.logPose) return false;
+  const target = storage(state, destination.type);
+  if (!target || target[destination.index]) return false;
+  target.splice(destination.index, 0, state.player.logPose);
+  state.player.logPose = null;
+  return true;
+}
+
+function swapStorage(state: GameState, catalog: ContentCatalog, source: StorageSlot, destination: StorageSlot): boolean {
+  if ((source.type !== 'pocket' && source.type !== 'cargo') || (destination.type !== 'pocket' && destination.type !== 'cargo')) return false;
+  const from = storage(state, source.type);
+  const to = storage(state, destination.type);
+  if (!from || !to || !from[source.index] || destination.index > to.length) return false;
+  if (from === to) {
+    const displaced = from[destination.index];
+    from[destination.index] = from[source.index];
+    if (displaced) from[source.index] = displaced;
+    else from.splice(source.index, 1);
+    return true;
+  }
+  const incoming = from[source.index];
+  const displaced = to[destination.index];
+  if (!displaced && to.length >= capacity(state, catalog, destination.type)) return false;
+  if (displaced) from[source.index] = displaced;
+  else from.splice(source.index, 1);
+  if (displaced) to[destination.index] = incoming;
+  else to.splice(destination.index, 0, incoming);
+  return true;
+}
+
+function storage(state: GameState, type: 'pocket' | 'cargo') { return type === 'pocket' ? state.player.inventory.stacks : state.ship?.cargo; }
+function capacity(state: GameState, catalog: ContentCatalog, type: 'pocket' | 'cargo') { return type === 'pocket' ? 2 : shipCapacity(state, catalog); }
+function slotValue(state: GameState, slot: StorageSlot) { return slot.type === 'pocket' || slot.type === 'cargo' ? storage(state, slot.type)?.[slot.index] ?? null : slot.type === 'equipment' ? state.player.equipment[slot.index] : state.player.logPose; }
+function sameSlot(left: StorageSlot, right: StorageSlot) { return left.type === right.type && ('index' in left ? 'index' in right && left.index === right.index : !('index' in right)); }
 
 export function activateLogPose(state: GameState, catalog: ContentCatalog, source: { type: 'pocket' | 'cargo'; index: number }): boolean {
   if (state.player.logPose !== null) return false;

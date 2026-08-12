@@ -39,7 +39,7 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
         return weapon !== undefined && (condition.damageType === undefined || weapon.damageType === condition.damageType) && (condition.rangeType === undefined || weapon.rangeType === condition.rangeType);
       });
     case 'itemQuantityAtLeast':
-      return itemQuantity(state.player.inventory.stacks, condition.itemId) >= condition.quantity;
+      return itemQuantity(state.player.inventory.stacks, condition.itemId) + itemQuantity(state.ship?.cargo ?? [], condition.itemId) >= condition.quantity;
     case 'inventoryFreeSlotsAtLeast':
       return inventoryFreeSlots(state.player.inventory) >= condition.value;
     case 'canBuyItem':

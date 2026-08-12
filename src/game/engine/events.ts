@@ -38,19 +38,8 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
   }
 
   if (state.shipMarketArrivalPending) {
+    if (isArrivalMarketHubAvailable(state, catalog)) return { ...state, currentEventId: null };
     state = { ...state, shipMarketArrivalPending: false };
-    const location = catalog.locations.find(({ id }) => id === state.locationId);
-    const purchase = catalog.events.find((event): event is NormalDefinition => event.id === SHIP_MARKET_PURCHASE_EVENT_ID && event.kind === 'normal');
-    if (
-      state.careerPhase === 'active'
-      && state.ship === null
-      && state.travelState === 'on_land'
-      && location !== undefined
-      && location.shipMarket !== 'none'
-      && purchase !== undefined
-      && purchase.majorTrack === undefined
-      && isEligible(purchase, state, catalog)
-    ) return selectEvent(state, catalog, purchase);
   }
 
   const major = findDueMajorNarrativeCandidates(state, catalog);
@@ -80,6 +69,11 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
   }
 
   return selectUniformNormal(state, catalog, scheduled.entries, candidates);
+}
+
+export function isArrivalMarketHubAvailable(state: GameState, catalog: ContentCatalog): boolean {
+  const location = catalog.locations.find(({ id }) => id === state.locationId);
+  return state.careerPhase === 'active' && state.travelState === 'on_land' && location?.hasMarketHub === true;
 }
 
 function findDueMajorNarrativeCandidates(state: GameState, catalog: ContentCatalog): DueMajorSelection | undefined {
