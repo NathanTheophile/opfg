@@ -1,6 +1,6 @@
 # OPFG — Major Narrative Tracks
 
-> **Status: validated V2 narrative-design authority; runtime implementation pending.**
+> **Status: validated V2 narrative-design authority; D2 Childhood Family runtime implemented.**
 >
 > This document defines the narrative spine introduced by the D2 Content Reset. It supersedes D1.8/D1.9 opening orchestration and the former mandatory Childhood Lifetime Thread guarantee. It does not itself claim that Schema 11 / Save 20 are already implemented.
 
@@ -551,3 +551,49 @@ The existing estimate of roughly **45–70 Major root nodes** for a mature Famil
 It does not count their Immediate descendants.
 
 A complete mature Saga may therefore contain well over 100 EventDefinitions while a single run still starts exactly five Childhood Family Major roots and sees only the Immediate branches belonging to those five lived mini-arcs.
+
+<!-- D2.11_FAMILY_SAGA_LESSONS -->
+## D2.11 — Production lessons from Marine, Pirate and Royal
+
+The first three integrated Family Sagas establish **multiple valid production shapes**, not a quality hierarchy.
+
+- **Marine** demonstrates a deep multi-Immediate treatment and the high-yield `Marine × Giant` institutional-pressure association.
+- **Pirate** demonstrates a broad, highly reactive Family DAG and the `Pirate × Fish-Man` coercion/consent association around aquatic capability.
+- **Royal** demonstrates that a compact `1 Major root -> 1 shared Immediate resolution` pattern can carry a full-quality DAG when each scene is concrete. Its strongest long paths are **Royal × Orphan** and **Royal × Poor / Fallen House**; Fish-Man specialization is deliberately shorter and rejoins shared court/public nodes.
+
+Event count, Immediate depth and authored volume are **not quality scores**. A node needs only the panels required for its dramatic situation. Quality is judged by continuity across the five ages, meaningful History callbacks, distinct lived Origins, concrete scenes, and a consequential inheritance resolution.
+
+### Special Association discovery
+
+Do not ask "which Race gets this Saga's special path?" Ask:
+
+> Which Origins crossing most changes the lived family experience of this affiliation?
+
+The answer may be Race, Family Structure, Social Class, current parent presence/state, Birth Location, a prior Family Outcome, or a compact combination. Special Associations are sparse authored pressure points, never a Cartesian matrix.
+
+Validated examples now intentionally span different axes:
+
+```text
+Marine × Giant
+Pirate × Fish-Man
+Royal × Orphan
+Royal × Poor / Fallen House
+```
+
+### Layer-5 handoff matrix
+
+| Family track | Inherited identity after Childhood | Active entry at 180 months |
+| --- | --- | --- |
+| `family_civilian` | `civilian` | Civilian |
+| `family_marine` | `marine` | Outcome-specific Marine + `marine_recruit` or Civilian |
+| `family_pirate` | `pirate` | Outcome-specific Pirate or Civilian |
+| `family_revolutionary` | `revolutionary` | Outcome-specific Revolutionary + `revolutionary_recruit` or Civilian |
+| `family_royal` | `royal_family` | Civilian |
+
+The inherited profile affiliation is never rewritten by this handoff.
+
+### Inheritance diversity
+
+The Layer-5 persistent consequence must follow the resolved story. Items, Equipment, Berrys, Reputation, durable NPC/access/network state, Traits and other supported assets are tools, not default templates.
+
+A complete Saga that gives the same mechanical reward family to every terminal leaf is a production defect unless a future explicit authority documents an exceptional reason.

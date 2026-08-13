@@ -138,6 +138,7 @@ interface SagaGeneratedManifest {
 const DEFAULT_REWARD_EFFECT_TYPES = [
   'addItem',
   'addTrait',
+  'modifyBerries',
   'modifyReputation',
   'setFlag',
   'setNpcStatus',
@@ -386,6 +387,7 @@ export function validateSagaAuthoring(source: SagaAuthoringSource): SagaCheckRes
   validateFallbackCoverage(source, chapterRoots, errors);
   validateScenarioCoverage(source, majorRoots, errors, warnings);
   validateTerminalRewards(source, chapterRoots, eventsById, immediateGraph, errors);
+  validateInheritanceRewardDiversity(source, chapterRoots, eventsById, immediateGraph, errors, warnings);
 
   return { errors, warnings };
 }
@@ -633,6 +635,68 @@ function validateScenarioCoverage(
   else warnings.push(message);
 }
 
+
+// D2.11 — Family inheritance reward diversity
+function validateInheritanceRewardDiversity(
+  source: SagaAuthoringSource,
+  chapterRoots: Map<string, AuthoringEvent[]>,
+  eventsById: Map<string, AuthoringEvent>,
+  graph: Map<string, Set<string>>,
+  errors: string[],
+  warnings: string[],
+): void {
+  if (!source.trackId.startsWith('family_')) return;
+  const terminalChapter = [...source.chapters].reverse().find(
+    (chapter) => (chapterRoots.get(chapter)?.length ?? 0) > 0,
+  );
+  if (!terminalChapter) return;
+
+  const leaves = (chapterRoots.get(terminalChapter) ?? []).flatMap((root) =>
+    collectLeafOutcomes(root.id, eventsById, graph)
+  );
+  if (leaves.length < 6) return;
+
+  const familyCounts = new Map<string, number>();
+  for (const leaf of leaves) {
+    const families = new Set<string>();
+    for (const effect of Array.isArray(leaf.outcome.effects) ? leaf.outcome.effects : []) {
+      const type = String(effect.type ?? '');
+      if (type === 'addItem') families.add('tangible_asset');
+      else if (type === 'modifyBerries' && Number(effect.amount) > 0) families.add('economic');
+      else if (type === 'modifyReputation') families.add('reputation');
+      else if (type === 'addTrait') families.add('trait');
+      else if (type === 'setFlag') families.add('state_access');
+      else if (type === 'setNpcStatus') families.add('npc');
+      else if (type === 'acquireShip') families.add('ship');
+      else if (type === 'setCareerAffiliation' || type === 'setCareerRank' || type === 'setCareerTitle') families.add('career');
+      else if (type === 'setNpcDevilFruit' || type === 'awakenHaki' || type === 'raiseConquerorHakiTo') families.add('power');
+    }
+    for (const family of families) {
+      familyCounts.set(family, (familyCounts.get(family) ?? 0) + 1);
+    }
+  }
+
+  if (familyCounts.size <= 1) {
+    errors.push(
+      `Family inheritance reward monoculture: "${source.sagaId}" uses only ${[...familyCounts.keys()].join(', ') || 'no recognized reward family'} across ${leaves.length} Layer-5 leaves. Choose rewards from the fiction instead of defaulting every ending to one mechanic.`,
+    );
+    return;
+  }
+
+  if (familyCounts.size < 3) {
+    warnings.push(
+      `Family inheritance diversity: "${source.sagaId}" uses only ${familyCounts.size} recognized reward families across ${leaves.length} Layer-5 leaves. Mature Sagas should normally reach at least three when fiction supports it.`,
+    );
+  }
+
+  const dominant = [...familyCounts.entries()].sort((a, b) => b[1] - a[1])[0];
+  if (dominant && dominant[1] / leaves.length > 0.75) {
+    warnings.push(
+      `Family inheritance concentration: "${source.sagaId}" gives ${dominant[0]} on ${dominant[1]}/${leaves.length} Layer-5 leaves (>75%). Keep only if the Saga fiction genuinely warrants that dominance.`,
+    );
+  }
+}
+
 function validateTerminalRewards(
   source: SagaAuthoringSource,
   chapterRoots: Map<string, AuthoringEvent[]>,
@@ -648,7 +712,7 @@ function validateTerminalRewards(
   for (const root of chapterRoots.get(terminalChapter) ?? []) {
     for (const leaf of collectLeafOutcomes(root.id, eventsById, graph)) {
       const effects = Array.isArray(leaf.outcome.effects) ? leaf.outcome.effects : [];
-      if (!effects.some((effect) => rewardTypes.has(String(effect.type)))) {
+      if (!effects.some((effect) => rewardTypes.has(String(effect.type)) && (effect.type !== 'modifyBerries' || Number(effect.amount) > 0))) {
         errors.push(
           `Terminal leaf "${leaf.eventId}/${leaf.outcome.id}" reachable from "${root.id}" has no persistent gameplay reward effect.`,
         );

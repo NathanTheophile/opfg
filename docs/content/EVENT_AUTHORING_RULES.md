@@ -2039,3 +2039,95 @@ For Layer 5, the guaranteed persistent gameplay reward should normally be grante
 Likewise, the Marine/Civilian Active-start decision belongs to the resolved inheritance Outcome, not to the opening panel merely because the terminal node was selected.
 
 Achievements/milestones remain additional recognition and never count as the gameplay reward.
+
+<!-- D2.11_FAMILY_INHERITANCE_RESOLUTION -->
+## 29. Family inheritance resolution — D2.11 authority
+
+Layer 5 does not distribute a generic "reward". It resolves **what the character actually inherits from the lived Family story**.
+
+### 29.1 Fiction first, mechanic second
+
+For every terminal Outcome, author in this order:
+
+1. state the inheritance in fiction;
+2. identify what persists into the character's future;
+3. only then choose the existing Effect that expresses it.
+
+Do not start from `addItem`, `modifyReputation`, a Trait, or a quota and reverse-engineer prose around it.
+
+Valid inheritance families include, when supported by the current runtime and the scene:
+
+- Berrys / economic inheritance;
+- Reputation / notoriety / social standing;
+- a meaningful Item, document or keepsake;
+- Equipment;
+- a Trait when the Trait is genuinely formed here and cannot silently no-op as the sole reward;
+- persistent NPC / animal / companion-related state when an existing runtime path can actually express it;
+- network, access, obligation or opportunity state encoded by a meaningful reusable Flag/History hook;
+- ship/power inheritance only when exceptionally justified;
+- the separate Active career handoff resolved from History at 180 months;
+- a light mixed inheritance when two components are independently earned by the fiction.
+
+A Flag does not count as good authoring merely because it is persistent. It must represent a concrete access, obligation, relationship, claim, network, or future authoring hook that later content can test.
+
+### 29.2 Explicit anti-pattern: reward monoculture
+
+Reject this production pattern:
+
+```text
+many Layer-5 leaves
+-> invent a handful of souvenir objects
+-> give one object to every leaf
+-> validator passes
+```
+
+Also reject the equivalent version where every leaf receives Reputation regardless of what happened.
+
+A mature Family Saga should **normally use at least three distinct inheritance families** across its Layer-5 leaves when the fiction naturally supports them. This is a review target, not a per-Saga quota. If one family appears on more than roughly 75% of terminal leaves, the SELF_AUDIT must explain why that dominance is narratively necessary.
+
+The Saga checker reports one-family monoculture as an error and strong concentration / low diversity as warnings. This is production tooling, not a new gameplay system.
+
+### 29.3 Economic inheritance
+
+`modifyBerries` is a valid persistent Layer-5 reward when the scene actually transfers money, a settlement, liquidated assets, a travel fund, saved wages, a pirate share, or another concrete economic inheritance.
+
+Use current economy anchors:
+
+- 2,500–7,500 Berrys: small personal stake;
+- 10,000–25,000 Berrys: meaningful starting inheritance;
+- above 25,000: exceptional and specifically justified.
+
+For scale, a Dinghy costs 5,000 and a Sloop 25,000 Berrys. Do not casually hand out ship-scale wealth.
+
+Social class still never grants automatic personal Berrys. Only an authored transfer does.
+
+A negative `modifyBerries` never satisfies the terminal persistent-reward requirement.
+
+### 29.4 Career handoff is separate
+
+Layer 5 resolves intent at 156 months. The actual career mutation occurs only at the Childhood -> Active boundary at 180 months.
+
+Current contracts:
+
+- Civilian Family -> Active Civilian;
+- Marine Family -> Outcome-specific Marine + `marine_recruit` or Civilian;
+- Pirate Family -> Outcome-specific Pirate or Civilian;
+- Revolutionary Family -> Outcome-specific Revolutionary + `revolutionary_recruit` or Civilian;
+- Royal Family -> Active Civilian; `royal_family` remains inherited identity.
+
+Do not use early `setCareerAffiliation` in Childhood Family Events.
+
+### 29.5 Required Layer-5 SELF_AUDIT table
+
+Every new/revised Family Saga must provide one row per reachable terminal leaf:
+
+```text
+terminal Event/Outcome
+-> narrative inheritance
+-> mechanical inheritance family
+-> exact Effect(s)
+-> why this form follows from the story
+-> future hook, if any
+```
+
+Review the distribution across the whole Saga before integration. The goal is not equal counts; it is to prevent the validator from choosing the fiction.

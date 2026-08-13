@@ -318,10 +318,10 @@ The D2 Content Reset separates **accepted V2 runtime concepts** from **legacy cr
 ### Major Family content
 
 - Childhood guarantees exactly five Family Legacy chapters for the inherited playable affiliation.
-- A chapter is a horizontal variant pool, not a fixed Scheduled chain.
+- The five Family layers form one connected descendant DAG, not independent horizontal rerolls and not a fixed Scheduled chain.
 - Race, family structure, current parent state, social class, History and location may select different variants when they materially change the scene.
 - Do not create Cartesian coverage. Create a specialized variant only when the fiction is substantially different.
-- Every chapter requires one safety fallback, but the fallback must not compete with eligible specialized variants.
+- Layer 1 has one generic fallback. From Layer 2 onward, fallback coverage is route-local: every previous node has exactly one safe fallback continuation.
 - Five Family roots reserve 25% of Childhood; the rest of Childhood must remain broad.
 
 ### Current playable narrative surface
@@ -373,7 +373,7 @@ A Special Association can involve:
 - affiliation × Race × a prior Saga Choice/Outcome;
 - another compact combination with unusually strong world/narrative consequences.
 
-The reference V1 example is `Marine × Giant`: Marine institutional interest in Giant military strength can justify Giant-only responses, descendants and a unique inheritance milestone.
+Validated V1 examples deliberately span different axes: `Marine × Giant` (institutional military interest), `Pirate × Fish-Man` (coercion/consent around aquatic capability), `Royal × Orphan` (premature burden without parents), and `Royal × Poor / Fallen House` (status without resources, restitution/restoration pressure). Marine × Giant is an example, not a quality benchmark and not a rule that Special Associations must be Race-based.
 
 Rules:
 
@@ -397,3 +397,18 @@ Family Major content is judged at the **mini-arc level**:
 - Layer-5 mini-arcs are the exception to optional rewards: every reachable terminal Outcome grants at least one persistent gameplay reward, excluding Achievements/milestones.
 
 Immediate descendants do not need persistent NPC definitions for throwaway actors; the existing NPC rules still apply.
+
+<!-- D2.11_INHERITANCE_CONTENT_BIBLE -->
+## D2.11 Family inheritance content rule
+
+> **Authoritative override:** this section supersedes older V2 shorthand that describes Family chapters as independent horizontal pools, requires a universal fallback at every layer, treats Marine × Giant as the reference quality model, or lets "persistent reward" default to one mechanic.
+
+For Layer 5, "persistent reward" means **the persistent form of the story's resolved inheritance**, not "give the player an Item."
+
+At Saga scale, vary inheritance forms when the fiction supports it: money, reputation, tangible objects, equipment, durable relationship/NPC state, network or access state, Traits, and other existing persistent systems. Do not create a new definition merely to make a reward look different.
+
+A full Saga should normally exercise at least three reward families. Strong dominance by one family is a review signal, not an invitation to rebalance mechanically without regard to the story.
+
+Any proposed animal/companion inheritance must use an existing supported NPC/companion acquisition path. Do not invent a direct companion Effect solely for a Family reward.
+
+Every Layer-5 SELF_AUDIT must map narrative inheritance -> mechanical inheritance -> reason for that mapping.

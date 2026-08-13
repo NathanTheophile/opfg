@@ -103,3 +103,22 @@ Before Active content production, the economy may add:
 - authored inventory-capacity upgrades.
 
 These extensions must preserve the principle that the economy supports narrative choices rather than replacing them with passive simulation.
+
+<!-- D2.11_FAMILY_ECONOMIC_INHERITANCE -->
+## 9. Family economic inheritance — D2.11
+
+Layer-5 Family resolution may grant Berrys with `modifyBerries` when the fiction transfers real money or liquid value: savings, a travel fund, wages, a pirate share, a settlement, restitution, liquidation of family assets, or another explicit transfer.
+
+This does **not** change the rule that Social Class is household context rather than an automatic child wallet.
+
+Authoring anchors:
+
+| Transfer scale | Suggested amount |
+| --- | ---: |
+| small personal stake | 2,500–7,500 |
+| meaningful starting inheritance | 10,000–25,000 |
+| exceptional settlement/restitution | above 25,000 only with specific justification |
+
+For comparison, the current ship ladder begins at 5,000 Berrys for a Dinghy and 25,000 for a Sloop. Family inheritance must not casually trivialize early Active progression.
+
+A negative money effect is a cost, not a persistent reward. Do not make a repayment scene grant money merely because the Saga needs economic variety; choose the inheritance that the scene actually resolves.

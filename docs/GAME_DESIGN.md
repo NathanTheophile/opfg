@@ -174,9 +174,9 @@ Cette répartition guide la production de contenu ; ce n’est pas un quota cons
 <!-- D2_WAVE2_NARRATIVE_RESET:FAMILY_GUARANTEE -->
 La garantie narrative obligatoire de Childhood n'est plus l'initiation d'une ancienne `Lifetime Thread`. Chaque personnage reçoit la **Family Legacy Saga correspondant à son affiliation familiale héritée**.
 
-Une Childhood complète contient **exactement cinq root Events de Family Saga**, dus aux checkpoints 12, 48, 84, 120 et 156 mois. Chaque chapitre est un pool horizontal de variantes et évalue l'état **actuel** du personnage au moment de sa résolution : Race, structure familiale initiale, statut/présence des parents, relations, classe sociale, History, Traits et autres Conditions réellement pertinentes.
+Une Childhood complète contient **exactement cinq root Events de Family Saga**, dus aux checkpoints 12, 48, 84, 120 et 156 mois. Ces cinq checkpoints sont les couches temporelles d'un **DAG narratif connecté**, pas cinq pools indépendants. Après la première couche, le prochain node doit être descendant du Major node réellement vécu à la couche précédente, puis filtré par l'état actuel et History.
 
-Une seule variante est vécue par chapitre. Le chapitre entier est ensuite considéré comme terminé via History. Chaque chapitre doit posséder exactement un fallback universel, utilisé seulement lorsqu'aucune variante spécialisée n'est éligible.
+La couche 1 conserve un fallback générique. À partir de la couche 2, les fallbacks sont **route-local** : chaque node précédent possède exactement une continuation fallback sûre, tandis que les descendants spécialisés éligibles et plus spécifiques gagnent d'abord. Les pyramides peuvent croiser, rejoindre une route partagée puis diverger à nouveau sans effacer History.
 
 Les variantes Family restent des Normal Events mais sont exclues du pool Normal ordinaire ; seul l'orchestrateur Major Narrative Track peut les sélectionner. La progression ne nécessite aucun `ArcState` ni compteur persistant dédié.
 
@@ -696,3 +696,22 @@ A Childhood Family checkpoint guarantees one **Family mini-arc**, not one isolat
 - Crossings, Special Associations, fracture beats and Layer-5 inheritance should receive enough internal development to feel like short stories.
 - Route-local fallbacks may be shorter but must still be concrete.
 - The 45–70 mature-root estimate counts mini-arc roots only; total EventDefinition count may be substantially higher.
+
+<!-- D2.11_FAMILY_QUALITY_AND_INHERITANCE -->
+## D2.11 — Qualité des Family Sagas et héritage final
+
+> **Authoritative override:** cette section supersède dans ce document toute formulation plus ancienne décrivant les cinq chapitres Family comme cinq pools horizontaux indépendants ou imposant un fallback universel à chaque couche.
+
+Marine, Pirate et Royal sont trois Sagas de **même niveau de qualité cible** avec des granularités différentes. Marine n'est pas un gold standard mesuré au nombre d'Immediate. Une scène compacte est préférable à trois panels de remplissage; une scène complexe mérite davantage de beats lorsqu'ils portent réellement réaction, confrontation, révélation ou résolution.
+
+La qualité d'une Family Saga se juge principalement sur:
+
+- une trajectoire reconnaissable aux cinq âges;
+- des descendants qui se souviennent des choix réellement vécus;
+- des Origins différents qui produisent des enfances réellement différentes;
+- une identité propre à l'affiliation;
+- un Layer 5 qui résout ce que le personnage hérite réellement.
+
+L'héritage mécanique final est choisi **après** l'héritage narratif. Il peut prendre la forme de Berrys, Reputation, Item, Equipment, Trait, état NPC/réseau/accès ou autre asset persistant déjà supporté. Aucun type n'est le reward par défaut.
+
+Le détail authoring appartient à `docs/content/EVENT_AUTHORING_RULES.md §29` et à `docs/design/MAJOR_NARRATIVE_TRACKS.md D2.11`.
