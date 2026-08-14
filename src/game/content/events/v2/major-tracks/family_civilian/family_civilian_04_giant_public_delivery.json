@@ -1,0 +1,115 @@
+{
+  "id": "family_civilian_04_giant_public_delivery",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_civilian",
+    "chapterId": "childhood_04",
+    "nodeId": "family_civilian_04_giant_public_delivery",
+    "selectionPriority": 20,
+    "parentNodeIds": [
+      "family_civilian_03_giant_delivery_turn",
+      "family_civilian_03_trade_fallback"
+    ]
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "raceIs",
+        "raceId": "giant"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasOutcome",
+            "eventId": "family_civilian_03_giant_delivery_turn_i01_reaction",
+            "outcomeId": "help"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "family_civilian_03_trade_fallback_i01_reaction",
+            "outcomeId": "help"
+          }
+        ]
+      }
+    ]
+  },
+  "titleKey": "event.family_civilian_04_giant_public_delivery.title",
+  "textKey": "event.family_civilian_04_giant_public_delivery.text",
+  "choices": [
+    {
+      "id": "test",
+      "textKey": "event.family_civilian_04_giant_public_delivery.choice.test.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "test",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_04_giant_public_delivery_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_04_giant_public_delivery.choice.test.outcome.test.text"
+        }
+      }
+    },
+    {
+      "id": "ask",
+      "textKey": "event.family_civilian_04_giant_public_delivery.choice.ask.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_04_giant_public_delivery_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_04_giant_public_delivery.choice.ask.outcome.ask.text"
+        }
+      }
+    },
+    {
+      "id": "wait",
+      "textKey": "event.family_civilian_04_giant_public_delivery.choice.wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_04_giant_public_delivery_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_04_giant_public_delivery.choice.wait.outcome.wait.text"
+        }
+      }
+    },
+    {
+      "id": "remember_alley",
+      "availableIf": {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_03_giant_delivery_turn_i01_reaction",
+        "outcomeId": "help"
+      },
+      "textKey": "event.family_civilian_04_giant_public_delivery.choice.remember_alley.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "remember_alley",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_04_giant_public_delivery_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_04_giant_public_delivery.choice.remember_alley.outcome.remember_alley.text"
+        }
+      }
+    }
+  ]
+}

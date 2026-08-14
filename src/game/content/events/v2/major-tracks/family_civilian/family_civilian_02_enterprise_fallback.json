@@ -1,0 +1,96 @@
+{
+  "id": "family_civilian_02_enterprise_fallback",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_civilian",
+    "chapterId": "childhood_02",
+    "nodeId": "family_civilian_02_enterprise_fallback",
+    "selectionPriority": 0,
+    "parentNodeIds": [
+      "family_civilian_01_wealthy_shop_keys",
+      "family_civilian_01_giant_narrow_counter"
+    ],
+    "fallback": true
+  },
+  "eligibility": {
+    "type": "affiliationIs",
+    "affiliationId": "civilian"
+  },
+  "titleKey": "event.family_civilian_02_enterprise_fallback.title",
+  "textKey": "event.family_civilian_02_enterprise_fallback.text",
+  "choices": [
+    {
+      "id": "read",
+      "textKey": "event.family_civilian_02_enterprise_fallback.choice.read.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "read",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_enterprise_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_enterprise_fallback.choice.read.outcome.read.text"
+        }
+      }
+    },
+    {
+      "id": "ask",
+      "textKey": "event.family_civilian_02_enterprise_fallback.choice.ask.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_enterprise_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_enterprise_fallback.choice.ask.outcome.ask.text"
+        }
+      }
+    },
+    {
+      "id": "wait",
+      "textKey": "event.family_civilian_02_enterprise_fallback.choice.wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_enterprise_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_enterprise_fallback.choice.wait.outcome.wait.text"
+        }
+      }
+    },
+    {
+      "id": "remember_keys",
+      "availableIf": {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_01_wealthy_shop_keys_i01_reaction",
+        "outcomeId": "protect"
+      },
+      "textKey": "event.family_civilian_02_enterprise_fallback.choice.remember_keys.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "remember_keys",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_enterprise_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_enterprise_fallback.choice.remember_keys.outcome.remember_keys.text"
+        }
+      }
+    }
+  ]
+}

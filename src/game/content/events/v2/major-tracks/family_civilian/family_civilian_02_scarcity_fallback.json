@@ -1,0 +1,96 @@
+{
+  "id": "family_civilian_02_scarcity_fallback",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_civilian",
+    "chapterId": "childhood_02",
+    "nodeId": "family_civilian_02_scarcity_fallback",
+    "selectionPriority": 0,
+    "parentNodeIds": [
+      "family_civilian_01_orphan_supper_key",
+      "family_civilian_01_poor_patched_roof"
+    ],
+    "fallback": true
+  },
+  "eligibility": {
+    "type": "affiliationIs",
+    "affiliationId": "civilian"
+  },
+  "titleKey": "event.family_civilian_02_scarcity_fallback.title",
+  "textKey": "event.family_civilian_02_scarcity_fallback.text",
+  "choices": [
+    {
+      "id": "hold",
+      "textKey": "event.family_civilian_02_scarcity_fallback.choice.hold.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hold",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_scarcity_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_scarcity_fallback.choice.hold.outcome.hold.text"
+        }
+      }
+    },
+    {
+      "id": "ask",
+      "textKey": "event.family_civilian_02_scarcity_fallback.choice.ask.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_scarcity_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_scarcity_fallback.choice.ask.outcome.ask.text"
+        }
+      }
+    },
+    {
+      "id": "wait",
+      "textKey": "event.family_civilian_02_scarcity_fallback.choice.wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_scarcity_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_scarcity_fallback.choice.wait.outcome.wait.text"
+        }
+      }
+    },
+    {
+      "id": "remember_dry",
+      "availableIf": {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_01_poor_patched_roof_i01_reaction",
+        "outcomeId": "protect"
+      },
+      "textKey": "event.family_civilian_02_scarcity_fallback.choice.remember_dry.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "remember_dry",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_scarcity_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_scarcity_fallback.choice.remember_dry.outcome.remember_dry.text"
+        }
+      }
+    }
+  ]
+}

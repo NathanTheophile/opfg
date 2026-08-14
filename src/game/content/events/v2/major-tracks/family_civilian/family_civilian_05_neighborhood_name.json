@@ -1,0 +1,106 @@
+{
+  "id": "family_civilian_05_neighborhood_name",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_civilian",
+    "chapterId": "childhood_05",
+    "nodeId": "family_civilian_05_neighborhood_name",
+    "selectionPriority": 10,
+    "parentNodeIds": [
+      "family_civilian_04_neighborhood_dispute",
+      "family_civilian_04_scarcity_care_fallback"
+    ]
+  },
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_04_neighborhood_dispute_i01_reaction",
+        "outcomeId": "help"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_04_scarcity_care_fallback_i01_reaction",
+        "outcomeId": "help"
+      }
+    ]
+  },
+  "titleKey": "event.family_civilian_05_neighborhood_name.title",
+  "textKey": "event.family_civilian_05_neighborhood_name.text",
+  "choices": [
+    {
+      "id": "touch",
+      "textKey": "event.family_civilian_05_neighborhood_name.choice.touch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "touch",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_neighborhood_name_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_neighborhood_name.choice.touch.outcome.touch.text"
+        }
+      }
+    },
+    {
+      "id": "ask",
+      "textKey": "event.family_civilian_05_neighborhood_name.choice.ask.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_neighborhood_name_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_neighborhood_name.choice.ask.outcome.ask.text"
+        }
+      }
+    },
+    {
+      "id": "wait",
+      "textKey": "event.family_civilian_05_neighborhood_name.choice.wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_neighborhood_name_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_neighborhood_name.choice.wait.outcome.wait.text"
+        }
+      }
+    },
+    {
+      "id": "remember_dispute",
+      "availableIf": {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_04_neighborhood_dispute_i01_reaction",
+        "outcomeId": "refuse"
+      },
+      "textKey": "event.family_civilian_05_neighborhood_name.choice.remember_dispute.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "remember_dispute",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_neighborhood_name_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_neighborhood_name.choice.remember_dispute.outcome.remember_dispute.text"
+        }
+      }
+    }
+  ]
+}

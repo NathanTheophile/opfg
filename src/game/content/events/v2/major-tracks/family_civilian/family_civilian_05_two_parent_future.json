@@ -1,0 +1,116 @@
+{
+  "id": "family_civilian_05_two_parent_future",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_civilian",
+    "chapterId": "childhood_05",
+    "nodeId": "family_civilian_05_two_parent_future",
+    "selectionPriority": 30,
+    "parentNodeIds": [
+      "family_civilian_04_apprenticeship_offer",
+      "family_civilian_04_work_family_fallback"
+    ]
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "familyStructureIs",
+        "familyStructureId": "two_parents"
+      },
+      {
+        "type": "originParentPresent",
+        "role": "father"
+      },
+      {
+        "type": "originParentPresent",
+        "role": "mother"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "family_civilian_01_two_parents_rent_table"
+      }
+    ]
+  },
+  "cast": [
+    "player_parent_1",
+    "player_parent_2"
+  ],
+  "titleKey": "event.family_civilian_05_two_parent_future.title",
+  "textKey": "event.family_civilian_05_two_parent_future.text",
+  "choices": [
+    {
+      "id": "touch",
+      "textKey": "event.family_civilian_05_two_parent_future.choice.touch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "touch",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_two_parent_future_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_two_parent_future.choice.touch.outcome.touch.text"
+        }
+      }
+    },
+    {
+      "id": "ask",
+      "textKey": "event.family_civilian_05_two_parent_future.choice.ask.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_two_parent_future_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_two_parent_future.choice.ask.outcome.ask.text"
+        }
+      }
+    },
+    {
+      "id": "wait",
+      "textKey": "event.family_civilian_05_two_parent_future.choice.wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_two_parent_future_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_two_parent_future.choice.wait.outcome.wait.text"
+        }
+      }
+    },
+    {
+      "id": "remember_trial",
+      "availableIf": {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_04_apprenticeship_offer_i01_reaction",
+        "outcomeId": "help"
+      },
+      "textKey": "event.family_civilian_05_two_parent_future.choice.remember_trial.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "remember_trial",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_two_parent_future_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_two_parent_future.choice.remember_trial.outcome.remember_trial.text"
+        }
+      }
+    }
+  ]
+}

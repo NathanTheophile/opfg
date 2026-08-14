@@ -1,0 +1,115 @@
+{
+  "id": "family_civilian_05_orphan_network",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_civilian",
+    "chapterId": "childhood_05",
+    "nodeId": "family_civilian_05_orphan_network",
+    "selectionPriority": 20,
+    "parentNodeIds": [
+      "family_civilian_04_orphan_signature_needed",
+      "family_civilian_04_scarcity_care_fallback"
+    ]
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "familyStructureIs",
+        "familyStructureId": "orphan"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasOutcome",
+            "eventId": "family_civilian_04_orphan_signature_needed_i01_reaction",
+            "outcomeId": "help"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "family_civilian_04_scarcity_care_fallback_i01_reaction",
+            "outcomeId": "protect"
+          }
+        ]
+      }
+    ]
+  },
+  "titleKey": "event.family_civilian_05_orphan_network.title",
+  "textKey": "event.family_civilian_05_orphan_network.text",
+  "choices": [
+    {
+      "id": "touch",
+      "textKey": "event.family_civilian_05_orphan_network.choice.touch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "touch",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_orphan_network_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_orphan_network.choice.touch.outcome.touch.text"
+        }
+      }
+    },
+    {
+      "id": "ask",
+      "textKey": "event.family_civilian_05_orphan_network.choice.ask.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_orphan_network_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_orphan_network.choice.ask.outcome.ask.text"
+        }
+      }
+    },
+    {
+      "id": "wait",
+      "textKey": "event.family_civilian_05_orphan_network.choice.wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_orphan_network_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_orphan_network.choice.wait.outcome.wait.text"
+        }
+      }
+    },
+    {
+      "id": "remember_signature",
+      "availableIf": {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_04_orphan_signature_needed_i01_reaction",
+        "outcomeId": "help"
+      },
+      "textKey": "event.family_civilian_05_orphan_network.choice.remember_signature.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "remember_signature",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_orphan_network_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_orphan_network.choice.remember_signature.outcome.remember_signature.text"
+        }
+      }
+    }
+  ]
+}
