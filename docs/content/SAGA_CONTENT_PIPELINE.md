@@ -22,9 +22,9 @@ History
 From the repository root:
 
 ```powershell
-npm run saga:roundtrip -- family_marine
-npm run saga:import -- family_marine
-npm run saga:check -- family_marine
+npx jiti scripts/saga-content.ts roundtrip family_marine
+npx jiti scripts/saga-content.ts import family_marine
+npx jiti scripts/saga-content.ts check family_marine
 ```
 
 `roundtrip` is the bootstrap proof. It reads the current runtime Marine Saga, converts it to the authoring model in memory, recompiles it in memory, and requires structural equality.
@@ -40,8 +40,8 @@ After the source exists, production becomes:
 
 ```text
 edit authoring source
-→ npm run saga:compile -- family_x
-→ npm run saga:check -- family_x
+→ npx jiti scripts/saga-content.ts compile family_x
+→ npx jiti scripts/saga-content.ts check family_x
 → npm test
 → npm run validate-content
 → npm run build
@@ -124,7 +124,7 @@ Scenarios are declarative data in the authoring source, not handwritten Vitest f
 }
 ```
 
-`npm run saga:check` executes them against the real selector.
+`npx jiti scripts/saga-content.ts check <sagaId>` executes them against the real selector.
 
 When a new Saga is ready for production, set:
 
@@ -160,22 +160,20 @@ V1 automates the expensive high-volume part:
 
 Persistent catalog definitions and career handoff tables remain existing runtime systems. They are low-volume compared with Event authoring and can be moved behind generated hooks in a later tooling pass if that becomes a bottleneck.
 
-## Parallel production
+## Current production status
 
-For the remaining Family Sagas:
+All five current Family Saga authoring sources exist under:
 
 ```text
-Conversation A -> Civilian authoring source
-Conversation B -> Pirate authoring source
-Conversation C -> Revolutionary authoring source
-Conversation D -> Royal authoring source
+content-authoring/sagas/family_civilian.authoring.json
+content-authoring/sagas/family_marine.authoring.json
+content-authoring/sagas/family_pirate.authoring.json
+content-authoring/sagas/family_revolutionary.authoring.json
+content-authoring/sagas/family_royal.authoring.json
 ```
 
-Each conversation edits only one authoring source and does not create patchers or engine code.
+The pipeline remains the supported synchronization mechanism between those authoring sources, generated ownership manifests and compiled runtime Event JSON.
 
-The main integration conversation only:
+The command examples use direct `jiti` invocation because `package.json` currently does not define `saga:*` aliases. This does not change the pipeline or the authoring-source format.
 
-1. reviews narrative quality;
-2. runs `saga:compile`;
-3. runs `saga:check`;
-4. fixes actual content conflicts.
+When a Family Saga source is revised, keep edits isolated to that Saga source whenever possible, then run its compiler/checker before the global test/validation/build pipeline.

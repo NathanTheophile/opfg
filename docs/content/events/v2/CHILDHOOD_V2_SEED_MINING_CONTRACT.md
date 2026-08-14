@@ -48,9 +48,10 @@ Primary idea mines include:
 - `docs/content/events/legacy/LEGACY_CHILDHOOD_SEEDS.md`;
 - `docs/content/events/legacy/D1_9_NARRATIVE_SEEDS.md`;
 - `docs/content/events/legacy/EVENT_CONCEPT_INDEX_LEGACY.md` when targeted lookup is useful;
-- relevant `docs/content/events/batches/CH_*` manifests;
-- selected material under `archives/`;
+- relevant legacy Childhood manifests under `docs/content/events/legacy/batches/CH_*/MANIFEST.md`;
 - selected material under `docs/content/events/legacy/runtime-reset-archive/`.
+
+The former top-level `archives/` and `docs/content/events/batches/` locations are no longer production mining paths. Historical batch manifests retained for V2 mining live under `docs/content/events/legacy/batches/`.
 
 Prefer curated seed documents and manifests before opening raw archived Event definitions.
 
