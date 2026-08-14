@@ -68,6 +68,8 @@ export function evaluateDiceRoll(
   includeSecretOverrides = true,
   catalog?: import('../content/schema').ContentCatalog,
 ): DiceRollResult {
+  // Retained for API compatibility. Trait overrides must never replace the raw/total critical classification.
+  void includeSecretOverrides;
   const npcActor = resolution.actor?.type === 'bestCrew' ? resolution.actor : undefined;
   const actorNpcId = npcActor ? findBestSwimmingRescuer(state, npcActor.requireNoDevilFruit ?? false) : resolution.actor?.type === 'crewRole' && catalog ? findCrewRoleActor(state, catalog, resolution.actor.roleId, resolution.actor.statId) : undefined;
   if (npcActor && actorNpcId === undefined) throw new Error('No eligible Crew NPC exists for this Dice actor.');
@@ -100,26 +102,11 @@ export function evaluateDiceRoll(
   );
   const modifierTotal = statModifier + conditionalModifiers.reduce((sum, modifier) => sum + modifier.value, 0);
   const total = rawRoll + modifierTotal;
-  let result: DiceResult = total >= 20
+  const result: DiceResult = total >= 20
     ? 'criticalSuccess'
     : total >= resolution.successThreshold
       ? 'success'
       : 'failure';
-  let traitOverrideApplied = false;
-
-  if (includeSecretOverrides) {
-    const forcedResults = new Set(
-      (resolution.traitOverrides ?? [])
-        .filter(({ traitId }) => state.player.traits.includes(traitId))
-        .map(({ forceResult }) => forceResult),
-    );
-    if (forcedResults.size > 1) throw new Error('Active TraitResultOverrides force conflicting DiceResults.');
-    const forcedResult = forcedResults.values().next().value as DiceResult | undefined;
-    if (forcedResult !== undefined) {
-      result = forcedResult;
-      traitOverrideApplied = true;
-    }
-  }
 
   return {
     rawRoll,
@@ -132,7 +119,6 @@ export function evaluateDiceRoll(
     result,
     outcomeId: resolution.outcomes[result].id,
     ...(actorNpcId ? { actorNpcId } : {}),
-    ...(traitOverrideApplied ? { traitOverrideApplied: true } : {}),
   };
 }
 

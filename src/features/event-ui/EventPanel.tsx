@@ -206,7 +206,7 @@ export function EventPanel({
     >
       <PanelHeader className="opfg-event-panel__header mb-0 bg-gradient-to-b from-black/[0.38] to-black/[0.24] px-5 md:px-6">
         {displayEvent.eyebrow && (
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-gold">
+          <p className="opfg-event-panel__location-flag text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-gold">
             {displayEvent.eyebrow}
           </p>
         )}

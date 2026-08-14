@@ -3,6 +3,7 @@ import {
   ChevronDown,
   PackagePlus,
   Search,
+  UserPlus,
   X,
 } from 'lucide-react';
 import {
@@ -16,6 +17,8 @@ import type {
 } from '@/game/content/schema';
 import { getPlayerMaxHealth } from '@/game/engine/health';
 import { tryAutoPlaceReward } from '@/game/engine/inventory';
+import { ensureNpcMaterialized } from '@/game/engine/npcNames';
+import { canRecruitNpc } from '@/game/engine/ship';
 import {
   GAMEPLAY_DEBUG_STATE_EVENT,
   getGameplayDebugBridge,
@@ -170,6 +173,7 @@ export function GameplayDebugPanel() {
   const [selectedItemId, setSelectedItemId] = useState('');
   const [itemQuantity, setItemQuantity] = useState(1);
   const [traitSearch, setTraitSearch] = useState('');
+  const [selectedCrewNpcId, setSelectedCrewNpcId] = useState('');
 
   useEffect(() => {
     const refresh = () =>
@@ -212,13 +216,31 @@ export function GameplayDebugPanel() {
     return catalog.traits.filter(({ id }) => !query || id.toLowerCase().includes(query));
   }, [catalog, traitSearch]);
 
+  const crewDefinitions = useMemo(() =>
+    catalog?.npcs
+      .filter(({ crewRoleId }) => crewRoleId !== null)
+      .sort((left, right) => left.id.localeCompare(right.id)) ?? [],
+  [catalog]);
+
   useEffect(() => {
     if (!catalog) return;
     const stillVisible = filteredItems.some(({ id }) => id === selectedItemId);
     if (!stillVisible) setSelectedItemId(filteredItems[0]?.id ?? '');
   }, [catalog, filteredItems, selectedItemId]);
 
+  useEffect(() => {
+    const stillAvailable = crewDefinitions.some(({ id }) => id === selectedCrewNpcId);
+    if (!stillAvailable) setSelectedCrewNpcId(crewDefinitions[0]?.id ?? '');
+  }, [crewDefinitions, selectedCrewNpcId]);
+
   const selectedItem = catalog?.items.find(({ id }) => id === selectedItemId) ?? null;
+  const selectedCrewDefinition = crewDefinitions.find(({ id }) => id === selectedCrewNpcId) ?? null;
+  const selectedCrewState = state?.npcs[selectedCrewNpcId];
+  const canAddSelectedCrewmate = Boolean(
+    state && catalog && selectedCrewDefinition
+      && selectedCrewState?.status !== 'crew'
+      && canRecruitNpc(state, catalog, selectedCrewDefinition.id, true),
+  );
   const maxItemQuantity = selectedItem?.stackLimit ?? 1;
   const healthMax = state && catalog && state.player.profile.raceId
     ? getPlayerMaxHealth(state, catalog)
@@ -274,6 +296,16 @@ export function GameplayDebugPanel() {
 
       next.player.traits.push(traitId);
     });
+
+  const recruitCrewmate = () => {
+    if (!selectedCrewDefinition) return;
+
+    mutate((next, nextCatalog) => {
+      if (!canRecruitNpc(next, nextCatalog, selectedCrewDefinition.id, true)) return;
+      const npc = ensureNpcMaterialized(next, nextCatalog, selectedCrewDefinition.id);
+      npc.status = 'crew';
+    });
+  };
 
   const giveItem = () => {
     if (!selectedItem || !state || state.pendingOverflow) return;
@@ -388,6 +420,37 @@ export function GameplayDebugPanel() {
                 onChange={(value) => setHaki(type, value)}
               />
             ))}
+          </DebugSection>
+
+          <DebugSection title="Crew" defaultOpen={false}>
+            <div className="opfg-gameplay-debug__crew-row">
+              <select
+                value={selectedCrewNpcId}
+                onChange={(event) => setSelectedCrewNpcId(event.target.value)}
+                aria-label="Crew NPC definition"
+              >
+                {crewDefinitions.map(({ id, crewRoleId }) => (
+                  <option key={id} value={id}>{id} · {crewRoleId}</option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={recruitCrewmate}
+                disabled={!canAddSelectedCrewmate}
+              >
+                <UserPlus size={14} />
+                Add crew
+              </button>
+            </div>
+            <div className="opfg-gameplay-debug__owned">
+              Active crew: {Object.entries(state.npcs)
+                .filter(([, npc]) => npc.status === 'crew')
+                .map(([npcId]) => npcId)
+                .join(' · ') || 'none'}
+            </div>
+            {crewDefinitions.length === 0 && (
+              <p className="opfg-gameplay-debug__warning">No role-bearing NPC definition is available in the current catalog.</p>
+            )}
           </DebugSection>
 
           <DebugSection title="Give Item">

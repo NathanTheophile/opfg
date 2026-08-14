@@ -32,6 +32,7 @@ import type {
   GameState,
   NpcStatId,
 } from '@/game/model/schema';
+import { PLAYER_NAME_MAX_LENGTH } from '@/game/model/playerName';
 import { useGameSession } from '@/game/session/useGameSession';
 import { moveItem, resolveOverflow, type StorageSlot } from '@/game/engine/inventory';
 import { setActiveCompanion, useCrewRolePower } from '@/game/engine/crewPowers';
@@ -284,6 +285,9 @@ export function EventPreview({
   const [inputError, setInputError] =
     useState<string | null>(null);
 
+  const [homeOpen, setHomeOpen] =
+    useState(false);
+
   const [showOutcome, setShowOutcome] =
     useState(false);
 
@@ -413,8 +417,9 @@ export function EventPreview({
                         choice.input
                           .minLength,
                       maxLength:
-                        choice.input
-                          .maxLength,
+                        choice.input.target === 'playerName'
+                          ? Math.min(choice.input.maxLength, PLAYER_NAME_MAX_LENGTH)
+                          : choice.input.maxLength,
                       placeholder:
                         choice.input
                           .placeholderKey
@@ -722,6 +727,7 @@ export function EventPreview({
   };
 
   const restartRun = () => {
+    setHomeOpen(false);
     setOutcomeRevealed(false);
     setShowOutcome(false);
     setPendingDice(null);
@@ -785,6 +791,29 @@ export function EventPreview({
   }
 
   const state = session.gameState;
+
+  if (homeOpen) {
+    return (
+      <main className="min-h-dvh grid place-items-center p-4 sm:p-6">
+        <Panel
+          variant="strong"
+          className="w-full max-w-lg text-center"
+        >
+          <h1 className="text-3xl font-bold text-gold">
+            {translate('ui.app.title')}
+          </h1>
+
+          <p className="my-5 text-fg-secondary">
+            {translate('ui.newRun.prompt')}
+          </p>
+
+          <Button size="lg" onClick={() => setHomeOpen(false)}>
+            {translate('ui.action.close')}
+          </Button>
+        </Panel>
+      </main>
+    );
+  }
 
   const displayState =
     pendingDice &&
@@ -853,6 +882,7 @@ export function EventPreview({
     calendarAgeMonths,
     selectedStorageSlot,
     onStorageSlot: handleStorageSlot,
+    onHome: () => setHomeOpen(true),
     onSelectCompanion: (npcId: string | null) => session.applySystemAction((next) => setActiveCompanion(next, catalog, npcId)),
   };
 

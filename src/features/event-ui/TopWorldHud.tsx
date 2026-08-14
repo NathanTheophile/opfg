@@ -64,6 +64,7 @@ export interface TopWorldHudProps {
   selectedStorageSlot?: StorageSlot | null;
   onStorageSlot?: (slot: StorageSlot) => void;
   onSelectCompanion?: (npcId: string | null) => void;
+  onHome?: () => void;
 
 }
 
@@ -185,6 +186,7 @@ export function InventoryHudPanel({
   locale,
   selectedStorageSlot,
   onStorageSlot,
+  onHome,
 }: TopWorldHudProps) {
   const inventoryCapacity = state.player.inventory.capacity;
   const inventoryStacks = state.player.inventory.stacks;
@@ -192,7 +194,7 @@ export function InventoryHudPanel({
 
   return (
     <div className="opfg-hud-inventory-stack">
-      <button type="button" className="opfg-hud-home-button" onClick={() => undefined}>
+      <button type="button" className="opfg-hud-home-button" onClick={onHome} disabled={!onHome}>
         <House className="size-4" aria-hidden="true" />
         <span>{translate('ui.action.home')}</span>
       </button>
@@ -414,7 +416,7 @@ export function ShipHudPanel({ state, catalog, translate, selectedStorageSlot, o
       </div>
 
       <div className="opfg-hud-panel__body opfg-hud-ship">
-        <div className="opfg-hud-slots opfg-hud-cargo" aria-label={translate('ui.cargo')}>
+        <div className="opfg-hud-cargo-group">
           <ContextTooltip
             className="opfg-hud-slot-wrap opfg-hud-cargo__storage-wrap"
             title={translate('ui.cargo.hold')}
@@ -428,7 +430,8 @@ export function ShipHudPanel({ state, catalog, translate, selectedStorageSlot, o
             </span>
           </ContextTooltip>
 
-          {Array.from({ length: CARGO_PREVIEW_SLOTS }, (_, index) => {
+          <div className="opfg-hud-slots opfg-hud-cargo" aria-label={translate('ui.cargo')}>
+            {Array.from({ length: CARGO_PREVIEW_SLOTS }, (_, index) => {
             const occupant = cargoOccupants[index];
             const locked = !state.ship || index >= cargoCapacity;
 
@@ -461,7 +464,8 @@ export function ShipHudPanel({ state, catalog, translate, selectedStorageSlot, o
                 </span>
               </ContextTooltip>
             );
-          })}
+            })}
+          </div>
         </div>
 
         <div className="opfg-hud-special-slots" aria-label={translate('ui.specialSlots')}>

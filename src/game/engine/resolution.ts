@@ -1,5 +1,6 @@
 import type { ContentCatalog, EventDefinition, Outcome } from '../content/schema';
 import type { ChoiceId, EventId, GameState } from '../model/schema';
+import { normalizePlayerName } from '../model/playerName';
 import { evaluateCondition, getChoiceState } from './conditions';
 import { resolveDiceCheck } from './dice';
 import type { DiceRollResult } from './dice';
@@ -158,10 +159,11 @@ function assignRandomBirthLocation(state: GameState, catalog: ContentCatalog): G
 }
 
 function applyChoiceInput(state: GameState, inputDefinition: { target: 'playerName'; minLength: number; maxLength: number }, input: string | undefined): GameState {
-  const normalized = input?.trim() ?? '';
-  if (normalized.length < inputDefinition.minLength || normalized.length > inputDefinition.maxLength) {
-    throw new Error(`Input for "${inputDefinition.target}" must contain ${inputDefinition.minLength} to ${inputDefinition.maxLength} characters.`);
-  }
+  const normalized = normalizePlayerName(
+    input,
+    inputDefinition.minLength,
+    inputDefinition.maxLength,
+  );
   return {
     ...state,
     player: { ...state.player, profile: { ...state.player.profile, name: normalized } },

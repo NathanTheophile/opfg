@@ -53,7 +53,7 @@ describe('seeded d20', () => {
 });
 
 describe('vNext roll evaluation', () => {
-  it('makes raw 1 an absolute critical failure before bonuses or Trait overrides', () => {
+  it('makes raw 1 an absolute critical failure before bonuses or legacy Trait overrides', () => {
     const state = createInitialGameState();
     state.player.stats.navigation = 50;
     state.player.traits = ['lucky'];
@@ -68,15 +68,63 @@ describe('vNext roll evaluation', () => {
     expect('traitOverrideApplied' in result).toBe(false);
   });
 
-  it('uses stat modifier, threshold, and total 20 critical success boundaries', () => {
+  it('never makes raw 2 a critical failure, including with a legacy Trait override', () => {
     const state = createInitialGameState();
-    state.player.stats.navigation = 38;
-    const check = resolution({ successThreshold: 14 });
+    state.player.stats.navigation = 0;
+    state.player.traits = ['clumsy'];
+    const check = resolution({
+      traitOverrides: [{ traitId: 'clumsy', forceResult: 'criticalFailure' }],
+    });
 
-    expect(evaluateDiceRoll(check, state, 11).result).toBe('failure');
-    expect(evaluateDiceRoll(check, state, 12).result).toBe('success');
-    expect(evaluateDiceRoll(check, state, 17).result).toBe('success');
-    expect(evaluateDiceRoll(check, state, 18)).toMatchObject({ statModifier: 2, total: 20, result: 'criticalSuccess' });
+    expect(evaluateDiceRoll(check, state, 2)).toMatchObject({
+      rawRoll: 2,
+      statModifier: -5,
+      total: -3,
+      result: 'failure',
+    });
+  });
+
+  it('makes raw 19 a critical success when the Stat bonus raises the total to 20', () => {
+    const state = createInitialGameState();
+    state.player.stats.navigation = 31;
+
+    expect(evaluateDiceRoll(resolution(), state, 19)).toMatchObject({
+      rawRoll: 19,
+      statModifier: 1,
+      total: 20,
+      result: 'criticalSuccess',
+    });
+  });
+
+  it('keeps raw 19 at normal success when the final total is 19', () => {
+    const state = createInitialGameState();
+    state.player.stats.navigation = 25;
+    state.player.traits = ['lucky'];
+    const check = resolution({
+      traitOverrides: [{ traitId: 'lucky', forceResult: 'criticalSuccess' }],
+    });
+
+    expect(evaluateDiceRoll(check, state, 19)).toMatchObject({
+      rawRoll: 19,
+      statModifier: 0,
+      total: 19,
+      result: 'success',
+    });
+  });
+
+  it('makes a low raw roll critical when explicit bonuses raise the final total to 20', () => {
+    const state = createInitialGameState();
+    state.flags = ['large_bonus'];
+    const check = resolution({
+      modifiers: [{ condition: { type: 'hasFlag', flagId: 'large_bonus' }, value: 15, displayLabelKey: 'test.bonus' }],
+    });
+
+    expect(evaluateDiceRoll(check, state, 5)).toMatchObject({
+      rawRoll: 5,
+      modifierTotal: 15,
+      total: 20,
+      result: 'criticalSuccess',
+    });
   });
 
   it('does not make a natural 20 critical when a malus lowers total below 20', () => {
@@ -90,28 +138,6 @@ describe('vNext roll evaluation', () => {
 
     expect(evaluateDiceRoll(check, state, 20)).toMatchObject({ total: 17, result: 'success' });
   });
-
-  it('applies secret Trait overrides after numeric resolution and rejects conflicts', () => {
-    const state = createInitialGameState();
-    state.player.traits = ['clumsy'];
-    const forcedFailure = resolution({ traitOverrides: [{ traitId: 'clumsy', forceResult: 'criticalFailure' }] });
-    expect(evaluateDiceRoll(forcedFailure, state, 20)).toMatchObject({
-      result: 'criticalFailure', traitOverrideApplied: true,
-    });
-
-    const forcedSuccess = resolution({ traitOverrides: [{ traitId: 'clumsy', forceResult: 'criticalSuccess' }] });
-    expect(evaluateDiceRoll(forcedSuccess, state, 2)).toMatchObject({
-      result: 'criticalSuccess', traitOverrideApplied: true,
-    });
-
-    state.player.traits.push('lucky');
-    const conflicting = resolution({ traitOverrides: [
-      { traitId: 'clumsy', forceResult: 'criticalFailure' },
-      { traitId: 'lucky', forceResult: 'criticalSuccess' },
-    ] });
-    expect(() => evaluateDiceRoll(conflicting, state, 10)).toThrow('conflicting DiceResults');
-  });
-
 });
 
 describe('probability preview', () => {
@@ -138,20 +164,39 @@ describe('DiceResolution integration', () => {
     });
   });
 
-  it('applies one of four Outcomes and exposes transient diagnostics', () => {
-    const effects = [{ type: 'setFlag' as const, flagId: 'dice_resolved' }];
-    const event: EventDefinition = { id: 'dice_fixture', kind: 'normal', titleKey: 'fixture.title', textKey: 'fixture.text', choices: [{ id: 'roll', textKey: 'fixture.choice', resolution: resolution({ outcomes: { criticalFailure: { ...outcome('critical_failure'), effects }, failure: { ...outcome('failure'), effects }, success: { ...outcome('success'), effects }, criticalSuccess: { ...outcome('critical_success'), effects } } }) }] };
+  it('executes the Outcome keyed by the same DiceResult consumed by the UI', () => {
+    const resolvedOutcomes: DiceResolution['outcomes'] = {
+      criticalFailure: { ...outcome('critical_failure'), effects: [{ type: 'setFlag', flagId: 'executed_critical_failure' }] },
+      failure: { ...outcome('failure'), effects: [{ type: 'setFlag', flagId: 'executed_failure' }] },
+      success: { ...outcome('success'), effects: [{ type: 'setFlag', flagId: 'executed_success' }] },
+      criticalSuccess: { ...outcome('critical_success'), effects: [{ type: 'setFlag', flagId: 'executed_critical_success' }] },
+    };
+    const event: EventDefinition = {
+      id: 'dice_fixture',
+      kind: 'normal',
+      titleKey: 'fixture.title',
+      textKey: 'fixture.text',
+      choices: [{
+        id: 'roll',
+        textKey: 'fixture.choice',
+        resolution: resolution({ outcomes: resolvedOutcomes }),
+      }],
+    };
     const catalog = { ...contentCatalog, events: [...contentCatalog.events, event] };
     const state = createInitialGameState(123);
     state.currentEventId = 'dice_fixture';
     const rngBeforeRoll = state.rngState;
 
     const result = resolveChoice(state, catalog, 'dice_fixture', 'roll');
+    expect(result.dice).toBeDefined();
+    const dice = result.dice!;
+    const displayedOutcome = resolvedOutcomes[dice.result];
 
-    expect(result.state.flags).toContain('dice_resolved');
     expect(result.state.rngState).not.toBe(rngBeforeRoll);
-    expect(result.dice).toMatchObject({ statId: 'navigation', statValue: 25, outcomeId: result.outcome.id });
-    expect(['criticalFailure', 'failure', 'success', 'criticalSuccess']).toContain(result.dice?.result);
+    expect(dice).toMatchObject({ statId: 'navigation', statValue: 25, outcomeId: result.outcome.id });
+    expect(result.outcome.id).toBe(displayedOutcome.id);
+    expect(result.state.flags).toContain(`executed_${displayedOutcome.id}`);
+    expect(result.state.history[result.state.history.length - 1]?.outcomeId).toBe(displayedOutcome.id);
     expect('lastRoll' in result.state).toBe(false);
   });
 
