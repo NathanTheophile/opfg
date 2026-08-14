@@ -1,0 +1,96 @@
+{
+  "id": "ch_v2_peers_01_lt_rival_s03b_grudging_score",
+  "kind": "scheduled",
+  "narrativeFamily": "child_peer",
+  "priority": 100,
+  "eligibility": {
+    "type": "hasPlayed",
+    "eventId": "ch_v2_peers_01_lt_rival_s02b_public_taunt"
+  },
+  "cast": [
+    "childhood_rival"
+  ],
+  "titleKey": "event.ch_v2_peers_01_lt_rival_s03b_grudging_score.title",
+  "textKey": "event.ch_v2_peers_01_lt_rival_s03b_grudging_score.text",
+  "choices": [
+    {
+      "id": "warm",
+      "textKey": "event.ch_v2_peers_01_lt_rival_s03b_grudging_score.choice.warm.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "warm",
+          "textKey": "event.ch_v2_peers_01_lt_rival_s03b_grudging_score.choice.warm.outcome.warm.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_peers_01_lt_rival_s04_distant_mark",
+              "delayMonths": 24
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "childhood_rival",
+        "value": 8
+      }
+    },
+    {
+      "id": "sharp",
+      "textKey": "event.ch_v2_peers_01_lt_rival_s03b_grudging_score.choice.sharp.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sharp",
+          "textKey": "event.ch_v2_peers_01_lt_rival_s03b_grudging_score.choice.sharp.outcome.sharp.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": -1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_peers_01_lt_rival_s04_distant_mark",
+              "delayMonths": 24
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "npcRelationshipAtMost",
+        "npcId": "childhood_rival",
+        "value": 2
+      }
+    },
+    {
+      "id": "plain",
+      "textKey": "event.ch_v2_peers_01_lt_rival_s03b_grudging_score.choice.plain.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "plain",
+          "textKey": "event.ch_v2_peers_01_lt_rival_s03b_grudging_score.choice.plain.outcome.plain.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_peers_01_lt_rival_s04_distant_mark",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

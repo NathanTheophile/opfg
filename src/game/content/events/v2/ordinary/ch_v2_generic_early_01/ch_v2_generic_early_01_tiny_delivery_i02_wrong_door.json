@@ -1,0 +1,108 @@
+{
+  "id": "ch_v2_generic_early_01_tiny_delivery_i02_wrong_door",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_generic_early_01_tiny_delivery_i02_wrong_door.title",
+  "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i02_wrong_door.text",
+  "choices": [
+    {
+      "id": "compare_details",
+      "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i02_wrong_door.choice.compare_details.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "compare_details_criticalfailure",
+            "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i02_wrong_door.choice.compare_details.outcome.compare_details_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant"
+              }
+            ]
+          },
+          "failure": {
+            "id": "compare_details_failure",
+            "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i02_wrong_door.choice.compare_details.outcome.compare_details_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant"
+              }
+            ]
+          },
+          "success": {
+            "id": "compare_details_success",
+            "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i02_wrong_door.choice.compare_details.outcome.compare_details_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "compare_details_criticalsuccess",
+            "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i02_wrong_door.choice.compare_details.outcome.compare_details_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ask_name",
+      "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i02_wrong_door.choice.ask_name.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "name_asked",
+          "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i02_wrong_door.choice.ask_name.outcome.name_asked.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pick_one",
+      "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i02_wrong_door.choice.pick_one.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "guessed",
+          "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i02_wrong_door.choice.pick_one.outcome.guessed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -25,9 +25,19 @@ describe('eventCatalog', () => {
     ]));
   });
 
-
   it('keeps Scheduled and Critical variants and validates the assembled catalog', () => {
-    expect(eventCatalog.filter(({ kind }) => kind === 'scheduled')).toEqual([]);
+    const scheduledIds = eventCatalog
+      .filter(({ kind }) => kind === 'scheduled')
+      .map(({ id }) => id);
+
+    expect(scheduledIds).toEqual(expect.arrayContaining([
+      'ch_v2_generic_early_01_lt01_first_return',
+      'ch_v2_generic_late_01_favor_s01_first_return',
+      'ch_v2_peers_01_lt_rival_s01_new_measure',
+      'ch_v2_identity_world_01_traveling_notebook_s01_first_return',
+      'ch_v2_combat_risk_01_younger_lt_s01_show_me',
+    ]));
+
     expect(eventCatalog.filter(({ kind }) => kind === 'critical').map(({ id }) => id)).toEqual([
       'critical_career_horizon',
       'critical_mira_death',

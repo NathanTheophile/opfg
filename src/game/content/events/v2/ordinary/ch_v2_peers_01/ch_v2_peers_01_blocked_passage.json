@@ -1,0 +1,180 @@
+{
+  "id": "ch_v2_peers_01_blocked_passage",
+  "kind": "normal",
+  "narrativeFamily": "child_peer",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "titleKey": "event.ch_v2_peers_01_blocked_passage.title",
+  "textKey": "event.ch_v2_peers_01_blocked_passage.text",
+  "choices": [
+    {
+      "id": "bluff",
+      "textKey": "event.ch_v2_peers_01_blocked_passage.choice.bluff.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 12,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cf",
+            "textKey": "event.ch_v2_peers_01_blocked_passage.choice.bluff.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_blocked_passage_i01_new_toll"
+              }
+            ]
+          },
+          "failure": {
+            "id": "f",
+            "textKey": "event.ch_v2_peers_01_blocked_passage.choice.bluff.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_blocked_passage_i01_new_toll"
+              }
+            ]
+          },
+          "success": {
+            "id": "s",
+            "textKey": "event.ch_v2_peers_01_blocked_passage.choice.bluff.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_blocked_passage_i01_new_toll"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cs",
+            "textKey": "event.ch_v2_peers_01_blocked_passage.choice.bluff.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_blocked_passage_i01_new_toll"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "slip",
+      "textKey": "event.ch_v2_peers_01_blocked_passage.choice.slip.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 12,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cf",
+            "textKey": "event.ch_v2_peers_01_blocked_passage.choice.slip.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_blocked_passage_i01_new_toll"
+              }
+            ]
+          },
+          "failure": {
+            "id": "f",
+            "textKey": "event.ch_v2_peers_01_blocked_passage.choice.slip.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_blocked_passage_i01_new_toll"
+              }
+            ]
+          },
+          "success": {
+            "id": "s",
+            "textKey": "event.ch_v2_peers_01_blocked_passage.choice.slip.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_blocked_passage_i01_new_toll"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cs",
+            "textKey": "event.ch_v2_peers_01_blocked_passage.choice.slip.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_blocked_passage_i01_new_toll"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "detour",
+      "textKey": "event.ch_v2_peers_01_blocked_passage.choice.detour.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "detour",
+          "textKey": "event.ch_v2_peers_01_blocked_passage.choice.detour.outcome.detour.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_peers_01_blocked_passage_i01_new_toll"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

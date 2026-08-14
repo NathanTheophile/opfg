@@ -1,0 +1,201 @@
+{
+  "id": "ch_v2_identity_world_01_wanted_poster_misprint",
+  "titleKey": "event.ch_v2_identity_world_01_wanted_poster_misprint.title",
+  "textKey": "event.ch_v2_identity_world_01_wanted_poster_misprint.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "compare_description",
+      "textKey": "event.ch_v2_identity_world_01_wanted_poster_misprint.choice.compare_description.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "compare_description_critical_failure",
+            "textKey": "event.ch_v2_identity_world_01_wanted_poster_misprint.choice.compare_description.outcome.compare_description_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_wanted_poster_misprint_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "compare_description_failure",
+            "textKey": "event.ch_v2_identity_world_01_wanted_poster_misprint.choice.compare_description.outcome.compare_description_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_wanted_poster_misprint_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "compare_description_success",
+            "textKey": "event.ch_v2_identity_world_01_wanted_poster_misprint.choice.compare_description.outcome.compare_description_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_wanted_poster_misprint_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "compare_description_critical_success",
+            "textKey": "event.ch_v2_identity_world_01_wanted_poster_misprint.choice.compare_description.outcome.compare_description_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_wanted_poster_misprint_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "slow_the_crowd",
+      "textKey": "event.ch_v2_identity_world_01_wanted_poster_misprint.choice.slow_the_crowd.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "slow_the_crowd_critical_failure",
+            "textKey": "event.ch_v2_identity_world_01_wanted_poster_misprint.choice.slow_the_crowd.outcome.slow_the_crowd_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_wanted_poster_misprint_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "slow_the_crowd_failure",
+            "textKey": "event.ch_v2_identity_world_01_wanted_poster_misprint.choice.slow_the_crowd.outcome.slow_the_crowd_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_wanted_poster_misprint_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "slow_the_crowd_success",
+            "textKey": "event.ch_v2_identity_world_01_wanted_poster_misprint.choice.slow_the_crowd.outcome.slow_the_crowd_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_wanted_poster_misprint_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "slow_the_crowd_critical_success",
+            "textKey": "event.ch_v2_identity_world_01_wanted_poster_misprint.choice.slow_the_crowd.outcome.slow_the_crowd_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_wanted_poster_misprint_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "bring_poster_to_paster",
+      "textKey": "event.ch_v2_identity_world_01_wanted_poster_misprint.choice.bring_poster_to_paster.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paster_sought",
+          "textKey": "event.ch_v2_identity_world_01_wanted_poster_misprint.choice.bring_poster_to_paster.outcome.paster_sought.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_identity_world_01_wanted_poster_misprint_i01"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "any",
+            "conditions": [
+              {
+                "type": "locationHasTag",
+                "tagId": "marine_presence"
+              },
+              {
+                "type": "locationHasTag",
+                "tagId": "government"
+              }
+            ]
+          },
+          {
+            "type": "any",
+            "conditions": [
+              {
+                "type": "locationHasService",
+                "serviceId": "trade"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "id": "ch_v2_combat_risk_01_panicked_dog",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_combat_risk_01_panicked_dog.title",
+  "textKey": "event.ch_v2_combat_risk_01_panicked_dog.text",
+  "choices": [
+    {
+      "id": "draw_sideways",
+      "textKey": "event.ch_v2_combat_risk_01_panicked_dog.choice.draw_sideways.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.ch_v2_combat_risk_01_panicked_dog.choice.draw_sideways.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_panicked_dog_i01_changes_target"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.ch_v2_combat_risk_01_panicked_dog.choice.draw_sideways.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_panicked_dog_i01_changes_target"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.ch_v2_combat_risk_01_panicked_dog.choice.draw_sideways.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_panicked_dog_i01_changes_target"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.ch_v2_combat_risk_01_panicked_dog.choice.draw_sideways.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_panicked_dog_i01_changes_target"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_rope",
+      "textKey": "event.ch_v2_combat_risk_01_panicked_dog.choice.read_rope.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.ch_v2_combat_risk_01_panicked_dog.choice.read_rope.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_panicked_dog_i01_changes_target"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.ch_v2_combat_risk_01_panicked_dog.choice.read_rope.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_panicked_dog_i01_changes_target"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.ch_v2_combat_risk_01_panicked_dog.choice.read_rope.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_panicked_dog_i01_changes_target"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.ch_v2_combat_risk_01_panicked_dog.choice.read_rope.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_panicked_dog_i01_changes_target"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "basket_screen",
+      "textKey": "event.ch_v2_combat_risk_01_panicked_dog.choice.basket_screen.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "basket_screen",
+          "textKey": "event.ch_v2_combat_risk_01_panicked_dog.choice.basket_screen.outcome.basket_screen.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_combat_risk_01_panicked_dog_i01_changes_target"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "resourceful"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 131
+      }
+    ]
+  }
+}

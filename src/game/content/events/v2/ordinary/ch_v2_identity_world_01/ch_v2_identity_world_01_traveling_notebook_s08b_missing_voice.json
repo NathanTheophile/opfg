@@ -1,0 +1,77 @@
+{
+  "id": "ch_v2_identity_world_01_traveling_notebook_s08b_missing_voice",
+  "titleKey": "event.ch_v2_identity_world_01_traveling_notebook_s08b_missing_voice.title",
+  "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s08b_missing_voice.text",
+  "kind": "scheduled",
+  "choices": [
+    {
+      "id": "note_who_cannot_write",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s08b_missing_voice.choice.note_who_cannot_write.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "silent_people_noted",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s08b_missing_voice.choice.note_who_cannot_write.outcome.silent_people_noted.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s09_notebook_catches_up",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_for_relayed_voice",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s08b_missing_voice.choice.ask_for_relayed_voice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "relayed_voices_requested",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s08b_missing_voice.choice.ask_for_relayed_voice.outcome.relayed_voices_requested.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s09_notebook_catches_up",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_scope_honest",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s08b_missing_voice.choice.keep_scope_honest.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "scope_reduced",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s08b_missing_voice.choice.keep_scope_honest.outcome.scope_reduced.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s09_notebook_catches_up",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "isOnLand"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

@@ -1,0 +1,81 @@
+{
+  "id": "ch_v2_generic_early_01_lt02_key_for_minute",
+  "kind": "scheduled",
+  "priority": 100,
+  "cast": [
+    "neighborhood_merchant"
+  ],
+  "titleKey": "event.ch_v2_generic_early_01_lt02_key_for_minute.title",
+  "textKey": "event.ch_v2_generic_early_01_lt02_key_for_minute.text",
+  "choices": [
+    {
+      "id": "keep_locked",
+      "textKey": "event.ch_v2_generic_early_01_lt02_key_for_minute.choice.keep_locked.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "kept_locked",
+          "textKey": "event.ch_v2_generic_early_01_lt02_key_for_minute.choice.keep_locked.outcome.kept_locked.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_early_01_lt03a_word_kept",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "open_once",
+      "textKey": "event.ch_v2_generic_early_01_lt02_key_for_minute.choice.open_once.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "opened_once",
+          "textKey": "event.ch_v2_generic_early_01_lt02_key_for_minute.choice.open_once.outcome.opened_once.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_early_01_lt03b_bent_word",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "return_key",
+      "textKey": "event.ch_v2_generic_early_01_lt02_key_for_minute.choice.return_key.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "returned_key",
+          "textKey": "event.ch_v2_generic_early_01_lt02_key_for_minute.choice.return_key.outcome.returned_key.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_early_01_lt03a_word_kept",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

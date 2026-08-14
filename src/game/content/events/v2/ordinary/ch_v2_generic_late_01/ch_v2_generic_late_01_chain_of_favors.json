@@ -1,0 +1,121 @@
+{
+  "id": "ch_v2_generic_late_01_chain_of_favors",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_chain_of_favors.title",
+  "textKey": "event.ch_v2_generic_late_01_chain_of_favors.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 126
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "accept_rule",
+      "textKey": "event.ch_v2_generic_late_01_chain_of_favors.choice.accept_rule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_rule_outcome",
+          "textKey": "event.ch_v2_generic_late_01_chain_of_favors.choice.accept_rule.outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s01_first_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "repay_anyway",
+      "textKey": "event.ch_v2_generic_late_01_chain_of_favors.choice.repay_anyway.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "repay_anyway_outcome",
+          "textKey": "event.ch_v2_generic_late_01_chain_of_favors.choice.repay_anyway.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s01_first_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "write_it_down",
+      "textKey": "event.ch_v2_generic_late_01_chain_of_favors.choice.write_it_down.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "write_it_down_outcome",
+          "textKey": "event.ch_v2_generic_late_01_chain_of_favors.choice.write_it_down.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s01_first_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_without_promise",
+      "textKey": "event.ch_v2_generic_late_01_chain_of_favors.choice.keep_without_promise.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_without_promise_outcome",
+          "textKey": "event.ch_v2_generic_late_01_chain_of_favors.choice.keep_without_promise.outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s01_first_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "neighborhood_merchant"
+  ],
+  "lifetimeThreadSeed": true
+}

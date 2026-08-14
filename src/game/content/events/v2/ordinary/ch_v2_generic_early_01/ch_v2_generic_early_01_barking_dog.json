@@ -1,0 +1,190 @@
+{
+  "id": "ch_v2_generic_early_01_barking_dog",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 24
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 60
+      }
+    ]
+  },
+  "titleKey": "event.ch_v2_generic_early_01_barking_dog.title",
+  "textKey": "event.ch_v2_generic_early_01_barking_dog.text",
+  "choices": [
+    {
+      "id": "walk_slow",
+      "textKey": "event.ch_v2_generic_early_01_barking_dog.choice.walk_slow.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "walk_slow_criticalfailure",
+            "textKey": "event.ch_v2_generic_early_01_barking_dog.choice.walk_slow.outcome.walk_slow_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_barking_dog_i01_gate_click"
+              }
+            ]
+          },
+          "failure": {
+            "id": "walk_slow_failure",
+            "textKey": "event.ch_v2_generic_early_01_barking_dog.choice.walk_slow.outcome.walk_slow_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_barking_dog_i01_gate_click"
+              }
+            ]
+          },
+          "success": {
+            "id": "walk_slow_success",
+            "textKey": "event.ch_v2_generic_early_01_barking_dog.choice.walk_slow.outcome.walk_slow_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_barking_dog_i01_gate_click"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "walk_slow_criticalsuccess",
+            "textKey": "event.ch_v2_generic_early_01_barking_dog.choice.walk_slow.outcome.walk_slow_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_barking_dog_i01_gate_click"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "watch_leash",
+      "textKey": "event.ch_v2_generic_early_01_barking_dog.choice.watch_leash.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "watch_leash_criticalfailure",
+            "textKey": "event.ch_v2_generic_early_01_barking_dog.choice.watch_leash.outcome.watch_leash_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_barking_dog_i01_gate_click"
+              }
+            ]
+          },
+          "failure": {
+            "id": "watch_leash_failure",
+            "textKey": "event.ch_v2_generic_early_01_barking_dog.choice.watch_leash.outcome.watch_leash_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_barking_dog_i01_gate_click"
+              }
+            ]
+          },
+          "success": {
+            "id": "watch_leash_success",
+            "textKey": "event.ch_v2_generic_early_01_barking_dog.choice.watch_leash.outcome.watch_leash_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_barking_dog_i01_gate_click"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "watch_leash_criticalsuccess",
+            "textKey": "event.ch_v2_generic_early_01_barking_dog.choice.watch_leash.outcome.watch_leash_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_barking_dog_i01_gate_click"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "wait_tension",
+      "textKey": "event.ch_v2_generic_early_01_barking_dog.choice.wait_tension.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "cautious"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cautious_wait",
+          "textKey": "event.ch_v2_generic_early_01_barking_dog.choice.wait_tension.outcome.cautious_wait.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_barking_dog_i01_gate_click"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "turn_back",
+      "textKey": "event.ch_v2_generic_early_01_barking_dog.choice.turn_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "turned",
+          "textKey": "event.ch_v2_generic_early_01_barking_dog.choice.turn_back.outcome.turned.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

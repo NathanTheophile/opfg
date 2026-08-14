@@ -1,0 +1,188 @@
+{
+  "id": "ch_v2_peers_01_humiliating_initiation",
+  "kind": "normal",
+  "narrativeFamily": "child_peer",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "titleKey": "event.ch_v2_peers_01_humiliating_initiation.title",
+  "textKey": "event.ch_v2_peers_01_humiliating_initiation.text",
+  "choices": [
+    {
+      "id": "reverse",
+      "textKey": "event.ch_v2_peers_01_humiliating_initiation.choice.reverse.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 13,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cf",
+            "textKey": "event.ch_v2_peers_01_humiliating_initiation.choice.reverse.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_humiliating_initiation_i01_next_target"
+              }
+            ]
+          },
+          "failure": {
+            "id": "f",
+            "textKey": "event.ch_v2_peers_01_humiliating_initiation.choice.reverse.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_humiliating_initiation_i01_next_target"
+              }
+            ]
+          },
+          "success": {
+            "id": "s",
+            "textKey": "event.ch_v2_peers_01_humiliating_initiation.choice.reverse.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "addTrait",
+                "traitId": "proud"
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_humiliating_initiation_i01_next_target"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cs",
+            "textKey": "event.ch_v2_peers_01_humiliating_initiation.choice.reverse.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "addTrait",
+                "traitId": "proud"
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_humiliating_initiation_i01_next_target"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "perform",
+      "textKey": "event.ch_v2_peers_01_humiliating_initiation.choice.perform.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 12,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cf",
+            "textKey": "event.ch_v2_peers_01_humiliating_initiation.choice.perform.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_humiliating_initiation_i01_next_target"
+              }
+            ]
+          },
+          "failure": {
+            "id": "f",
+            "textKey": "event.ch_v2_peers_01_humiliating_initiation.choice.perform.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_humiliating_initiation_i01_next_target"
+              }
+            ]
+          },
+          "success": {
+            "id": "s",
+            "textKey": "event.ch_v2_peers_01_humiliating_initiation.choice.perform.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_humiliating_initiation_i01_next_target"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cs",
+            "textKey": "event.ch_v2_peers_01_humiliating_initiation.choice.perform.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_peers_01_humiliating_initiation_i01_next_target"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "refuse",
+      "textKey": "event.ch_v2_peers_01_humiliating_initiation.choice.refuse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse",
+          "textKey": "event.ch_v2_peers_01_humiliating_initiation.choice.refuse.outcome.refuse.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_peers_01_humiliating_initiation_i01_next_target"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

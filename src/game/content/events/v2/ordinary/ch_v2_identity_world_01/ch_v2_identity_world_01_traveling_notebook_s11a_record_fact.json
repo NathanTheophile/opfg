@@ -1,0 +1,72 @@
+{
+  "id": "ch_v2_identity_world_01_traveling_notebook_s11a_record_fact",
+  "titleKey": "event.ch_v2_identity_world_01_traveling_notebook_s11a_record_fact.title",
+  "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s11a_record_fact.text",
+  "kind": "scheduled",
+  "choices": [
+    {
+      "id": "accept_newer_measure",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s11a_record_fact.choice.accept_newer_measure.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "newer_measure_accepted",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s11a_record_fact.choice.accept_newer_measure.outcome.newer_measure_accepted.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s12_returned_again",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_how_updated",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s11a_record_fact.choice.ask_how_updated.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "update_method_asked",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s11a_record_fact.choice.ask_how_updated.outcome.update_method_asked.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s12_returned_again",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_both_dates",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s11a_record_fact.choice.leave_both_dates.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "both_dates_left",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s11a_record_fact.choice.leave_both_dates.outcome.both_dates_left.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s12_returned_again",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "isOnLand"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

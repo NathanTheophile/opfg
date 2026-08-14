@@ -1,0 +1,174 @@
+{
+  "id": "ch_v2_combat_risk_01_after_the_fall",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_combat_risk_01_after_the_fall.title",
+  "textKey": "event.ch_v2_combat_risk_01_after_the_fall.text",
+  "choices": [
+    {
+      "id": "read_signs",
+      "textKey": "event.ch_v2_combat_risk_01_after_the_fall.choice.read_signs.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.ch_v2_combat_risk_01_after_the_fall.choice.read_signs.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_after_the_fall_i01_second_step"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.ch_v2_combat_risk_01_after_the_fall.choice.read_signs.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_after_the_fall_i01_second_step"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.ch_v2_combat_risk_01_after_the_fall.choice.read_signs.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_after_the_fall_i01_second_step"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.ch_v2_combat_risk_01_after_the_fall.choice.read_signs.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_after_the_fall_i01_second_step"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "keep_talking",
+      "textKey": "event.ch_v2_combat_risk_01_after_the_fall.choice.keep_talking.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.ch_v2_combat_risk_01_after_the_fall.choice.keep_talking.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_after_the_fall_i01_second_step"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.ch_v2_combat_risk_01_after_the_fall.choice.keep_talking.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_after_the_fall_i01_second_step"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.ch_v2_combat_risk_01_after_the_fall.choice.keep_talking.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_after_the_fall_i01_second_step"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.ch_v2_combat_risk_01_after_the_fall.choice.keep_talking.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_after_the_fall_i01_second_step"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "move_crowd",
+      "textKey": "event.ch_v2_combat_risk_01_after_the_fall.choice.move_crowd.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "move_crowd",
+          "textKey": "event.ch_v2_combat_risk_01_after_the_fall.choice.move_crowd.outcome.move_crowd.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_combat_risk_01_after_the_fall_i01_second_step"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 119
+      }
+    ]
+  }
+}

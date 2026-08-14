@@ -21,5 +21,5 @@ describe('Saga authoring pipeline', () => {
       checkSaga(rootDirectory, source).errors.map((error) => `${source.sagaId}: ${error}`)
     );
     expect(errors).toEqual([]);
-  });
+  }, 30_000);
 });

@@ -1,0 +1,153 @@
+{
+  "id": "ch_v2_generic_late_01_keyring_claimant",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_keyring_claimant.title",
+  "textKey": "event.ch_v2_generic_late_01_keyring_claimant.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "ask_storage_detail",
+      "textKey": "event.ch_v2_generic_late_01_keyring_claimant.choice.ask_storage_detail.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "ask_storage_detail_cf",
+            "textKey": "event.ch_v2_generic_late_01_keyring_claimant.choice.ask_storage_detail.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_keyring_claimant_i01_collateral_bundle"
+              }
+            ]
+          },
+          "failure": {
+            "id": "ask_storage_detail_f",
+            "textKey": "event.ch_v2_generic_late_01_keyring_claimant.choice.ask_storage_detail.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_keyring_claimant_i01_collateral_bundle"
+              }
+            ]
+          },
+          "success": {
+            "id": "ask_storage_detail_s",
+            "textKey": "event.ch_v2_generic_late_01_keyring_claimant.choice.ask_storage_detail.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "ask_storage_detail_cs",
+            "textKey": "event.ch_v2_generic_late_01_keyring_claimant.choice.ask_storage_detail.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "demand_authority",
+      "textKey": "event.ch_v2_generic_late_01_keyring_claimant.choice.demand_authority.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "demand_authority_cf",
+            "textKey": "event.ch_v2_generic_late_01_keyring_claimant.choice.demand_authority.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_keyring_claimant_i01_collateral_bundle"
+              }
+            ]
+          },
+          "failure": {
+            "id": "demand_authority_f",
+            "textKey": "event.ch_v2_generic_late_01_keyring_claimant.choice.demand_authority.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_keyring_claimant_i01_collateral_bundle"
+              }
+            ]
+          },
+          "success": {
+            "id": "demand_authority_s",
+            "textKey": "event.ch_v2_generic_late_01_keyring_claimant.choice.demand_authority.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "demand_authority_cs",
+            "textKey": "event.ch_v2_generic_late_01_keyring_claimant.choice.demand_authority.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "keep_keys",
+      "textKey": "event.ch_v2_generic_late_01_keyring_claimant.choice.keep_keys.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_keys_outcome",
+          "textKey": "event.ch_v2_generic_late_01_keyring_claimant.choice.keep_keys.outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "id": "ch_v2_identity_world_01_anonymous_revolutionary_leaflet",
+  "titleKey": "event.ch_v2_identity_world_01_anonymous_revolutionary_leaflet.title",
+  "textKey": "event.ch_v2_identity_world_01_anonymous_revolutionary_leaflet.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "read_before_destroying",
+      "textKey": "event.ch_v2_identity_world_01_anonymous_revolutionary_leaflet.choice.read_before_destroying.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leaflet_read",
+          "textKey": "event.ch_v2_identity_world_01_anonymous_revolutionary_leaflet.choice.read_before_destroying.outcome.leaflet_read.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_identity_world_01_anonymous_revolutionary_leaflet_i01"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fold_and_return",
+      "textKey": "event.ch_v2_identity_world_01_anonymous_revolutionary_leaflet.choice.fold_and_return.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leaflet_returned",
+          "textKey": "event.ch_v2_identity_world_01_anonymous_revolutionary_leaflet.choice.fold_and_return.outcome.leaflet_returned.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_identity_world_01_anonymous_revolutionary_leaflet_i01"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "give_to_shopkeeper",
+      "textKey": "event.ch_v2_identity_world_01_anonymous_revolutionary_leaflet.choice.give_to_shopkeeper.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leaflet_given_shopkeeper",
+          "textKey": "event.ch_v2_identity_world_01_anonymous_revolutionary_leaflet.choice.give_to_shopkeeper.outcome.leaflet_given_shopkeeper.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_identity_world_01_anonymous_revolutionary_leaflet_i01"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hide_source_question",
+      "textKey": "event.ch_v2_identity_world_01_anonymous_revolutionary_leaflet.choice.hide_source_question.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "source_risk_asked",
+          "textKey": "event.ch_v2_identity_world_01_anonymous_revolutionary_leaflet.choice.hide_source_question.outcome.source_risk_asked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_identity_world_01_anonymous_revolutionary_leaflet_i01"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "cautious"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "marine_presence"
+      }
+    ]
+  }
+}

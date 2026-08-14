@@ -1,0 +1,77 @@
+{
+  "id": "ch_v2_identity_world_01_traveling_notebook_s09_notebook_catches_up",
+  "titleKey": "event.ch_v2_identity_world_01_traveling_notebook_s09_notebook_catches_up.title",
+  "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s09_notebook_catches_up.text",
+  "kind": "scheduled",
+  "choices": [
+    {
+      "id": "compare_their_reading",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s09_notebook_catches_up.choice.compare_their_reading.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reading_compared",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s09_notebook_catches_up.choice.compare_their_reading.outcome.reading_compared.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s10_asked_to_write_back",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_being_corrected",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s09_notebook_catches_up.choice.accept_being_corrected.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "correction_accepted",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s09_notebook_catches_up.choice.accept_being_corrected.outcome.correction_accepted.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s10_asked_to_write_back",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "answer_misreading",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s09_notebook_catches_up.choice.answer_misreading.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "misreading_answered",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s09_notebook_catches_up.choice.answer_misreading.outcome.misreading_answered.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s10_asked_to_write_back",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "isOnLand"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

@@ -1,0 +1,86 @@
+{
+  "id": "ch_v2_combat_risk_01_younger_lt_s06b_own_call",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_combat_risk_01_younger_lt_s06b_own_call.title",
+  "textKey": "event.ch_v2_combat_risk_01_younger_lt_s06b_own_call.text",
+  "choices": [
+    {
+      "id": "recognize_both",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s06b_own_call.choice.recognize_both.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "recognize_both",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s06b_own_call.choice.recognize_both.outcome.recognize_both.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 6
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s07_first_distance",
+              "delayMonths": 22
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_trigger",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s06b_own_call.choice.ask_trigger.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_trigger",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s06b_own_call.choice.ask_trigger.outcome.ask_trigger.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s07_first_distance",
+              "delayMonths": 22
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "say_told_you",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s06b_own_call.choice.say_told_you.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "say_told_you",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s06b_own_call.choice.say_told_you.outcome.say_told_you.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": -4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s07_first_distance",
+              "delayMonths": 22
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "childhood_younger"
+  ],
+  "priority": 100,
+  "cancelIf": {
+    "type": "npcStatusIs",
+    "npcId": "childhood_younger",
+    "status": "dead"
+  }
+}

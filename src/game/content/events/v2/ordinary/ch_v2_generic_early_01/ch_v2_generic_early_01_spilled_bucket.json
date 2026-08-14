@@ -1,0 +1,94 @@
+{
+  "id": "ch_v2_generic_early_01_spilled_bucket",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 36
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 72
+      }
+    ]
+  },
+  "titleKey": "event.ch_v2_generic_early_01_spilled_bucket.title",
+  "textKey": "event.ch_v2_generic_early_01_spilled_bucket.text",
+  "choices": [
+    {
+      "id": "dam_with_rag",
+      "textKey": "event.ch_v2_generic_early_01_spilled_bucket.choice.dam_with_rag.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rag_dam",
+          "textKey": "event.ch_v2_generic_early_01_spilled_bucket.choice.dam_with_rag.outcome.rag_dam.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_spilled_bucket_i01_feet_coming"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "move_stool",
+      "textKey": "event.ch_v2_generic_early_01_spilled_bucket.choice.move_stool.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stool_barrier",
+          "textKey": "event.ch_v2_generic_early_01_spilled_bucket.choice.move_stool.outcome.stool_barrier.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_spilled_bucket_i01_feet_coming"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fetch_cloth",
+      "textKey": "event.ch_v2_generic_early_01_spilled_bucket.choice.fetch_cloth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fetching",
+          "textKey": "event.ch_v2_generic_early_01_spilled_bucket.choice.fetch_cloth.outcome.fetching.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_spilled_bucket_i01_feet_coming"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "walk_away",
+      "textKey": "event.ch_v2_generic_early_01_spilled_bucket.choice.walk_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "left",
+          "textKey": "event.ch_v2_generic_early_01_spilled_bucket.choice.walk_away.outcome.left.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

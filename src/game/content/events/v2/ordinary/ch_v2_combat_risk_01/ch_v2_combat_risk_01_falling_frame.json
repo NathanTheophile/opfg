@@ -1,0 +1,191 @@
+{
+  "id": "ch_v2_combat_risk_01_falling_frame",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_combat_risk_01_falling_frame.title",
+  "textKey": "event.ch_v2_combat_risk_01_falling_frame.text",
+  "choices": [
+    {
+      "id": "catch_side",
+      "textKey": "event.ch_v2_combat_risk_01_falling_frame.choice.catch_side.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.ch_v2_combat_risk_01_falling_frame.choice.catch_side.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_falling_frame_i01_canvas_trap"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.ch_v2_combat_risk_01_falling_frame.choice.catch_side.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_falling_frame_i01_canvas_trap"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.ch_v2_combat_risk_01_falling_frame.choice.catch_side.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_falling_frame_i01_canvas_trap"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.ch_v2_combat_risk_01_falling_frame.choice.catch_side.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_falling_frame_i01_canvas_trap"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_under",
+      "textKey": "event.ch_v2_combat_risk_01_falling_frame.choice.clear_under.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.ch_v2_combat_risk_01_falling_frame.choice.clear_under.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_falling_frame_i01_canvas_trap"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.ch_v2_combat_risk_01_falling_frame.choice.clear_under.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_falling_frame_i01_canvas_trap"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.ch_v2_combat_risk_01_falling_frame.choice.clear_under.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_falling_frame_i01_canvas_trap"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.ch_v2_combat_risk_01_falling_frame.choice.clear_under.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_falling_frame_i01_canvas_trap"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cut_canvas",
+      "textKey": "event.ch_v2_combat_risk_01_falling_frame.choice.cut_canvas.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_canvas",
+          "textKey": "event.ch_v2_combat_risk_01_falling_frame.choice.cut_canvas.outcome.cut_canvas.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_combat_risk_01_falling_frame_i01_canvas_trap"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "resourceful"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 96
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      }
+    ]
+  }
+}

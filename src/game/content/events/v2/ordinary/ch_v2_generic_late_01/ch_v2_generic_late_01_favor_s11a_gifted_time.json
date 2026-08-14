@@ -1,0 +1,77 @@
+{
+  "id": "ch_v2_generic_late_01_favor_s11a_gifted_time",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_favor_s11a_gifted_time.title",
+  "textKey": "event.ch_v2_generic_late_01_favor_s11a_gifted_time.text",
+  "choices": [
+    {
+      "id": "refuse_again",
+      "textKey": "event.ch_v2_generic_late_01_favor_s11a_gifted_time.choice.refuse_again.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_again_outcome",
+          "textKey": "event.ch_v2_generic_late_01_favor_s11a_gifted_time.choice.refuse_again.outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s12_your_version",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_after",
+      "textKey": "event.ch_v2_generic_late_01_favor_s11a_gifted_time.choice.accept_after.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_after_outcome",
+          "textKey": "event.ch_v2_generic_late_01_favor_s11a_gifted_time.choice.accept_after.outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 100
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s12_your_version",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "split_payment",
+      "textKey": "event.ch_v2_generic_late_01_favor_s11a_gifted_time.choice.split_payment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "split_payment_outcome",
+          "textKey": "event.ch_v2_generic_late_01_favor_s11a_gifted_time.choice.split_payment.outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 50
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s12_your_version",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

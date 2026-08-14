@@ -1,0 +1,176 @@
+{
+  "id": "ch_v2_identity_world_01_sea_king_relic_scam",
+  "titleKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.title",
+  "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "inspect_carving",
+      "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.choice.inspect_carving.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "inspect_carving_critical_failure",
+            "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.choice.inspect_carving.outcome.inspect_carving_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "inspect_carving_failure",
+            "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.choice.inspect_carving.outcome.inspect_carving_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "inspect_carving_success",
+            "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.choice.inspect_carving.outcome.inspect_carving_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "inspect_carving_critical_success",
+            "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.choice.inspect_carving.outcome.inspect_carving_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "test_story",
+      "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.choice.test_story.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "test_story_critical_failure",
+            "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.choice.test_story.outcome.test_story_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "test_story_failure",
+            "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.choice.test_story.outcome.test_story_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "test_story_success",
+            "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.choice.test_story.outcome.test_story_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "test_story_critical_success",
+            "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.choice.test_story.outcome.test_story_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ask_for_price_without_story",
+      "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.choice.ask_for_price_without_story.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "plain_price_asked",
+          "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.choice.ask_for_price_without_story.outcome.plain_price_asked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "treat_as_omen",
+      "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.choice.treat_as_omen.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "omen_questioned",
+          "textKey": "event.ch_v2_identity_world_01_sea_king_relic_scam.choice.treat_as_omen.outcome.omen_questioned.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "superstitious"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 131
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          }
+        ]
+      }
+    ]
+  }
+}

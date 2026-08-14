@@ -1,0 +1,72 @@
+{
+  "id": "ch_v2_identity_world_01_traveling_notebook_s04b_two_witnesses",
+  "titleKey": "event.ch_v2_identity_world_01_traveling_notebook_s04b_two_witnesses.title",
+  "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s04b_two_witnesses.text",
+  "kind": "scheduled",
+  "choices": [
+    {
+      "id": "add_third_voice",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s04b_two_witnesses.choice.add_third_voice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "third_voice_added",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s04b_two_witnesses.choice.add_third_voice.outcome.third_voice_added.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s05_returned_copy",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mark_missing_witness",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s04b_two_witnesses.choice.mark_missing_witness.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "missing_witness_marked",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s04b_two_witnesses.choice.mark_missing_witness.outcome.missing_witness_marked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s05_returned_copy",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_all_three_same_question",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s04b_two_witnesses.choice.ask_all_three_same_question.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "same_question_sent",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s04b_two_witnesses.choice.ask_all_three_same_question.outcome.same_question_sent.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s05_returned_copy",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "isOnLand"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

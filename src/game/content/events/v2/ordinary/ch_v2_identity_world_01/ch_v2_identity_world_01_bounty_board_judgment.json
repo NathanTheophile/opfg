@@ -1,0 +1,128 @@
+{
+  "id": "ch_v2_identity_world_01_bounty_board_judgment",
+  "titleKey": "event.ch_v2_identity_world_01_bounty_board_judgment.title",
+  "textKey": "event.ch_v2_identity_world_01_bounty_board_judgment.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "ask_what_happened_here",
+      "textKey": "event.ch_v2_identity_world_01_bounty_board_judgment.choice.ask_what_happened_here.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "local_facts_requested",
+          "textKey": "event.ch_v2_identity_world_01_bounty_board_judgment.choice.ask_what_happened_here.outcome.local_facts_requested.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "study_crowd_reaction",
+      "textKey": "event.ch_v2_identity_world_01_bounty_board_judgment.choice.study_crowd_reaction.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crowd_reaction_studied",
+          "textKey": "event.ch_v2_identity_world_01_bounty_board_judgment.choice.study_crowd_reaction.outcome.crowd_reaction_studied.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "repeat_the_number",
+      "textKey": "event.ch_v2_identity_world_01_bounty_board_judgment.choice.repeat_the_number.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "number_repeated",
+          "textKey": "event.ch_v2_identity_world_01_bounty_board_judgment.choice.repeat_the_number.outcome.number_repeated.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "look_for_missing_context",
+      "textKey": "event.ch_v2_identity_world_01_bounty_board_judgment.choice.look_for_missing_context.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "missing_context_sought",
+          "textKey": "event.ch_v2_identity_world_01_bounty_board_judgment.choice.look_for_missing_context.outcome.missing_context_sought.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "suspicious"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "any",
+            "conditions": [
+              {
+                "type": "locationHasTag",
+                "tagId": "marine_presence"
+              },
+              {
+                "type": "locationHasTag",
+                "tagId": "government"
+              }
+            ]
+          },
+          {
+            "type": "any",
+            "conditions": [
+              {
+                "type": "locationHasService",
+                "serviceId": "trade"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

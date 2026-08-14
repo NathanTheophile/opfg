@@ -1,0 +1,99 @@
+{
+  "id": "ch_v2_identity_world_01_departure_omen",
+  "titleKey": "event.ch_v2_identity_world_01_departure_omen.title",
+  "textKey": "event.ch_v2_identity_world_01_departure_omen.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "retie_and_mark",
+      "textKey": "event.ch_v2_identity_world_01_departure_omen.choice.retie_and_mark.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rope_retied",
+          "textKey": "event.ch_v2_identity_world_01_departure_omen.choice.retie_and_mark.outcome.rope_retied.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "give_ritual_time",
+      "textKey": "event.ch_v2_identity_world_01_departure_omen.choice.give_ritual_time.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ritual_time_given",
+          "textKey": "event.ch_v2_identity_world_01_departure_omen.choice.give_ritual_time.outcome.ritual_time_given.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "laugh_at_omen",
+      "textKey": "event.ch_v2_identity_world_01_departure_omen.choice.laugh_at_omen.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "omen_mocked",
+          "textKey": "event.ch_v2_identity_world_01_departure_omen.choice.laugh_at_omen.outcome.omen_mocked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "follow_omen",
+      "textKey": "event.ch_v2_identity_world_01_departure_omen.choice.follow_omen.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "omen_followed",
+          "textKey": "event.ch_v2_identity_world_01_departure_omen.choice.follow_omen.outcome.omen_followed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "superstitious"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 84
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 143
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  }
+}

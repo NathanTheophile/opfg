@@ -1,0 +1,107 @@
+{
+  "id": "ch_v2_peers_01_game_spreads",
+  "kind": "normal",
+  "narrativeFamily": "child_peer",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 84
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 143
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "ch_v2_peers_01_friend_rule_intro"
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "childhood_friend",
+        "value": 3
+      }
+    ]
+  },
+  "cast": [
+    "childhood_friend"
+  ],
+  "titleKey": "event.ch_v2_peers_01_game_spreads.title",
+  "textKey": "event.ch_v2_peers_01_game_spreads.text",
+  "choices": [
+    {
+      "id": "accept",
+      "textKey": "event.ch_v2_peers_01_game_spreads.choice.accept.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept",
+          "textKey": "event.ch_v2_peers_01_game_spreads.choice.accept.outcome.accept.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "restore",
+      "textKey": "event.ch_v2_peers_01_game_spreads.choice.restore.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "restore",
+          "textKey": "event.ch_v2_peers_01_game_spreads.choice.restore.outcome.restore.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "claim",
+      "textKey": "event.ch_v2_peers_01_game_spreads.choice.claim.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "claim",
+          "textKey": "event.ch_v2_peers_01_game_spreads.choice.claim.outcome.claim.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": -4
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
