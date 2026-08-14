@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { ContentCatalog } from '../content/schema';
 import { clearGameState, loadGameState, saveGameState, type StorageLike } from '../engine/save';
 import { findCurrentEvent, selectNextEvent } from '../engine/events';
@@ -12,6 +12,10 @@ import {
 } from './gameSession';
 import type { MonthlyNavigationChoice } from '../engine/navigation';
 import type { GameState } from '../model/schema';
+import {
+  GAMEPLAY_DEBUG_STATE_EVENT,
+  type GameplayDebugBridge,
+} from './devGameplayDebugBridge';
 
 let fallbackSeed = Date.now() >>> 0;
 
@@ -84,6 +88,27 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
     setSession(next);
     return true;
   };
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) return undefined;
+
+    const bridge: GameplayDebugBridge = {
+      getSnapshot: () => ({
+        gameState: session.gameState,
+        catalog,
+      }),
+      applySystemAction,
+    };
+
+    window.__OPFG_GAMEPLAY_DEBUG__ = bridge;
+    window.dispatchEvent(new Event(GAMEPLAY_DEBUG_STATE_EVENT));
+
+    return () => {
+      if (window.__OPFG_GAMEPLAY_DEBUG__ === bridge) {
+        delete window.__OPFG_GAMEPLAY_DEBUG__;
+      }
+    };
+  }, [catalog, session]);
 
   return {
     ...session,

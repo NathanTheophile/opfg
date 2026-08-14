@@ -20,6 +20,13 @@ const DevUITuner = import.meta.env.DEV
     })
   : null;
 
+const DevGameplayDebugPanel = import.meta.env.DEV
+  ? lazy(async () => {
+      const module = await import('./features/dev-ui/GameplayDebugPanel');
+      return { default: module.GameplayDebugPanel };
+    })
+  : null;
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AudioProvider
@@ -33,6 +40,12 @@ createRoot(document.getElementById('root')!).render(
       {DevUITuner && (
         <Suspense fallback={null}>
           <DevUITuner />
+        </Suspense>
+      )}
+
+      {DevGameplayDebugPanel && (
+        <Suspense fallback={null}>
+          <DevGameplayDebugPanel />
         </Suspense>
       )}
     </AudioProvider>
