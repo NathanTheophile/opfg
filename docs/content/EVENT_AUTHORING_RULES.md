@@ -6,6 +6,8 @@
 >
 > **Scope:** rules for producing, reviewing, validating, and batching authored Events for OPFG V1.
 > **D2 V2 authority note:** §24 is the current override for V2 narrative production. Legacy standard-batch Lifetime quotas and §23 D1.9 Opening Breadth remain historical reference only where §24 says they are superseded.
+> Ordinary Childhood V2 batches additionally follow `docs/content/events/v2/CHILDHOOD_V2_BATCH_CONTRACT.md`, the dedicated V2 contract authorized by §24.1. It overrides the legacy Childhood quotas it explicitly names.
+> Pre-production mining for those batches follows `docs/content/events/v2/CHILDHOOD_V2_SEED_MINING_CONTRACT.md`; curated SEED_POOL files are inspiration material, never accepted V2 EventDefinitions.
 
 >
 > **Editorial revision B:** dramatic density, mobile readability, meaningful stakes, recurring cast, age coherence, and Situation → Reaction writing are hard authoring requirements.
@@ -1660,6 +1662,34 @@ For V2 batches, the following old mandatory-production rules are **not global re
 
 The quality rules on concrete scenes, text budget, stakes, age coherence, Choice resolvability, recurring cast, callbacks, geography and localization remain fully active.
 
+#### 24.1 bis Ordinary Childhood V2 dedicated contract
+
+For ordinary Childhood V2 production outside Major Narrative Tracks, the dedicated authority is:
+
+`docs/content/events/v2/CHILDHOOD_V2_BATCH_CONTRACT.md`
+
+When a batch brief opts into that contract, it explicitly overrides for that batch:
+
+- the legacy `40–50%` Dice-root target with a **55–65% root Dice target**;
+- deterministic unconditional Trait acquisition;
+- mandatory Signature depth-5 + three Secondary depth-3 Immediate quotas;
+- the legacy strongly-branching / breadth-first Lifetime topology and graph-shape expectations;
+- other legacy measurable requirements explicitly named by the dedicated contract.
+
+The dedicated Childhood V2 contract requires, among other rules:
+
+- at least **50%** genuine Immediate mini-arc roots;
+- multiple Dice approaches when the scene plausibly supports several risky methods;
+- deterministic Choices that may produce mechanical maluses, with **-1 as the normal Stat malus** and larger penalties uncommon;
+- a normal Dice Stat profile of **failure = 0** and **criticalFailure = -1**, while failure must still lose/worsen something meaningful when the fiction promises risk;
+- slightly stronger upside for genuinely conditioned Choices and successful Dice Choices when fiction justifies the leverage/risk;
+- Trait acquisition restricted to DiceCheck Choices or genuinely conditioned Choices;
+- exactly one primary qualifying Lifetime Thread per batch unless the dedicated brief explicitly says otherwise;
+- braided-linear Scheduled Lifetime topology: short divergences, persistent consequences, then credible reconvergence/termination rather than nested multi-pyramidal growth;
+- deliberate Lifetime continuation beyond Childhood so later ages retain secondary continuity.
+
+These are authoring-production rules, not automatic runtime transformations.
+
 ### 24.2 V2 concept authority
 
 The only accepted-concept ledger for new production is:
@@ -1728,6 +1758,32 @@ A V2 production conversation receives:
 5. a **curated small subset** of legacy/D1.9 seeds relevant to the task.
 
 It must not receive the complete frozen legacy index by default. This prevents old catalogue assumptions from becoming accidental V2 authority.
+
+### 24.8 bis Childhood V2 seed mining
+
+Ordinary Childhood V2 workers must not receive the complete frozen legacy catalogue by default.
+
+Before authoring a batch, a separate mining pass produces a curated `SEED_POOL` under:
+
+`docs/content/events/v2/CHILDHOOD_V2_SEED_MINING_CONTRACT.md`
+
+Normal target:
+
+- roughly **15–30 relevant inspirations** per batch;
+- deliberate assignment to one batch territory;
+- at least **3 Lifetime candidates** when the available source material supports them;
+- explicit Dice-rich and Condition-rich shortlists;
+- explicit collision/dedup notes;
+- explicit rejected legacy concepts that a downstream worker must not resurrect.
+
+A SEED_POOL is non-authoritative inspiration material.
+
+It does not:
+
+- add concepts to `EVENT_CONCEPT_INDEX_V2.md`;
+- mark migration ledger rows as accepted/adapted;
+- create final Event IDs;
+- authorize new runtime systems or persistent definitions.
 
 ### 24.9 V2 acceptance focus
 
