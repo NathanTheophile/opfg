@@ -1,0 +1,108 @@
+{
+  "id": "ch_v2_generic_early_01_high_branch_i01_branch_bends",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_generic_early_01_high_branch_i01_branch_bends.title",
+  "textKey": "event.ch_v2_generic_early_01_high_branch_i01_branch_bends.text",
+  "choices": [
+    {
+      "id": "catch_drop",
+      "textKey": "event.ch_v2_generic_early_01_high_branch_i01_branch_bends.choice.catch_drop.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "catch_drop_criticalfailure",
+            "textKey": "event.ch_v2_generic_early_01_high_branch_i01_branch_bends.choice.catch_drop.outcome.catch_drop_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_high_branch_i02_last_reach"
+              }
+            ]
+          },
+          "failure": {
+            "id": "catch_drop_failure",
+            "textKey": "event.ch_v2_generic_early_01_high_branch_i01_branch_bends.choice.catch_drop.outcome.catch_drop_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_high_branch_i02_last_reach"
+              }
+            ]
+          },
+          "success": {
+            "id": "catch_drop_success",
+            "textKey": "event.ch_v2_generic_early_01_high_branch_i01_branch_bends.choice.catch_drop.outcome.catch_drop_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_high_branch_i02_last_reach"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "catch_drop_criticalsuccess",
+            "textKey": "event.ch_v2_generic_early_01_high_branch_i01_branch_bends.choice.catch_drop.outcome.catch_drop_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_high_branch_i02_last_reach"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "spread_cloth",
+      "textKey": "event.ch_v2_generic_early_01_high_branch_i01_branch_bends.choice.spread_cloth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cloth_catch",
+          "textKey": "event.ch_v2_generic_early_01_high_branch_i01_branch_bends.choice.spread_cloth.outcome.cloth_catch.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_high_branch_i02_last_reach"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_fall",
+      "textKey": "event.ch_v2_generic_early_01_high_branch_i01_branch_bends.choice.let_fall.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fell",
+          "textKey": "event.ch_v2_generic_early_01_high_branch_i01_branch_bends.choice.let_fall.outcome.fell.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_high_branch_i02_last_reach"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

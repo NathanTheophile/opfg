@@ -1,0 +1,196 @@
+{
+  "id": "ch_v2_generic_late_01_queue_steward",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_queue_steward.title",
+  "textKey": "event.ch_v2_generic_late_01_queue_steward.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "food"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "hold_line",
+      "textKey": "event.ch_v2_generic_late_01_queue_steward.choice.hold_line.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hold_line_cf",
+            "textKey": "event.ch_v2_generic_late_01_queue_steward.choice.hold_line.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_queue_steward_i01_side_deal"
+              }
+            ]
+          },
+          "failure": {
+            "id": "hold_line_f",
+            "textKey": "event.ch_v2_generic_late_01_queue_steward.choice.hold_line.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_queue_steward_i01_side_deal"
+              }
+            ]
+          },
+          "success": {
+            "id": "hold_line_s",
+            "textKey": "event.ch_v2_generic_late_01_queue_steward.choice.hold_line.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_queue_steward_i01_side_deal"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hold_line_cs",
+            "textKey": "event.ch_v2_generic_late_01_queue_steward.choice.hold_line.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_queue_steward_i01_side_deal"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "compare_tickets",
+      "textKey": "event.ch_v2_generic_late_01_queue_steward.choice.compare_tickets.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "compare_tickets_cf",
+            "textKey": "event.ch_v2_generic_late_01_queue_steward.choice.compare_tickets.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_queue_steward_i01_side_deal"
+              }
+            ]
+          },
+          "failure": {
+            "id": "compare_tickets_f",
+            "textKey": "event.ch_v2_generic_late_01_queue_steward.choice.compare_tickets.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_queue_steward_i01_side_deal"
+              }
+            ]
+          },
+          "success": {
+            "id": "compare_tickets_s",
+            "textKey": "event.ch_v2_generic_late_01_queue_steward.choice.compare_tickets.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_queue_steward_i01_side_deal"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "compare_tickets_cs",
+            "textKey": "event.ch_v2_generic_late_01_queue_steward.choice.compare_tickets.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_queue_steward_i01_side_deal"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pause_both",
+      "textKey": "event.ch_v2_generic_late_01_queue_steward.choice.pause_both.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pause_both_outcome",
+          "textKey": "event.ch_v2_generic_late_01_queue_steward.choice.pause_both.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_late_01_queue_steward_i01_side_deal"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

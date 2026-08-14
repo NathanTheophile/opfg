@@ -1,0 +1,222 @@
+{
+  "id": "ch_v2_generic_late_01_puppet_case",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_puppet_case.title",
+  "textKey": "event.ch_v2_generic_late_01_puppet_case.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "entertainment"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "watch_hands",
+      "textKey": "event.ch_v2_generic_late_01_puppet_case.choice.watch_hands.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "watch_hands_cf",
+            "textKey": "event.ch_v2_generic_late_01_puppet_case.choice.watch_hands.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_puppet_case_i01_crowd_surge"
+              }
+            ]
+          },
+          "failure": {
+            "id": "watch_hands_f",
+            "textKey": "event.ch_v2_generic_late_01_puppet_case.choice.watch_hands.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_puppet_case_i01_crowd_surge"
+              }
+            ]
+          },
+          "success": {
+            "id": "watch_hands_s",
+            "textKey": "event.ch_v2_generic_late_01_puppet_case.choice.watch_hands.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_puppet_case_i01_crowd_surge"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "watch_hands_cs",
+            "textKey": "event.ch_v2_generic_late_01_puppet_case.choice.watch_hands.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_puppet_case_i01_crowd_surge"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "body_block",
+      "textKey": "event.ch_v2_generic_late_01_puppet_case.choice.body_block.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "body_block_cf",
+            "textKey": "event.ch_v2_generic_late_01_puppet_case.choice.body_block.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_puppet_case_i01_crowd_surge"
+              }
+            ]
+          },
+          "failure": {
+            "id": "body_block_f",
+            "textKey": "event.ch_v2_generic_late_01_puppet_case.choice.body_block.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_puppet_case_i01_crowd_surge"
+              }
+            ]
+          },
+          "success": {
+            "id": "body_block_s",
+            "textKey": "event.ch_v2_generic_late_01_puppet_case.choice.body_block.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_puppet_case_i01_crowd_surge"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "body_block_cs",
+            "textKey": "event.ch_v2_generic_late_01_puppet_case.choice.body_block.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_puppet_case_i01_crowd_surge"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "tie_to_stool",
+      "textKey": "event.ch_v2_generic_late_01_puppet_case.choice.tie_to_stool.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tie_to_stool_outcome",
+          "textKey": "event.ch_v2_generic_late_01_puppet_case.choice.tie_to_stool.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_late_01_puppet_case_i01_crowd_surge"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wedge_behind_prop",
+      "textKey": "event.ch_v2_generic_late_01_puppet_case.choice.wedge_behind_prop.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "suspicious"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wedge_behind_prop_outcome",
+          "textKey": "event.ch_v2_generic_late_01_puppet_case.choice.wedge_behind_prop.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_late_01_puppet_case_i01_crowd_surge"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

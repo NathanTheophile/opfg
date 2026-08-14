@@ -1,0 +1,225 @@
+{
+  "id": "ch_v2_generic_late_01_quiet_counter",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_quiet_counter.title",
+  "textKey": "event.ch_v2_generic_late_01_quiet_counter.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "food"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "hold_boundary",
+      "textKey": "event.ch_v2_generic_late_01_quiet_counter.choice.hold_boundary.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hold_boundary_cf",
+            "textKey": "event.ch_v2_generic_late_01_quiet_counter.choice.hold_boundary.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_quiet_counter_i01_extra_coin"
+              }
+            ]
+          },
+          "failure": {
+            "id": "hold_boundary_f",
+            "textKey": "event.ch_v2_generic_late_01_quiet_counter.choice.hold_boundary.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_quiet_counter_i01_extra_coin"
+              }
+            ]
+          },
+          "success": {
+            "id": "hold_boundary_s",
+            "textKey": "event.ch_v2_generic_late_01_quiet_counter.choice.hold_boundary.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_quiet_counter_i01_extra_coin"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hold_boundary_cs",
+            "textKey": "event.ch_v2_generic_late_01_quiet_counter.choice.hold_boundary.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_quiet_counter_i01_extra_coin"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "check_notes",
+      "textKey": "event.ch_v2_generic_late_01_quiet_counter.choice.check_notes.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "check_notes_cf",
+            "textKey": "event.ch_v2_generic_late_01_quiet_counter.choice.check_notes.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_quiet_counter_i01_extra_coin"
+              }
+            ]
+          },
+          "failure": {
+            "id": "check_notes_f",
+            "textKey": "event.ch_v2_generic_late_01_quiet_counter.choice.check_notes.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_quiet_counter_i01_extra_coin"
+              }
+            ]
+          },
+          "success": {
+            "id": "check_notes_s",
+            "textKey": "event.ch_v2_generic_late_01_quiet_counter.choice.check_notes.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_quiet_counter_i01_extra_coin"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "check_notes_cs",
+            "textKey": "event.ch_v2_generic_late_01_quiet_counter.choice.check_notes.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_quiet_counter_i01_extra_coin"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "refuse_decision",
+      "textKey": "event.ch_v2_generic_late_01_quiet_counter.choice.refuse_decision.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_decision_outcome",
+          "textKey": "event.ch_v2_generic_late_01_quiet_counter.choice.refuse_decision.outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_late_01_quiet_counter_i01_extra_coin"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_for_proof",
+      "textKey": "event.ch_v2_generic_late_01_quiet_counter.choice.ask_for_proof.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "suspicious"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_for_proof_outcome",
+          "textKey": "event.ch_v2_generic_late_01_quiet_counter.choice.ask_for_proof.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_late_01_quiet_counter_i01_extra_coin"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "neighborhood_merchant"
+  ]
+}

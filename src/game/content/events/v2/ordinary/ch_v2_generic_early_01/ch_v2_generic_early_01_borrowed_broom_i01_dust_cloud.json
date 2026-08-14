@@ -1,0 +1,108 @@
+{
+  "id": "ch_v2_generic_early_01_borrowed_broom_i01_dust_cloud",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_generic_early_01_borrowed_broom_i01_dust_cloud.title",
+  "textKey": "event.ch_v2_generic_early_01_borrowed_broom_i01_dust_cloud.text",
+  "choices": [
+    {
+      "id": "catch_bowl",
+      "textKey": "event.ch_v2_generic_early_01_borrowed_broom_i01_dust_cloud.choice.catch_bowl.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "catch_bowl_criticalfailure",
+            "textKey": "event.ch_v2_generic_early_01_borrowed_broom_i01_dust_cloud.choice.catch_bowl.outcome.catch_bowl_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_borrowed_broom_i02_adult_returns"
+              }
+            ]
+          },
+          "failure": {
+            "id": "catch_bowl_failure",
+            "textKey": "event.ch_v2_generic_early_01_borrowed_broom_i01_dust_cloud.choice.catch_bowl.outcome.catch_bowl_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_borrowed_broom_i02_adult_returns"
+              }
+            ]
+          },
+          "success": {
+            "id": "catch_bowl_success",
+            "textKey": "event.ch_v2_generic_early_01_borrowed_broom_i01_dust_cloud.choice.catch_bowl.outcome.catch_bowl_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_borrowed_broom_i02_adult_returns"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "catch_bowl_criticalsuccess",
+            "textKey": "event.ch_v2_generic_early_01_borrowed_broom_i01_dust_cloud.choice.catch_bowl.outcome.catch_bowl_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_borrowed_broom_i02_adult_returns"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "push_shelf",
+      "textKey": "event.ch_v2_generic_early_01_borrowed_broom_i01_dust_cloud.choice.push_shelf.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shelf_safe",
+          "textKey": "event.ch_v2_generic_early_01_borrowed_broom_i01_dust_cloud.choice.push_shelf.outcome.shelf_safe.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_borrowed_broom_i02_adult_returns"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step_back",
+      "textKey": "event.ch_v2_generic_early_01_borrowed_broom_i01_dust_cloud.choice.step_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "let_fall",
+          "textKey": "event.ch_v2_generic_early_01_borrowed_broom_i01_dust_cloud.choice.step_back.outcome.let_fall.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_borrowed_broom_i02_adult_returns"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

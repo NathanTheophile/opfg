@@ -1,0 +1,191 @@
+{
+  "id": "ch_v2_combat_risk_01_kitchen_grease_fire",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_combat_risk_01_kitchen_grease_fire.title",
+  "textKey": "event.ch_v2_combat_risk_01_kitchen_grease_fire.text",
+  "choices": [
+    {
+      "id": "smother_pan",
+      "textKey": "event.ch_v2_combat_risk_01_kitchen_grease_fire.choice.smother_pan.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.ch_v2_combat_risk_01_kitchen_grease_fire.choice.smother_pan.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_kitchen_grease_fire_i01_oily_cloth"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.ch_v2_combat_risk_01_kitchen_grease_fire.choice.smother_pan.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_kitchen_grease_fire_i01_oily_cloth"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.ch_v2_combat_risk_01_kitchen_grease_fire.choice.smother_pan.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_kitchen_grease_fire_i01_oily_cloth"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.ch_v2_combat_risk_01_kitchen_grease_fire.choice.smother_pan.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_kitchen_grease_fire_i01_oily_cloth"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "drag_stool",
+      "textKey": "event.ch_v2_combat_risk_01_kitchen_grease_fire.choice.drag_stool.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.ch_v2_combat_risk_01_kitchen_grease_fire.choice.drag_stool.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_kitchen_grease_fire_i01_oily_cloth"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.ch_v2_combat_risk_01_kitchen_grease_fire.choice.drag_stool.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_kitchen_grease_fire_i01_oily_cloth"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.ch_v2_combat_risk_01_kitchen_grease_fire.choice.drag_stool.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_kitchen_grease_fire_i01_oily_cloth"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.ch_v2_combat_risk_01_kitchen_grease_fire.choice.drag_stool.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_kitchen_grease_fire_i01_oily_cloth"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "salt_ring",
+      "textKey": "event.ch_v2_combat_risk_01_kitchen_grease_fire.choice.salt_ring.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "salt_ring",
+          "textKey": "event.ch_v2_combat_risk_01_kitchen_grease_fire.choice.salt_ring.outcome.salt_ring.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_combat_risk_01_kitchen_grease_fire_i01_oily_cloth"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "resourceful"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  }
+}

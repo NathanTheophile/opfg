@@ -1,0 +1,178 @@
+{
+  "id": "ch_v2_identity_world_01_marine_drill_breaks",
+  "titleKey": "event.ch_v2_identity_world_01_marine_drill_breaks.title",
+  "textKey": "event.ch_v2_identity_world_01_marine_drill_breaks.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "spot_opening",
+      "textKey": "event.ch_v2_identity_world_01_marine_drill_breaks.choice.spot_opening.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "spot_opening_critical_failure",
+            "textKey": "event.ch_v2_identity_world_01_marine_drill_breaks.choice.spot_opening.outcome.spot_opening_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_marine_drill_breaks_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "spot_opening_failure",
+            "textKey": "event.ch_v2_identity_world_01_marine_drill_breaks.choice.spot_opening.outcome.spot_opening_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_marine_drill_breaks_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "spot_opening_success",
+            "textKey": "event.ch_v2_identity_world_01_marine_drill_breaks.choice.spot_opening.outcome.spot_opening_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_marine_drill_breaks_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "spot_opening_critical_success",
+            "textKey": "event.ch_v2_identity_world_01_marine_drill_breaks.choice.spot_opening.outcome.spot_opening_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_marine_drill_breaks_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_the_conflict",
+      "textKey": "event.ch_v2_identity_world_01_marine_drill_breaks.choice.call_the_conflict.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "call_the_conflict_critical_failure",
+            "textKey": "event.ch_v2_identity_world_01_marine_drill_breaks.choice.call_the_conflict.outcome.call_the_conflict_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_marine_drill_breaks_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "call_the_conflict_failure",
+            "textKey": "event.ch_v2_identity_world_01_marine_drill_breaks.choice.call_the_conflict.outcome.call_the_conflict_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_marine_drill_breaks_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "call_the_conflict_success",
+            "textKey": "event.ch_v2_identity_world_01_marine_drill_breaks.choice.call_the_conflict.outcome.call_the_conflict_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_marine_drill_breaks_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "call_the_conflict_critical_success",
+            "textKey": "event.ch_v2_identity_world_01_marine_drill_breaks.choice.call_the_conflict.outcome.call_the_conflict_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_marine_drill_breaks_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "show_urgent_mark",
+      "textKey": "event.ch_v2_identity_world_01_marine_drill_breaks.choice.show_urgent_mark.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "urgent_mark_shown",
+          "textKey": "event.ch_v2_identity_world_01_marine_drill_breaks.choice.show_urgent_mark.outcome.urgent_mark_shown.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_identity_world_01_marine_drill_breaks_i01"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 84
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 131
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "marine_presence"
+      }
+    ]
+  }
+}

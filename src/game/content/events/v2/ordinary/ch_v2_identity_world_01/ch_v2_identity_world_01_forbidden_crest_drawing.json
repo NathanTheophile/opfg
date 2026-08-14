@@ -1,0 +1,108 @@
+{
+  "id": "ch_v2_identity_world_01_forbidden_crest_drawing",
+  "titleKey": "event.ch_v2_identity_world_01_forbidden_crest_drawing.title",
+  "textKey": "event.ch_v2_identity_world_01_forbidden_crest_drawing.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "redraw_as_fake_crest",
+      "textKey": "event.ch_v2_identity_world_01_forbidden_crest_drawing.choice.redraw_as_fake_crest.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fake_crest_drawn",
+          "textKey": "event.ch_v2_identity_world_01_forbidden_crest_drawing.choice.redraw_as_fake_crest.outcome.fake_crest_drawn.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_who_owns_symbol",
+      "textKey": "event.ch_v2_identity_world_01_forbidden_crest_drawing.choice.ask_who_owns_symbol.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ownership_asked",
+          "textKey": "event.ch_v2_identity_world_01_forbidden_crest_drawing.choice.ask_who_owns_symbol.outcome.ownership_asked.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "draw_crown_bigger",
+      "textKey": "event.ch_v2_identity_world_01_forbidden_crest_drawing.choice.draw_crown_bigger.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crown_redrawn",
+          "textKey": "event.ch_v2_identity_world_01_forbidden_crest_drawing.choice.draw_crown_bigger.outcome.crown_redrawn.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "copy_permitted_marks",
+      "textKey": "event.ch_v2_identity_world_01_forbidden_crest_drawing.choice.copy_permitted_marks.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "permitted_marks_copied",
+          "textKey": "event.ch_v2_identity_world_01_forbidden_crest_drawing.choice.copy_permitted_marks.outcome.permitted_marks_copied.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "curious"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 119
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "royal"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "capital"
+          }
+        ]
+      }
+    ]
+  }
+}

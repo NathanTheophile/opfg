@@ -1,0 +1,178 @@
+{
+  "id": "ch_v2_identity_world_01_pirate_song_unpaid_tab",
+  "titleKey": "event.ch_v2_identity_world_01_pirate_song_unpaid_tab.title",
+  "textKey": "event.ch_v2_identity_world_01_pirate_song_unpaid_tab.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "read_the_tally",
+      "textKey": "event.ch_v2_identity_world_01_pirate_song_unpaid_tab.choice.read_the_tally.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_the_tally_critical_failure",
+            "textKey": "event.ch_v2_identity_world_01_pirate_song_unpaid_tab.choice.read_the_tally.outcome.read_the_tally_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_pirate_song_unpaid_tab_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_the_tally_failure",
+            "textKey": "event.ch_v2_identity_world_01_pirate_song_unpaid_tab.choice.read_the_tally.outcome.read_the_tally_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_pirate_song_unpaid_tab_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_the_tally_success",
+            "textKey": "event.ch_v2_identity_world_01_pirate_song_unpaid_tab.choice.read_the_tally.outcome.read_the_tally_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_pirate_song_unpaid_tab_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_the_tally_critical_success",
+            "textKey": "event.ch_v2_identity_world_01_pirate_song_unpaid_tab.choice.read_the_tally.outcome.read_the_tally_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_pirate_song_unpaid_tab_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "negotiate_payment",
+      "textKey": "event.ch_v2_identity_world_01_pirate_song_unpaid_tab.choice.negotiate_payment.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "negotiate_payment_critical_failure",
+            "textKey": "event.ch_v2_identity_world_01_pirate_song_unpaid_tab.choice.negotiate_payment.outcome.negotiate_payment_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_pirate_song_unpaid_tab_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "negotiate_payment_failure",
+            "textKey": "event.ch_v2_identity_world_01_pirate_song_unpaid_tab.choice.negotiate_payment.outcome.negotiate_payment_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_pirate_song_unpaid_tab_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "negotiate_payment_success",
+            "textKey": "event.ch_v2_identity_world_01_pirate_song_unpaid_tab.choice.negotiate_payment.outcome.negotiate_payment_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_pirate_song_unpaid_tab_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "negotiate_payment_critical_success",
+            "textKey": "event.ch_v2_identity_world_01_pirate_song_unpaid_tab.choice.negotiate_payment.outcome.negotiate_payment_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_pirate_song_unpaid_tab_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "turn_song_back",
+      "textKey": "event.ch_v2_identity_world_01_pirate_song_unpaid_tab.choice.turn_song_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "song_turned_back",
+          "textKey": "event.ch_v2_identity_world_01_pirate_song_unpaid_tab.choice.turn_song_back.outcome.song_turned_back.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_identity_world_01_pirate_song_unpaid_tab_i01"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "food"
+      }
+    ]
+  }
+}

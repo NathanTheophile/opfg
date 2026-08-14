@@ -1,0 +1,125 @@
+{
+  "id": "ch_v2_peers_01_entrusted_tool_loan",
+  "kind": "normal",
+  "narrativeFamily": "child_peer",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "ch_v2_peers_01_friend_rule_intro"
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "childhood_friend",
+        "value": 3
+      }
+    ]
+  },
+  "cast": [
+    "childhood_friend"
+  ],
+  "titleKey": "event.ch_v2_peers_01_entrusted_tool_loan.title",
+  "textKey": "event.ch_v2_peers_01_entrusted_tool_loan.text",
+  "choices": [
+    {
+      "id": "lend",
+      "textKey": "event.ch_v2_peers_01_entrusted_tool_loan.choice.lend.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lend",
+          "textKey": "event.ch_v2_peers_01_entrusted_tool_loan.choice.lend.outcome.lend.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 4
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "share",
+      "textKey": "event.ch_v2_peers_01_entrusted_tool_loan.choice.share.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "share",
+          "textKey": "event.ch_v2_peers_01_entrusted_tool_loan.choice.share.outcome.share.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse",
+      "textKey": "event.ch_v2_peers_01_entrusted_tool_loan.choice.refuse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse",
+          "textKey": "event.ch_v2_peers_01_entrusted_tool_loan.choice.refuse.outcome.refuse.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": -2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "collateral",
+      "textKey": "event.ch_v2_peers_01_entrusted_tool_loan.choice.collateral.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "collateral",
+          "textKey": "event.ch_v2_peers_01_entrusted_tool_loan.choice.collateral.outcome.collateral.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

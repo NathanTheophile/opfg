@@ -1,0 +1,176 @@
+{
+  "id": "ch_v2_generic_late_01_mislabeled_crate",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_mislabeled_crate.title",
+  "textKey": "event.ch_v2_generic_late_01_mislabeled_crate.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "food"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "rebuild_route",
+      "textKey": "event.ch_v2_generic_late_01_mislabeled_crate.choice.rebuild_route.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rebuild_route_cf",
+            "textKey": "event.ch_v2_generic_late_01_mislabeled_crate.choice.rebuild_route.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_mislabeled_crate_i01_driver_waits"
+              }
+            ]
+          },
+          "failure": {
+            "id": "rebuild_route_f",
+            "textKey": "event.ch_v2_generic_late_01_mislabeled_crate.choice.rebuild_route.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_mislabeled_crate_i01_driver_waits"
+              }
+            ]
+          },
+          "success": {
+            "id": "rebuild_route_s",
+            "textKey": "event.ch_v2_generic_late_01_mislabeled_crate.choice.rebuild_route.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "rebuild_route_cs",
+            "textKey": "event.ch_v2_generic_late_01_mislabeled_crate.choice.rebuild_route.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "inspect_seals",
+      "textKey": "event.ch_v2_generic_late_01_mislabeled_crate.choice.inspect_seals.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "inspect_seals_cf",
+            "textKey": "event.ch_v2_generic_late_01_mislabeled_crate.choice.inspect_seals.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_mislabeled_crate_i01_driver_waits"
+              }
+            ]
+          },
+          "failure": {
+            "id": "inspect_seals_f",
+            "textKey": "event.ch_v2_generic_late_01_mislabeled_crate.choice.inspect_seals.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_mislabeled_crate_i01_driver_waits"
+              }
+            ]
+          },
+          "success": {
+            "id": "inspect_seals_s",
+            "textKey": "event.ch_v2_generic_late_01_mislabeled_crate.choice.inspect_seals.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "inspect_seals_cs",
+            "textKey": "event.ch_v2_generic_late_01_mislabeled_crate.choice.inspect_seals.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_crate",
+      "textKey": "event.ch_v2_generic_late_01_mislabeled_crate.choice.hold_crate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hold_crate_outcome",
+          "textKey": "event.ch_v2_generic_late_01_mislabeled_crate.choice.hold_crate.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

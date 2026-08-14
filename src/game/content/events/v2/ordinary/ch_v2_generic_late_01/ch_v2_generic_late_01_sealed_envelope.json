@@ -1,0 +1,201 @@
+{
+  "id": "ch_v2_generic_late_01_sealed_envelope",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_sealed_envelope.title",
+  "textKey": "event.ch_v2_generic_late_01_sealed_envelope.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "compare_details",
+      "textKey": "event.ch_v2_generic_late_01_sealed_envelope.choice.compare_details.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "compare_details_cf",
+            "textKey": "event.ch_v2_generic_late_01_sealed_envelope.choice.compare_details.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_sealed_envelope_i01_claim_details"
+              }
+            ]
+          },
+          "failure": {
+            "id": "compare_details_f",
+            "textKey": "event.ch_v2_generic_late_01_sealed_envelope.choice.compare_details.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_sealed_envelope_i01_claim_details"
+              }
+            ]
+          },
+          "success": {
+            "id": "compare_details_s",
+            "textKey": "event.ch_v2_generic_late_01_sealed_envelope.choice.compare_details.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_sealed_envelope_i01_claim_details"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "compare_details_cs",
+            "textKey": "event.ch_v2_generic_late_01_sealed_envelope.choice.compare_details.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_sealed_envelope_i01_claim_details"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "trap_question",
+      "textKey": "event.ch_v2_generic_late_01_sealed_envelope.choice.trap_question.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "trap_question_cf",
+            "textKey": "event.ch_v2_generic_late_01_sealed_envelope.choice.trap_question.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_sealed_envelope_i01_claim_details"
+              }
+            ]
+          },
+          "failure": {
+            "id": "trap_question_f",
+            "textKey": "event.ch_v2_generic_late_01_sealed_envelope.choice.trap_question.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_sealed_envelope_i01_claim_details"
+              }
+            ]
+          },
+          "success": {
+            "id": "trap_question_s",
+            "textKey": "event.ch_v2_generic_late_01_sealed_envelope.choice.trap_question.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_sealed_envelope_i01_claim_details"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "trap_question_cs",
+            "textKey": "event.ch_v2_generic_late_01_sealed_envelope.choice.trap_question.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_sealed_envelope_i01_claim_details"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "keep_until_time",
+      "textKey": "event.ch_v2_generic_late_01_sealed_envelope.choice.keep_until_time.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_until_time_outcome",
+          "textKey": "event.ch_v2_generic_late_01_sealed_envelope.choice.keep_until_time.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_seal_detail",
+      "textKey": "event.ch_v2_generic_late_01_sealed_envelope.choice.ask_seal_detail.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "suspicious"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_seal_detail_outcome",
+          "textKey": "event.ch_v2_generic_late_01_sealed_envelope.choice.ask_seal_detail.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_late_01_sealed_envelope_i01_claim_details"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

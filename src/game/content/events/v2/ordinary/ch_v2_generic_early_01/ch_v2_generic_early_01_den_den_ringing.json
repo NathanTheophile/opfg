@@ -1,0 +1,195 @@
+{
+  "id": "ch_v2_generic_early_01_den_den_ringing",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 24
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 60
+      }
+    ]
+  },
+  "titleKey": "event.ch_v2_generic_early_01_den_den_ringing.title",
+  "textKey": "event.ch_v2_generic_early_01_den_den_ringing.text",
+  "choices": [
+    {
+      "id": "answer_clear",
+      "textKey": "event.ch_v2_generic_early_01_den_den_ringing.choice.answer_clear.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "answer_clear_criticalfailure",
+            "textKey": "event.ch_v2_generic_early_01_den_den_ringing.choice.answer_clear.outcome.answer_clear_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_den_den_ringing_i01_voice_waits"
+              }
+            ]
+          },
+          "failure": {
+            "id": "answer_clear_failure",
+            "textKey": "event.ch_v2_generic_early_01_den_den_ringing.choice.answer_clear.outcome.answer_clear_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_den_den_ringing_i01_voice_waits"
+              }
+            ]
+          },
+          "success": {
+            "id": "answer_clear_success",
+            "textKey": "event.ch_v2_generic_early_01_den_den_ringing.choice.answer_clear.outcome.answer_clear_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_den_den_ringing_i01_voice_waits"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "answer_clear_criticalsuccess",
+            "textKey": "event.ch_v2_generic_early_01_den_den_ringing.choice.answer_clear.outcome.answer_clear_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_den_den_ringing_i01_voice_waits"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "listen_first",
+      "textKey": "event.ch_v2_generic_early_01_den_den_ringing.choice.listen_first.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "listen_first_criticalfailure",
+            "textKey": "event.ch_v2_generic_early_01_den_den_ringing.choice.listen_first.outcome.listen_first_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_den_den_ringing_i01_voice_waits"
+              }
+            ]
+          },
+          "failure": {
+            "id": "listen_first_failure",
+            "textKey": "event.ch_v2_generic_early_01_den_den_ringing.choice.listen_first.outcome.listen_first_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_den_den_ringing_i01_voice_waits"
+              }
+            ]
+          },
+          "success": {
+            "id": "listen_first_success",
+            "textKey": "event.ch_v2_generic_early_01_den_den_ringing.choice.listen_first.outcome.listen_first_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_den_den_ringing_i01_voice_waits"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "listen_first_criticalsuccess",
+            "textKey": "event.ch_v2_generic_early_01_den_den_ringing.choice.listen_first.outcome.listen_first_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_den_den_ringing_i01_voice_waits"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cover_receiver",
+      "textKey": "event.ch_v2_generic_early_01_den_den_ringing.choice.cover_receiver.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "covered",
+          "textKey": "event.ch_v2_generic_early_01_den_den_ringing.choice.cover_receiver.outcome.covered.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_den_den_ringing_i01_voice_waits"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "study_face",
+      "textKey": "event.ch_v2_generic_early_01_den_den_ringing.choice.study_face.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "curious"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "curious",
+          "textKey": "event.ch_v2_generic_early_01_den_den_ringing.choice.study_face.outcome.curious.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_den_den_ringing_i01_voice_waits"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

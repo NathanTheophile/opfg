@@ -1,0 +1,148 @@
+{
+  "id": "ch_v2_generic_early_01_lt01_first_return",
+  "kind": "scheduled",
+  "priority": 100,
+  "cast": [
+    "neighborhood_merchant"
+  ],
+  "titleKey": "event.ch_v2_generic_early_01_lt01_first_return.title",
+  "textKey": "event.ch_v2_generic_early_01_lt01_first_return.text",
+  "choices": [
+    {
+      "id": "reconstruct",
+      "textKey": "event.ch_v2_generic_early_01_lt01_first_return.choice.reconstruct.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "reconstruct_criticalfailure",
+            "textKey": "event.ch_v2_generic_early_01_lt01_first_return.choice.reconstruct.outcome.reconstruct_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": -2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_generic_early_01_lt02_key_for_minute",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "reconstruct_failure",
+            "textKey": "event.ch_v2_generic_early_01_lt01_first_return.choice.reconstruct.outcome.reconstruct_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_generic_early_01_lt02_key_for_minute",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "reconstruct_success",
+            "textKey": "event.ch_v2_generic_early_01_lt01_first_return.choice.reconstruct.outcome.reconstruct_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": 4
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_generic_early_01_lt02_key_for_minute",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "reconstruct_criticalsuccess",
+            "textKey": "event.ch_v2_generic_early_01_lt01_first_return.choice.reconstruct.outcome.reconstruct_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": 5
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_generic_early_01_lt02_key_for_minute",
+                "delayMonths": 18
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "admit_no_memory",
+      "textKey": "event.ch_v2_generic_early_01_lt01_first_return.choice.admit_no_memory.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "honest_gap",
+          "textKey": "event.ch_v2_generic_early_01_lt01_first_return.choice.admit_no_memory.outcome.honest_gap.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_early_01_lt02_key_for_minute",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "invent_detail",
+      "textKey": "event.ch_v2_generic_early_01_lt01_first_return.choice.invent_detail.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "invented",
+          "textKey": "event.ch_v2_generic_early_01_lt01_first_return.choice.invent_detail.outcome.invented.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_early_01_lt02_key_for_minute",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

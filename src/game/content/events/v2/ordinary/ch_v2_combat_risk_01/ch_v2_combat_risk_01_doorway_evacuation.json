@@ -1,0 +1,86 @@
+{
+  "id": "ch_v2_combat_risk_01_doorway_evacuation",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_combat_risk_01_doorway_evacuation.title",
+  "textKey": "event.ch_v2_combat_risk_01_doorway_evacuation.text",
+  "choices": [
+    {
+      "id": "make_back_route",
+      "textKey": "event.ch_v2_combat_risk_01_doorway_evacuation.choice.make_back_route.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "make_back_route",
+          "textKey": "event.ch_v2_combat_risk_01_doorway_evacuation.choice.make_back_route.outcome.make_back_route.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_combat_risk_01_doorway_evacuation_i01_back_hatch"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "use_long_hook",
+      "textKey": "event.ch_v2_combat_risk_01_doorway_evacuation.choice.use_long_hook.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "use_long_hook",
+          "textKey": "event.ch_v2_combat_risk_01_doorway_evacuation.choice.use_long_hook.outcome.use_long_hook.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_combat_risk_01_doorway_evacuation_i01_back_hatch"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "line_children",
+      "textKey": "event.ch_v2_combat_risk_01_doorway_evacuation.choice.line_children.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "line_children",
+          "textKey": "event.ch_v2_combat_risk_01_doorway_evacuation.choice.line_children.outcome.line_children.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_combat_risk_01_doorway_evacuation_i01_back_hatch"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  }
+}

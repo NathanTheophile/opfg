@@ -1,0 +1,183 @@
+{
+  "id": "ch_v2_combat_risk_01_ditch_jump",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_combat_risk_01_ditch_jump.title",
+  "textKey": "event.ch_v2_combat_risk_01_ditch_jump.text",
+  "choices": [
+    {
+      "id": "jump_clean",
+      "textKey": "event.ch_v2_combat_risk_01_ditch_jump.choice.jump_clean.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.ch_v2_combat_risk_01_ditch_jump.choice.jump_clean.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_ditch_jump_i01_bank_slips"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.ch_v2_combat_risk_01_ditch_jump.choice.jump_clean.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_ditch_jump_i01_bank_slips"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.ch_v2_combat_risk_01_ditch_jump.choice.jump_clean.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_ditch_jump_i01_bank_slips"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.ch_v2_combat_risk_01_ditch_jump.choice.jump_clean.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_ditch_jump_i01_bank_slips"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "make_bridge",
+      "textKey": "event.ch_v2_combat_risk_01_ditch_jump.choice.make_bridge.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.ch_v2_combat_risk_01_ditch_jump.choice.make_bridge.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_ditch_jump_i01_bank_slips"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.ch_v2_combat_risk_01_ditch_jump.choice.make_bridge.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_ditch_jump_i01_bank_slips"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.ch_v2_combat_risk_01_ditch_jump.choice.make_bridge.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_ditch_jump_i01_bank_slips"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.ch_v2_combat_risk_01_ditch_jump.choice.make_bridge.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_ditch_jump_i01_bank_slips"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "test_bank",
+      "textKey": "event.ch_v2_combat_risk_01_ditch_jump.choice.test_bank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "test_bank",
+          "textKey": "event.ch_v2_combat_risk_01_ditch_jump.choice.test_bank.outcome.test_bank.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_combat_risk_01_ditch_jump_i01_bank_slips"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "cautious"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 119
+      }
+    ]
+  }
+}

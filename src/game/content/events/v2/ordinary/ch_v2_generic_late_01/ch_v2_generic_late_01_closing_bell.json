@@ -1,0 +1,158 @@
+{
+  "id": "ch_v2_generic_late_01_closing_bell",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_closing_bell.title",
+  "textKey": "event.ch_v2_generic_late_01_closing_bell.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "sprint_to_bell",
+      "textKey": "event.ch_v2_generic_late_01_closing_bell.choice.sprint_to_bell.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "sprint_to_bell_cf",
+            "textKey": "event.ch_v2_generic_late_01_closing_bell.choice.sprint_to_bell.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_closing_bell_i01_mixed_stop"
+              }
+            ]
+          },
+          "failure": {
+            "id": "sprint_to_bell_f",
+            "textKey": "event.ch_v2_generic_late_01_closing_bell.choice.sprint_to_bell.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_closing_bell_i01_mixed_stop"
+              }
+            ]
+          },
+          "success": {
+            "id": "sprint_to_bell_s",
+            "textKey": "event.ch_v2_generic_late_01_closing_bell.choice.sprint_to_bell.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "sprint_to_bell_cs",
+            "textKey": "event.ch_v2_generic_late_01_closing_bell.choice.sprint_to_bell.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_stop",
+      "textKey": "event.ch_v2_generic_late_01_closing_bell.choice.call_stop.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "call_stop_cf",
+            "textKey": "event.ch_v2_generic_late_01_closing_bell.choice.call_stop.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_closing_bell_i01_mixed_stop"
+              }
+            ]
+          },
+          "failure": {
+            "id": "call_stop_f",
+            "textKey": "event.ch_v2_generic_late_01_closing_bell.choice.call_stop.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_closing_bell_i01_mixed_stop"
+              }
+            ]
+          },
+          "success": {
+            "id": "call_stop_s",
+            "textKey": "event.ch_v2_generic_late_01_closing_bell.choice.call_stop.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "call_stop_cs",
+            "textKey": "event.ch_v2_generic_late_01_closing_bell.choice.call_stop.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ring_late",
+      "textKey": "event.ch_v2_generic_late_01_closing_bell.choice.ring_late.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ring_late_outcome",
+          "textKey": "event.ch_v2_generic_late_01_closing_bell.choice.ring_late.outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_late_01_closing_bell_i01_mixed_stop"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

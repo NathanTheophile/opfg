@@ -1,0 +1,187 @@
+{
+  "id": "ch_v2_identity_world_01_conflicting_newspapers",
+  "titleKey": "event.ch_v2_identity_world_01_conflicting_newspapers.title",
+  "textKey": "event.ch_v2_identity_world_01_conflicting_newspapers.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "compare_editions",
+      "textKey": "event.ch_v2_identity_world_01_conflicting_newspapers.choice.compare_editions.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "compare_editions_critical_failure",
+            "textKey": "event.ch_v2_identity_world_01_conflicting_newspapers.choice.compare_editions.outcome.compare_editions_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_conflicting_newspapers_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "compare_editions_failure",
+            "textKey": "event.ch_v2_identity_world_01_conflicting_newspapers.choice.compare_editions.outcome.compare_editions_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_conflicting_newspapers_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "compare_editions_success",
+            "textKey": "event.ch_v2_identity_world_01_conflicting_newspapers.choice.compare_editions.outcome.compare_editions_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_conflicting_newspapers_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "compare_editions_critical_success",
+            "textKey": "event.ch_v2_identity_world_01_conflicting_newspapers.choice.compare_editions.outcome.compare_editions_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_conflicting_newspapers_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "question_carriers",
+      "textKey": "event.ch_v2_identity_world_01_conflicting_newspapers.choice.question_carriers.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "question_carriers_critical_failure",
+            "textKey": "event.ch_v2_identity_world_01_conflicting_newspapers.choice.question_carriers.outcome.question_carriers_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_conflicting_newspapers_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "question_carriers_failure",
+            "textKey": "event.ch_v2_identity_world_01_conflicting_newspapers.choice.question_carriers.outcome.question_carriers_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_conflicting_newspapers_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "question_carriers_success",
+            "textKey": "event.ch_v2_identity_world_01_conflicting_newspapers.choice.question_carriers.outcome.question_carriers_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_conflicting_newspapers_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "question_carriers_critical_success",
+            "textKey": "event.ch_v2_identity_world_01_conflicting_newspapers.choice.question_carriers.outcome.question_carriers_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_conflicting_newspapers_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "display_both_headlines",
+      "textKey": "event.ch_v2_identity_world_01_conflicting_newspapers.choice.display_both_headlines.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "headlines_displayed",
+          "textKey": "event.ch_v2_identity_world_01_conflicting_newspapers.choice.display_both_headlines.outcome.headlines_displayed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_identity_world_01_conflicting_newspapers_i01"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 96
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          }
+        ]
+      }
+    ]
+  }
+}

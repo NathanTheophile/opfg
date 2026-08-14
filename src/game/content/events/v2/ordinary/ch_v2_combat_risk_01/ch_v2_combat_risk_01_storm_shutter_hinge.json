@@ -1,0 +1,191 @@
+{
+  "id": "ch_v2_combat_risk_01_storm_shutter_hinge",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_combat_risk_01_storm_shutter_hinge.title",
+  "textKey": "event.ch_v2_combat_risk_01_storm_shutter_hinge.text",
+  "choices": [
+    {
+      "id": "hold_shutter",
+      "textKey": "event.ch_v2_combat_risk_01_storm_shutter_hinge.choice.hold_shutter.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.ch_v2_combat_risk_01_storm_shutter_hinge.choice.hold_shutter.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_storm_shutter_hinge_i01_hinge_tears"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.ch_v2_combat_risk_01_storm_shutter_hinge.choice.hold_shutter.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_storm_shutter_hinge_i01_hinge_tears"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.ch_v2_combat_risk_01_storm_shutter_hinge.choice.hold_shutter.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_storm_shutter_hinge_i01_hinge_tears"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.ch_v2_combat_risk_01_storm_shutter_hinge.choice.hold_shutter.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_storm_shutter_hinge_i01_hinge_tears"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_gust",
+      "textKey": "event.ch_v2_combat_risk_01_storm_shutter_hinge.choice.read_gust.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.ch_v2_combat_risk_01_storm_shutter_hinge.choice.read_gust.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_storm_shutter_hinge_i01_hinge_tears"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.ch_v2_combat_risk_01_storm_shutter_hinge.choice.read_gust.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_storm_shutter_hinge_i01_hinge_tears"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.ch_v2_combat_risk_01_storm_shutter_hinge.choice.read_gust.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_storm_shutter_hinge_i01_hinge_tears"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.ch_v2_combat_risk_01_storm_shutter_hinge.choice.read_gust.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_storm_shutter_hinge_i01_hinge_tears"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hook_rope",
+      "textKey": "event.ch_v2_combat_risk_01_storm_shutter_hinge.choice.hook_rope.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hook_rope",
+          "textKey": "event.ch_v2_combat_risk_01_storm_shutter_hinge.choice.hook_rope.outcome.hook_rope.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_combat_risk_01_storm_shutter_hinge_i01_hinge_tears"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "resourceful"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 96
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      }
+    ]
+  }
+}

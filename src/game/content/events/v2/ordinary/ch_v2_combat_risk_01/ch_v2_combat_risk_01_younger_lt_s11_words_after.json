@@ -1,0 +1,86 @@
+{
+  "id": "ch_v2_combat_risk_01_younger_lt_s11_words_after",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_combat_risk_01_younger_lt_s11_words_after.title",
+  "textKey": "event.ch_v2_combat_risk_01_younger_lt_s11_words_after.text",
+  "choices": [
+    {
+      "id": "admit",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s11_words_after.choice.admit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "admit",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s11_words_after.choice.admit.outcome.admit.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 6
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s12_warning_returns",
+              "delayMonths": 22
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "explain_fear",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s11_words_after.choice.explain_fear.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "explain_fear",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s11_words_after.choice.explain_fear.outcome.explain_fear.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s12_warning_returns",
+              "delayMonths": 22
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "deny",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s11_words_after.choice.deny.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "deny",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s11_words_after.choice.deny.outcome.deny.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": -5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s12_warning_returns",
+              "delayMonths": 22
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "childhood_younger"
+  ],
+  "priority": 100,
+  "cancelIf": {
+    "type": "npcStatusIs",
+    "npcId": "childhood_younger",
+    "status": "dead"
+  }
+}

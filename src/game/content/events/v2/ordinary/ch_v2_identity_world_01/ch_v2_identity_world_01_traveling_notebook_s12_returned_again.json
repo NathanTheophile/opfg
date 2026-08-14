@@ -1,0 +1,77 @@
+{
+  "id": "ch_v2_identity_world_01_traveling_notebook_s12_returned_again",
+  "titleKey": "event.ch_v2_identity_world_01_traveling_notebook_s12_returned_again.title",
+  "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s12_returned_again.text",
+  "kind": "scheduled",
+  "choices": [
+    {
+      "id": "write_reading_rule",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s12_returned_again.choice.write_reading_rule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reading_rule_written",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s12_returned_again.choice.write_reading_rule.outcome.reading_rule_written.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s13_handoff",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "write_own_limit",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s12_returned_again.choice.write_own_limit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "own_limit_written",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s12_returned_again.choice.write_own_limit.outcome.own_limit_written.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s13_handoff",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_blank_page",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s12_returned_again.choice.leave_blank_page.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "blank_page_left",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s12_returned_again.choice.leave_blank_page.outcome.blank_page_left.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s13_handoff",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "isOnLand"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

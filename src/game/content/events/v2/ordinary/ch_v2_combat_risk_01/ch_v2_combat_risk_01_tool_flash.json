@@ -1,0 +1,187 @@
+{
+  "id": "ch_v2_combat_risk_01_tool_flash",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_combat_risk_01_tool_flash.title",
+  "textKey": "event.ch_v2_combat_risk_01_tool_flash.text",
+  "choices": [
+    {
+      "id": "read_grip",
+      "textKey": "event.ch_v2_combat_risk_01_tool_flash.choice.read_grip.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.ch_v2_combat_risk_01_tool_flash.choice.read_grip.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_tool_flash_i01_tool_hits_wall"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.ch_v2_combat_risk_01_tool_flash.choice.read_grip.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_tool_flash_i01_tool_hits_wall"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.ch_v2_combat_risk_01_tool_flash.choice.read_grip.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_tool_flash_i01_tool_hits_wall"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.ch_v2_combat_risk_01_tool_flash.choice.read_grip.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_tool_flash_i01_tool_hits_wall"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "name_consequence",
+      "textKey": "event.ch_v2_combat_risk_01_tool_flash.choice.name_consequence.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.ch_v2_combat_risk_01_tool_flash.choice.name_consequence.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_tool_flash_i01_tool_hits_wall"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.ch_v2_combat_risk_01_tool_flash.choice.name_consequence.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_tool_flash_i01_tool_hits_wall"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.ch_v2_combat_risk_01_tool_flash.choice.name_consequence.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_tool_flash_i01_tool_hits_wall"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.ch_v2_combat_risk_01_tool_flash.choice.name_consequence.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_risk_01_tool_flash_i01_tool_hits_wall"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "move_bench",
+      "textKey": "event.ch_v2_combat_risk_01_tool_flash.choice.move_bench.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "move_bench",
+          "textKey": "event.ch_v2_combat_risk_01_tool_flash.choice.move_bench.outcome.move_bench.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_combat_risk_01_tool_flash_i01_tool_hits_wall"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  }
+}

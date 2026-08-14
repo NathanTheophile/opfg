@@ -1,0 +1,81 @@
+{
+  "id": "ch_v2_generic_early_01_lt03b_bent_word",
+  "kind": "scheduled",
+  "priority": 100,
+  "cast": [
+    "neighborhood_merchant"
+  ],
+  "titleKey": "event.ch_v2_generic_early_01_lt03b_bent_word.title",
+  "textKey": "event.ch_v2_generic_early_01_lt03b_bent_word.text",
+  "choices": [
+    {
+      "id": "explain_marble",
+      "textKey": "event.ch_v2_generic_early_01_lt03b_bent_word.choice.explain_marble.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "explained",
+          "textKey": "event.ch_v2_generic_early_01_lt03b_bent_word.choice.explain_marble.outcome.explained.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_early_01_lt04b_awkward_retry",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "say_worth_it",
+      "textKey": "event.ch_v2_generic_early_01_lt03b_bent_word.choice.say_worth_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "worth_it",
+          "textKey": "event.ch_v2_generic_early_01_lt03b_bent_word.choice.say_worth_it.outcome.worth_it.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_early_01_lt04b_awkward_retry",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "deny",
+      "textKey": "event.ch_v2_generic_early_01_lt03b_bent_word.choice.deny.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "denied",
+          "textKey": "event.ch_v2_generic_early_01_lt03b_bent_word.choice.deny.outcome.denied.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_early_01_lt04b_awkward_retry",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

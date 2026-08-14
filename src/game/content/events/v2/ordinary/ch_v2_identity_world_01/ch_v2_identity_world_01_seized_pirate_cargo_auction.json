@@ -1,0 +1,114 @@
+{
+  "id": "ch_v2_identity_world_01_seized_pirate_cargo_auction",
+  "titleKey": "event.ch_v2_identity_world_01_seized_pirate_cargo_auction.title",
+  "textKey": "event.ch_v2_identity_world_01_seized_pirate_cargo_auction.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "ask_for_repair_mark",
+      "textKey": "event.ch_v2_identity_world_01_seized_pirate_cargo_auction.choice.ask_for_repair_mark.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "repair_mark_shown",
+          "textKey": "event.ch_v2_identity_world_01_seized_pirate_cargo_auction.choice.ask_for_repair_mark.outcome.repair_mark_shown.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_auction_rule",
+      "textKey": "event.ch_v2_identity_world_01_seized_pirate_cargo_auction.choice.ask_auction_rule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "auction_rule_asked",
+          "textKey": "event.ch_v2_identity_world_01_seized_pirate_cargo_auction.choice.ask_auction_rule.outcome.auction_rule_asked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_bidding_moving",
+      "textKey": "event.ch_v2_identity_world_01_seized_pirate_cargo_auction.choice.keep_bidding_moving.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "auction_continued",
+          "textKey": "event.ch_v2_identity_world_01_seized_pirate_cargo_auction.choice.keep_bidding_moving.outcome.auction_continued.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "state_witness_openly",
+      "textKey": "event.ch_v2_identity_world_01_seized_pirate_cargo_auction.choice.state_witness_openly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "witness_stated",
+          "textKey": "event.ch_v2_identity_world_01_seized_pirate_cargo_auction.choice.state_witness_openly.outcome.witness_stated.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "honest"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "government"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "marine_presence"
+          }
+        ]
+      }
+    ]
+  }
+}

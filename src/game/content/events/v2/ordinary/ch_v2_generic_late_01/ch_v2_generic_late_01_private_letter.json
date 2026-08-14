@@ -1,0 +1,89 @@
+{
+  "id": "ch_v2_generic_late_01_private_letter",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_private_letter.title",
+  "textKey": "event.ch_v2_generic_late_01_private_letter.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_softly",
+      "textKey": "event.ch_v2_generic_late_01_private_letter.choice.read_softly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "read_softly_outcome",
+          "textKey": "event.ch_v2_generic_late_01_private_letter.choice.read_softly.outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "summarize_private",
+      "textKey": "event.ch_v2_generic_late_01_private_letter.choice.summarize_private.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "summarize_private_outcome",
+          "textKey": "event.ch_v2_generic_late_01_private_letter.choice.summarize_private.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "announce_help",
+      "textKey": "event.ch_v2_generic_late_01_private_letter.choice.announce_help.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "announce_help_outcome",
+          "textKey": "event.ch_v2_generic_late_01_private_letter.choice.announce_help.outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "ask_context",
+      "textKey": "event.ch_v2_generic_late_01_private_letter.choice.ask_context.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "curious"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_context_outcome",
+          "textKey": "event.ch_v2_generic_late_01_private_letter.choice.ask_context.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

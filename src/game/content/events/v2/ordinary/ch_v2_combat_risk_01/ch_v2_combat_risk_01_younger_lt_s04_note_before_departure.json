@@ -1,0 +1,86 @@
+{
+  "id": "ch_v2_combat_risk_01_younger_lt_s04_note_before_departure",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_combat_risk_01_younger_lt_s04_note_before_departure.title",
+  "textKey": "event.ch_v2_combat_risk_01_younger_lt_s04_note_before_departure.text",
+  "choices": [
+    {
+      "id": "write_trust",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s04_note_before_departure.choice.write_trust.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "write_trust",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s04_note_before_departure.choice.write_trust.outcome.write_trust.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s05_risky_errand",
+              "delayMonths": 36
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "write_question",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s04_note_before_departure.choice.write_question.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "write_question",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s04_note_before_departure.choice.write_question.outcome.write_question.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 6
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s05_risky_errand",
+              "delayMonths": 36
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "write_warning",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s04_note_before_departure.choice.write_warning.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "write_warning",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s04_note_before_departure.choice.write_warning.outcome.write_warning.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": -3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s05_risky_errand",
+              "delayMonths": 36
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "childhood_younger"
+  ],
+  "priority": 100,
+  "cancelIf": {
+    "type": "npcStatusIs",
+    "npcId": "childhood_younger",
+    "status": "dead"
+  }
+}

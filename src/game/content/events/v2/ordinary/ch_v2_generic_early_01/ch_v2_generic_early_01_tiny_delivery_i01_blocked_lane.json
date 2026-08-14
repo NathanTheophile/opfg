@@ -1,0 +1,108 @@
+{
+  "id": "ch_v2_generic_early_01_tiny_delivery_i01_blocked_lane",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_generic_early_01_tiny_delivery_i01_blocked_lane.title",
+  "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i01_blocked_lane.text",
+  "choices": [
+    {
+      "id": "squeeze_through",
+      "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i01_blocked_lane.choice.squeeze_through.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "squeeze_through_criticalfailure",
+            "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i01_blocked_lane.choice.squeeze_through.outcome.squeeze_through_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_tiny_delivery_i02_wrong_door"
+              }
+            ]
+          },
+          "failure": {
+            "id": "squeeze_through_failure",
+            "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i01_blocked_lane.choice.squeeze_through.outcome.squeeze_through_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_tiny_delivery_i02_wrong_door"
+              }
+            ]
+          },
+          "success": {
+            "id": "squeeze_through_success",
+            "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i01_blocked_lane.choice.squeeze_through.outcome.squeeze_through_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_tiny_delivery_i02_wrong_door"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "squeeze_through_criticalsuccess",
+            "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i01_blocked_lane.choice.squeeze_through.outcome.squeeze_through_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_tiny_delivery_i02_wrong_door"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "go_around",
+      "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i01_blocked_lane.choice.go_around.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "detour",
+          "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i01_blocked_lane.choice.go_around.outcome.detour.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_tiny_delivery_i02_wrong_door"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_washer",
+      "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i01_blocked_lane.choice.ask_washer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "asked",
+          "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i01_blocked_lane.choice.ask_washer.outcome.asked.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_tiny_delivery_i02_wrong_door"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "id": "ch_v2_generic_early_01_lost_button_i01_under_board",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_generic_early_01_lost_button_i01_under_board.title",
+  "textKey": "event.ch_v2_generic_early_01_lost_button_i01_under_board.text",
+  "choices": [
+    {
+      "id": "hook_string",
+      "textKey": "event.ch_v2_generic_early_01_lost_button_i01_under_board.choice.hook_string.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hook_string_criticalfailure",
+            "textKey": "event.ch_v2_generic_early_01_lost_button_i01_under_board.choice.hook_string.outcome.hook_string_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_lost_button_i02_owner_checks"
+              }
+            ]
+          },
+          "failure": {
+            "id": "hook_string_failure",
+            "textKey": "event.ch_v2_generic_early_01_lost_button_i01_under_board.choice.hook_string.outcome.hook_string_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_lost_button_i02_owner_checks"
+              }
+            ]
+          },
+          "success": {
+            "id": "hook_string_success",
+            "textKey": "event.ch_v2_generic_early_01_lost_button_i01_under_board.choice.hook_string.outcome.hook_string_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_lost_button_i02_owner_checks"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hook_string_criticalsuccess",
+            "textKey": "event.ch_v2_generic_early_01_lost_button_i01_under_board.choice.hook_string.outcome.hook_string_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_lost_button_i02_owner_checks"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "use_wax",
+      "textKey": "event.ch_v2_generic_early_01_lost_button_i01_under_board.choice.use_wax.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "resourceful"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "waxed",
+          "textKey": "event.ch_v2_generic_early_01_lost_button_i01_under_board.choice.use_wax.outcome.waxed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_lost_button_i02_owner_checks"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "show_neighbor",
+      "textKey": "event.ch_v2_generic_early_01_lost_button_i01_under_board.choice.show_neighbor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shown",
+          "textKey": "event.ch_v2_generic_early_01_lost_button_i01_under_board.choice.show_neighbor.outcome.shown.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_lost_button_i02_owner_checks"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

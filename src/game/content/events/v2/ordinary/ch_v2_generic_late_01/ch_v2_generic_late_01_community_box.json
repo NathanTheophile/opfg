@@ -1,0 +1,88 @@
+{
+  "id": "ch_v2_generic_late_01_community_box",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_community_box.title",
+  "textKey": "event.ch_v2_generic_late_01_community_box.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "refuse_box",
+      "textKey": "event.ch_v2_generic_late_01_community_box.choice.refuse_box.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_box_outcome",
+          "textKey": "event.ch_v2_generic_late_01_community_box.choice.refuse_box.outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "lend_own_money",
+      "textKey": "event.ch_v2_generic_late_01_community_box.choice.lend_own_money.text",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 50
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lend_own_money_outcome",
+          "textKey": "event.ch_v2_generic_late_01_community_box.choice.lend_own_money.outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -50
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lend_from_box",
+      "textKey": "event.ch_v2_generic_late_01_community_box.choice.lend_from_box.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lend_from_box_outcome",
+          "textKey": "event.ch_v2_generic_late_01_community_box.choice.lend_from_box.outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "write_terms",
+      "textKey": "event.ch_v2_generic_late_01_community_box.choice.write_terms.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "write_terms_outcome",
+          "textKey": "event.ch_v2_generic_late_01_community_box.choice.write_terms.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
