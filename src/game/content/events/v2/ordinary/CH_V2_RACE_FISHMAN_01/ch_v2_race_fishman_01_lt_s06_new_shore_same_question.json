@@ -1,0 +1,86 @@
+{
+  "id": "ch_v2_race_fishman_01_lt_s06_new_shore_same_question",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_race_fishman_01_lt_s06_new_shore_same_question.title",
+  "textKey": "event.ch_v2_race_fishman_01_lt_s06_new_shore_same_question.text",
+  "choices": [
+    {
+      "id": "ask_for_return",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s06_new_shore_same_question.choice.ask_for_return.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "return_named",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s06_new_shore_same_question.choice.ask_for_return.outcome.return_named.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s07a_name_a_return",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "require_preparation",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s06_new_shore_same_question.choice.require_preparation.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "preparation_required",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s06_new_shore_same_question.choice.require_preparation.outcome.preparation_required.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s07b_tools_first",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline_new_place",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s06_new_shore_same_question.choice.decline_new_place.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "new_place_refused",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s06_new_shore_same_question.choice.decline_new_place.outcome.new_place_refused.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "locationHasTag",
+        "tagId": "coastal"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  },
+  "priority": 100
+}

@@ -1,0 +1,55 @@
+{
+  "id": "ch_v2_race_giant_01_lt07b_patient_queue",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_race_giant_01_lt07b_patient_queue.title",
+  "textKey": "event.ch_v2_race_giant_01_lt07b_patient_queue.text",
+  "choices": [
+    {
+      "id": "keep_sequence",
+      "textKey": "event.ch_v2_race_giant_01_lt07b_patient_queue.choice.keep_sequence.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sequence_kept",
+          "textKey": "event.ch_v2_race_giant_01_lt07b_patient_queue.choice.keep_sequence.outcome.sequence_kept.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_giant_01_lt08b_owner_waits",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "explain_delay",
+      "textKey": "event.ch_v2_race_giant_01_lt07b_patient_queue.choice.explain_delay.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "delay_explained",
+          "textKey": "event.ch_v2_race_giant_01_lt07b_patient_queue.choice.explain_delay.outcome.delay_explained.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_giant_01_lt08b_owner_waits",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100
+}

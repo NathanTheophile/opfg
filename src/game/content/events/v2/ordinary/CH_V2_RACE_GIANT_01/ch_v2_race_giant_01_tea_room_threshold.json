@@ -1,0 +1,184 @@
+{
+  "id": "ch_v2_race_giant_01_tea_room_threshold",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_race_giant_01_tea_room_threshold.title",
+  "textKey": "event.ch_v2_race_giant_01_tea_room_threshold.text",
+  "choices": [
+    {
+      "id": "read_room",
+      "textKey": "event.ch_v2_race_giant_01_tea_room_threshold.choice.read_room.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_room_criticalfailure",
+            "textKey": "event.ch_v2_race_giant_01_tea_room_threshold.choice.read_room.outcome.read_room_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_tea_room_threshold_i01_bench_shift"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_room_failure",
+            "textKey": "event.ch_v2_race_giant_01_tea_room_threshold.choice.read_room.outcome.read_room_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_tea_room_threshold_i01_bench_shift"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_room_success",
+            "textKey": "event.ch_v2_race_giant_01_tea_room_threshold.choice.read_room.outcome.read_room_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_tea_room_threshold_i01_bench_shift"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_room_criticalsuccess",
+            "textKey": "event.ch_v2_race_giant_01_tea_room_threshold.choice.read_room.outcome.read_room_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_tea_room_threshold_i01_bench_shift"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "propose_floor",
+      "textKey": "event.ch_v2_race_giant_01_tea_room_threshold.choice.propose_floor.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "propose_floor_criticalfailure",
+            "textKey": "event.ch_v2_race_giant_01_tea_room_threshold.choice.propose_floor.outcome.propose_floor_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_tea_room_threshold_i01_bench_shift"
+              }
+            ]
+          },
+          "failure": {
+            "id": "propose_floor_failure",
+            "textKey": "event.ch_v2_race_giant_01_tea_room_threshold.choice.propose_floor.outcome.propose_floor_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_tea_room_threshold_i01_bench_shift"
+              }
+            ]
+          },
+          "success": {
+            "id": "propose_floor_success",
+            "textKey": "event.ch_v2_race_giant_01_tea_room_threshold.choice.propose_floor.outcome.propose_floor_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_tea_room_threshold_i01_bench_shift"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "propose_floor_criticalsuccess",
+            "textKey": "event.ch_v2_race_giant_01_tea_room_threshold.choice.propose_floor.outcome.propose_floor_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_tea_room_threshold_i01_bench_shift"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "take_outside_bench",
+      "textKey": "event.ch_v2_race_giant_01_tea_room_threshold.choice.take_outside_bench.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "outside_bench",
+          "textKey": "event.ch_v2_race_giant_01_tea_room_threshold.choice.take_outside_bench.outcome.outside_bench.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_giant_01_tea_room_threshold_i01_bench_shift"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "raceIs",
+        "raceId": "giant"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 95
+      }
+    ]
+  },
+  "narrativeFamily": "origin_race"
+}

@@ -1,0 +1,97 @@
+{
+  "id": "ch_v2_race_giant_01_lt07a_fast_thread",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_race_giant_01_lt07a_fast_thread.title",
+  "textKey": "event.ch_v2_race_giant_01_lt07a_fast_thread.text",
+  "choices": [
+    {
+      "id": "fast_precision",
+      "textKey": "event.ch_v2_race_giant_01_lt07a_fast_thread.choice.fast_precision.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "fast_precision_criticalfailure",
+            "textKey": "event.ch_v2_race_giant_01_lt07a_fast_thread.choice.fast_precision.outcome.fast_precision_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_race_giant_01_lt08a_hairline_mark",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "failure": {
+            "id": "fast_precision_failure",
+            "textKey": "event.ch_v2_race_giant_01_lt07a_fast_thread.choice.fast_precision.outcome.fast_precision_failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_race_giant_01_lt08a_hairline_mark",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "success": {
+            "id": "fast_precision_success",
+            "textKey": "event.ch_v2_race_giant_01_lt07a_fast_thread.choice.fast_precision.outcome.fast_precision_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_race_giant_01_lt08a_hairline_mark",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "fast_precision_criticalsuccess",
+            "textKey": "event.ch_v2_race_giant_01_lt07a_fast_thread.choice.fast_precision.outcome.fast_precision_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_race_giant_01_lt08a_hairline_mark",
+                "delayMonths": 24
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "stop_clock",
+      "textKey": "event.ch_v2_race_giant_01_lt07a_fast_thread.choice.stop_clock.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stopped",
+          "textKey": "event.ch_v2_race_giant_01_lt07a_fast_thread.choice.stop_clock.outcome.stopped.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_giant_01_lt08a_hairline_mark",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100
+}

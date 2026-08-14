@@ -1,0 +1,51 @@
+{
+  "id": "ch_v2_race_human_01_lt04a_gauge_shared",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "unrestricted",
+  "titleKey": "event.ch_v2_race_human_01_lt04a_gauge_shared.title",
+  "textKey": "event.ch_v2_race_human_01_lt04a_gauge_shared.text",
+  "choices": [
+    {
+      "id": "keep_new_notches",
+      "textKey": "event.ch_v2_race_human_01_lt04a_gauge_shared.choice.keep_new_notches.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_new_notches_outcome",
+          "textKey": "event.ch_v2_race_human_01_lt04a_gauge_shared.choice.keep_new_notches.outcome.keep_new_notches_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_human_01_lt05_method_catches_up",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "restore_original",
+      "textKey": "event.ch_v2_race_human_01_lt04a_gauge_shared.choice.restore_original.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "restore_original_outcome",
+          "textKey": "event.ch_v2_race_human_01_lt04a_gauge_shared.choice.restore_original.outcome.restore_original_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": -1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_human_01_lt05_method_catches_up",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

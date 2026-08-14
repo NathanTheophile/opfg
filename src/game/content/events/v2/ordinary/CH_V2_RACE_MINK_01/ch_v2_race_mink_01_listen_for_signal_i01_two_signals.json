@@ -1,0 +1,69 @@
+{
+  "id": "ch_v2_race_mink_01_listen_for_signal_i01_two_signals",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_race_mink_01_listen_for_signal_i01_two_signals.title",
+  "textKey": "event.ch_v2_race_mink_01_listen_for_signal_i01_two_signals.text",
+  "choices": [
+    {
+      "id": "verify_nearest_source",
+      "textKey": "event.ch_v2_race_mink_01_listen_for_signal_i01_two_signals.choice.verify_nearest_source.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "near_source_checked",
+          "textKey": "event.ch_v2_race_mink_01_listen_for_signal_i01_two_signals.choice.verify_nearest_source.outcome.near_source_checked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_mink_01_listen_for_signal_i02_verified_source"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_signal_detail",
+      "textKey": "event.ch_v2_race_mink_01_listen_for_signal_i01_two_signals.choice.ask_signal_detail.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "detail_requested",
+          "textKey": "event.ch_v2_race_mink_01_listen_for_signal_i01_two_signals.choice.ask_signal_detail.outcome.detail_requested.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_mink_01_listen_for_signal_i02_verified_source"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_both_open",
+      "textKey": "event.ch_v2_race_mink_01_listen_for_signal_i01_two_signals.choice.keep_both_open.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "both_open",
+          "textKey": "event.ch_v2_race_mink_01_listen_for_signal_i01_two_signals.choice.keep_both_open.outcome.both_open.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_mink_01_listen_for_signal_i02_verified_source"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

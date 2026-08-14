@@ -1,0 +1,72 @@
+{
+  "id": "ch_v2_race_fishman_01_price_from_below_i01_clean_recovery",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_race_fishman_01_price_from_below_i01_clean_recovery.title",
+  "textKey": "event.ch_v2_race_fishman_01_price_from_below_i01_clean_recovery.text",
+  "choices": [
+    {
+      "id": "hand_it_over",
+      "textKey": "event.ch_v2_race_fishman_01_price_from_below_i01_clean_recovery.choice.hand_it_over.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lot_returned",
+          "textKey": "event.ch_v2_race_fishman_01_price_from_below_i01_clean_recovery.choice.hand_it_over.outcome.lot_returned.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_price_from_below_i02_terms"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "check_damage_first",
+      "textKey": "event.ch_v2_race_fishman_01_price_from_below_i01_clean_recovery.choice.check_damage_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "checked_first",
+          "textKey": "event.ch_v2_race_fishman_01_price_from_below_i01_clean_recovery.choice.check_damage_first.outcome.checked_first.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_price_from_below_i02_terms"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_terms_now",
+      "textKey": "event.ch_v2_race_fishman_01_price_from_below_i01_clean_recovery.choice.ask_terms_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "terms_named",
+          "textKey": "event.ch_v2_race_fishman_01_price_from_below_i01_clean_recovery.choice.ask_terms_now.outcome.terms_named.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_price_from_below_i02_terms"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "neighborhood_merchant"
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "id": "ch_v2_race_fishman_01_lt_s10_called_before_asked",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_race_fishman_01_lt_s10_called_before_asked.title",
+  "textKey": "event.ch_v2_race_fishman_01_lt_s10_called_before_asked.text",
+  "choices": [
+    {
+      "id": "offer_help_yourself",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s10_called_before_asked.choice.offer_help_yourself.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "voluntary_offer",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s10_called_before_asked.choice.offer_help_yourself.outcome.voluntary_offer.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s11a_voluntary_help",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stop_the_assignment",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s10_called_before_asked.choice.stop_the_assignment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "assignment_stopped",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s10_called_before_asked.choice.stop_the_assignment.outcome.assignment_stopped.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s11b_refuse_automatic_role",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "walk_away",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s10_called_before_asked.choice.walk_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "role_left",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s10_called_before_asked.choice.walk_away.outcome.role_left.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "locationHasTag",
+        "tagId": "coastal"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  },
+  "priority": 100
+}

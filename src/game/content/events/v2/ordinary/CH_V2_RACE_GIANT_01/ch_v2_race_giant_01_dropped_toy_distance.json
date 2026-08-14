@@ -1,0 +1,100 @@
+{
+  "id": "ch_v2_race_giant_01_dropped_toy_distance",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_race_giant_01_dropped_toy_distance.title",
+  "textKey": "event.ch_v2_race_giant_01_dropped_toy_distance.text",
+  "choices": [
+    {
+      "id": "set_down",
+      "textKey": "event.ch_v2_race_giant_01_dropped_toy_distance.choice.set_down.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "space_given",
+          "textKey": "event.ch_v2_race_giant_01_dropped_toy_distance.choice.set_down.outcome.space_given.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "roll_gently",
+      "textKey": "event.ch_v2_race_giant_01_dropped_toy_distance.choice.roll_gently.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "toy_returned",
+          "textKey": "event.ch_v2_race_giant_01_dropped_toy_distance.choice.roll_gently.outcome.toy_returned.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "ask_where",
+      "textKey": "event.ch_v2_race_giant_01_dropped_toy_distance.choice.ask_where.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "asked_first",
+          "textKey": "event.ch_v2_race_giant_01_dropped_toy_distance.choice.ask_where.outcome.asked_first.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "sit_wait",
+      "textKey": "event.ch_v2_race_giant_01_dropped_toy_distance.choice.sit_wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "patient_distance",
+          "textKey": "event.ch_v2_race_giant_01_dropped_toy_distance.choice.sit_wait.outcome.patient_distance.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "patient"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "raceIs",
+        "raceId": "giant"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 36
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 95
+      }
+    ]
+  },
+  "narrativeFamily": "origin_race"
+}

@@ -1,0 +1,72 @@
+{
+  "id": "ch_v2_race_giant_01_fragile_nest_i01_rim_flexes",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_race_giant_01_fragile_nest_i01_rim_flexes.title",
+  "textKey": "event.ch_v2_race_giant_01_fragile_nest_i01_rim_flexes.text",
+  "choices": [
+    {
+      "id": "support_only",
+      "textKey": "event.ch_v2_race_giant_01_fragile_nest_i01_rim_flexes.choice.support_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "supported",
+          "textKey": "event.ch_v2_race_giant_01_fragile_nest_i01_rim_flexes.choice.support_only.outcome.supported.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_giant_01_fragile_nest_i02_last_support"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "grass_tie",
+      "textKey": "event.ch_v2_race_giant_01_fragile_nest_i01_rim_flexes.choice.grass_tie.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "grass_tie",
+          "textKey": "event.ch_v2_race_giant_01_fragile_nest_i01_rim_flexes.choice.grass_tie.outcome.grass_tie.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_giant_01_fragile_nest_i02_last_support"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "resourceful"
+      }
+    },
+    {
+      "id": "wait_calm",
+      "textKey": "event.ch_v2_race_giant_01_fragile_nest_i01_rim_flexes.choice.wait_calm.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "waited",
+          "textKey": "event.ch_v2_race_giant_01_fragile_nest_i01_rim_flexes.choice.wait_calm.outcome.waited.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_giant_01_fragile_nest_i02_last_support"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "patient"
+      }
+    }
+  ]
+}

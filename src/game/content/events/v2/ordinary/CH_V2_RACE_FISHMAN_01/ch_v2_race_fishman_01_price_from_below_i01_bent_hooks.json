@@ -1,0 +1,82 @@
+{
+  "id": "ch_v2_race_fishman_01_price_from_below_i01_bent_hooks",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_race_fishman_01_price_from_below_i01_bent_hooks.title",
+  "textKey": "event.ch_v2_race_fishman_01_price_from_below_i01_bent_hooks.text",
+  "choices": [
+    {
+      "id": "admit_damage",
+      "textKey": "event.ch_v2_race_fishman_01_price_from_below_i01_bent_hooks.choice.admit_damage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "damage_admitted",
+          "textKey": "event.ch_v2_race_fishman_01_price_from_below_i01_bent_hooks.choice.admit_damage.outcome.damage_admitted.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_price_from_below_i02_terms"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "separate_good_hooks",
+      "textKey": "event.ch_v2_race_fishman_01_price_from_below_i01_bent_hooks.choice.separate_good_hooks.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "damage_sorted",
+          "textKey": "event.ch_v2_race_fishman_01_price_from_below_i01_bent_hooks.choice.separate_good_hooks.outcome.damage_sorted.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_price_from_below_i02_terms"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "push_back_on_easy",
+      "textKey": "event.ch_v2_race_fishman_01_price_from_below_i01_bent_hooks.choice.push_back_on_easy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "easy_contested",
+          "textKey": "event.ch_v2_race_fishman_01_price_from_below_i01_bent_hooks.choice.push_back_on_easy.outcome.easy_contested.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_price_from_below_i02_terms"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "neighborhood_merchant"
+  ]
+}

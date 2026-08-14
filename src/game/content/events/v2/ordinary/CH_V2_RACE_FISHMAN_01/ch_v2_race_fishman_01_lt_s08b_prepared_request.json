@@ -1,0 +1,74 @@
+{
+  "id": "ch_v2_race_fishman_01_lt_s08b_prepared_request",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_race_fishman_01_lt_s08b_prepared_request.title",
+  "textKey": "event.ch_v2_race_fishman_01_lt_s08b_prepared_request.text",
+  "choices": [
+    {
+      "id": "approve_preparation",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s08b_prepared_request.choice.approve_preparation.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "preparation_approved",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s08b_prepared_request.choice.approve_preparation.outcome.preparation_approved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s09_reputation_precedes_you",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "add_abort_rule",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s08b_prepared_request.choice.add_abort_rule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "abort_rule",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s08b_prepared_request.choice.add_abort_rule.outcome.abort_rule.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s09_reputation_precedes_you",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline_even_prepared",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s08b_prepared_request.choice.decline_even_prepared.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "prepared_not_entitled",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s08b_prepared_request.choice.decline_even_prepared.outcome.prepared_not_entitled.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s09_reputation_precedes_you",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

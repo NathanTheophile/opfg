@@ -1,0 +1,73 @@
+{
+  "id": "ch_v2_race_giant_01_lt06_rush_request",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_race_giant_01_lt06_rush_request.title",
+  "textKey": "event.ch_v2_race_giant_01_lt06_rush_request.text",
+  "choices": [
+    {
+      "id": "rush",
+      "textKey": "event.ch_v2_race_giant_01_lt06_rush_request.choice.rush.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rush_path",
+          "textKey": "event.ch_v2_race_giant_01_lt06_rush_request.choice.rush.outcome.rush_path.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_giant_01_lt07a_fast_thread",
+              "delayMonths": 30
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "one_first",
+      "textKey": "event.ch_v2_race_giant_01_lt06_rush_request.choice.one_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "patient_path",
+          "textKey": "event.ch_v2_race_giant_01_lt06_rush_request.choice.one_first.outcome.patient_path.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_giant_01_lt07b_patient_queue",
+              "delayMonths": 30
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stage",
+      "textKey": "event.ch_v2_race_giant_01_lt06_rush_request.choice.stage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "staged_path",
+          "textKey": "event.ch_v2_race_giant_01_lt06_rush_request.choice.stage.outcome.staged_path.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_giant_01_lt07b_patient_queue",
+              "delayMonths": 30
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100
+}

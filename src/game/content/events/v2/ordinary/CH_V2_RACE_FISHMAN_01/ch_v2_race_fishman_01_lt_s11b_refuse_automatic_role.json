@@ -1,0 +1,79 @@
+{
+  "id": "ch_v2_race_fishman_01_lt_s11b_refuse_automatic_role",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_race_fishman_01_lt_s11b_refuse_automatic_role.title",
+  "textKey": "event.ch_v2_race_fishman_01_lt_s11b_refuse_automatic_role.text",
+  "choices": [
+    {
+      "id": "accept_after_asking",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s11b_refuse_automatic_role.choice.accept_after_asking.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "asked_then_helped",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s11b_refuse_automatic_role.choice.accept_after_asking.outcome.asked_then_helped.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s12b_permission_returns",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline_after_asking",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s11b_refuse_automatic_role.choice.decline_after_asking.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "asked_then_refused",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s11b_refuse_automatic_role.choice.decline_after_asking.outcome.asked_then_refused.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s12b_permission_returns",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "make_them_repeat_rule",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s11b_refuse_automatic_role.choice.make_them_repeat_rule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rule_repeated",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s11b_refuse_automatic_role.choice.make_them_repeat_rule.outcome.rule_repeated.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s12b_permission_returns",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

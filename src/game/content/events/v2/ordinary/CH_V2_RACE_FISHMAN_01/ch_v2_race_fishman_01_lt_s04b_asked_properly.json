@@ -1,0 +1,74 @@
+{
+  "id": "ch_v2_race_fishman_01_lt_s04b_asked_properly",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_race_fishman_01_lt_s04b_asked_properly.title",
+  "textKey": "event.ch_v2_race_fishman_01_lt_s04b_asked_properly.text",
+  "choices": [
+    {
+      "id": "acknowledge_request",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s04b_asked_properly.choice.acknowledge_request.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "request_acknowledged",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s04b_asked_properly.choice.acknowledge_request.outcome.request_acknowledged.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s05_news_from_home",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_refusal",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s04b_asked_properly.choice.keep_refusal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refusal_kept",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s04b_asked_properly.choice.keep_refusal.outcome.refusal_kept.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s05_news_from_home",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "offer_method_only",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s04b_asked_properly.choice.offer_method_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "method_only",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s04b_asked_properly.choice.offer_method_only.outcome.method_only.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s05_news_from_home",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

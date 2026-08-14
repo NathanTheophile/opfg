@@ -1,0 +1,69 @@
+{
+  "id": "ch_v2_race_fishman_01_under_hull_before_departure_i01_clear_mark",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_race_fishman_01_under_hull_before_departure_i01_clear_mark.title",
+  "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure_i01_clear_mark.text",
+  "choices": [
+    {
+      "id": "trace_with_finger",
+      "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure_i01_clear_mark.choice.trace_with_finger.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mark_traced",
+          "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure_i01_clear_mark.choice.trace_with_finger.outcome.mark_traced.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_under_hull_before_departure_i02_departure_bell"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "report_only_seen",
+      "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure_i01_clear_mark.choice.report_only_seen.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "facts_only",
+          "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure_i01_clear_mark.choice.report_only_seen.outcome.facts_only.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_under_hull_before_departure_i02_departure_bell"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_second_check",
+      "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure_i01_clear_mark.choice.ask_second_check.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "second_check",
+          "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure_i01_clear_mark.choice.ask_second_check.outcome.second_check.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_under_hull_before_departure_i02_departure_bell"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

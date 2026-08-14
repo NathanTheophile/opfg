@@ -1,0 +1,74 @@
+{
+  "id": "ch_v2_race_fishman_01_called_again_i01_cost_of_haste",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_race_fishman_01_called_again_i01_cost_of_haste.title",
+  "textKey": "event.ch_v2_race_fishman_01_called_again_i01_cost_of_haste.text",
+  "choices": [
+    {
+      "id": "show_the_collision",
+      "textKey": "event.ch_v2_race_fishman_01_called_again_i01_cost_of_haste.choice.show_the_collision.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cost_shown",
+          "textKey": "event.ch_v2_race_fishman_01_called_again_i01_cost_of_haste.choice.show_the_collision.outcome.cost_shown.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_called_again_i02_next_time"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "make_them_reset",
+      "textKey": "event.ch_v2_race_fishman_01_called_again_i01_cost_of_haste.choice.make_them_reset.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safety_reset",
+          "textKey": "event.ch_v2_race_fishman_01_called_again_i01_cost_of_haste.choice.make_them_reset.outcome.safety_reset.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_called_again_i02_next_time"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_second_job",
+      "textKey": "event.ch_v2_race_fishman_01_called_again_i01_cost_of_haste.choice.take_second_job.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "second_job_taken",
+          "textKey": "event.ch_v2_race_fishman_01_called_again_i01_cost_of_haste.choice.take_second_job.outcome.second_job_taken.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_called_again_i02_next_time"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "id": "ch_v2_race_giant_01_blanket_fort",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_race_giant_01_blanket_fort.title",
+  "textKey": "event.ch_v2_race_giant_01_blanket_fort.text",
+  "choices": [
+    {
+      "id": "hold_roof",
+      "textKey": "event.ch_v2_race_giant_01_blanket_fort.choice.hold_roof.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "roof_held",
+          "textKey": "event.ch_v2_race_giant_01_blanket_fort.choice.hold_roof.outcome.roof_held.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_giant_01_blanket_fort_i01_new_shape"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "add_supports",
+      "textKey": "event.ch_v2_race_giant_01_blanket_fort.choice.add_supports.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "supports_added",
+          "textKey": "event.ch_v2_race_giant_01_blanket_fort.choice.add_supports.outcome.supports_added.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_giant_01_blanket_fort_i01_new_shape"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "resourceful"
+      }
+    },
+    {
+      "id": "play_from_entrance",
+      "textKey": "event.ch_v2_race_giant_01_blanket_fort.choice.play_from_entrance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "outside_role",
+          "textKey": "event.ch_v2_race_giant_01_blanket_fort.choice.play_from_entrance.outcome.outside_role.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_giant_01_blanket_fort_i01_new_shape"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "raceIs",
+        "raceId": "giant"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 24
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 59
+      }
+    ]
+  },
+  "narrativeFamily": "origin_race"
+}
