@@ -29,7 +29,6 @@ export function consumePhaseSlot(state: GameState, phaseBeforeResolution: GameSt
       ...withCareerHandoff,
       careerPhase,
       slotInMonth: 0,
-      shipMarketArrivalPending: careerPhase === 'active' ? true : state.shipMarketArrivalPending,
     };
   }
   return { ...advanceAge(state, state.ageMonths + 1, catalog), slotInMonth: 0 };

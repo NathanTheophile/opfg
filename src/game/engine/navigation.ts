@@ -74,7 +74,7 @@ export function applyMonthlyNavigationChoice(
   }
 
   if (choice === 'dock') {
-    next.travelState = 'on_land';
+    movePlayerToLocation(next, next.locationId, 'on_land');
   }
 
   return next;

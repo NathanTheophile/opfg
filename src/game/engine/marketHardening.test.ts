@@ -4,6 +4,7 @@ import type { EventDefinition } from '../content/schema';
 import { createInitialGameState } from '../model/initialState';
 import { chooseInSession, createSessionState, dismissResolution } from '../session/gameSession';
 import { buyItem, buyShip, canBuyItem, canSellItem, sellItem, shipBuyPrice, shipSellPrice } from './economy';
+import { findCurrentEvent } from './events';
 
 const event: EventDefinition = {
   id: 'market_test_event', kind: 'normal', titleKey: 'x', textKey: 'x',
@@ -73,19 +74,51 @@ describe('D2.6 fixed markets and Arrival Hub', () => {
   it('runs Arrival, Merchant, confirmation, Dice negotiation and Explore as slotless System Events', () => {
     const { catalog, state } = marketState();
     state.shipMarketArrivalPending = true;
-    const before = { ageMonths: state.ageMonths, slotInMonth: state.slotInMonth, historyLength: state.history.length };
+    const before = {
+      ageMonths: state.ageMonths,
+      slotInMonth: state.slotInMonth,
+      historyLength: state.history.length,
+    };
+
     let session = createSessionState(state, catalog);
-    expect(session.systemEvent?.kind).toBe('system');
-    session = dismissResolution(chooseInSession(session, catalog, 'market:merchant'), catalog);
-    session = dismissResolution(chooseInSession(session, catalog, 'market:buy:list'), catalog);
-    session = dismissResolution(chooseInSession(session, catalog, 'market:item:buy:timber'), catalog);
+    expect(session.gameState?.currentEventId).toBe('system_market:arrival');
+    expect(session.gameState && findCurrentEvent(session.gameState, catalog)?.kind).toBe('system');
+
+    session = dismissResolution(
+      chooseInSession(session, catalog, 'market:merchant'),
+      catalog,
+    );
+    expect(session.gameState?.currentEventId).toBe('system_market:merchant');
+
+    session = dismissResolution(
+      chooseInSession(session, catalog, 'market:buy:list'),
+      catalog,
+    );
+    expect(session.gameState?.currentEventId).toBe('system_market:buy');
+
+    session = dismissResolution(
+      chooseInSession(session, catalog, 'market:item:buy:timber'),
+      catalog,
+    );
+    expect(session.gameState?.currentEventId).toBe('system_market:confirm:item:buy:timber');
+
     const negotiated = chooseInSession(session, catalog, 'market:negotiate');
     expect(negotiated.lastResolution?.dice?.rawRoll).toBeGreaterThanOrEqual(1);
+    expect(negotiated.gameState?.currentEventId).toBe('system_market:merchant');
+
     session = dismissResolution(negotiated, catalog);
-    expect(session.systemEvent?.id).toBe('system_market:merchant');
-    session = dismissResolution(chooseInSession(session, catalog, 'market:explore'), catalog);
-    expect(session.systemEvent).toBeNull();
-    expect(session.gameState).toMatchObject({ ageMonths: before.ageMonths, slotInMonth: before.slotInMonth, shipMarketArrivalPending: false, currentEventId: event.id });
+    expect(session.gameState?.currentEventId).toBe('system_market:merchant');
+
+    session = dismissResolution(
+      chooseInSession(session, catalog, 'market:explore'),
+      catalog,
+    );
+    expect(session.gameState).toMatchObject({
+      ageMonths: before.ageMonths,
+      slotInMonth: before.slotInMonth,
+      shipMarketArrivalPending: false,
+      currentEventId: event.id,
+    });
     expect(session.gameState?.history).toHaveLength(before.historyLength);
   });
 });

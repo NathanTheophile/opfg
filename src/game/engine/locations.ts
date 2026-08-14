@@ -8,9 +8,14 @@ export function findLocation(catalog: ContentCatalog, locationId: LocationId): L
 }
 
 export function movePlayerToLocation(state: GameState, locationId: LocationId, travelState: TravelState): void {
-  if (state.locationId !== locationId) state.shipMarketArrivalPending = true;
+  const arrivesOnLand =
+    travelState === 'on_land'
+    && (state.locationId !== locationId || state.travelState !== 'on_land');
+
   state.locationId = locationId;
   state.travelState = travelState;
+
+  if (arrivesOnLand) state.shipMarketArrivalPending = true;
 }
 
 export function getLocationAncestors(catalog: ContentCatalog, locationId: LocationId): LocationDefinition[] {

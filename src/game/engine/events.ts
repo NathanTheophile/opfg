@@ -9,9 +9,9 @@ import { needsMonthlyNavigationDecision } from './navigation';
 import { finalizePendingSlot } from './time';
 import { findDockableAccess } from './locations';
 import { countFallbackStreak } from './maritime';
+import { createArrivalMarketEvent, materializeMarketEvent } from './marketEvents';
 
 export const FALLBACK_EVENT_IDS = ['dead_end_on_land', 'dead_end_at_sea'] as const;
-const SHIP_MARKET_PURCHASE_EVENT_ID = 'active_port_trade_01_ship_purchase_offer';
 
 interface DueMajorSelection {
   candidates: NormalDefinition[];
@@ -38,8 +38,14 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
   }
 
   if (state.shipMarketArrivalPending) {
-    if (isArrivalMarketHubAvailable(state, catalog)) return { ...state, currentEventId: null };
-    state = { ...state, shipMarketArrivalPending: false };
+    const marketEvent = createArrivalMarketEvent(state, catalog);
+    if (marketEvent) return selectEvent(state, catalog, marketEvent);
+
+    // A legacy save may still carry the flag while at sea. Preserve it until
+    // the player actually docks; only a landed non-market Location consumes it.
+    if (state.travelState === 'on_land') {
+      state = { ...state, shipMarketArrivalPending: false };
+    }
   }
 
   const major = findDueMajorNarrativeCandidates(state, catalog);
@@ -53,7 +59,6 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
   const candidates = catalog.events.filter((event): event is NormalDefinition =>
     event.kind === 'normal'
       && event.majorTrack === undefined
-      && event.id !== SHIP_MARKET_PURCHASE_EVENT_ID
       && !FALLBACK_EVENT_IDS.includes(event.id as typeof FALLBACK_EVENT_IDS[number])
       && isNormalOccurrenceEligible(event, state)
       && isEligible(event, state, catalog),
@@ -232,5 +237,7 @@ function isEligible(event: EventDefinition, state: GameState, catalog: ContentCa
 }
 
 export function findCurrentEvent(state: GameState, catalog: ContentCatalog): EventDefinition | undefined {
-  return catalog.events.find(({ id }) => id === state.currentEventId);
+  if (state.currentEventId === null) return undefined;
+  return catalog.events.find(({ id }) => id === state.currentEventId)
+    ?? materializeMarketEvent(state, catalog, state.currentEventId);
 }

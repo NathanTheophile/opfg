@@ -5,7 +5,8 @@ import { resolveDiceCheck } from './dice';
 import type { DiceRollResult } from './dice';
 import { applyEffects } from './effects';
 import { nextRandom } from './rng';
-import { findCriticalEvent, selectNextEvent } from './events';
+import { findCriticalEvent, findCurrentEvent, selectNextEvent } from './events';
+import { isMarketSystemEventId, marketReturnEvent } from './marketEvents';
 import { consumePhaseSlot, finalizePendingSlot } from './time';
 
 const MAX_IMMEDIATE_EVENTS_PER_CHAIN = 1000;
@@ -19,8 +20,8 @@ export function resolveChoice(
 ): ChoiceResolutionResult {
   if (state.currentEventId !== eventId) throw new Error(`Event "${eventId}" is not the current event.`);
 
-  const event = catalog.events.find(({ id }) => id === eventId);
-  if (!event) throw new Error(`Unknown event "${eventId}".`);
+  const event = findCurrentEvent(state, catalog);
+  if (!event || event.id !== eventId) throw new Error(`Unknown event "${eventId}".`);
 
   const choice = event.choices.find(({ id }) => id === choiceId);
   if (!choice) throw new Error(`Unknown choice "${choiceId}" in event "${eventId}".`);
@@ -77,6 +78,23 @@ function finalizeOutcome(
     ],
     scheduledEvents: consumeScheduledEntry(afterSystemResolution, catalog, event, state.ageMonths),
   };
+
+  if (event.kind === 'system' && isMarketSystemEventId(event.id)) {
+    const nextMarket = marketReturnEvent(resolvedState, catalog, event.id, choiceId);
+    const nextState = nextMarket
+      ? { ...resolvedState, currentEventId: nextMarket.id }
+      : selectNextEvent({
+          ...resolvedState,
+          shipMarketArrivalPending: false,
+          currentEventId: null,
+        }, catalog);
+
+    return {
+      state: nextState,
+      outcome,
+      dice,
+    };
+  }
 
   if (event.kind === 'immediate') {
     if (resolvedState.immediateEventQueue[0] !== event.id) throw new Error(`Immediate Event "${event.id}" is not at the head of the pending queue.`);

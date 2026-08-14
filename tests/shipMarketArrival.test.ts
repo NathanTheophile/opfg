@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { contentCatalog } from '../src/game/content/definitions';
 import type { ContentCatalog, EventDefinition } from '../src/game/content/schema';
-import { selectNextEvent } from '../src/game/engine/events';
+import { findCurrentEvent, selectNextEvent } from '../src/game/engine/events';
 import { movePlayerToLocation } from '../src/game/engine/locations';
 import { consumePhaseSlot } from '../src/game/engine/time';
 import { createInitialGameState } from '../src/game/model/initialState';
@@ -43,25 +43,39 @@ function fixtureEvent(id: string, kind: 'immediate' | 'scheduled'): EventDefinit
 }
 
 describe('ship market arrival and annual income', () => {
-  it('opens the no-slot Hub from explicit arrival metadata', () => {
+  it('selects the no-slot Hub as a real System Event from explicit arrival metadata', () => {
     const state = activeShiplessState();
     state.shipMarketArrivalPending = true;
     state.navigationDecisionAgeMonths = state.ageMonths;
+
     const selected = selectNextEvent(state, contentCatalog);
-    expect(selected.currentEventId).toBeNull();
+
+    expect(selected.currentEventId).toBe('system_market:arrival');
     expect(selected.shipMarketArrivalPending).toBe(true);
+    expect(findCurrentEvent(selected, contentCatalog)?.kind).toBe('system');
   });
 
   it('loops through Merchant and resumes real selection only on Explore', () => {
     const state = activeShiplessState();
     state.shipMarketArrivalPending = true;
     state.navigationDecisionAgeMonths = state.ageMonths;
+
     let session = createSessionState(state, contentCatalog);
-    session = dismissResolution(chooseInSession(session, contentCatalog, 'market:merchant'), contentCatalog);
-    expect(session.systemEvent?.id).toBe('system_market:merchant');
-    session = dismissResolution(chooseInSession(session, contentCatalog, 'market:explore'), contentCatalog);
-    expect(session.systemEvent).toBeNull();
+    expect(session.gameState?.currentEventId).toBe('system_market:arrival');
+
+    session = dismissResolution(
+      chooseInSession(session, contentCatalog, 'market:merchant'),
+      contentCatalog,
+    );
+    expect(session.gameState?.currentEventId).toBe('system_market:merchant');
+    expect(session.gameState && findCurrentEvent(session.gameState, contentCatalog)?.kind).toBe('system');
+
+    session = dismissResolution(
+      chooseInSession(session, contentCatalog, 'market:explore'),
+      contentCatalog,
+    );
     expect(session.gameState?.shipMarketArrivalPending).toBe(false);
+    expect(session.gameState?.currentEventId?.startsWith('system_market:')).not.toBe(true);
   });
 
   it('does not create a new arrival when only travelState changes at the same Location', () => {
@@ -75,7 +89,10 @@ describe('ship market arrival and annual income', () => {
   it('keeps Immediate ahead of the arrival Hub and the Hub ahead of due Scheduled Events', () => {
     const immediate = fixtureEvent('test_ship_market_immediate', 'immediate');
     const scheduled = fixtureEvent('test_ship_market_scheduled', 'scheduled');
-    const catalog: ContentCatalog = { ...contentCatalog, events: [...contentCatalog.events, immediate, scheduled] };
+    const catalog: ContentCatalog = {
+      ...contentCatalog,
+      events: [...contentCatalog.events, immediate, scheduled],
+    };
 
     const withImmediate = activeShiplessState();
     withImmediate.shipMarketArrivalPending = true;
@@ -96,7 +113,7 @@ describe('ship market arrival and annual income', () => {
       sourceChoiceId: 'choice',
     }];
     expect(selectNextEvent(withScheduled, catalog)).toMatchObject({
-      currentEventId: null,
+      currentEventId: 'system_market:arrival',
       shipMarketArrivalPending: true,
     });
   });
@@ -109,15 +126,21 @@ describe('ship market arrival and annual income', () => {
     state.player.stats.health = 20;
     state = consumePhaseSlot(state, 'origins', contentCatalog);
 
-    expect(state).toMatchObject({ ageMonths: 12, berries: 0, player: { stats: { health: 21 } } });
+    expect(state).toMatchObject({
+      ageMonths: 12,
+      berries: 0,
+      player: { stats: { health: 21 } },
+    });
 
-    while (state.careerPhase === 'childhood') state = consumePhaseSlot(state, 'childhood', contentCatalog);
+    while (state.careerPhase === 'childhood') {
+      state = consumePhaseSlot(state, 'childhood', contentCatalog);
+    }
 
     expect(state).toMatchObject({
       ageMonths: 180,
       berries: 5000,
       careerPhase: 'active',
-      shipMarketArrivalPending: true,
+      shipMarketArrivalPending: false,
       player: { stats: { health: 35 } },
     });
 
@@ -125,6 +148,11 @@ describe('ship market arrival and annual income', () => {
     state.slotInMonth = 1;
     state.player.stats.health = 30;
     state = consumePhaseSlot(state, 'active', contentCatalog);
-    expect(state).toMatchObject({ ageMonths: 192, berries: 5000, slotInMonth: 0, player: { stats: { health: 31 } } });
+    expect(state).toMatchObject({
+      ageMonths: 192,
+      berries: 5000,
+      slotInMonth: 0,
+      player: { stats: { health: 31 } },
+    });
   });
 });
