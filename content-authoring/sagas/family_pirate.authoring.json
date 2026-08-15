@@ -4295,18 +4295,12 @@
             "familyStructureId": "single_parent"
           },
           {
-            "type": "not",
-            "condition": {
-              "type": "originParentPresent",
-              "role": "mother"
-            }
-          },
-          {
             "type": "any",
             "conditions": [
               {
-                "type": "hasPlayed",
-                "eventId": "family_pirate_04_empty_berth"
+                "type": "hasOutcome",
+                "eventId": "family_pirate_04_empty_berth",
+                "outcomeId": "take_mug"
               },
               {
                 "type": "hasPlayed",
@@ -4428,6 +4422,11 @@
                   "type": "modifyStat",
                   "statId": "observation",
                   "amount": -1
+                },
+                {
+                  "type": "setNpcStatus",
+                  "npcId": "player_parent_2",
+                  "status": "unavailable"
                 }
               ],
               "text": {
@@ -4471,6 +4470,11 @@
                   "type": "modifyStat",
                   "statId": "intelligence",
                   "amount": -2
+                },
+                {
+                  "type": "setNpcStatus",
+                  "npcId": "player_parent_2",
+                  "status": "unavailable"
                 }
               ],
               "text": {
@@ -4519,6 +4523,11 @@
                   "type": "modifyStat",
                   "statId": "observation",
                   "amount": -1
+                },
+                {
+                  "type": "setNpcStatus",
+                  "npcId": "player_parent_2",
+                  "status": "unavailable"
                 }
               ],
               "text": {
@@ -7273,11 +7282,9 @@
             "familyStructureId": "single_parent"
           },
           {
-            "type": "not",
-            "condition": {
-              "type": "originParentPresent",
-              "role": "mother"
-            }
+            "type": "npcStatusIs",
+            "npcId": "player_parent_2",
+            "status": "unavailable"
           },
           {
             "type": "any",
@@ -9247,11 +9254,9 @@
         "type": "all",
         "conditions": [
           {
-            "type": "not",
-            "condition": {
-              "type": "originParentPresent",
-              "role": "mother"
-            }
+            "type": "npcStatusIs",
+            "npcId": "player_parent_2",
+            "status": "unavailable"
           },
           {
             "type": "any",
@@ -11955,13 +11960,6 @@
           "familyStructureId": "single_parent"
         },
         {
-          "type": "not",
-          "condition": {
-            "type": "originParentPresent",
-            "role": "mother"
-          }
-        },
-        {
           "type": "raceIs",
           "raceId": "human"
         }
@@ -11983,7 +11981,10 @@
           "outcomeId": "keep_watch"
         }
       ],
-      "expectNodeId": "family_pirate_10_choose_without_mother"
+      "expectNodeId": "family_pirate_10_choose_without_mother",
+      "npcStatuses": {
+        "player_parent_2": "unavailable"
+      }
     },
     {
       "id": "scenario_10_not_cargo",
@@ -12221,13 +12222,6 @@
           "familyStructureId": "single_parent"
         },
         {
-          "type": "not",
-          "condition": {
-            "type": "originParentPresent",
-            "role": "mother"
-          }
-        },
-        {
           "type": "raceIs",
           "raceId": "human"
         }
@@ -12254,7 +12248,10 @@
           "outcomeId": "keep_words"
         }
       ],
-      "expectNodeId": "family_pirate_13_mothers_salt_chart"
+      "expectNodeId": "family_pirate_13_mothers_salt_chart",
+      "npcStatuses": {
+        "player_parent_2": "unavailable"
+      }
     },
     {
       "id": "scenario_13_crew_has_limits",

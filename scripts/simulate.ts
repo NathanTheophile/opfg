@@ -98,7 +98,7 @@ if (warnings.length > 0 && args.verbose) {
 }
 
 if (args.jsonPath) {
-  const { runResults: _, ...report } = batch;
+  const { runResults: _, problematicRuns: __, ...report } = batch;
   const outputPath = resolve(args.jsonPath);
   writeFileSync(outputPath, `${JSON.stringify({ ...report, staticDiagnostics: warnings }, null, 2)}\n`, 'utf8');
   console.log(`\nJSON report: ${outputPath}`);

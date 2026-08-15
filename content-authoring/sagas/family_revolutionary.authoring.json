@@ -3569,11 +3569,16 @@
                   "type": "modifyStat",
                   "statId": "morale",
                   "amount": -1
+                },
+                {
+                  "type": "setNpcStatus",
+                  "npcId": "player_parent_2",
+                  "status": "departed"
                 }
               ],
               "text": {
-                "fr": "Ta mère cache le papier dans une boîte fixe qu’un adulte récupérera plus tard, sans utiliser ton cartable.",
-                "en": "Your mother hides the paper in a fixed dead drop an adult will retrieve later, without using your schoolbag."
+                "fr": "Ta mère cache le papier dans une boîte fixe qu’un adulte récupérera plus tard. C’est son dernier relais depuis le foyer avant de partir, sans utiliser ton cartable.",
+                "en": "Your mother hides the paper in a fixed dead drop an adult will retrieve later. It is her final relay from the household before leaving, without using your schoolbag."
               }
             }
           }
@@ -5523,24 +5528,14 @@
             "familyStructureId": "single_parent"
           },
           {
-            "type": "any",
-            "conditions": [
-              {
-                "type": "npcStatusIs",
-                "npcId": "player_parent_2",
-                "status": "dead"
-              },
-              {
-                "type": "npcStatusIs",
-                "npcId": "player_parent_2",
-                "status": "departed"
-              },
-              {
-                "type": "npcStatusIs",
-                "npcId": "player_parent_2",
-                "status": "unavailable"
-              }
-            ]
+            "type": "hasOutcome",
+            "eventId": "family_revolutionary_07_code_in_schoolbag_i01_resolution",
+            "outcomeId": "use_dead_drop"
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_2",
+            "status": "departed"
           }
         ]
       },
@@ -11109,7 +11104,7 @@
       "profileAffiliationId": "revolutionary",
       "npcStatuses": {
         "player_parent_1": "departed",
-        "player_parent_2": "unavailable"
+        "player_parent_2": "departed"
       },
       "history": [
         {
@@ -11144,8 +11139,8 @@
         },
         {
           "eventId": "family_revolutionary_07_code_in_schoolbag_i01_resolution",
-          "choiceId": "refuse_child_route",
-          "outcomeId": "refuse_child_route",
+          "choiceId": "use_dead_drop",
+          "outcomeId": "use_dead_drop",
           "ageMonths": 84
         }
       ]
@@ -11682,7 +11677,7 @@
       "profileAffiliationId": "revolutionary",
       "npcStatuses": {
         "player_parent_1": "departed",
-        "player_parent_2": "unavailable"
+        "player_parent_2": "departed"
       },
       "history": [
         {
@@ -11717,8 +11712,8 @@
         },
         {
           "eventId": "family_revolutionary_07_code_in_schoolbag_i01_resolution",
-          "choiceId": "refuse_child_route",
-          "outcomeId": "refuse_child_route",
+          "choiceId": "use_dead_drop",
+          "outcomeId": "use_dead_drop",
           "ageMonths": 84
         },
         {
