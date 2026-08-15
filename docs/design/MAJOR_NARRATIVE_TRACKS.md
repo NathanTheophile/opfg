@@ -74,9 +74,9 @@ Every complete Childhood resolves **exactly five Family Legacy root chapters** b
 | `childhood_02` | 48 months | first development / consequence |
 | `childhood_03` | 84 months | middle-childhood family identity |
 | `childhood_04` | 120 months | pre-adolescent pressure / divergence |
-| `childhood_05` | 156 months | adolescent inheritance / bridge toward Active |
+| `childhood_05` | 168 months | adolescent inheritance / bridge toward Active |
 
-The checkpoints make a chapter **due**. They do not require the Event to fire on the exact month if a higher-priority event occupies that slot.
+The checkpoints make a chapter **due**. They do not require the Event to fire on the exact month if a higher-priority event occupies that slot. Layer 5 is due at 168 so a Scheduled Event may consume that checkpoint; at 174 the still-missing Family layer is overdue and therefore wins before another Scheduled, preserving Family completion before the 180-month Active boundary in normal Childhood flow.
 
 Five Family roots out of the 20 Childhood root slots reserve 25% of Childhood for the major family spine and leave 75% for the rest of life.
 
@@ -283,12 +283,12 @@ A chapter selects specialized eligible variants first and uses its single fallba
 
 ### 16.1 Five temporal layers, not five independent subjects
 
-Childhood still guarantees exactly five Family Legacy roots, due at 12 / 48 / 84 / 120 / 156 months.
+Childhood still guarantees exactly five Family Legacy roots, due at 12 / 48 / 84 / 120 / 168 months.
 
 Each checkpoint is a **temporal layer** of one connected narrative graph:
 
 ```text
-Layer 1y  -> Layer 4y -> Layer 8y -> Layer 12y -> Layer 15y inheritance
+Layer 1y  -> Layer 4y -> Layer 8y -> Layer 12y -> Layer 14y inheritance
 ```
 
 The player resolves exactly one Major Family node in each layer.

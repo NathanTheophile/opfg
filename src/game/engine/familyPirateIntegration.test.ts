@@ -29,7 +29,7 @@ describe('Family Pirate integration', () => {
     s.player.career.affiliationId = 'civilian';
     s.player.career.rankId = null;
     s.history = [
-      h('family_pirate_13_flag_means_mine_i01_take_pirate', 'resolve', 'active_pirate_take_pirate', 156),
+      h('family_pirate_13_flag_means_mine_i01_take_pirate', 'resolve', 'active_pirate_take_pirate', 168),
     ];
 
     const next = consumePhaseSlot(s, 'childhood', catalog);
@@ -48,7 +48,7 @@ describe('Family Pirate integration', () => {
     s.player.career.affiliationId = 'civilian';
     s.player.career.rankId = null;
     s.history = [
-      h('family_pirate_13_flag_means_mine_i01_defer', 'resolve', 'active_civilian_defer', 156),
+      h('family_pirate_13_flag_means_mine_i01_defer', 'resolve', 'active_civilian_defer', 168),
     ];
 
     const next = consumePhaseSlot(s, 'childhood', catalog);

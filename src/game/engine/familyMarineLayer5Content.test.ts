@@ -10,7 +10,7 @@ const catalog = loadNodeContentCatalog();
 function state(raceId: RaceId = 'human', familyStructureId: FamilyStructureId = 'two_parents'): GameState {
   const s = createInitialGameState(51313);
   s.careerPhase = 'childhood';
-  s.ageMonths = 156;
+  s.ageMonths = 168;
   s.player.profile.affiliationId = 'marine';
   s.player.profile.raceId = raceId;
   s.player.profile.familyStructureId = familyStructureId;
@@ -110,7 +110,7 @@ describe('Family Marine Layer 5 inheritance', () => {
     s.player.career.affiliationId = 'civilian';
     s.player.career.rankId = null;
     s.history = [
-      h('family_marine_13_your_name_on_roll_i03_signature', 'sign', 'active_marine_registered', 156),
+      h('family_marine_13_your_name_on_roll_i03_signature', 'sign', 'active_marine_registered', 168),
     ];
 
     const next = consumePhaseSlot(s, 'childhood', catalog);
@@ -129,7 +129,7 @@ describe('Family Marine Layer 5 inheritance', () => {
     s.player.career.affiliationId = 'civilian';
     s.player.career.rankId = null;
     s.history = [
-      h('family_marine_13_our_name_is_not_theirs_i03_answer', 'civilian', 'active_civilian_break', 156),
+      h('family_marine_13_our_name_is_not_theirs_i03_answer', 'civilian', 'active_civilian_break', 168),
     ];
 
     const next = consumePhaseSlot(s, 'childhood', catalog);

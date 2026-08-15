@@ -174,7 +174,7 @@ Cette répartition guide la production de contenu ; ce n’est pas un quota cons
 <!-- D2_WAVE2_NARRATIVE_RESET:FAMILY_GUARANTEE -->
 La garantie narrative obligatoire de Childhood n'est plus l'initiation d'une ancienne `Lifetime Thread`. Chaque personnage reçoit la **Family Legacy Saga correspondant à son affiliation familiale héritée**.
 
-Une Childhood complète contient **exactement cinq root Events de Family Saga**, dus aux checkpoints 12, 48, 84, 120 et 156 mois. Ces cinq checkpoints sont les couches temporelles d'un **DAG narratif connecté**, pas cinq pools indépendants. Après la première couche, le prochain node doit être descendant du Major node réellement vécu à la couche précédente, puis filtré par l'état actuel et History.
+Une Childhood complète contient **exactement cinq root Events de Family Saga**, dus aux checkpoints 12, 48, 84, 120 et 168 mois. Ces cinq checkpoints sont les couches temporelles d'un **DAG narratif connecté**, pas cinq pools indépendants. Après la première couche, le prochain node doit être descendant du Major node réellement vécu à la couche précédente, puis filtré par l'état actuel et History.
 
 La couche 1 conserve un fallback générique. À partir de la couche 2, les fallbacks sont **route-local** : chaque node précédent possède exactement une continuation fallback sûre, tandis que les descendants spécialisés éligibles et plus spécifiques gagnent d'abord. Les pyramides peuvent croiser, rejoindre une route partagée puis diverger à nouveau sans effacer History.
 

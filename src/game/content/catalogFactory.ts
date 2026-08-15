@@ -117,7 +117,7 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
         { id: 'childhood_02', phase: 'childhood' as const, dueAgeMonths: 48 },
         { id: 'childhood_03', phase: 'childhood' as const, dueAgeMonths: 84 },
         { id: 'childhood_04', phase: 'childhood' as const, dueAgeMonths: 120 },
-        { id: 'childhood_05', phase: 'childhood' as const, dueAgeMonths: 156 },
+        { id: 'childhood_05', phase: 'childhood' as const, dueAgeMonths: 168 },
       ],
     })),
     events,

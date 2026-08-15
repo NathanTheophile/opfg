@@ -59,7 +59,7 @@ function marineCatalog(events: EventDefinition[]) {
       { id: 'childhood_02', phase: 'childhood', dueAgeMonths: 48 },
       { id: 'childhood_03', phase: 'childhood', dueAgeMonths: 84 },
       { id: 'childhood_04', phase: 'childhood', dueAgeMonths: 120 },
-      { id: 'childhood_05', phase: 'childhood', dueAgeMonths: 156 },
+      { id: 'childhood_05', phase: 'childhood', dueAgeMonths: 168 },
     ],
   }];
   return catalog;
@@ -172,7 +172,7 @@ describe('Layered Major Narrative Track selection', () => {
       }),
     ]);
     const state = createInitialGameState(123);
-    state.history = [history('marine_giant_heritage', 156)];
+    state.history = [history('marine_giant_heritage', 168)];
 
     expect(completedMajorNarrativeMilestones(state, catalog)).toEqual(['marine_giant_inheritance']);
   });
