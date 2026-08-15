@@ -1,4 +1,5 @@
-import type { ContentCatalog, DiceResult, EventDefinition } from '../content/schema';
+import type { ContentCatalog, DiceResult, EventDefinition, StatId } from '../content/schema';
+import type { GameState, ItemId, ItemStack } from '../model/schema';
 import type { SimulationRunResult, SimulationTerminationReason } from './types';
 import { simulateRun } from './simulateRun';
 
@@ -15,6 +16,32 @@ export interface EventMetric {
   timesResolved: number;
   runsContaining: number;
   runPercentage: number;
+}
+
+export interface NumericDistribution {
+  min: number;
+  p10: number;
+  p50: number;
+  p90: number;
+  max: number;
+  average: number;
+}
+
+export interface ActiveFinalStateMetrics {
+  runs: number;
+  berries: NumericDistribution;
+  stats: Record<StatId, NumericDistribution>;
+  traitCount: NumericDistribution;
+  ordinaryItemStacks: NumericDistribution;
+  ordinaryItemCount: NumericDistribution;
+  equipmentOwned: NumericDistribution;
+  equipmentEquipped: NumericDistribution;
+  companionItemsOwned: NumericDistribution;
+  activeCompanionSlotOccupancy: { occupied: number; empty: number; occupancyPercentage: number };
+  equipmentItemIdsOwned: Record<ItemId, number>;
+  equipmentItemIdsEquipped: Record<ItemId, number>;
+  companionItemIdsOwned: Record<ItemId, number>;
+  activeCompanionItemIds: Record<ItemId, number>;
 }
 
 export interface SimulationBatchResult {
@@ -53,6 +80,7 @@ export interface SimulationBatchResult {
   events: EventMetric[];
   traits: Record<string, number>;
   items: Record<string, number>;
+  activeFinalState: ActiveFinalStateMetrics;
   pendingScheduledById: Record<string, { due: number; notDue: number }>;
   problematicRuns: SimulationRunResult[];
   runResults: SimulationRunResult[];
@@ -73,6 +101,7 @@ export function simulateBatch(options: SimulateBatchOptions): SimulationBatchRes
   const items: Record<string, number> = {};
   const pendingScheduledById: Record<string, { due: number; notDue: number }> = {};
   const eventCounters = new Map(options.catalog.events.map((event) => [event.id, { event, times: 0, runs: 0 }]));
+  const activeFinalState = createActiveFinalStateAccumulator(options.catalog);
 
   for (const result of runResults) {
     terminations[result.terminationReason] += 1;
@@ -81,6 +110,7 @@ export function simulateBatch(options: SimulateBatchOptions): SimulationBatchRes
     result.npcDeaths.forEach((id) => increment(npcDeathsById, id));
     result.traits.forEach((id) => increment(traits, id));
     result.items.forEach((id) => increment(items, id));
+    if (result.activeReached) activeFinalState.add(result.finalState);
     result.pendingScheduled.due.forEach(({ eventId }) => incrementPending(pendingScheduledById, eventId, 'due'));
     result.pendingScheduled.notDue.forEach(({ eventId }) => incrementPending(pendingScheduledById, eventId, 'notDue'));
     const seen = new Set<string>();
@@ -137,6 +167,7 @@ export function simulateBatch(options: SimulateBatchOptions): SimulationBatchRes
     })),
     traits,
     items,
+    activeFinalState: activeFinalState.finalize(),
     pendingScheduledById,
     problematicRuns: runResults.filter(({ terminationReason, possibleCriticalLoop }) => terminationReason !== 'careerEnded' || possibleCriticalLoop),
     runResults,
@@ -154,4 +185,105 @@ function incrementPending(target: Record<string, { due: number; notDue: number }
 
 function average(values: number[]): number {
   return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+const basePlayerStats = ['morale', 'strength', 'agility', 'observation', 'intelligence', 'navigation', 'charisma', 'luck'] as const satisfies readonly StatId[];
+
+function createActiveFinalStateAccumulator(catalog: ContentCatalog): { add(state: GameState): void; finalize(): ActiveFinalStateMetrics } {
+  const itemDefinitions = new Map(catalog.items.map((item) => [item.id, item]));
+  const values = {
+    berries: [] as number[],
+    stats: Object.fromEntries(basePlayerStats.map((statId) => [statId, [] as number[]])) as Record<StatId, number[]>,
+    traitCount: [] as number[],
+    ordinaryItemStacks: [] as number[],
+    ordinaryItemCount: [] as number[],
+    equipmentOwned: [] as number[],
+    equipmentEquipped: [] as number[],
+    companionItemsOwned: [] as number[],
+  };
+  const equipmentItemIdsOwned: Record<ItemId, number> = {};
+  const equipmentItemIdsEquipped: Record<ItemId, number> = {};
+  const companionItemIdsOwned: Record<ItemId, number> = {};
+  const activeCompanionItemIds: Record<ItemId, number> = {};
+  let activeCompanionOccupied = 0;
+
+  return {
+    add(state) {
+      const storedStacks = [...state.player.inventory.stacks, ...(state.ship?.cargo ?? [])];
+      const ordinaryStacks = storedStacks.filter((stack) => {
+        const definition = itemDefinitions.get(stack.itemId);
+        return definition?.category === 'item' && definition.companion !== true && definition.logPoseType === undefined;
+      });
+      const storedEquipment = storedStacks.filter((stack) => itemDefinitions.get(stack.itemId)?.category === 'equipment');
+      const equipped = state.player.equipment.filter((stack): stack is ItemStack => stack !== null);
+      const storedCompanions = storedStacks.filter((stack) => itemDefinitions.get(stack.itemId)?.companion === true);
+      const activeCompanion = state.player.companion;
+      const companionItems = activeCompanion ? [...storedCompanions, activeCompanion] : storedCompanions;
+
+      values.berries.push(state.berries);
+      basePlayerStats.forEach((statId) => values.stats[statId].push(state.player.stats[statId]));
+      values.traitCount.push(state.player.traits.length);
+      values.ordinaryItemStacks.push(ordinaryStacks.length);
+      values.ordinaryItemCount.push(sumQuantities(ordinaryStacks));
+      values.equipmentOwned.push(sumQuantities(storedEquipment) + sumQuantities(equipped));
+      values.equipmentEquipped.push(equipped.length);
+      values.companionItemsOwned.push(sumQuantities(companionItems));
+      [...storedEquipment, ...equipped].forEach((stack) => addQuantity(equipmentItemIdsOwned, stack));
+      equipped.forEach((stack) => addQuantity(equipmentItemIdsEquipped, stack));
+      companionItems.forEach((stack) => addQuantity(companionItemIdsOwned, stack));
+      if (activeCompanion) {
+        activeCompanionOccupied += 1;
+        addQuantity(activeCompanionItemIds, activeCompanion);
+      }
+    },
+    finalize() {
+      const runs = values.berries.length;
+      return {
+        runs,
+        berries: distribution(values.berries),
+        stats: Object.fromEntries(basePlayerStats.map((statId) => [statId, distribution(values.stats[statId])])) as Record<StatId, NumericDistribution>,
+        traitCount: distribution(values.traitCount),
+        ordinaryItemStacks: distribution(values.ordinaryItemStacks),
+        ordinaryItemCount: distribution(values.ordinaryItemCount),
+        equipmentOwned: distribution(values.equipmentOwned),
+        equipmentEquipped: distribution(values.equipmentEquipped),
+        companionItemsOwned: distribution(values.companionItemsOwned),
+        activeCompanionSlotOccupancy: {
+          occupied: activeCompanionOccupied,
+          empty: runs - activeCompanionOccupied,
+          occupancyPercentage: runs === 0 ? 0 : activeCompanionOccupied / runs * 100,
+        },
+        equipmentItemIdsOwned,
+        equipmentItemIdsEquipped,
+        companionItemIdsOwned,
+        activeCompanionItemIds,
+      };
+    },
+  };
+}
+
+function sumQuantities(stacks: ItemStack[]): number {
+  return stacks.reduce((sum, stack) => sum + stack.quantity, 0);
+}
+
+function addQuantity(target: Record<ItemId, number>, stack: ItemStack): void {
+  target[stack.itemId] = (target[stack.itemId] ?? 0) + stack.quantity;
+}
+
+function distribution(values: number[]): NumericDistribution {
+  if (values.length === 0) return { min: 0, p10: 0, p50: 0, p90: 0, max: 0, average: 0 };
+  const sorted = [...values].sort((a, b) => a - b);
+  return {
+    min: sorted[0],
+    p10: percentile(sorted, 0.1),
+    p50: percentile(sorted, 0.5),
+    p90: percentile(sorted, 0.9),
+    max: sorted[sorted.length - 1],
+    average: average(sorted),
+  };
+}
+
+function percentile(sortedValues: number[], percentileValue: number): number {
+  const index = Math.ceil(percentileValue * sortedValues.length) - 1;
+  return sortedValues[Math.min(sortedValues.length - 1, Math.max(0, index))];
 }

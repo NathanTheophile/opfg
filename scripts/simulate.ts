@@ -67,6 +67,17 @@ row('  Resolved', batch.summary.scheduledResolved);
 row('  Pending', batch.summary.pendingScheduled);
 row('  Due but pending', batch.summary.dueScheduledPending);
 
+console.log('\nActive final state');
+row('  Runs', batch.activeFinalState.runs);
+row('  Berrys min/p50/p90/max/avg', formatDistribution(batch.activeFinalState.berries));
+row('  Trait count p50/p90/avg', formatCompactDistribution(batch.activeFinalState.traitCount));
+row('  Ordinary Items stacks/count avg', `${batch.activeFinalState.ordinaryItemStacks.average.toFixed(2)} / ${batch.activeFinalState.ordinaryItemCount.average.toFixed(2)}`);
+row('  Equipment owned/equipped avg', `${batch.activeFinalState.equipmentOwned.average.toFixed(2)} / ${batch.activeFinalState.equipmentEquipped.average.toFixed(2)}`);
+row('  Companion owned avg', batch.activeFinalState.companionItemsOwned.average.toFixed(2));
+row('  Active Companion slot', `${batch.activeFinalState.activeCompanionSlotOccupancy.occupied} (${percentage(batch.activeFinalState.activeCompanionSlotOccupancy.occupied, batch.activeFinalState.runs)})`);
+printTopCounts('Top Equipment owned', batch.activeFinalState.equipmentItemIdsOwned, args.verbose ? Infinity : 8);
+printTopCounts('Top Companions owned', batch.activeFinalState.companionItemIdsOwned, args.verbose ? Infinity : 8);
+
 printIds('Never seen Events', neverSeen.map(({ eventId }) => eventId), args.verbose ? Infinity : 12);
 printIds('Rare Events', rare.map(({ eventId }) => eventId), args.verbose ? Infinity : 12);
 if (Object.keys(batch.pendingScheduledById).length > 0) {
@@ -128,9 +139,22 @@ function row(label: string, value: string | number): void { console.log(`${label
 function percentage(value: number, total: number): string { return total === 0 ? '0.0%' : `${(value / total * 100).toFixed(1)}%`; }
 function countRate(value: number, total: number): string { return `${value} (${percentage(value, total)})`; }
 function formatAge(months: number): string { return `${Math.floor(months / 12)}y ${Math.round(months % 12)}m`; }
+function formatDistribution(value: { min: number; p50: number; p90: number; max: number; average: number }): string {
+  return `${value.min} / ${value.p50} / ${value.p90} / ${value.max} / ${value.average.toFixed(2)}`;
+}
+function formatCompactDistribution(value: { p50: number; p90: number; average: number }): string {
+  return `${value.p50} / ${value.p90} / ${value.average.toFixed(2)}`;
+}
 function printIds(title: string, ids: string[], limit: number): void {
   if (ids.length === 0) return;
   console.log(`\n${title}`);
   ids.slice(0, limit).forEach((id) => console.log(`  ${id}`));
   if (ids.length > limit) console.log(`  ... ${ids.length - limit} more`);
+}
+function printTopCounts(title: string, values: Record<string, number>, limit: number): void {
+  const entries = Object.entries(values).sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]));
+  if (entries.length === 0) return;
+  console.log(`\n${title}`);
+  entries.slice(0, limit).forEach(([id, count]) => console.log(`  ${id}: ${count}`));
+  if (entries.length > limit) console.log(`  ... ${entries.length - limit} more`);
 }
