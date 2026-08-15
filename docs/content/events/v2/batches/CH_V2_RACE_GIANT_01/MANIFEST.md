@@ -42,7 +42,7 @@
 | `ch_v2_race_giant_01_shadow_screen` | 72–131 | oui ×2 | 0 | SEED-07 — impossibilité de disparaître |
 | `ch_v2_race_giant_01_dropped_toy_distance` | 36–95 | non | 0 | SEED-08 — peur immédiate |
 | `ch_v2_race_giant_01_borrowed_authority` | 108–179 | non | 0 | SEED-09 — autorité supposée |
-| `ch_v2_race_giant_01_tiny_frame` | 84–95 | oui ×3 | 3 | SEED-10 — Lifetime primaire |
+| `ch_v2_race_giant_01_tiny_frame` | 84–107 | oui ×3 | 3 | SEED-10 — Lifetime primaire |
 | `ch_v2_race_giant_01_turning_stair` | 60–131 | non | 0 | SEED-11 — détour / géométrie |
 | `ch_v2_race_giant_01_creaking_room` | 60–119 | oui ×3 | 2 | SEED-15 — discrétion corporelle |
 
