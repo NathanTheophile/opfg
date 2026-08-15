@@ -99,7 +99,7 @@ describe('Family Marine Layer 5 inheritance', () => {
     ]) expect(ids.has(id)).toBe(true);
 
     const bracer = catalog.items.find(({ id }) => id === 'giant_marine_training_bracer');
-    expect(bracer).toMatchObject({ category: 'equipment', unique: true, modifiers: { strength: 1 } });
+    expect(bracer).toMatchObject({ category: 'equipment', unique: true, modifiers: { strength: 3 } });
   });
 
   it('applies Marine + recruit only at the Childhood -> Active boundary', () => {
