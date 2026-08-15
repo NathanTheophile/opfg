@@ -1,5 +1,5 @@
 import type { ContentCatalog } from '../content/schema';
-import type { CrewRoleId, GameState, LocationId, NpcId } from '../model/schema';
+import type { CrewRoleId, GameState, LocationId } from '../model/schema';
 import { effectivePlayerStat } from './stats';
 import { getOrdinaryDestinationIds, movePlayerToLocation } from './locations';
 
@@ -31,17 +31,3 @@ export function navigatorDestinations(state: GameState, catalog: ContentCatalog)
   return catalog.locations.filter(({ id }) => destinationIds.has(id));
 }
 
-export function isCompanionCandidate(state: GameState, catalog: ContentCatalog, npcId: NpcId): boolean {
-  const npc = state.npcs[npcId];
-  const definition = catalog.npcs.find(({ id }) => id === npcId);
-  return npc !== undefined && npc.status === 'known' && npc.stats.health > 0 && definition?.companionCapable === true;
-}
-
-export function setActiveCompanion(state: GameState, catalog: ContentCatalog, npcId: NpcId | null): void {
-  if (npcId === null) {
-    state.companionNpcId = null;
-    return;
-  }
-  if (!isCompanionCandidate(state, catalog, npcId)) throw new Error(`Companion "${npcId}" must be a living companion-capable NPC.`);
-  state.companionNpcId = npcId;
-}

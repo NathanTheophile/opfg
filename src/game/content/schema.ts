@@ -33,7 +33,7 @@ import type {
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 14;
+export const CONTENT_SCHEMA_VERSION = 15;
 
 export const V1_CAREER_HORIZON_MONTHS = 420;
 
@@ -132,7 +132,7 @@ export type Condition =
   | { type: 'hasItem'; itemId: ItemId }
   | { type: 'activeLogPoseIs'; logPoseType: LogPoseType }
   | { type: 'hasActiveCompanion' }
-  | { type: 'activeCompanionIs'; npcId: NpcId }
+  | { type: 'activeCompanionIs'; itemId: ItemId }
   | { type: 'hasEquipped'; itemId: ItemId }
   | { type: 'hasEquippedWeapon'; damageType?: WeaponDamageType; rangeType?: WeaponRangeType }
   | { type: 'itemQuantityAtLeast'; itemId: ItemId; quantity: number }
@@ -377,6 +377,8 @@ export interface ItemDefinition {
   twoHanded?: boolean;
   unique?: boolean;
   logPoseType?: LogPoseType;
+  /** Dedicated active animal-object slot; Companion is never an NPC. */
+  companion?: true;
 }
 
 export interface DevilFruitDefinition {
@@ -408,8 +410,6 @@ export interface NpcDefinition {
   affiliationId: AffiliationId | null;
   crewRoleId: CrewRoleId | null;
   initialStats: NpcStats;
-  companionCapable?: boolean;
-  companionModifiers?: Partial<Record<NpcStatId, number>>;
 }
 
 export interface CrewRoleDefinition { id: CrewRoleId; nameKey: LocalizationKey; annualPower?: 'medic' | 'shipwright' | 'navigator' }

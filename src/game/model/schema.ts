@@ -82,6 +82,7 @@ export interface PlayerState {
   inventory: InventoryState;
   equipment: [ItemStack | null, ItemStack | null];
   logPose: ItemStack | null;
+  companion: ItemStack | null;
   powers: PowerState;
 }
 
@@ -158,7 +159,6 @@ export interface GameState {
   maritimeEmergency: MaritimeEmergencyState | null;
   isLeader: boolean;
   passengerNpcIds: NpcId[];
-  companionNpcId: NpcId | null;
   crewRoleLastUsedYear: Partial<Record<CrewRoleId, number>>;
   pendingOverflow: PendingOverflowState | null;
   berries: number;

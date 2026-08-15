@@ -4,9 +4,9 @@ import { createInitialGameState } from '../model/initialState';
 import { createDefaultNpcState } from '../model/npcState';
 import { deserializeGameState, serializeGameState } from './save';
 import { equipFromStorage, activateLogPose, activeLogPoseNavigationBonus, resolveOverflow, tryAutoPlaceReward } from './inventory';
-import { effectiveNpcStat, effectivePlayerStat } from './stats';
+import { effectivePlayerStat } from './stats';
 import { itemSellPrice, negotiationMultiplier } from './economy';
-import { canUseCrewRolePower, navigatorDestinations, setActiveCompanion, useCrewRolePower } from './crewPowers';
+import { canUseCrewRolePower, navigatorDestinations, useCrewRolePower } from './crewPowers';
 import { findCrewRoleActor } from './dice';
 import { getPlayerMaxHealth } from './health';
 import { moveItem } from './inventory';
@@ -14,7 +14,7 @@ import { beginMaritimeEmergency } from './maritime';
 import { consumePhaseSlot } from './time';
 
 describe('D2.6 systems hardening', () => {
-  it('uses Save 21 and rejects Save 20', () => {
+  it('uses Save 22 and rejects Save 20', () => {
     const state = createInitialGameState();
     expect(deserializeGameState(serializeGameState(state))).toEqual(state);
     expect(deserializeGameState(JSON.stringify({ ...state, version: 20 }))).toBeNull();
@@ -82,13 +82,20 @@ describe('D2.6 systems hardening', () => {
     expect(state.player.inventory.stacks[0].itemId).toBe('timber'); expect(state.ship.cargo[0].itemId).toBe('sealed_chart');
   });
 
-  it('wrecks cargo, passengers and companion but preserves Log Pose', () => {
+  it('wrecks cargo and passengers but preserves active Item slots', () => {
     const state = createInitialGameState();
     state.ship = { shipId: 'sloop', name: 'Test', health: 0, cargo: [{ itemId: 'timber', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] }] };
-    state.npcs.mira = { ...createDefaultNpcState(), status: 'known' }; state.npcs.guest = createDefaultNpcState();
-    state.passengerNpcIds = ['guest']; state.companionNpcId = 'mira'; state.player.logPose = { itemId: 'paradise_log_pose', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] };
+    state.npcs.guest = createDefaultNpcState();
+    state.passengerNpcIds = ['guest'];
+    state.player.logPose = { itemId: 'paradise_log_pose', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] };
+    state.player.companion = { itemId: 'sealed_chart', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] };
+
     beginMaritimeEmergency(state, contentCatalog, 'accident');
-    expect(state.ship).toBeNull(); expect(state.npcs.guest.status).toBe('dead'); expect(state.npcs.mira.status).toBe('dead'); expect(state.companionNpcId).toBeNull(); expect(state.player.logPose?.itemId).toBe('paradise_log_pose');
+
+    expect(state.ship).toBeNull();
+    expect(state.npcs.guest.status).toBe('dead');
+    expect(state.player.logPose?.itemId).toBe('paradise_log_pose');
+    expect(state.player.companion?.itemId).toBe('sealed_chart');
   });
 
   it('moves Navigator through the arrival pipeline and excludes gated destinations', () => {
@@ -114,52 +121,6 @@ describe('D2.6 systems hardening', () => {
     expect(state.slotInMonth).toBe(slotInMonth);
   });
 
-  it('selects only living companion-capable NPCs without treating them as crew or cargo', () => {
-    const catalog = structuredClone(contentCatalog);
-    const mira = catalog.npcs.find(({ id }) => id === 'mira')!;
-    mira.companionCapable = true;
-    mira.companionModifiers = { navigation: 2, morale: -1 };
-    const state = createInitialGameState();
-    state.ship = { shipId: 'dinghy', name: 'Test', health: 18, cargo: [] };
-    state.npcs.mira = { ...createDefaultNpcState(), status: 'known' };
-    const crewCount = Object.values(state.npcs).filter(({ status }) => status === 'crew').length;
-
-    setActiveCompanion(state, catalog, 'mira');
-
-    expect(state.companionNpcId).toBe('mira');
-    expect(Object.values(state.npcs).filter(({ status }) => status === 'crew')).toHaveLength(crewCount);
-    expect(state.ship.cargo).toEqual([]);
-    expect(state.passengerNpcIds).toEqual([]);
-
-    state.npcs.mira.stats.health = 0;
-    expect(() => setActiveCompanion(state, catalog, 'mira')).toThrow(/living companion-capable/);
-    state.npcs.mira.stats.health = 25;
-
-    for (const status of ['departed', 'unavailable', 'crew'] as const) {
-      state.npcs.mira.status = status;
-      expect(() => setActiveCompanion(state, catalog, 'mira')).toThrow(/living companion-capable/);
-    }
-
-    state.npcs.mira.status = 'known';
-    mira.companionCapable = false;
-    expect(() => setActiveCompanion(state, catalog, 'mira')).toThrow(/living companion-capable/);
-  });
-
-  it('applies active companion modifiers only to crew NPCs', () => {
-    const catalog = structuredClone(contentCatalog);
-    const mira = catalog.npcs.find(({ id }) => id === 'mira')!;
-    mira.companionCapable = true;
-    mira.companionModifiers = { navigation: 2 };
-    const state = createInitialGameState();
-    state.npcs.mira = { ...createDefaultNpcState(), status: 'known' };
-    state.npcs.childhood_friend = { ...createDefaultNpcState(), status: 'crew' };
-    state.npcs.childhood_rival = { ...createDefaultNpcState(), status: 'known' };
-    setActiveCompanion(state, catalog, 'mira');
-
-    expect(effectiveNpcStat(state, catalog, 'childhood_friend', 'navigation')).toBe(27);
-    expect(effectiveNpcStat(state, catalog, 'childhood_rival', 'navigation')).toBe(25);
-    expect(effectiveNpcStat(state, catalog, 'mira', 'navigation')).toBe(25);
-  });
 
   it.each([['poor', 5000], ['modest', 7500], ['wealthy', 15000]] as const)('pays %s Childhood income', (socialClassId, expected) => {
     let state = createInitialGameState(); state.careerPhase = 'childhood'; state.player.profile.raceId = 'human'; state.player.profile.socialClassId = socialClassId;

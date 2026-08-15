@@ -2,7 +2,7 @@ import type { CareerEndReason, CareerPhase, GameState, ItemStack, MaritimeEmerge
 import { createDefaultPowerState } from './powers';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-export const CURRENT_SAVE_VERSION = 21;
+export const CURRENT_SAVE_VERSION = 22;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
@@ -62,7 +62,8 @@ function readGameState(value: unknown): GameState | null {
   if (inventory === null || inventory.capacity !== 2) return null;
   const equipment = readEquipment(value.player.equipment);
   const logPose = readOptionalStack(value.player.logPose);
-  if (equipment === null || logPose === undefined) return null;
+  const companion = readOptionalStack(value.player.companion);
+  if (equipment === null || logPose === undefined || companion === undefined || (companion !== null && companion.quantity !== 1)) return null;
   const profile = readPlayerProfile(value.player.profile);
   if (profile === null) return null;
   const career = readCareerState(value.player.career);
@@ -82,7 +83,7 @@ function readGameState(value: unknown): GameState | null {
   const pendingShip = readShip(value.pendingShip);
   const maritimeEmergency = readMaritimeEmergency(value.maritimeEmergency);
   if (ship === undefined || pendingShip === undefined || maritimeEmergency === undefined || typeof value.isLeader !== 'boolean' || !isUniqueStringArray(value.passengerNpcIds) || !isNonNegativeInteger(value.berries)) return null;
-  if (!isNullableString(value.companionNpcId) || !isRecord(value.crewRoleLastUsedYear) || !Object.values(value.crewRoleLastUsedYear).every(isNonNegativeInteger)) return null;
+  if (!isRecord(value.crewRoleLastUsedYear) || !Object.values(value.crewRoleLastUsedYear).every(isNonNegativeInteger)) return null;
   const pendingOverflow = readPendingOverflow(value.pendingOverflow);
   if (pendingOverflow === undefined) return null;
   if (!isStringArray(value.flags)) return null;
@@ -132,6 +133,7 @@ function readGameState(value: unknown): GameState | null {
       inventory,
       equipment,
       logPose,
+      companion,
       powers: playerPowers,
     },
     ship,
@@ -139,7 +141,6 @@ function readGameState(value: unknown): GameState | null {
     maritimeEmergency,
     isLeader: value.isLeader,
     passengerNpcIds: [...value.passengerNpcIds],
-    companionNpcId: value.companionNpcId,
     crewRoleLastUsedYear: Object.fromEntries(Object.entries(value.crewRoleLastUsedYear).map(([key, year]) => [key, year as number])),
     pendingOverflow,
     berries: value.berries,
@@ -261,6 +262,14 @@ function migrateLegacySave(value: unknown): unknown {
       ? Object.fromEntries(Object.entries(migrated.npcs).map(([id, npc]) => [id, isRecord(npc) ? { ...npc, displayName: null } : npc]))
       : migrated.npcs;
     migrated = { ...migrated, version: 19, npcs };
+  }
+  if (isRecord(migrated) && migrated.version === 21 && isRecord(migrated.player)) {
+    const { companionNpcId: _legacyCompanionNpcId, ...withoutLegacyCompanion } = migrated;
+    migrated = {
+      ...withoutLegacyCompanion,
+      version: 22,
+      player: { ...migrated.player, companion: null },
+    };
   }
   return migrated;
 }

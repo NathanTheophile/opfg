@@ -49,16 +49,18 @@ describe('conditions v2', () => {
     const state = createInitialGameState();
     state.player.inventory.stacks = [{ itemId: 'triple_log_pose', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] }];
     state.player.logPose = { itemId: 'paradise_log_pose', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] };
-    state.npcs.mira.status = 'known';
-
     expect(evaluateCondition({ type: 'activeLogPoseIs', logPoseType: 'paradise' }, state, contentCatalog)).toBe(true);
     expect(evaluateCondition({ type: 'activeLogPoseIs', logPoseType: 'new_world' }, state, contentCatalog)).toBe(false);
     expect(evaluateCondition({ type: 'hasActiveCompanion' }, state, contentCatalog)).toBe(false);
-    expect(evaluateCondition({ type: 'activeCompanionIs', npcId: 'mira' }, state, contentCatalog)).toBe(false);
+    expect(evaluateCondition({ type: 'activeCompanionIs', itemId: 'test_puppy' }, state, contentCatalog)).toBe(false);
 
-    state.companionNpcId = 'mira';
+    state.player.companion = {
+      itemId: 'test_puppy',
+      quantity: 1,
+      provenance: [{ locationId: null, quantity: 1 }],
+    };
     expect(evaluateCondition({ type: 'hasActiveCompanion' }, state, contentCatalog)).toBe(true);
-    expect(evaluateCondition({ type: 'activeCompanionIs', npcId: 'mira' }, state, contentCatalog)).toBe(true);
+    expect(evaluateCondition({ type: 'activeCompanionIs', itemId: 'test_puppy' }, state, contentCatalog)).toBe(true);
   });
 
   it('uses the real economy rule for canSellShip without requiring pendingShip', () => {

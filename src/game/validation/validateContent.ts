@@ -182,7 +182,7 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   const crewRoleIds = collectIds(crewRoles, 'crewRoles', errors);
   const npcs = readRecords(catalog.npcs, 'npcs', errors);
   const npcIds = collectIds(npcs, 'npcs', errors);
-  const companionNpcIds = new Set(npcs.filter((npc) => npc.companionCapable === true).map((npc) => String(npc.id)));
+  const companionItemIds = new Set(items.filter((item) => item.companion === true).map((item) => String(item.id)));
   const races = readRecords(catalog.races, 'races', errors);
   const raceIds = collectIds(races, 'races', errors);
   const seas = readRecords(catalog.seas, 'seas', errors);
@@ -222,7 +222,7 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   }
 
   validateTraitOpposites(traits, traitIds, errors);
-  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, equipmentItemIds, devilFruitIds, shipIds, crewRoleIds, npcIds, companionNpcIds, raceIds, seaIds, affiliationIds, careerAffiliationIds, careerRankIds, careerTitleIds, endingIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds, immediateEventIds, majorTrackIds, majorTracks };
+  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, equipmentItemIds, devilFruitIds, shipIds, crewRoleIds, npcIds, companionItemIds, raceIds, seaIds, affiliationIds, careerAffiliationIds, careerRankIds, careerTitleIds, endingIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds, immediateEventIds, majorTrackIds, majorTracks };
   devilFruits.forEach((fruit, index) => {
     const path = `devilFruits[${index}]`;
     if (typeof fruit.playableV1 !== 'boolean') errors.push({ path: `${path}.playableV1`, message: 'Devil Fruit requires playableV1.' });
@@ -325,13 +325,17 @@ function validateItemEconomy(catalog: UnknownRecord, items: UnknownRecord[], err
         if (!['buy_sell', 'buy_only', 'sell_only'].includes(String(item.market.mode))) errors.push({ path: `${path}.market.mode`, message: 'Invalid Item market mode.' });
       }
     }
-    const equipmentOnly = ['modifiers', 'weapon', 'twoHanded'];
+    const equipmentOnly = ['weapon', 'twoHanded'];
     if (item.category === 'item' && equipmentOnly.some((field) => item[field] !== undefined)) errors.push({ path, message: 'Equipment-only fields are forbidden on item.' });
+    if (item.companion !== undefined && item.companion !== true) errors.push({ path: `${path}.companion`, message: 'companion metadata may only be true when present.' });
+    if (item.companion === true && item.category !== 'item') errors.push({ path: `${path}.companion`, message: 'Companion must use Item category item.' });
+    if (item.companion === true && item.logPoseType !== undefined) errors.push({ path, message: 'Companion and Log Pose metadata are mutually exclusive.' });
     if (item.modifiers !== undefined) {
-      if (!isRecord(item.modifiers)) errors.push({ path: `${path}.modifiers`, message: 'Equipment modifiers must be an object.' });
+      if (item.category !== 'equipment' && item.companion !== true) errors.push({ path: `${path}.modifiers`, message: 'Modifiers require Equipment or Companion Item.' });
+      if (!isRecord(item.modifiers)) errors.push({ path: `${path}.modifiers`, message: 'Active Item modifiers must be an object.' });
       else Object.entries(item.modifiers).forEach(([statId, amount]) => {
         if (statId !== 'health') validateStat(statId, `${path}.modifiers.${statId}`, errors);
-        if (typeof amount !== 'number' || !Number.isFinite(amount)) errors.push({ path: `${path}.modifiers.${statId}`, message: 'Equipment modifier must be finite.' });
+        if (typeof amount !== 'number' || !Number.isFinite(amount)) errors.push({ path: `${path}.modifiers.${statId}`, message: 'Active Item modifier must be finite.' });
       });
     }
     if (item.weapon !== undefined) {
@@ -476,7 +480,7 @@ interface References {
   shipIds: Set<string>;
   crewRoleIds: Set<string>;
   npcIds: Set<string>;
-  companionNpcIds: Set<string>;
+  companionItemIds: Set<string>;
   raceIds: Set<string>;
   seaIds: Set<string>;
   affiliationIds: Set<string>;
@@ -711,7 +715,7 @@ function validateCondition(
   if (type === 'hasTrait') validateReference(value.traitId, references.traitIds, 'TraitId', path, errors);
   if (type === 'hasItem') validateReference(value.itemId, references.itemIds, 'ItemId', path, errors);
   if (type === 'activeLogPoseIs' && !['paradise', 'new_world'].includes(String(value.logPoseType))) errors.push({ path: `${path}.logPoseType`, message: 'Invalid Log Pose type.' });
-  if (type === 'activeCompanionIs') validateReference(value.npcId, references.companionNpcIds, 'companion-capable NpcId', path, errors);
+  if (type === 'activeCompanionIs') validateReference(value.itemId, references.companionItemIds, 'Companion ItemId', path, errors);
   if (type === 'hasEquipped') validateReference(value.itemId, references.equipmentItemIds, 'Equipment ItemId', path, errors);
   if (type === 'hasEquippedWeapon') {
     if (value.damageType !== undefined && !['cutting', 'blunt', 'explosive'].includes(String(value.damageType))) errors.push({ path: `${path}.damageType`, message: 'Invalid equipped weapon damage type.' });
@@ -1167,20 +1171,6 @@ function validateNpcDefinitions(npcs: UnknownRecord[], references: References, e
     validateNullableReference(npc.originSeaId, references.seaIds, 'SeaId', `${path}.originSeaId`, errors);
     validateNullableReference(npc.affiliationId, references.affiliationIds, 'AffiliationId', `${path}.affiliationId`, errors);
     validateNullableReference(npc.crewRoleId, references.crewRoleIds, 'CrewRoleId', `${path}.crewRoleId`, errors);
-    if (npc.companionCapable !== undefined && typeof npc.companionCapable !== 'boolean') errors.push({ path: `${path}.companionCapable`, message: 'companionCapable must be boolean.' });
-    if (npc.companionModifiers !== undefined) {
-      if (npc.companionCapable !== true) errors.push({ path: `${path}.companionModifiers`, message: 'Companion modifiers require companionCapable.' });
-      if (!isRecord(npc.companionModifiers)) errors.push({ path: `${path}.companionModifiers`, message: 'Companion modifiers must be an object.' });
-      else {
-        let absoluteTotal = 0;
-        Object.entries(npc.companionModifiers).forEach(([statId, amount]) => {
-          validateNpcStat(statId, `${path}.companionModifiers.${statId}`, errors);
-          if (typeof amount !== 'number' || !Number.isFinite(amount)) errors.push({ path: `${path}.companionModifiers.${statId}`, message: 'Companion modifier must be finite.' });
-          else absoluteTotal += Math.abs(amount);
-        });
-        if (absoluteTotal > 3) errors.push({ path: `${path}.companionModifiers`, message: 'Companion modifier absolute total cannot exceed 3.' });
-      }
-    }
     if (!isRecord(npc.initialStats)) {
       errors.push({ path: `${path}.initialStats`, message: 'NPC initialStats must be an object.' });
       return;

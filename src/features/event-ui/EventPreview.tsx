@@ -35,7 +35,7 @@ import type {
 import { PLAYER_NAME_MAX_LENGTH } from '@/game/model/playerName';
 import { useGameSession } from '@/game/session/useGameSession';
 import { moveItem, resolveOverflow, type StorageSlot } from '@/game/engine/inventory';
-import { setActiveCompanion, useCrewRolePower } from '@/game/engine/crewPowers';
+import { useCrewRolePower } from '@/game/engine/crewPowers';
 import { npcInterpolationParams } from '@/game/engine/npcNames';
 import { originNarrativeInterpolationParams } from '@/game/engine/originNarrative';
 import {
@@ -883,7 +883,6 @@ export function EventPreview({
     selectedStorageSlot,
     onStorageSlot: handleStorageSlot,
     onHome: () => setHomeOpen(true),
-    onSelectCompanion: (npcId: string | null) => session.applySystemAction((next) => setActiveCompanion(next, catalog, npcId)),
   };
 
   return (

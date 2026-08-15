@@ -82,9 +82,7 @@ export function beginMaritimeEmergency(state: GameState, catalog: ContentCatalog
   if (!seaId) throw new Error(`Cannot begin maritime emergency outside a known sea at "${state.locationId}".`);
   state.maritimeEmergency = { kind: 'shipwreck', seaId, cause };
   for (const npcId of state.passengerNpcIds) if (state.npcs[npcId]) state.npcs[npcId] = { ...state.npcs[npcId], status: 'dead', stats: { ...state.npcs[npcId].stats, health: 0 } };
-  if (state.companionNpcId && state.npcs[state.companionNpcId]) state.npcs[state.companionNpcId] = { ...state.npcs[state.companionNpcId], status: 'dead', stats: { ...state.npcs[state.companionNpcId].stats, health: 0 } };
   state.passengerNpcIds = [];
-  state.companionNpcId = null;
   state.ship = null;
   state.pendingShip = null;
   state.travelState = 'at_sea';

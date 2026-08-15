@@ -35,9 +35,10 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
     case 'activeLogPoseIs':
       return catalog?.items.find(({ id }) => id === state.player.logPose?.itemId)?.logPoseType === condition.logPoseType;
     case 'hasActiveCompanion':
-      return state.companionNpcId !== null;
+      return state.player.companion !== null;
     case 'activeCompanionIs':
-      return state.companionNpcId === condition.npcId;
+      return state.player.companion !== null
+        && state.player.companion.itemId === condition.itemId;
     case 'hasEquipped':
       return state.player.equipment.some((stack) => stack?.itemId === condition.itemId);
     case 'hasEquippedWeapon':

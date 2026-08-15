@@ -162,6 +162,7 @@ function ownedItemQuantities(state: GameState) {
     if (stack) add(stack.itemId, 1);
   }
   if (state.player.logPose) add(state.player.logPose.itemId, state.player.logPose.quantity);
+  if (state.player.companion) add(state.player.companion.itemId, state.player.companion.quantity);
 
   return [...totals.entries()].sort(([left], [right]) => left.localeCompare(right));
 }

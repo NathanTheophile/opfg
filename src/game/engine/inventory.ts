@@ -1,4 +1,4 @@
-import type { ContentCatalog, ItemDefinition } from '../content/schema';
+import type { ContentCatalog } from '../content/schema';
 import type { GameState, ItemId, ItemStack } from '../model/schema';
 import { getPlayerMaxHealth } from './health';
 
@@ -6,7 +6,8 @@ export type StorageSlot =
   | { type: 'pocket'; index: 0 | 1 }
   | { type: 'cargo'; index: number }
   | { type: 'equipment'; index: 0 | 1 }
-  | { type: 'logPose' };
+  | { type: 'logPose' }
+  | { type: 'companion' };
 
 export function equipFromStorage(state: GameState, catalog: ContentCatalog, source: { type: 'pocket' | 'cargo'; index: number }): boolean {
   const stacks = source.type === 'pocket' ? state.player.inventory.stacks : state.ship?.cargo;
@@ -28,7 +29,7 @@ export function unequipToPocket(state: GameState, catalog: ContentCatalog, index
   const definition = catalog.items.find(({ id }) => id === stack.itemId);
   state.player.equipment = definition?.twoHanded ? [null, null] : state.player.equipment.map((entry, slot) => slot === index ? null : entry) as GameState['player']['equipment'];
   state.player.inventory.stacks.push(stack);
-  state.player.stats.health = Math.max(1, Math.min(state.player.stats.health, getPlayerMaxHealth(state, catalog)));
+  clampCurrentHealth(state, catalog);
   return true;
 }
 
@@ -40,8 +41,10 @@ export function moveItem(state: GameState, catalog: ContentCatalog, source: Stor
     if (!sourceStack) return false;
     if (destination.type === 'equipment') return moveToEquipment(state, catalog, source, destination.index);
     if (destination.type === 'logPose') return moveToLogPose(state, catalog, source);
+    if (destination.type === 'companion') return moveToCompanion(state, catalog, source);
     if (source.type === 'equipment') return moveEquipmentToStorage(state, catalog, source.index, destination);
     if (source.type === 'logPose') return moveLogPoseToStorage(state, destination);
+    if (source.type === 'companion') return moveCompanionToStorage(state, catalog, destination);
     return swapStorage(state, catalog, source, destination);
   } catch {
     Object.assign(state, snapshot);
@@ -73,7 +76,7 @@ function moveEquipmentToStorage(state: GameState, catalog: ContentCatalog, index
   if (displaced) return false;
   target.splice(destination.index, 0, equipped);
   state.player.equipment = definition?.twoHanded ? [null, null] : state.player.equipment.map((entry, slot) => slot === index ? null : entry) as GameState['player']['equipment'];
-  state.player.stats.health = Math.max(1, Math.min(state.player.stats.health, getPlayerMaxHealth(state, catalog)));
+  clampCurrentHealth(state, catalog);
   return true;
 }
 
@@ -88,6 +91,54 @@ function moveLogPoseToStorage(state: GameState, destination: StorageSlot): boole
   if (!target || target[destination.index]) return false;
   target.splice(destination.index, 0, state.player.logPose);
   state.player.logPose = null;
+  return true;
+}
+
+function moveToCompanion(state: GameState, catalog: ContentCatalog, source: StorageSlot): boolean {
+  if (source.type !== 'pocket' && source.type !== 'cargo') return false;
+  const stacks = storage(state, source.type);
+  const stack = stacks?.[source.index];
+  const definition = stack && catalog.items.find(({ id }) => id === stack.itemId);
+  if (!stack || definition?.companion !== true) return false;
+
+  const active = state.player.companion;
+  if (active) {
+    const activeDefinition = catalog.items.find(({ id }) => id === active.itemId);
+    if (!activeDefinition || activeDefinition.companion !== true) return false;
+
+    if (stack.quantity === 1) {
+      stacks![source.index] = active;
+      state.player.companion = stack;
+      clampCurrentHealth(state, catalog);
+      return true;
+    }
+
+    const existing = stacks!.find((entry, index) => index !== source.index && entry.itemId === active.itemId);
+    if (existing) {
+      if (existing.quantity + active.quantity > activeDefinition.stackLimit) return false;
+    } else if (stacks!.length >= capacity(state, catalog, source.type)) {
+      return false;
+    }
+
+    const incoming = takeOne(stack, stacks!);
+    if (existing) mergeStack(existing, active);
+    else stacks!.push(active);
+    state.player.companion = incoming;
+  } else {
+    state.player.companion = takeOne(stack, stacks!);
+  }
+
+  clampCurrentHealth(state, catalog);
+  return true;
+}
+
+function moveCompanionToStorage(state: GameState, catalog: ContentCatalog, destination: StorageSlot): boolean {
+  if ((destination.type !== 'pocket' && destination.type !== 'cargo') || !state.player.companion) return false;
+  const target = storage(state, destination.type);
+  if (!target || target[destination.index] || destination.index > target.length || target.length >= capacity(state, catalog, destination.type)) return false;
+  target.splice(destination.index, 0, state.player.companion);
+  state.player.companion = null;
+  clampCurrentHealth(state, catalog);
   return true;
 }
 
@@ -115,7 +166,11 @@ function swapStorage(state: GameState, catalog: ContentCatalog, source: StorageS
 
 function storage(state: GameState, type: 'pocket' | 'cargo') { return type === 'pocket' ? state.player.inventory.stacks : state.ship?.cargo; }
 function capacity(state: GameState, catalog: ContentCatalog, type: 'pocket' | 'cargo') { return type === 'pocket' ? 2 : shipCapacity(state, catalog); }
-function slotValue(state: GameState, slot: StorageSlot) { return slot.type === 'pocket' || slot.type === 'cargo' ? storage(state, slot.type)?.[slot.index] ?? null : slot.type === 'equipment' ? state.player.equipment[slot.index] : state.player.logPose; }
+function slotValue(state: GameState, slot: StorageSlot) {
+  if (slot.type === 'pocket' || slot.type === 'cargo') return storage(state, slot.type)?.[slot.index] ?? null;
+  if (slot.type === 'equipment') return state.player.equipment[slot.index];
+  return slot.type === 'logPose' ? state.player.logPose : state.player.companion;
+}
 function sameSlot(left: StorageSlot, right: StorageSlot) { return left.type === right.type && ('index' in left ? 'index' in right && left.index === right.index : !('index' in right)); }
 
 export function activateLogPose(state: GameState, catalog: ContentCatalog, source: { type: 'pocket' | 'cargo'; index: number }): boolean {
@@ -162,7 +217,7 @@ export function resolveOverflow(state: GameState, catalog: ContentCatalog, actio
 }
 
 function ownsUsableCopy(state: GameState, itemId: ItemId): boolean {
-  return [...state.player.inventory.stacks, ...(state.ship?.cargo ?? []), ...state.player.equipment.filter((entry): entry is ItemStack => entry !== null), ...(state.player.logPose ? [state.player.logPose] : [])].some((stack) => stack.itemId === itemId);
+  return [...state.player.inventory.stacks, ...(state.ship?.cargo ?? []), ...state.player.equipment.filter((entry): entry is ItemStack => entry !== null), ...(state.player.logPose ? [state.player.logPose] : []), ...(state.player.companion ? [state.player.companion] : [])].some((stack) => stack.itemId === itemId);
 }
 
 function shipCapacity(state: GameState, catalog: ContentCatalog): number {
@@ -177,4 +232,18 @@ function takeOne(stack: ItemStack, stacks: ItemStack[]): ItemStack {
   if (batch.quantity === 0) stack.provenance.shift();
   if (stack.quantity === 0) stacks.splice(stacks.indexOf(stack), 1);
   return result;
+}
+
+function mergeStack(target: ItemStack, incoming: ItemStack): void {
+  target.quantity += incoming.quantity;
+  for (const batch of incoming.provenance) {
+    const existing = target.provenance.find(({ locationId }) => locationId === batch.locationId);
+    if (existing) existing.quantity += batch.quantity;
+    else target.provenance.push({ ...batch });
+  }
+}
+
+function clampCurrentHealth(state: GameState, catalog: ContentCatalog): void {
+  if (state.player.profile.raceId === null) return;
+  state.player.stats.health = Math.max(1, Math.min(state.player.stats.health, getPlayerMaxHealth(state, catalog)));
 }

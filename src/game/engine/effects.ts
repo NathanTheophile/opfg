@@ -28,6 +28,7 @@ export function applyEffects(state: GameState, catalog: ContentCatalog, effects:
       inventory: cloneInventory(state.player.inventory),
       equipment: state.player.equipment.map((stack) => stack ? ({ ...stack, provenance: stack.provenance.map((batch) => ({ ...batch })) }) : null) as GameState['player']['equipment'],
       logPose: state.player.logPose ? { ...state.player.logPose, provenance: state.player.logPose.provenance.map((batch) => ({ ...batch })) } : null,
+      companion: state.player.companion ? { ...state.player.companion, provenance: state.player.companion.provenance.map((batch) => ({ ...batch })) } : null,
       powers: { ...state.player.powers, haki: { ...state.player.powers.haki } },
     },
     ship: cloneShip(state.ship),
@@ -188,7 +189,6 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       if (effect.status === 'crew' && npc.status !== 'crew' && !canRecruitNpc(state, catalog, npcId, effect.allowWithoutLeadership === true)) throw new Error(`Cannot recruit NPC "${npcId}" without leadership or free crew capacity.`);
       if (effect.status === 'crew') state.passengerNpcIds = state.passengerNpcIds.filter((id) => id !== npcId);
       state.npcs[npcId] = { ...npc, status: effect.status };
-      if (state.companionNpcId === npcId && (effect.status === 'dead' || effect.status === 'departed')) state.companionNpcId = null;
       return;
     }
     case 'setNpcPassenger': {

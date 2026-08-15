@@ -1,0 +1,122 @@
+[35mdocs/GAME_DESIGN.md[m[36m:[m[32m3[m[36m:[m> **D2.6 systems amendment.** Schema 12 / Save 21 establishes the simple Item/Equipment, fixed-price market, Log Pose, [1;31mcompanion[m and annual crew-role systems described in `design/ECONOMY_AND_ITEMS.md`. It supersedes older passages that list numeric Loyalty/Calm NPC Stats, a 50% resale rate, legacy Item categories, passive universal income, or crew roles without powers. NPC base Stats now exactly match the player's nine Stats. Childhood income is paid on birthdays ages 5–14 only: poor 500, modest 750, wealthy 1,500 Berrys.
+[35mdocs/JAM_STATE.md[m[36m:[m[32m51[m[36m:[m- Six generic ship chassis, inventory/equipment, Log Pose, Berrys/market primitives, crew roles, [1;31mcompanion[ms and persistent NPC state are implemented.
+[35mdocs/content/CONTENT_BIBLE.md[m[36m:[m[32m412[m[36m:[mAny proposed animal/[1;31mcompanion[m inheritance must use an existing supported NPC/[1;31mcompanion[m acquisition path. Do not invent a direct [1;31mcompanion[m Effect solely for a Family reward.
+[35mdocs/content/EVENT_AUTHORING_RULES.md[m[36m:[m[32m3[m[36m:[m> **D2.6 contract.** `hasItem` inspects ordinary stored Items; equipment-use Choices must use `hasEquipped` or equipped weapon metadata Conditions. A stored weapon never satisfies an equipped-weapon requirement. `activeLogPoseIs`, `hasActive[1;31mCompanion[m` and `active[1;31mCompanion[mIs` query the dedicated active slots, never mere possession. Dice may name a `crewRole` actor; runtime selects the matching active crew NPC with the highest requested effective Stat, stable NPC ID as tie-break. Narrative continuations must support Items being sold, lost, stored, or unequipped.
+[35mdocs/content/EVENT_AUTHORING_RULES.md[m[36m:[m[32m2121[m[36m:[m- persistent NPC / animal / [1;31mcompanion[m-related state when an existing runtime path can actually express it;
+[35mdocs/content/events/legacy/runtime-reset-archive/childhood/ch_combat_01_tool_flash.json[m[36m:[m[32m99[m[36m:[m      "id": "pull_[1;31mcompanion[m",
+[35mdocs/content/events/legacy/runtime-reset-archive/childhood/ch_combat_01_tool_flash.json[m[36m:[m[32m100[m[36m:[m      "textKey": "event.ch_combat_01_tool_flash.choice.pull_[1;31mcompanion[m.text",
+[35mdocs/content/events/legacy/runtime-reset-archive/childhood/ch_combat_01_tool_flash.json[m[36m:[m[32m104[m[36m:[m          "id": "[1;31mcompanion[m_pulled",
+[35mdocs/content/events/legacy/runtime-reset-archive/childhood/ch_combat_01_tool_flash.json[m[36m:[m[32m105[m[36m:[m          "textKey": "event.ch_combat_01_tool_flash.choice.pull_[1;31mcompanion[m.outcome.[1;31mcompanion[m_pulled.text",
+[35mdocs/content/events/legacy/runtime-reset-archive/childhood/ch_generic_early_01_small_delivery.json[m[36m:[m[32m88[m[36m:[m      "id": "ask_[1;31mcompanion[m",
+[35mdocs/content/events/legacy/runtime-reset-archive/childhood/ch_generic_early_01_small_delivery.json[m[36m:[m[32m89[m[36m:[m      "textKey": "event.ch_generic_early_01_small_delivery.choice.ask_[1;31mcompanion[m.text",
+[35mdocs/content/events/legacy/runtime-reset-archive/childhood/ch_generic_early_01_small_delivery.json[m[36m:[m[32m94[m[36m:[m          "textKey": "event.ch_generic_early_01_small_delivery.choice.ask_[1;31mcompanion[m.outcome.shared_delivery.text",
+[35mdocs/design/ECONOMY_AND_ITEMS.md[m[36m:[m[32m5[m[36m:[mPlayers have two pockets, two equipment slots, one active Log Pose slot, and one active [1;31mcompanion[m slot. Equipment is inert while stored; equipped modifiers are derived and capped at 50. Two-handed equipment occupies both equipment slots. Owned stacks carry provenance batches whose quantities sum to the stack quantity.
+[35mdocs/design/MAJOR_NARRATIVE_TRACKS.md[m[36m:[m[32m450[m[36m:[mEvery reachable Outcome of every Childhood Layer-5 Family node must grant at least one persistent gameplay reward: Item, Equipment, Trait, [1;31mCompanion[m/state unlock, Reputation, or another supported persistent asset. A `milestoneId` / future Achievement never counts as that gameplay reward.
+[35msrc/features/dev-ui/GameplayDebugPanel.tsx[m[36m:[m[32m165[m[36m:[m  if (state.player.[1;31mcompanion[m) add(state.player.[1;31mcompanion[m.itemId, state.player.[1;31mcompanion[m.quantity);
+[35msrc/features/event-ui/TopWorldHud.tsx[m[36m:[m[32m68[m[36m:[mfunction storageKey(slot: StorageSlot): string { return slot.type === 'logPose' || slot.type === '[1;31mcompanion[m' ? slot.type : `${slot.type}-${slot.index}`; }
+[35msrc/features/event-ui/TopWorldHud.tsx[m[36m:[m[32m367[m[36m:[m  const active[1;31mCompanion[m = state.player.[1;31mcompanion[m;
+[35msrc/features/event-ui/TopWorldHud.tsx[m[36m:[m[32m368[m[36m:[m  const active[1;31mCompanion[mDefinition = active[1;31mCompanion[m
+[35msrc/features/event-ui/TopWorldHud.tsx[m[36m:[m[32m369[m[36m:[m    ? catalog.items.find(({ id }) => id === active[1;31mCompanion[m.itemId)
+[35msrc/features/event-ui/TopWorldHud.tsx[m[36m:[m[32m371[m[36m:[m  const active[1;31mCompanion[mLabel = active[1;31mCompanion[m ? getItemLabel(active[1;31mCompanion[m, catalog, translate) : null;
+[35msrc/features/event-ui/TopWorldHud.tsx[m[36m:[m[32m372[m[36m:[m  const active[1;31mCompanion[mBonus = active[1;31mCompanion[mDefinition?.[1;31mcompanion[m === true
+[35msrc/features/event-ui/TopWorldHud.tsx[m[36m:[m[32m373[m[36m:[m    ? Object.entries(active[1;31mCompanion[mDefinition.modifiers ?? {})
+[35msrc/features/event-ui/TopWorldHud.tsx[m[36m:[m[32m486[m[36m:[m            title={translate('ui.[1;31mcompanion[m.title')}
+[35msrc/features/event-ui/TopWorldHud.tsx[m[36m:[m[32m487[m[36m:[m            detail={active[1;31mCompanion[mLabel
+[35msrc/features/event-ui/TopWorldHud.tsx[m[36m:[m[32m488[m[36m:[m              ? [active[1;31mCompanion[mLabel, active[1;31mCompanion[mBonus].filter(Boolean).join(' · ')
+[35msrc/features/event-ui/TopWorldHud.tsx[m[36m:[m[32m489[m[36m:[m              : translate('ui.[1;31mcompanion[m.empty')}
+[35msrc/features/event-ui/TopWorldHud.tsx[m[36m:[m[32m495[m[36m:[m              className={`opfg-hud-slot ${active[1;31mCompanion[m ? 'is-filled' : 'is-empty'}`}
+[35msrc/features/event-ui/TopWorldHud.tsx[m[36m:[m[32m496[m[36m:[m              aria-label={active[1;31mCompanion[mLabel ?? translate('ui.[1;31mcompanion[m.empty')}
+[35msrc/features/event-ui/TopWorldHud.tsx[m[36m:[m[32m497[m[36m:[m              {...interactionProps({ type: '[1;31mcompanion[m' }, selectedStorageSlot, onStorageSlot)}
+[35msrc/features/event-ui/crew-rail.css[m[36m:[m[32m146[m[36m:[m.opfg-[1;31mcompanion[m-selector {
+[35msrc/features/event-ui/crew-rail.css[m[36m:[m[32m152[m[36m:[m.opfg-[1;31mcompanion[m-selector {
+[35msrc/features/event-ui/top-world-hud.css[m[36m:[m[32m639[m[36m:[m.opfg-hud-[1;31mcompanion[m {
+[35msrc/features/event-ui/top-world-hud.css[m[36m:[m[32m643[m[36m:[m.opfg-hud-[1;31mcompanion[m-picker {
+[35msrc/features/event-ui/top-world-hud.css[m[36m:[m[32m657[m[36m:[m.opfg-hud-[1;31mcompanion[m-picker > strong,
+[35msrc/features/event-ui/top-world-hud.css[m[36m:[m[32m658[m[36m:[m.opfg-hud-[1;31mcompanion[m-picker > span {
+[35msrc/features/event-ui/top-world-hud.css[m[36m:[m[32m662[m[36m:[m.opfg-hud-[1;31mcompanion[m-picker > button {
+[35msrc/game/content/schema.ts[m[36m:[m[32m134[m[36m:[m  | { type: 'hasActive[1;31mCompanion[m' }
+[35msrc/game/content/schema.ts[m[36m:[m[32m135[m[36m:[m  | { type: 'active[1;31mCompanion[mIs'; itemId: ItemId }
+[35msrc/game/content/schema.ts[m[36m:[m[32m380[m[36m:[m  /** Dedicated active animal-object slot; [1;31mCompanion[m is never an NPC. */
+[35msrc/game/content/schema.ts[m[36m:[m[32m381[m[36m:[m  [1;31mcompanion[m?: true;
+[35msrc/game/engine/conditions.ts[m[36m:[m[32m37[m[36m:[m    case 'hasActive[1;31mCompanion[m':
+[35msrc/game/engine/conditions.ts[m[36m:[m[32m38[m[36m:[m      return state.player.[1;31mcompanion[m !== null;
+[35msrc/game/engine/conditions.ts[m[36m:[m[32m39[m[36m:[m    case 'active[1;31mCompanion[mIs':
+[35msrc/game/engine/conditions.ts[m[36m:[m[32m40[m[36m:[m      return state.player.[1;31mcompanion[m?.itemId === condition.itemId;
+[35msrc/game/engine/d26Systems.test.ts[m[36m:[m[32m91[m[36m:[m    state.player.[1;31mcompanion[m = { itemId: 'sealed_chart', quantity: 1, provenance: [{ locationId: null, quantity: 1 }] };
+[35msrc/game/engine/d26Systems.test.ts[m[36m:[m[32m98[m[36m:[m    expect(state.player.[1;31mcompanion[m?.itemId).toBe('sealed_chart');
+[35msrc/game/engine/effects.ts[m[36m:[m[32m31[m[36m:[m      [1;31mcompanion[m: state.player.[1;31mcompanion[m ? { ...state.player.[1;31mcompanion[m, provenance: state.player.[1;31mcompanion[m.provenance.map((batch) => ({ ...batch })) } : null,
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m10[m[36m:[m  | { type: '[1;31mcompanion[m' };
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m44[m[36m:[m    if (destination.type === '[1;31mcompanion[m') return moveTo[1;31mCompanion[m(state, catalog, source);
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m47[m[36m:[m    if (source.type === '[1;31mcompanion[m') return move[1;31mCompanion[mToStorage(state, catalog, destination);
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m97[m[36m:[mfunction moveTo[1;31mCompanion[m(state: GameState, catalog: ContentCatalog, source: StorageSlot): boolean {
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m102[m[36m:[m  if (!stack || definition?.[1;31mcompanion[m !== true) return false;
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m104[m[36m:[m  const active = state.player.[1;31mcompanion[m;
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m107[m[36m:[m    if (!activeDefinition || activeDefinition.[1;31mcompanion[m !== true) return false;
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m111[m[36m:[m      state.player.[1;31mcompanion[m = stack;
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m126[m[36m:[m    state.player.[1;31mcompanion[m = incoming;
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m128[m[36m:[m    state.player.[1;31mcompanion[m = takeOne(stack, stacks!);
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m135[m[36m:[mfunction move[1;31mCompanion[mToStorage(state: GameState, catalog: ContentCatalog, destination: StorageSlot): boolean {
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m136[m[36m:[m  if ((destination.type !== 'pocket' && destination.type !== 'cargo') || !state.player.[1;31mcompanion[m) return false;
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m139[m[36m:[m  target.splice(destination.index, 0, state.player.[1;31mcompanion[m);
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m140[m[36m:[m  state.player.[1;31mcompanion[m = null;
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m172[m[36m:[m  return slot.type === 'logPose' ? state.player.logPose : state.player.[1;31mcompanion[m;
+[35msrc/game/engine/inventory.ts[m[36m:[m[32m220[m[36m:[m  return [...state.player.inventory.stacks, ...(state.ship?.cargo ?? []), ...state.player.equipment.filter((entry): entry is ItemStack => entry !== null), ...(state.player.logPose ? [state.player.logPose] : []), ...(state.player.[1;31mcompanion[m ? [state.player.[1;31mcompanion[m] : [])].some((stack) => stack.itemId === itemId);
+[35msrc/game/engine/save.ts[m[36m:[m[32m65[m[36m:[m  const [1;31mcompanion[m = readOptionalStack(value.player.[1;31mcompanion[m);
+[35msrc/game/engine/save.ts[m[36m:[m[32m66[m[36m:[m  if (equipment === null || logPose === undefined || [1;31mcompanion[m === undefined || ([1;31mcompanion[m !== null && [1;31mcompanion[m.quantity !== 1)) return null;
+[35msrc/game/engine/save.ts[m[36m:[m[32m136[m[36m:[m      [1;31mcompanion[m,
+[35msrc/game/engine/save.ts[m[36m:[m[32m267[m[36m:[m    const { [1;31mcompanion[mNpcId: _legacy[1;31mCompanion[mNpcId, ...withoutLegacy[1;31mCompanion[m } = migrated;
+[35msrc/game/engine/save.ts[m[36m:[m[32m269[m[36m:[m      ...withoutLegacy[1;31mCompanion[m,
+[35msrc/game/engine/save.ts[m[36m:[m[32m271[m[36m:[m      player: { ...migrated.player, [1;31mcompanion[m: null },
+[35msrc/game/engine/stats.ts[m[36m:[m[32m11[m[36m:[m  const [1;31mcompanion[mDefinition = state.player.[1;31mcompanion[m
+[35msrc/game/engine/stats.ts[m[36m:[m[32m12[m[36m:[m    ? catalog.items.find(({ id }) => id === state.player.[1;31mcompanion[m?.itemId)
+[35msrc/game/engine/stats.ts[m[36m:[m[32m14[m[36m:[m  const [1;31mcompanion[mModifier = [1;31mcompanion[mDefinition?.[1;31mcompanion[m === true
+[35msrc/game/engine/stats.ts[m[36m:[m[32m15[m[36m:[m    ? [1;31mcompanion[mDefinition.modifiers?.[statId] ?? 0
+[35msrc/game/engine/stats.ts[m[36m:[m[32m17[m[36m:[m  return equipmentModifier + [1;31mcompanion[mModifier;
+[35msrc/game/localization/locales/en.json[m[36m:[m[32m1034[m[36m:[m  "event.ch_generic_early_01_small_delivery.choice.ask_[1;31mcompanion[m.text": "Ask someone to come along",
+[35msrc/game/localization/locales/en.json[m[36m:[m[32m1035[m[36m:[m  "event.ch_generic_early_01_small_delivery.choice.ask_[1;31mcompanion[m.outcome.shared_delivery.text": "You make the trip together. {{npc_neighborhood_merchant}} does not tease you; the parcel gets there.",
+[35msrc/game/localization/locales/en.json[m[36m:[m[32m1160[m[36m:[m  "event.ch_opening_household_pirate_01.text": "{{npc_player_parent_1}} opens the door to three [1;31mcompanion[ms still covered in salt. A tricorn, a purse and a wanted poster land on the table before breakfast.",
+[35msrc/game/localization/locales/en.json[m[36m:[m[32m1450[m[36m:[m  "ui.[1;31mcompanion[m.title": "[1;31mCompanion[m",
+[35msrc/game/localization/locales/en.json[m[36m:[m[32m1451[m[36m:[m  "ui.[1;31mcompanion[m.empty": "Empty [1;31mcompanion[m slot",
+[35msrc/game/localization/locales/en.json[m[36m:[m[32m1452[m[36m:[m  "ui.[1;31mcompanion[m.noneAvailable": "No [1;31mcompanion[m is available.",
+[35msrc/game/localization/locales/en.json[m[36m:[m[32m1453[m[36m:[m  "ui.[1;31mcompanion[m.select": "Select as [1;31mcompanion[m",
+[35msrc/game/localization/locales/en.json[m[36m:[m[32m1454[m[36m:[m  "ui.[1;31mcompanion[m.remove": "Remove [1;31mcompanion[m",
+[35msrc/game/localization/locales/en.json[m[36m:[m[32m1455[m[36m:[m  "ui.[1;31mcompanion[m.tooltip": "The active [1;31mcompanion[m applies their modifiers to crew members only.",
+[35msrc/game/localization/locales/fr.json[m[36m:[m[32m683[m[36m:[m  "event.ch_generic_early_01_small_delivery.choice.ask_[1;31mcompanion[m.outcome.shared_delivery.text": "Vous faites le trajet à deux. {{npc_neighborhood_merchant}} ne se moque pas : le paquet arrive.",
+[35msrc/game/localization/locales/fr.json[m[36m:[m[32m684[m[36m:[m  "event.ch_generic_early_01_small_delivery.choice.ask_[1;31mcompanion[m.text": "Demander à quelqu’un de venir",
+[35msrc/game/localization/locales/fr.json[m[36m:[m[32m12883[m[36m:[m  "event.ch_combat_01_tool_flash.choice.pull_[1;31mcompanion[m.outcome.[1;31mcompanion[m_pulled.text": "Tu ne cherches pas l’outil ; tu retires d’abord une cible du geste.",
+[35msrc/game/localization/locales/fr.json[m[36m:[m[32m12884[m[36m:[m  "event.ch_combat_01_tool_flash.choice.pull_[1;31mcompanion[m.text": "Tirer la personne la plus proche hors de portée.",
+[35msrc/game/localization/locales/fr.json[m[36m:[m[32m13291[m[36m:[m  "ui.[1;31mcompanion[m.title": "Compagnon",
+[35msrc/game/localization/locales/fr.json[m[36m:[m[32m13292[m[36m:[m  "ui.[1;31mcompanion[m.empty": "Emplacement de compagnon vide",
+[35msrc/game/localization/locales/fr.json[m[36m:[m[32m13293[m[36m:[m  "ui.[1;31mcompanion[m.noneAvailable": "Aucun compagnon n’est disponible.",
+[35msrc/game/localization/locales/fr.json[m[36m:[m[32m13294[m[36m:[m  "ui.[1;31mcompanion[m.select": "Choisir comme compagnon",
+[35msrc/game/localization/locales/fr.json[m[36m:[m[32m13295[m[36m:[m  "ui.[1;31mcompanion[m.remove": "Retirer le compagnon",
+[35msrc/game/localization/locales/fr.json[m[36m:[m[32m13296[m[36m:[m  "ui.[1;31mcompanion[m.tooltip": "Le compagnon actif applique ses modificateurs aux membres d’équipage uniquement.",
+[35msrc/game/model/initialState.ts[m[36m:[m[32m34[m[36m:[m      [1;31mcompanion[m: null,
+[35msrc/game/model/schema.ts[m[36m:[m[32m85[m[36m:[m  [1;31mcompanion[m: ItemStack | null;
+[35msrc/game/validation/validateContent.ts[m[36m:[m[32m65[m[36m:[m  'hasActive[1;31mCompanion[m',
+[35msrc/game/validation/validateContent.ts[m[36m:[m[32m66[m[36m:[m  'active[1;31mCompanion[mIs',
+[35msrc/game/validation/validateContent.ts[m[36m:[m[32m185[m[36m:[m  const [1;31mcompanion[mItemIds = new Set(items.filter((item) => item.[1;31mcompanion[m === true).map((item) => String(item.id)));
+[35msrc/game/validation/validateContent.ts[m[36m:[m[32m225[m[36m:[m  const references = { eventIds, choicesByEvent, outcomesByEvent, traitIds, itemIds, equipmentItemIds, devilFruitIds, shipIds, crewRoleIds, npcIds, [1;31mcompanion[mItemIds, raceIds, seaIds, affiliationIds, careerAffiliationIds, careerRankIds, careerTitleIds, endingIds, familyStructureIds, socialClassIds, locationIds, scheduledEventIds, immediateEventIds, majorTrackIds, majorTracks };
+[35msrc/game/validation/validateContent.ts[m[36m:[m[32m330[m[36m:[m    if (item.[1;31mcompanion[m !== undefined && item.[1;31mcompanion[m !== true) errors.push({ path: `${path}.[1;31mcompanion[m`, message: '[1;31mcompanion[m metadata may only be true when present.' });
+[35msrc/game/validation/validateContent.ts[m[36m:[m[32m331[m[36m:[m    if (item.[1;31mcompanion[m === true && item.category !== 'item') errors.push({ path: `${path}.[1;31mcompanion[m`, message: '[1;31mCompanion[m must use Item category item.' });
+[35msrc/game/validation/validateContent.ts[m[36m:[m[32m332[m[36m:[m    if (item.[1;31mcompanion[m === true && item.logPoseType !== undefined) errors.push({ path, message: '[1;31mCompanion[m and Log Pose metadata are mutually exclusive.' });
+[35msrc/game/validation/validateContent.ts[m[36m:[m[32m334[m[36m:[m      if (item.category !== 'equipment' && item.[1;31mcompanion[m !== true) errors.push({ path: `${path}.modifiers`, message: 'Modifiers require Equipment or [1;31mCompanion[m Item.' });
+[35msrc/game/validation/validateContent.ts[m[36m:[m[32m483[m[36m:[m  [1;31mcompanion[mItemIds: Set<string>;
+[35msrc/game/validation/validateContent.ts[m[36m:[m[32m718[m[36m:[m  if (type === 'active[1;31mCompanion[mIs') validateReference(value.itemId, references.[1;31mcompanion[mItemIds, '[1;31mCompanion[m ItemId', path, errors);
+[35mtests/conditions.test.ts[m[36m:[m[32m48[m[36m:[m  it('queries only the active Log Pose and [1;31mcompanion[m slots', () => {
+[35mtests/conditions.test.ts[m[36m:[m[32m56[m[36m:[m    expect(evaluateCondition({ type: 'hasActive[1;31mCompanion[m' }, state, contentCatalog)).toBe(false);
+[35mtests/conditions.test.ts[m[36m:[m[32m57[m[36m:[m    expect(evaluateCondition({ type: 'active[1;31mCompanion[mIs', npcId: 'mira' }, state, contentCatalog)).toBe(false);
+[35mtests/conditions.test.ts[m[36m:[m[32m59[m[36m:[m    state.[1;31mcompanion[mNpcId = 'mira';
+[35mtests/conditions.test.ts[m[36m:[m[32m60[m[36m:[m    expect(evaluateCondition({ type: 'hasActive[1;31mCompanion[m' }, state, contentCatalog)).toBe(true);
+[35mtests/conditions.test.ts[m[36m:[m[32m61[m[36m:[m    expect(evaluateCondition({ type: 'active[1;31mCompanion[mIs', npcId: 'mira' }, state, contentCatalog)).toBe(true);
+[35mtests/contentValidation.test.ts[m[36m:[m[32m43[m[36m:[m  it('validates active Log Pose and [1;31mcompanion[m Condition metadata', () => {
+[35mtests/contentValidation.test.ts[m[36m:[m[32m51[m[36m:[m        id: 'choice', textKey: key, availableIf: { type: 'active[1;31mCompanion[mIs', npcId: 'mira' },
+[35mtests/contentValidation.test.ts[m[36m:[m[32m59[m[36m:[m      expect.stringContaining('Unknown [1;31mcompanion[m-capable NpcId "mira"'),
+[35mtests/contentValidation.test.ts[m[36m:[m[32m63[m[36m:[m  it('validates D2.6 Item, [1;31mcompanion[m, Market Hub and exact Ship contracts', () => {
+[35mtests/contentValidation.test.ts[m[36m:[m[32m69[m[36m:[m    catalog.npcs[0].[1;31mcompanion[mModifiers = { navigation: 4 };
+[35mtests/contentValidation.test.ts[m[36m:[m[32m81[m[36m:[m      expect.stringContaining('[1;31mCompanion[m modifiers require [1;31mcompanion[mCapable'),
+[35mtools/event-authoring/src/components/ConditionEditor.tsx[m[36m:[m[32m6[m[36m:[m  'all','any','not','hasTrait','statAtLeast','hasFlag','hasItem','activeLogPoseIs','hasActive[1;31mCompanion[m','active[1;31mCompanion[mIs','berriesAtLeast','hasCrew','crewSizeAtLeast','hasCrewRole','canRecruitNpc','isLeader','locationIs','locationWithin','currentSeaIs','locationHasTag','locationHasService','isAtSea','isOnLand','careerPhaseIs',
+[35mtools/event-authoring/src/components/ConditionEditor.tsx[m[36m:[m[32m27[m[36m:[m      case 'active[1;31mCompanion[mIs': return <IdSelect value={value.npcId} options={registries.npcs} onChange={(npcId) => onChange({ ...value, npcId })} />;
+[35mtools/event-authoring/src/components/ConditionEditor.tsx[m[36m:[m[32m40[m[36m:[m      case 'isAtSea': case 'isOnLand': case 'hasShip': case 'canSellShip': case 'hasCrew': case 'isLeader': case 'hasActive[1;31mCompanion[m': case 'hasDevilFruit': case 'devilFruitIsAwakened': return <span className="muted">No parameters</span>;
+[35mtools/event-authoring/src/gameSchema/current/defaults.ts[m[36m:[m[32m57[m[36m:[m    case 'hasActive[1;31mCompanion[m': return { type };
+[35mtools/event-authoring/src/gameSchema/current/defaults.ts[m[36m:[m[32m58[m[36m:[m    case 'active[1;31mCompanion[mIs': return { type, npcId: '' };
