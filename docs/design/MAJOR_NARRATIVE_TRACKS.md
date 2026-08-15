@@ -447,7 +447,7 @@ Family Major Events may shape the character more strongly than ordinary Childhoo
 
 NPC Relationship consequences may accompany those Stat packages when the Family relationship is directly at stake.
 
-Every reachable Outcome of every Childhood Layer-5 Family node must grant at least one persistent gameplay reward: Item, Equipment, Trait, Companion/state unlock, Reputation, or another supported persistent asset. A `milestoneId` / future Achievement never counts as that gameplay reward.
+Every reachable Outcome of every Childhood Layer-5 Family node must grant at least one persistent gameplay reward: Item, Equipment, Trait, Companion animal Item, Reputation, NPC relationship/status, or another supported persistent asset. A `milestoneId` / future Achievement never counts as that gameplay reward.
 
 Inherited Family affiliation remains historical origin and is never rewritten by Layer 5. A Layer-5 Outcome may determine the personal affiliation with which the character enters Active. For `family_marine`, an accepted Marine inheritance may start Active as `marine`; a rejected/deferred inheritance may start Active as `civilian`. Conflict with a Marine parent does not automatically imply rejection of the Marine institution, and affection for the parent does not automatically imply enlistment.
 

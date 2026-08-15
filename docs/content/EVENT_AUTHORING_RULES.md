@@ -2118,7 +2118,10 @@ Valid inheritance families include, when supported by the current runtime and th
 - a meaningful Item, document or keepsake;
 - Equipment;
 - a Trait when the Trait is genuinely formed here and cannot silently no-op as the sole reward;
-- persistent NPC / animal / companion-related state when an existing runtime path can actually express it;
+- persistent NPC relationship/status when the story is actually about an NPC;
+- a Companion animal Item when the story hands the player a persistent animal companion through the normal Item acquisition path.
+
+Companion != NPC: never use NpcState, Relationship, NpcStatus, crewRoleId or crewCapacity to express a Companion reward.
 - network, access, obligation or opportunity state encoded by a meaningful reusable Flag/History hook;
 - ship/power inheritance only when exceptionally justified;
 - the separate Active career handoff resolved from History at 180 months;

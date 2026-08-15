@@ -409,6 +409,6 @@ At Saga scale, vary inheritance forms when the fiction supports it: money, reput
 
 A full Saga should normally exercise at least three reward families. Strong dominance by one family is a review signal, not an invitation to rebalance mechanically without regard to the story.
 
-Any proposed animal/companion inheritance must use an existing supported NPC/companion acquisition path. Do not invent a direct companion Effect solely for a Family reward.
+Any Companion inheritance is an animal Item acquired through the normal Item acquisition path and activated only through the dedicated Companion Item slot. A Companion is never an NPC and never uses NpcState, Relationship, NpcStatus, crewRoleId or crewCapacity.
 
 Every Layer-5 SELF_AUDIT must map narrative inheritance -> mechanical inheritance -> reason for that mapping.
