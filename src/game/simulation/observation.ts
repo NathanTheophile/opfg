@@ -1,4 +1,5 @@
 import type { ChoiceDefinition, ContentCatalog, EventDefinition, Outcome } from '../content/schema';
+import type { DiceRollResult } from '../engine/dice';
 import type { GameState } from '../model/schema';
 import type { MonthlyNavigationChoice } from '../engine/navigation';
 import type { SimulationTerminationReason } from './types';
@@ -10,6 +11,7 @@ export interface ObservedEventResolution {
   choice: ChoiceDefinition;
   outcome: Outcome;
   diceResult?: 'criticalFailure' | 'failure' | 'success' | 'criticalSuccess';
+  dice?: DiceRollResult;
 }
 
 export interface ObservedNavigationResolution {

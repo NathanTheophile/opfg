@@ -116,6 +116,7 @@ export function simulateObservedRun(options: SimulateObservedRunOptions): Simula
         choice: selection.choice,
         outcome: result.outcome,
         ...(result.dice ? { diceResult: result.dice.result } : {}),
+        ...(result.dice ? { dice: result.dice } : {}),
       }, options.catalog);
 
       resolvedEvents.push({
