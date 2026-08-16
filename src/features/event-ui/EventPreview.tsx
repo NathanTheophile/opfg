@@ -263,16 +263,30 @@ function renderNarrativeBody(
 export interface EventPreviewProps {
   catalog: ContentCatalog;
   storage: StorageLike;
+  autoStartNewRun?: boolean;
 }
 
 export function EventPreview({
   catalog,
   storage,
+  autoStartNewRun = false,
 }: EventPreviewProps) {
   const session = useGameSession(
     catalog,
     storage,
   );
+
+  const autoStartHandledRef = useRef(false);
+
+  useEffect(() => {
+    if (
+      !autoStartNewRun ||
+      autoStartHandledRef.current
+    ) return;
+
+    autoStartHandledRef.current = true;
+    session.startNewRun();
+  }, [autoStartNewRun, session.startNewRun]);
 
   const [locale, setLocale] =
     useState<LocaleId>(() =>

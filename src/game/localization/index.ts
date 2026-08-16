@@ -7,9 +7,55 @@ export const supportedLocales = ['fr', 'en'] as const;
 export type LocaleId = typeof supportedLocales[number];
 export type LocalizationDictionary = Record<string, string>;
 export type Translator = (key: LocalizationKey, params?: InterpolationParams) => string;
+
+const landingDictionaries: Record<LocaleId, LocalizationDictionary> = {
+  fr: {
+    'ui.landing.title': 'One Piece: Destinies',
+    'ui.landing.kicker': 'Forge ta destinée',
+    'ui.landing.tagline': 'Une vie entière à construire, des mers à traverser et des choix qui laissent des traces.',
+    'ui.landing.continue': 'Continuer',
+    'ui.landing.newGame': 'Nouvelle partie',
+    'ui.landing.achievements': 'Achievements',
+    'ui.landing.shop': 'Boutique',
+    'ui.landing.history': 'Historique',
+    'ui.landing.secondaryNavigation': 'Navigation secondaire',
+    'ui.landing.unnamed': 'Sans nom',
+    'ui.landing.affiliationUnknown': 'Affiliation à définir',
+    'ui.landing.ageYears': '{years} ans',
+    'ui.landing.ageYearsMonths': '{years} ans · {months} mois',
+    'ui.landing.placeholder': 'Cette section est réservée dans la landing et sera branchée dans une prochaine passe.',
+    'ui.landing.close': 'Fermer',
+    'ui.landing.cancel': 'Annuler',
+    'ui.landing.resetTitle': 'Commencer une nouvelle partie ?',
+    'ui.landing.resetBody': "La partie active sera supprimée. L'historique des anciennes parties n'est pas encore branché dans cette ébauche.",
+    'ui.landing.resetConfirm': 'Supprimer et recommencer',
+  },
+  en: {
+    'ui.landing.title': 'One Piece: Destinies',
+    'ui.landing.kicker': 'Forge your destiny',
+    'ui.landing.tagline': 'Build an entire life, cross the seas and make choices that leave a mark.',
+    'ui.landing.continue': 'Continue',
+    'ui.landing.newGame': 'New game',
+    'ui.landing.achievements': 'Achievements',
+    'ui.landing.shop': 'Shop',
+    'ui.landing.history': 'History',
+    'ui.landing.secondaryNavigation': 'Secondary navigation',
+    'ui.landing.unnamed': 'Unnamed',
+    'ui.landing.affiliationUnknown': 'Affiliation not chosen',
+    'ui.landing.ageYears': '{years} years',
+    'ui.landing.ageYearsMonths': '{years} years · {months} months',
+    'ui.landing.placeholder': 'This section is reserved in the landing page and will be connected in a later pass.',
+    'ui.landing.close': 'Close',
+    'ui.landing.cancel': 'Cancel',
+    'ui.landing.resetTitle': 'Start a new game?',
+    'ui.landing.resetBody': 'The active game will be deleted. Previous-run history is not connected in this first draft yet.',
+    'ui.landing.resetConfirm': 'Delete and restart',
+  },
+};
+
 export const dictionaries: Record<LocaleId, LocalizationDictionary> = {
-  fr: { ...fr },
-  en: { ...en },
+  fr: { ...fr, ...landingDictionaries.fr },
+  en: { ...en, ...landingDictionaries.en },
 };
 export const LOCALE_STORAGE_KEY = 'jam-op-fan-game.locale';
 export interface LocaleStorage { getItem(key: string): string | null; setItem(key: string, value: string): void }
