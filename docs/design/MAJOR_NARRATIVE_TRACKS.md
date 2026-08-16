@@ -1,5 +1,7 @@
 # OPFG — Major Narrative Tracks
 
+> **ACTIVE_V1_LOCK — 2026-08-16.** Active Personal Affiliation is now defined for four V1 careers only: Civilian (commercial trajectory), Pirate, Marine and Revolutionary. It begins after a few ordinary Active roots, progresses through approximately **10–14 milestone-driven major chapters**, and a normal major chapter resolves as a root plus roughly **1–3 Immediate** continuations when warranted. V1 content exposes no career changes, so Personal Affiliation never transfers/restarts under another career in V1. Adult Family uses broad Active age windows + current History/family state rather than Childhood-style fixed checkpoints. Adult Family and Personal Affiliation may both become due and must use overdue/fairness behavior so neither starves the other. Exact Adult Family authoring remains deferred until the minimal Active corridor is stable.
+
 > **Status: validated V2 narrative-design authority; D2 Childhood Family runtime implemented.**
 >
 > This document defines the narrative spine introduced by the D2 Content Reset. It supersedes D1.8/D1.9 opening orchestration and the former mandatory Childhood Lifetime Thread guarantee. It does not itself claim that Schema 11 / Save 20 are already implemented.

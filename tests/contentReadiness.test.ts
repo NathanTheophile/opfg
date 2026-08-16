@@ -14,6 +14,11 @@ describe('Content Authoring Readiness V1', () => {
     expect(contentCatalog.traits.filter(({ oppositeTraitId }) => oppositeTraitId !== undefined)).toHaveLength(20);
     expect(contentCatalog.crewRoles.map(({ id }) => id)).toEqual(['navigator','medic','cook','shipwright','helmsman','gunner','musician','scholar','fighter','quartermaster']);
     expect(contentCatalog.ships.map(({ id }) => id)).toEqual(['dinghy','sloop','caravel','brig','merchant_ship','galleon']);
+    expect(contentCatalog.affiliations.filter(({ playableV1 }) => playableV1).map(({ id }) => id)).toEqual(['civilian','marine','pirate','revolutionary']);
+    expect(contentCatalog.affiliations.find(({ id }) => id === 'royal_family')).toMatchObject({
+      id: 'royal_family',
+      playableV1: false,
+    });
     expect(contentCatalog.careerRanks.filter(({ affiliationId }) => affiliationId === 'marine')).toHaveLength(10);
     expect(contentCatalog.careerRanks.filter(({ affiliationId }) => affiliationId === 'revolutionary')).toHaveLength(5);
     expect(contentCatalog.careerRanks.filter(({ affiliationId }) => affiliationId === 'bounty_hunter')).toHaveLength(5);

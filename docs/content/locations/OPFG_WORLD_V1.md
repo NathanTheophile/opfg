@@ -1,5 +1,7 @@
 # OPFG — World V1
 
+> **ACTIVE_V1_TRAVEL_LOCK — 2026-08-16.** This amendment supersedes older Active travel wording where it conflicts. In the Blues, ordinary ship travel is **not direct destination selection**: the player chooses to take the sea, remains `at_sea`, resolves one or more maritime roots, and after each maritime root a seeded arrival resolution may continue travel or land at a seeded valid destination in the current Blue. Standard departure requires **two genuine local roots** after arrival. Reverse Mountain is unavailable through ordinary non-Marine navigation; V1 access is the annual crew Navigator power or authored Marine institutional transport. The Navigator button requires a crew NPC with fixed role `navigator`, is usable once per biological year, chooses any destination in the current Blue plus Reverse Mountain, is disabled in Paradise, and from the New World may choose any runtime island in the world. Paradise route start remains seeded. New World ordinary travel remains random/Event-driven, with Navigator as the explicit annual direct-choice exception. The New World should be a substantial part of the majority of strong/long V1 runs.
+
 > **Status: final curated content authority, ready for runtime integration.**
 
 ## Scope

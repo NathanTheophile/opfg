@@ -1,5 +1,7 @@
 # OPFG — Career & Endings
 
+> **ACTIVE_V1_LOCK — 2026-08-16.** V1 playable Active careers are `civilian`, `pirate`, `marine`, `revolutionary`. `bounty_hunter` is outside V1 content scope; its existing runtime/rank definitions may remain inert for future use. The engine may retain career-change primitives, but V1 Events must not expose career changes. Civilian remains one career with no profession state; its V1 Personal Affiliation production line is commerce-focused. Because V1 does not expose career-change resolution, V1 content must not create a bounty on an active Marine. The old ~5 base Endings × ~4 variants planning figure is aspirational rather than a locked V1 count; final Ending inventory is decided after full-run playtests. The real six-axis `/100` score is required from the first terminable Active vertical slice. The Active safety horizon is 40 years / 480 ageMonths and is not a normal retirement target.
+
 > Status: **validated specialized design authority**.
 > Scope: Active career, Reputation, Bounty, ranks/titles, Endings, final score and end screen.
 

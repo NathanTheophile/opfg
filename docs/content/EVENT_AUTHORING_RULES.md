@@ -7,6 +7,7 @@
 > **Scope:** rules for producing, reviewing, validating, and batching authored Events for OPFG V1.
 > **D2 V2 authority note:** §24 is the current override for V2 narrative production. Legacy standard-batch Lifetime quotas and §23 D1.9 Opening Breadth remain historical reference only where §24 says they are superseded.
 > Ordinary Childhood V2 batches additionally follow `docs/content/events/v2/CHILDHOOD_V2_BATCH_CONTRACT.md`, the dedicated V2 contract authorized by §24.1. It overrides the legacy Childhood quotas it explicitly names.
+> Active V1 narrative batches follow `docs/content/events/v2/ACTIVE_V1_BATCH_CONTRACT.md`. That dedicated contract overrides conflicting legacy Active batch quotas/assumptions, including the standard Active targets of ~20 roots, 40–50% genuine Immediate mini-arcs, 55–65% Dice roots, and one primary Lifetime Thread per standard narrative batch.
 > Pre-production mining for those batches follows `docs/content/events/v2/CHILDHOOD_V2_SEED_MINING_CONTRACT.md`; curated SEED_POOL files are inspiration material, never accepted V2 EventDefinitions.
 
 >
