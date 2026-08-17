@@ -45,6 +45,7 @@ import {
 } from '@/features/dice/DiceTableStage';
 import { LanguageControls } from '@/features/settings/LanguageControls';
 import { notifyUiLocaleChanged } from '@/features/settings/localeSync';
+import { AchievementToast } from '@/features/achievements/AchievementToast';
 import { PlayerStatsRail } from './PlayerStatsRail';
 import {
   InventoryHudPanel,
@@ -1101,6 +1102,7 @@ export function EventPreview({
   }
 
   const state = session.gameState;
+  const achievementToastId = session.newlyUnlockedAchievements[0];
 
   if (homeOpen) {
     return (
@@ -1379,6 +1381,15 @@ export function EventPreview({
           changeLocale
         }
       />
+
+      {pendingDice === null && achievementToastId && (
+        <AchievementToast
+          key={achievementToastId}
+          achievementId={achievementToastId}
+          locale={locale}
+          onDismiss={() => session.dismissAchievementUnlock(achievementToastId)}
+        />
+      )}
 
       <DiceTableStage
         translate={translate}

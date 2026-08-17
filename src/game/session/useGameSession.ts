@@ -1,5 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ContentCatalog } from '../content/schema';
+import { syncAchievements } from '../achievements/metaProgression';
+import type { AchievementId } from '../achievements/model';
+import { loadMetaProgression, saveMetaProgression } from '../achievements/storage';
 import { clearGameState, loadGameState, saveGameState, type StorageLike } from '../engine/save';
 import { findCurrentEvent, selectNextEvent } from '../engine/events';
 import {
@@ -31,6 +34,38 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
   const [session, setSession] = useState(() =>
     createSessionState(loadGameState(storage), catalog),
   );
+  const [metaProgression, setMetaProgression] = useState(() => loadMetaProgression(storage));
+  const metaProgressionRef = useRef(metaProgression);
+  const [newlyUnlockedAchievements, setNewlyUnlockedAchievements] = useState<AchievementId[]>([]);
+  const initialAchievementSyncHandledRef = useRef(false);
+
+  const syncMetaProgression = useCallback((gameState: GameState | null) => {
+    if (gameState === null) return;
+
+    const result = syncAchievements(
+      metaProgressionRef.current,
+      gameState,
+      catalog,
+      Date.now(),
+    );
+
+    metaProgressionRef.current = result.state;
+    setMetaProgression(result.state);
+    saveMetaProgression(storage, result.state);
+
+    if (result.newlyUnlocked.length > 0) {
+      setNewlyUnlockedAchievements((current) => [
+        ...current,
+        ...result.newlyUnlocked.filter((id) => !current.includes(id)),
+      ]);
+    }
+  }, [catalog, storage]);
+
+  useEffect(() => {
+    if (initialAchievementSyncHandledRef.current || session.gameState === null) return;
+    initialAchievementSyncHandledRef.current = true;
+    syncMetaProgression(session.gameState);
+  }, [session.gameState, syncMetaProgression]);
 
   const currentEvent = useMemo(
     () =>
@@ -43,13 +78,19 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
   const start = (seed = generateSeed()) => {
     clearGameState(storage);
     const next = startNewRun(catalog, seed);
-    if (next.gameState) saveGameState(storage, next.gameState);
+    if (next.gameState) {
+      saveGameState(storage, next.gameState);
+      syncMetaProgression(next.gameState);
+    }
     setSession(next);
   };
 
   const choose = (choiceId: string, input?: string) => {
     const next = chooseInSession(session, catalog, choiceId, input);
-    if (next.gameState) saveGameState(storage, next.gameState);
+    if (next.gameState) {
+      saveGameState(storage, next.gameState);
+      syncMetaProgression(next.gameState);
+    }
     setSession(next);
     return next.lastResolution;
   };
@@ -68,7 +109,10 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
 
   const chooseNavigation = (choice: MonthlyNavigationChoice) => {
     const next = chooseMonthlyNavigationInSession(session, catalog, choice);
-    if (next.gameState) saveGameState(storage, next.gameState);
+    if (next.gameState) {
+      saveGameState(storage, next.gameState);
+      syncMetaProgression(next.gameState);
+    }
     setSession(next);
   };
 
@@ -84,7 +128,10 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
         : nextState;
 
     const next = createSessionState(normalized);
-    if (next.gameState) saveGameState(storage, next.gameState);
+    if (next.gameState) {
+      saveGameState(storage, next.gameState);
+      syncMetaProgression(next.gameState);
+    }
     setSession(next);
     return true;
   };
@@ -110,8 +157,18 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
     };
   }, [catalog, session]);
 
+  const dismissAchievementUnlock = (achievementId?: AchievementId) =>
+    setNewlyUnlockedAchievements((current) =>
+      achievementId === undefined
+        ? current.slice(1)
+        : current.filter((id) => id !== achievementId),
+    );
+
   return {
     ...session,
+    metaProgression,
+    newlyUnlockedAchievements,
+    dismissAchievementUnlock,
     currentEvent,
     navigationOptions,
     startNewRun: start,
