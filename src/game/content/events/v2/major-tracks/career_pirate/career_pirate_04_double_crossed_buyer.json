@@ -1,0 +1,166 @@
+{
+  "id": "career_pirate_04_double_crossed_buyer",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_04_wanted_horizon",
+    "nodeId": "career_pirate_04_double_crossed_buyer",
+    "parentNodeIds": [
+      "career_pirate_03_prize_at_anchor",
+      "career_pirate_03_crew_draws_line",
+      "career_pirate_03_salt_chart",
+      "career_pirate_03_small_flag_big_sea"
+    ],
+    "selectionPriority": 20
+  },
+  "eligibility": {
+    "type": "berriesAtLeast",
+    "value": 5000
+  },
+  "titleKey": "event.career_pirate_04_double_crossed_buyer.title",
+  "textKey": "event.career_pirate_04_double_crossed_buyer.text",
+  "choices": [
+    {
+      "id": "read_trap",
+      "textKey": "event.career_pirate_04_double_crossed_buyer.choice.read_trap.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_trap_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -2
+              },
+              {
+                "type": "modifyBerries",
+                "amount": -1500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_04_double_crossed_buyer_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_04_double_crossed_buyer.choice.read_trap.outcome.read_trap_criticalFailure.text"
+          },
+          "failure": {
+            "id": "read_trap_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "modifyBerries",
+                "amount": -750
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_04_double_crossed_buyer_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_04_double_crossed_buyer.choice.read_trap.outcome.read_trap_failure.text"
+          },
+          "success": {
+            "id": "read_trap_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 5000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_04_double_crossed_buyer_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_04_double_crossed_buyer.choice.read_trap.outcome.read_trap_success.text"
+          },
+          "criticalSuccess": {
+            "id": "read_trap_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 10000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_04_double_crossed_buyer_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_04_double_crossed_buyer.choice.read_trap.outcome.read_trap_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_silence",
+      "textKey": "event.career_pirate_04_double_crossed_buyer.choice.pay_silence.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_silence",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -3000
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_04_double_crossed_buyer_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_04_double_crossed_buyer.choice.pay_silence.outcome.pay_silence.text"
+        }
+      }
+    },
+    {
+      "id": "walk_away",
+      "textKey": "event.career_pirate_04_double_crossed_buyer.choice.walk_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "walk_away",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_04_double_crossed_buyer_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_04_double_crossed_buyer.choice.walk_away.outcome.walk_away.text"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "id": "career_pirate_06_captains_table",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_06_great_line_choice",
+    "nodeId": "career_pirate_06_captains_table",
+    "parentNodeIds": [
+      "career_pirate_05_captain_without_permission",
+      "career_pirate_05_island_tax",
+      "career_pirate_05_hunters_at_breakfast",
+      "career_pirate_05_black_market_lantern"
+    ],
+    "selectionPriority": 1,
+    "fallback": true
+  },
+  "titleKey": "event.career_pirate_06_captains_table.title",
+  "textKey": "event.career_pirate_06_captains_table.text",
+  "choices": [
+    {
+      "id": "take_front",
+      "textKey": "event.career_pirate_06_captains_table.choice.take_front.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_front",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "modifyBounty",
+              "amount": 20000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_06_captains_table_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_06_captains_table.choice.take_front.outcome.take_front.text"
+        }
+      }
+    },
+    {
+      "id": "take_support",
+      "textKey": "event.career_pirate_06_captains_table.choice.take_support.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_support",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_06_captains_table_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_06_captains_table.choice.take_support.outcome.take_support.text"
+        }
+      }
+    },
+    {
+      "id": "decline_raid",
+      "textKey": "event.career_pirate_06_captains_table.choice.decline_raid.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decline_raid",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_06_captains_table_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_06_captains_table.choice.decline_raid.outcome.decline_raid.text"
+        }
+      }
+    }
+  ]
+}

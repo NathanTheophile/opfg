@@ -1,0 +1,178 @@
+{
+  "id": "career_pirate_07_government_convoy",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_07_sea_knows_your_flag",
+    "nodeId": "career_pirate_07_government_convoy",
+    "parentNodeIds": [
+      "career_pirate_06_paradise_whisper",
+      "career_pirate_06_blue_kingpin",
+      "career_pirate_06_scarred_hull",
+      "career_pirate_06_captains_table"
+    ],
+    "selectionPriority": 40
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "bountyAtLeast",
+        "value": 100000
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "titleKey": "event.career_pirate_07_government_convoy.title",
+  "textKey": "event.career_pirate_07_government_convoy.text",
+  "choices": [
+    {
+      "id": "spring_trap",
+      "textKey": "event.career_pirate_07_government_convoy.choice.spring_trap.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "spring_trap_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -8
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_07_government_convoy_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_07_government_convoy.choice.spring_trap.outcome.spring_trap_criticalFailure.text"
+          },
+          "failure": {
+            "id": "spring_trap_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_07_government_convoy_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_07_government_convoy.choice.spring_trap.outcome.spring_trap_failure.text"
+          },
+          "success": {
+            "id": "spring_trap_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 30000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_07_government_convoy_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_07_government_convoy.choice.spring_trap.outcome.spring_trap_success.text"
+          },
+          "criticalSuccess": {
+            "id": "spring_trap_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 60000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_07_government_convoy_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_07_government_convoy.choice.spring_trap.outcome.spring_trap_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "shadow_convoy",
+      "textKey": "event.career_pirate_07_government_convoy.choice.shadow_convoy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shadow_convoy",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_07_government_convoy_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_07_government_convoy.choice.shadow_convoy.outcome.shadow_convoy.text"
+        }
+      }
+    },
+    {
+      "id": "take_lead_ship",
+      "textKey": "event.career_pirate_07_government_convoy.choice.take_lead_ship.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_lead_ship",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 5
+            },
+            {
+              "type": "modifyBounty",
+              "amount": 40000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_07_government_convoy_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_07_government_convoy.choice.take_lead_ship.outcome.take_lead_ship.text"
+        }
+      }
+    }
+  ]
+}

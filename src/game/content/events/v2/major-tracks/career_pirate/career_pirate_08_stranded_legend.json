@@ -1,0 +1,107 @@
+{
+  "id": "career_pirate_08_stranded_legend",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_08_price_of_command",
+    "nodeId": "career_pirate_08_stranded_legend",
+    "parentNodeIds": [
+      "career_pirate_07_government_convoy",
+      "career_pirate_07_crew_legend",
+      "career_pirate_07_old_home_message",
+      "career_pirate_07_name_reaches_ahead"
+    ],
+    "selectionPriority": 30
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "not",
+        "condition": {
+          "type": "hasShip"
+        }
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 25
+      }
+    ]
+  },
+  "titleKey": "event.career_pirate_08_stranded_legend.title",
+  "textKey": "event.career_pirate_08_stranded_legend.text",
+  "choices": [
+    {
+      "id": "accept_lower_flag",
+      "textKey": "event.career_pirate_08_stranded_legend.choice.accept_lower_flag.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_lower_flag",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_08_stranded_legend_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_08_stranded_legend.choice.accept_lower_flag.outcome.accept_lower_flag.text"
+        }
+      }
+    },
+    {
+      "id": "pay_full_fare",
+      "textKey": "event.career_pirate_08_stranded_legend.choice.pay_full_fare.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_full_fare",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -5000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_08_stranded_legend_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_08_stranded_legend.choice.pay_full_fare.outcome.pay_full_fare.text"
+        }
+      }
+    },
+    {
+      "id": "sell_story",
+      "textKey": "event.career_pirate_08_stranded_legend.choice.sell_story.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sell_story",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_08_stranded_legend_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_08_stranded_legend.choice.sell_story.outcome.sell_story.text"
+        }
+      }
+    }
+  ]
+}

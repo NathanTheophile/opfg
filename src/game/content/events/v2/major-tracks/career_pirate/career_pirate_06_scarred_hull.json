@@ -1,0 +1,170 @@
+{
+  "id": "career_pirate_06_scarred_hull",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_06_great_line_choice",
+    "nodeId": "career_pirate_06_scarred_hull",
+    "parentNodeIds": [
+      "career_pirate_05_captain_without_permission",
+      "career_pirate_05_island_tax",
+      "career_pirate_05_hunters_at_breakfast",
+      "career_pirate_05_black_market_lantern"
+    ],
+    "selectionPriority": 20
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "shipHealthAtMost",
+        "value": 15
+      }
+    ]
+  },
+  "titleKey": "event.career_pirate_06_scarred_hull.title",
+  "textKey": "event.career_pirate_06_scarred_hull.text",
+  "choices": [
+    {
+      "id": "repair_yourself",
+      "textKey": "event.career_pirate_06_scarred_hull.choice.repair_yourself.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "repair_yourself_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -8
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_06_scarred_hull_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_06_scarred_hull.choice.repair_yourself.outcome.repair_yourself_criticalFailure.text"
+          },
+          "failure": {
+            "id": "repair_yourself_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_06_scarred_hull_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_06_scarred_hull.choice.repair_yourself.outcome.repair_yourself_failure.text"
+          },
+          "success": {
+            "id": "repair_yourself_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_06_scarred_hull_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_06_scarred_hull.choice.repair_yourself.outcome.repair_yourself_success.text"
+          },
+          "criticalSuccess": {
+            "id": "repair_yourself_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_06_scarred_hull_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_06_scarred_hull.choice.repair_yourself.outcome.repair_yourself_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_full_repair",
+      "textKey": "event.career_pirate_06_scarred_hull.choice.pay_full_repair.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_full_repair",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -7000
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 12
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_06_scarred_hull_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_06_scarred_hull.choice.pay_full_repair.outcome.pay_full_repair.text"
+        }
+      }
+    },
+    {
+      "id": "sail_light",
+      "textKey": "event.career_pirate_06_scarred_hull.choice.sail_light.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sail_light",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": 4
+            },
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_06_scarred_hull_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_06_scarred_hull.choice.sail_light.outcome.sail_light.text"
+        }
+      }
+    }
+  ]
+}

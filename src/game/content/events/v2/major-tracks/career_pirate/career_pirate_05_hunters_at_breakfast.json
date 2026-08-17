@@ -1,0 +1,174 @@
+{
+  "id": "career_pirate_05_hunters_at_breakfast",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_05_code_under_fire",
+    "nodeId": "career_pirate_05_hunters_at_breakfast",
+    "parentNodeIds": [
+      "career_pirate_04_navy_net",
+      "career_pirate_04_port_under_siege",
+      "career_pirate_04_double_crossed_buyer",
+      "career_pirate_04_poster_on_wall"
+    ],
+    "selectionPriority": 20
+  },
+  "eligibility": {
+    "type": "bountyAtLeast",
+    "value": 50000
+  },
+  "titleKey": "event.career_pirate_05_hunters_at_breakfast.title",
+  "textKey": "event.career_pirate_05_hunters_at_breakfast.text",
+  "choices": [
+    {
+      "id": "flip_room",
+      "textKey": "event.career_pirate_05_hunters_at_breakfast.choice.flip_room.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "flip_room_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -2
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_05_hunters_at_breakfast_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_05_hunters_at_breakfast.choice.flip_room.outcome.flip_room_criticalFailure.text"
+          },
+          "failure": {
+            "id": "flip_room_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_05_hunters_at_breakfast_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_05_hunters_at_breakfast.choice.flip_room.outcome.flip_room_failure.text"
+          },
+          "success": {
+            "id": "flip_room_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 12000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_05_hunters_at_breakfast_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_05_hunters_at_breakfast.choice.flip_room.outcome.flip_room_success.text"
+          },
+          "criticalSuccess": {
+            "id": "flip_room_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 24000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_05_hunters_at_breakfast_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_05_hunters_at_breakfast.choice.flip_room.outcome.flip_room_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_breakfast",
+      "textKey": "event.career_pirate_05_hunters_at_breakfast.choice.pay_breakfast.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_breakfast",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "modifyBounty",
+              "amount": 8000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_05_hunters_at_breakfast_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_05_hunters_at_breakfast.choice.pay_breakfast.outcome.pay_breakfast.text"
+        }
+      }
+    },
+    {
+      "id": "offer_split",
+      "textKey": "event.career_pirate_05_hunters_at_breakfast.choice.offer_split.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "offer_split",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_05_hunters_at_breakfast_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_05_hunters_at_breakfast.choice.offer_split.outcome.offer_split.text"
+        }
+      }
+    }
+  ]
+}

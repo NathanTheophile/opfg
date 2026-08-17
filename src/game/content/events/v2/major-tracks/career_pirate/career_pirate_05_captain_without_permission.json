@@ -1,0 +1,178 @@
+{
+  "id": "career_pirate_05_captain_without_permission",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_05_code_under_fire",
+    "nodeId": "career_pirate_05_captain_without_permission",
+    "parentNodeIds": [
+      "career_pirate_04_navy_net",
+      "career_pirate_04_port_under_siege",
+      "career_pirate_04_double_crossed_buyer",
+      "career_pirate_04_poster_on_wall"
+    ],
+    "selectionPriority": 40
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "hasCrew"
+      }
+    ]
+  },
+  "titleKey": "event.career_pirate_05_captain_without_permission.title",
+  "textKey": "event.career_pirate_05_captain_without_permission.text",
+  "choices": [
+    {
+      "id": "hold_course",
+      "textKey": "event.career_pirate_05_captain_without_permission.choice.hold_course.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hold_course_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -8
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_05_captain_without_permission_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_05_captain_without_permission.choice.hold_course.outcome.hold_course_criticalFailure.text"
+          },
+          "failure": {
+            "id": "hold_course_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_05_captain_without_permission_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_05_captain_without_permission.choice.hold_course.outcome.hold_course_failure.text"
+          },
+          "success": {
+            "id": "hold_course_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 5000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_05_captain_without_permission_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_05_captain_without_permission.choice.hold_course.outcome.hold_course_success.text"
+          },
+          "criticalSuccess": {
+            "id": "hold_course_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 10000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_05_captain_without_permission_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_05_captain_without_permission.choice.hold_course.outcome.hold_course_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "change_course",
+      "textKey": "event.career_pirate_05_captain_without_permission.choice.change_course.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "change_course",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": 3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_05_captain_without_permission_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_05_captain_without_permission.choice.change_course.outcome.change_course.text"
+        }
+      }
+    },
+    {
+      "id": "ask_course",
+      "textKey": "event.career_pirate_05_captain_without_permission.choice.ask_course.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_course",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_05_captain_without_permission_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_05_captain_without_permission.choice.ask_course.outcome.ask_course.text"
+        }
+      }
+    }
+  ]
+}

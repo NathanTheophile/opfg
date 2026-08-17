@@ -166,6 +166,23 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
           { id: 'active_10', phase: 'active' as const, dueAgeMonths: 396 },
         ],
       },
+      {
+        id: 'career_pirate',
+        type: 'personal_affiliation' as const,
+        eligibility: { type: 'careerAffiliationIs' as const, affiliationId: 'pirate' },
+        chapters: [
+          { id: 'active_01_name_on_the_water', phase: 'active' as const, dueAgeMonths: 192 },
+          { id: 'active_02_first_hunt', phase: 'active' as const, dueAgeMonths: 216 },
+          { id: 'active_03_crew_and_keel', phase: 'active' as const, dueAgeMonths: 240 },
+          { id: 'active_04_wanted_horizon', phase: 'active' as const, dueAgeMonths: 264 },
+          { id: 'active_05_code_under_fire', phase: 'active' as const, dueAgeMonths: 288 },
+          { id: 'active_06_great_line_choice', phase: 'active' as const, dueAgeMonths: 312 },
+          { id: 'active_07_sea_knows_your_flag', phase: 'active' as const, dueAgeMonths: 336 },
+          { id: 'active_08_price_of_command', phase: 'active' as const, dueAgeMonths: 360 },
+          { id: 'active_09_legend_or_ruin', phase: 'active' as const, dueAgeMonths: 384 },
+          { id: 'active_10_what_the_flag_means', phase: 'active' as const, dueAgeMonths: 408 },
+        ],
+      },
     ],
     events,
   };

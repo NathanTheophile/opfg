@@ -1,0 +1,201 @@
+{
+  "id": "career_pirate_10_storm_king",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_10_what_the_flag_means",
+    "nodeId": "career_pirate_10_storm_king",
+    "parentNodeIds": [
+      "career_pirate_09_legendary_heist",
+      "career_pirate_09_crew_crown",
+      "career_pirate_09_world_sets_price"
+    ],
+    "selectionPriority": 40
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 45
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_pirate_09_legendary_heist",
+            "choiceId": "announce_heist"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_pirate_09_world_sets_price",
+            "choiceId": "write_correction"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_pirate_09_crew_crown",
+            "choiceId": "wear_title"
+          }
+        ]
+      }
+    ]
+  },
+  "titleKey": "event.career_pirate_10_storm_king.title",
+  "textKey": "event.career_pirate_10_storm_king.text",
+  "choices": [
+    {
+      "id": "take_harbor",
+      "textKey": "event.career_pirate_10_storm_king.choice.take_harbor.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "take_harbor_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -8
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_10_storm_king_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_10_storm_king.choice.take_harbor.outcome.take_harbor_criticalFailure.text"
+          },
+          "failure": {
+            "id": "take_harbor_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_10_storm_king_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_10_storm_king.choice.take_harbor.outcome.take_harbor_failure.text"
+          },
+          "success": {
+            "id": "take_harbor_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 50000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_10_storm_king_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_10_storm_king.choice.take_harbor.outcome.take_harbor_success.text"
+          },
+          "criticalSuccess": {
+            "id": "take_harbor_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 100000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_10_storm_king_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_10_storm_king.choice.take_harbor.outcome.take_harbor_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "take_ransom",
+      "textKey": "event.career_pirate_10_storm_king.choice.take_ransom.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_ransom",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 15000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 5
+            },
+            {
+              "type": "modifyBounty",
+              "amount": 40000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_10_storm_king_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_10_storm_king.choice.take_ransom.outcome.take_ransom.text"
+        }
+      }
+    },
+    {
+      "id": "refuse_ransom",
+      "textKey": "event.career_pirate_10_storm_king.choice.refuse_ransom.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_ransom",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 5
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_10_storm_king_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_10_storm_king.choice.refuse_ransom.outcome.refuse_ransom.text"
+        }
+      }
+    }
+  ]
+}
