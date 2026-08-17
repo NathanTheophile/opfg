@@ -37,6 +37,7 @@ import { PLAYER_NAME_MAX_LENGTH } from '@/game/model/playerName';
 import { useGameSession } from '@/game/session/useGameSession';
 import { moveItem, resolveOverflow, type StorageSlot } from '@/game/engine/inventory';
 import { useCrewRolePower } from '@/game/engine/crewPowers';
+import { requiresCrewManagement } from '@/game/engine/crew';
 import { npcInterpolationParams } from '@/game/engine/npcNames';
 import { originNarrativeInterpolationParams } from '@/game/engine/originNarrative';
 import {
@@ -56,6 +57,7 @@ import { CrewRail } from './CrewRail';
 import { EventPanel } from './EventPanel';
 import { OutcomePanel } from './OutcomePanel';
 import { NavigationPanel } from './NavigationPanel';
+import { CrewManagementPanel } from './CrewManagementPanel';
 import { MobileSideDrawers } from './MobileSideDrawers';
 import type {
   ChoiceStatChangeViewModel,
@@ -1266,6 +1268,13 @@ export function EventPreview({
                       })}
                       {!state.pendingOverflow.mandatory && <Button onClick={() => session.applySystemAction((next) => resolveOverflow(next, catalog, { type: 'abandonIncoming' }))}>{translate('ui.overflow.abandon')}</Button>}
                     </Panel>
+                  ) : requiresCrewManagement(state) ? (
+                    <CrewManagementPanel
+                      state={state}
+                      catalog={catalog}
+                      translate={translate}
+                      onSystemAction={session.applySystemAction}
+                    />
                   ) : showOutcome && outcomeView ? (
                     <>
                       {resolvedEventView && (

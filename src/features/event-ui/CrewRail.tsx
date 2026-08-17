@@ -1,5 +1,5 @@
 import { Brain, ChevronRight, Clover, Compass, Dumbbell, Eye, Heart, Gauge, MessageCircle, Smile, UsersRound, type LucideIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Panel } from '@/components/ui';
 import type { ContentCatalog } from '@/game/content/schema';
 import type { Translator } from '@/game/localization';
@@ -12,6 +12,7 @@ import { effectiveNpcStat } from '@/game/engine/stats';
 import { canUseCrewRolePower, navigatorDestinations } from '@/game/engine/crewPowers';
 import { maxCrewSize } from '@/game/engine/ship';
 import type { CrewRoleId, LocationId } from '@/game/model/schema';
+import { firstMateTargetRoleIds } from './crewManagementView';
 
 const NPC_STAT_IDS: NpcStatId[] = ['health', 'morale', 'strength', 'agility', 'observation', 'intelligence', 'navigation', 'charisma', 'luck'];
 const ICONS: Record<NpcStatId, LucideIcon> = { health: Heart, morale: Smile, strength: Dumbbell, agility: Gauge, observation: Eye, intelligence: Brain, navigation: Compass, charisma: MessageCircle, luck: Clover };
@@ -27,8 +28,16 @@ export interface CrewRailProps {
 export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower }: CrewRailProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [navigatorRoleId, setNavigatorRoleId] = useState<CrewRoleId | null>(null);
+  const [firstMateRoleId, setFirstMateRoleId] = useState<CrewRoleId | null>(null);
   const crew = Object.entries(state.npcs).filter(([, npc]) => npc.status === 'crew');
   const capacity = maxCrewSize(state, catalog);
+  const firstMateTargets = firstMateTargetRoleIds(state, catalog);
+
+  useEffect(() => {
+    if (firstMateRoleId && firstMateTargets.length === 0) {
+      setFirstMateRoleId(null);
+    }
+  }, [firstMateRoleId, firstMateTargets.length]);
 
   return <div className="opfg-crew-rail" aria-label={translate('ui.crew')}>
     <Panel
@@ -104,7 +113,11 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
                 className="opfg-crew-action"
                 disabled={!onUseRolePower || !rolePowerAvailable}
                 title={translate(`ui.crew.power.${role.annualPower}.tooltip`)}
-                onClick={() => role.annualPower === 'navigator' ? setNavigatorRoleId(role.id) : onUseRolePower?.(role.id)}
+                onClick={() => {
+                  if (role.annualPower === 'navigator') setNavigatorRoleId(role.id);
+                  else if (role.annualPower === 'first_mate') setFirstMateRoleId(role.id);
+                  else onUseRolePower?.(role.id);
+                }}
               >
                 {translate(`ui.crew.power.${role.annualPower}.action`)}
               </button>
@@ -123,6 +136,29 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
           }}>{translate(location.nameKey)}</button>
         ))}
         <button type="button" className="opfg-crew-action" onClick={() => setNavigatorRoleId(null)}>{translate('ui.action.cancel')}</button>
+      </Panel>
+    )}
+    {firstMateRoleId && (
+      <Panel variant="strong" padding="none" className="opfg-crew-destinations" aria-label={translate('ui.crew.power.first_mate.target')}>
+        <strong>{translate('ui.crew.power.first_mate.target')}</strong>
+        {firstMateTargets.map((roleId) => {
+          const role = catalog.crewRoles.find(({ id }) => id === roleId);
+          if (!role) return null;
+          return (
+            <button
+              key={roleId}
+              type="button"
+              className="opfg-crew-action"
+              onClick={() => {
+                onUseRolePower?.(firstMateRoleId, roleId);
+                setFirstMateRoleId(null);
+              }}
+            >
+              {translate(role.nameKey)}
+            </button>
+          );
+        })}
+        <button type="button" className="opfg-crew-action" onClick={() => setFirstMateRoleId(null)}>{translate('ui.action.cancel')}</button>
       </Panel>
     )}
   </div>;
