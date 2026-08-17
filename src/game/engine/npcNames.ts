@@ -10,40 +10,44 @@ export function ensureNpcMaterialized(
   npcId: NpcId,
 ): NpcState {
   const existing = state.npcs[npcId];
-  if (existing !== undefined) return existing;
-
   const definition = catalog.npcs.find(({ id }) => id === npcId);
   if (definition === undefined) throw new Error(`Unknown NPC "${npcId}".`);
 
-  const base = createDefaultNpcState();
-  let displayName: string | null = null;
-
-  if (definition.namePoolId !== undefined) {
-    const pool = NPC_NAME_POOLS[definition.namePoolId];
-    if (pool === undefined || pool.length === 0) {
-      throw new Error(`Unknown or empty NPC name pool "${definition.namePoolId}".`);
-    }
-
-    const usedNames = new Set(
-      Object.values(state.npcs)
-        .map((npc) => npc.displayName)
-        .filter((name): name is string => typeof name === 'string' && name.length > 0),
-    );
-    const available = pool.filter((name) => !usedNames.has(name));
-    const candidates = available.length > 0 ? available : pool;
-    const random = nextRandom(state.rngState);
-    state.rngState = random.nextState;
-    displayName = candidates[Math.floor(random.value * candidates.length)];
+  if (existing !== undefined) {
+    if (existing.displayName !== null || definition.namePoolId === undefined) return existing;
+    const npc = { ...existing, displayName: generateNpcDisplayName(state, definition.namePoolId) };
+    state.npcs[npcId] = npc;
+    return npc;
   }
+
+  const base = createDefaultNpcState();
 
   const npc: NpcState = {
     ...base,
     raceId: definition.familyRole !== undefined ? state.player.profile.raceId ?? definition.raceId : definition.raceId,
-    displayName,
+    displayName: definition.namePoolId === undefined ? null : generateNpcDisplayName(state, definition.namePoolId),
     stats: { ...definition.initialStats },
   };
   state.npcs[npcId] = npc;
   return npc;
+}
+
+function generateNpcDisplayName(state: GameState, namePoolId: string): string {
+  const pool = NPC_NAME_POOLS[namePoolId];
+  if (pool === undefined || pool.length === 0) {
+    throw new Error(`Unknown or empty NPC name pool "${namePoolId}".`);
+  }
+
+  const usedNames = new Set(
+    Object.values(state.npcs)
+      .map((npc) => npc.displayName)
+      .filter((name): name is string => typeof name === 'string' && name.length > 0),
+  );
+  const available = pool.filter((name) => !usedNames.has(name));
+  const candidates = available.length > 0 ? available : pool;
+  const random = nextRandom(state.rngState);
+  state.rngState = random.nextState;
+  return candidates[Math.floor(random.value * candidates.length)];
 }
 
 export function materializeEventCast(
