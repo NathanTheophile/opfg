@@ -1,0 +1,59 @@
+{
+  "id": "active_blue_south_blue_01_lantern_lifetime_s05b_closed_lights",
+  "kind": "scheduled",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "titleKey": "event.active_blue_south_blue_01_lantern_lifetime_s05b_closed_lights.title",
+  "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s05b_closed_lights.text",
+  "choices": [
+    {
+      "id": "cap_price",
+      "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s05b_closed_lights.choice.cap_price.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cap",
+          "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s05b_closed_lights.choice.cap_price.outcome.cap.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyBerries",
+              "amount": 2500
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_share",
+      "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s05b_closed_lights.choice.take_share.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "share",
+          "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s05b_closed_lights.choice.take_share.outcome.share.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 7000
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "currentSeaIs",
+      "seaId": "south_blue"
+    }
+  },
+  "fallbackEventId": "active_blue_south_blue_01_lantern_lifetime_outside_south_blue"
+}

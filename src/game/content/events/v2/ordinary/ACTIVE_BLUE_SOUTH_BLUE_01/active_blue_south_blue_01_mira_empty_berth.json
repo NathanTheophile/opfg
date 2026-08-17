@@ -1,0 +1,104 @@
+{
+  "id": "active_blue_south_blue_01_mira_empty_berth",
+  "kind": "normal",
+  "cast": [
+    "mira"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "crew_recruitment"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "mira",
+        "status": "known"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_mira_empty_berth.title",
+  "textKey": "event.active_blue_south_blue_01_mira_empty_berth.text",
+  "choices": [
+    {
+      "id": "offer_berth",
+      "textKey": "event.active_blue_south_blue_01_mira_empty_berth.choice.offer_berth.text",
+      "availableIf": {
+        "type": "canRecruitNpc",
+        "npcId": "mira"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crew",
+          "textKey": "event.active_blue_south_blue_01_mira_empty_berth.choice.offer_berth.outcome.crew.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "mira",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "share_routes",
+      "textKey": "event.active_blue_south_blue_01_mira_empty_berth.choice.share_routes.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "routes",
+          "textKey": "event.active_blue_south_blue_01_mira_empty_berth.choice.share_routes.outcome.routes.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": 3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wish_luck",
+      "textKey": "event.active_blue_south_blue_01_mira_empty_berth.choice.wish_luck.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "luck",
+          "textKey": "event.active_blue_south_blue_01_mira_empty_berth.choice.wish_luck.outcome.luck.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

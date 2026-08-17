@@ -1,0 +1,189 @@
+{
+  "id": "active_blue_south_blue_01_crosscurrent_fishers",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_crosscurrent_fishers.title",
+  "textKey": "event.active_blue_south_blue_01_crosscurrent_fishers.text",
+  "choices": [
+    {
+      "id": "thread_skiffs",
+      "textKey": "event.active_blue_south_blue_01_crosscurrent_fishers.choice.thread_skiffs.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "thread_skiffs_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_crosscurrent_fishers.choice.thread_skiffs.outcome.thread_skiffs_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_crosscurrent_fishers_i01_towline_choice"
+              }
+            ]
+          },
+          "failure": {
+            "id": "thread_skiffs_failure",
+            "textKey": "event.active_blue_south_blue_01_crosscurrent_fishers.choice.thread_skiffs.outcome.thread_skiffs_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_crosscurrent_fishers_i01_towline_choice"
+              }
+            ]
+          },
+          "success": {
+            "id": "thread_skiffs_success",
+            "textKey": "event.active_blue_south_blue_01_crosscurrent_fishers.choice.thread_skiffs.outcome.thread_skiffs_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_crosscurrent_fishers_i01_towline_choice"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "thread_skiffs_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_crosscurrent_fishers.choice.thread_skiffs.outcome.thread_skiffs_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_crosscurrent_fishers_i01_towline_choice"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cut_outer_net",
+      "textKey": "event.active_blue_south_blue_01_crosscurrent_fishers.choice.cut_outer_net.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cut_outer_net_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_crosscurrent_fishers.choice.cut_outer_net.outcome.cut_outer_net_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_crosscurrent_fishers_i01_towline_choice"
+              }
+            ]
+          },
+          "failure": {
+            "id": "cut_outer_net_failure",
+            "textKey": "event.active_blue_south_blue_01_crosscurrent_fishers.choice.cut_outer_net.outcome.cut_outer_net_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_crosscurrent_fishers_i01_towline_choice"
+              }
+            ]
+          },
+          "success": {
+            "id": "cut_outer_net_success",
+            "textKey": "event.active_blue_south_blue_01_crosscurrent_fishers.choice.cut_outer_net.outcome.cut_outer_net_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_crosscurrent_fishers_i01_towline_choice"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cut_outer_net_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_crosscurrent_fishers.choice.cut_outer_net.outcome.cut_outer_net_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_crosscurrent_fishers_i01_towline_choice"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "heave_to",
+      "textKey": "event.active_blue_south_blue_01_crosscurrent_fishers.choice.heave_to.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "waited",
+          "textKey": "event.active_blue_south_blue_01_crosscurrent_fishers.choice.heave_to.outcome.waited.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_south_blue_01_crosscurrent_fishers_i01_towline_choice"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "id": "active_blue_south_blue_01_seventy_fourth_sealed_crate",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "south_74th_branch"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_seventy_fourth_sealed_crate.title",
+  "textKey": "event.active_blue_south_blue_01_seventy_fourth_sealed_crate.text",
+  "choices": [
+    {
+      "id": "use_marine_chain",
+      "textKey": "event.active_blue_south_blue_01_seventy_fourth_sealed_crate.choice.use_marine_chain.text",
+      "availableIf": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "marine",
+          "textKey": "event.active_blue_south_blue_01_seventy_fourth_sealed_crate.choice.use_marine_chain.outcome.marine.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "open_in_public",
+      "textKey": "event.active_blue_south_blue_01_seventy_fourth_sealed_crate.choice.open_in_public.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "open",
+          "textKey": "event.active_blue_south_blue_01_seventy_fourth_sealed_crate.choice.open_in_public.outcome.open.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_quartermaster",
+      "textKey": "event.active_blue_south_blue_01_seventy_fourth_sealed_crate.choice.leave_quartermaster.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_blue_south_blue_01_seventy_fourth_sealed_crate.choice.leave_quartermaster.outcome.leave.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "take_payment",
+      "textKey": "event.active_blue_south_blue_01_seventy_fourth_sealed_crate.choice.take_payment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paid",
+          "textKey": "event.active_blue_south_blue_01_seventy_fourth_sealed_crate.choice.take_payment.outcome.paid.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1500
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

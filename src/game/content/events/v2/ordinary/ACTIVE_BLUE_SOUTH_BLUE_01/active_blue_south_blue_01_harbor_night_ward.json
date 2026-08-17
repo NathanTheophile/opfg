@@ -1,0 +1,104 @@
+{
+  "id": "active_blue_south_blue_01_harbor_night_ward",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "medical"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_harbor_night_ward.title",
+  "textKey": "event.active_blue_south_blue_01_harbor_night_ward.text",
+  "choices": [
+    {
+      "id": "carry_water",
+      "textKey": "event.active_blue_south_blue_01_harbor_night_ward.choice.carry_water.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "water",
+          "textKey": "event.active_blue_south_blue_01_harbor_night_ward.choice.carry_water.outcome.water.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "sort_waiting",
+      "textKey": "event.active_blue_south_blue_01_harbor_night_ward.choice.sort_waiting.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sort",
+          "textKey": "event.active_blue_south_blue_01_harbor_night_ward.choice.sort_waiting.outcome.sort.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pay_runner",
+      "textKey": "event.active_blue_south_blue_01_harbor_night_ward.choice.pay_runner.text",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "runner",
+          "textKey": "event.active_blue_south_blue_01_harbor_night_ward.choice.pay_runner.outcome.runner.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_staff",
+      "textKey": "event.active_blue_south_blue_01_harbor_night_ward.choice.leave_staff.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_blue_south_blue_01_harbor_night_ward.choice.leave_staff.outcome.leave.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

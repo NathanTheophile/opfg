@@ -1,0 +1,191 @@
+{
+  "id": "active_blue_south_blue_01_southport_trial_hull",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_southport_trial_hull.title",
+  "textKey": "event.active_blue_south_blue_01_southport_trial_hull.text",
+  "choices": [
+    {
+      "id": "pace_trial",
+      "textKey": "event.active_blue_south_blue_01_southport_trial_hull.choice.pace_trial.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "pace_trial_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_southport_trial_hull.choice.pace_trial.outcome.pace_trial_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_southport_trial_hull_i01_loose_rudder"
+              }
+            ]
+          },
+          "failure": {
+            "id": "pace_trial_failure",
+            "textKey": "event.active_blue_south_blue_01_southport_trial_hull.choice.pace_trial.outcome.pace_trial_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_southport_trial_hull_i01_loose_rudder"
+              }
+            ]
+          },
+          "success": {
+            "id": "pace_trial_success",
+            "textKey": "event.active_blue_south_blue_01_southport_trial_hull.choice.pace_trial.outcome.pace_trial_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_southport_trial_hull_i01_loose_rudder"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "pace_trial_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_southport_trial_hull.choice.pace_trial.outcome.pace_trial_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_southport_trial_hull_i01_loose_rudder"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "spot_flex",
+      "textKey": "event.active_blue_south_blue_01_southport_trial_hull.choice.spot_flex.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "spot_flex_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_southport_trial_hull.choice.spot_flex.outcome.spot_flex_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_southport_trial_hull_i01_loose_rudder"
+              }
+            ]
+          },
+          "failure": {
+            "id": "spot_flex_failure",
+            "textKey": "event.active_blue_south_blue_01_southport_trial_hull.choice.spot_flex.outcome.spot_flex_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_southport_trial_hull_i01_loose_rudder"
+              }
+            ]
+          },
+          "success": {
+            "id": "spot_flex_success",
+            "textKey": "event.active_blue_south_blue_01_southport_trial_hull.choice.spot_flex.outcome.spot_flex_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_southport_trial_hull_i01_loose_rudder"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "spot_flex_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_southport_trial_hull.choice.spot_flex.outcome.spot_flex_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_southport_trial_hull_i01_loose_rudder"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "keep_distance",
+      "textKey": "event.active_blue_south_blue_01_southport_trial_hull.choice.keep_distance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "distance",
+          "textKey": "event.active_blue_south_blue_01_southport_trial_hull.choice.keep_distance.outcome.distance.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_south_blue_01_southport_trial_hull_i01_loose_rudder"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

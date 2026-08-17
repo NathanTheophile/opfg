@@ -1,0 +1,88 @@
+{
+  "id": "active_blue_south_blue_01_southport_secondhand_sloop",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "sorbet_southport"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_southport_secondhand_sloop.title",
+  "textKey": "event.active_blue_south_blue_01_southport_secondhand_sloop.text",
+  "choices": [
+    {
+      "id": "buy_sloop",
+      "textKey": "event.active_blue_south_blue_01_southport_secondhand_sloop.choice.buy_sloop.text",
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "canAcquireShip",
+            "shipId": "sloop"
+          },
+          {
+            "type": "berriesAtLeast",
+            "value": 25000
+          }
+        ]
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bought",
+          "textKey": "event.active_blue_south_blue_01_southport_secondhand_sloop.choice.buy_sloop.outcome.bought.text",
+          "effects": [
+            {
+              "type": "buyShip",
+              "shipId": "sloop"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "inspect_only",
+      "textKey": "event.active_blue_south_blue_01_southport_secondhand_sloop.choice.inspect_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "inspect",
+          "textKey": "event.active_blue_south_blue_01_southport_secondhand_sloop.choice.inspect_only.outcome.inspect.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "walk_away",
+      "textKey": "event.active_blue_south_blue_01_southport_secondhand_sloop.choice.walk_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "walk",
+          "textKey": "event.active_blue_south_blue_01_southport_secondhand_sloop.choice.walk_away.outcome.walk.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

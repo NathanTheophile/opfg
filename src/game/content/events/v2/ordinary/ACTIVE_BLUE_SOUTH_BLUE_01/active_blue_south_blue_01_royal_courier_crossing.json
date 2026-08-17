@@ -1,0 +1,151 @@
+{
+  "id": "active_blue_south_blue_01_royal_courier_crossing",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_royal_courier_crossing.title",
+  "textKey": "event.active_blue_south_blue_01_royal_courier_crossing.text",
+  "choices": [
+    {
+      "id": "hold_middle",
+      "textKey": "event.active_blue_south_blue_01_royal_courier_crossing.choice.hold_middle.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hold_middle_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_royal_courier_crossing.choice.hold_middle.outcome.hold_middle_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "hold_middle_failure",
+            "textKey": "event.active_blue_south_blue_01_royal_courier_crossing.choice.hold_middle.outcome.hold_middle_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "hold_middle_success",
+            "textKey": "event.active_blue_south_blue_01_royal_courier_crossing.choice.hold_middle.outcome.hold_middle_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hold_middle_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_royal_courier_crossing.choice.hold_middle.outcome.hold_middle_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "shame_both",
+      "textKey": "event.active_blue_south_blue_01_royal_courier_crossing.choice.shame_both.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "shame_both_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_royal_courier_crossing.choice.shame_both.outcome.shame_both_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "shame_both_failure",
+            "textKey": "event.active_blue_south_blue_01_royal_courier_crossing.choice.shame_both.outcome.shame_both_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "shame_both_success",
+            "textKey": "event.active_blue_south_blue_01_royal_courier_crossing.choice.shame_both.outcome.shame_both_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "shame_both_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_royal_courier_crossing.choice.shame_both.outcome.shame_both_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "give_water",
+      "textKey": "event.active_blue_south_blue_01_royal_courier_crossing.choice.give_water.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "yield",
+          "textKey": "event.active_blue_south_blue_01_royal_courier_crossing.choice.give_water.outcome.yield.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "id": "active_blue_south_blue_01_port_dinghy_lot",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_port_dinghy_lot.title",
+  "textKey": "event.active_blue_south_blue_01_port_dinghy_lot.text",
+  "choices": [
+    {
+      "id": "buy_dinghy",
+      "textKey": "event.active_blue_south_blue_01_port_dinghy_lot.choice.buy_dinghy.text",
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "canAcquireShip",
+            "shipId": "dinghy"
+          },
+          {
+            "type": "berriesAtLeast",
+            "value": 5000
+          }
+        ]
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bought",
+          "textKey": "event.active_blue_south_blue_01_port_dinghy_lot.choice.buy_dinghy.outcome.bought.text",
+          "effects": [
+            {
+              "type": "buyShip",
+              "shipId": "dinghy"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "check_planks",
+      "textKey": "event.active_blue_south_blue_01_port_dinghy_lot.choice.check_planks.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "check",
+          "textKey": "event.active_blue_south_blue_01_port_dinghy_lot.choice.check_planks.outcome.check.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pass_lot",
+      "textKey": "event.active_blue_south_blue_01_port_dinghy_lot.choice.pass_lot.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pass",
+          "textKey": "event.active_blue_south_blue_01_port_dinghy_lot.choice.pass_lot.outcome.pass.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

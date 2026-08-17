@@ -1,0 +1,188 @@
+{
+  "id": "active_blue_south_blue_01_drifting_crop_barges",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_drifting_crop_barges.title",
+  "textKey": "event.active_blue_south_blue_01_drifting_crop_barges.text",
+  "choices": [
+    {
+      "id": "catch_head_barge",
+      "textKey": "event.active_blue_south_blue_01_drifting_crop_barges.choice.catch_head_barge.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "catch_head_barge_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_drifting_crop_barges.choice.catch_head_barge.outcome.catch_head_barge_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_drifting_crop_barges_i01_split_tow"
+              }
+            ]
+          },
+          "failure": {
+            "id": "catch_head_barge_failure",
+            "textKey": "event.active_blue_south_blue_01_drifting_crop_barges.choice.catch_head_barge.outcome.catch_head_barge_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_drifting_crop_barges_i01_split_tow"
+              }
+            ]
+          },
+          "success": {
+            "id": "catch_head_barge_success",
+            "textKey": "event.active_blue_south_blue_01_drifting_crop_barges.choice.catch_head_barge.outcome.catch_head_barge_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_drifting_crop_barges_i01_split_tow"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "catch_head_barge_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_drifting_crop_barges.choice.catch_head_barge.outcome.catch_head_barge_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_drifting_crop_barges_i01_split_tow"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "jump_line",
+      "textKey": "event.active_blue_south_blue_01_drifting_crop_barges.choice.jump_line.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "jump_line_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_drifting_crop_barges.choice.jump_line.outcome.jump_line_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_drifting_crop_barges_i01_split_tow"
+              }
+            ]
+          },
+          "failure": {
+            "id": "jump_line_failure",
+            "textKey": "event.active_blue_south_blue_01_drifting_crop_barges.choice.jump_line.outcome.jump_line_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_drifting_crop_barges_i01_split_tow"
+              }
+            ]
+          },
+          "success": {
+            "id": "jump_line_success",
+            "textKey": "event.active_blue_south_blue_01_drifting_crop_barges.choice.jump_line.outcome.jump_line_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_drifting_crop_barges_i01_split_tow"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "jump_line_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_drifting_crop_barges.choice.jump_line.outcome.jump_line_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_drifting_crop_barges_i01_split_tow"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "mark_drift",
+      "textKey": "event.active_blue_south_blue_01_drifting_crop_barges.choice.mark_drift.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "marked",
+          "textKey": "event.active_blue_south_blue_01_drifting_crop_barges.choice.mark_drift.outcome.marked.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_south_blue_01_drifting_crop_barges_i01_split_tow"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
