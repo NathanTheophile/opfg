@@ -1,0 +1,179 @@
+{
+  "id": "active_generic_land_03_mystery_stitched_ledger",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_03_mystery_stitched_ledger.title",
+  "textKey": "event.active_generic_land_03_mystery_stitched_ledger.text",
+  "choices": [
+    {
+      "id": "follow_totals",
+      "textKey": "event.active_generic_land_03_mystery_stitched_ledger.choice.follow_totals.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "follow_totals_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_stitched_ledger.choice.follow_totals.outcome.follow_totals_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "modifyBerries",
+                "amount": -150
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stitched_ledger_i01_hidden_copy"
+              }
+            ]
+          },
+          "failure": {
+            "id": "follow_totals_failure",
+            "textKey": "event.active_generic_land_03_mystery_stitched_ledger.choice.follow_totals.outcome.follow_totals_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stitched_ledger_i01_hidden_copy"
+              }
+            ]
+          },
+          "success": {
+            "id": "follow_totals_success",
+            "textKey": "event.active_generic_land_03_mystery_stitched_ledger.choice.follow_totals.outcome.follow_totals_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stitched_ledger_i01_hidden_copy"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "follow_totals_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_stitched_ledger.choice.follow_totals.outcome.follow_totals_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stitched_ledger_i01_hidden_copy"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "inspect_thread",
+      "textKey": "event.active_generic_land_03_mystery_stitched_ledger.choice.inspect_thread.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "inspect_thread_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_stitched_ledger.choice.inspect_thread.outcome.inspect_thread_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -100
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stitched_ledger_i01_hidden_copy"
+              }
+            ]
+          },
+          "failure": {
+            "id": "inspect_thread_failure",
+            "textKey": "event.active_generic_land_03_mystery_stitched_ledger.choice.inspect_thread.outcome.inspect_thread_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stitched_ledger_i01_hidden_copy"
+              }
+            ]
+          },
+          "success": {
+            "id": "inspect_thread_success",
+            "textKey": "event.active_generic_land_03_mystery_stitched_ledger.choice.inspect_thread.outcome.inspect_thread_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stitched_ledger_i01_hidden_copy"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "inspect_thread_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_stitched_ledger.choice.inspect_thread.outcome.inspect_thread_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stitched_ledger_i01_hidden_copy"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "freeze_book",
+      "textKey": "event.active_generic_land_03_mystery_stitched_ledger.choice.freeze_book.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "frozen",
+          "textKey": "event.active_generic_land_03_mystery_stitched_ledger.choice.freeze_book.outcome.frozen.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_stitched_ledger_i01_hidden_copy"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  }
+}

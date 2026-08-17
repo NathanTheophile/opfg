@@ -1,0 +1,179 @@
+{
+  "id": "active_generic_land_03_mystery_swapped_seals",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_03_mystery_swapped_seals.title",
+  "textKey": "event.active_generic_land_03_mystery_swapped_seals.text",
+  "choices": [
+    {
+      "id": "read_manifest",
+      "textKey": "event.active_generic_land_03_mystery_swapped_seals.choice.read_manifest.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_manifest_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_swapped_seals.choice.read_manifest.outcome.read_manifest_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -150
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_swapped_seals_i01_chipped_stamp"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_manifest_failure",
+            "textKey": "event.active_generic_land_03_mystery_swapped_seals.choice.read_manifest.outcome.read_manifest_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_swapped_seals_i01_chipped_stamp"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_manifest_success",
+            "textKey": "event.active_generic_land_03_mystery_swapped_seals.choice.read_manifest.outcome.read_manifest_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_swapped_seals_i01_chipped_stamp"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_manifest_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_swapped_seals.choice.read_manifest.outcome.read_manifest_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_swapped_seals_i01_chipped_stamp"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "inspect_seals",
+      "textKey": "event.active_generic_land_03_mystery_swapped_seals.choice.inspect_seals.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "inspect_seals_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_swapped_seals.choice.inspect_seals.outcome.inspect_seals_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -250
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_swapped_seals_i01_chipped_stamp"
+              }
+            ]
+          },
+          "failure": {
+            "id": "inspect_seals_failure",
+            "textKey": "event.active_generic_land_03_mystery_swapped_seals.choice.inspect_seals.outcome.inspect_seals_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_swapped_seals_i01_chipped_stamp"
+              }
+            ]
+          },
+          "success": {
+            "id": "inspect_seals_success",
+            "textKey": "event.active_generic_land_03_mystery_swapped_seals.choice.inspect_seals.outcome.inspect_seals_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_swapped_seals_i01_chipped_stamp"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "inspect_seals_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_swapped_seals.choice.inspect_seals.outcome.inspect_seals_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_swapped_seals_i01_chipped_stamp"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_both",
+      "textKey": "event.active_generic_land_03_mystery_swapped_seals.choice.hold_both.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "held",
+          "textKey": "event.active_generic_land_03_mystery_swapped_seals.choice.hold_both.outcome.held.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_swapped_seals_i01_chipped_stamp"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  }
+}

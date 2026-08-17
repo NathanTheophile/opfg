@@ -1,0 +1,175 @@
+{
+  "id": "active_generic_land_03_mystery_abandoned_camp",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_03_mystery_abandoned_camp.title",
+  "textKey": "event.active_generic_land_03_mystery_abandoned_camp.text",
+  "choices": [
+    {
+      "id": "read_camp",
+      "textKey": "event.active_generic_land_03_mystery_abandoned_camp.choice.read_camp.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_camp_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_abandoned_camp.choice.read_camp.outcome.read_camp_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_abandoned_camp_i01_drainage_hide"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_camp_failure",
+            "textKey": "event.active_generic_land_03_mystery_abandoned_camp.choice.read_camp.outcome.read_camp_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_abandoned_camp_i01_drainage_hide"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_camp_success",
+            "textKey": "event.active_generic_land_03_mystery_abandoned_camp.choice.read_camp.outcome.read_camp_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_abandoned_camp_i01_drainage_hide"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_camp_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_abandoned_camp.choice.read_camp.outcome.read_camp_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_abandoned_camp_i01_drainage_hide"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pick_trail",
+      "textKey": "event.active_generic_land_03_mystery_abandoned_camp.choice.pick_trail.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "luck",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "pick_trail_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_abandoned_camp.choice.pick_trail.outcome.pick_trail_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_abandoned_camp_i01_drainage_hide"
+              }
+            ]
+          },
+          "failure": {
+            "id": "pick_trail_failure",
+            "textKey": "event.active_generic_land_03_mystery_abandoned_camp.choice.pick_trail.outcome.pick_trail_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_abandoned_camp_i01_drainage_hide"
+              }
+            ]
+          },
+          "success": {
+            "id": "pick_trail_success",
+            "textKey": "event.active_generic_land_03_mystery_abandoned_camp.choice.pick_trail.outcome.pick_trail_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_abandoned_camp_i01_drainage_hide"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "pick_trail_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_abandoned_camp.choice.pick_trail.outcome.pick_trail_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_abandoned_camp_i01_drainage_hide"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_names",
+      "textKey": "event.active_generic_land_03_mystery_abandoned_camp.choice.call_names.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "called",
+          "textKey": "event.active_generic_land_03_mystery_abandoned_camp.choice.call_names.outcome.called.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_abandoned_camp_i01_drainage_hide"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

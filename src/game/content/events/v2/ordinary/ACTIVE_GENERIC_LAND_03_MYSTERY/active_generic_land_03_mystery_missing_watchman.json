@@ -1,0 +1,167 @@
+{
+  "id": "active_generic_land_03_mystery_missing_watchman",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_03_mystery_missing_watchman.title",
+  "textKey": "event.active_generic_land_03_mystery_missing_watchman.text",
+  "choices": [
+    {
+      "id": "read_roster",
+      "textKey": "event.active_generic_land_03_mystery_missing_watchman.choice.read_roster.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_roster_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_missing_watchman.choice.read_roster.outcome.read_roster_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_missing_watchman_i01_second_signature"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_roster_failure",
+            "textKey": "event.active_generic_land_03_mystery_missing_watchman.choice.read_roster.outcome.read_roster_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_missing_watchman_i01_second_signature"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_roster_success",
+            "textKey": "event.active_generic_land_03_mystery_missing_watchman.choice.read_roster.outcome.read_roster_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_missing_watchman_i01_second_signature"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_roster_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_missing_watchman.choice.read_roster.outcome.read_roster_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_missing_watchman_i01_second_signature"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "question_relief",
+      "textKey": "event.active_generic_land_03_mystery_missing_watchman.choice.question_relief.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "question_relief_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_missing_watchman.choice.question_relief.outcome.question_relief_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_missing_watchman_i01_second_signature"
+              }
+            ]
+          },
+          "failure": {
+            "id": "question_relief_failure",
+            "textKey": "event.active_generic_land_03_mystery_missing_watchman.choice.question_relief.outcome.question_relief_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_missing_watchman_i01_second_signature"
+              }
+            ]
+          },
+          "success": {
+            "id": "question_relief_success",
+            "textKey": "event.active_generic_land_03_mystery_missing_watchman.choice.question_relief.outcome.question_relief_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_missing_watchman_i01_second_signature"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "question_relief_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_missing_watchman.choice.question_relief.outcome.question_relief_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_missing_watchman_i01_second_signature"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "check_boots",
+      "textKey": "event.active_generic_land_03_mystery_missing_watchman.choice.check_boots.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "checked",
+          "textKey": "event.active_generic_land_03_mystery_missing_watchman.choice.check_boots.outcome.checked.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_missing_watchman_i01_second_signature"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

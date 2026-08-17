@@ -1,0 +1,179 @@
+{
+  "id": "active_generic_land_03_mystery_warm_warehouse",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_03_mystery_warm_warehouse.title",
+  "textKey": "event.active_generic_land_03_mystery_warm_warehouse.text",
+  "choices": [
+    {
+      "id": "read_room",
+      "textKey": "event.active_generic_land_03_mystery_warm_warehouse.choice.read_room.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_room_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_warm_warehouse.choice.read_room.outcome.read_room_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_warm_warehouse_i01_moving_pulley"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_room_failure",
+            "textKey": "event.active_generic_land_03_mystery_warm_warehouse.choice.read_room.outcome.read_room_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_warm_warehouse_i01_moving_pulley"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_room_success",
+            "textKey": "event.active_generic_land_03_mystery_warm_warehouse.choice.read_room.outcome.read_room_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_warm_warehouse_i01_moving_pulley"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_room_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_warm_warehouse.choice.read_room.outcome.read_room_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_warm_warehouse_i01_moving_pulley"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "choose_hiding_place",
+      "textKey": "event.active_generic_land_03_mystery_warm_warehouse.choice.choose_hiding_place.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "luck",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "choose_hiding_place_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_warm_warehouse.choice.choose_hiding_place.outcome.choose_hiding_place_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_warm_warehouse_i01_moving_pulley"
+              }
+            ]
+          },
+          "failure": {
+            "id": "choose_hiding_place_failure",
+            "textKey": "event.active_generic_land_03_mystery_warm_warehouse.choice.choose_hiding_place.outcome.choose_hiding_place_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_warm_warehouse_i01_moving_pulley"
+              }
+            ]
+          },
+          "success": {
+            "id": "choose_hiding_place_success",
+            "textKey": "event.active_generic_land_03_mystery_warm_warehouse.choice.choose_hiding_place.outcome.choose_hiding_place_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_warm_warehouse_i01_moving_pulley"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "choose_hiding_place_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_warm_warehouse.choice.choose_hiding_place.outcome.choose_hiding_place_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_warm_warehouse_i01_moving_pulley"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "wait_still",
+      "textKey": "event.active_generic_land_03_mystery_warm_warehouse.choice.wait_still.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "waited",
+          "textKey": "event.active_generic_land_03_mystery_warm_warehouse.choice.wait_still.outcome.waited.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_warm_warehouse_i01_moving_pulley"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  }
+}
