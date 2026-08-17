@@ -1,0 +1,150 @@
+{
+  "id": "active_blue_east_blue_01_baratie_short_cook",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_baratie_short_cook.title",
+  "textKey": "event.active_blue_east_blue_01_baratie_short_cook.text",
+  "choices": [
+    {
+      "id": "offer_a_berth",
+      "textKey": "event.active_blue_east_blue_01_baratie_short_cook.choice.offer_a_berth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "offer_a_berth_outcome",
+          "textKey": "event.active_blue_east_blue_01_baratie_short_cook.choice.offer_a_berth.outcome.offer_a_berth_outcome.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "rohan",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "rohan",
+              "amount": 5
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "canRecruitNpc",
+            "npcId": "rohan"
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasCrewRole",
+              "roleId": "cook"
+            }
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "dead"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pay_for_the_meal",
+      "textKey": "event.active_blue_east_blue_01_baratie_short_cook.choice.pay_for_the_meal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_for_the_meal_outcome",
+          "textKey": "event.active_blue_east_blue_01_baratie_short_cook.choice.pay_for_the_meal.outcome.pay_for_the_meal_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "rohan",
+              "amount": 3
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    },
+    {
+      "id": "trade_kitchen_news",
+      "textKey": "event.active_blue_east_blue_01_baratie_short_cook.choice.trade_kitchen_news.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade_kitchen_news_outcome",
+          "textKey": "event.active_blue_east_blue_01_baratie_short_cook.choice.trade_kitchen_news.outcome.trade_kitchen_news_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "rohan",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "rohan"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "baratie"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "crew"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

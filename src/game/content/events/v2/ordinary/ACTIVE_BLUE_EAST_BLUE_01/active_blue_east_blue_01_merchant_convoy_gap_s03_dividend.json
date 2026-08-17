@@ -1,0 +1,80 @@
+{
+  "id": "active_blue_east_blue_01_merchant_convoy_gap_s03_dividend",
+  "kind": "scheduled",
+  "titleKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s03_dividend.title",
+  "textKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s03_dividend.text",
+  "choices": [
+    {
+      "id": "take_the_share",
+      "textKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s03_dividend.choice.take_the_share.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_the_share_outcome",
+          "textKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s03_dividend.choice.take_the_share.outcome.take_the_share_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 2000
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "active_blue_east_blue_01_merchant_convoy_gap",
+            "choiceId": "take_the_empty_slot"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "active_blue_east_blue_01_merchant_convoy_gap",
+            "choiceId": "share_your_heading"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "active_blue_east_blue_01_merchant_convoy_gap_s02_letter",
+            "choiceId": "ask_for_work"
+          }
+        ]
+      }
+    },
+    {
+      "id": "trade_it_for_a_name",
+      "textKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s03_dividend.choice.trade_it_for_a_name.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade_it_for_a_name_outcome",
+          "textKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s03_dividend.choice.trade_it_for_a_name.outcome.trade_it_for_a_name_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send_it_back",
+      "textKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s03_dividend.choice.send_it_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "send_it_back_outcome",
+          "textKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s03_dividend.choice.send_it_back.outcome.send_it_back_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

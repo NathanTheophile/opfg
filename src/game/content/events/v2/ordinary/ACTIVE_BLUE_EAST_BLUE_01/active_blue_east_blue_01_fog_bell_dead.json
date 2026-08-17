@@ -1,0 +1,176 @@
+{
+  "id": "active_blue_east_blue_01_fog_bell_dead",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_fog_bell_dead.title",
+  "textKey": "event.active_blue_east_blue_01_fog_bell_dead.text",
+  "choices": [
+    {
+      "id": "sound_depths",
+      "textKey": "event.active_blue_east_blue_01_fog_bell_dead.choice.sound_depths.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "sound_depths_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_fog_bell_dead.choice.sound_depths.outcome.sound_depths_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fog_bell_dead_i01_bell_skiff"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "sound_depths_failure",
+            "textKey": "event.active_blue_east_blue_01_fog_bell_dead.choice.sound_depths.outcome.sound_depths_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fog_bell_dead_i01_bell_skiff"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "sound_depths_success",
+            "textKey": "event.active_blue_east_blue_01_fog_bell_dead.choice.sound_depths.outcome.sound_depths_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fog_bell_dead_i01_bell_skiff"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "sound_depths_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_fog_bell_dead.choice.sound_depths.outcome.sound_depths_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fog_bell_dead_i01_bell_skiff"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "listen_for_breakers",
+      "textKey": "event.active_blue_east_blue_01_fog_bell_dead.choice.listen_for_breakers.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "listen_for_breakers_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_fog_bell_dead.choice.listen_for_breakers.outcome.listen_for_breakers_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fog_bell_dead_i01_bell_skiff"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "listen_for_breakers_failure",
+            "textKey": "event.active_blue_east_blue_01_fog_bell_dead.choice.listen_for_breakers.outcome.listen_for_breakers_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fog_bell_dead_i01_bell_skiff"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "listen_for_breakers_success",
+            "textKey": "event.active_blue_east_blue_01_fog_bell_dead.choice.listen_for_breakers.outcome.listen_for_breakers_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fog_bell_dead_i01_bell_skiff"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "listen_for_breakers_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_fog_bell_dead.choice.listen_for_breakers.outcome.listen_for_breakers_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fog_bell_dead_i01_bell_skiff"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "anchor_until_clear",
+      "textKey": "event.active_blue_east_blue_01_fog_bell_dead.choice.anchor_until_clear.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "anchor_until_clear_outcome",
+          "textKey": "event.active_blue_east_blue_01_fog_bell_dead.choice.anchor_until_clear.outcome.anchor_until_clear_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_east_blue_01_fog_bell_dead_i01_bell_skiff"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

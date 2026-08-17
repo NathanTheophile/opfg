@@ -1,0 +1,177 @@
+{
+  "id": "active_blue_east_blue_01_coastwatch_bell",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_coastwatch_bell.title",
+  "textKey": "event.active_blue_east_blue_01_coastwatch_bell.text",
+  "choices": [
+    {
+      "id": "inspect_the_bell",
+      "textKey": "event.active_blue_east_blue_01_coastwatch_bell.choice.inspect_the_bell.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "inspect_the_bell_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_coastwatch_bell.choice.inspect_the_bell.outcome.inspect_the_bell_criticalfailure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_coastwatch_bell_i01_broken_clapper"
+              }
+            ]
+          },
+          "failure": {
+            "id": "inspect_the_bell_failure",
+            "textKey": "event.active_blue_east_blue_01_coastwatch_bell.choice.inspect_the_bell.outcome.inspect_the_bell_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_coastwatch_bell_i01_broken_clapper"
+              }
+            ]
+          },
+          "success": {
+            "id": "inspect_the_bell_success",
+            "textKey": "event.active_blue_east_blue_01_coastwatch_bell.choice.inspect_the_bell.outcome.inspect_the_bell_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_coastwatch_bell_i01_broken_clapper"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "inspect_the_bell_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_coastwatch_bell.choice.inspect_the_bell.outcome.inspect_the_bell_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_coastwatch_bell_i01_broken_clapper"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "trace_the_false_rings",
+      "textKey": "event.active_blue_east_blue_01_coastwatch_bell.choice.trace_the_false_rings.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "trace_the_false_rings_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_coastwatch_bell.choice.trace_the_false_rings.outcome.trace_the_false_rings_criticalfailure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_coastwatch_bell_i01_broken_clapper"
+              }
+            ]
+          },
+          "failure": {
+            "id": "trace_the_false_rings_failure",
+            "textKey": "event.active_blue_east_blue_01_coastwatch_bell.choice.trace_the_false_rings.outcome.trace_the_false_rings_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_coastwatch_bell_i01_broken_clapper"
+              }
+            ]
+          },
+          "success": {
+            "id": "trace_the_false_rings_success",
+            "textKey": "event.active_blue_east_blue_01_coastwatch_bell.choice.trace_the_false_rings.outcome.trace_the_false_rings_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_coastwatch_bell_i01_broken_clapper"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "trace_the_false_rings_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_coastwatch_bell.choice.trace_the_false_rings.outcome.trace_the_false_rings_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_coastwatch_bell_i01_broken_clapper"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "fund_a_new_bell",
+      "textKey": "event.active_blue_east_blue_01_coastwatch_bell.choice.fund_a_new_bell.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fund_a_new_bell_outcome",
+          "textKey": "event.active_blue_east_blue_01_coastwatch_bell.choice.fund_a_new_bell.outcome.fund_a_new_bell_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1500
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_east_blue_01_coastwatch_bell_i01_broken_clapper"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1500
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "coastal"
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 306
+      }
+    ]
+  },
+  "lifetimeThreadSeed": true
+}

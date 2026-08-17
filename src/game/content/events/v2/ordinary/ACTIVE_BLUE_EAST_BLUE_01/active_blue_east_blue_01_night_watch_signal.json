@@ -1,0 +1,176 @@
+{
+  "id": "active_blue_east_blue_01_night_watch_signal",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_night_watch_signal.title",
+  "textKey": "event.active_blue_east_blue_01_night_watch_signal.text",
+  "choices": [
+    {
+      "id": "read_the_pattern",
+      "textKey": "event.active_blue_east_blue_01_night_watch_signal.choice.read_the_pattern.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_the_pattern_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_night_watch_signal.choice.read_the_pattern.outcome.read_the_pattern_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_night_watch_signal_i01_reef_line"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "read_the_pattern_failure",
+            "textKey": "event.active_blue_east_blue_01_night_watch_signal.choice.read_the_pattern.outcome.read_the_pattern_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_night_watch_signal_i01_reef_line"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "read_the_pattern_success",
+            "textKey": "event.active_blue_east_blue_01_night_watch_signal.choice.read_the_pattern.outcome.read_the_pattern_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_night_watch_signal_i01_reef_line"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_the_pattern_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_night_watch_signal.choice.read_the_pattern.outcome.read_the_pattern_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_night_watch_signal_i01_reef_line"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "trust_the_swell",
+      "textKey": "event.active_blue_east_blue_01_night_watch_signal.choice.trust_the_swell.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "trust_the_swell_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_night_watch_signal.choice.trust_the_swell.outcome.trust_the_swell_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_night_watch_signal_i01_reef_line"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "trust_the_swell_failure",
+            "textKey": "event.active_blue_east_blue_01_night_watch_signal.choice.trust_the_swell.outcome.trust_the_swell_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_night_watch_signal_i01_reef_line"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "trust_the_swell_success",
+            "textKey": "event.active_blue_east_blue_01_night_watch_signal.choice.trust_the_swell.outcome.trust_the_swell_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_night_watch_signal_i01_reef_line"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "trust_the_swell_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_night_watch_signal.choice.trust_the_swell.outcome.trust_the_swell_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_night_watch_signal_i01_reef_line"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "heave_to",
+      "textKey": "event.active_blue_east_blue_01_night_watch_signal.choice.heave_to.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "heave_to_outcome",
+          "textKey": "event.active_blue_east_blue_01_night_watch_signal.choice.heave_to.outcome.heave_to_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_east_blue_01_night_watch_signal_i01_reef_line"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "id": "active_blue_east_blue_01_clinic_triage_i01_last_bandage",
+  "kind": "immediate",
+  "titleKey": "event.active_blue_east_blue_01_clinic_triage_i01_last_bandage.title",
+  "textKey": "event.active_blue_east_blue_01_clinic_triage_i01_last_bandage.text",
+  "choices": [
+    {
+      "id": "tear_clean_cloth",
+      "textKey": "event.active_blue_east_blue_01_clinic_triage_i01_last_bandage.choice.tear_clean_cloth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tear_clean_cloth_outcome",
+          "textKey": "event.active_blue_east_blue_01_clinic_triage_i01_last_bandage.choice.tear_clean_cloth.outcome.tear_clean_cloth_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "ari",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "buy_from_a_ship",
+      "textKey": "event.active_blue_east_blue_01_clinic_triage_i01_last_bandage.choice.buy_from_a_ship.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy_from_a_ship_outcome",
+          "textKey": "event.active_blue_east_blue_01_clinic_triage_i01_last_bandage.choice.buy_from_a_ship.outcome.buy_from_a_ship_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1500
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "ari",
+              "amount": 3
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1500
+      }
+    },
+    {
+      "id": "offer_ari_a_berth",
+      "textKey": "event.active_blue_east_blue_01_clinic_triage_i01_last_bandage.choice.offer_ari_a_berth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "offer_ari_a_berth_outcome",
+          "textKey": "event.active_blue_east_blue_01_clinic_triage_i01_last_bandage.choice.offer_ari_a_berth.outcome.offer_ari_a_berth_outcome.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "ari",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "ari",
+              "amount": 5
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "canRecruitNpc",
+            "npcId": "ari"
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasCrewRole",
+              "roleId": "medic"
+            }
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "dead"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "cast": [
+    "ari"
+  ]
+}

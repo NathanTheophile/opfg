@@ -1,0 +1,66 @@
+{
+  "id": "active_blue_east_blue_01_merchant_convoy_gap_s02_letter",
+  "kind": "scheduled",
+  "titleKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s02_letter.title",
+  "textKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s02_letter.text",
+  "choices": [
+    {
+      "id": "answer_the_merchants",
+      "textKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s02_letter.choice.answer_the_merchants.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_the_merchants_outcome",
+          "textKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s02_letter.choice.answer_the_merchants.outcome.answer_the_merchants_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_merchant_convoy_gap_s03_dividend",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_for_work",
+      "textKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s02_letter.choice.ask_for_work.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_for_work_outcome",
+          "textKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s02_letter.choice.ask_for_work.outcome.ask_for_work_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1000
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_merchant_convoy_gap_s03_dividend",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "close_the_correspondence",
+      "textKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s02_letter.choice.close_the_correspondence.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "close_the_correspondence_outcome",
+          "textKey": "event.active_blue_east_blue_01_merchant_convoy_gap_s02_letter.choice.close_the_correspondence.outcome.close_the_correspondence_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

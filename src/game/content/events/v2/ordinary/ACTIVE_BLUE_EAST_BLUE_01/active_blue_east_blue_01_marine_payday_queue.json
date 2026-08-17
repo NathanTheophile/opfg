@@ -1,0 +1,82 @@
+{
+  "id": "active_blue_east_blue_01_marine_payday_queue",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_marine_payday_queue.title",
+  "textKey": "event.active_blue_east_blue_01_marine_payday_queue.text",
+  "choices": [
+    {
+      "id": "sort_the_roster",
+      "textKey": "event.active_blue_east_blue_01_marine_payday_queue.choice.sort_the_roster.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sort_the_roster_outcome",
+          "textKey": "event.active_blue_east_blue_01_marine_payday_queue.choice.sort_the_roster.outcome.sort_the_roster_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "front_one_recruit",
+      "textKey": "event.active_blue_east_blue_01_marine_payday_queue.choice.front_one_recruit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "front_one_recruit_outcome",
+          "textKey": "event.active_blue_east_blue_01_marine_payday_queue.choice.front_one_recruit.outcome.front_one_recruit_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    },
+    {
+      "id": "back_the_clerk",
+      "textKey": "event.active_blue_east_blue_01_marine_payday_queue.choice.back_the_clerk.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "back_the_clerk_outcome",
+          "textKey": "event.active_blue_east_blue_01_marine_payday_queue.choice.back_the_clerk.outcome.back_the_clerk_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      }
+    ]
+  }
+}

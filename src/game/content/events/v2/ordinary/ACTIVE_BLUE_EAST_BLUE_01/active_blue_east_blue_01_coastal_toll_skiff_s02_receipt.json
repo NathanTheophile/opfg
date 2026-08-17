@@ -1,0 +1,75 @@
+{
+  "id": "active_blue_east_blue_01_coastal_toll_skiff_s02_receipt",
+  "kind": "scheduled",
+  "titleKey": "event.active_blue_east_blue_01_coastal_toll_skiff_s02_receipt.title",
+  "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff_s02_receipt.text",
+  "choices": [
+    {
+      "id": "send_your_account",
+      "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff_s02_receipt.choice.send_your_account.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "send_your_account_outcome",
+          "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff_s02_receipt.choice.send_your_account.outcome.send_your_account_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_coastal_toll_skiff_s03_verdict",
+              "delayMonths": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "claim_back_payment",
+      "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff_s02_receipt.choice.claim_back_payment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "claim_back_payment_outcome",
+          "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff_s02_receipt.choice.claim_back_payment.outcome.claim_back_payment_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1000
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_coastal_toll_skiff_s03_verdict",
+              "delayMonths": 3
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "active_blue_east_blue_01_coastal_toll_skiff",
+        "choiceId": "pay_the_toll"
+      }
+    },
+    {
+      "id": "bin_the_notice",
+      "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff_s02_receipt.choice.bin_the_notice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bin_the_notice_outcome",
+          "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff_s02_receipt.choice.bin_the_notice.outcome.bin_the_notice_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

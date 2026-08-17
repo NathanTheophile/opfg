@@ -1,0 +1,65 @@
+{
+  "id": "active_blue_east_blue_01_dockyard_wage_book_s03_close",
+  "kind": "scheduled",
+  "titleKey": "event.active_blue_east_blue_01_dockyard_wage_book_s03_close.title",
+  "textKey": "event.active_blue_east_blue_01_dockyard_wage_book_s03_close.text",
+  "choices": [
+    {
+      "id": "accept_thanks",
+      "textKey": "event.active_blue_east_blue_01_dockyard_wage_book_s03_close.choice.accept_thanks.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_thanks_outcome",
+          "textKey": "event.active_blue_east_blue_01_dockyard_wage_book_s03_close.choice.accept_thanks.outcome.accept_thanks_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_the_returned_advance",
+      "textKey": "event.active_blue_east_blue_01_dockyard_wage_book_s03_close.choice.take_the_returned_advance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_the_returned_advance_outcome",
+          "textKey": "event.active_blue_east_blue_01_dockyard_wage_book_s03_close.choice.take_the_returned_advance.outcome.take_the_returned_advance_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1000
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "active_blue_east_blue_01_dockyard_wage_book",
+        "choiceId": "pay_one_worker"
+      }
+    },
+    {
+      "id": "close_the_book",
+      "textKey": "event.active_blue_east_blue_01_dockyard_wage_book_s03_close.choice.close_the_book.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "close_the_book_outcome",
+          "textKey": "event.active_blue_east_blue_01_dockyard_wage_book_s03_close.choice.close_the_book.outcome.close_the_book_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

@@ -1,0 +1,132 @@
+{
+  "id": "active_blue_east_blue_01_beach_wreck_claim",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_beach_wreck_claim.title",
+  "textKey": "event.active_blue_east_blue_01_beach_wreck_claim.text",
+  "choices": [
+    {
+      "id": "read_the_marks",
+      "textKey": "event.active_blue_east_blue_01_beach_wreck_claim.choice.read_the_marks.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_the_marks_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_beach_wreck_claim.choice.read_the_marks.outcome.read_the_marks_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_the_marks_failure",
+            "textKey": "event.active_blue_east_blue_01_beach_wreck_claim.choice.read_the_marks.outcome.read_the_marks_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "read_the_marks_success",
+            "textKey": "event.active_blue_east_blue_01_beach_wreck_claim.choice.read_the_marks.outcome.read_the_marks_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_the_marks_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_beach_wreck_claim.choice.read_the_marks.outcome.read_the_marks_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "settle_the_claim",
+      "textKey": "event.active_blue_east_blue_01_beach_wreck_claim.choice.settle_the_claim.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "settle_the_claim_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_beach_wreck_claim.choice.settle_the_claim.outcome.settle_the_claim_criticalfailure.text",
+            "effects": []
+          },
+          "failure": {
+            "id": "settle_the_claim_failure",
+            "textKey": "event.active_blue_east_blue_01_beach_wreck_claim.choice.settle_the_claim.outcome.settle_the_claim_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "settle_the_claim_success",
+            "textKey": "event.active_blue_east_blue_01_beach_wreck_claim.choice.settle_the_claim.outcome.settle_the_claim_success.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 1000
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "settle_the_claim_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_beach_wreck_claim.choice.settle_the_claim.outcome.settle_the_claim_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 2000
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "leave_the_wreck",
+      "textKey": "event.active_blue_east_blue_01_beach_wreck_claim.choice.leave_the_wreck.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_the_wreck_outcome",
+          "textKey": "event.active_blue_east_blue_01_beach_wreck_claim.choice.leave_the_wreck.outcome.leave_the_wreck_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "coastal"
+      }
+    ]
+  }
+}

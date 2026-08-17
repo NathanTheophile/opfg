@@ -1,0 +1,98 @@
+{
+  "id": "active_blue_east_blue_01_fish_market_fake_weights",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_fish_market_fake_weights.title",
+  "textKey": "event.active_blue_east_blue_01_fish_market_fake_weights.text",
+  "choices": [
+    {
+      "id": "mark_the_scale",
+      "textKey": "event.active_blue_east_blue_01_fish_market_fake_weights.choice.mark_the_scale.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mark_the_scale_outcome",
+          "textKey": "event.active_blue_east_blue_01_fish_market_fake_weights.choice.mark_the_scale.outcome.mark_the_scale_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_fish_market_fake_weights_s02_return",
+              "delayMonths": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "buy_the_vendor_silence",
+      "textKey": "event.active_blue_east_blue_01_fish_market_fake_weights.choice.buy_the_vendor_silence.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy_the_vendor_silence_outcome",
+          "textKey": "event.active_blue_east_blue_01_fish_market_fake_weights.choice.buy_the_vendor_silence.outcome.buy_the_vendor_silence_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -750
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_fish_market_fake_weights_s02_return",
+              "delayMonths": 4
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 750
+      }
+    },
+    {
+      "id": "call_the_stall_out",
+      "textKey": "event.active_blue_east_blue_01_fish_market_fake_weights.choice.call_the_stall_out.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "call_the_stall_out_outcome",
+          "textKey": "event.active_blue_east_blue_01_fish_market_fake_weights.choice.call_the_stall_out.outcome.call_the_stall_out_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_fish_market_fake_weights_s02_return",
+              "delayMonths": 4
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 412
+      }
+    ]
+  }
+}
