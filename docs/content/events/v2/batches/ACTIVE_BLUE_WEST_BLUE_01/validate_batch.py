@@ -6,7 +6,8 @@ ROOT = Path(__file__).resolve().parents[6]
 EVENT_DIR = ROOT / "src/game/content/events/v2/ordinary/ACTIVE_BLUE_WEST_BLUE_01"
 DOC_DIR = ROOT / "docs/content/events/v2/batches/ACTIVE_BLUE_WEST_BLUE_01"
 PREFIX = "active_blue_west_blue_01_"
-VALID_LOCS = set(['kano_country', 'kano_happo_port', 'ilisia_kingdom', 'ilisia_aurora_city', 'bollywood_kingdom', 'bollywood_masala_port', 'esperia_kingdom', 'esperia_lago_town', 'sankan_river_town', 'shishano_port', 'twinsnakes_island', 'bellflower_village', '80th_branch', 'mt_mauri', 'blackfin_cove', 'sankan_kingdom', 'shishano_kingdom', 'enoa_academy', 'czach_kingdom', 'jambalaya_kingdom'])
+WORLD = json.loads((ROOT / "src/game/content/data/locationsV1.json").read_text(encoding="utf-8"))
+VALID_LOCS = {loc["id"] for loc in WORLD["blueLocations"] if loc.get("seaId") == "west_blue"}
 IMMEDIATE_ROOTS = set(['active_blue_west_blue_01_bellflower_floodgate', 'active_blue_west_blue_01_blackfin_quiet_auction', 'active_blue_west_blue_01_blue_post_network', 'active_blue_west_blue_01_branch_evidence_cart', 'active_blue_west_blue_01_contraband_bilge_mark', 'active_blue_west_blue_01_gun_oil_shortage', 'active_blue_west_blue_01_happo_crate_spar', 'active_blue_west_blue_01_lantern_code_across_fog', 'active_blue_west_blue_01_masala_stage_rig', 'active_blue_west_blue_01_mauri_rope_bridge', 'active_blue_west_blue_01_rain_squall_cargo', 'active_blue_west_blue_01_sankan_lockgate_dispute', 'active_blue_west_blue_01_street_medicine_queue', 'active_blue_west_blue_01_survey_marker_missing', 'active_blue_west_blue_01_travelling_troupe_spill'])
 DICE_ROOTS = set(['active_blue_west_blue_01_bellflower_floodgate', 'active_blue_west_blue_01_blackfin_quiet_auction', 'active_blue_west_blue_01_blue_post_network', 'active_blue_west_blue_01_branch_evidence_cart', 'active_blue_west_blue_01_contraband_bilge_mark', 'active_blue_west_blue_01_dockyard_night_shift', 'active_blue_west_blue_01_gun_oil_shortage', 'active_blue_west_blue_01_happo_crate_spar', 'active_blue_west_blue_01_lantern_code_across_fog', 'active_blue_west_blue_01_masala_stage_rig', 'active_blue_west_blue_01_mauri_rope_bridge', 'active_blue_west_blue_01_orchard_wasp_cart', 'active_blue_west_blue_01_porter_union_scale', 'active_blue_west_blue_01_rain_squall_cargo', 'active_blue_west_blue_01_sankan_lockgate_dispute', 'active_blue_west_blue_01_survey_marker_missing', 'active_blue_west_blue_01_travelling_troupe_spill', 'active_blue_west_blue_01_whale_lane_bell'])
 SHORT_ROOTS = {'active_blue_west_blue_01_sankan_lockgate_dispute': ('active_blue_west_blue_01_sankan_lockgate_dispute_s02_notice', 4, 'active_blue_west_blue_01_sankan_lockgate_dispute_s03_verdict', 4), 'active_blue_west_blue_01_counterfeit_passage_seal': ('active_blue_west_blue_01_counterfeit_passage_seal_s02_letter', 6, 'active_blue_west_blue_01_counterfeit_passage_seal_s03_hearing', 6), 'active_blue_west_blue_01_marine_ration_ledger': ('active_blue_west_blue_01_marine_ration_ledger_s02_audit', 5, 'active_blue_west_blue_01_marine_ration_ledger_s03_close', 5), 'active_blue_west_blue_01_reef_claim_flag': ('active_blue_west_blue_01_reef_claim_flag_s02_notice', 3, 'active_blue_west_blue_01_reef_claim_flag_s03_ruling', 3), 'active_blue_west_blue_01_pilot_boat_debt': ('active_blue_west_blue_01_pilot_boat_debt_s02_claim', 9, 'active_blue_west_blue_01_pilot_boat_debt_s03_receipt', 6)}
@@ -56,7 +57,7 @@ for e in roots:
 assert len(immediate_roots)==15, len(immediate_roots)
 assert len(dice_roots)==18, len(dice_roots)
 assert len(sea_roots)==8, len(sea_roots)
-assert len(loc_roots)==9, len(loc_roots)
+assert len(loc_roots)==8, len(loc_roots)
 
 for e in sched:
     assert e.get("priority") in {50,100,200,300}

@@ -17,7 +17,7 @@
 - Immediate roots: **15/30 = 50%**
 - Dice roots: **18/30 = 60%**
 - Land / sea: **22 / 8**
-- Exact-location / Blue-wide: **9 / 21**
+- Exact-location / Blue-wide: **8 / 22**
 - Lifetime seeds: **1**
 
 ## 30-root inventory
@@ -28,7 +28,6 @@
 5. `active_blue_west_blue_01_branch_evidence_cart`
 6. `active_blue_west_blue_01_mauri_rope_bridge`
 7. `active_blue_west_blue_01_blackfin_quiet_auction`
-8. `active_blue_west_blue_01_enoa_exam_materials`
 9. `active_blue_west_blue_01_sankan_lockgate_dispute`
 10. `active_blue_west_blue_01_western_customs_stamp`
 11. `active_blue_west_blue_01_porter_union_scale`
@@ -60,7 +59,6 @@
 - `active_blue_west_blue_01_branch_evidence_cart` → `80th_branch`
 - `active_blue_west_blue_01_mauri_rope_bridge` → `mt_mauri`
 - `active_blue_west_blue_01_blackfin_quiet_auction` → `blackfin_cove`
-- `active_blue_west_blue_01_enoa_exam_materials` → `enoa_academy`
 - `active_blue_west_blue_01_sankan_lockgate_dispute` → `sankan_river_town`
 
 ## Five short Scheduled threads
@@ -107,11 +105,6 @@ The seed is West-Blue-specific and sea-gated. Once accepted, the continuity is c
 - `80th_branch`
 - `mt_mauri`
 - `blackfin_cove`
-- `sankan_kingdom`
-- `shishano_kingdom`
-- `enoa_academy`
-- `czach_kingdom`
-- `jambalaya_kingdom`
 
 ## PROPOSED_DEFINITIONS
 No shared runtime definition required. Recruitment candidates remain throwaway until a shared NPC integration deliberately defines them.

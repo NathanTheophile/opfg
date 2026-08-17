@@ -10,7 +10,7 @@
 - [x] exactly 1 regional Lifetime.
 - [x] Lifetime is multi-year and portable after West Blue departure.
 - [x] 22 land / 8 sea.
-- [x] 21 Blue-wide / 9 exact-location.
+- [x] 22 Blue-wide / 8 exact-location.
 - [x] exact Location IDs all exist in fresh runtime West Blue surface.
 - [x] no negative Reputation.
 - [x] no Marine bounty or any bounty effect.
