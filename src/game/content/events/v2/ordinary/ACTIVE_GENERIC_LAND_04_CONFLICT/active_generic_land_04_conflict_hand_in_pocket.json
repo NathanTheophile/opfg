@@ -1,0 +1,181 @@
+{
+  "id": "active_generic_land_04_conflict_hand_in_pocket",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_04_conflict_hand_in_pocket.title",
+  "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.text",
+  "choices": [
+    {
+      "id": "chase",
+      "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.choice.chase",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "chase_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.outcome.chase.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_hand_in_pocket_i01_cornered"
+              }
+            ]
+          },
+          "failure": {
+            "id": "chase_failure",
+            "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.outcome.chase.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_hand_in_pocket_i01_cornered"
+              }
+            ]
+          },
+          "success": {
+            "id": "chase_success",
+            "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.outcome.chase.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_hand_in_pocket_i01_cornered"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "chase_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.outcome.chase.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_hand_in_pocket_i01_cornered"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_route",
+      "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.choice.read_route",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_route_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.outcome.read_route.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -500
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_route_failure",
+            "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.outcome.read_route.failure",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -500
+              }
+            ]
+          },
+          "success": {
+            "id": "read_route_success",
+            "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.outcome.read_route.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_hand_in_pocket_i01_cornered"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_route_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.outcome.read_route.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_hand_in_pocket_i01_cornered"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "shout",
+      "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.choice.shout",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shout",
+          "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.outcome.shout",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_go",
+      "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.choice.let_go",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "let_go",
+          "textKey": "event.active_generic_land_04_conflict_hand_in_pocket.outcome.let_go",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    ]
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "id": "active_generic_land_04_conflict_saw_too_much",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_04_conflict_saw_too_much.title",
+  "textKey": "event.active_generic_land_04_conflict_saw_too_much.text",
+  "choices": [
+    {
+      "id": "crowd",
+      "textKey": "event.active_generic_land_04_conflict_saw_too_much.choice.crowd",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "crowd_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_saw_too_much.outcome.crowd.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_saw_too_much_i01_pursuit"
+              }
+            ]
+          },
+          "failure": {
+            "id": "crowd_failure",
+            "textKey": "event.active_generic_land_04_conflict_saw_too_much.outcome.crowd.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_saw_too_much_i01_pursuit"
+              }
+            ]
+          },
+          "success": {
+            "id": "crowd_success",
+            "textKey": "event.active_generic_land_04_conflict_saw_too_much.outcome.crowd.success",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": -3
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crowd_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_saw_too_much.outcome.crowd.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "turn",
+      "textKey": "event.active_generic_land_04_conflict_saw_too_much.choice.turn",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "turn_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_saw_too_much.outcome.turn.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_saw_too_much_i01_pursuit"
+              }
+            ]
+          },
+          "failure": {
+            "id": "turn_failure",
+            "textKey": "event.active_generic_land_04_conflict_saw_too_much.outcome.turn.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_saw_too_much_i01_pursuit"
+              }
+            ]
+          },
+          "success": {
+            "id": "turn_success",
+            "textKey": "event.active_generic_land_04_conflict_saw_too_much.outcome.turn.success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "turn_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_saw_too_much.outcome.turn.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "lead_away",
+      "textKey": "event.active_generic_land_04_conflict_saw_too_much.choice.lead_away",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lead_away",
+          "textKey": "event.active_generic_land_04_conflict_saw_too_much.outcome.lead_away",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 5
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_saw_too_much_i01_pursuit"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ignore",
+      "textKey": "event.active_generic_land_04_conflict_saw_too_much.choice.ignore",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ignore",
+          "textKey": "event.active_generic_land_04_conflict_saw_too_much.outcome.ignore",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": -5
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_saw_too_much_i01_pursuit"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "npcStatusIs",
+            "npcId": "childhood_friend",
+            "status": "known"
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "childhood_friend",
+            "status": "crew"
+          }
+        ]
+      }
+    ]
+  },
+  "cast": [
+    "childhood_friend"
+  ]
+}

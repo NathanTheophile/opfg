@@ -1,0 +1,191 @@
+{
+  "id": "active_generic_land_04_conflict_alley_knife",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_04_conflict_alley_knife.title",
+  "textKey": "event.active_generic_land_04_conflict_alley_knife.text",
+  "choices": [
+    {
+      "id": "disarm",
+      "textKey": "event.active_generic_land_04_conflict_alley_knife.choice.disarm",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "disarm_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_alley_knife.outcome.disarm.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_alley_knife_i01_second_man"
+              }
+            ]
+          },
+          "failure": {
+            "id": "disarm_failure",
+            "textKey": "event.active_generic_land_04_conflict_alley_knife.outcome.disarm.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_alley_knife_i01_second_man"
+              }
+            ]
+          },
+          "success": {
+            "id": "disarm_success",
+            "textKey": "event.active_generic_land_04_conflict_alley_knife.outcome.disarm.success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_alley_knife_i01_second_man"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "disarm_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_alley_knife.outcome.disarm.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_alley_knife_i01_second_man"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "intimidate",
+      "textKey": "event.active_generic_land_04_conflict_alley_knife.choice.intimidate",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "intimidate_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_alley_knife.outcome.intimidate.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_alley_knife_i01_second_man"
+              }
+            ]
+          },
+          "failure": {
+            "id": "intimidate_failure",
+            "textKey": "event.active_generic_land_04_conflict_alley_knife.outcome.intimidate.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_alley_knife_i01_second_man"
+              }
+            ]
+          },
+          "success": {
+            "id": "intimidate_success",
+            "textKey": "event.active_generic_land_04_conflict_alley_knife.outcome.intimidate.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_alley_knife_i01_second_man"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "intimidate_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_alley_knife.outcome.intimidate.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_alley_knife_i01_second_man"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "draw_weapon",
+      "textKey": "event.active_generic_land_04_conflict_alley_knife.choice.draw_weapon",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "draw_weapon",
+          "textKey": "event.active_generic_land_04_conflict_alley_knife.outcome.draw_weapon",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_alley_knife_i01_second_man"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasEquippedWeapon"
+      }
+    },
+    {
+      "id": "pay",
+      "textKey": "event.active_generic_land_04_conflict_alley_knife.choice.pay",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay",
+          "textKey": "event.active_generic_land_04_conflict_alley_knife.outcome.pay",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

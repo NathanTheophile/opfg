@@ -1,0 +1,92 @@
+{
+  "id": "active_generic_land_04_conflict_street_toll_asset",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_04_conflict_street_toll_asset.title",
+  "textKey": "event.active_generic_land_04_conflict_street_toll_asset.text",
+  "choices": [
+    {
+      "id": "refuse",
+      "textKey": "event.active_generic_land_04_conflict_street_toll_asset.choice.refuse",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse",
+          "textKey": "event.active_generic_land_04_conflict_street_toll_asset.outcome.refuse",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -2
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "give_timber",
+      "textKey": "event.active_generic_land_04_conflict_street_toll_asset.choice.give_timber",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "give_timber",
+          "textKey": "event.active_generic_land_04_conflict_street_toll_asset.outcome.give_timber",
+          "effects": [
+            {
+              "type": "removeItem",
+              "itemId": "timber",
+              "quantity": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasItem",
+        "itemId": "timber"
+      }
+    },
+    {
+      "id": "mock",
+      "textKey": "event.active_generic_land_04_conflict_street_toll_asset.choice.mock",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mock",
+          "textKey": "event.active_generic_land_04_conflict_street_toll_asset.outcome.mock",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "detour",
+      "textKey": "event.active_generic_land_04_conflict_street_toll_asset.choice.detour",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "detour",
+          "textKey": "event.active_generic_land_04_conflict_street_toll_asset.outcome.detour",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}
