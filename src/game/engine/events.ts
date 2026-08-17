@@ -8,7 +8,7 @@ import { materializeEventCast } from './npcNames';
 import { createDepartureSystemEvent, materializeNavigationEvent } from './navigation';
 import { finalizePendingSlot } from './time';
 import { findDockableAccess } from './locations';
-import { countFallbackStreak, seedParadiseRouteAtTwinCapes } from './maritime';
+import { activeParadiseRouteId, countFallbackStreak, isParadiseRouteStartEventId } from './maritime';
 import { createArrivalMarketEvent, materializeMarketEvent } from './marketEvents';
 
 export const FALLBACK_EVENT_IDS = ['dead_end_on_land', 'dead_end_at_sea'] as const;
@@ -35,7 +35,15 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     return selectEvent(state, catalog, immediate);
   }
 
-  state = seedParadiseRouteAtTwinCapes(state);
+  if (state.locationId === 'twin_capes' && state.travelState === 'on_land' && activeParadiseRouteId(state) === undefined) {
+    const routeStarts = catalog.events.filter((event): event is NormalDefinition =>
+      event.kind === 'normal'
+        && isParadiseRouteStartEventId(event.id)
+        && isNormalOccurrenceEligible(event, state)
+        && isEligible(event, state, catalog),
+    ).sort((left, right) => left.id.localeCompare(right.id));
+    if (routeStarts.length > 0) return selectUniformNormal(state, catalog, state.scheduledEvents, routeStarts);
+  }
 
   if (state.locationId === 'reverse_mountain') {
     const reverseMountainEntry = catalog.events.find((event): event is NormalDefinition =>
@@ -72,6 +80,7 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     event.kind === 'normal'
       && event.majorTrack === undefined
       && !FALLBACK_EVENT_IDS.includes(event.id as typeof FALLBACK_EVENT_IDS[number])
+      && !isParadiseRouteStartEventId(event.id)
       && isNormalOccurrenceEligible(event, state)
       && isEligible(event, state, catalog),
   );

@@ -4,9 +4,9 @@ import { evaluateCondition } from '../src/game/engine/conditions';
 import { selectNextEvent } from '../src/game/engine/events';
 import {
   activeParadiseRouteId,
+  PARADISE_ROUTE_START_EVENT_IDS,
   paradiseArrivalProbabilityForCrossingRoot,
   resolveOrdinaryParadiseArrivalAfterMonthlyRoot,
-  seedParadiseRouteAtTwinCapes,
 } from '../src/game/engine/maritime';
 import { resolveChoice } from '../src/game/engine/resolution';
 import { createInitialGameState } from '../src/game/model/initialState';
@@ -23,23 +23,38 @@ function activeState(seed = 123): GameState {
   return state;
 }
 
-describe('Active Paradise navigation foundation', () => {
-  it('seeds exactly one stable Paradise route at Twin Capes', () => {
-    const seeded = seedParadiseRouteAtTwinCapes(activeState(7));
-    const routeId = activeParadiseRouteId(seeded);
-    expect(routeId).toMatch(/^P[1-7]_/);
-    expect(seeded.flags.filter((flag) => flag.startsWith('paradise_route:'))).toHaveLength(1);
+function lockRouteFromHistory(state: GameState, routeStartEventId: string): void {
+  state.history.push({
+    eventId: routeStartEventId,
+    choiceId: 'take_course',
+    outcomeId: 'course_set',
+    ageMonths: state.ageMonths,
+  });
+}
 
-    const seededAgain = seedParadiseRouteAtTwinCapes(seeded);
-    expect(activeParadiseRouteId(seededAgain)).toBe(routeId);
-    expect(seededAgain.rngState).toBe(seeded.rngState);
+describe('Active Paradise navigation foundation', () => {
+  it('seed-selects one of the seven route-start Events at Twin Capes and derives the route from History', () => {
+    expect(PARADISE_ROUTE_START_EVENT_IDS).toHaveLength(7);
+    expect(PARADISE_ROUTE_START_EVENT_IDS.every((eventId) => contentCatalog.events.some(({ id }) => id === eventId))).toBe(true);
+
+    let state = selectNextEvent(activeState(7), contentCatalog);
+    const routeStartEventId = state.currentEventId!;
+    const sameSeed = selectNextEvent(activeState(7), contentCatalog);
+
+    expect(PARADISE_ROUTE_START_EVENT_IDS).toContain(routeStartEventId);
+    expect(sameSeed.currentEventId).toBe(routeStartEventId);
+    expect(activeParadiseRouteId(state)).toBeUndefined();
+
+    state = resolveChoice(state, contentCatalog, routeStartEventId, 'take_course').state;
+    expect(activeParadiseRouteId(state)).toMatch(/^P[1-7]_/);
+    expect(state.flags.filter((flag) => flag.startsWith('paradise_route:'))).toHaveLength(0);
   });
 
-  it('keeps shared Paradise nodes on the seeded route', () => {
+  it('keeps shared Paradise nodes on the route recorded at Twin Capes', () => {
     const classic = activeState();
     classic.locationId = 'water_seven';
     classic.travelState = 'at_sea';
-    classic.flags = ['paradise_route:P1_CLASSIC'];
+    lockRouteFromHistory(classic, 'active_paradise_route_start_p1_classic');
     classic.ageMonths = 186;
     expect(resolveOrdinaryParadiseArrivalAfterMonthlyRoot(classic, contentCatalog)).toBe(true);
     expect(classic.locationId).toBe('thriller_bark');
@@ -47,10 +62,16 @@ describe('Active Paradise navigation foundation', () => {
     const trade = activeState();
     trade.locationId = 'water_seven';
     trade.travelState = 'at_sea';
-    trade.flags = ['paradise_route:P2_TRADE'];
+    lockRouteFromHistory(trade, 'active_paradise_route_start_p2_trade');
     trade.ageMonths = 186;
     expect(resolveOrdinaryParadiseArrivalAfterMonthlyRoot(trade, contentCatalog)).toBe(true);
     expect(trade.locationId).toBe('sabaody_archipelago');
+  });
+
+  it('keeps the old route flag as read-only Save 22 compatibility', () => {
+    const state = activeState();
+    state.flags = ['paradise_route:P3_WILD'];
+    expect(activeParadiseRouteId(state)).toBe('P3_WILD');
   });
 
   it('doubles the Paradise crossing clock without an active Log Pose', () => {
@@ -68,7 +89,6 @@ describe('Active Paradise navigation foundation', () => {
     const state = activeState();
     state.locationId = 'twin_capes';
     state.travelState = 'at_sea';
-    state.flags = ['paradise_route:P3_WILD'];
     expect(evaluateCondition(hazard.eligibility!, state, contentCatalog)).toBe(true);
 
     state.player.logPose = {
@@ -79,7 +99,7 @@ describe('Active Paradise navigation foundation', () => {
     expect(evaluateCondition(hazard.eligibility!, state, contentCatalog)).toBe(false);
   });
 
-  it('forces the Reverse Mountain mini-arc and lands at Twin Capes before seeding the route', () => {
+  it('forces the Reverse Mountain mini-arc, lands at Twin Capes, then selects a route-start root', () => {
     let state = activeState(11);
     state.locationId = 'reverse_mountain';
     state = selectNextEvent(state, contentCatalog);
@@ -92,7 +112,13 @@ describe('Active Paradise navigation foundation', () => {
     state = resolveChoice(state, contentCatalog, 'active_reverse_mountain_01_descent', 'enter_paradise').state;
 
     expect(state.locationId).toBe('twin_capes');
-    expect(activeParadiseRouteId(state)).toMatch(/^P[1-7]_/);
+    expect(PARADISE_ROUTE_START_EVENT_IDS).toContain(state.currentEventId);
+    expect(activeParadiseRouteId(state)).toBeUndefined();
     expect(state.ageMonths).toBe(181);
+
+    const routeStartEventId = state.currentEventId!;
+    state = resolveChoice(state, contentCatalog, routeStartEventId, 'take_course').state;
+    expect(activeParadiseRouteId(state)).toMatch(/^P[1-7]_/);
+    expect(state.ageMonths).toBe(182);
   });
 });

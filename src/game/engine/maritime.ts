@@ -9,24 +9,30 @@ const EXCLUDED_EXTREME_SEAS = new Set(['sky', 'underwater', 'red_line']);
 const outsideMetadata = new Map(worldData.outsideBlueLocations.map((location) => [location.id, location]));
 const BLUE_SEAS = new Set(['east_blue', 'west_blue', 'north_blue', 'south_blue']);
 
-const PARADISE_ROUTE_FLAG_PREFIX = 'paradise_route:';
+const LEGACY_PARADISE_ROUTE_FLAG_PREFIX = 'paradise_route:';
 const PARADISE_ROUTE_IDS = Object.keys(worldData.paradiseRouteGraph)
   .filter((routeId) => routeId !== 'P0_INGRESS')
   .sort();
 
-export function activeParadiseRouteId(state: GameState): string | undefined {
-  return PARADISE_ROUTE_IDS.find((routeId) => state.flags.includes(`${PARADISE_ROUTE_FLAG_PREFIX}${routeId}`));
+export const PARADISE_ROUTE_START_EVENT_IDS = PARADISE_ROUTE_IDS
+  .map((routeId) => `active_paradise_route_start_${routeId.toLowerCase()}`);
+
+const PARADISE_ROUTE_BY_START_EVENT_ID = new Map(
+  PARADISE_ROUTE_IDS.map((routeId) => [`active_paradise_route_start_${routeId.toLowerCase()}`, routeId] as const),
+);
+
+export function isParadiseRouteStartEventId(eventId: string): boolean {
+  return PARADISE_ROUTE_BY_START_EVENT_ID.has(eventId);
 }
 
-export function seedParadiseRouteAtTwinCapes(state: GameState): GameState {
-  if (state.locationId !== 'twin_capes' || activeParadiseRouteId(state) !== undefined) return state;
-  const random = nextRandom(state.rngState);
-  const routeId = PARADISE_ROUTE_IDS[Math.floor(random.value * PARADISE_ROUTE_IDS.length)];
-  return {
-    ...state,
-    rngState: random.nextState,
-    flags: [...state.flags, `${PARADISE_ROUTE_FLAG_PREFIX}${routeId}`],
-  };
+/** History is authoritative. The old flag is read-only compatibility for current Save 22 states. */
+export function activeParadiseRouteId(state: GameState): string | undefined {
+  for (let index = state.history.length - 1; index >= 0; index -= 1) {
+    const routeId = PARADISE_ROUTE_BY_START_EVENT_ID.get(state.history[index].eventId);
+    if (routeId !== undefined) return routeId;
+  }
+
+  return PARADISE_ROUTE_IDS.find((routeId) => state.flags.includes(`${LEGACY_PARADISE_ROUTE_FLAG_PREFIX}${routeId}`));
 }
 
 function paradiseRouteSequence(routeId: string): readonly string[] | undefined {
