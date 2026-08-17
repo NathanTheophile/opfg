@@ -380,168 +380,194 @@ export function EventPreview({
     if (!screen || !stage) return undefined;
 
     let frame = 0;
+    let settleTimer = 0;
 
     const px = (value: string) =>
       Number.parseFloat(value) || 0;
 
-    const fit = () => {
-      window.cancelAnimationFrame(frame);
+    const measureAndFit = () => {
+      /*
+       * Always measure from a true unscaled frame.
+       * Reading offsetWidth immediately after changing the CSS variable
+       * forces Chromium/WebKit to commit the style before bounds are read.
+       */
+      stage.style.setProperty(
+        '--opfg-game-ui-scale',
+        '1',
+      );
 
-      frame = window.requestAnimationFrame(() => {
-        // Measure from the natural, unscaled UI every time.
-        stage.style.setProperty(
-          '--opfg-game-ui-scale',
-          '1',
+      void stage.offsetWidth;
+
+      const viewport =
+        window.visualViewport;
+
+      const viewportWidth =
+        viewport?.width
+        ?? document.documentElement.clientWidth
+        ?? window.innerWidth;
+
+      const viewportHeight =
+        viewport?.height
+        ?? document.documentElement.clientHeight
+        ?? window.innerHeight;
+
+      const screenStyle =
+        window.getComputedStyle(screen);
+
+      const horizontalPadding =
+        px(screenStyle.paddingLeft)
+        + px(screenStyle.paddingRight);
+
+      const verticalPadding =
+        px(screenStyle.paddingTop)
+        + px(screenStyle.paddingBottom);
+
+      const availableWidth =
+        Math.max(
+          1,
+          viewportWidth
+            - horizontalPadding
+            - 12,
         );
 
-        const viewport =
-          window.visualViewport;
+      const availableHeight =
+        Math.max(
+          1,
+          viewportHeight
+            - verticalPadding
+            - 12,
+        );
 
-        const viewportWidth =
-          viewport?.width
-          ?? window.innerWidth;
+      const candidates = [
+        ...stage.querySelectorAll<HTMLElement>(
+          '[data-opfg-scale-bound="true"],'
+          + '.opfg-top-world-hud',
+        ),
+      ];
 
-        const viewportHeight =
-          viewport?.height
-          ?? window.innerHeight;
+      const nodes =
+        candidates.filter((node) => {
+          const style =
+            window.getComputedStyle(node);
 
-        const screenStyle =
-          window.getComputedStyle(screen);
+          if (
+            style.display === 'none'
+            || style.visibility === 'hidden'
+          ) {
+            return false;
+          }
 
-        const horizontalPadding =
-          px(screenStyle.paddingLeft)
-          + px(screenStyle.paddingRight);
-
-        const verticalPadding =
-          px(screenStyle.paddingTop)
-          + px(screenStyle.paddingBottom);
-
-        const availableWidth =
-          Math.max(
-            1,
-            viewportWidth
-              - horizontalPadding
-              - 12,
-          );
-
-        const availableHeight =
-          Math.max(
-            1,
-            viewportHeight
-              - verticalPadding
-              - 12,
-          );
-
-        const candidates = [
-          ...stage.querySelectorAll<HTMLElement>(
-            '[data-opfg-scale-bound="true"],'
-            + '.opfg-top-world-hud',
-          ),
-        ];
-
-        const nodes =
-          candidates.filter((node) => {
-            const style =
-              window.getComputedStyle(node);
-
-            if (
-              style.display === 'none'
-              || style.visibility === 'hidden'
-            ) {
-              return false;
-            }
-
-            const rect =
-              node.getBoundingClientRect();
-
-            return (
-              rect.width > 0
-              && rect.height > 0
-            );
-          });
-
-        if (nodes.length === 0) return;
-
-        let left =
-          Number.POSITIVE_INFINITY;
-        let top =
-          Number.POSITIVE_INFINITY;
-        let right =
-          Number.NEGATIVE_INFINITY;
-        let bottom =
-          Number.NEGATIVE_INFINITY;
-
-        for (const node of nodes) {
           const rect =
             node.getBoundingClientRect();
 
-          left =
-            Math.min(left, rect.left);
-
-          top =
-            Math.min(top, rect.top);
-
-          right =
-            Math.max(right, rect.right);
-
-          bottom =
-            Math.max(bottom, rect.bottom);
-        }
-
-        const naturalWidth =
-          Math.max(
-            1,
-            right - left,
+          return (
+            rect.width > 0
+            && rect.height > 0
           );
+        });
 
-        const naturalHeight =
-          Math.max(
-            1,
-            bottom - top,
-          );
+      if (nodes.length === 0) return;
 
-        const widthScale =
-          availableWidth / naturalWidth;
+      let left =
+        Number.POSITIVE_INFINITY;
+      let top =
+        Number.POSITIVE_INFINITY;
+      let right =
+        Number.NEGATIVE_INFINITY;
+      let bottom =
+        Number.NEGATIVE_INFINITY;
 
-        const heightScale =
-          availableHeight / naturalHeight;
+      for (const node of nodes) {
+        const rect =
+          node.getBoundingClientRect();
 
-        /*
-         * Scale BOTH directions:
-         * - > 1 on large viewports
-         * - < 1 on small viewports
-         *
-         * 4 is only a pathological safety guard.
-         */
-        const scale =
-          Math.max(
-            0.25,
-            Math.min(
-              widthScale,
-              heightScale,
-              4,
-            ),
-          );
+        left =
+          Math.min(left, rect.left);
 
-        const value =
-          scale.toFixed(4);
+        top =
+          Math.min(top, rect.top);
 
-        stage.style.setProperty(
+        right =
+          Math.max(right, rect.right);
+
+        bottom =
+          Math.max(bottom, rect.bottom);
+      }
+
+      const naturalWidth =
+        Math.max(
+          1,
+          right - left,
+        );
+
+      const naturalHeight =
+        Math.max(
+          1,
+          bottom - top,
+        );
+
+      const scale =
+        Math.max(
+          0.25,
+          Math.min(
+            availableWidth / naturalWidth,
+            availableHeight / naturalHeight,
+            4,
+          ),
+        );
+
+      const value =
+        scale.toFixed(4);
+
+      stage.style.setProperty(
+        '--opfg-game-ui-scale',
+        value,
+      );
+
+      document.documentElement
+        .style
+        .setProperty(
           '--opfg-game-ui-scale',
           value,
         );
+    };
 
-        document.documentElement
-          .style
-          .setProperty(
-            '--opfg-game-ui-scale',
-            value,
-          );
-      });
+    const fit = () => {
+      window.cancelAnimationFrame(frame);
+
+      frame =
+        window.requestAnimationFrame(
+          measureAndFit,
+        );
+
+      /*
+       * A resize can also flip portrait/landscape media queries.
+       * Re-run once after that CSS reflow has fully settled.
+       */
+      window.clearTimeout(settleTimer);
+
+      settleTimer =
+        window.setTimeout(
+          () => {
+            window.cancelAnimationFrame(frame);
+
+            frame =
+              window.requestAnimationFrame(
+                measureAndFit,
+              );
+          },
+          80,
+        );
     };
 
     const observer =
       new ResizeObserver(fit);
+
+    observer.observe(screen);
+    observer.observe(stage);
+    observer.observe(
+      document.documentElement,
+    );
 
     const observed = [
       ...stage.querySelectorAll<HTMLElement>(
@@ -554,28 +580,49 @@ export function EventPreview({
       observer.observe(node);
     }
 
-    observer.observe(stage);
+    const orientationQuery =
+      window.matchMedia(
+        '(orientation: portrait)',
+      );
 
     window.addEventListener(
       'resize',
       fit,
+      { passive: true },
     );
 
     window.addEventListener(
       'orientationchange',
       fit,
+      { passive: true },
     );
 
     window.visualViewport
       ?.addEventListener(
         'resize',
         fit,
+        { passive: true },
       );
+
+    orientationQuery
+      .addEventListener(
+        'change',
+        fit,
+      );
+
+    /*
+     * Fonts can change intrinsic panel dimensions after the first paint.
+     */
+    void document.fonts?.ready.then(
+      fit,
+    );
 
     fit();
 
     return () => {
       window.cancelAnimationFrame(frame);
+      window.clearTimeout(settleTimer);
+
       observer.disconnect();
 
       window.removeEventListener(
@@ -592,6 +639,12 @@ export function EventPreview({
         ?.removeEventListener(
           'resize',
           fit,
+      );
+
+      orientationQuery
+        .removeEventListener(
+          'change',
+          fit,
         );
 
       document.documentElement
@@ -601,6 +654,8 @@ export function EventPreview({
         );
     };
   }, [session.gameState !== null]);
+
+
 
 
 
