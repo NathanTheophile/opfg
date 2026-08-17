@@ -1,0 +1,105 @@
+{
+  "id": "active_generic_sea_04_nav_hazard_sun_glare_troughs",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_04_nav_hazard_sun_glare_troughs.title",
+  "textKey": "event.active_generic_sea_04_nav_hazard_sun_glare_troughs.text",
+  "choices": [
+    {
+      "id": "angle_off_glare",
+      "textKey": "event.active_generic_sea_04_nav_hazard_sun_glare_troughs.choice.angle_off_glare.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "angle_off_glare",
+          "textKey": "event.active_generic_sea_04_nav_hazard_sun_glare_troughs.outcome.angle_off_glare.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_04_nav_hazard_sun_glare_troughs_i01_glare_breaks"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_spray_markers",
+      "textKey": "event.active_generic_sea_04_nav_hazard_sun_glare_troughs.choice.take_spray_markers.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_spray_markers",
+          "textKey": "event.active_generic_sea_04_nav_hazard_sun_glare_troughs.outcome.take_spray_markers.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    },
+    {
+      "id": "shield_and_watch",
+      "textKey": "event.active_generic_sea_04_nav_hazard_sun_glare_troughs.choice.shield_and_watch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shield_and_watch",
+          "textKey": "event.active_generic_sea_04_nav_hazard_sun_glare_troughs.outcome.shield_and_watch.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_04_nav_hazard_sun_glare_troughs_i01_glare_breaks"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "navigator_glare",
+      "textKey": "event.active_generic_sea_04_nav_hazard_sun_glare_troughs.choice.navigator_glare.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "navigator_glare",
+          "textKey": "event.active_generic_sea_04_nav_hazard_sun_glare_troughs.outcome.navigator_glare.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_04_nav_hazard_sun_glare_troughs_i01_glare_breaks"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "navigator"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

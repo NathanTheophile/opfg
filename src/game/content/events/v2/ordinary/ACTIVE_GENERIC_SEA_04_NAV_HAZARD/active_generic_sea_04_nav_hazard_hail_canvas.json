@@ -1,0 +1,105 @@
+{
+  "id": "active_generic_sea_04_nav_hazard_hail_canvas",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_04_nav_hazard_hail_canvas.title",
+  "textKey": "event.active_generic_sea_04_nav_hazard_hail_canvas.text",
+  "choices": [
+    {
+      "id": "reef_now",
+      "textKey": "event.active_generic_sea_04_nav_hazard_hail_canvas.choice.reef_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reef_now",
+          "textKey": "event.active_generic_sea_04_nav_hazard_hail_canvas.outcome.reef_now.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_04_nav_hazard_hail_canvas_i01_meltwater_weight"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_small_sail",
+      "textKey": "event.active_generic_sea_04_nav_hazard_hail_canvas.choice.keep_small_sail.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_small_sail",
+          "textKey": "event.active_generic_sea_04_nav_hazard_hail_canvas.outcome.keep_small_sail.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -2
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    },
+    {
+      "id": "work_under_hail",
+      "textKey": "event.active_generic_sea_04_nav_hazard_hail_canvas.choice.work_under_hail.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "work_under_hail",
+          "textKey": "event.active_generic_sea_04_nav_hazard_hail_canvas.outcome.work_under_hail.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_04_nav_hazard_hail_canvas_i01_meltwater_weight"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shipwright_seams",
+      "textKey": "event.active_generic_sea_04_nav_hazard_hail_canvas.choice.shipwright_seams.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shipwright_seams",
+          "textKey": "event.active_generic_sea_04_nav_hazard_hail_canvas.outcome.shipwright_seams.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_04_nav_hazard_hail_canvas_i01_meltwater_weight"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

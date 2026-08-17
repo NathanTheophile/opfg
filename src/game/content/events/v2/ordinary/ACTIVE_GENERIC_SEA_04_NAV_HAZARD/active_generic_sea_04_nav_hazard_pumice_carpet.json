@@ -1,0 +1,105 @@
+{
+  "id": "active_generic_sea_04_nav_hazard_pumice_carpet",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_04_nav_hazard_pumice_carpet.title",
+  "textKey": "event.active_generic_sea_04_nav_hazard_pumice_carpet.text",
+  "choices": [
+    {
+      "id": "skirt_edge",
+      "textKey": "event.active_generic_sea_04_nav_hazard_pumice_carpet.choice.skirt_edge.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "skirt_edge",
+          "textKey": "event.active_generic_sea_04_nav_hazard_pumice_carpet.outcome.skirt_edge.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_04_nav_hazard_pumice_carpet_i01_pumice_rudder"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "push_through",
+      "textKey": "event.active_generic_sea_04_nav_hazard_pumice_carpet.choice.push_through.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "push_through",
+          "textKey": "event.active_generic_sea_04_nav_hazard_pumice_carpet.outcome.push_through.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -3
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    },
+    {
+      "id": "fend_pumice",
+      "textKey": "event.active_generic_sea_04_nav_hazard_pumice_carpet.choice.fend_pumice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fend_pumice",
+          "textKey": "event.active_generic_sea_04_nav_hazard_pumice_carpet.outcome.fend_pumice.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_04_nav_hazard_pumice_carpet_i01_pumice_rudder"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shipwright_vulnerable",
+      "textKey": "event.active_generic_sea_04_nav_hazard_pumice_carpet.choice.shipwright_vulnerable.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shipwright_vulnerable",
+          "textKey": "event.active_generic_sea_04_nav_hazard_pumice_carpet.outcome.shipwright_vulnerable.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_04_nav_hazard_pumice_carpet_i01_pumice_rudder"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

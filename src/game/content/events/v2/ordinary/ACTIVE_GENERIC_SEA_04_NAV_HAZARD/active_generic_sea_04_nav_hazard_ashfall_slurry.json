@@ -1,0 +1,92 @@
+{
+  "id": "active_generic_sea_04_nav_hazard_ashfall_slurry",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_04_nav_hazard_ashfall_slurry.title",
+  "textKey": "event.active_generic_sea_04_nav_hazard_ashfall_slurry.text",
+  "choices": [
+    {
+      "id": "scrape_sightline",
+      "textKey": "event.active_generic_sea_04_nav_hazard_ashfall_slurry.choice.scrape_sightline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "scrape_sightline",
+          "textKey": "event.active_generic_sea_04_nav_hazard_ashfall_slurry.outcome.scrape_sightline.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "steer_by_feel",
+      "textKey": "event.active_generic_sea_04_nav_hazard_ashfall_slurry.choice.steer_by_feel.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "steer_by_feel",
+          "textKey": "event.active_generic_sea_04_nav_hazard_ashfall_slurry.outcome.steer_by_feel.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -2
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    },
+    {
+      "id": "stop_and_clear",
+      "textKey": "event.active_generic_sea_04_nav_hazard_ashfall_slurry.choice.stop_and_clear.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stop_and_clear",
+          "textKey": "event.active_generic_sea_04_nav_hazard_ashfall_slurry.outcome.stop_and_clear.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shipwright_paths",
+      "textKey": "event.active_generic_sea_04_nav_hazard_ashfall_slurry.choice.shipwright_paths.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shipwright_paths",
+          "textKey": "event.active_generic_sea_04_nav_hazard_ashfall_slurry.outcome.shipwright_paths.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}
