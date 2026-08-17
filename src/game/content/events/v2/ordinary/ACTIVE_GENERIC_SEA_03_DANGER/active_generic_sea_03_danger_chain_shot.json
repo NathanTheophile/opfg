@@ -1,0 +1,235 @@
+{
+  "id": "active_generic_sea_03_danger_chain_shot",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_chain_shot.title",
+  "textKey": "event.active_generic_sea_03_danger_chain_shot.text",
+  "choices": [
+    {
+      "id": "free_yard",
+      "textKey": "event.active_generic_sea_03_danger_chain_shot.choice.free_yard.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_chain_shot.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_03_danger_chain_shot.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_03_danger_chain_shot.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_chain_shot_i01_hanging_spar"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_03_danger_chain_shot.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_chain_shot_i01_hanging_spar"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "force_chain",
+      "textKey": "event.active_generic_sea_03_danger_chain_shot.choice.force_chain.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_chain_shot.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_03_danger_chain_shot.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_03_danger_chain_shot.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_chain_shot_i01_hanging_spar"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_03_danger_chain_shot.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_chain_shot_i01_hanging_spar"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "shipwright_climb",
+      "textKey": "event.active_generic_sea_03_danger_chain_shot.choice.shipwright_climb.text",
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      },
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "crew_critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_chain_shot.outcome.crew_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcStat",
+                "npcSelector": "diceActor",
+                "statId": "health",
+                "amount": -6
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "crew_failure",
+            "textKey": "event.active_generic_sea_03_danger_chain_shot.outcome.crew_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcStat",
+                "npcSelector": "diceActor",
+                "statId": "health",
+                "amount": -3
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "crew_success",
+            "textKey": "event.active_generic_sea_03_danger_chain_shot.outcome.crew_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_chain_shot_i01_hanging_spar"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crew_critical_success",
+            "textKey": "event.active_generic_sea_03_danger_chain_shot.outcome.crew_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcStat",
+                "npcSelector": "diceActor",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_chain_shot_i01_hanging_spar"
+              }
+            ]
+          }
+        },
+        "actor": {
+          "type": "crewRole",
+          "roleId": "shipwright",
+          "statId": "intelligence"
+        }
+      }
+    },
+    {
+      "id": "drop_sail",
+      "textKey": "event.active_generic_sea_03_danger_chain_shot.choice.drop_sail.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "drop_sail",
+          "textKey": "event.active_generic_sea_03_danger_chain_shot.outcome.drop_sail.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -2
+            }
+          ],
+          "shipDamageCause": "enemy"
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

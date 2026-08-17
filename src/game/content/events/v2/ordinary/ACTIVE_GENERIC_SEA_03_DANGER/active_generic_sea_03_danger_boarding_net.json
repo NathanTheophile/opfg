@@ -1,0 +1,75 @@
+{
+  "id": "active_generic_sea_03_danger_boarding_net",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_boarding_net.title",
+  "textKey": "event.active_generic_sea_03_danger_boarding_net.text",
+  "choices": [
+    {
+      "id": "cut_center",
+      "textKey": "event.active_generic_sea_03_danger_boarding_net.choice.cut_center.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_center",
+          "textKey": "event.active_generic_sea_03_danger_boarding_net.outcome.cut_center.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_03_danger_boarding_net_i01_tangle"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "drop_yard",
+      "textKey": "event.active_generic_sea_03_danger_boarding_net.choice.drop_yard.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "drop_yard",
+          "textKey": "event.active_generic_sea_03_danger_boarding_net.outcome.drop_yard.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -2
+            }
+          ],
+          "shipDamageCause": "enemy"
+        }
+      }
+    },
+    {
+      "id": "retreat_helm",
+      "textKey": "event.active_generic_sea_03_danger_boarding_net.choice.retreat_helm.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "retreat_helm",
+          "textKey": "event.active_generic_sea_03_danger_boarding_net.outcome.retreat_helm.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "id": "active_generic_sea_03_danger_grapple_hooks",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_grapple_hooks.title",
+  "textKey": "event.active_generic_sea_03_danger_grapple_hooks.text",
+  "choices": [
+    {
+      "id": "cut_hooks",
+      "textKey": "event.active_generic_sea_03_danger_grapple_hooks.choice.cut_hooks.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_grapple_hooks.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyBerries",
+                "amount": -1000
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_03_danger_grapple_hooks.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_03_danger_grapple_hooks.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_grapple_hooks_i01_boarders"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_03_danger_grapple_hooks.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_grapple_hooks_i01_boarders"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "shoot_hands",
+      "textKey": "event.active_generic_sea_03_danger_grapple_hooks.choice.shoot_hands.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_grapple_hooks.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyBerries",
+                "amount": -1000
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_03_danger_grapple_hooks.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_03_danger_grapple_hooks.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_grapple_hooks_i01_boarders"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_03_danger_grapple_hooks.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_grapple_hooks_i01_boarders"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "brace_boarding",
+      "textKey": "event.active_generic_sea_03_danger_grapple_hooks.choice.brace_boarding.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "brace_boarding",
+          "textKey": "event.active_generic_sea_03_danger_grapple_hooks.outcome.brace_boarding.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

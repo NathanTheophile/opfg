@@ -1,0 +1,75 @@
+{
+  "id": "active_generic_sea_03_danger_lit_keg",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_lit_keg.title",
+  "textKey": "event.active_generic_sea_03_danger_lit_keg.text",
+  "choices": [
+    {
+      "id": "cut_fuse",
+      "textKey": "event.active_generic_sea_03_danger_lit_keg.choice.cut_fuse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_fuse",
+          "textKey": "event.active_generic_sea_03_danger_lit_keg.outcome.cut_fuse.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_03_danger_lit_keg_i01_second_fuse"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "throw_overboard",
+      "textKey": "event.active_generic_sea_03_danger_lit_keg.choice.throw_overboard.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "throw_overboard",
+          "textKey": "event.active_generic_sea_03_danger_lit_keg.outcome.throw_overboard.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -3
+            }
+          ],
+          "shipDamageCause": "enemy"
+        }
+      }
+    },
+    {
+      "id": "shield_hatch",
+      "textKey": "event.active_generic_sea_03_danger_lit_keg.choice.shield_hatch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shield_hatch",
+          "textKey": "event.active_generic_sea_03_danger_lit_keg.outcome.shield_hatch.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

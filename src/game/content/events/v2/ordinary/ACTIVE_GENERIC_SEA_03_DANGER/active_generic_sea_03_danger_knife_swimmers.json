@@ -1,0 +1,165 @@
+{
+  "id": "active_generic_sea_03_danger_knife_swimmers",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_knife_swimmers.title",
+  "textKey": "event.active_generic_sea_03_danger_knife_swimmers.text",
+  "choices": [
+    {
+      "id": "read_bubbles",
+      "textKey": "event.active_generic_sea_03_danger_knife_swimmers.choice.read_bubbles.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_knife_swimmers.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_03_danger_knife_swimmers.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_03_danger_knife_swimmers.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_knife_swimmers_i01_surface"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_03_danger_knife_swimmers.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_knife_swimmers_i01_surface"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "whip_rudder",
+      "textKey": "event.active_generic_sea_03_danger_knife_swimmers.choice.whip_rudder.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_knife_swimmers.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_03_danger_knife_swimmers.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_03_danger_knife_swimmers.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_knife_swimmers_i01_surface"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_03_danger_knife_swimmers.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_knife_swimmers_i01_surface"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "abandon_rudder_line",
+      "textKey": "event.active_generic_sea_03_danger_knife_swimmers.choice.abandon_rudder_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "abandon_rudder_line",
+          "textKey": "event.active_generic_sea_03_danger_knife_swimmers.outcome.abandon_rudder_line.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -2
+            }
+          ],
+          "shipDamageCause": "enemy"
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

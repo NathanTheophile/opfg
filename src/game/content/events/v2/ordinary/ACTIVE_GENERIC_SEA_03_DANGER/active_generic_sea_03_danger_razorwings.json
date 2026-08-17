@@ -1,0 +1,75 @@
+{
+  "id": "active_generic_sea_03_danger_razorwings",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_razorwings.title",
+  "textKey": "event.active_generic_sea_03_danger_razorwings.text",
+  "choices": [
+    {
+      "id": "drop_canvas",
+      "textKey": "event.active_generic_sea_03_danger_razorwings.choice.drop_canvas.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "drop_canvas",
+          "textKey": "event.active_generic_sea_03_danger_razorwings.outcome.drop_canvas.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_03_danger_razorwings_i01_return_pass"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cut_loose_rig",
+      "textKey": "event.active_generic_sea_03_danger_razorwings.choice.cut_loose_rig.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_loose_rig",
+          "textKey": "event.active_generic_sea_03_danger_razorwings.outcome.cut_loose_rig.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -2
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    },
+    {
+      "id": "take_cover_low",
+      "textKey": "event.active_generic_sea_03_danger_razorwings.choice.take_cover_low.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_cover_low",
+          "textKey": "event.active_generic_sea_03_danger_razorwings.outcome.take_cover_low.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}
