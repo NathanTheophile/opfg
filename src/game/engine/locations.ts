@@ -71,6 +71,7 @@ const PLAYER_DIRECT_NAVIGATION_SEAS = new Set<SeaId>([
 ]);
 
 const OUTSIDE_LOCATION_METADATA = new Map(worldData.outsideBlueLocations.map((location) => [location.id, location]));
+const NEW_WORLD_ORDINARY_RUNTIME_ROLES = new Set<string>(['route_node', 'major_hub']);
 
 const ORDINARY_ACCESS_LOCATION_IDS = new Set<LocationId>([
   ...worldData.blueLocations.map(({ id }) => id),
@@ -98,6 +99,25 @@ export function getOrdinaryDestinationIds(currentId: LocationId, catalog: Conten
       && location.islandId !== current.islandId
       && location.allowsDocking
       && ORDINARY_ACCESS_LOCATION_IDS.has(location.id))
+    .map(({ id }) => id)
+    .sort();
+}
+
+/** Ordinary seeded New World landfalls. Special, gated and late-route Locations never enter this pool. */
+export function getOrdinaryNewWorldDestinationIds(currentId: LocationId, catalog: ContentCatalog): LocationId[] {
+  const current = findLocation(catalog, currentId);
+  if (!current || current.seaId !== 'new_world') return [];
+
+  return catalog.locations
+    .filter((location) => location.seaId === 'new_world'
+      && location.islandId !== current.islandId
+      && location.allowsDocking)
+    .filter((location) => {
+      const metadata = OUTSIDE_LOCATION_METADATA.get(location.id);
+      return metadata !== undefined
+        && (metadata.access === 'normal' || metadata.access === 'route')
+        && NEW_WORLD_ORDINARY_RUNTIME_ROLES.has(metadata.runtimeRole);
+    })
     .map(({ id }) => id)
     .sort();
 }
@@ -162,12 +182,17 @@ function fallbackDestinationIds(currentId: LocationId, catalog: ContentCatalog):
   const current = findLocation(catalog, currentId);
   if (!current) return [];
   if (current.seaId === 'grand_line_paradise') {
-    const routeCurrent = getLocationAncestors(catalog, currentId).at(-1)?.id ?? currentId;
+    const routeCandidates = [current, ...getLocationAncestors(catalog, currentId)];
     const forward = Object.values(worldData.paradiseRouteGraph).flatMap((route) => {
-      const index = route.sequence.indexOf(routeCurrent);
-      return index >= 0 && index + 1 < route.sequence.length ? [route.sequence[index + 1]] : [];
+      const sequence: readonly string[] = route.sequence;
+      const routeCurrent = routeCandidates.find(({ id }) => sequence.includes(id));
+      if (!routeCurrent) return [];
+      const index = sequence.indexOf(routeCurrent.id);
+      return index >= 0 && index + 1 < sequence.length ? [sequence[index + 1]] : [];
     });
-    const safeForward = [...new Set(forward)].filter((id) => isSafeDestination(id, catalog));
+    const safeForward = [...new Set(forward)]
+      .filter((id) => id !== currentId)
+      .filter((id) => isSafeDestination(id, catalog));
     if (safeForward.length > 0) return safeForward;
   }
   const metadata = new Map(worldData.outsideBlueLocations.map((location) => [location.id, location]));

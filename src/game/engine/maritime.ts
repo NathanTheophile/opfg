@@ -2,7 +2,12 @@ import worldData from '../content/data/locationsV1.json';
 import type { ContentCatalog, EventDefinition } from '../content/schema';
 import type { GameState, LocationId, MaritimeEmergencyState, NpcId, ShipDamageCause } from '../model/schema';
 import { nextRandom } from './rng';
-import { getLocationAncestors, getOrdinaryDestinationIds, movePlayerToLocation } from './locations';
+import {
+  getLocationAncestors,
+  getOrdinaryDestinationIds,
+  getOrdinaryNewWorldDestinationIds,
+  movePlayerToLocation,
+} from './locations';
 
 const FALLBACK_IDS = new Set(['dead_end_on_land', 'dead_end_at_sea']);
 const EXCLUDED_EXTREME_SEAS = new Set(['sky', 'underwater', 'red_line']);
@@ -118,9 +123,13 @@ export function resolveOrdinaryBlueArrivalAfterMonthlyRoot(state: GameState, cat
   const current = catalog.locations.find(({ id }) => id === state.locationId);
   if (!current) return false;
   if (!BLUE_SEAS.has(current.seaId)) {
-    return current.seaId === 'grand_line_paradise'
-      ? resolveOrdinaryParadiseArrivalAfterMonthlyRoot(state, catalog)
-      : false;
+    if (current.seaId === 'grand_line_paradise') {
+      return resolveOrdinaryParadiseArrivalAfterMonthlyRoot(state, catalog);
+    }
+    if (current.seaId === 'new_world') {
+      return resolveOrdinaryNewWorldArrivalAfterMonthlyRoot(state, catalog);
+    }
+    return false;
   }
 
   const crossingRoots = state.ageMonths - state.navigationDecisionAgeMonths;
@@ -128,6 +137,30 @@ export function resolveOrdinaryBlueArrivalAfterMonthlyRoot(state: GameState, cat
   if (probability <= 0) return false;
 
   const destinationIds = getOrdinaryDestinationIds(state.locationId, catalog);
+  if (destinationIds.length === 0) return false;
+
+  const arrivalRoll = nextRandom(state.rngState);
+  state.rngState = arrivalRoll.nextState;
+  if (arrivalRoll.value >= probability) return false;
+
+  const destinationRoll = nextRandom(state.rngState);
+  state.rngState = destinationRoll.nextState;
+  movePlayerToLocation(state, destinationIds[Math.floor(destinationRoll.value * destinationIds.length)], 'on_land');
+  return true;
+}
+
+export function resolveOrdinaryNewWorldArrivalAfterMonthlyRoot(state: GameState, catalog: ContentCatalog): boolean {
+  if (state.careerStatus !== 'active' || state.careerPhase !== 'active' || state.travelState !== 'at_sea' || state.ship === null || state.maritimeEmergency !== null) return false;
+  if (state.player.stats.health <= 0 || state.ship.health <= 0 || state.navigationDecisionAgeMonths === null) return false;
+
+  const current = catalog.locations.find(({ id }) => id === state.locationId);
+  if (current?.seaId !== 'new_world') return false;
+
+  const crossingRoots = state.ageMonths - state.navigationDecisionAgeMonths;
+  const probability = blueArrivalProbabilityForCrossingRoot(crossingRoots);
+  if (probability <= 0) return false;
+
+  const destinationIds = getOrdinaryNewWorldDestinationIds(state.locationId, catalog);
   if (destinationIds.length === 0) return false;
 
   const arrivalRoll = nextRandom(state.rngState);

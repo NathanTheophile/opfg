@@ -5,6 +5,8 @@ import { ordinaryDepartureHasDestination } from './maritime';
 
 export const DEPARTURE_SYSTEM_EVENT_ID = 'system_navigation:departure';
 
+const BLUE_SEAS = new Set(['east_blue', 'west_blue', 'north_blue', 'south_blue']);
+
 /** @deprecated Active V1 no longer exposes a monthly destination picker. */
 export type MonthlyNavigationChoice = 'stay' | 'dock' | `sailTo:${LocationId}`;
 
@@ -75,6 +77,20 @@ export function createDepartureSystemEvent(
     },
   });
 
+  const currentSeaId = catalog.locations.find(({ id }) => id === state.locationId)?.seaId;
+  const grandLineChoice: ChoiceDefinition = {
+    id: 'navigation:grand_line',
+    textKey: 'ui.departure.grandLine',
+    resolution: {
+      type: 'deterministic',
+      outcome: {
+        id: 'navigation:grand_line_outcome',
+        textKey: 'ui.departure.grandLineOutcome',
+        effects: [{ type: 'moveToLocation', locationId: 'reverse_mountain', travelState: 'on_land' }],
+      },
+    },
+  };
+
   return {
     id: DEPARTURE_SYSTEM_EVENT_ID,
     kind: 'system',
@@ -82,6 +98,7 @@ export function createDepartureSystemEvent(
     textKey: 'ui.departure.body',
     choices: [
       choice('navigation:depart', 'ui.departure.depart', true),
+      ...(currentSeaId !== undefined && BLUE_SEAS.has(currentSeaId) ? [grandLineChoice] : []),
       choice('navigation:stay', 'ui.departure.stay', false),
     ],
   };
