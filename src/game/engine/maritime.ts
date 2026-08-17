@@ -255,8 +255,34 @@ export function beginMaritimeEmergency(state: GameState, catalog: ContentCatalog
 
 export function resolveMaritimeEmergencyLandfall(state: GameState, catalog: ContentCatalog): void {
   if (!state.maritimeEmergency) throw new Error('No maritime emergency to resolve.');
-  recoverToLandInCurrentSea(state, catalog);
+  moveSeeded(state, maritimeEmergencyLandfallDestinationIds(state, catalog));
   state.maritimeEmergency = null;
+}
+
+function maritimeEmergencyLandfallDestinationIds(state: GameState, catalog: ContentCatalog): LocationId[] {
+  const seaId = currentSeaId(state, catalog);
+  if (!seaId) return [];
+
+  if (seaId === 'grand_line_paradise') {
+    const forward = paradiseNextDestinationId(state, catalog);
+    if (forward !== undefined && isNormalAccess(forward)) return [forward];
+
+    const current = catalog.locations.find(({ id }) => id === state.locationId);
+    if (current?.seaId === seaId && isNormalAccess(current.id)) return [current.id];
+  }
+
+  if (seaId === 'new_world') {
+    const ordinary = getOrdinaryNewWorldDestinationIds(state.locationId, catalog);
+    if (ordinary.length > 0) return ordinary;
+  }
+
+  const sameSea = catalog.locations
+    .filter((location) => location.seaId === seaId && location.id !== state.locationId && isNormalAccess(location.id))
+    .map(({ id }) => id);
+  if (sameSea.length > 0) return sameSea;
+
+  const current = catalog.locations.find(({ id }) => id === state.locationId);
+  return current?.seaId === seaId ? [current.id] : [];
 }
 
 function currentSeaId(state: GameState, catalog: ContentCatalog): string | undefined {
