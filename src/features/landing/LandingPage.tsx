@@ -20,6 +20,7 @@ import {
 import type { GameState } from '@/game/model/schema';
 import { LanguageControls } from '@/features/settings/LanguageControls';
 import { notifyUiLocaleChanged } from '@/features/settings/localeSync';
+import logoMark from './assets/opfg-logo-mark.png';
 import './landing-page.css';
 
 type LandingSection =
@@ -160,6 +161,13 @@ export function LandingPage({
           <span className="opfg-landing__kicker">
             {translate('ui.landing.kicker')}
           </span>
+          <img
+            src={logoMark}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="opfg-landing__logo"
+          />
           <h1 className="opfg-landing__title">
             {translate('ui.landing.title')}
           </h1>
