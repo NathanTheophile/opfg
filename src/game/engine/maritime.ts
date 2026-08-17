@@ -17,8 +17,8 @@ const PARADISE_ROUTE_IDS = Object.keys(worldData.paradiseRouteGraph)
 export const PARADISE_ROUTE_START_EVENT_IDS = PARADISE_ROUTE_IDS
   .map((routeId) => `active_paradise_route_start_${routeId.toLowerCase()}`);
 
-const PARADISE_ROUTE_BY_START_EVENT_ID = new Map(
-  PARADISE_ROUTE_IDS.map((routeId) => [`active_paradise_route_start_${routeId.toLowerCase()}`, routeId] as const),
+const PARADISE_ROUTE_BY_START_EVENT_ID = new Map<string, string>(
+  PARADISE_ROUTE_IDS.map((routeId) => [`active_paradise_route_start_${routeId.toLowerCase()}`, routeId]),
 );
 
 export function isParadiseRouteStartEventId(eventId: string): boolean {
@@ -61,7 +61,8 @@ export function ordinaryDepartureHasDestination(state: GameState, catalog: Conte
 }
 
 export function paradiseArrivalProbabilityForCrossingRoot(rootCount: number, hasParadiseLogPose: boolean): number {
-  const effectiveRootCount = hasParadiseLogPose ? rootCount : Math.floor(rootCount / 2);
+  if (!hasParadiseLogPose && rootCount % 2 !== 0) return 0;
+  const effectiveRootCount = hasParadiseLogPose ? rootCount : rootCount / 2;
   return blueArrivalProbabilityForCrossingRoot(effectiveRootCount);
 }
 

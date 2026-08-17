@@ -80,7 +80,9 @@ describe('Active Paradise navigation foundation', () => {
     expect(paradiseArrivalProbabilityForCrossingRoot(3, true)).toBe(1);
     expect(paradiseArrivalProbabilityForCrossingRoot(1, false)).toBe(0);
     expect(paradiseArrivalProbabilityForCrossingRoot(2, false)).toBe(0.35);
+    expect(paradiseArrivalProbabilityForCrossingRoot(3, false)).toBe(0);
     expect(paradiseArrivalProbabilityForCrossingRoot(4, false)).toBe(0.70);
+    expect(paradiseArrivalProbabilityForCrossingRoot(5, false)).toBe(0);
     expect(paradiseArrivalProbabilityForCrossingRoot(6, false)).toBe(1);
   });
 
