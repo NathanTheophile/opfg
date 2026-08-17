@@ -37,7 +37,7 @@ describe('runtime NPC names', () => {
     expect(again.rngState).toBe(rngAfterFirstMaterialization);
   });
 
-  it('assigns seeded names to existing fixed-role recruits without changing IDs or roles', () => {
+  it('assigns seeded names and Stats without authored Crew Roles', () => {
     const first = createInitialGameState(1);
     const second = createInitialGameState(1);
     const otherSeed = createInitialGameState(2);
@@ -50,10 +50,11 @@ describe('runtime NPC names', () => {
     expect(firstName).toBe(secondName);
     expect(otherName).not.toBe(firstName);
 
-    expect(contentCatalog.npcs.find(({ id }) => id === 'mira')).toMatchObject({ crewRoleId: 'navigator', namePoolId: 'childhood_female' });
-    expect(contentCatalog.npcs.find(({ id }) => id === 'rohan')).toMatchObject({ crewRoleId: 'cook', namePoolId: 'childhood_male' });
-    expect(contentCatalog.npcs.find(({ id }) => id === 'ari')).toMatchObject({ crewRoleId: 'medic', namePoolId: 'childhood_female' });
-    expect(contentCatalog.npcs.find(({ id }) => id === 'owen')).toMatchObject({ crewRoleId: 'shipwright', namePoolId: 'childhood_male' });
+    expect(contentCatalog.npcs.find(({ id }) => id === 'mira')).toMatchObject({ namePoolId: 'childhood_female' });
+    expect(contentCatalog.npcs.find(({ id }) => id === 'rohan')).toMatchObject({ namePoolId: 'childhood_male' });
+    expect(contentCatalog.npcs.find(({ id }) => id === 'ari')).toMatchObject({ namePoolId: 'childhood_female' });
+    expect(contentCatalog.npcs.find(({ id }) => id === 'owen')).toMatchObject({ namePoolId: 'childhood_male' });
+    expect(contentCatalog.npcs.some(({ crewRoleId }) => crewRoleId !== undefined && crewRoleId !== null)).toBe(false);
   });
 
   it('backfills one seeded name for existing null display names and never rerolls', () => {
@@ -72,16 +73,21 @@ describe('runtime NPC names', () => {
     expect(state.rngState).toBe(rngAfterBackfill);
   });
 
-  it('keeps existing non-null display names unchanged', () => {
+  it('keeps existing non-null display names unchanged while materializing Stats once', () => {
     const state = createInitialGameState(4);
     state.npcs.mira = { ...state.npcs.mira, displayName: 'Existing Name' };
     const rngBefore = state.rngState;
 
     expect(ensureNpcMaterialized(state, contentCatalog, 'mira').displayName).toBe('Existing Name');
-    expect(state.rngState).toBe(rngBefore);
+    expect(state.npcs.mira.statsGenerated).toBe(true);
+    expect(state.rngState).not.toBe(rngBefore);
+    const rngAfter = state.rngState;
+
+    expect(ensureNpcMaterialized(state, contentCatalog, 'mira').displayName).toBe('Existing Name');
+    expect(state.rngState).toBe(rngAfter);
   });
 
-  it('interpolates fixed-role recruits with their seeded display names', () => {
+  it('interpolates recruited NPC identities with their seeded display names', () => {
     const state = createInitialGameState(5);
     const name = ensureNpcMaterialized(state, contentCatalog, 'mira').displayName;
     const params = npcInterpolationParams(state, contentCatalog, (key) => dictionaries.en[key] ?? dictionaries.fr[key] ?? key);

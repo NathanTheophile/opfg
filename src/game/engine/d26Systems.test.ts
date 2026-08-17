@@ -15,7 +15,7 @@ import { movePlayerToLocation } from './locations';
 import { consumePhaseSlot } from './time';
 
 describe('D2.6 systems hardening', () => {
-  it('uses Save 22 and rejects Save 20', () => {
+  it('uses Save 23 and rejects Save 20', () => {
     const state = createInitialGameState();
     expect(deserializeGameState(serializeGameState(state))).toEqual(state);
     expect(deserializeGameState(JSON.stringify({ ...state, version: 20 }))).toBeNull();
@@ -44,7 +44,7 @@ describe('D2.6 systems hardening', () => {
 
   it('shares annual role cooldown and selects crewRole actor by effective stat then ID', () => {
     const state = createInitialGameState();
-    state.npcs.mira = { ...createDefaultNpcState(), status: 'crew', stats: { ...createDefaultNpcState().stats, navigation: 40 } };
+    state.npcs.mira = { ...createDefaultNpcState(), status: 'crew', crewRoleId: 'navigator', stats: { ...createDefaultNpcState().stats, navigation: 40 } };
     state.ship = { shipId: 'sloop', name: 'Test', health: 30, cargo: [] };
     expect(canUseCrewRolePower(state, contentCatalog, 'navigator')).toBe(true);
     expect(findCrewRoleActor(state, contentCatalog, 'navigator', 'navigation')).toBe('mira');
@@ -103,7 +103,7 @@ describe('D2.6 systems hardening', () => {
   it('moves Navigator through the arrival pipeline and excludes gated destinations', () => {
     const state = createInitialGameState();
     state.locationId = 'dressrosa';
-    state.npcs.mira = { ...createDefaultNpcState(), status: 'crew' };
+    state.npcs.mira = { ...createDefaultNpcState(), status: 'crew', crewRoleId: 'navigator' };
     state.ship = { shipId: 'sloop', name: 'Test', health: 30, cargo: [] };
     state.shipMarketArrivalPending = false;
     const destinations = navigatorDestinations(state, contentCatalog);
@@ -149,7 +149,7 @@ describe('D2.6 systems hardening', () => {
 
   it('locks Navigator geography to Blue + Reverse Mountain, none in Paradise, global from New World', () => {
     const state = createInitialGameState();
-    state.npcs.mira = { ...createDefaultNpcState(), status: 'crew' };
+    state.npcs.mira = { ...createDefaultNpcState(), status: 'crew', crewRoleId: 'navigator' };
     state.ship = { shipId: 'sloop', name: 'Test', health: 30, cargo: [] };
 
     state.locationId = 'foosha_village';

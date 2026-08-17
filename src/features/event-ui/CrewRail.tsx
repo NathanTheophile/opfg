@@ -10,6 +10,7 @@ import './hud-panel-header.css';
 import './crew-rail.css';
 import { effectiveNpcStat } from '@/game/engine/stats';
 import { canUseCrewRolePower, navigatorDestinations } from '@/game/engine/crewPowers';
+import { maxCrewSize } from '@/game/engine/ship';
 import type { CrewRoleId, LocationId } from '@/game/model/schema';
 
 const NPC_STAT_IDS: NpcStatId[] = ['health', 'morale', 'strength', 'agility', 'observation', 'intelligence', 'navigation', 'charisma', 'luck'];
@@ -27,8 +28,7 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [navigatorRoleId, setNavigatorRoleId] = useState<CrewRoleId | null>(null);
   const crew = Object.entries(state.npcs).filter(([, npc]) => npc.status === 'crew');
-  const shipDefinition = state.ship ? catalog.ships.find(({ id }) => id === state.ship?.shipId) : undefined;
-  const capacity = shipDefinition?.crewCapacity ?? 0;
+  const capacity = maxCrewSize(state, catalog);
 
   return <div className="opfg-crew-rail" aria-label={translate('ui.crew')}>
     <Panel
@@ -57,7 +57,7 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
 
     {crew.map(([npcId, npc]) => {
       const definition = catalog.npcs.find(({ id }) => id === npcId);
-      const role = catalog.crewRoles.find(({ id }) => id === definition?.crewRoleId);
+      const role = catalog.crewRoles.find(({ id }) => id === npc.crewRoleId);
       const roleLabel = role ? translate(role.nameKey) : translate('ui.crew.member');
       const expanded = expandedId === npcId;
       const rolePowerAvailable = role?.annualPower !== undefined

@@ -150,6 +150,6 @@ export function getDicePreview(resolution: DiceResolution, state: GameState, cat
 
 export function findCrewRoleActor(state: GameState, catalog: import('../content/schema').ContentCatalog, roleId: string, statId: import('../model/schema').NpcStatId): string | undefined {
   return Object.keys(state.npcs)
-    .filter((npcId) => state.npcs[npcId].status === 'crew' && catalog.npcs.find(({ id }) => id === npcId)?.crewRoleId === roleId)
+    .filter((npcId) => state.npcs[npcId].status === 'crew' && state.npcs[npcId].crewRoleId === roleId && state.npcs[npcId].stats.health > 0)
     .sort((a, b) => effectiveNpcStat(state, catalog, b, statId) - effectiveNpcStat(state, catalog, a, statId) || a.localeCompare(b))[0];
 }

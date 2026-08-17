@@ -115,6 +115,10 @@ export interface NpcState {
   status: NpcStatus;
   relationship: number;
   lastInteractionAgeMonths: number | null;
+  /** Runtime crew assignment. NPC definitions never own a CrewRole. */
+  crewRoleId: CrewRoleId | null;
+  /** False only for placeholder states that have not been materially encountered yet. */
+  statsGenerated: boolean;
   stats: NpcStats;
   powers: PowerState;
 }
@@ -160,6 +164,12 @@ export interface GameState {
   isLeader: boolean;
   passengerNpcIds: NpcId[];
   crewRoleLastUsedYear: Partial<Record<CrewRoleId, number>>;
+  /** A role lost to death/departure cannot be refilled before the next year. */
+  crewRoleVacatedYear: Partial<Record<CrewRoleId, number>>;
+  /** Blocks the next root until the yearly crew-role panel is validated. */
+  crewReassignmentPending: boolean;
+  /** Recruiter annual power request; resolved at the next ordinary-root opportunity. */
+  pendingCrewRecruitment: boolean;
   pendingOverflow: PendingOverflowState | null;
   berries: number;
   flags: FlagId[];

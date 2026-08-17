@@ -6,7 +6,7 @@ import { canBuyItem, canSellItem, canSellShip as canSellShipAtMarket, inventoryF
 import { canConsumeDevilFruit, playerHakiSourceTotal } from './powers';
 import { isLocationWithin } from './locations';
 import { countFallbackStreak, currentSeaPorts, currentShipDestructionCause, findBestSwimmingRescuer, findHighestRelationshipFruitCrew, sameIslandPorts } from './maritime';
-import { effectivePlayerStat } from './stats';
+import { effectiveNpcStat, effectivePlayerStat } from './stats';
 import { getSingleParentSex, isOriginParentPresent } from './family';
 
 export interface ChoiceState {
@@ -61,7 +61,7 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
     case 'crewSizeAtLeast':
       return countCurrentCrew(state) >= condition.value;
     case 'hasCrewRole':
-      return catalog !== undefined && Object.entries(state.npcs).some(([npcId, npc]) => npc.status === 'crew' && catalog.npcs.find(({ id }) => id === npcId)?.crewRoleId === condition.roleId);
+      return Object.values(state.npcs).some((npc) => npc.status === 'crew' && npc.crewRoleId === condition.roleId);
     case 'canRecruitNpc':
       return catalog !== undefined && canRecruitNpc(state, catalog, condition.npcId);
     case 'isLeader':
@@ -130,7 +130,8 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
       return age !== null && age !== undefined && state.ageMonths - age <= condition.value;
     }
     case 'npcStatAtLeast':
-      return (state.npcs[condition.npcId]?.stats[condition.statId] ?? Number.NEGATIVE_INFINITY) >= condition.value;
+      return state.npcs[condition.npcId]?.statsGenerated === true
+        && (catalog ? effectiveNpcStat(state, catalog, condition.npcId, condition.statId) : state.npcs[condition.npcId].stats[condition.statId]) >= condition.value;
     case 'npcSexIs':
       return catalog?.npcs.find(({ id }) => id === condition.npcId)?.sex === condition.sex;
     case 'singleParentSexIs':

@@ -2,6 +2,7 @@ import type { ContentCatalog } from '../content/schema';
 import type { GameState } from '../model/schema';
 import { modifyPlayerHealth } from './health';
 import { deriveFamilyActiveCareerHandoff } from '../content/familySagaConfig';
+import { annualCrewIncome, currentCrewIds } from './crew';
 
 const CHILDHOOD_INCOME: Record<string, number> = { poor: 500, modest: 750, wealthy: 1500 };
 
@@ -42,21 +43,26 @@ export function finalizePendingSlot(state: GameState, catalog: ContentCatalog): 
     immediateEventsResolvedInChain: 0,
   };
 }
+
 function advanceAge(state: GameState, ageMonths: number, catalog: ContentCatalog): GameState {
   const birthdays = Math.floor(ageMonths / 12) - Math.floor(state.ageMonths / 12);
   const startYear = Math.floor(state.ageMonths / 12);
   const income = Array.from({ length: birthdays }, (_, index) => startYear + index + 1)
     .filter((age) => age >= 5 && age <= 14)
     .reduce((sum) => sum + (CHILDHOOD_INCOME[state.player.profile.socialClassId ?? ''] ?? 0), 0);
+  const crewIncome = birthdays * annualCrewIncome(state, catalog);
+  const annualCrewPanel = birthdays > 0 && currentCrewIds(state).length > 0;
+
   const advanced = {
     ...state,
     player: { ...state.player, stats: { ...state.player.stats } },
     ageMonths,
+    crewReassignmentPending: state.crewReassignmentPending || annualCrewPanel,
     npcs: Object.fromEntries(Object.entries(state.npcs).map(([id, npc]) => [id, npc.status !== 'crew' || birthdays === 0 ? npc : {
       ...npc,
       stats: Object.fromEntries(Object.entries(npc.stats).map(([statId, value]) => [statId, Math.min(50, value + birthdays)])) as unknown as typeof npc.stats,
     }])),
-    berries: state.berries + income,
+    berries: state.berries + income + crewIncome,
   };
   if (birthdays > 0 && advanced.player.profile.raceId !== null && advanced.player.stats.health > 0) {
     modifyPlayerHealth(advanced, catalog, birthdays);

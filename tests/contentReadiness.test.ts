@@ -12,7 +12,7 @@ describe('Content Authoring Readiness V1', () => {
   it('exposes the exact V1 trait, crew, ship, rank, Location, and Fruit rosters', () => {
     expect(contentCatalog.traits).toHaveLength(28);
     expect(contentCatalog.traits.filter(({ oppositeTraitId }) => oppositeTraitId !== undefined)).toHaveLength(20);
-    expect(contentCatalog.crewRoles.map(({ id }) => id)).toEqual(['navigator','medic','cook','shipwright','helmsman','gunner','musician','scholar','fighter','quartermaster']);
+    expect(contentCatalog.crewRoles.map(({ id }) => id)).toEqual(['navigator','medic','shipwright','recruiter','first_mate','helmsman','cook','musician','scholar','foreman']);
     expect(contentCatalog.ships.map(({ id }) => id)).toEqual(['dinghy','sloop','caravel','brig','merchant_ship','galleon']);
     expect(contentCatalog.affiliations.filter(({ playableV1 }) => playableV1).map(({ id }) => id)).toEqual(['civilian','marine','pirate','revolutionary']);
     expect(contentCatalog.affiliations.find(({ id }) => id === 'royal_family')).toMatchObject({

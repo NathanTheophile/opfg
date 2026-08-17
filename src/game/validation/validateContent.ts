@@ -261,7 +261,28 @@ export function validateContent(catalog: unknown, sourceDictionary: Localization
   validateNamedDefinitions(socialClasses, 'socialClasses', errors);
   validateNamedDefinitions(crewRoles, 'crewRoles', errors);
   crewRoles.forEach((role, index) => {
-    if (role.annualPower !== undefined && !['medic', 'shipwright', 'navigator'].includes(String(role.annualPower))) errors.push({ path: `crewRoles[${index}].annualPower`, message: 'Unknown annual Crew Role power.' });
+    const path = `crewRoles[${index}]`;
+    if (role.annualPower !== undefined && !['medic', 'shipwright', 'navigator', 'recruiter', 'first_mate'].includes(String(role.annualPower))) {
+      errors.push({ path: `${path}.annualPower`, message: 'Unknown annual Crew Role power.' });
+    }
+    if (role.passive === undefined) return;
+    if (!isRecord(role.passive) || !['globalStats', 'annualIncome'].includes(String(role.passive.type))) {
+      errors.push({ path: `${path}.passive`, message: 'Invalid Crew Role passive.' });
+      return;
+    }
+    if (role.passive.type === 'globalStats') {
+      if (!Array.isArray(role.passive.statIds) || role.passive.statIds.length !== 2 || new Set(role.passive.statIds.map(String)).size !== 2) {
+        errors.push({ path: `${path}.passive.statIds`, message: 'globalStats passive requires exactly two distinct StatIds.' });
+      } else {
+        role.passive.statIds.forEach((statId, statIndex) => validateStat(statId, `${path}.passive.statIds[${statIndex}]`, errors));
+      }
+      if (role.passive.amount !== undefined && (typeof role.passive.amount !== 'number' || !Number.isFinite(role.passive.amount))) {
+        errors.push({ path: `${path}.passive.amount`, message: 'Crew passive Stat amount must be finite when defined.' });
+      }
+    }
+    if (role.passive.type === 'annualIncome' && role.passive.berries !== undefined && (!Number.isInteger(role.passive.berries) || (role.passive.berries as number) < 0)) {
+      errors.push({ path: `${path}.passive.berries`, message: 'Crew passive annual income must be a non-negative integer when defined.' });
+    }
   });
   locations.forEach((location, index) => {
     const path = `locations[${index}]`;
@@ -1170,14 +1191,18 @@ function validateNpcDefinitions(npcs: UnknownRecord[], references: References, e
     validateNullableReference(npc.raceId, references.raceIds, 'RaceId', `${path}.raceId`, errors);
     validateNullableReference(npc.originSeaId, references.seaIds, 'SeaId', `${path}.originSeaId`, errors);
     validateNullableReference(npc.affiliationId, references.affiliationIds, 'AffiliationId', `${path}.affiliationId`, errors);
-    validateNullableReference(npc.crewRoleId, references.crewRoleIds, 'CrewRoleId', `${path}.crewRoleId`, errors);
-    if (!isRecord(npc.initialStats)) {
-      errors.push({ path: `${path}.initialStats`, message: 'NPC initialStats must be an object.' });
-      return;
+    if (npc.crewRoleId !== undefined && npc.crewRoleId !== null) {
+      errors.push({ path: `${path}.crewRoleId`, message: 'NPC definitions cannot own Crew Roles; assign roles in runtime crew state.' });
     }
-    for (const statId of NPC_STAT_IDS) {
-      if (!isNumberInRange(npc.initialStats[statId], 0, 50)) {
-        errors.push({ path: `${path}.initialStats.${statId}`, message: `${statId} must be a finite number from 0 to 50.` });
+    if (npc.initialStats !== undefined) {
+      if (!isRecord(npc.initialStats)) {
+        errors.push({ path: `${path}.initialStats`, message: 'NPC initialStats must be an object when provided.' });
+        return;
+      }
+      for (const statId of NPC_STAT_IDS) {
+        if (!isNumberInRange(npc.initialStats[statId], 0, 50)) {
+          errors.push({ path: `${path}.initialStats.${statId}`, message: `${statId} must be a finite number from 0 to 50.` });
+        }
       }
     }
   });

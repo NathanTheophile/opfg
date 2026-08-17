@@ -1,5 +1,8 @@
 import type { ContentCatalog, ShipDefinition } from '../content/schema';
 import type { GameState, InventoryState, ItemId, ItemStack, ShipId, ShipState } from '../model/schema';
+import { vacantCrewRoleIds } from './crew';
+
+export const CREW_CAPACITY_WITHOUT_SHIP = 3;
 
 export function findShipDefinition(catalog: ContentCatalog, shipId: ShipId): ShipDefinition {
   const definition = catalog.ships.find(({ id }) => id === shipId);
@@ -8,8 +11,13 @@ export function findShipDefinition(catalog: ContentCatalog, shipId: ShipId): Shi
 }
 
 export function countCurrentCrew(state: GameState): number {
-  // GAME_DESIGN intentionally leaves whether the player consumes capacity open.
   return Object.values(state.npcs).filter(({ status }) => status === 'crew').length;
+}
+
+export function maxCrewSize(state: GameState, catalog: ContentCatalog): number {
+  return state.ship === null
+    ? CREW_CAPACITY_WITHOUT_SHIP
+    : findShipDefinition(catalog, state.ship.shipId).crewCapacity;
 }
 
 export function canAcquireShip(state: GameState, catalog: ContentCatalog, shipId: ShipId, allowWithoutLeadership = false): boolean {
@@ -28,9 +36,12 @@ export function availableCargoSlots(ship: ShipState, catalog: ContentCatalog, pa
 
 export function canRecruitNpc(state: GameState, catalog: ContentCatalog, npcId: string, allowWithoutLeadership = false): boolean {
   if (!state.isLeader && !allowWithoutLeadership) return false;
-  if (state.npcs[npcId]?.status === 'crew') return true;
-  if (state.ship === null) return countCurrentCrew(state) < 2;
-  return countCurrentCrew(state) + 1 <= findShipDefinition(catalog, state.ship.shipId).crewCapacity;
+  const current = state.npcs[npcId];
+  if (current?.status === 'crew') return true;
+  if (current?.status === 'dead') return false;
+  if (countCurrentCrew(state) >= maxCrewSize(state, catalog)) return false;
+
+  return vacantCrewRoleIds(state, catalog).length > 0;
 }
 
 export function addStack(stacks: ItemStack[], itemId: ItemId, quantity: number, capacity: number, stackLimit = Number.MAX_SAFE_INTEGER, locationId: import('../model/schema').LocationId | null = null): void {

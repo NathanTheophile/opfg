@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { contentCatalog } from '../src/game/content/definitions';
 import { evaluateCondition, getChoiceState } from '../src/game/engine/conditions';
 import { applyEffects } from '../src/game/engine/effects';
+import { assignCrewRoleToRecruit } from '../src/game/engine/crew';
 import { createInitialGameState } from '../src/game/model/initialState';
 import { createDefaultNpcState } from '../src/game/model/npcState';
 
@@ -25,17 +26,20 @@ describe('Crew System V1', () => {
     expect(() => applyEffects(recruited, contentCatalog, [{ type: 'setNpcStatus', npcId: 'candidate', status: 'crew' }], context)).toThrow(/free crew capacity/);
   });
 
-  it('caps a shipless party at three people total, then defers to ship crewCapacity', () => {
+  it('caps a shipless party at three crewmates, then defers to ship crewCapacity', () => {
     const state = createInitialGameState();
     state.npcs.a = npc('crew');
     state.npcs.candidate = npc();
     expect(evaluateCondition({ type: 'canRecruitNpc', npcId: 'candidate' }, state, contentCatalog)).toBe(true);
 
     state.npcs.b = npc('crew');
+    expect(evaluateCondition({ type: 'canRecruitNpc', npcId: 'candidate' }, state, contentCatalog)).toBe(true);
+
+    state.npcs.c = npc('crew');
     expect(evaluateCondition({ type: 'canRecruitNpc', npcId: 'candidate' }, state, contentCatalog)).toBe(false);
     expect(() => applyEffects(state, contentCatalog, [{ type: 'setNpcStatus', npcId: 'candidate', status: 'crew' }], context)).toThrow(/free crew capacity/);
 
-    state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
+    state.ship = { shipId: 'caravel', name: 'Test Caravel', health: 38, cargo: [] };
     expect(evaluateCondition({ type: 'canRecruitNpc', npcId: 'candidate' }, state, contentCatalog)).toBe(true);
   });
 
@@ -65,19 +69,21 @@ describe('Crew System V1', () => {
     const state = withShip();
     const related = applyEffects(state, contentCatalog, [{ type: 'modifyNpcRelationship', npcId: 'mira', amount: 20 }], context);
     expect(related.npcs.mira.relationship).toBe(20);
-    expect(related.npcs.mira.stats.morale).toBe(25);
+    const moraleBefore = related.npcs.mira.stats.morale;
     const loyal = applyEffects(related, contentCatalog, [{ type: 'modifyNpcStat', npcId: 'mira', statId: 'morale', amount: -5 }], context);
-    expect(loyal.npcs.mira).toMatchObject({ relationship: 20, stats: { morale: 20 } });
+    expect(loyal.npcs.mira).toMatchObject({ relationship: 20, stats: { morale: moraleBefore - 5 } });
   });
 
-  it('tests immutable authored roles and allows several crew NPCs with the same role', () => {
-    const catalog = structuredClone(contentCatalog);
-    catalog.npcs.push({ ...catalog.npcs[0], id: 'second_navigator', nameKey: 'npc.mira.name' });
+  it('uses mutable runtime roles and enforces one holder per role', () => {
     const state = createInitialGameState();
-    state.npcs.mira.status = 'crew';
+    state.npcs.mira = { ...npc('crew'), crewRoleId: 'navigator' };
     state.npcs.second_navigator = npc('crew');
-    expect(evaluateCondition({ type: 'hasCrewRole', roleId: 'navigator' }, state, catalog)).toBe(true);
-    expect(catalog.npcs.filter(({ crewRoleId }) => crewRoleId === 'navigator')).toHaveLength(2);
+    expect(evaluateCondition({ type: 'hasCrewRole', roleId: 'navigator' }, state, contentCatalog)).toBe(true);
+    expect(contentCatalog.npcs.some(({ crewRoleId }) => crewRoleId !== undefined && crewRoleId !== null)).toBe(false);
+
+    expect(() => assignCrewRoleToRecruit(state, contentCatalog, 'second_navigator', 'navigator')).toThrow(/already occupied/);
+    assignCrewRoleToRecruit(state, contentCatalog, 'second_navigator', 'cook');
+    expect(state.npcs.second_navigator.crewRoleId).toBe('cook');
   });
 
   it('does not let unavailable alter crew capacity without an explicit authored status change', () => {

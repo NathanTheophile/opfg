@@ -166,13 +166,13 @@ describe('validateContent', () => {
     expect(errors).toContainEqual(expect.stringContaining('Unknown ShipId "missing_ship"'));
   });
 
-  it('validates CrewRole and recruitment references plus leadership override shape', () => {
+  it('rejects authored NPC Crew Roles and validates recruitment references plus leadership override shape', () => {
     const catalog = cloneCatalog();
     catalog.npcs[0].crewRoleId = 'missing_role';
     eventById(catalog, 'mira_castaway').choices[0].availableIf.npcId = 'missing_npc';
     eventById(catalog, 'mira_castaway').choices[0].resolution.outcome.effects[0].allowWithoutLeadership = 'yes';
     const errors = messages(catalog);
-    expect(errors).toContainEqual(expect.stringContaining('Unknown CrewRoleId "missing_role"'));
+    expect(errors).toContainEqual(expect.stringContaining('NPC definitions cannot own Crew Roles'));
     expect(errors).toContainEqual(expect.stringContaining('Unknown NpcId "missing_npc"'));
     expect(errors).toContainEqual(expect.stringContaining('allowWithoutLeadership must be boolean'));
   });
@@ -279,24 +279,34 @@ describe('validateContent', () => {
     expect(messages(asymmetric)).toContainEqual(expect.stringContaining('must be symmetric'));
   });
 
-  it('validates NPC definitions, NPC stat conditions, and NPC stat effects', () => {
+  it('validates optional fixed NPC stats, NPC stat conditions, and NPC stat effects', () => {
     const catalog = cloneCatalog();
     catalog.npcs[0].nameKey = '';
-    catalog.npcs[0].initialStats.loyalty = 51;
+    catalog.npcs[0].initialStats = {
+      health: 51,
+      morale: 25,
+      strength: 25,
+      agility: 25,
+      observation: 25,
+      intelligence: 25,
+      navigation: 25,
+      charisma: 25,
+      luck: 25,
+    };
     eventById(catalog, 'origin_name').eligibility = {
-      type: 'npcStatAtLeast', npcId: 'missing_npc', statId: 'navigation', value: 51,
+      type: 'npcStatAtLeast', npcId: 'missing_npc', statId: 'calm', value: 51,
     };
     eventById(catalog, 'origin_name').choices[0].resolution.outcome.effects = [{
-      type: 'modifyNpcStat', npcId: 'missing_npc', statId: 'charisma', amount: Number.POSITIVE_INFINITY,
+      type: 'modifyNpcStat', npcId: 'missing_npc', statId: 'focus', amount: Number.POSITIVE_INFINITY,
     }];
 
     const errors = messages(catalog);
     expect(errors).toContainEqual(expect.stringContaining('NPC nameKey must be a non-empty string'));
-    expect(errors).toContainEqual(expect.stringContaining('loyalty must be a finite number from 0 to 50'));
+    expect(errors).toContainEqual(expect.stringContaining('health must be a finite number from 0 to 50'));
     expect(errors).toContainEqual(expect.stringContaining('Unknown NpcId "missing_npc"'));
-    expect(errors).toContainEqual(expect.stringContaining('Invalid NpcStatId "navigation"'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid NpcStatId "calm"'));
     expect(errors).toContainEqual(expect.stringContaining('npcStatAtLeast value must be a finite number from 0 to 50'));
-    expect(errors).toContainEqual(expect.stringContaining('Invalid NpcStatId "charisma"'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid NpcStatId "focus"'));
     expect(errors).toContainEqual(expect.stringContaining('modifyNpcStat amount must be finite'));
   });
 

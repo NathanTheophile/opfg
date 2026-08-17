@@ -33,7 +33,7 @@ import type {
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 15;
+export const CONTENT_SCHEMA_VERSION = 16;
 
 export const V1_CAREER_HORIZON_MONTHS = 420;
 
@@ -408,11 +408,23 @@ export interface NpcDefinition {
   raceId: RaceId | null;
   originSeaId: SeaId | null;
   affiliationId: AffiliationId | null;
-  crewRoleId: CrewRoleId | null;
-  initialStats: NpcStats;
+  /** Explicit fixed-stat exception. Omit for seeded per-run generation. */
+  initialStats?: NpcStats;
+  /** @deprecated Crew roles belong to runtime NpcState. Content must omit this field. */
+  crewRoleId?: null;
 }
 
-export interface CrewRoleDefinition { id: CrewRoleId; nameKey: LocalizationKey; annualPower?: 'medic' | 'shipwright' | 'navigator' }
+export type CrewRoleAnnualPower = 'medic' | 'shipwright' | 'navigator' | 'recruiter' | 'first_mate';
+export type CrewRolePassive =
+  | { type: 'globalStats'; statIds: [StatId, StatId]; amount?: number }
+  | { type: 'annualIncome'; berries?: number };
+
+export interface CrewRoleDefinition {
+  id: CrewRoleId;
+  nameKey: LocalizationKey;
+  annualPower?: CrewRoleAnnualPower;
+  passive?: CrewRolePassive;
+}
 
 export interface RaceDefinition { id: RaceId; nameKey: LocalizationKey; playableV1: boolean; initialHealth: number; attributeModifiers: Partial<Record<StatId, number>> }
 export interface SeaDefinition { id: SeaId; nameKey: LocalizationKey }

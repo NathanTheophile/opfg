@@ -166,7 +166,7 @@ describe('Companion Item architecture', () => {
     expect(deserializeGameState(serializeGameState(state))?.player.companion).toEqual(stack('test_puppy'));
   });
 
-  it('migrates Save 21 to Save 22 without keeping the legacy NPC-Companion model', () => {
+  it('migrates Save 21 through Save 23 without keeping the legacy NPC-Companion model', () => {
     const current = createInitialGameState();
     const { companion: _companion, ...legacyPlayer } = current.player;
     const legacy = {
@@ -177,7 +177,7 @@ describe('Companion Item architecture', () => {
     };
 
     const migrated = deserializeGameState(JSON.stringify(legacy));
-    expect(migrated?.version).toBe(22);
+    expect(migrated?.version).toBe(23);
     expect(migrated?.player.companion).toBeNull();
     expect(migrated && 'companionNpcId' in migrated).toBe(false);
   });
@@ -203,7 +203,7 @@ describe('Companion Item architecture', () => {
     const catalog = withCompanions();
     const state = createInitialGameState();
     state.player.companion = stack('test_puppy');
-    state.npcs.mira = { ...createDefaultNpcState(), status: 'crew' };
+    state.npcs.mira = { ...createDefaultNpcState(), status: 'crew', crewRoleId: 'navigator', statsGenerated: true };
     state.locationId = 'foosha_village';
     state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
     state.isLeader = true;

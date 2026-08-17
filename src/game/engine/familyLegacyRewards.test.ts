@@ -174,7 +174,8 @@ describe('Family L5 legacy rewards', () => {
     expect(companionIds).toHaveLength(5);
     for (const itemId of companionIds) {
       expect(itemById.get(itemId)?.category, itemId).toBe('item');
-      expect(contentCatalog.npcs.some((npc) => npc.id === itemId || npc.crewRoleId === itemId), itemId).toBe(false);
+      expect(contentCatalog.npcs.some((npc) => npc.id === itemId), itemId).toBe(false);
+      expect(contentCatalog.crewRoles.some((role) => role.id === itemId), itemId).toBe(false);
     }
   });
 

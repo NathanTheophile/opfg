@@ -183,17 +183,24 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
     case 'resolveMaritimeEmergencyLandfall': resolveMaritimeEmergencyLandfall(state, catalog); return;
     case 'setNpcStatus': {
       const npcId = resolveNpcTarget(state, effect, context);
-      const npc = getNpcState(state, npcId);
+      const npc = getNpcState(state, catalog, npcId);
       const changesCrew = npc.status === 'crew' || effect.status === 'crew';
       if (changesCrew && effect.status !== 'dead') requireLeadership(state, effect.allowWithoutLeadership);
-      if (effect.status === 'crew' && npc.status !== 'crew' && !canRecruitNpc(state, catalog, npcId, effect.allowWithoutLeadership === true)) throw new Error(`Cannot recruit NPC "${npcId}" without leadership or free crew capacity.`);
+      if (effect.status === 'crew' && npc.status !== 'crew' && !canRecruitNpc(state, catalog, npcId, effect.allowWithoutLeadership === true)) throw new Error(`Cannot recruit NPC "${npcId}" without leadership, free crew capacity, or a vacant Crew Role.`);
       if (effect.status === 'crew') state.passengerNpcIds = state.passengerNpcIds.filter((id) => id !== npcId);
-      state.npcs[npcId] = { ...npc, status: effect.status };
+      if (npc.status === 'crew' && effect.status !== 'crew' && npc.crewRoleId !== null) {
+        state.crewRoleVacatedYear[npc.crewRoleId] = Math.floor(state.ageMonths / 12);
+      }
+      state.npcs[npcId] = {
+        ...npc,
+        status: effect.status,
+        crewRoleId: effect.status === 'crew' && npc.status === 'crew' ? npc.crewRoleId : null,
+      };
       return;
     }
     case 'setNpcPassenger': {
       requireLeadership(state, effect.allowWithoutLeadership);
-      const npc = getNpcState(state, effect.npcId);
+      const npc = getNpcState(state, catalog, effect.npcId);
       if (effect.passenger) {
         if (npc.status === 'crew' || npc.status === 'dead') throw new Error('Crew or dead NPCs cannot be passengers.');
         if (state.ship === null) throw new Error('Cannot add a passenger without a ship.');
@@ -209,7 +216,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       state.isLeader = effect.isLeader;
       return;
     case 'modifyNpcRelationship': {
-      const npc = getNpcState(state, effect.npcId);
+      const npc = getNpcState(state, catalog, effect.npcId);
       state.npcs[effect.npcId] = {
         ...npc,
         relationship: clamp(npc.relationship + effect.amount, -100, 100),
@@ -218,7 +225,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
     }
     case 'modifyNpcStat': {
       const npcId = resolveNpcTarget(state, effect, context);
-      const npc = getNpcState(state, npcId);
+      const npc = getNpcState(state, catalog, npcId);
       state.npcs[npcId] = {
         ...npc,
         stats: {
@@ -359,7 +366,7 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       state.player.powers.haki.conqueror = effect.level;
       return;
     case 'setNpcDevilFruit': {
-      const npc = getNpcState(state, effect.npcId);
+      const npc = getNpcState(state, catalog, effect.npcId);
       if (!catalog.devilFruits.some(({ id }) => id === effect.fruitId)) throw new Error(`Unknown Devil Fruit "${effect.fruitId}".`);
       if (npc.powers.devilFruitId !== null && npc.powers.devilFruitId !== effect.fruitId) throw new Error(`NPC "${effect.npcId}" already has a Devil Fruit.`);
       if (npc.powers.devilFruitId === effect.fruitId) return;
@@ -367,13 +374,13 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       return;
     }
     case 'increaseNpcDevilFruitAwakening': {
-      const npc = getNpcState(state, effect.npcId);
+      const npc = getNpcState(state, catalog, effect.npcId);
       if (npc.powers.devilFruitId === null || !Number.isInteger(effect.amount) || effect.amount <= 0) throw new Error('NPC Devil Fruit Awakening increase requires a Fruit and a positive integer.');
       npc.powers.devilFruitAwakening = clamp(npc.powers.devilFruitAwakening + effect.amount, 0, 10); state.npcs[effect.npcId] = npc;
       return;
     }
     case 'raiseNpcHakiTo': {
-      const npc = getNpcState(state, effect.npcId); const current = npc.powers.haki[effect.hakiType];
+      const npc = getNpcState(state, catalog, effect.npcId); const current = npc.powers.haki[effect.hakiType];
       if (!Number.isInteger(effect.level) || effect.level < 1 || effect.level > 5 || effect.level < current) throw new Error('NPC Haki level must increase monotonically within 1..5.');
       npc.powers.haki[effect.hakiType] = effect.level; state.npcs[effect.npcId] = npc;
       return;
@@ -387,8 +394,25 @@ function applyAttributeModifiers(state: GameState, modifiers: Partial<Record<imp
   }
 }
 
-function getNpcState(state: GameState, npcId: string): NpcState {
-  return state.npcs[npcId] ?? createDefaultNpcState();
+function getNpcState(state: GameState, catalog: ContentCatalog, npcId: string): NpcState {
+  const existing = state.npcs[npcId];
+  const definitionExists = catalog.npcs.some(({ id }) => id === npcId);
+
+  // Existing engaged/runtime NPC state is authoritative. Only untouched
+  // canonical placeholders are lazily materialized on first real interaction.
+  if (
+    existing !== undefined
+    && (
+      existing.statsGenerated
+      || existing.status !== 'known'
+      || existing.displayName !== null
+      || !definitionExists
+    )
+  ) {
+    return existing;
+  }
+
+  return ensureNpcMaterialized(state, catalog, npcId);
 }
 
 function resolveNpcTarget(state: GameState, target: { npcId?: string; npcSelector?: 'diceActor' | 'highestRelationshipCrewWithDevilFruit' }, context: EffectContext): string {

@@ -2,7 +2,7 @@ import type { CareerEndReason, CareerPhase, GameState, ItemStack, MaritimeEmerge
 import { createDefaultPowerState } from './powers';
 
 export const SAVE_KEY = 'jam-op-fan-game.save';
-export const CURRENT_SAVE_VERSION = 22;
+export const CURRENT_SAVE_VERSION = 23;
 const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
 
 export interface StorageLike {
@@ -84,6 +84,8 @@ function readGameState(value: unknown): GameState | null {
   const maritimeEmergency = readMaritimeEmergency(value.maritimeEmergency);
   if (ship === undefined || pendingShip === undefined || maritimeEmergency === undefined || typeof value.isLeader !== 'boolean' || !isUniqueStringArray(value.passengerNpcIds) || !isNonNegativeInteger(value.berries)) return null;
   if (!isRecord(value.crewRoleLastUsedYear) || !Object.values(value.crewRoleLastUsedYear).every(isNonNegativeInteger)) return null;
+  if (!isRecord(value.crewRoleVacatedYear) || !Object.values(value.crewRoleVacatedYear).every(isNonNegativeInteger)) return null;
+  if (typeof value.crewReassignmentPending !== 'boolean' || typeof value.pendingCrewRecruitment !== 'boolean') return null;
   const pendingOverflow = readPendingOverflow(value.pendingOverflow);
   if (pendingOverflow === undefined) return null;
   if (!isStringArray(value.flags)) return null;
@@ -92,6 +94,8 @@ function readGameState(value: unknown): GameState | null {
   const history = readHistory(value.history);
   const scheduledEvents = readScheduledEvents(value.scheduledEvents);
   if (npcs === null || history === null || scheduledEvents === null || !isStringArray(value.immediateEventQueue)) return null;
+  const occupiedRoleIds = Object.values(npcs).filter(({ status, crewRoleId }) => status === 'crew' && crewRoleId !== null).map(({ crewRoleId }) => crewRoleId!);
+  if (new Set(occupiedRoleIds).size !== occupiedRoleIds.length) return null;
   if (!(value.pendingSlotPhase === null || isCareerPhase(value.pendingSlotPhase))) return null;
   if (!isNonNegativeInteger(value.immediateEventsResolvedInChain) || value.immediateEventsResolvedInChain > 1000) return null;
   if (!(value.navigationDecisionAgeMonths === null || (isNonNegativeInteger(value.navigationDecisionAgeMonths) && value.navigationDecisionAgeMonths <= value.ageMonths))) return null;
@@ -142,6 +146,9 @@ function readGameState(value: unknown): GameState | null {
     isLeader: value.isLeader,
     passengerNpcIds: [...value.passengerNpcIds],
     crewRoleLastUsedYear: Object.fromEntries(Object.entries(value.crewRoleLastUsedYear).map(([key, year]) => [key, year as number])),
+    crewRoleVacatedYear: Object.fromEntries(Object.entries(value.crewRoleVacatedYear).map(([key, year]) => [key, year as number])),
+    crewReassignmentPending: value.crewReassignmentPending,
+    pendingCrewRecruitment: value.pendingCrewRecruitment,
     pendingOverflow,
     berries: value.berries,
     flags: [...value.flags],
@@ -271,6 +278,34 @@ function migrateLegacySave(value: unknown): unknown {
       player: { ...migrated.player, companion: null },
     };
   }
+  if (isRecord(migrated) && migrated.version === 22) {
+    const legacyRoleByNpcId: Record<string, string> = {
+      mira: 'navigator',
+      rohan: 'cook',
+      ari: 'medic',
+      owen: 'shipwright',
+    };
+    const npcs = isRecord(migrated.npcs)
+      ? Object.fromEntries(Object.entries(migrated.npcs).map(([npcId, npc]) => {
+          if (!isRecord(npc)) return [npcId, npc];
+          return [npcId, {
+            ...npc,
+            crewRoleId: npc.status === 'crew' ? legacyRoleByNpcId[npcId] ?? null : null,
+            statsGenerated: true,
+          }];
+        }))
+      : migrated.npcs;
+    const crewReassignmentPending = isRecord(npcs)
+      && Object.values(npcs).some((npc) => isRecord(npc) && npc.status === 'crew' && npc.crewRoleId === null);
+    migrated = {
+      ...migrated,
+      version: 23,
+      npcs,
+      crewRoleVacatedYear: {},
+      crewReassignmentPending,
+      pendingCrewRecruitment: false,
+    };
+  }
   return migrated;
 }
 
@@ -333,9 +368,20 @@ function readNpcs(value: unknown): GameState['npcs'] | null {
     if (stats === null) return null;
     const powers = readPowerState(npc.powers);
     if (powers === null) return null;
-    if (!isNullableString(npc.raceId) || !isNullableString(npc.displayName)) return null;
+    if (!isNullableString(npc.raceId) || !isNullableString(npc.displayName) || !isNullableString(npc.crewRoleId) || typeof npc.statsGenerated !== 'boolean') return null;
     if (!(npc.lastInteractionAgeMonths === null || isNonNegativeInteger(npc.lastInteractionAgeMonths))) return null;
-    npcs[npcId] = { status: npc.status, relationship: npc.relationship, lastInteractionAgeMonths: npc.lastInteractionAgeMonths, raceId: npc.raceId, displayName: npc.displayName, stats, powers };
+    if (npc.status !== 'crew' && npc.crewRoleId !== null) return null;
+    npcs[npcId] = {
+      status: npc.status,
+      relationship: npc.relationship,
+      lastInteractionAgeMonths: npc.lastInteractionAgeMonths,
+      raceId: npc.raceId,
+      displayName: npc.displayName,
+      crewRoleId: npc.crewRoleId,
+      statsGenerated: npc.statsGenerated,
+      stats,
+      powers,
+    };
   }
   return npcs;
 }

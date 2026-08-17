@@ -10,6 +10,7 @@ import { finalizePendingSlot } from './time';
 import { findDockableAccess } from './locations';
 import { activeParadiseRouteId, countFallbackStreak, isParadiseRouteStartEventId } from './maritime';
 import { createArrivalMarketEvent, materializeMarketEvent } from './marketEvents';
+import { requiresCrewManagement } from './crew';
 
 export const FALLBACK_EVENT_IDS = ['dead_end_on_land', 'dead_end_at_sea'] as const;
 
@@ -25,6 +26,27 @@ const SABAODY_RED_LINE_PASSAGE_EVENT_ID = 'active_sabaody_red_line_passage';
 interface DueMajorSelection {
   candidates: NormalDefinition[];
   overdue: boolean;
+}
+
+export function isCrewRecruitmentEvent(event: EventDefinition): event is NormalDefinition {
+  if (event.kind !== 'normal' || event.majorTrack !== undefined || event.lifetimeThreadSeed === true) return false;
+  return event.choices.some((choice) => {
+    const outcomes = choice.resolution.type === 'deterministic'
+      ? [choice.resolution.outcome]
+      : Object.values(choice.resolution.outcomes);
+    return outcomes.some((outcome) => outcome.effects.some((effect) => effect.type === 'setNpcStatus' && effect.status === 'crew'));
+  });
+}
+
+function eligibleCrewRecruitmentEvents(state: GameState, catalog: ContentCatalog): NormalDefinition[] {
+  return catalog.events
+    .filter((event): event is NormalDefinition => isCrewRecruitmentEvent(event))
+    .filter((event) => isNormalOccurrenceEligible(event, state) && isEligible(event, state, catalog))
+    .sort((left, right) => left.id.localeCompare(right.id));
+}
+
+export function hasEligibleCrewRecruitmentEvent(state: GameState, catalog: ContentCatalog): boolean {
+  return eligibleCrewRecruitmentEvents(state, catalog).length > 0;
 }
 
 export function selectNextEvent(state: GameState, catalog: ContentCatalog): GameState {
@@ -43,6 +65,8 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     }
     return selectEvent(state, catalog, immediate);
   }
+
+  if (requiresCrewManagement(state)) return { ...state, currentEventId: null };
 
   if (state.locationId === 'twin_capes' && state.travelState === 'on_land' && activeParadiseRouteId(state) === undefined) {
     const routeStarts = catalog.events.filter((event): event is NormalDefinition =>
@@ -105,6 +129,19 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
   if (scheduled.event) return selectEvent({ ...state, scheduledEvents: scheduled.entries }, catalog, scheduled.event);
 
   if (major) return selectUniformNormal(state, catalog, scheduled.entries, major.candidates);
+
+  if (state.pendingCrewRecruitment) {
+    const recruitmentCandidates = eligibleCrewRecruitmentEvents(state, catalog);
+    if (recruitmentCandidates.length > 0) {
+      return selectUniformNormal({ ...state, pendingCrewRecruitment: false }, catalog, scheduled.entries, recruitmentCandidates);
+    }
+
+    // The state may have changed between activation and the next ordinary-root opportunity.
+    // Refund Recruiter rather than silently consuming the annual charge.
+    const crewRoleLastUsedYear = { ...state.crewRoleLastUsedYear };
+    if (crewRoleLastUsedYear.recruiter === Math.floor(state.ageMonths / 12)) delete crewRoleLastUsedYear.recruiter;
+    state = { ...state, pendingCrewRecruitment: false, crewRoleLastUsedYear };
+  }
 
   const candidates = catalog.events.filter((event): event is NormalDefinition =>
     event.kind === 'normal'
