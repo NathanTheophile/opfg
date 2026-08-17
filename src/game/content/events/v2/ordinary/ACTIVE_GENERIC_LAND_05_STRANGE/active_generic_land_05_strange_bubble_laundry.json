@@ -1,0 +1,182 @@
+{
+  "id": "active_generic_land_05_strange_bubble_laundry",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_05_strange_bubble_laundry.title",
+  "textKey": "event.active_generic_land_05_strange_bubble_laundry.text",
+  "choices": [
+    {
+      "id": "pop_chain",
+      "textKey": "event.active_generic_land_05_strange_bubble_laundry.choice.pop_chain.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "pop_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_bubble_laundry.choice.pop_chain.outcome.pop_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bubble_laundry_i01_roof_bubble"
+              }
+            ]
+          },
+          "failure": {
+            "id": "pop_failure",
+            "textKey": "event.active_generic_land_05_strange_bubble_laundry.choice.pop_chain.outcome.pop_failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -150
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bubble_laundry_i01_roof_bubble"
+              }
+            ]
+          },
+          "success": {
+            "id": "pop_success",
+            "textKey": "event.active_generic_land_05_strange_bubble_laundry.choice.pop_chain.outcome.pop_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bubble_laundry_i01_roof_bubble"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "pop_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_bubble_laundry.choice.pop_chain.outcome.pop_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bubble_laundry_i01_roof_bubble"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_drafts",
+      "textKey": "event.active_generic_land_05_strange_bubble_laundry.choice.read_drafts.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "draft_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_bubble_laundry.choice.read_drafts.outcome.draft_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -200
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bubble_laundry_i01_roof_bubble"
+              }
+            ]
+          },
+          "failure": {
+            "id": "draft_failure",
+            "textKey": "event.active_generic_land_05_strange_bubble_laundry.choice.read_drafts.outcome.draft_failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -100
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bubble_laundry_i01_roof_bubble"
+              }
+            ]
+          },
+          "success": {
+            "id": "draft_success",
+            "textKey": "event.active_generic_land_05_strange_bubble_laundry.choice.read_drafts.outcome.draft_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bubble_laundry_i01_roof_bubble"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "draft_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_bubble_laundry.choice.read_drafts.outcome.draft_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bubble_laundry_i01_roof_bubble"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "drain_vat",
+      "textKey": "event.active_generic_land_05_strange_bubble_laundry.choice.drain_vat.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "vat_drained",
+          "textKey": "event.active_generic_land_05_strange_bubble_laundry.choice.drain_vat.outcome.vat_drained.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_bubble_laundry_i01_roof_bubble"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

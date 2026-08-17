@@ -1,0 +1,186 @@
+{
+  "id": "active_generic_land_05_strange_backward_race",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_05_strange_backward_race.title",
+  "textKey": "event.active_generic_land_05_strange_backward_race.text",
+  "choices": [
+    {
+      "id": "join_lane",
+      "textKey": "event.active_generic_land_05_strange_backward_race.choice.join_lane.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "join_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_backward_race.choice.join_lane.outcome.join_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_backward_race_i01_mirror_corner"
+              }
+            ]
+          },
+          "failure": {
+            "id": "join_failure",
+            "textKey": "event.active_generic_land_05_strange_backward_race.choice.join_lane.outcome.join_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_backward_race_i01_mirror_corner"
+              }
+            ]
+          },
+          "success": {
+            "id": "join_success",
+            "textKey": "event.active_generic_land_05_strange_backward_race.choice.join_lane.outcome.join_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_backward_race_i01_mirror_corner"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "join_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_backward_race.choice.join_lane.outcome.join_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_backward_race_i01_mirror_corner"
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 300
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_mirrors",
+      "textKey": "event.active_generic_land_05_strange_backward_race.choice.read_mirrors.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "mirror_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_backward_race.choice.read_mirrors.outcome.mirror_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -150
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_backward_race_i01_mirror_corner"
+              }
+            ]
+          },
+          "failure": {
+            "id": "mirror_failure",
+            "textKey": "event.active_generic_land_05_strange_backward_race.choice.read_mirrors.outcome.mirror_failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -100
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_backward_race_i01_mirror_corner"
+              }
+            ]
+          },
+          "success": {
+            "id": "mirror_success",
+            "textKey": "event.active_generic_land_05_strange_backward_race.choice.read_mirrors.outcome.mirror_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_backward_race_i01_mirror_corner"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "mirror_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_backward_race.choice.read_mirrors.outcome.mirror_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_backward_race_i01_mirror_corner"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "move_barrier",
+      "textKey": "event.active_generic_land_05_strange_backward_race.choice.move_barrier.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "barrier_moved",
+          "textKey": "event.active_generic_land_05_strange_backward_race.choice.move_barrier.outcome.barrier_moved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_backward_race_i01_mirror_corner"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

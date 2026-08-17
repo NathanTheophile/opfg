@@ -1,0 +1,93 @@
+{
+  "id": "active_generic_land_05_strange_backward_race_i02_finish_line",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_05_strange_backward_race_i02_finish_line.title",
+  "textKey": "event.active_generic_land_05_strange_backward_race_i02_finish_line.text",
+  "choices": [
+    {
+      "id": "move_finish",
+      "textKey": "event.active_generic_land_05_strange_backward_race_i02_finish_line.choice.move_finish.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "finish_moved",
+          "textKey": "event.active_generic_land_05_strange_backward_race_i02_finish_line.choice.move_finish.outcome.finish_moved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "sprint_last",
+      "textKey": "event.active_generic_land_05_strange_backward_race_i02_finish_line.choice.sprint_last.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "sprint_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_backward_race_i02_finish_line.choice.sprint_last.outcome.sprint_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "sprint_failure",
+            "textKey": "event.active_generic_land_05_strange_backward_race_i02_finish_line.choice.sprint_last.outcome.sprint_failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -100
+              }
+            ]
+          },
+          "success": {
+            "id": "sprint_success",
+            "textKey": "event.active_generic_land_05_strange_backward_race_i02_finish_line.choice.sprint_last.outcome.sprint_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "sprint_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_backward_race_i02_finish_line.choice.sprint_last.outcome.sprint_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "step_out",
+      "textKey": "event.active_generic_land_05_strange_backward_race_i02_finish_line.choice.step_out.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stepped_out",
+          "textKey": "event.active_generic_land_05_strange_backward_race_i02_finish_line.choice.step_out.outcome.stepped_out.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

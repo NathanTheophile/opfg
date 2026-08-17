@@ -1,0 +1,199 @@
+{
+  "id": "active_generic_land_05_strange_rolling_house",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_05_strange_rolling_house.title",
+  "textKey": "event.active_generic_land_05_strange_rolling_house.text",
+  "choices": [
+    {
+      "id": "catch_axle",
+      "textKey": "event.active_generic_land_05_strange_rolling_house.choice.catch_axle.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "catch_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_rolling_house.choice.catch_axle.outcome.catch_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rolling_house_i01_balcony_swing"
+              }
+            ]
+          },
+          "failure": {
+            "id": "catch_failure",
+            "textKey": "event.active_generic_land_05_strange_rolling_house.choice.catch_axle.outcome.catch_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rolling_house_i01_balcony_swing"
+              }
+            ]
+          },
+          "success": {
+            "id": "catch_success",
+            "textKey": "event.active_generic_land_05_strange_rolling_house.choice.catch_axle.outcome.catch_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rolling_house_i01_balcony_swing"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "catch_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_rolling_house.choice.catch_axle.outcome.catch_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rolling_house_i01_balcony_swing"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "board_window",
+      "textKey": "event.active_generic_land_05_strange_rolling_house.choice.board_window.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "board_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_rolling_house.choice.board_window.outcome.board_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rolling_house_i01_balcony_swing"
+              }
+            ]
+          },
+          "failure": {
+            "id": "board_failure",
+            "textKey": "event.active_generic_land_05_strange_rolling_house.choice.board_window.outcome.board_failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -100
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rolling_house_i01_balcony_swing"
+              }
+            ]
+          },
+          "success": {
+            "id": "board_success",
+            "textKey": "event.active_generic_land_05_strange_rolling_house.choice.board_window.outcome.board_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rolling_house_i01_balcony_swing"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "board_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_rolling_house.choice.board_window.outcome.board_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rolling_house_i01_balcony_swing"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "sacrifice_timber",
+      "textKey": "event.active_generic_land_05_strange_rolling_house.choice.sacrifice_timber.text",
+      "availableIf": {
+        "type": "hasItem",
+        "itemId": "timber"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "timber_wedged",
+          "textKey": "event.active_generic_land_05_strange_rolling_house.choice.sacrifice_timber.outcome.timber_wedged.text",
+          "effects": [
+            {
+              "type": "removeItem",
+              "itemId": "timber",
+              "quantity": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_rolling_house_i01_balcony_swing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "clear_crossroad",
+      "textKey": "event.active_generic_land_05_strange_rolling_house.choice.clear_crossroad.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crossroad_cleared",
+          "textKey": "event.active_generic_land_05_strange_rolling_house.choice.clear_crossroad.outcome.crossroad_cleared.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_rolling_house_i01_balcony_swing"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

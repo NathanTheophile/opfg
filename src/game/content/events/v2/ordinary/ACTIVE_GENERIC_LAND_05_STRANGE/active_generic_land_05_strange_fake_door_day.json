@@ -1,0 +1,80 @@
+{
+  "id": "active_generic_land_05_strange_fake_door_day",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_05_strange_fake_door_day.title",
+  "textKey": "event.active_generic_land_05_strange_fake_door_day.text",
+  "choices": [
+    {
+      "id": "scrape_marks",
+      "textKey": "event.active_generic_land_05_strange_fake_door_day.choice.scrape_marks.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "scraped",
+          "textKey": "event.active_generic_land_05_strange_fake_door_day.choice.scrape_marks.outcome.scraped.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_fake_door_day_i01_painted_exit"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "follow_smoke",
+      "textKey": "event.active_generic_land_05_strange_fake_door_day.choice.follow_smoke.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "followed_smoke",
+          "textKey": "event.active_generic_land_05_strange_fake_door_day.choice.follow_smoke.outcome.followed_smoke.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_fake_door_day_i01_painted_exit"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "break_window",
+      "textKey": "event.active_generic_land_05_strange_fake_door_day.choice.break_window.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "window_broken",
+          "textKey": "event.active_generic_land_05_strange_fake_door_day.choice.break_window.outcome.window_broken.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -200
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_fake_door_day_i01_painted_exit"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

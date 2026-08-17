@@ -1,0 +1,104 @@
+{
+  "id": "active_generic_land_05_strange_fake_door_day_i01_painted_exit",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_05_strange_fake_door_day_i01_painted_exit.title",
+  "textKey": "event.active_generic_land_05_strange_fake_door_day_i01_painted_exit.text",
+  "choices": [
+    {
+      "id": "pull_handle",
+      "textKey": "event.active_generic_land_05_strange_fake_door_day_i01_painted_exit.choice.pull_handle.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "handle_pulled",
+          "textKey": "event.active_generic_land_05_strange_fake_door_day_i01_painted_exit.choice.pull_handle.outcome.handle_pulled.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shoulder_panel",
+      "textKey": "event.active_generic_land_05_strange_fake_door_day_i01_painted_exit.choice.shoulder_panel.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "panel_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_fake_door_day_i01_painted_exit.choice.shoulder_panel.outcome.panel_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "panel_failure",
+            "textKey": "event.active_generic_land_05_strange_fake_door_day_i01_painted_exit.choice.shoulder_panel.outcome.panel_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "panel_success",
+            "textKey": "event.active_generic_land_05_strange_fake_door_day_i01_painted_exit.choice.shoulder_panel.outcome.panel_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "panel_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_fake_door_day_i01_painted_exit.choice.shoulder_panel.outcome.panel_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "mark_real_exit",
+      "textKey": "event.active_generic_land_05_strange_fake_door_day_i01_painted_exit.choice.mark_real_exit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "marked_exit",
+          "textKey": "event.active_generic_land_05_strange_fake_door_day_i01_painted_exit.choice.mark_real_exit.outcome.marked_exit.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

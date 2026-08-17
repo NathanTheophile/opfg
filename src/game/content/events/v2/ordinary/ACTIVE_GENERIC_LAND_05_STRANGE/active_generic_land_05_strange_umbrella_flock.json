@@ -1,0 +1,79 @@
+{
+  "id": "active_generic_land_05_strange_umbrella_flock",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_05_strange_umbrella_flock.title",
+  "textKey": "event.active_generic_land_05_strange_umbrella_flock.text",
+  "choices": [
+    {
+      "id": "cut_main_line",
+      "textKey": "event.active_generic_land_05_strange_umbrella_flock.choice.cut_main_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "line_cut",
+          "textKey": "event.active_generic_land_05_strange_umbrella_flock.choice.cut_main_line.outcome.line_cut.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_umbrella_flock_i01_rooftop_knot"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "anchor_cart",
+      "textKey": "event.active_generic_land_05_strange_umbrella_flock.choice.anchor_cart.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cart_anchored",
+          "textKey": "event.active_generic_land_05_strange_umbrella_flock.choice.anchor_cart.outcome.cart_anchored.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -100
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_umbrella_flock_i01_rooftop_knot"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pull_people_down",
+      "textKey": "event.active_generic_land_05_strange_umbrella_flock.choice.pull_people_down.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "carriers_down",
+          "textKey": "event.active_generic_land_05_strange_umbrella_flock.choice.pull_people_down.outcome.carriers_down.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_umbrella_flock_i01_rooftop_knot"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

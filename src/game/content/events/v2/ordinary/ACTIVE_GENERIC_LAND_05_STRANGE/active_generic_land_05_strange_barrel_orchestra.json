@@ -1,0 +1,186 @@
+{
+  "id": "active_generic_land_05_strange_barrel_orchestra",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_05_strange_barrel_orchestra.title",
+  "textKey": "event.active_generic_land_05_strange_barrel_orchestra.text",
+  "choices": [
+    {
+      "id": "catch_barrel",
+      "textKey": "event.active_generic_land_05_strange_barrel_orchestra.choice.catch_barrel.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "catch_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_barrel_orchestra.choice.catch_barrel.outcome.catch_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_barrel_orchestra_i01_bouncing_bass"
+              }
+            ]
+          },
+          "failure": {
+            "id": "catch_failure",
+            "textKey": "event.active_generic_land_05_strange_barrel_orchestra.choice.catch_barrel.outcome.catch_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_barrel_orchestra_i01_bouncing_bass"
+              }
+            ]
+          },
+          "success": {
+            "id": "catch_success",
+            "textKey": "event.active_generic_land_05_strange_barrel_orchestra.choice.catch_barrel.outcome.catch_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_barrel_orchestra_i01_bouncing_bass"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "catch_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_barrel_orchestra.choice.catch_barrel.outcome.catch_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_barrel_orchestra_i01_bouncing_bass"
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 200
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "predict_bounce",
+      "textKey": "event.active_generic_land_05_strange_barrel_orchestra.choice.predict_bounce.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "predict_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_barrel_orchestra.choice.predict_bounce.outcome.predict_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -200
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_barrel_orchestra_i01_bouncing_bass"
+              }
+            ]
+          },
+          "failure": {
+            "id": "predict_failure",
+            "textKey": "event.active_generic_land_05_strange_barrel_orchestra.choice.predict_bounce.outcome.predict_failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -100
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_barrel_orchestra_i01_bouncing_bass"
+              }
+            ]
+          },
+          "success": {
+            "id": "predict_success",
+            "textKey": "event.active_generic_land_05_strange_barrel_orchestra.choice.predict_bounce.outcome.predict_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_barrel_orchestra_i01_bouncing_bass"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "predict_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_barrel_orchestra.choice.predict_bounce.outcome.predict_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_barrel_orchestra_i01_bouncing_bass"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "open_gate",
+      "textKey": "event.active_generic_land_05_strange_barrel_orchestra.choice.open_gate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "gate_opened",
+          "textKey": "event.active_generic_land_05_strange_barrel_orchestra.choice.open_gate.outcome.gate_opened.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_barrel_orchestra_i01_bouncing_bass"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "id": "active_generic_land_05_strange_rolling_house_i01_balcony_swing",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_05_strange_rolling_house_i01_balcony_swing.title",
+  "textKey": "event.active_generic_land_05_strange_rolling_house_i01_balcony_swing.text",
+  "choices": [
+    {
+      "id": "pull_awning",
+      "textKey": "event.active_generic_land_05_strange_rolling_house_i01_balcony_swing.choice.pull_awning.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "awning_pulled",
+          "textKey": "event.active_generic_land_05_strange_rolling_house_i01_balcony_swing.choice.pull_awning.outcome.awning_pulled.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_rolling_house_i02_wheel_lock"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "swing_inside",
+      "textKey": "event.active_generic_land_05_strange_rolling_house_i01_balcony_swing.choice.swing_inside.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "swing_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_rolling_house_i01_balcony_swing.choice.swing_inside.outcome.swing_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rolling_house_i02_wheel_lock"
+              }
+            ]
+          },
+          "failure": {
+            "id": "swing_failure",
+            "textKey": "event.active_generic_land_05_strange_rolling_house_i01_balcony_swing.choice.swing_inside.outcome.swing_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rolling_house_i02_wheel_lock"
+              }
+            ]
+          },
+          "success": {
+            "id": "swing_success",
+            "textKey": "event.active_generic_land_05_strange_rolling_house_i01_balcony_swing.choice.swing_inside.outcome.swing_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rolling_house_i02_wheel_lock"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "swing_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_rolling_house_i01_balcony_swing.choice.swing_inside.outcome.swing_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rolling_house_i02_wheel_lock"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "drop_furniture",
+      "textKey": "event.active_generic_land_05_strange_rolling_house_i01_balcony_swing.choice.drop_furniture.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "furniture_dropped",
+          "textKey": "event.active_generic_land_05_strange_rolling_house_i01_balcony_swing.choice.drop_furniture.outcome.furniture_dropped.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -200
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_rolling_house_i02_wheel_lock"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

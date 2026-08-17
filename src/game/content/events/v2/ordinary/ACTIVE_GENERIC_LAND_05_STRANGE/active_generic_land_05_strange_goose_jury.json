@@ -1,0 +1,79 @@
+{
+  "id": "active_generic_land_05_strange_goose_jury",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_05_strange_goose_jury.title",
+  "textKey": "event.active_generic_land_05_strange_goose_jury.text",
+  "choices": [
+    {
+      "id": "return_ribbons",
+      "textKey": "event.active_generic_land_05_strange_goose_jury.choice.return_ribbons.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ribbons_recovered",
+          "textKey": "event.active_generic_land_05_strange_goose_jury.choice.return_ribbons.outcome.ribbons_recovered.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_goose_jury_i01_ribbon_stampede"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "follow_alpha",
+      "textKey": "event.active_generic_land_05_strange_goose_jury.choice.follow_alpha.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alpha_followed",
+          "textKey": "event.active_generic_land_05_strange_goose_jury.choice.follow_alpha.outcome.alpha_followed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_goose_jury_i01_ribbon_stampede"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "scatter_grain",
+      "textKey": "event.active_generic_land_05_strange_goose_jury.choice.scatter_grain.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "grain_thrown",
+          "textKey": "event.active_generic_land_05_strange_goose_jury.choice.scatter_grain.outcome.grain_thrown.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -100
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_goose_jury_i01_ribbon_stampede"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

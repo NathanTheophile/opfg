@@ -1,0 +1,93 @@
+{
+  "id": "active_generic_land_05_strange_dancing_bridge_i01_counterweight",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_05_strange_dancing_bridge_i01_counterweight.title",
+  "textKey": "event.active_generic_land_05_strange_dancing_bridge_i01_counterweight.text",
+  "choices": [
+    {
+      "id": "release_weight",
+      "textKey": "event.active_generic_land_05_strange_dancing_bridge_i01_counterweight.choice.release_weight.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "weight_released",
+          "textKey": "event.active_generic_land_05_strange_dancing_bridge_i01_counterweight.choice.release_weight.outcome.weight_released.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hold_chain",
+      "textKey": "event.active_generic_land_05_strange_dancing_bridge_i01_counterweight.choice.hold_chain.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "chain_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_dancing_bridge_i01_counterweight.choice.hold_chain.outcome.chain_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "chain_failure",
+            "textKey": "event.active_generic_land_05_strange_dancing_bridge_i01_counterweight.choice.hold_chain.outcome.chain_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "chain_success",
+            "textKey": "event.active_generic_land_05_strange_dancing_bridge_i01_counterweight.choice.hold_chain.outcome.chain_success.text",
+            "effects": []
+          },
+          "criticalSuccess": {
+            "id": "chain_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_dancing_bridge_i01_counterweight.choice.hold_chain.outcome.chain_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_bridge",
+      "textKey": "event.active_generic_land_05_strange_dancing_bridge_i01_counterweight.choice.clear_bridge.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cleared_bridge",
+          "textKey": "event.active_generic_land_05_strange_dancing_bridge_i01_counterweight.choice.clear_bridge.outcome.cleared_bridge.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

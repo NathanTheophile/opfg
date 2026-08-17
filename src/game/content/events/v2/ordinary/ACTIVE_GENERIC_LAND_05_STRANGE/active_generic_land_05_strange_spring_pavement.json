@@ -1,0 +1,182 @@
+{
+  "id": "active_generic_land_05_strange_spring_pavement",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_05_strange_spring_pavement.title",
+  "textKey": "event.active_generic_land_05_strange_spring_pavement.text",
+  "choices": [
+    {
+      "id": "cross_the_bounce",
+      "textKey": "event.active_generic_land_05_strange_spring_pavement.choice.cross_the_bounce.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cross_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_spring_pavement.choice.cross_the_bounce.outcome.cross_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_spring_pavement_i01_jammed_tile"
+              }
+            ]
+          },
+          "failure": {
+            "id": "cross_failure",
+            "textKey": "event.active_generic_land_05_strange_spring_pavement.choice.cross_the_bounce.outcome.cross_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_spring_pavement_i01_jammed_tile"
+              }
+            ]
+          },
+          "success": {
+            "id": "cross_success",
+            "textKey": "event.active_generic_land_05_strange_spring_pavement.choice.cross_the_bounce.outcome.cross_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_spring_pavement_i01_jammed_tile"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cross_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_spring_pavement.choice.cross_the_bounce.outcome.cross_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_spring_pavement_i01_jammed_tile"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_sequence",
+      "textKey": "event.active_generic_land_05_strange_spring_pavement.choice.read_sequence.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_spring_pavement.choice.read_sequence.outcome.read_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_spring_pavement_i01_jammed_tile"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_failure",
+            "textKey": "event.active_generic_land_05_strange_spring_pavement.choice.read_sequence.outcome.read_failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -100
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_spring_pavement_i01_jammed_tile"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_success",
+            "textKey": "event.active_generic_land_05_strange_spring_pavement.choice.read_sequence.outcome.read_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_spring_pavement_i01_jammed_tile"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_spring_pavement.choice.read_sequence.outcome.read_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_spring_pavement_i01_jammed_tile"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "wait_for_stop",
+      "textKey": "event.active_generic_land_05_strange_spring_pavement.choice.wait_for_stop.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "waited",
+          "textKey": "event.active_generic_land_05_strange_spring_pavement.choice.wait_for_stop.outcome.waited.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_spring_pavement_i01_jammed_tile"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
