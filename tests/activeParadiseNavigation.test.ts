@@ -4,8 +4,10 @@ import { evaluateCondition } from '../src/game/engine/conditions';
 import { selectNextEvent } from '../src/game/engine/events';
 import {
   activeParadiseRouteId,
+  ordinaryDepartureHasDestination,
   PARADISE_ROUTE_START_EVENT_IDS,
   paradiseArrivalProbabilityForCrossingRoot,
+  paradiseNextDestinationId,
   resolveOrdinaryParadiseArrivalAfterMonthlyRoot,
 } from '../src/game/engine/maritime';
 import { resolveChoice } from '../src/game/engine/resolution';
@@ -68,6 +70,23 @@ describe('Active Paradise navigation foundation', () => {
     expect(trade.locationId).toBe('sabaody_archipelago');
   });
 
+  it('resolves the nearest route node before its ancestors and preserves sub-location progression', () => {
+    const state = activeState();
+    lockRouteFromHistory(state, 'active_paradise_route_start_p1_classic');
+
+    state.locationId = 'whisky_peak';
+    expect(paradiseNextDestinationId(state, contentCatalog)).toBe('giant_island_little_garden');
+    expect(ordinaryDepartureHasDestination(state, contentCatalog)).toBe(true);
+
+    state.locationId = 'sakura_kingdom';
+    expect(paradiseNextDestinationId(state, contentCatalog)).toBe('alabasta_kingdom');
+    expect(ordinaryDepartureHasDestination(state, contentCatalog)).toBe(true);
+
+    state.locationId = 'sabaody_archipelago';
+    expect(paradiseNextDestinationId(state, contentCatalog)).toBeUndefined();
+    expect(ordinaryDepartureHasDestination(state, contentCatalog)).toBe(false);
+  });
+
   it('keeps the old route flag as read-only Save 22 compatibility', () => {
     const state = activeState();
     state.flags = ['paradise_route:P3_WILD'];
@@ -80,7 +99,9 @@ describe('Active Paradise navigation foundation', () => {
     expect(paradiseArrivalProbabilityForCrossingRoot(3, true)).toBe(1);
     expect(paradiseArrivalProbabilityForCrossingRoot(1, false)).toBe(0);
     expect(paradiseArrivalProbabilityForCrossingRoot(2, false)).toBe(0.35);
+    expect(paradiseArrivalProbabilityForCrossingRoot(3, false)).toBe(0);
     expect(paradiseArrivalProbabilityForCrossingRoot(4, false)).toBe(0.70);
+    expect(paradiseArrivalProbabilityForCrossingRoot(5, false)).toBe(0);
     expect(paradiseArrivalProbabilityForCrossingRoot(6, false)).toBe(1);
   });
 

@@ -17,8 +17,8 @@ const PARADISE_ROUTE_IDS = Object.keys(worldData.paradiseRouteGraph)
 export const PARADISE_ROUTE_START_EVENT_IDS = PARADISE_ROUTE_IDS
   .map((routeId) => `active_paradise_route_start_${routeId.toLowerCase()}`);
 
-const PARADISE_ROUTE_BY_START_EVENT_ID = new Map(
-  PARADISE_ROUTE_IDS.map((routeId) => [`active_paradise_route_start_${routeId.toLowerCase()}`, routeId] as const),
+const PARADISE_ROUTE_BY_START_EVENT_ID = new Map<string, string>(
+  PARADISE_ROUTE_IDS.map((routeId) => [`active_paradise_route_start_${routeId.toLowerCase()}`, routeId]),
 );
 
 export function isParadiseRouteStartEventId(eventId: string): boolean {
@@ -40,13 +40,25 @@ function paradiseRouteSequence(routeId: string): readonly string[] | undefined {
   return route?.sequence;
 }
 
+function paradiseRouteLocationId(
+  state: GameState,
+  catalog: ContentCatalog,
+  sequence: readonly string[],
+): LocationId | undefined {
+  const current = catalog.locations.find(({ id }) => id === state.locationId);
+  if (!current) return undefined;
+  return [current, ...getLocationAncestors(catalog, state.locationId)]
+    .find(({ id }) => sequence.includes(id))?.id;
+}
+
 export function paradiseNextDestinationId(state: GameState, catalog: ContentCatalog): LocationId | undefined {
   const routeId = activeParadiseRouteId(state);
   const sequence = routeId === undefined ? undefined : paradiseRouteSequence(routeId);
   if (!sequence || sequence.length === 0) return undefined;
+  if (state.locationId === 'twin_capes') return sequence[0];
 
-  const routeLocationId = getLocationAncestors(catalog, state.locationId).at(-1)?.id ?? state.locationId;
-  if (routeLocationId === 'twin_capes') return sequence[0];
+  const routeLocationId = paradiseRouteLocationId(state, catalog, sequence);
+  if (routeLocationId === undefined) return undefined;
 
   const currentIndex = sequence.indexOf(routeLocationId);
   return currentIndex >= 0 && currentIndex + 1 < sequence.length
@@ -61,7 +73,8 @@ export function ordinaryDepartureHasDestination(state: GameState, catalog: Conte
 }
 
 export function paradiseArrivalProbabilityForCrossingRoot(rootCount: number, hasParadiseLogPose: boolean): number {
-  const effectiveRootCount = hasParadiseLogPose ? rootCount : Math.floor(rootCount / 2);
+  if (!hasParadiseLogPose && rootCount % 2 !== 0) return 0;
+  const effectiveRootCount = hasParadiseLogPose ? rootCount : rootCount / 2;
   return blueArrivalProbabilityForCrossingRoot(effectiveRootCount);
 }
 
