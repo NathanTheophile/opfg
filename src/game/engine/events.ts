@@ -13,6 +13,15 @@ import { createArrivalMarketEvent, materializeMarketEvent } from './marketEvents
 
 export const FALLBACK_EVENT_IDS = ['dead_end_on_land', 'dead_end_at_sea'] as const;
 
+export const NEW_WORLD_ROUTE_START_EVENT_IDS = [
+  'active_new_world_route_start_raijin',
+  'active_new_world_route_start_risky_red',
+  'active_new_world_route_start_mystoria',
+] as const;
+
+const NEW_WORLD_ROUTE_START_EVENT_ID_SET = new Set<string>(NEW_WORLD_ROUTE_START_EVENT_IDS);
+const SABAODY_RED_LINE_PASSAGE_EVENT_ID = 'active_sabaody_red_line_passage';
+
 interface DueMajorSelection {
   candidates: NormalDefinition[];
   overdue: boolean;
@@ -62,6 +71,27 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     // the player actually docks; only a landed non-market Location consumes it.
     if (state.travelState === 'on_land') {
       state = { ...state, shipMarketArrivalPending: false };
+    }
+  }
+
+  const sabaodyPassage = state.locationId === 'sabaody_archipelago'
+    ? catalog.events.find((event): event is NormalDefinition =>
+        event.id === SABAODY_RED_LINE_PASSAGE_EVENT_ID
+          && event.kind === 'normal'
+          && isNormalOccurrenceEligible(event, state)
+          && isEligible(event, state, catalog))
+    : undefined;
+  if (sabaodyPassage) return selectEvent(state, catalog, sabaodyPassage);
+
+  if (state.locationId === 'fish_man_island') {
+    const newWorldRouteStarts = catalog.events.filter((event): event is NormalDefinition =>
+      event.kind === 'normal'
+        && NEW_WORLD_ROUTE_START_EVENT_ID_SET.has(event.id)
+        && isNormalOccurrenceEligible(event, state)
+        && isEligible(event, state, catalog),
+    ).sort((left, right) => left.id.localeCompare(right.id));
+    if (newWorldRouteStarts.length > 0) {
+      return selectUniformNormal(state, catalog, state.scheduledEvents, newWorldRouteStarts);
     }
   }
 
