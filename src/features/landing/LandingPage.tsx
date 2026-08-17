@@ -6,7 +6,12 @@ import {
   Trophy,
   X,
 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import {
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Button, Panel } from '@/components/ui';
 import type { ContentCatalog } from '@/game/content/schema';
 import type { StorageLike } from '@/game/engine/save';
@@ -89,6 +94,71 @@ export function LandingPage({
   const [confirmReset, setConfirmReset] =
     useState(false);
 
+  // OPFG landing viewport fit
+  const landingRef = useRef<HTMLElement | null>(null);
+  const contentRef = useRef<HTMLElement | null>(null);
+
+  useLayoutEffect(() => {
+    const landing = landingRef.current;
+    const content = contentRef.current;
+    if (!landing || !content) return undefined;
+
+    let frame = 0;
+
+    const px = (value: string) =>
+      Number.parseFloat(value) || 0;
+
+    const fit = () => {
+      window.cancelAnimationFrame(frame);
+
+      frame = window.requestAnimationFrame(() => {
+        landing.style.setProperty('--opfg-landing-scale', '1');
+
+        const style = window.getComputedStyle(landing);
+        const availableHeight = Math.max(
+          1,
+          landing.clientHeight
+            - px(style.paddingTop)
+            - px(style.paddingBottom),
+        );
+        const availableWidth = Math.max(
+          1,
+          landing.clientWidth
+            - px(style.paddingLeft)
+            - px(style.paddingRight),
+        );
+
+        const naturalHeight = Math.max(1, content.scrollHeight);
+        const naturalWidth = Math.max(1, content.scrollWidth);
+
+        const scale = Math.min(
+          1,
+          availableHeight / naturalHeight,
+          availableWidth / naturalWidth,
+        );
+
+        landing.style.setProperty(
+          '--opfg-landing-scale',
+          scale.toFixed(4),
+        );
+      });
+    };
+
+    const observer = new ResizeObserver(fit);
+    observer.observe(content);
+
+    window.addEventListener('resize', fit);
+    window.visualViewport?.addEventListener('resize', fit);
+    fit();
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener('resize', fit);
+      window.visualViewport?.removeEventListener('resize', fit);
+    };
+  }, []);
+
   const translate: Translator = (key, params) =>
     t(key, locale, params);
 
@@ -150,13 +220,19 @@ export function LandingPage({
       : '';
 
   return (
-    <main className="opfg-landing">
+    <main
+      ref={landingRef}
+      className="opfg-landing"
+    >
       <div
         className="opfg-landing__vignette"
         aria-hidden="true"
       />
 
-      <section className="opfg-landing__content">
+      <section
+        ref={contentRef}
+        className="opfg-landing__content"
+      >
         <header className="opfg-landing__brand">
           <span className="opfg-landing__kicker">
             {translate('ui.landing.kicker')}
