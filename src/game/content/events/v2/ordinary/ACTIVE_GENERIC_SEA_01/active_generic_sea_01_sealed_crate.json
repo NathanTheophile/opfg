@@ -1,0 +1,127 @@
+{
+  "id": "active_generic_sea_01_sealed_crate",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_sealed_crate.title",
+  "textKey": "event.active_generic_sea_01_sealed_crate.text",
+  "choices": [
+    {
+      "id": "hook_crate",
+      "textKey": "event.active_generic_sea_01_sealed_crate.choice.hook_crate.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hook_crate_criticalfailure",
+            "textKey": "event.active_generic_sea_01_sealed_crate.choice.hook_crate.outcome.hook_crate_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_sealed_crate_i01_claimant"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "hook_crate_failure",
+            "textKey": "event.active_generic_sea_01_sealed_crate.choice.hook_crate.outcome.hook_crate_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_sealed_crate_i01_claimant"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "hook_crate_success",
+            "textKey": "event.active_generic_sea_01_sealed_crate.choice.hook_crate.outcome.hook_crate_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_sealed_crate_i01_claimant"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hook_crate_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_sealed_crate.choice.hook_crate.outcome.hook_crate_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_sealed_crate_i01_claimant"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "mark_and_wait",
+      "textKey": "event.active_generic_sea_01_sealed_crate.choice.mark_and_wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mark_and_wait_outcome",
+          "textKey": "event.active_generic_sea_01_sealed_crate.choice.mark_and_wait.outcome.mark_and_wait_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_sealed_crate_i01_claimant"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_it",
+      "textKey": "event.active_generic_sea_01_sealed_crate.choice.leave_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_it_outcome",
+          "textKey": "event.active_generic_sea_01_sealed_crate.choice.leave_it.outcome.leave_it_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "id": "active_generic_sea_01_medicine_flag",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_medicine_flag.title",
+  "textKey": "event.active_generic_sea_01_medicine_flag.text",
+  "choices": [
+    {
+      "id": "send_medic",
+      "textKey": "event.active_generic_sea_01_medicine_flag.choice.send_medic.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "send_medic_outcome",
+          "textKey": "event.active_generic_sea_01_medicine_flag.choice.send_medic.outcome.send_medic_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_medicine_flag_i01_recovered_patient"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "medic"
+      }
+    },
+    {
+      "id": "share_cool_water",
+      "textKey": "event.active_generic_sea_01_medicine_flag.choice.share_cool_water.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "share_cool_water_outcome",
+          "textKey": "event.active_generic_sea_01_medicine_flag.choice.share_cool_water.outcome.share_cool_water_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_medicine_flag_i01_recovered_patient"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_payment",
+      "textKey": "event.active_generic_sea_01_medicine_flag.choice.ask_payment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_payment_outcome",
+          "textKey": "event.active_generic_sea_01_medicine_flag.choice.ask_payment.outcome.ask_payment_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 500
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_medicine_flag_i01_recovered_patient"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline",
+      "textKey": "event.active_generic_sea_01_medicine_flag.choice.decline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decline_outcome",
+          "textKey": "event.active_generic_sea_01_medicine_flag.choice.decline.outcome.decline_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

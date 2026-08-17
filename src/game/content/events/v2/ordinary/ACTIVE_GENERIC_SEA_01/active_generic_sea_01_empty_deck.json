@@ -1,0 +1,187 @@
+{
+  "id": "active_generic_sea_01_empty_deck",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_empty_deck.title",
+  "textKey": "event.active_generic_sea_01_empty_deck.text",
+  "choices": [
+    {
+      "id": "board_watchfully",
+      "textKey": "event.active_generic_sea_01_empty_deck.choice.board_watchfully.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "board_watchfully_criticalfailure",
+            "textKey": "event.active_generic_sea_01_empty_deck.choice.board_watchfully.outcome.board_watchfully_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_empty_deck_i01_knocking_below"
+              }
+            ]
+          },
+          "failure": {
+            "id": "board_watchfully_failure",
+            "textKey": "event.active_generic_sea_01_empty_deck.choice.board_watchfully.outcome.board_watchfully_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_empty_deck_i01_knocking_below"
+              }
+            ]
+          },
+          "success": {
+            "id": "board_watchfully_success",
+            "textKey": "event.active_generic_sea_01_empty_deck.choice.board_watchfully.outcome.board_watchfully_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_empty_deck_i01_knocking_below"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "board_watchfully_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_empty_deck.choice.board_watchfully.outcome.board_watchfully_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_empty_deck_i01_knocking_below"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "shipwright_read",
+      "textKey": "event.active_generic_sea_01_empty_deck.choice.shipwright_read.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "shipwright_read_criticalfailure",
+            "textKey": "event.active_generic_sea_01_empty_deck.choice.shipwright_read.outcome.shipwright_read_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_empty_deck_i01_knocking_below"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "shipwright_read_failure",
+            "textKey": "event.active_generic_sea_01_empty_deck.choice.shipwright_read.outcome.shipwright_read_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_empty_deck_i01_knocking_below"
+              }
+            ]
+          },
+          "success": {
+            "id": "shipwright_read_success",
+            "textKey": "event.active_generic_sea_01_empty_deck.choice.shipwright_read.outcome.shipwright_read_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_empty_deck_i01_knocking_below"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "shipwright_read_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_empty_deck.choice.shipwright_read.outcome.shipwright_read_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_empty_deck_i01_knocking_below"
+              }
+            ]
+          }
+        },
+        "actor": {
+          "type": "crewRole",
+          "roleId": "shipwright",
+          "statId": "intelligence"
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    },
+    {
+      "id": "hail_only",
+      "textKey": "event.active_generic_sea_01_empty_deck.choice.hail_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hail_only_outcome",
+          "textKey": "event.active_generic_sea_01_empty_deck.choice.hail_only.outcome.hail_only_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_empty_deck_i01_knocking_below"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_ghost",
+      "textKey": "event.active_generic_sea_01_empty_deck.choice.leave_ghost.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_ghost_outcome",
+          "textKey": "event.active_generic_sea_01_empty_deck.choice.leave_ghost.outcome.leave_ghost_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

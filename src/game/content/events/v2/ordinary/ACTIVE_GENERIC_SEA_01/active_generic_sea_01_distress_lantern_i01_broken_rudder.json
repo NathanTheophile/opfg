@@ -1,0 +1,84 @@
+{
+  "id": "active_generic_sea_01_distress_lantern_i01_broken_rudder",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_01_distress_lantern_i01_broken_rudder.title",
+  "textKey": "event.active_generic_sea_01_distress_lantern_i01_broken_rudder.text",
+  "eligibility": {
+    "type": "hasShip"
+  },
+  "choices": [
+    {
+      "id": "tow_free",
+      "textKey": "event.active_generic_sea_01_distress_lantern_i01_broken_rudder.choice.tow_free.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tow_free_outcome",
+          "textKey": "event.active_generic_sea_01_distress_lantern_i01_broken_rudder.choice.tow_free.outcome.tow_free_outcome.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    },
+    {
+      "id": "tow_for_pay",
+      "textKey": "event.active_generic_sea_01_distress_lantern_i01_broken_rudder.choice.tow_for_pay.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tow_for_pay_outcome",
+          "textKey": "event.active_generic_sea_01_distress_lantern_i01_broken_rudder.choice.tow_for_pay.outcome.tow_for_pay_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 900
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "give_advice",
+      "textKey": "event.active_generic_sea_01_distress_lantern_i01_broken_rudder.choice.give_advice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "give_advice_outcome",
+          "textKey": "event.active_generic_sea_01_distress_lantern_i01_broken_rudder.choice.give_advice.outcome.give_advice_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "resourceful"
+      }
+    },
+    {
+      "id": "leave_now",
+      "textKey": "event.active_generic_sea_01_distress_lantern_i01_broken_rudder.choice.leave_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_now_outcome",
+          "textKey": "event.active_generic_sea_01_distress_lantern_i01_broken_rudder.choice.leave_now.outcome.leave_now_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

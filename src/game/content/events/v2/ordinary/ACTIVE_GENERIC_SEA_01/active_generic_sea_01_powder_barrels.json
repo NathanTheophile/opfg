@@ -1,0 +1,185 @@
+{
+  "id": "active_generic_sea_01_powder_barrels",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_powder_barrels.title",
+  "textKey": "event.active_generic_sea_01_powder_barrels.text",
+  "choices": [
+    {
+      "id": "thread_gap",
+      "textKey": "event.active_generic_sea_01_powder_barrels.choice.thread_gap.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "thread_gap_criticalfailure",
+            "textKey": "event.active_generic_sea_01_powder_barrels.choice.thread_gap.outcome.thread_gap_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_powder_barrels_i01_sabotage_warning"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "thread_gap_failure",
+            "textKey": "event.active_generic_sea_01_powder_barrels.choice.thread_gap.outcome.thread_gap_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_powder_barrels_i01_sabotage_warning"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "thread_gap_success",
+            "textKey": "event.active_generic_sea_01_powder_barrels.choice.thread_gap.outcome.thread_gap_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_powder_barrels_i01_sabotage_warning"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "thread_gap_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_powder_barrels.choice.thread_gap.outcome.thread_gap_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_powder_barrels_i01_sabotage_warning"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "gunner_shoot",
+      "textKey": "event.active_generic_sea_01_powder_barrels.choice.gunner_shoot.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "gunner_shoot_criticalfailure",
+            "textKey": "event.active_generic_sea_01_powder_barrels.choice.gunner_shoot.outcome.gunner_shoot_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_powder_barrels_i01_sabotage_warning"
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "gunner_shoot_failure",
+            "textKey": "event.active_generic_sea_01_powder_barrels.choice.gunner_shoot.outcome.gunner_shoot_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_powder_barrels_i01_sabotage_warning"
+              }
+            ]
+          },
+          "success": {
+            "id": "gunner_shoot_success",
+            "textKey": "event.active_generic_sea_01_powder_barrels.choice.gunner_shoot.outcome.gunner_shoot_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_powder_barrels_i01_sabotage_warning"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "gunner_shoot_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_powder_barrels.choice.gunner_shoot.outcome.gunner_shoot_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_powder_barrels_i01_sabotage_warning"
+              }
+            ]
+          }
+        },
+        "actor": {
+          "type": "crewRole",
+          "roleId": "gunner",
+          "statId": "observation"
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "gunner"
+      }
+    },
+    {
+      "id": "wait_drift",
+      "textKey": "event.active_generic_sea_01_powder_barrels.choice.wait_drift.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait_drift_outcome",
+          "textKey": "event.active_generic_sea_01_powder_barrels.choice.wait_drift.outcome.wait_drift_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_powder_barrels_i01_sabotage_warning"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

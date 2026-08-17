@@ -1,0 +1,182 @@
+{
+  "id": "active_generic_sea_01_baited_distress_i01_hooks",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_01_baited_distress_i01_hooks.title",
+  "textKey": "event.active_generic_sea_01_baited_distress_i01_hooks.text",
+  "eligibility": {
+    "type": "hasShip"
+  },
+  "choices": [
+    {
+      "id": "cut_hooks",
+      "textKey": "event.active_generic_sea_01_baited_distress_i01_hooks.choice.cut_hooks.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cut_hooks_criticalfailure",
+            "textKey": "event.active_generic_sea_01_baited_distress_i01_hooks.choice.cut_hooks.outcome.cut_hooks_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i02_standoff"
+              }
+            ]
+          },
+          "failure": {
+            "id": "cut_hooks_failure",
+            "textKey": "event.active_generic_sea_01_baited_distress_i01_hooks.choice.cut_hooks.outcome.cut_hooks_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i02_standoff"
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "cut_hooks_success",
+            "textKey": "event.active_generic_sea_01_baited_distress_i01_hooks.choice.cut_hooks.outcome.cut_hooks_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i02_standoff"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cut_hooks_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_baited_distress_i01_hooks.choice.cut_hooks.outcome.cut_hooks_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i02_standoff"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "break_angle",
+      "textKey": "event.active_generic_sea_01_baited_distress_i01_hooks.choice.break_angle.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "break_angle_criticalfailure",
+            "textKey": "event.active_generic_sea_01_baited_distress_i01_hooks.choice.break_angle.outcome.break_angle_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i02_standoff"
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "break_angle_failure",
+            "textKey": "event.active_generic_sea_01_baited_distress_i01_hooks.choice.break_angle.outcome.break_angle_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i02_standoff"
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "break_angle_success",
+            "textKey": "event.active_generic_sea_01_baited_distress_i01_hooks.choice.break_angle.outcome.break_angle_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i02_standoff"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "break_angle_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_baited_distress_i01_hooks.choice.break_angle.outcome.break_angle_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i02_standoff"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_them_off",
+      "textKey": "event.active_generic_sea_01_baited_distress_i01_hooks.choice.pay_them_off.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_them_off_outcome",
+          "textKey": "event.active_generic_sea_01_baited_distress_i01_hooks.choice.pay_them_off.outcome.pay_them_off_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -300
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_baited_distress_i02_standoff"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 300
+      }
+    }
+  ]
+}

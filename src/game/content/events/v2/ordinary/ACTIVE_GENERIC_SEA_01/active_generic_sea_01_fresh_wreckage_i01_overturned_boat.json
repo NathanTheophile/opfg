@@ -1,0 +1,116 @@
+{
+  "id": "active_generic_sea_01_fresh_wreckage_i01_overturned_boat",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_01_fresh_wreckage_i01_overturned_boat.title",
+  "textKey": "event.active_generic_sea_01_fresh_wreckage_i01_overturned_boat.text",
+  "eligibility": {
+    "type": "hasShip"
+  },
+  "choices": [
+    {
+      "id": "lift_hull",
+      "textKey": "event.active_generic_sea_01_fresh_wreckage_i01_overturned_boat.choice.lift_hull.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "lift_hull_criticalfailure",
+            "textKey": "event.active_generic_sea_01_fresh_wreckage_i01_overturned_boat.choice.lift_hull.outcome.lift_hull_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              }
+            ]
+          },
+          "failure": {
+            "id": "lift_hull_failure",
+            "textKey": "event.active_generic_sea_01_fresh_wreckage_i01_overturned_boat.choice.lift_hull.outcome.lift_hull_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "lift_hull_success",
+            "textKey": "event.active_generic_sea_01_fresh_wreckage_i01_overturned_boat.choice.lift_hull.outcome.lift_hull_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "lift_hull_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_fresh_wreckage_i01_overturned_boat.choice.lift_hull.outcome.lift_hull_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "rig_lines",
+      "textKey": "event.active_generic_sea_01_fresh_wreckage_i01_overturned_boat.choice.rig_lines.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rig_lines_outcome",
+          "textKey": "event.active_generic_sea_01_fresh_wreckage_i01_overturned_boat.choice.rig_lines.outcome.rig_lines_outcome.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    },
+    {
+      "id": "call_out",
+      "textKey": "event.active_generic_sea_01_fresh_wreckage_i01_overturned_boat.choice.call_out.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "call_out_outcome",
+          "textKey": "event.active_generic_sea_01_fresh_wreckage_i01_overturned_boat.choice.call_out.outcome.call_out_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

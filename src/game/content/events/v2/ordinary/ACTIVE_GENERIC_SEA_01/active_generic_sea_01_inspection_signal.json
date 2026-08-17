@@ -1,0 +1,176 @@
+{
+  "id": "active_generic_sea_01_inspection_signal",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_inspection_signal.title",
+  "textKey": "event.active_generic_sea_01_inspection_signal.text",
+  "choices": [
+    {
+      "id": "bluff_route",
+      "textKey": "event.active_generic_sea_01_inspection_signal.choice.bluff_route.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bluff_route_criticalfailure",
+            "textKey": "event.active_generic_sea_01_inspection_signal.choice.bluff_route.outcome.bluff_route_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_inspection_signal_i01_search_request"
+              }
+            ]
+          },
+          "failure": {
+            "id": "bluff_route_failure",
+            "textKey": "event.active_generic_sea_01_inspection_signal.choice.bluff_route.outcome.bluff_route_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_inspection_signal_i01_search_request"
+              }
+            ]
+          },
+          "success": {
+            "id": "bluff_route_success",
+            "textKey": "event.active_generic_sea_01_inspection_signal.choice.bluff_route.outcome.bluff_route_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_inspection_signal_i01_search_request"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "bluff_route_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_inspection_signal.choice.bluff_route.outcome.bluff_route_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_inspection_signal_i01_search_request"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_distance",
+      "textKey": "event.active_generic_sea_01_inspection_signal.choice.hold_distance.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hold_distance_criticalfailure",
+            "textKey": "event.active_generic_sea_01_inspection_signal.choice.hold_distance.outcome.hold_distance_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_inspection_signal_i01_search_request"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "hold_distance_failure",
+            "textKey": "event.active_generic_sea_01_inspection_signal.choice.hold_distance.outcome.hold_distance_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_inspection_signal_i01_search_request"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "hold_distance_success",
+            "textKey": "event.active_generic_sea_01_inspection_signal.choice.hold_distance.outcome.hold_distance_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_inspection_signal_i01_search_request"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hold_distance_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_inspection_signal.choice.hold_distance.outcome.hold_distance_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_inspection_signal_i01_search_request"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "comply",
+      "textKey": "event.active_generic_sea_01_inspection_signal.choice.comply.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "comply_outcome",
+          "textKey": "event.active_generic_sea_01_inspection_signal.choice.comply.outcome.comply_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_inspection_signal_i01_search_request"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "id": "active_generic_sea_01_overboard_deserter",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_overboard_deserter.title",
+  "textKey": "event.active_generic_sea_01_overboard_deserter.text",
+  "choices": [
+    {
+      "id": "pull_aboard",
+      "textKey": "event.active_generic_sea_01_overboard_deserter.choice.pull_aboard.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "pull_aboard_criticalfailure",
+            "textKey": "event.active_generic_sea_01_overboard_deserter.choice.pull_aboard.outcome.pull_aboard_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overboard_deserter_i01_wage_dispute"
+              }
+            ]
+          },
+          "failure": {
+            "id": "pull_aboard_failure",
+            "textKey": "event.active_generic_sea_01_overboard_deserter.choice.pull_aboard.outcome.pull_aboard_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overboard_deserter_i01_wage_dispute"
+              }
+            ]
+          },
+          "success": {
+            "id": "pull_aboard_success",
+            "textKey": "event.active_generic_sea_01_overboard_deserter.choice.pull_aboard.outcome.pull_aboard_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overboard_deserter_i01_wage_dispute"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "pull_aboard_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_overboard_deserter.choice.pull_aboard.outcome.pull_aboard_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overboard_deserter_i01_wage_dispute"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "question_from_rail",
+      "textKey": "event.active_generic_sea_01_overboard_deserter.choice.question_from_rail.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "question_from_rail_criticalfailure",
+            "textKey": "event.active_generic_sea_01_overboard_deserter.choice.question_from_rail.outcome.question_from_rail_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overboard_deserter_i01_wage_dispute"
+              }
+            ]
+          },
+          "failure": {
+            "id": "question_from_rail_failure",
+            "textKey": "event.active_generic_sea_01_overboard_deserter.choice.question_from_rail.outcome.question_from_rail_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overboard_deserter_i01_wage_dispute"
+              }
+            ]
+          },
+          "success": {
+            "id": "question_from_rail_success",
+            "textKey": "event.active_generic_sea_01_overboard_deserter.choice.question_from_rail.outcome.question_from_rail_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overboard_deserter_i01_wage_dispute"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "question_from_rail_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_overboard_deserter.choice.question_from_rail.outcome.question_from_rail_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overboard_deserter_i01_wage_dispute"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "throw_float",
+      "textKey": "event.active_generic_sea_01_overboard_deserter.choice.throw_float.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "throw_float_outcome",
+          "textKey": "event.active_generic_sea_01_overboard_deserter.choice.throw_float.outcome.throw_float_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_overboard_deserter_i01_wage_dispute"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "turn_away",
+      "textKey": "event.active_generic_sea_01_overboard_deserter.choice.turn_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "turn_away_outcome",
+          "textKey": "event.active_generic_sea_01_overboard_deserter.choice.turn_away.outcome.turn_away_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

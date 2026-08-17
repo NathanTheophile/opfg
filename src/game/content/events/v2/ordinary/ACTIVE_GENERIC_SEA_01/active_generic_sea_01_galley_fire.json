@@ -1,0 +1,175 @@
+{
+  "id": "active_generic_sea_01_galley_fire",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_galley_fire.title",
+  "textKey": "event.active_generic_sea_01_galley_fire.text",
+  "choices": [
+    {
+      "id": "come_leeward",
+      "textKey": "event.active_generic_sea_01_galley_fire.choice.come_leeward.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "come_leeward_criticalfailure",
+            "textKey": "event.active_generic_sea_01_galley_fire.choice.come_leeward.outcome.come_leeward_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_galley_fire_i01_powder_door"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "come_leeward_failure",
+            "textKey": "event.active_generic_sea_01_galley_fire.choice.come_leeward.outcome.come_leeward_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_galley_fire_i01_powder_door"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "come_leeward_success",
+            "textKey": "event.active_generic_sea_01_galley_fire.choice.come_leeward.outcome.come_leeward_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_galley_fire_i01_powder_door"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "come_leeward_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_galley_fire.choice.come_leeward.outcome.come_leeward_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_galley_fire_i01_powder_door"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "swing_across",
+      "textKey": "event.active_generic_sea_01_galley_fire.choice.swing_across.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "swing_across_criticalfailure",
+            "textKey": "event.active_generic_sea_01_galley_fire.choice.swing_across.outcome.swing_across_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_galley_fire_i01_powder_door"
+              }
+            ]
+          },
+          "failure": {
+            "id": "swing_across_failure",
+            "textKey": "event.active_generic_sea_01_galley_fire.choice.swing_across.outcome.swing_across_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_galley_fire_i01_powder_door"
+              }
+            ]
+          },
+          "success": {
+            "id": "swing_across_success",
+            "textKey": "event.active_generic_sea_01_galley_fire.choice.swing_across.outcome.swing_across_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_galley_fire_i01_powder_door"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "swing_across_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_galley_fire.choice.swing_across.outcome.swing_across_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_galley_fire_i01_powder_door"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "stay_clear",
+      "textKey": "event.active_generic_sea_01_galley_fire.choice.stay_clear.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stay_clear_outcome",
+          "textKey": "event.active_generic_sea_01_galley_fire.choice.stay_clear.outcome.stay_clear_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

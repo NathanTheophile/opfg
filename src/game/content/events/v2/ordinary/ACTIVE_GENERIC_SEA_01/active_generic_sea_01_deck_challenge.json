@@ -1,0 +1,194 @@
+{
+  "id": "active_generic_sea_01_deck_challenge",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_deck_challenge.title",
+  "textKey": "event.active_generic_sea_01_deck_challenge.text",
+  "choices": [
+    {
+      "id": "cross_plank",
+      "textKey": "event.active_generic_sea_01_deck_challenge.choice.cross_plank.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cross_plank_criticalfailure",
+            "textKey": "event.active_generic_sea_01_deck_challenge.choice.cross_plank.outcome.cross_plank_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_deck_challenge_i01_second_wager"
+              }
+            ]
+          },
+          "failure": {
+            "id": "cross_plank_failure",
+            "textKey": "event.active_generic_sea_01_deck_challenge.choice.cross_plank.outcome.cross_plank_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_deck_challenge_i01_second_wager"
+              }
+            ]
+          },
+          "success": {
+            "id": "cross_plank_success",
+            "textKey": "event.active_generic_sea_01_deck_challenge.choice.cross_plank.outcome.cross_plank_success.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 500
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_deck_challenge_i01_second_wager"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cross_plank_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_deck_challenge.choice.cross_plank.outcome.cross_plank_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 900
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_deck_challenge_i01_second_wager"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "talk_up_stakes",
+      "textKey": "event.active_generic_sea_01_deck_challenge.choice.talk_up_stakes.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "talk_up_stakes_criticalfailure",
+            "textKey": "event.active_generic_sea_01_deck_challenge.choice.talk_up_stakes.outcome.talk_up_stakes_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -300
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_deck_challenge_i01_second_wager"
+              }
+            ]
+          },
+          "failure": {
+            "id": "talk_up_stakes_failure",
+            "textKey": "event.active_generic_sea_01_deck_challenge.choice.talk_up_stakes.outcome.talk_up_stakes_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_deck_challenge_i01_second_wager"
+              }
+            ]
+          },
+          "success": {
+            "id": "talk_up_stakes_success",
+            "textKey": "event.active_generic_sea_01_deck_challenge.choice.talk_up_stakes.outcome.talk_up_stakes_success.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 400
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_deck_challenge_i01_second_wager"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "talk_up_stakes_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_deck_challenge.choice.talk_up_stakes.outcome.talk_up_stakes_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 800
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_deck_challenge_i01_second_wager"
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 300
+      }
+    },
+    {
+      "id": "decline_with_laugh",
+      "textKey": "event.active_generic_sea_01_deck_challenge.choice.decline_with_laugh.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decline_with_laugh_outcome",
+          "textKey": "event.active_generic_sea_01_deck_challenge.choice.decline_with_laugh.outcome.decline_with_laugh_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}
