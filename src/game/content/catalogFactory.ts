@@ -149,6 +149,23 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
           { id: 'active_10', phase: 'active' as const, dueAgeMonths: 396 },
         ],
       },
+      {
+        id: 'career_marine',
+        type: 'personal_affiliation' as const,
+        eligibility: { type: 'careerAffiliationIs' as const, affiliationId: 'marine' },
+        chapters: [
+          { id: 'active_01', phase: 'active' as const, dueAgeMonths: 180 },
+          { id: 'active_02', phase: 'active' as const, dueAgeMonths: 204 },
+          { id: 'active_03', phase: 'active' as const, dueAgeMonths: 228 },
+          { id: 'active_04', phase: 'active' as const, dueAgeMonths: 252 },
+          { id: 'active_05', phase: 'active' as const, dueAgeMonths: 276 },
+          { id: 'active_06', phase: 'active' as const, dueAgeMonths: 300 },
+          { id: 'active_07', phase: 'active' as const, dueAgeMonths: 324 },
+          { id: 'active_08', phase: 'active' as const, dueAgeMonths: 348 },
+          { id: 'active_09', phase: 'active' as const, dueAgeMonths: 372 },
+          { id: 'active_10', phase: 'active' as const, dueAgeMonths: 396 },
+        ],
+      },
     ],
     events,
   };

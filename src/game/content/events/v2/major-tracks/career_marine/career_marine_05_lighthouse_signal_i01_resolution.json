@@ -1,0 +1,75 @@
+{
+  "id": "career_marine_05_lighthouse_signal_i01_resolution",
+  "kind": "immediate",
+  "titleKey": "event.career_marine_05_lighthouse_signal_i01_resolution.title",
+  "textKey": "event.career_marine_05_lighthouse_signal_i01_resolution.text",
+  "choices": [
+    {
+      "id": "protect",
+      "textKey": "event.career_marine_05_lighthouse_signal_i01_resolution.choice.protect.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "protect",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ],
+          "textKey": "event.career_marine_05_lighthouse_signal_i01_resolution.choice.protect.outcome.protect.text"
+        }
+      }
+    },
+    {
+      "id": "decode",
+      "textKey": "event.career_marine_05_lighthouse_signal_i01_resolution.choice.decode.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decode",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_marine_05_lighthouse_signal_i01_resolution.choice.decode.outcome.decode.text"
+        }
+      }
+    },
+    {
+      "id": "promotion",
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "careerRankAtLeast",
+          "rankId": "marine_captain"
+        }
+      },
+      "textKey": "event.career_marine_05_lighthouse_signal_i01_resolution.choice.promotion.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "promotion",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_captain"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ],
+          "textKey": "event.career_marine_05_lighthouse_signal_i01_resolution.choice.promotion.outcome.promotion.text"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "id": "career_marine_06_convoy_breach_i01_resolution",
+  "kind": "immediate",
+  "titleKey": "event.career_marine_06_convoy_breach_i01_resolution.title",
+  "textKey": "event.career_marine_06_convoy_breach_i01_resolution.text",
+  "choices": [
+    {
+      "id": "handoff",
+      "textKey": "event.career_marine_06_convoy_breach_i01_resolution.choice.handoff.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "handoff",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_marine_06_convoy_breach_i01_resolution.choice.handoff.outcome.handoff.text"
+        }
+      }
+    },
+    {
+      "id": "block",
+      "textKey": "event.career_marine_06_convoy_breach_i01_resolution.choice.block.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "block",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ],
+          "textKey": "event.career_marine_06_convoy_breach_i01_resolution.choice.block.outcome.block.text"
+        }
+      }
+    },
+    {
+      "id": "promotion",
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "careerRankAtLeast",
+          "rankId": "marine_commodore"
+        }
+      },
+      "textKey": "event.career_marine_06_convoy_breach_i01_resolution.choice.promotion.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "promotion",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_commodore"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ],
+          "textKey": "event.career_marine_06_convoy_breach_i01_resolution.choice.promotion.outcome.promotion.text"
+        }
+      }
+    }
+  ]
+}

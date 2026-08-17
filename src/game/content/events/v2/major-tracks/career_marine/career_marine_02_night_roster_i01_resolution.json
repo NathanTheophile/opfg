@@ -1,0 +1,71 @@
+{
+  "id": "career_marine_02_night_roster_i01_resolution",
+  "kind": "immediate",
+  "titleKey": "event.career_marine_02_night_roster_i01_resolution.title",
+  "textKey": "event.career_marine_02_night_roster_i01_resolution.text",
+  "choices": [
+    {
+      "id": "seal",
+      "textKey": "event.career_marine_02_night_roster_i01_resolution.choice.seal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "seal",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_marine_02_night_roster_i01_resolution.choice.seal.outcome.seal.text"
+        }
+      }
+    },
+    {
+      "id": "trace",
+      "textKey": "event.career_marine_02_night_roster_i01_resolution.choice.trace.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trace",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_marine_02_night_roster_i01_resolution.choice.trace.outcome.trace.text"
+        }
+      }
+    },
+    {
+      "id": "promotion",
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "careerRankAtLeast",
+          "rankId": "marine_petty_officer"
+        }
+      },
+      "textKey": "event.career_marine_02_night_roster_i01_resolution.choice.promotion.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "promotion",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_petty_officer"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ],
+          "textKey": "event.career_marine_02_night_roster_i01_resolution.choice.promotion.outcome.promotion.text"
+        }
+      }
+    }
+  ]
+}

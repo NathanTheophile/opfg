@@ -1,0 +1,93 @@
+{
+  "id": "career_marine_10_moving_justice_i02_resolution",
+  "kind": "immediate",
+  "titleKey": "event.career_marine_10_moving_justice_i02_resolution.title",
+  "textKey": "event.career_marine_10_moving_justice_i02_resolution.text",
+  "choices": [
+    {
+      "id": "lead",
+      "textKey": "event.career_marine_10_moving_justice_i02_resolution.choice.lead.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lead",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_marine_10_moving_justice_i02_resolution.choice.lead.outcome.lead.text"
+        }
+      }
+    },
+    {
+      "id": "mentor",
+      "textKey": "event.career_marine_10_moving_justice_i02_resolution.choice.mentor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mentor",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ],
+          "textKey": "event.career_marine_10_moving_justice_i02_resolution.choice.mentor.outcome.mentor.text"
+        }
+      }
+    },
+    {
+      "id": "promotion",
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerRankAtLeast",
+            "rankId": "marine_admiral"
+          },
+          {
+            "type": "reputationAtLeast",
+            "value": 65
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "careerRankAtLeast",
+              "rankId": "marine_fleet_admiral"
+            }
+          }
+        ]
+      },
+      "textKey": "event.career_marine_10_moving_justice_i02_resolution.choice.promotion.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "promotion",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_fleet_admiral"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 5
+            }
+          ],
+          "textKey": "event.career_marine_10_moving_justice_i02_resolution.choice.promotion.outcome.promotion.text"
+        }
+      }
+    }
+  ]
+}

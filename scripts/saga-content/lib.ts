@@ -466,8 +466,8 @@ function runScenario(
 ): void {
   const expectedEventId = scenarioExpectedEventId(scenario);
   const state = createInitialGameState(0x5a6a);
-  state.careerPhase = 'childhood';
   state.ageMonths = scenario.ageMonths ?? inferHistoryEntryAgeMonths(catalog, source, expectedEventId);
+  state.careerPhase = state.ageMonths >= 180 ? 'active' : 'childhood';
   state.player.profile.affiliationId =
     (scenario.profileAffiliationId ?? affiliationFromTrack(catalog, source.trackId) ?? 'civilian') as never;
   if (scenario.raceId) state.player.profile.raceId = scenario.raceId as never;

@@ -1,0 +1,169 @@
+{
+  "id": "career_marine_03_cell_six",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_marine",
+    "chapterId": "active_03",
+    "nodeId": "career_marine_03_cell_six",
+    "parentNodeIds": [
+      "career_marine_02_night_roster",
+      "career_marine_02_refugee_quay",
+      "career_marine_02_unmarked_cutter",
+      "career_marine_02_relief_patrol"
+    ],
+    "selectionPriority": 20
+  },
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_02_night_roster",
+        "outcomeId": "shield"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_02_refugee_quay",
+        "outcomeId": "shield"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_02_unmarked_cutter",
+        "outcomeId": "shield"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_02_relief_patrol",
+        "outcomeId": "shield"
+      }
+    ]
+  },
+  "titleKey": "event.career_marine_03_cell_six.title",
+  "textKey": "event.career_marine_03_cell_six.text",
+  "choices": [
+    {
+      "id": "duty",
+      "textKey": "event.career_marine_03_cell_six.choice.duty.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "duty",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_marine_03_cell_six_i01_resolution"
+            }
+          ],
+          "textKey": "event.career_marine_03_cell_six.choice.duty.outcome.duty.text"
+        }
+      }
+    },
+    {
+      "id": "shield",
+      "textKey": "event.career_marine_03_cell_six.choice.shield.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shield",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_marine_03_cell_six_i01_resolution"
+            }
+          ],
+          "textKey": "event.career_marine_03_cell_six.choice.shield.outcome.shield.text"
+        }
+      }
+    },
+    {
+      "id": "initiative",
+      "textKey": "event.career_marine_03_cell_six.choice.initiative.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "initiative_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_03_cell_six_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_03_cell_six.choice.initiative.outcome.initiative_criticalFailure.text"
+          },
+          "failure": {
+            "id": "initiative_failure",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_03_cell_six_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_03_cell_six.choice.initiative.outcome.initiative_failure.text"
+          },
+          "success": {
+            "id": "initiative_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_03_cell_six_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_03_cell_six.choice.initiative.outcome.initiative_success.text"
+          },
+          "criticalSuccess": {
+            "id": "initiative_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_03_cell_six_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_03_cell_six.choice.initiative.outcome.initiative_criticalSuccess.text"
+          }
+        }
+      }
+    }
+  ]
+}

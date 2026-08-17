@@ -1,0 +1,75 @@
+{
+  "id": "career_marine_02_unmarked_cutter_i01_resolution",
+  "kind": "immediate",
+  "titleKey": "event.career_marine_02_unmarked_cutter_i01_resolution.title",
+  "textKey": "event.career_marine_02_unmarked_cutter_i01_resolution.text",
+  "choices": [
+    {
+      "id": "prisoners",
+      "textKey": "event.career_marine_02_unmarked_cutter_i01_resolution.choice.prisoners.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "prisoners",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_marine_02_unmarked_cutter_i01_resolution.choice.prisoners.outcome.prisoners.text"
+        }
+      }
+    },
+    {
+      "id": "ledger",
+      "textKey": "event.career_marine_02_unmarked_cutter_i01_resolution.choice.ledger.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ledger",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_marine_02_unmarked_cutter_i01_resolution.choice.ledger.outcome.ledger.text"
+        }
+      }
+    },
+    {
+      "id": "promotion",
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "careerRankAtLeast",
+          "rankId": "marine_petty_officer"
+        }
+      },
+      "textKey": "event.career_marine_02_unmarked_cutter_i01_resolution.choice.promotion.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "promotion",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_petty_officer"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ],
+          "textKey": "event.career_marine_02_unmarked_cutter_i01_resolution.choice.promotion.outcome.promotion.text"
+        }
+      }
+    }
+  ]
+}
