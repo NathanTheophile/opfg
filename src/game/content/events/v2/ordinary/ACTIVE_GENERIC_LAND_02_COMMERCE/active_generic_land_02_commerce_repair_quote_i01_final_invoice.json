@@ -1,0 +1,73 @@
+{
+  "id": "active_generic_land_02_commerce_repair_quote_i01_final_invoice",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_02_commerce_repair_quote_i01_final_invoice.title",
+  "textKey": "event.active_generic_land_02_commerce_repair_quote_i01_final_invoice.text",
+  "choices": [
+    {
+      "id": "pay_full",
+      "textKey": "event.active_generic_land_02_commerce_repair_quote_i01_final_invoice.choice.pay_full.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_full_outcome",
+          "textKey": "event.active_generic_land_02_commerce_repair_quote_i01_final_invoice.choice.pay_full.outcome.pay_full_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -3000
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 3
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 3000
+      }
+    },
+    {
+      "id": "pay_reduced",
+      "textKey": "event.active_generic_land_02_commerce_repair_quote_i01_final_invoice.choice.pay_reduced.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_reduced_outcome",
+          "textKey": "event.active_generic_land_02_commerce_repair_quote_i01_final_invoice.choice.pay_reduced.outcome.pay_reduced_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1500
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1500
+      }
+    },
+    {
+      "id": "take_ship_back",
+      "textKey": "event.active_generic_land_02_commerce_repair_quote_i01_final_invoice.choice.take_ship_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_ship_back_outcome",
+          "textKey": "event.active_generic_land_02_commerce_repair_quote_i01_final_invoice.choice.take_ship_back.outcome.take_ship_back_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "hasShip"
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "id": "active_generic_land_02_commerce_repair_quote",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_repair_quote.title",
+  "textKey": "event.active_generic_land_02_commerce_repair_quote.text",
+  "choices": [
+    {
+      "id": "audit_invoice",
+      "textKey": "event.active_generic_land_02_commerce_repair_quote.choice.audit_invoice.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "audit_invoice_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_repair_quote.choice.audit_invoice.outcome.audit_invoice_criticalfailure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_repair_quote_i01_final_invoice"
+              }
+            ]
+          },
+          "failure": {
+            "id": "audit_invoice_failure",
+            "textKey": "event.active_generic_land_02_commerce_repair_quote.choice.audit_invoice.outcome.audit_invoice_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_repair_quote_i01_final_invoice"
+              }
+            ]
+          },
+          "success": {
+            "id": "audit_invoice_success",
+            "textKey": "event.active_generic_land_02_commerce_repair_quote.choice.audit_invoice.outcome.audit_invoice_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_repair_quote_i01_final_invoice"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "audit_invoice_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_repair_quote.choice.audit_invoice.outcome.audit_invoice_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_repair_quote_i01_final_invoice"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_foreman",
+      "textKey": "event.active_generic_land_02_commerce_repair_quote.choice.hold_foreman.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hold_foreman_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_repair_quote.choice.hold_foreman.outcome.hold_foreman_criticalfailure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_repair_quote_i01_final_invoice"
+              }
+            ]
+          },
+          "failure": {
+            "id": "hold_foreman_failure",
+            "textKey": "event.active_generic_land_02_commerce_repair_quote.choice.hold_foreman.outcome.hold_foreman_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_repair_quote_i01_final_invoice"
+              }
+            ]
+          },
+          "success": {
+            "id": "hold_foreman_success",
+            "textKey": "event.active_generic_land_02_commerce_repair_quote.choice.hold_foreman.outcome.hold_foreman_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_repair_quote_i01_final_invoice"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hold_foreman_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_repair_quote.choice.hold_foreman.outcome.hold_foreman_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_repair_quote_i01_final_invoice"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cancel_work",
+      "textKey": "event.active_generic_land_02_commerce_repair_quote.choice.cancel_work.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cancel_work_outcome",
+          "textKey": "event.active_generic_land_02_commerce_repair_quote.choice.cancel_work.outcome.cancel_work_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "ship_repair"
+      }
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "id": "active_generic_land_02_commerce_dock_tax_rounding",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_dock_tax_rounding.title",
+  "textKey": "event.active_generic_land_02_commerce_dock_tax_rounding.text",
+  "choices": [
+    {
+      "id": "pay_rounding",
+      "textKey": "event.active_generic_land_02_commerce_dock_tax_rounding.choice.pay_rounding.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_rounding_outcome",
+          "textKey": "event.active_generic_land_02_commerce_dock_tax_rounding.choice.pay_rounding.outcome.pay_rounding_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -700
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 700
+      }
+    },
+    {
+      "id": "show_ledger",
+      "textKey": "event.active_generic_land_02_commerce_dock_tax_rounding.choice.show_ledger.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "show_ledger_outcome",
+          "textKey": "event.active_generic_land_02_commerce_dock_tax_rounding.choice.show_ledger.outcome.show_ledger_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "marine_rate",
+      "textKey": "event.active_generic_land_02_commerce_dock_tax_rounding.choice.marine_rate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "marine_rate_outcome",
+          "textKey": "event.active_generic_land_02_commerce_dock_tax_rounding.choice.marine_rate.outcome.marine_rate_outcome.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      }
+    },
+    {
+      "id": "leave_counter",
+      "textKey": "event.active_generic_land_02_commerce_dock_tax_rounding.choice.leave_counter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_counter_outcome",
+          "textKey": "event.active_generic_land_02_commerce_dock_tax_rounding.choice.leave_counter.outcome.leave_counter_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  }
+}

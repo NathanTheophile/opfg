@@ -1,0 +1,179 @@
+{
+  "id": "active_generic_land_02_commerce_ship_market_inspection",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_ship_market_inspection.title",
+  "textKey": "event.active_generic_land_02_commerce_ship_market_inspection.text",
+  "choices": [
+    {
+      "id": "haggle_dinghy",
+      "textKey": "event.active_generic_land_02_commerce_ship_market_inspection.choice.haggle_dinghy.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "haggle_dinghy_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_ship_market_inspection.choice.haggle_dinghy.outcome.haggle_dinghy_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_ship_market_inspection_i01_purchase_desk"
+              }
+            ]
+          },
+          "failure": {
+            "id": "haggle_dinghy_failure",
+            "textKey": "event.active_generic_land_02_commerce_ship_market_inspection.choice.haggle_dinghy.outcome.haggle_dinghy_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_ship_market_inspection_i01_purchase_desk"
+              }
+            ]
+          },
+          "success": {
+            "id": "haggle_dinghy_success",
+            "textKey": "event.active_generic_land_02_commerce_ship_market_inspection.choice.haggle_dinghy.outcome.haggle_dinghy_success.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 1000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_ship_market_inspection_i01_purchase_desk"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "haggle_dinghy_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_ship_market_inspection.choice.haggle_dinghy.outcome.haggle_dinghy_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 2000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_ship_market_inspection_i01_purchase_desk"
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "canAcquireShip",
+        "shipId": "dinghy"
+      }
+    },
+    {
+      "id": "haggle_sloop",
+      "textKey": "event.active_generic_land_02_commerce_ship_market_inspection.choice.haggle_sloop.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "haggle_sloop_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_ship_market_inspection.choice.haggle_sloop.outcome.haggle_sloop_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -2000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_ship_market_inspection_i01_purchase_desk"
+              }
+            ]
+          },
+          "failure": {
+            "id": "haggle_sloop_failure",
+            "textKey": "event.active_generic_land_02_commerce_ship_market_inspection.choice.haggle_sloop.outcome.haggle_sloop_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_ship_market_inspection_i01_purchase_desk"
+              }
+            ]
+          },
+          "success": {
+            "id": "haggle_sloop_success",
+            "textKey": "event.active_generic_land_02_commerce_ship_market_inspection.choice.haggle_sloop.outcome.haggle_sloop_success.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 2000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_ship_market_inspection_i01_purchase_desk"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "haggle_sloop_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_ship_market_inspection.choice.haggle_sloop.outcome.haggle_sloop_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 4000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_ship_market_inspection_i01_purchase_desk"
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "canAcquireShip",
+        "shipId": "sloop"
+      }
+    },
+    {
+      "id": "just_inspect",
+      "textKey": "event.active_generic_land_02_commerce_ship_market_inspection.choice.just_inspect.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "just_inspect_outcome",
+          "textKey": "event.active_generic_land_02_commerce_ship_market_inspection.choice.just_inspect.outcome.just_inspect_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "canAcquireShip",
+            "shipId": "dinghy"
+          },
+          {
+            "type": "canAcquireShip",
+            "shipId": "sloop"
+          }
+        ]
+      }
+    ]
+  }
+}

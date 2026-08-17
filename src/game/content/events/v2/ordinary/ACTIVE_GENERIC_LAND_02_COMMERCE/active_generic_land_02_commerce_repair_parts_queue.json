@@ -1,0 +1,81 @@
+{
+  "id": "active_generic_land_02_commerce_repair_parts_queue",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_repair_parts_queue.title",
+  "textKey": "event.active_generic_land_02_commerce_repair_parts_queue.text",
+  "choices": [
+    {
+      "id": "pay_slot",
+      "textKey": "event.active_generic_land_02_commerce_repair_parts_queue.choice.pay_slot.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_slot_outcome",
+          "textKey": "event.active_generic_land_02_commerce_repair_parts_queue.choice.pay_slot.outcome.pay_slot_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2500
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_02_commerce_repair_parts_queue_i01_substitute_part"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2500
+      }
+    },
+    {
+      "id": "yield_part",
+      "textKey": "event.active_generic_land_02_commerce_repair_parts_queue.choice.yield_part.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "yield_part_outcome",
+          "textKey": "event.active_generic_land_02_commerce_repair_parts_queue.choice.yield_part.outcome.yield_part_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "offer_labor",
+      "textKey": "event.active_generic_land_02_commerce_repair_parts_queue.choice.offer_labor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "offer_labor_outcome",
+          "textKey": "event.active_generic_land_02_commerce_repair_parts_queue.choice.offer_labor.outcome.offer_labor_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_02_commerce_repair_parts_queue_i01_substitute_part"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "ship_repair"
+      }
+    ]
+  }
+}

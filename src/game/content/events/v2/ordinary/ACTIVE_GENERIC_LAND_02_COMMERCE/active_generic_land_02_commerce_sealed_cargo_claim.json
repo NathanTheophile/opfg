@@ -1,0 +1,159 @@
+{
+  "id": "active_generic_land_02_commerce_sealed_cargo_claim",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_sealed_cargo_claim.title",
+  "textKey": "event.active_generic_land_02_commerce_sealed_cargo_claim.text",
+  "choices": [
+    {
+      "id": "read_receipt",
+      "textKey": "event.active_generic_land_02_commerce_sealed_cargo_claim.choice.read_receipt.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_receipt_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_sealed_cargo_claim.choice.read_receipt.outcome.read_receipt_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_sealed_cargo_claim_i01_claim_counter"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_receipt_failure",
+            "textKey": "event.active_generic_land_02_commerce_sealed_cargo_claim.choice.read_receipt.outcome.read_receipt_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_sealed_cargo_claim_i01_claim_counter"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_receipt_success",
+            "textKey": "event.active_generic_land_02_commerce_sealed_cargo_claim.choice.read_receipt.outcome.read_receipt_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_sealed_cargo_claim_i01_claim_counter"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_receipt_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_sealed_cargo_claim.choice.read_receipt.outcome.read_receipt_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_sealed_cargo_claim_i01_claim_counter"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "press_manager",
+      "textKey": "event.active_generic_land_02_commerce_sealed_cargo_claim.choice.press_manager.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "press_manager_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_sealed_cargo_claim.choice.press_manager.outcome.press_manager_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_sealed_cargo_claim_i01_claim_counter"
+              }
+            ]
+          },
+          "failure": {
+            "id": "press_manager_failure",
+            "textKey": "event.active_generic_land_02_commerce_sealed_cargo_claim.choice.press_manager.outcome.press_manager_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_sealed_cargo_claim_i01_claim_counter"
+              }
+            ]
+          },
+          "success": {
+            "id": "press_manager_success",
+            "textKey": "event.active_generic_land_02_commerce_sealed_cargo_claim.choice.press_manager.outcome.press_manager_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_sealed_cargo_claim_i01_claim_counter"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "press_manager_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_sealed_cargo_claim.choice.press_manager.outcome.press_manager_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_sealed_cargo_claim_i01_claim_counter"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_claim",
+      "textKey": "event.active_generic_land_02_commerce_sealed_cargo_claim.choice.pay_claim.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_claim_outcome",
+          "textKey": "event.active_generic_land_02_commerce_sealed_cargo_claim.choice.pay_claim.outcome.pay_claim_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1500
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1500
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  }
+}

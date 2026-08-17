@@ -1,0 +1,159 @@
+{
+  "id": "active_generic_land_02_commerce_clipped_change",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_clipped_change.title",
+  "textKey": "event.active_generic_land_02_commerce_clipped_change.text",
+  "choices": [
+    {
+      "id": "weigh_coins",
+      "textKey": "event.active_generic_land_02_commerce_clipped_change.choice.weigh_coins.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "weigh_coins_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_clipped_change.choice.weigh_coins.outcome.weigh_coins_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_clipped_change_i01_cashbox_open"
+              }
+            ]
+          },
+          "failure": {
+            "id": "weigh_coins_failure",
+            "textKey": "event.active_generic_land_02_commerce_clipped_change.choice.weigh_coins.outcome.weigh_coins_failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_clipped_change_i01_cashbox_open"
+              }
+            ]
+          },
+          "success": {
+            "id": "weigh_coins_success",
+            "textKey": "event.active_generic_land_02_commerce_clipped_change.choice.weigh_coins.outcome.weigh_coins_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_clipped_change_i01_cashbox_open"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "weigh_coins_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_clipped_change.choice.weigh_coins.outcome.weigh_coins_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_clipped_change_i01_cashbox_open"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "corner_changer",
+      "textKey": "event.active_generic_land_02_commerce_clipped_change.choice.corner_changer.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "corner_changer_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_clipped_change.choice.corner_changer.outcome.corner_changer_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_clipped_change_i01_cashbox_open"
+              }
+            ]
+          },
+          "failure": {
+            "id": "corner_changer_failure",
+            "textKey": "event.active_generic_land_02_commerce_clipped_change.choice.corner_changer.outcome.corner_changer_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_clipped_change_i01_cashbox_open"
+              }
+            ]
+          },
+          "success": {
+            "id": "corner_changer_success",
+            "textKey": "event.active_generic_land_02_commerce_clipped_change.choice.corner_changer.outcome.corner_changer_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_clipped_change_i01_cashbox_open"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "corner_changer_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_clipped_change.choice.corner_changer.outcome.corner_changer_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_clipped_change_i01_cashbox_open"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "eat_loss",
+      "textKey": "event.active_generic_land_02_commerce_clipped_change.choice.eat_loss.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "eat_loss_outcome",
+          "textKey": "event.active_generic_land_02_commerce_clipped_change.choice.eat_loss.outcome.eat_loss_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -750
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  }
+}

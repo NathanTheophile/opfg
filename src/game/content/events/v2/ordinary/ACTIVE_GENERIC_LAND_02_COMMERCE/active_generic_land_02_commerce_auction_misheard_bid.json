@@ -1,0 +1,155 @@
+{
+  "id": "active_generic_land_02_commerce_auction_misheard_bid",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_auction_misheard_bid.title",
+  "textKey": "event.active_generic_land_02_commerce_auction_misheard_bid.text",
+  "choices": [
+    {
+      "id": "challenge_call",
+      "textKey": "event.active_generic_land_02_commerce_auction_misheard_bid.choice.challenge_call.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "challenge_call_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_auction_misheard_bid.choice.challenge_call.outcome.challenge_call_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -2000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_auction_misheard_bid_i01_clerk_desk"
+              }
+            ]
+          },
+          "failure": {
+            "id": "challenge_call_failure",
+            "textKey": "event.active_generic_land_02_commerce_auction_misheard_bid.choice.challenge_call.outcome.challenge_call_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_auction_misheard_bid_i01_clerk_desk"
+              }
+            ]
+          },
+          "success": {
+            "id": "challenge_call_success",
+            "textKey": "event.active_generic_land_02_commerce_auction_misheard_bid.choice.challenge_call.outcome.challenge_call_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_auction_misheard_bid_i01_clerk_desk"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "challenge_call_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_auction_misheard_bid.choice.challenge_call.outcome.challenge_call_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_auction_misheard_bid_i01_clerk_desk"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "trace_sheet",
+      "textKey": "event.active_generic_land_02_commerce_auction_misheard_bid.choice.trace_sheet.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "trace_sheet_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_auction_misheard_bid.choice.trace_sheet.outcome.trace_sheet_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_auction_misheard_bid_i01_clerk_desk"
+              }
+            ]
+          },
+          "failure": {
+            "id": "trace_sheet_failure",
+            "textKey": "event.active_generic_land_02_commerce_auction_misheard_bid.choice.trace_sheet.outcome.trace_sheet_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_auction_misheard_bid_i01_clerk_desk"
+              }
+            ]
+          },
+          "success": {
+            "id": "trace_sheet_success",
+            "textKey": "event.active_generic_land_02_commerce_auction_misheard_bid.choice.trace_sheet.outcome.trace_sheet_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_auction_misheard_bid_i01_clerk_desk"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "trace_sheet_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_auction_misheard_bid.choice.trace_sheet.outcome.trace_sheet_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_auction_misheard_bid_i01_clerk_desk"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_and_drop",
+      "textKey": "event.active_generic_land_02_commerce_auction_misheard_bid.choice.pay_and_drop.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_and_drop_outcome",
+          "textKey": "event.active_generic_land_02_commerce_auction_misheard_bid.choice.pay_and_drop.outcome.pay_and_drop_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "trade"
+      }
+    ]
+  }
+}

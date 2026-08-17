@@ -1,0 +1,98 @@
+{
+  "id": "active_generic_land_02_commerce_workshop_test_piece",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_workshop_test_piece.title",
+  "textKey": "event.active_generic_land_02_commerce_workshop_test_piece.text",
+  "choices": [
+    {
+      "id": "accept_test",
+      "textKey": "event.active_generic_land_02_commerce_workshop_test_piece.choice.accept_test.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_test_outcome",
+          "textKey": "event.active_generic_land_02_commerce_workshop_test_piece.choice.accept_test.outcome.accept_test_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    },
+    {
+      "id": "shipwright_watch",
+      "textKey": "event.active_generic_land_02_commerce_workshop_test_piece.choice.shipwright_watch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shipwright_watch_outcome",
+          "textKey": "event.active_generic_land_02_commerce_workshop_test_piece.choice.shipwright_watch.outcome.shipwright_watch_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "berriesAtLeast",
+            "value": 1000
+          },
+          {
+            "type": "hasCrewRole",
+            "roleId": "shipwright"
+          }
+        ]
+      }
+    },
+    {
+      "id": "decline_test",
+      "textKey": "event.active_generic_land_02_commerce_workshop_test_piece.choice.decline_test.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decline_test_outcome",
+          "textKey": "event.active_generic_land_02_commerce_workshop_test_piece.choice.decline_test.outcome.decline_test_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "ship_repair"
+      }
+    ]
+  }
+}

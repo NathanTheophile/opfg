@@ -1,0 +1,66 @@
+{
+  "id": "active_generic_land_02_commerce_warehouse_clock_i01_jammed_door",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_02_commerce_warehouse_clock_i01_jammed_door.title",
+  "textKey": "event.active_generic_land_02_commerce_warehouse_clock_i01_jammed_door.text",
+  "choices": [
+    {
+      "id": "lift_door",
+      "textKey": "event.active_generic_land_02_commerce_warehouse_clock_i01_jammed_door.choice.lift_door.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lift_door_outcome",
+          "textKey": "event.active_generic_land_02_commerce_warehouse_clock_i01_jammed_door.choice.lift_door.outcome.lift_door_outcome.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_02_commerce_warehouse_clock_i02_foreman_settlement"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pay_guard",
+      "textKey": "event.active_generic_land_02_commerce_warehouse_clock_i01_jammed_door.choice.pay_guard.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_guard_outcome",
+          "textKey": "event.active_generic_land_02_commerce_warehouse_clock_i01_jammed_door.choice.pay_guard.outcome.pay_guard_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_02_commerce_warehouse_clock_i02_foreman_settlement"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "leave_sacks",
+      "textKey": "event.active_generic_land_02_commerce_warehouse_clock_i01_jammed_door.choice.leave_sacks.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_sacks_outcome",
+          "textKey": "event.active_generic_land_02_commerce_warehouse_clock_i01_jammed_door.choice.leave_sacks.outcome.leave_sacks_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

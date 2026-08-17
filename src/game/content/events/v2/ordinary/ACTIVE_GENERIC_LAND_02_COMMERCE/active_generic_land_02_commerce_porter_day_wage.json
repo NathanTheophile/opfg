@@ -1,0 +1,87 @@
+{
+  "id": "active_generic_land_02_commerce_porter_day_wage",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_porter_day_wage.title",
+  "textKey": "event.active_generic_land_02_commerce_porter_day_wage.text",
+  "choices": [
+    {
+      "id": "take_heavy_line",
+      "textKey": "event.active_generic_land_02_commerce_porter_day_wage.choice.take_heavy_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_heavy_line_outcome",
+          "textKey": "event.active_generic_land_02_commerce_porter_day_wage.choice.take_heavy_line.outcome.take_heavy_line_outcome.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyBerries",
+              "amount": 1000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_02_commerce_porter_day_wage_i01_broken_seal"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "organize_cart",
+      "textKey": "event.active_generic_land_02_commerce_porter_day_wage.choice.organize_cart.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "organize_cart_outcome",
+          "textKey": "event.active_generic_land_02_commerce_porter_day_wage.choice.organize_cart.outcome.organize_cart_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 700
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_02_commerce_porter_day_wage_i01_broken_seal"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline_wage",
+      "textKey": "event.active_generic_land_02_commerce_porter_day_wage.choice.decline_wage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decline_wage_outcome",
+          "textKey": "event.active_generic_land_02_commerce_porter_day_wage.choice.decline_wage.outcome.decline_wage_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  }
+}
