@@ -1,0 +1,268 @@
+{
+  "id": "active_generic_sea_05_strange_premature_wake",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_sea_05_strange_premature_wake.title",
+  "textKey": "event.active_generic_sea_05_strange_premature_wake.text",
+  "choices": [
+    {
+      "id": "cut_across",
+      "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.cut_across.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cut_across_criticalfailure",
+            "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.cut_across.outcome.cut_across_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_premature_wake_i01_backwards_skiff"
+              }
+            ]
+          },
+          "failure": {
+            "id": "cut_across_failure",
+            "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.cut_across.outcome.cut_across_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_premature_wake_i01_backwards_skiff"
+              }
+            ]
+          },
+          "success": {
+            "id": "cut_across_success",
+            "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.cut_across.outcome.cut_across_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_premature_wake_i01_backwards_skiff"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cut_across_criticalsuccess",
+            "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.cut_across.outcome.cut_across_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_premature_wake_i01_backwards_skiff"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "match_pattern",
+      "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.match_pattern.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "match_pattern_criticalfailure",
+            "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.match_pattern.outcome.match_pattern_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_premature_wake_i01_backwards_skiff"
+              }
+            ]
+          },
+          "failure": {
+            "id": "match_pattern_failure",
+            "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.match_pattern.outcome.match_pattern_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_premature_wake_i01_backwards_skiff"
+              }
+            ]
+          },
+          "success": {
+            "id": "match_pattern_success",
+            "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.match_pattern.outcome.match_pattern_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_premature_wake_i01_backwards_skiff"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "match_pattern_criticalsuccess",
+            "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.match_pattern.outcome.match_pattern_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_premature_wake_i01_backwards_skiff"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_course",
+      "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.hold_course.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "held_course",
+          "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.hold_course.outcome.held_course.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_premature_wake_i01_backwards_skiff"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "navigator_call",
+      "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.navigator_call.text",
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "navigator"
+      },
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "navigator_call_criticalfailure",
+            "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.navigator_call.outcome.navigator_call_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_premature_wake_i01_backwards_skiff"
+              }
+            ]
+          },
+          "failure": {
+            "id": "navigator_call_failure",
+            "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.navigator_call.outcome.navigator_call_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_premature_wake_i01_backwards_skiff"
+              }
+            ]
+          },
+          "success": {
+            "id": "navigator_call_success",
+            "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.navigator_call.outcome.navigator_call_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_premature_wake_i01_backwards_skiff"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "navigator_call_criticalsuccess",
+            "textKey": "event.active_generic_sea_05_strange_premature_wake.choice.navigator_call.outcome.navigator_call_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_premature_wake_i01_backwards_skiff"
+              }
+            ]
+          }
+        },
+        "actor": {
+          "type": "crewRole",
+          "roleId": "navigator",
+          "statId": "strength"
+        }
+      }
+    }
+  ]
+}

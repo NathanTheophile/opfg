@@ -1,0 +1,119 @@
+{
+  "id": "active_generic_sea_05_strange_silent_bell_i01_upward_sand",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_05_strange_silent_bell_i01_upward_sand.title",
+  "textKey": "event.active_generic_sea_05_strange_silent_bell_i01_upward_sand.text",
+  "choices": [
+    {
+      "id": "hook_bell",
+      "textKey": "event.active_generic_sea_05_strange_silent_bell_i01_upward_sand.choice.hook_bell.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hooked",
+          "textKey": "event.active_generic_sea_05_strange_silent_bell_i01_upward_sand.choice.hook_bell.outcome.hooked.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_silent_bell_i02_everything_drops"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "counterweight",
+      "textKey": "event.active_generic_sea_05_strange_silent_bell_i01_upward_sand.choice.counterweight.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "counterweight_criticalfailure",
+            "textKey": "event.active_generic_sea_05_strange_silent_bell_i01_upward_sand.choice.counterweight.outcome.counterweight_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_silent_bell_i02_everything_drops"
+              }
+            ]
+          },
+          "failure": {
+            "id": "counterweight_failure",
+            "textKey": "event.active_generic_sea_05_strange_silent_bell_i01_upward_sand.choice.counterweight.outcome.counterweight_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_silent_bell_i02_everything_drops"
+              }
+            ]
+          },
+          "success": {
+            "id": "counterweight_success",
+            "textKey": "event.active_generic_sea_05_strange_silent_bell_i01_upward_sand.choice.counterweight.outcome.counterweight_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_silent_bell_i02_everything_drops"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "counterweight_criticalsuccess",
+            "textKey": "event.active_generic_sea_05_strange_silent_bell_i01_upward_sand.choice.counterweight.outcome.counterweight_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_silent_bell_i02_everything_drops"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "strike_bell",
+      "textKey": "event.active_generic_sea_05_strange_silent_bell_i01_upward_sand.choice.strike_bell.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "struck",
+          "textKey": "event.active_generic_sea_05_strange_silent_bell_i01_upward_sand.choice.strike_bell.outcome.struck.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_silent_bell_i02_everything_drops"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "hasShip"
+  }
+}

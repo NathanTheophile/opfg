@@ -1,0 +1,101 @@
+{
+  "id": "active_generic_sea_05_strange_teacup_castaways",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_sea_05_strange_teacup_castaways.title",
+  "textKey": "event.active_generic_sea_05_strange_teacup_castaways.text",
+  "choices": [
+    {
+      "id": "tow_cup",
+      "textKey": "event.active_generic_sea_05_strange_teacup_castaways.choice.tow_cup.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "towed",
+          "textKey": "event.active_generic_sea_05_strange_teacup_castaways.choice.tow_cup.outcome.towed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_teacup_castaways_i01_spoon_spin"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "board_people",
+      "textKey": "event.active_generic_sea_05_strange_teacup_castaways.choice.board_people.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "boarded",
+          "textKey": "event.active_generic_sea_05_strange_teacup_castaways.choice.board_people.outcome.boarded.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_teacup_castaways_i01_spoon_spin"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "give_bearings",
+      "textKey": "event.active_generic_sea_05_strange_teacup_castaways.choice.give_bearings.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bearings",
+          "textKey": "event.active_generic_sea_05_strange_teacup_castaways.choice.give_bearings.outcome.bearings.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_teacup_castaways_i01_spoon_spin"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_rescue",
+      "textKey": "event.active_generic_sea_05_strange_teacup_castaways.choice.refuse_rescue.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refused",
+          "textKey": "event.active_generic_sea_05_strange_teacup_castaways.choice.refuse_rescue.outcome.refused.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_teacup_castaways_i01_spoon_spin"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

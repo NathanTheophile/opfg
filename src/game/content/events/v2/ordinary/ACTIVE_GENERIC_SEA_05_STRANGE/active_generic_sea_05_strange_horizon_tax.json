@@ -1,0 +1,198 @@
+{
+  "id": "active_generic_sea_05_strange_horizon_tax",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_sea_05_strange_horizon_tax.title",
+  "textKey": "event.active_generic_sea_05_strange_horizon_tax.text",
+  "choices": [
+    {
+      "id": "forge_exemption",
+      "textKey": "event.active_generic_sea_05_strange_horizon_tax.choice.forge_exemption.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "forge_exemption_criticalfailure",
+            "textKey": "event.active_generic_sea_05_strange_horizon_tax.choice.forge_exemption.outcome.forge_exemption_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_horizon_tax_i01_debtor_stamp"
+              }
+            ]
+          },
+          "failure": {
+            "id": "forge_exemption_failure",
+            "textKey": "event.active_generic_sea_05_strange_horizon_tax.choice.forge_exemption.outcome.forge_exemption_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_horizon_tax_i01_debtor_stamp"
+              }
+            ]
+          },
+          "success": {
+            "id": "forge_exemption_success",
+            "textKey": "event.active_generic_sea_05_strange_horizon_tax.choice.forge_exemption.outcome.forge_exemption_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_horizon_tax_i01_debtor_stamp"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "forge_exemption_criticalsuccess",
+            "textKey": "event.active_generic_sea_05_strange_horizon_tax.choice.forge_exemption.outcome.forge_exemption_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_horizon_tax_i01_debtor_stamp"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "inspect_seal",
+      "textKey": "event.active_generic_sea_05_strange_horizon_tax.choice.inspect_seal.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "inspect_seal_criticalfailure",
+            "textKey": "event.active_generic_sea_05_strange_horizon_tax.choice.inspect_seal.outcome.inspect_seal_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_horizon_tax_i01_debtor_stamp"
+              }
+            ]
+          },
+          "failure": {
+            "id": "inspect_seal_failure",
+            "textKey": "event.active_generic_sea_05_strange_horizon_tax.choice.inspect_seal.outcome.inspect_seal_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_horizon_tax_i01_debtor_stamp"
+              }
+            ]
+          },
+          "success": {
+            "id": "inspect_seal_success",
+            "textKey": "event.active_generic_sea_05_strange_horizon_tax.choice.inspect_seal.outcome.inspect_seal_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_horizon_tax_i01_debtor_stamp"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "inspect_seal_criticalsuccess",
+            "textKey": "event.active_generic_sea_05_strange_horizon_tax.choice.inspect_seal.outcome.inspect_seal_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_horizon_tax_i01_debtor_stamp"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_tax",
+      "textKey": "event.active_generic_sea_05_strange_horizon_tax.choice.pay_tax.text",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 300
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paid",
+          "textKey": "event.active_generic_sea_05_strange_horizon_tax.choice.pay_tax.outcome.paid.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -300
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_horizon_tax_i01_debtor_stamp"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_tax",
+      "textKey": "event.active_generic_sea_05_strange_horizon_tax.choice.refuse_tax.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refused",
+          "textKey": "event.active_generic_sea_05_strange_horizon_tax.choice.refuse_tax.outcome.refused.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_horizon_tax_i01_debtor_stamp"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
