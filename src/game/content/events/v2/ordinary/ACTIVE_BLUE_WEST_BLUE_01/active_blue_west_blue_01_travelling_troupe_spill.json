@@ -1,0 +1,137 @@
+{
+  "id": "active_blue_west_blue_01_travelling_troupe_spill",
+  "kind": "normal",
+  "titleKey": "event.active_blue_west_blue_01_travelling_troupe_spill.title",
+  "textKey": "event.active_blue_west_blue_01_travelling_troupe_spill.text",
+  "choices": [
+    {
+      "id": "take_action",
+      "textKey": "event.active_blue_west_blue_01_travelling_troupe_spill.choice.take_action.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "take_action_criticalfailure",
+            "textKey": "event.active_blue_west_blue_01_travelling_troupe_spill.choice.take_action.outcome.take_action_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_west_blue_01_travelling_troupe_spill_i01_followup"
+              }
+            ]
+          },
+          "failure": {
+            "id": "take_action_failure",
+            "textKey": "event.active_blue_west_blue_01_travelling_troupe_spill.choice.take_action.outcome.take_action_failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_west_blue_01_travelling_troupe_spill_i01_followup"
+              }
+            ]
+          },
+          "success": {
+            "id": "take_action_success",
+            "textKey": "event.active_blue_west_blue_01_travelling_troupe_spill.choice.take_action.outcome.take_action_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_west_blue_01_travelling_troupe_spill_i01_followup"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "take_action_criticalsuccess",
+            "textKey": "event.active_blue_west_blue_01_travelling_troupe_spill.choice.take_action.outcome.take_action_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_west_blue_01_travelling_troupe_spill_i01_followup"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "steady_choice",
+      "textKey": "event.active_blue_west_blue_01_travelling_troupe_spill.choice.steady_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "steady_choice_outcome",
+          "textKey": "event.active_blue_west_blue_01_travelling_troupe_spill.choice.steady_choice.outcome.steady_choice_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "safe_choice",
+      "textKey": "event.active_blue_west_blue_01_travelling_troupe_spill.choice.safe_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safe_choice_outcome",
+          "textKey": "event.active_blue_west_blue_01_travelling_troupe_spill.choice.safe_choice.outcome.safe_choice_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "west_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "entertainment"
+      }
+    ]
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "id": "active_blue_west_blue_01_whale_lane_bell",
+  "kind": "normal",
+  "titleKey": "event.active_blue_west_blue_01_whale_lane_bell.title",
+  "textKey": "event.active_blue_west_blue_01_whale_lane_bell.text",
+  "choices": [
+    {
+      "id": "take_action",
+      "textKey": "event.active_blue_west_blue_01_whale_lane_bell.choice.take_action.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "take_action_criticalfailure",
+            "textKey": "event.active_blue_west_blue_01_whale_lane_bell.choice.take_action.outcome.take_action_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "take_action_failure",
+            "textKey": "event.active_blue_west_blue_01_whale_lane_bell.choice.take_action.outcome.take_action_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "take_action_success",
+            "textKey": "event.active_blue_west_blue_01_whale_lane_bell.choice.take_action.outcome.take_action_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "take_action_criticalsuccess",
+            "textKey": "event.active_blue_west_blue_01_whale_lane_bell.choice.take_action.outcome.take_action_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "steady_choice",
+      "textKey": "event.active_blue_west_blue_01_whale_lane_bell.choice.steady_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "steady_choice_outcome",
+          "textKey": "event.active_blue_west_blue_01_whale_lane_bell.choice.steady_choice.outcome.steady_choice_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "safe_choice",
+      "textKey": "event.active_blue_west_blue_01_whale_lane_bell.choice.safe_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safe_choice_outcome",
+          "textKey": "event.active_blue_west_blue_01_whale_lane_bell.choice.safe_choice.outcome.safe_choice_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "west_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

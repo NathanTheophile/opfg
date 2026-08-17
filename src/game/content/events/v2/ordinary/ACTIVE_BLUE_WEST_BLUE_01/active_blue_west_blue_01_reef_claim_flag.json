@@ -1,0 +1,73 @@
+{
+  "id": "active_blue_west_blue_01_reef_claim_flag",
+  "kind": "normal",
+  "titleKey": "event.active_blue_west_blue_01_reef_claim_flag.title",
+  "textKey": "event.active_blue_west_blue_01_reef_claim_flag.text",
+  "choices": [
+    {
+      "id": "take_action",
+      "textKey": "event.active_blue_west_blue_01_reef_claim_flag.choice.take_action.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_action_outcome",
+          "textKey": "event.active_blue_west_blue_01_reef_claim_flag.choice.take_action.outcome.take_action_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_west_blue_01_reef_claim_flag_s02_notice",
+              "delayMonths": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "steady_choice",
+      "textKey": "event.active_blue_west_blue_01_reef_claim_flag.choice.steady_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "steady_choice_outcome",
+          "textKey": "event.active_blue_west_blue_01_reef_claim_flag.choice.steady_choice.outcome.steady_choice_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "safe_choice",
+      "textKey": "event.active_blue_west_blue_01_reef_claim_flag.choice.safe_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safe_choice_outcome",
+          "textKey": "event.active_blue_west_blue_01_reef_claim_flag.choice.safe_choice.outcome.safe_choice_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "west_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 414
+      }
+    ]
+  }
+}

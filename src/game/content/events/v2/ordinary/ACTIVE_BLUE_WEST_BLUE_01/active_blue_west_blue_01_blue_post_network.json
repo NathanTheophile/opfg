@@ -1,0 +1,125 @@
+{
+  "id": "active_blue_west_blue_01_blue_post_network",
+  "kind": "normal",
+  "titleKey": "event.active_blue_west_blue_01_blue_post_network.title",
+  "textKey": "event.active_blue_west_blue_01_blue_post_network.text",
+  "choices": [
+    {
+      "id": "take_action",
+      "textKey": "event.active_blue_west_blue_01_blue_post_network.choice.take_action.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "take_action_criticalfailure",
+            "textKey": "event.active_blue_west_blue_01_blue_post_network.choice.take_action.outcome.take_action_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_west_blue_01_blue_post_network_i01_followup"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "take_action_failure",
+            "textKey": "event.active_blue_west_blue_01_blue_post_network.choice.take_action.outcome.take_action_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_west_blue_01_blue_post_network_i01_followup"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "take_action_success",
+            "textKey": "event.active_blue_west_blue_01_blue_post_network.choice.take_action.outcome.take_action_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_west_blue_01_blue_post_network_i01_followup"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "take_action_criticalsuccess",
+            "textKey": "event.active_blue_west_blue_01_blue_post_network.choice.take_action.outcome.take_action_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_west_blue_01_blue_post_network_i01_followup"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "steady_choice",
+      "textKey": "event.active_blue_west_blue_01_blue_post_network.choice.steady_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "steady_choice_outcome",
+          "textKey": "event.active_blue_west_blue_01_blue_post_network.choice.steady_choice.outcome.steady_choice_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "safe_choice",
+      "textKey": "event.active_blue_west_blue_01_blue_post_network.choice.safe_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safe_choice_outcome",
+          "textKey": "event.active_blue_west_blue_01_blue_post_network.choice.safe_choice.outcome.safe_choice_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "west_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 306
+      }
+    ]
+  },
+  "lifetimeThreadSeed": true
+}
