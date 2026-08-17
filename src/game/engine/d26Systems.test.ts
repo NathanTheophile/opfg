@@ -10,7 +10,8 @@ import { canUseCrewRolePower, navigatorDestinations, useCrewRolePower } from './
 import { findCrewRoleActor } from './dice';
 import { getPlayerMaxHealth } from './health';
 import { moveItem } from './inventory';
-import { beginMaritimeEmergency } from './maritime';
+import { beginMaritimeEmergency, blueArrivalProbabilityForCrossingRoot, resolveOrdinaryBlueArrivalAfterMonthlyRoot } from './maritime';
+import { movePlayerToLocation } from './locations';
 import { consumePhaseSlot } from './time';
 
 describe('D2.6 systems hardening', () => {
@@ -44,6 +45,7 @@ describe('D2.6 systems hardening', () => {
   it('shares annual role cooldown and selects crewRole actor by effective stat then ID', () => {
     const state = createInitialGameState();
     state.npcs.mira = { ...createDefaultNpcState(), status: 'crew', stats: { ...createDefaultNpcState().stats, navigation: 40 } };
+    state.ship = { shipId: 'sloop', name: 'Test', health: 30, cargo: [] };
     expect(canUseCrewRolePower(state, contentCatalog, 'navigator')).toBe(true);
     expect(findCrewRoleActor(state, contentCatalog, 'navigator', 'navigation')).toBe('mira');
     const destination = contentCatalog.locations.find(({ id, seaId, allowsDocking }) => id !== state.locationId && seaId === 'east_blue' && allowsDocking)!;
@@ -102,6 +104,7 @@ describe('D2.6 systems hardening', () => {
     const state = createInitialGameState();
     state.locationId = 'dressrosa';
     state.npcs.mira = { ...createDefaultNpcState(), status: 'crew' };
+    state.ship = { shipId: 'sloop', name: 'Test', health: 30, cargo: [] };
     state.shipMarketArrivalPending = false;
     const destinations = navigatorDestinations(state, contentCatalog);
     const marketDestination = destinations.find(({ hasMarketHub }) => hasMarketHub);
@@ -121,6 +124,51 @@ describe('D2.6 systems hardening', () => {
     expect(state.slotInMonth).toBe(slotInMonth);
   });
 
+
+  it('keeps ordinary Blue crossings seeded, rising, and capped at three monthly roots', () => {
+    expect([0, 1, 2, 3, 4].map(blueArrivalProbabilityForCrossingRoot)).toEqual([0, 0.35, 0.70, 1, 1]);
+
+    const state = createInitialGameState(12345);
+    state.careerPhase = 'active';
+    state.ageMonths = 180;
+    state.locationId = 'foosha_village';
+    state.ship = { shipId: 'sloop', name: 'Test', health: 30, cargo: [] };
+    movePlayerToLocation(state, state.locationId, 'at_sea');
+
+    expect(state.navigationDecisionAgeMonths).toBe(180);
+    expect(resolveOrdinaryBlueArrivalAfterMonthlyRoot(state, contentCatalog)).toBe(false);
+
+    state.ageMonths = 183;
+    expect(resolveOrdinaryBlueArrivalAfterMonthlyRoot(state, contentCatalog)).toBe(true);
+    expect(state.travelState).toBe('on_land');
+    expect(contentCatalog.locations.find(({ id }) => id === state.locationId)?.seaId).toBe('east_blue');
+    expect(contentCatalog.locations.find(({ id }) => id === state.locationId)?.islandId).not.toBe('dawn_island');
+    expect(state.locationId).not.toBe('reverse_mountain');
+    expect(state.shipMarketArrivalPending).toBe(true);
+  });
+
+  it('locks Navigator geography to Blue + Reverse Mountain, none in Paradise, global from New World', () => {
+    const state = createInitialGameState();
+    state.npcs.mira = { ...createDefaultNpcState(), status: 'crew' };
+    state.ship = { shipId: 'sloop', name: 'Test', health: 30, cargo: [] };
+
+    state.locationId = 'foosha_village';
+    const blueIds = navigatorDestinations(state, contentCatalog).map(({ id }) => id);
+    expect(blueIds).toContain('reverse_mountain');
+    expect(blueIds).toContain('orange_town');
+    expect(blueIds).not.toContain('baterilla');
+
+    state.locationId = 'alabasta_kingdom';
+    expect(navigatorDestinations(state, contentCatalog)).toEqual([]);
+    expect(canUseCrewRolePower(state, contentCatalog, 'navigator')).toBe(false);
+
+    state.locationId = 'dressrosa';
+    const newWorldIds = navigatorDestinations(state, contentCatalog).map(({ id }) => id);
+    expect(newWorldIds).toContain('orange_town');
+    expect(newWorldIds).toContain('alabasta_kingdom');
+    expect(newWorldIds).not.toContain('reverse_mountain');
+    expect(newWorldIds).not.toContain('egghead_island');
+  });
 
   it.each([['poor', 5000], ['modest', 7500], ['wealthy', 15000]] as const)('pays %s Childhood income', (socialClassId, expected) => {
     let state = createInitialGameState(); state.careerPhase = 'childhood'; state.player.profile.raceId = 'human'; state.player.profile.socialClassId = socialClassId;

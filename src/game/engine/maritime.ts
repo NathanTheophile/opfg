@@ -2,11 +2,42 @@ import worldData from '../content/data/locationsV1.json';
 import type { ContentCatalog, EventDefinition } from '../content/schema';
 import type { GameState, LocationId, MaritimeEmergencyState, NpcId, ShipDamageCause } from '../model/schema';
 import { nextRandom } from './rng';
-import { movePlayerToLocation } from './locations';
+import { getOrdinaryDestinationIds, movePlayerToLocation } from './locations';
 
 const FALLBACK_IDS = new Set(['dead_end_on_land', 'dead_end_at_sea']);
 const EXCLUDED_EXTREME_SEAS = new Set(['sky', 'underwater', 'red_line']);
 const outsideMetadata = new Map(worldData.outsideBlueLocations.map((location) => [location.id, location]));
+const BLUE_SEAS = new Set(['east_blue', 'west_blue', 'north_blue', 'south_blue']);
+
+export function blueArrivalProbabilityForCrossingRoot(rootCount: number): number {
+  if (rootCount <= 0) return 0;
+  if (rootCount === 1) return 0.35;
+  if (rootCount === 2) return 0.70;
+  return 1;
+}
+
+export function resolveOrdinaryBlueArrivalAfterMonthlyRoot(state: GameState, catalog: ContentCatalog): boolean {
+  if (state.careerStatus !== 'active' || state.careerPhase !== 'active' || state.travelState !== 'at_sea' || state.ship === null || state.maritimeEmergency !== null) return false;
+  if (state.player.stats.health <= 0 || state.ship.health <= 0 || state.navigationDecisionAgeMonths === null) return false;
+  const current = catalog.locations.find(({ id }) => id === state.locationId);
+  if (!current || !BLUE_SEAS.has(current.seaId)) return false;
+
+  const crossingRoots = state.ageMonths - state.navigationDecisionAgeMonths;
+  const probability = blueArrivalProbabilityForCrossingRoot(crossingRoots);
+  if (probability <= 0) return false;
+
+  const destinationIds = getOrdinaryDestinationIds(state.locationId, catalog);
+  if (destinationIds.length === 0) return false;
+
+  const arrivalRoll = nextRandom(state.rngState);
+  state.rngState = arrivalRoll.nextState;
+  if (arrivalRoll.value >= probability) return false;
+
+  const destinationRoll = nextRandom(state.rngState);
+  state.rngState = destinationRoll.nextState;
+  movePlayerToLocation(state, destinationIds[Math.floor(destinationRoll.value * destinationIds.length)], 'on_land');
+  return true;
+}
 
 export function findBestSwimmingRescuer(state: GameState, requireNoDevilFruit = true): NpcId | undefined {
   return Object.entries(state.npcs)

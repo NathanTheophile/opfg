@@ -9,6 +9,7 @@ import { nextRandom } from './rng';
 import { findCriticalEvent, findCurrentEvent, selectNextEvent } from './events';
 import { isMarketSystemEventId, marketReturnEvent } from './marketEvents';
 import { applyNavigationSystemResolution, isNavigationSystemEventId } from './navigation';
+import { resolveOrdinaryBlueArrivalAfterMonthlyRoot } from './maritime';
 import { consumePhaseSlot, finalizePendingSlot } from './time';
 
 const MAX_IMMEDIATE_EVENTS_PER_CHAIN = 1000;
@@ -114,19 +115,28 @@ function finalizeOutcome(
     };
   }
 
+  let completedMonthlyRoot = false;
   if (event.kind === 'immediate') {
     if (resolvedState.immediateEventQueue[0] !== event.id) throw new Error(`Immediate Event "${event.id}" is not at the head of the pending queue.`);
     const immediateEventsResolvedInChain = resolvedState.immediateEventsResolvedInChain + 1;
     if (immediateEventsResolvedInChain > MAX_IMMEDIATE_EVENTS_PER_CHAIN) throw new Error(`Immediate Event chain exceeded runtime guard (${MAX_IMMEDIATE_EVENTS_PER_CHAIN}).`);
     resolvedState = { ...resolvedState, immediateEventQueue: resolvedState.immediateEventQueue.slice(1), immediateEventsResolvedInChain };
   } else if (event.kind === 'normal' || event.kind === 'scheduled') {
-    resolvedState = resolvedState.immediateEventQueue.length > 0
-      ? { ...resolvedState, pendingSlotPhase: state.careerPhase, immediateEventsResolvedInChain: 0 }
-      : consumePhaseSlot(resolvedState, state.careerPhase, catalog);
+    if (resolvedState.immediateEventQueue.length > 0) {
+      resolvedState = { ...resolvedState, pendingSlotPhase: state.careerPhase, immediateEventsResolvedInChain: 0 };
+    } else {
+      resolvedState = consumePhaseSlot(resolvedState, state.careerPhase, catalog);
+      completedMonthlyRoot = true;
+    }
   }
 
   if (resolvedState.pendingSlotPhase !== null && resolvedState.immediateEventQueue.length === 0 && findCriticalEvent(resolvedState, catalog.events) === undefined) {
     resolvedState = finalizePendingSlot(resolvedState, catalog);
+    completedMonthlyRoot = true;
+  }
+
+  if (completedMonthlyRoot && findCriticalEvent(resolvedState, catalog.events) === undefined) {
+    resolveOrdinaryBlueArrivalAfterMonthlyRoot(resolvedState, catalog);
   }
 
   return {

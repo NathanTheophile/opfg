@@ -1,14 +1,18 @@
 import type { ContentCatalog } from '../content/schema';
 import type { CrewRoleId, GameState, LocationId } from '../model/schema';
 import { effectivePlayerStat } from './stats';
-import { getOrdinaryDestinationIds, movePlayerToLocation } from './locations';
+import { getNavigatorDestinationIds, movePlayerToLocation } from './locations';
 
 export const currentYearIndex = (state: GameState) => Math.floor(state.ageMonths / 12);
 
 export function canUseCrewRolePower(state: GameState, catalog: ContentCatalog, roleId: CrewRoleId): boolean {
-  return catalog.crewRoles.some(({ id, annualPower }) => id === roleId && annualPower !== undefined)
-    && Object.entries(state.npcs).some(([npcId, npc]) => npc.status === 'crew' && catalog.npcs.find(({ id }) => id === npcId)?.crewRoleId === roleId)
+  const role = catalog.crewRoles.find(({ id }) => id === roleId);
+  if (role?.annualPower === undefined) return false;
+  const available = Object.entries(state.npcs).some(([npcId, npc]) => npc.status === 'crew' && npc.stats.health > 0 && catalog.npcs.find(({ id }) => id === npcId)?.crewRoleId === roleId)
     && state.crewRoleLastUsedYear[roleId] !== currentYearIndex(state);
+  if (!available) return false;
+  if (role.annualPower === 'navigator') return state.isLeader && state.ship !== null && navigatorDestinations(state, catalog).length > 0;
+  return true;
 }
 
 export function useCrewRolePower(state: GameState, catalog: ContentCatalog, roleId: CrewRoleId, destinationId?: LocationId): void {
@@ -27,7 +31,7 @@ export function useCrewRolePower(state: GameState, catalog: ContentCatalog, role
 }
 
 export function navigatorDestinations(state: GameState, catalog: ContentCatalog) {
-  const destinationIds = new Set(getOrdinaryDestinationIds(state.locationId, catalog));
+  const destinationIds = new Set(getNavigatorDestinationIds(state.locationId, catalog));
   return catalog.locations.filter(({ id }) => destinationIds.has(id));
 }
 

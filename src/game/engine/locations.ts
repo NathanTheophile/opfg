@@ -8,6 +8,9 @@ export function findLocation(catalog: ContentCatalog, locationId: LocationId): L
 }
 
 export function movePlayerToLocation(state: GameState, locationId: LocationId, travelState: TravelState): void {
+  const departsToSea =
+    travelState === 'at_sea'
+    && state.travelState === 'on_land';
   const arrivesOnLand =
     travelState === 'on_land'
     && (state.locationId !== locationId || state.travelState !== 'on_land');
@@ -15,7 +18,9 @@ export function movePlayerToLocation(state: GameState, locationId: LocationId, t
   state.locationId = locationId;
   state.travelState = travelState;
 
-  if (arrivesOnLand) {
+  if (departsToSea) {
+    state.navigationDecisionAgeMonths = state.ageMonths;
+  } else if (arrivesOnLand) {
     state.shipMarketArrivalPending = true;
     state.navigationDecisionAgeMonths = state.ageMonths;
   }
@@ -44,6 +49,19 @@ export function findDockableAccess(catalog: ContentCatalog, locationId: Location
   return [current, ...getLocationAncestors(catalog, locationId)].find((location) => location?.allowsDocking);
 }
 
+const BLUE_SEAS = new Set<SeaId>([
+  'east_blue',
+  'west_blue',
+  'north_blue',
+  'south_blue',
+]);
+
+const STANDARD_MARITIME_SEAS = new Set<SeaId>([
+  ...BLUE_SEAS,
+  'grand_line_paradise',
+  'new_world',
+]);
+
 const PLAYER_DIRECT_NAVIGATION_SEAS = new Set<SeaId>([
   'east_blue',
   'west_blue',
@@ -51,6 +69,8 @@ const PLAYER_DIRECT_NAVIGATION_SEAS = new Set<SeaId>([
   'south_blue',
   'grand_line_paradise',
 ]);
+
+const OUTSIDE_LOCATION_METADATA = new Map(worldData.outsideBlueLocations.map((location) => [location.id, location]));
 
 const ORDINARY_ACCESS_LOCATION_IDS = new Set<LocationId>([
   ...worldData.blueLocations.map(({ id }) => id),
@@ -78,6 +98,33 @@ export function getOrdinaryDestinationIds(currentId: LocationId, catalog: Conten
       && location.islandId !== current.islandId
       && location.allowsDocking
       && ORDINARY_ACCESS_LOCATION_IDS.has(location.id))
+    .map(({ id }) => id)
+    .sort();
+}
+
+/** Direct destinations exposed only by the annual Navigator crew-role power. */
+export function getNavigatorDestinationIds(currentId: LocationId, catalog: ContentCatalog): LocationId[] {
+  const current = findLocation(catalog, currentId);
+  if (!current) return [];
+
+  if (BLUE_SEAS.has(current.seaId)) {
+    const destinationIds = new Set(getOrdinaryDestinationIds(currentId, catalog));
+    if (catalog.locations.some(({ id }) => id === 'reverse_mountain')) destinationIds.add('reverse_mountain');
+    return [...destinationIds].sort();
+  }
+
+  if (current.seaId === 'grand_line_paradise') return [];
+  if (current.seaId !== 'new_world') return [];
+
+  return catalog.locations
+    .filter((location) => location.islandId !== current.islandId)
+    .filter((location) => STANDARD_MARITIME_SEAS.has(location.seaId))
+    .filter((location) => location.allowsDocking)
+    .filter((location) => location.id !== 'reverse_mountain')
+    .filter((location) => {
+      const access = OUTSIDE_LOCATION_METADATA.get(location.id)?.access;
+      return access === undefined || access === 'normal' || access === 'route';
+    })
     .map(({ id }) => id)
     .sort();
 }
