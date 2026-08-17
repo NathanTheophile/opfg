@@ -875,3 +875,63 @@
     --ui-hud-slot-size: 1.7rem;
   }
 }
+
+/* OPFG ORIENTATION HUD MODE START */
+
+@media (orientation: portrait) {
+  .opfg-top-world-hud {
+    max-width:
+      min(
+        100%,
+        var(--ui-hud-center-width, 32rem)
+      ) !important;
+
+    grid-template-columns:
+      minmax(0, 1fr) !important;
+  }
+
+  .opfg-top-world-hud
+    > .opfg-hud-inventory-stack,
+  .opfg-top-world-hud
+    > .opfg-hud-panel--ship {
+    display: none !important;
+  }
+
+  .opfg-hud-panel--identity {
+    min-height: auto !important;
+  }
+}
+
+@media (orientation: landscape) {
+  .opfg-top-world-hud {
+    max-width:
+      calc(
+        var(--ui-hud-side-width, 15.5rem)
+        + var(--ui-hud-side-width, 15.5rem)
+        + var(--ui-hud-center-width, 32rem)
+        + var(--ui-hud-group-gap, 0.75rem)
+        + var(--ui-hud-group-gap, 0.75rem)
+      ) !important;
+
+    grid-template-columns:
+      var(--ui-hud-side-width, 15.5rem)
+      minmax(
+        0,
+        var(--ui-hud-center-width, 32rem)
+      )
+      var(--ui-hud-side-width, 15.5rem)
+      !important;
+  }
+
+  .opfg-top-world-hud
+    > .opfg-hud-inventory-stack {
+    display: grid !important;
+  }
+
+  .opfg-top-world-hud
+    > .opfg-hud-panel--ship {
+    display: grid !important;
+  }
+}
+
+/* OPFG ORIENTATION HUD MODE END */

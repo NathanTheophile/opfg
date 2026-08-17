@@ -784,3 +784,65 @@
     padding-inline: 0.48rem !important;
   }
 }
+
+/* OPFG RESPONSIVE GAMEPLAY SCALE START */
+
+.opfg-game-screen {
+  width: 100%;
+  height: 100dvh;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.opfg-game-scale-content {
+  --opfg-game-ui-scale: 1;
+
+  position: relative;
+  transform:
+    scale(var(--opfg-game-ui-scale));
+  transform-origin: top center;
+  will-change: transform;
+}
+
+/*
+ * Do not solve short viewports by clipping/scrolling the narrative.
+ * The complete gameplay composition is what gets resized.
+ */
+.opfg-game-screen
+  .opfg-adventure-scroll {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/*
+ * Side rails are selected by aspect orientation.
+ */
+.opfg-game-side-rail {
+  display: none !important;
+}
+
+@media (orientation: landscape) {
+  .opfg-game-side-rail--stats {
+    display: flex !important;
+  }
+
+  .opfg-game-side-rail--crew {
+    display: block !important;
+  }
+}
+
+@media (orientation: portrait) {
+  .opfg-game-side-rail {
+    display: none !important;
+  }
+
+  .opfg-game-scale-content {
+    max-width: 32rem !important;
+  }
+
+  .opfg-game-adventure-region {
+    max-width: 32rem !important;
+  }
+}
+
+/* OPFG RESPONSIVE GAMEPLAY SCALE END */
