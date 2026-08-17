@@ -1,0 +1,126 @@
+{
+  "id": "active_blue_north_blue_01_blackglass_black_ledger",
+  "kind": "normal",
+  "titleKey": "event.active_blue_north_blue_01_blackglass_black_ledger.title",
+  "textKey": "event.active_blue_north_blue_01_blackglass_black_ledger.text",
+  "choices": [
+    {
+      "id": "approach_1",
+      "textKey": "event.active_blue_north_blue_01_blackglass_black_ledger.choice.approach_1.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_1_outcome",
+          "textKey": "event.active_blue_north_blue_01_blackglass_black_ledger.choice.approach_1.outcome.approach_1_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_north_blue_01_st_ledger_s02_alias",
+              "delayMonths": 9
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_north_blue_01_blackglass_black_ledger_i01_missing_page"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "approach_2",
+      "textKey": "event.active_blue_north_blue_01_blackglass_black_ledger.choice.approach_2.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_2_outcome",
+          "textKey": "event.active_blue_north_blue_01_blackglass_black_ledger.choice.approach_2.outcome.approach_2_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_north_blue_01_st_ledger_s02_alias",
+              "delayMonths": 9
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_north_blue_01_blackglass_black_ledger_i01_missing_page"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "approach_3",
+      "textKey": "event.active_blue_north_blue_01_blackglass_black_ledger.choice.approach_3.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_3_outcome",
+          "textKey": "event.active_blue_north_blue_01_blackglass_black_ledger.choice.approach_3.outcome.approach_3_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_north_blue_01_st_ledger_s02_alias",
+              "delayMonths": 9
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_north_blue_01_blackglass_black_ledger_i01_missing_page"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "criminal"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "black_market"
+          }
+        ]
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "flevance"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "germa_empire"
+        }
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 401
+      }
+    ]
+  }
+}

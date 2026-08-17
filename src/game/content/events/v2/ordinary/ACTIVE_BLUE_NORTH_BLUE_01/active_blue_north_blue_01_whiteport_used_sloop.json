@@ -1,0 +1,87 @@
+{
+  "id": "active_blue_north_blue_01_whiteport_used_sloop",
+  "kind": "normal",
+  "titleKey": "event.active_blue_north_blue_01_whiteport_used_sloop.title",
+  "textKey": "event.active_blue_north_blue_01_whiteport_used_sloop.text",
+  "choices": [
+    {
+      "id": "approach_1",
+      "textKey": "event.active_blue_north_blue_01_whiteport_used_sloop.choice.approach_1.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_1_outcome",
+          "textKey": "event.active_blue_north_blue_01_whiteport_used_sloop.choice.approach_1.outcome.approach_1_outcome.text",
+          "effects": [
+            {
+              "type": "buyShip",
+              "shipId": "sloop"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "canAcquireShip",
+        "shipId": "sloop"
+      }
+    },
+    {
+      "id": "approach_2",
+      "textKey": "event.active_blue_north_blue_01_whiteport_used_sloop.choice.approach_2.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_2_outcome",
+          "textKey": "event.active_blue_north_blue_01_whiteport_used_sloop.choice.approach_2.outcome.approach_2_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "approach_3",
+      "textKey": "event.active_blue_north_blue_01_whiteport_used_sloop.choice.approach_3.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_3_outcome",
+          "textKey": "event.active_blue_north_blue_01_whiteport_used_sloop.choice.approach_3.outcome.approach_3_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "shipyard"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "flevance"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "germa_empire"
+        }
+      }
+    ]
+  }
+}

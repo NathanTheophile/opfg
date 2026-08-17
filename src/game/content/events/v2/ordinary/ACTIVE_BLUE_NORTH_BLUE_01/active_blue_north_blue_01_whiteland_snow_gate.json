@@ -1,0 +1,144 @@
+{
+  "id": "active_blue_north_blue_01_whiteland_snow_gate",
+  "kind": "normal",
+  "titleKey": "event.active_blue_north_blue_01_whiteland_snow_gate.title",
+  "textKey": "event.active_blue_north_blue_01_whiteland_snow_gate.text",
+  "choices": [
+    {
+      "id": "risk",
+      "textKey": "event.active_blue_north_blue_01_whiteland_snow_gate.choice.risk.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "risk_criticalfailure",
+            "textKey": "event.active_blue_north_blue_01_whiteland_snow_gate.choice.risk.outcome.risk_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_whiteland_snow_gate_i01_last_cart"
+              }
+            ]
+          },
+          "failure": {
+            "id": "risk_failure",
+            "textKey": "event.active_blue_north_blue_01_whiteland_snow_gate.choice.risk.outcome.risk_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_whiteland_snow_gate_i01_last_cart"
+              }
+            ]
+          },
+          "success": {
+            "id": "risk_success",
+            "textKey": "event.active_blue_north_blue_01_whiteland_snow_gate.choice.risk.outcome.risk_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_whiteland_snow_gate_i01_last_cart"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "risk_criticalsuccess",
+            "textKey": "event.active_blue_north_blue_01_whiteland_snow_gate.choice.risk.outcome.risk_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_whiteland_snow_gate_i01_last_cart"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "approach_1",
+      "textKey": "event.active_blue_north_blue_01_whiteland_snow_gate.choice.approach_1.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_1_outcome",
+          "textKey": "event.active_blue_north_blue_01_whiteland_snow_gate.choice.approach_1.outcome.approach_1_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_north_blue_01_whiteland_snow_gate_i01_last_cart"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "approach_2",
+      "textKey": "event.active_blue_north_blue_01_whiteland_snow_gate.choice.approach_2.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_2_outcome",
+          "textKey": "event.active_blue_north_blue_01_whiteland_snow_gate.choice.approach_2.outcome.approach_2_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_north_blue_01_whiteland_snow_gate_i01_last_cart"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "snow"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "flevance"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "germa_empire"
+        }
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "royal"
+      }
+    ]
+  }
+}

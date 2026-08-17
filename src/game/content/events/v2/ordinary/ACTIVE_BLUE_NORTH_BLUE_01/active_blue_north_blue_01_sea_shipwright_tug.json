@@ -1,0 +1,130 @@
+{
+  "id": "active_blue_north_blue_01_sea_shipwright_tug",
+  "kind": "normal",
+  "titleKey": "event.active_blue_north_blue_01_sea_shipwright_tug.title",
+  "textKey": "event.active_blue_north_blue_01_sea_shipwright_tug.text",
+  "choices": [
+    {
+      "id": "risk",
+      "textKey": "event.active_blue_north_blue_01_sea_shipwright_tug.choice.risk.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "risk_criticalfailure",
+            "textKey": "event.active_blue_north_blue_01_sea_shipwright_tug.choice.risk.outcome.risk_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_sea_shipwright_tug_i01_split_hawser"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "risk_failure",
+            "textKey": "event.active_blue_north_blue_01_sea_shipwright_tug.choice.risk.outcome.risk_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_sea_shipwright_tug_i01_split_hawser"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "risk_success",
+            "textKey": "event.active_blue_north_blue_01_sea_shipwright_tug.choice.risk.outcome.risk_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_sea_shipwright_tug_i01_split_hawser"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "risk_criticalsuccess",
+            "textKey": "event.active_blue_north_blue_01_sea_shipwright_tug.choice.risk.outcome.risk_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_sea_shipwright_tug_i01_split_hawser"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "approach_1",
+      "textKey": "event.active_blue_north_blue_01_sea_shipwright_tug.choice.approach_1.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_1_outcome",
+          "textKey": "event.active_blue_north_blue_01_sea_shipwright_tug.choice.approach_1.outcome.approach_1_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_north_blue_01_sea_shipwright_tug_i01_split_hawser"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "approach_2",
+      "textKey": "event.active_blue_north_blue_01_sea_shipwright_tug.choice.approach_2.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_2_outcome",
+          "textKey": "event.active_blue_north_blue_01_sea_shipwright_tug.choice.approach_2.outcome.approach_2_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_north_blue_01_sea_shipwright_tug_i01_split_hawser"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}
