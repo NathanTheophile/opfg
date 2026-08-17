@@ -1,4 +1,5 @@
 import type { StorageLike } from '../engine/save';
+import { FAMILY_UNIQUE_ITEM_IDS, ORIGIN_ACHIEVEMENT_SEAS, PLAYABLE_ACHIEVEMENT_RACES } from './catalog';
 import { ACHIEVEMENT_IDS } from './model';
 import type { AchievementId, MetaProgressionState } from './model';
 import { createMetaProgressionState, META_PROGRESSION_VERSION } from './metaProgression';
@@ -30,21 +31,30 @@ export function deserializeMetaProgression(raw: string): MetaProgressionState {
 
     const unlockedIds = isRecord(value.unlocks)
       ? Object.entries(value.unlocks)
-          .filter(([id, unlock]) => isAchievementId(id) && isRecord(unlock) && typeof unlock.unlockedAt === 'number' && Number.isFinite(unlock.unlockedAt))
+          .filter(([id, unlock]) => isAchievementId(id) && isRecord(unlock) && typeof unlock.unlockedAt === 'number' && Number.isFinite(unlock.unlockedAt) && unlock.unlockedAt >= 0)
           .map(([id, unlock]) => [id as AchievementId, { unlockedAt: (unlock as { unlockedAt: number }).unlockedAt }] as const)
       : [];
 
     return {
       version: META_PROGRESSION_VERSION,
       unlocks: Object.fromEntries(unlockedIds),
-      completedChildhoodRaceIds: readStringArray(value.completedChildhoodRaceIds),
-      discoveredFamilyUniqueItemIds: readStringArray(value.discoveredFamilyUniqueItemIds),
-      consumedDevilFruitTypes: readStringArray(value.consumedDevilFruitTypes).filter((type): type is 'paramecia' | 'zoan' | 'logia' => ['paramecia', 'zoan', 'logia'].includes(type)),
-      startedOriginSeaIds: readStringArray(value.startedOriginSeaIds),
+      completedChildhoodRaceIds: readStringArray(value.completedChildhoodRaceIds)
+        .filter((id) => (PLAYABLE_ACHIEVEMENT_RACES as readonly string[]).includes(id)),
+      discoveredFamilyUniqueItemIds: readStringArray(value.discoveredFamilyUniqueItemIds)
+        .filter(isFamilyUniqueItemId),
+      consumedDevilFruitTypes: readStringArray(value.consumedDevilFruitTypes)
+        .filter((type): type is 'paramecia' | 'zoan' | 'logia' => ['paramecia', 'zoan', 'logia'].includes(type)),
+      startedOriginSeaIds: readStringArray(value.startedOriginSeaIds)
+        .filter((id) => (ORIGIN_ACHIEVEMENT_SEAS as readonly string[]).includes(id)),
     };
   } catch {
     return createMetaProgressionState();
   }
+}
+
+function isFamilyUniqueItemId(value: string): boolean {
+  return Object.values(FAMILY_UNIQUE_ITEM_IDS)
+    .some((ids) => (ids as readonly string[]).includes(value));
 }
 
 function isAchievementId(value: string): value is AchievementId {

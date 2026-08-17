@@ -8,8 +8,10 @@ import {
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Button, Panel } from '@/components/ui';
+import { loadMetaProgression } from '@/game/achievements/storage';
 import type { ContentCatalog } from '@/game/content/schema';
 import type { StorageLike } from '@/game/engine/save';
+import { AchievementsPanel } from '@/features/achievements/AchievementsPanel';
 import {
   loadLocale,
   saveLocale,
@@ -280,7 +282,14 @@ export function LandingPage({
             </button>
 
             <h2>{activeSectionLabel}</h2>
-            <p>{translate('ui.landing.placeholder')}</p>
+            {activeSection === 'achievements' ? (
+              <AchievementsPanel
+                metaProgression={loadMetaProgression(storage)}
+                locale={locale}
+              />
+            ) : (
+              <p>{translate('ui.landing.placeholder')}</p>
+            )}
           </Panel>
         </div>
       )}
