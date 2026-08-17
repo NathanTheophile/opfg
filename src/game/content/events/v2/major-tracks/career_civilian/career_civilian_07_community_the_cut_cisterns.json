@@ -1,0 +1,195 @@
+{
+  "id": "career_civilian_07_community_the_cut_cisterns",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_06_trade_scales_bearing_your_name",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_06_horizon_the_map_worth_too_much",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_06_craft_the_crane_before_everyone",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_06_community_the_empty_seat",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_06_fallback",
+            "choiceId": "community"
+          }
+        ]
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_civilian",
+    "chapterId": "active_07",
+    "nodeId": "career_civilian_07_community_the_cut_cisterns",
+    "parentNodeIds": [
+      "career_civilian_06_trade_scales_bearing_your_name",
+      "career_civilian_06_horizon_the_map_worth_too_much",
+      "career_civilian_06_craft_the_crane_before_everyone",
+      "career_civilian_06_community_the_empty_seat",
+      "career_civilian_06_fallback"
+    ],
+    "selectionPriority": 20
+  },
+  "titleKey": "event.career_civilian_07_community_the_cut_cisterns.title",
+  "textKey": "event.career_civilian_07_community_the_cut_cisterns.text",
+  "choices": [
+    {
+      "id": "trade",
+      "textKey": "event.career_civilian_07_community_the_cut_cisterns.choice.trade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 2000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_07_community_the_cut_cisterns.choice.trade.outcome.trade.text"
+        }
+      }
+    },
+    {
+      "id": "horizon",
+      "textKey": "event.career_civilian_07_community_the_cut_cisterns.choice.horizon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "horizon",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ],
+          "textKey": "event.career_civilian_07_community_the_cut_cisterns.choice.horizon.outcome.horizon.text"
+        }
+      }
+    },
+    {
+      "id": "craft",
+      "textKey": "event.career_civilian_07_community_the_cut_cisterns.choice.craft.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "craft",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ],
+          "textKey": "event.career_civilian_07_community_the_cut_cisterns.choice.craft.outcome.craft.text"
+        }
+      }
+    },
+    {
+      "id": "community",
+      "textKey": "event.career_civilian_07_community_the_cut_cisterns.choice.community.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "community_critical_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -2
+              }
+            ],
+            "textKey": "event.career_civilian_07_community_the_cut_cisterns.choice.community.outcome.community_critical_failure.text"
+          },
+          "failure": {
+            "id": "community_failure",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.career_civilian_07_community_the_cut_cisterns.choice.community.outcome.community_failure.text"
+          },
+          "success": {
+            "id": "community_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ],
+            "textKey": "event.career_civilian_07_community_the_cut_cisterns.choice.community.outcome.community_success.text"
+          },
+          "criticalSuccess": {
+            "id": "community_critical_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              }
+            ],
+            "textKey": "event.career_civilian_07_community_the_cut_cisterns.choice.community.outcome.community_critical_success.text"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "id": "career_civilian_05_trade_the_withheld_wages",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_trade_the_exclusive_contract",
+            "choiceId": "trade"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_horizon_the_impatient_patron",
+            "choiceId": "trade"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_craft_the_patrons_claim",
+            "choiceId": "trade"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_community_the_rent_of_silence",
+            "choiceId": "trade"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_fallback",
+            "choiceId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_civilian",
+    "chapterId": "active_05",
+    "nodeId": "career_civilian_05_trade_the_withheld_wages",
+    "parentNodeIds": [
+      "career_civilian_04_trade_the_exclusive_contract",
+      "career_civilian_04_horizon_the_impatient_patron",
+      "career_civilian_04_craft_the_patrons_claim",
+      "career_civilian_04_community_the_rent_of_silence",
+      "career_civilian_04_fallback"
+    ],
+    "selectionPriority": 20
+  },
+  "titleKey": "event.career_civilian_05_trade_the_withheld_wages.title",
+  "textKey": "event.career_civilian_05_trade_the_withheld_wages.text",
+  "choices": [
+    {
+      "id": "trade",
+      "textKey": "event.career_civilian_05_trade_the_withheld_wages.choice.trade.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "trade_critical_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "modifyBerries",
+                "amount": -500
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -2
+              }
+            ],
+            "textKey": "event.career_civilian_05_trade_the_withheld_wages.choice.trade.outcome.trade_critical_failure.text"
+          },
+          "failure": {
+            "id": "trade_failure",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.career_civilian_05_trade_the_withheld_wages.choice.trade.outcome.trade_failure.text"
+          },
+          "success": {
+            "id": "trade_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 2250
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ],
+            "textKey": "event.career_civilian_05_trade_the_withheld_wages.choice.trade.outcome.trade_success.text"
+          },
+          "criticalSuccess": {
+            "id": "trade_critical_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 3250
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              }
+            ],
+            "textKey": "event.career_civilian_05_trade_the_withheld_wages.choice.trade.outcome.trade_critical_success.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "horizon",
+      "textKey": "event.career_civilian_05_trade_the_withheld_wages.choice.horizon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "horizon",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_05_trade_the_withheld_wages.choice.horizon.outcome.horizon.text"
+        }
+      }
+    },
+    {
+      "id": "craft",
+      "textKey": "event.career_civilian_05_trade_the_withheld_wages.choice.craft.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "craft",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_05_trade_the_withheld_wages.choice.craft.outcome.craft.text"
+        }
+      }
+    },
+    {
+      "id": "community",
+      "textKey": "event.career_civilian_05_trade_the_withheld_wages.choice.community.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "community",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ],
+          "textKey": "event.career_civilian_05_trade_the_withheld_wages.choice.community.outcome.community.text"
+        }
+      }
+    }
+  ]
+}

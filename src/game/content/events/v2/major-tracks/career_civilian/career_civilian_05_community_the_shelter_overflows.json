@@ -1,0 +1,187 @@
+{
+  "id": "career_civilian_05_community_the_shelter_overflows",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_trade_the_exclusive_contract",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_horizon_the_impatient_patron",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_craft_the_patrons_claim",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_community_the_rent_of_silence",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_fallback",
+            "choiceId": "community"
+          }
+        ]
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_civilian",
+    "chapterId": "active_05",
+    "nodeId": "career_civilian_05_community_the_shelter_overflows",
+    "parentNodeIds": [
+      "career_civilian_04_trade_the_exclusive_contract",
+      "career_civilian_04_horizon_the_impatient_patron",
+      "career_civilian_04_craft_the_patrons_claim",
+      "career_civilian_04_community_the_rent_of_silence",
+      "career_civilian_04_fallback"
+    ],
+    "selectionPriority": 20
+  },
+  "titleKey": "event.career_civilian_05_community_the_shelter_overflows.title",
+  "textKey": "event.career_civilian_05_community_the_shelter_overflows.text",
+  "choices": [
+    {
+      "id": "trade",
+      "textKey": "event.career_civilian_05_community_the_shelter_overflows.choice.trade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1750
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_05_community_the_shelter_overflows.choice.trade.outcome.trade.text"
+        }
+      }
+    },
+    {
+      "id": "horizon",
+      "textKey": "event.career_civilian_05_community_the_shelter_overflows.choice.horizon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "horizon",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_05_community_the_shelter_overflows.choice.horizon.outcome.horizon.text"
+        }
+      }
+    },
+    {
+      "id": "craft",
+      "textKey": "event.career_civilian_05_community_the_shelter_overflows.choice.craft.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "craft",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_05_community_the_shelter_overflows.choice.craft.outcome.craft.text"
+        }
+      }
+    },
+    {
+      "id": "community",
+      "textKey": "event.career_civilian_05_community_the_shelter_overflows.choice.community.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "community_critical_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -2
+              }
+            ],
+            "textKey": "event.career_civilian_05_community_the_shelter_overflows.choice.community.outcome.community_critical_failure.text"
+          },
+          "failure": {
+            "id": "community_failure",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.career_civilian_05_community_the_shelter_overflows.choice.community.outcome.community_failure.text"
+          },
+          "success": {
+            "id": "community_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ],
+            "textKey": "event.career_civilian_05_community_the_shelter_overflows.choice.community.outcome.community_success.text"
+          },
+          "criticalSuccess": {
+            "id": "community_critical_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              }
+            ],
+            "textKey": "event.career_civilian_05_community_the_shelter_overflows.choice.community.outcome.community_critical_success.text"
+          }
+        }
+      }
+    }
+  ]
+}

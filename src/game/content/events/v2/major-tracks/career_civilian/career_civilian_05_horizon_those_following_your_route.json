@@ -1,0 +1,206 @@
+{
+  "id": "career_civilian_05_horizon_those_following_your_route",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_trade_the_exclusive_contract",
+            "choiceId": "horizon"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_horizon_the_impatient_patron",
+            "choiceId": "horizon"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_craft_the_patrons_claim",
+            "choiceId": "horizon"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_community_the_rent_of_silence",
+            "choiceId": "horizon"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_04_fallback",
+            "choiceId": "horizon"
+          }
+        ]
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_civilian",
+    "chapterId": "active_05",
+    "nodeId": "career_civilian_05_horizon_those_following_your_route",
+    "parentNodeIds": [
+      "career_civilian_04_trade_the_exclusive_contract",
+      "career_civilian_04_horizon_the_impatient_patron",
+      "career_civilian_04_craft_the_patrons_claim",
+      "career_civilian_04_community_the_rent_of_silence",
+      "career_civilian_04_fallback"
+    ],
+    "selectionPriority": 20
+  },
+  "titleKey": "event.career_civilian_05_horizon_those_following_your_route.title",
+  "textKey": "event.career_civilian_05_horizon_those_following_your_route.text",
+  "choices": [
+    {
+      "id": "trade",
+      "textKey": "event.career_civilian_05_horizon_those_following_your_route.choice.trade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1750
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_05_horizon_those_following_your_route.choice.trade.outcome.trade.text"
+        }
+      }
+    },
+    {
+      "id": "horizon",
+      "textKey": "event.career_civilian_05_horizon_those_following_your_route.choice.horizon.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "horizon_critical_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_05_horizon_those_following_your_route_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_05_horizon_those_following_your_route.choice.horizon.outcome.horizon_critical_failure.text"
+          },
+          "failure": {
+            "id": "horizon_failure",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_05_horizon_those_following_your_route_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_05_horizon_those_following_your_route.choice.horizon.outcome.horizon_failure.text"
+          },
+          "success": {
+            "id": "horizon_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_05_horizon_those_following_your_route_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_05_horizon_those_following_your_route.choice.horizon.outcome.horizon_success.text"
+          },
+          "criticalSuccess": {
+            "id": "horizon_critical_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_05_horizon_those_following_your_route_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_05_horizon_those_following_your_route.choice.horizon.outcome.horizon_critical_success.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "craft",
+      "textKey": "event.career_civilian_05_horizon_those_following_your_route.choice.craft.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "craft",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_05_horizon_those_following_your_route.choice.craft.outcome.craft.text"
+        }
+      }
+    },
+    {
+      "id": "community",
+      "textKey": "event.career_civilian_05_horizon_those_following_your_route.choice.community.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "community",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ],
+          "textKey": "event.career_civilian_05_horizon_those_following_your_route.choice.community.outcome.community.text"
+        }
+      }
+    }
+  ]
+}

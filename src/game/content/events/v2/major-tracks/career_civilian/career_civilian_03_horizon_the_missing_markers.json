@@ -1,0 +1,182 @@
+{
+  "id": "career_civilian_03_horizon_the_missing_markers",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_02_trade_the_missing_manifest",
+            "choiceId": "horizon"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_02_horizon_the_passage_under_fog",
+            "choiceId": "horizon"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_02_craft_the_split_pump",
+            "choiceId": "horizon"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_02_community_the_alley_on_fire",
+            "choiceId": "horizon"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_02_fallback",
+            "choiceId": "horizon"
+          }
+        ]
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_civilian",
+    "chapterId": "active_03",
+    "nodeId": "career_civilian_03_horizon_the_missing_markers",
+    "parentNodeIds": [
+      "career_civilian_02_trade_the_missing_manifest",
+      "career_civilian_02_horizon_the_passage_under_fog",
+      "career_civilian_02_craft_the_split_pump",
+      "career_civilian_02_community_the_alley_on_fire",
+      "career_civilian_02_fallback"
+    ],
+    "selectionPriority": 20
+  },
+  "titleKey": "event.career_civilian_03_horizon_the_missing_markers.title",
+  "textKey": "event.career_civilian_03_horizon_the_missing_markers.text",
+  "choices": [
+    {
+      "id": "trade",
+      "textKey": "event.career_civilian_03_horizon_the_missing_markers.choice.trade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1250
+            }
+          ],
+          "textKey": "event.career_civilian_03_horizon_the_missing_markers.choice.trade.outcome.trade.text"
+        }
+      }
+    },
+    {
+      "id": "horizon",
+      "textKey": "event.career_civilian_03_horizon_the_missing_markers.choice.horizon.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "horizon_critical_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -2
+              }
+            ],
+            "textKey": "event.career_civilian_03_horizon_the_missing_markers.choice.horizon.outcome.horizon_critical_failure.text"
+          },
+          "failure": {
+            "id": "horizon_failure",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.career_civilian_03_horizon_the_missing_markers.choice.horizon.outcome.horizon_failure.text"
+          },
+          "success": {
+            "id": "horizon_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ],
+            "textKey": "event.career_civilian_03_horizon_the_missing_markers.choice.horizon.outcome.horizon_success.text"
+          },
+          "criticalSuccess": {
+            "id": "horizon_critical_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              }
+            ],
+            "textKey": "event.career_civilian_03_horizon_the_missing_markers.choice.horizon.outcome.horizon_critical_success.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "craft",
+      "textKey": "event.career_civilian_03_horizon_the_missing_markers.choice.craft.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "craft",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_03_horizon_the_missing_markers.choice.craft.outcome.craft.text"
+        }
+      }
+    },
+    {
+      "id": "community",
+      "textKey": "event.career_civilian_03_horizon_the_missing_markers.choice.community.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "community",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_03_horizon_the_missing_markers.choice.community.outcome.community.text"
+        }
+      }
+    }
+  ]
+}

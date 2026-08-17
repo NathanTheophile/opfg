@@ -1,0 +1,210 @@
+{
+  "id": "career_civilian_07_craft_the_falling_crane",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_06_trade_scales_bearing_your_name",
+            "choiceId": "craft"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_06_horizon_the_map_worth_too_much",
+            "choiceId": "craft"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_06_craft_the_crane_before_everyone",
+            "choiceId": "craft"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_06_community_the_empty_seat",
+            "choiceId": "craft"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_06_fallback",
+            "choiceId": "craft"
+          }
+        ]
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_civilian",
+    "chapterId": "active_07",
+    "nodeId": "career_civilian_07_craft_the_falling_crane",
+    "parentNodeIds": [
+      "career_civilian_06_trade_scales_bearing_your_name",
+      "career_civilian_06_horizon_the_map_worth_too_much",
+      "career_civilian_06_craft_the_crane_before_everyone",
+      "career_civilian_06_community_the_empty_seat",
+      "career_civilian_06_fallback"
+    ],
+    "selectionPriority": 20
+  },
+  "titleKey": "event.career_civilian_07_craft_the_falling_crane.title",
+  "textKey": "event.career_civilian_07_craft_the_falling_crane.text",
+  "choices": [
+    {
+      "id": "trade",
+      "textKey": "event.career_civilian_07_craft_the_falling_crane.choice.trade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 2000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_07_craft_the_falling_crane.choice.trade.outcome.trade.text"
+        }
+      }
+    },
+    {
+      "id": "horizon",
+      "textKey": "event.career_civilian_07_craft_the_falling_crane.choice.horizon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "horizon",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ],
+          "textKey": "event.career_civilian_07_craft_the_falling_crane.choice.horizon.outcome.horizon.text"
+        }
+      }
+    },
+    {
+      "id": "craft",
+      "textKey": "event.career_civilian_07_craft_the_falling_crane.choice.craft.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "craft_critical_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_07_craft_the_falling_crane_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_07_craft_the_falling_crane.choice.craft.outcome.craft_critical_failure.text"
+          },
+          "failure": {
+            "id": "craft_failure",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_07_craft_the_falling_crane_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_07_craft_the_falling_crane.choice.craft.outcome.craft_failure.text"
+          },
+          "success": {
+            "id": "craft_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_07_craft_the_falling_crane_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_07_craft_the_falling_crane.choice.craft.outcome.craft_success.text"
+          },
+          "criticalSuccess": {
+            "id": "craft_critical_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_07_craft_the_falling_crane_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_07_craft_the_falling_crane.choice.craft.outcome.craft_critical_success.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "community",
+      "textKey": "event.career_civilian_07_craft_the_falling_crane.choice.community.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "community",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ],
+          "textKey": "event.career_civilian_07_craft_the_falling_crane.choice.community.outcome.community.text"
+        }
+      }
+    }
+  ]
+}
