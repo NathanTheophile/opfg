@@ -15,7 +15,10 @@ export function movePlayerToLocation(state: GameState, locationId: LocationId, t
   state.locationId = locationId;
   state.travelState = travelState;
 
-  if (arrivesOnLand) state.shipMarketArrivalPending = true;
+  if (arrivesOnLand) {
+    state.shipMarketArrivalPending = true;
+    state.navigationDecisionAgeMonths = state.ageMonths;
+  }
 }
 
 export function getLocationAncestors(catalog: ContentCatalog, locationId: LocationId): LocationDefinition[] {

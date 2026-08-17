@@ -53,9 +53,28 @@ const landingDictionaries: Record<LocaleId, LocalizationDictionary> = {
   },
 };
 
+const activeSystemDictionaries: Record<LocaleId, LocalizationDictionary> = {
+  fr: {
+    'ui.departure.title': 'Prendre la mer ?',
+    'ui.departure.body': 'Tu peux quitter cette île maintenant, ou rester encore ici.',
+    'ui.departure.depart': 'Prendre la mer',
+    'ui.departure.stay': 'Rester ici',
+    'ui.departure.departOutcome': 'Le navire quitte la côte.',
+    'ui.departure.stayOutcome': 'Tu restes encore quelque temps.',
+  },
+  en: {
+    'ui.departure.title': 'Set sail?',
+    'ui.departure.body': 'You can leave this island now, or stay here a while longer.',
+    'ui.departure.depart': 'Set sail',
+    'ui.departure.stay': 'Stay here',
+    'ui.departure.departOutcome': 'The ship leaves the coast behind.',
+    'ui.departure.stayOutcome': 'You stay here a while longer.',
+  },
+};
+
 export const dictionaries: Record<LocaleId, LocalizationDictionary> = {
-  fr: { ...fr, ...landingDictionaries.fr },
-  en: { ...en, ...landingDictionaries.en },
+  fr: { ...fr, ...landingDictionaries.fr, ...activeSystemDictionaries.fr },
+  en: { ...en, ...landingDictionaries.en, ...activeSystemDictionaries.en },
 };
 export const LOCALE_STORAGE_KEY = 'jam-op-fan-game.locale';
 export interface LocaleStorage { getItem(key: string): string | null; setItem(key: string, value: string): void }

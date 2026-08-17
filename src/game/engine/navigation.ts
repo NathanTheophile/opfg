@@ -1,81 +1,103 @@
-import type { ContentCatalog } from '../content/schema';
+import type { ChoiceDefinition, ContentCatalog, EventDefinition } from '../content/schema';
 import type { GameState, LocationId } from '../model/schema';
-import {
-  findDockableAccess,
-  findLocation,
-  getNavigableDestinationIds,
-  movePlayerToLocation,
-} from './locations';
+import { findDockableAccess } from './locations';
 
+export const DEPARTURE_SYSTEM_EVENT_ID = 'system_navigation:departure';
+
+/** @deprecated Active V1 no longer exposes a monthly destination picker. */
 export type MonthlyNavigationChoice = 'stay' | 'dock' | `sailTo:${LocationId}`;
 
+/** @deprecated Active V1 no longer exposes a monthly destination picker. */
 export interface MonthlyNavigationOption {
   id: MonthlyNavigationChoice;
   available: boolean;
   destinationId?: LocationId;
 }
 
-export function needsMonthlyNavigationDecision(state: GameState): boolean {
-  return state.careerStatus === 'active'
-    && state.careerPhase === 'active'
-    && state.slotInMonth === 0
-    && state.pendingSlotPhase === null
-    && state.immediateEventQueue.length === 0
-    && state.isLeader
-    && state.ship !== null
-    && state.navigationDecisionAgeMonths !== state.ageMonths;
+/** @deprecated Kept temporarily for UI/session compatibility; always false in Active V1. */
+export function needsMonthlyNavigationDecision(_state: GameState): boolean {
+  return false;
 }
 
-export function getMonthlyNavigationOptions(state: GameState, catalog: ContentCatalog): MonthlyNavigationOption[] {
-  if (!needsMonthlyNavigationDecision(state)) return [];
-
-  const canDepart = state.travelState === 'at_sea'
-    || findDockableAccess(catalog, state.locationId) !== undefined;
-
-  const sailOptions: MonthlyNavigationOption[] = getNavigableDestinationIds(state.locationId, catalog)
-    .map((destinationId) => ({
-      id: `sailTo:${destinationId}` as MonthlyNavigationChoice,
-      available: canDepart,
-      destinationId,
-    }));
-
-  if (state.travelState === 'on_land') {
-    return [
-      { id: 'stay', available: true },
-      ...sailOptions,
-    ];
-  }
-
-  const location = findLocation(catalog, state.locationId);
-  return [
-    { id: 'stay', available: true },
-    { id: 'dock', available: location?.allowsDocking === true },
-    ...sailOptions,
-  ];
+/** @deprecated Kept temporarily for UI/session compatibility; always empty in Active V1. */
+export function getMonthlyNavigationOptions(_state: GameState, _catalog: ContentCatalog): MonthlyNavigationOption[] {
+  return [];
 }
 
+/** @deprecated Ordinary Active navigation now goes through the non-root departure System Event. */
 export function applyMonthlyNavigationChoice(
-  state: GameState,
-  catalog: ContentCatalog,
+  _state: GameState,
+  _catalog: ContentCatalog,
   choice: MonthlyNavigationChoice,
 ): GameState {
-  const option = getMonthlyNavigationOptions(state, catalog).find(({ id }) => id === choice);
-  if (!option?.available) throw new Error(`Monthly navigation choice "${choice}" is not available.`);
+  throw new Error(`Monthly navigation choice "${choice}" is disabled in Active V1.`);
+}
 
-  const next: GameState = {
+export function isNavigationSystemEventId(eventId: string): boolean {
+  return eventId === DEPARTURE_SYSTEM_EVENT_ID;
+}
+
+export function createDepartureSystemEvent(
+  state: GameState,
+  catalog: ContentCatalog,
+  forceForLocalExhaustion = false,
+): EventDefinition | null {
+  if (
+    state.careerStatus !== 'active'
+    || state.careerPhase !== 'active'
+    || state.travelState !== 'on_land'
+    || !state.isLeader
+    || state.ship === null
+    || findDockableAccess(catalog, state.locationId) === undefined
+  ) return null;
+
+  const hasResolvedActiveRoot = state.history.some(({ ageMonths }) => ageMonths >= 180);
+  const dueToFreshShip = state.navigationDecisionAgeMonths === null && hasResolvedActiveRoot;
+  const anchorAgeMonths = state.navigationDecisionAgeMonths ?? Math.min(state.ageMonths, 180);
+  const dueByResidence = state.ageMonths - anchorAgeMonths > 6;
+
+  if (!forceForLocalExhaustion && !dueToFreshShip && !dueByResidence) return null;
+
+  const choice = (id: 'navigation:depart' | 'navigation:stay', textKey: string, depart: boolean): ChoiceDefinition => ({
+    id,
+    textKey,
+    resolution: {
+      type: 'deterministic',
+      outcome: {
+        id: `${id}_outcome`,
+        textKey: depart ? 'ui.departure.departOutcome' : 'ui.departure.stayOutcome',
+        effects: depart
+          ? [{ type: 'moveToLocation', locationId: state.locationId, travelState: 'at_sea' }]
+          : [],
+      },
+    },
+  });
+
+  return {
+    id: DEPARTURE_SYSTEM_EVENT_ID,
+    kind: 'system',
+    titleKey: 'ui.departure.title',
+    textKey: 'ui.departure.body',
+    choices: [
+      choice('navigation:depart', 'ui.departure.depart', true),
+      choice('navigation:stay', 'ui.departure.stay', false),
+    ],
+  };
+}
+
+export function materializeNavigationEvent(
+  state: GameState,
+  catalog: ContentCatalog,
+  eventId: string,
+): EventDefinition | undefined {
+  if (!isNavigationSystemEventId(eventId)) return undefined;
+  return createDepartureSystemEvent(state, catalog, true) ?? undefined;
+}
+
+export function applyNavigationSystemResolution(state: GameState, choiceId: string): GameState {
+  if (choiceId !== 'navigation:stay') return state;
+  return {
     ...state,
     navigationDecisionAgeMonths: state.ageMonths,
-    currentEventId: null,
   };
-
-  if (option.destinationId) {
-    movePlayerToLocation(next, option.destinationId, 'at_sea');
-    return next;
-  }
-
-  if (choice === 'dock') {
-    movePlayerToLocation(next, next.locationId, 'on_land');
-  }
-
-  return next;
 }

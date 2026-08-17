@@ -8,6 +8,7 @@ import { applyEffects } from './effects';
 import { nextRandom } from './rng';
 import { findCriticalEvent, findCurrentEvent, selectNextEvent } from './events';
 import { isMarketSystemEventId, marketReturnEvent } from './marketEvents';
+import { applyNavigationSystemResolution, isNavigationSystemEventId } from './navigation';
 import { consumePhaseSlot, finalizePendingSlot } from './time';
 
 const MAX_IMMEDIATE_EVENTS_PER_CHAIN = 1000;
@@ -79,6 +80,22 @@ function finalizeOutcome(
     ],
     scheduledEvents: consumeScheduledEntry(afterSystemResolution, catalog, event, state.ageMonths),
   };
+
+  if (state.ship === null && resolvedState.ship !== null) {
+    resolvedState = { ...resolvedState, navigationDecisionAgeMonths: null };
+  }
+
+  if (event.kind === 'system' && isNavigationSystemEventId(event.id)) {
+    resolvedState = applyNavigationSystemResolution(resolvedState, choiceId);
+    return {
+      state: selectNextEvent({
+        ...resolvedState,
+        currentEventId: null,
+      }, catalog),
+      outcome,
+      dice,
+    };
+  }
 
   if (event.kind === 'system' && isMarketSystemEventId(event.id)) {
     const nextMarket = marketReturnEvent(resolvedState, catalog, event.id, choiceId);

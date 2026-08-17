@@ -5,7 +5,7 @@ import type { GameState, ScheduledEvent } from '../model/schema';
 import { evaluateCondition } from './conditions';
 import { nextRandom } from './rng';
 import { materializeEventCast } from './npcNames';
-import { needsMonthlyNavigationDecision } from './navigation';
+import { createDepartureSystemEvent, materializeNavigationEvent } from './navigation';
 import { finalizePendingSlot } from './time';
 import { findDockableAccess } from './locations';
 import { countFallbackStreak } from './maritime';
@@ -23,8 +23,6 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
 
   const critical = findCriticalEvent(state, catalog.events);
   if (critical) return selectEvent(state, catalog, critical);
-
-  if (needsMonthlyNavigationDecision(state)) return { ...state, currentEventId: null };
 
   if (state.immediateEventQueue.length > 0) {
     const immediateId = state.immediateEventQueue[0];
@@ -48,6 +46,9 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     }
   }
 
+  const departure = createDepartureSystemEvent(state, catalog);
+  if (departure) return selectEvent(state, catalog, departure);
+
   const major = findDueMajorNarrativeCandidates(state, catalog);
   if (major?.overdue) return selectUniformNormal(state, catalog, state.scheduledEvents, major.candidates);
 
@@ -65,6 +66,10 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
   );
   if (candidates.length === 0) {
     if (state.careerPhase !== 'active') return { ...state, scheduledEvents: scheduled.entries, currentEventId: null };
+    if (state.travelState === 'on_land') {
+      const exhaustedDeparture = createDepartureSystemEvent(state, catalog, true);
+      if (exhaustedDeparture) return selectEvent({ ...state, scheduledEvents: scheduled.entries }, catalog, exhaustedDeparture);
+    }
     const fallbackId = state.travelState === 'at_sea' ? 'dead_end_at_sea' : 'dead_end_on_land';
     const fallback = catalog.events.find((event) => event.id === fallbackId && event.kind === 'normal');
     const accessible = state.travelState === 'at_sea' || findDockableAccess(catalog, state.locationId) !== undefined;
@@ -239,5 +244,6 @@ function isEligible(event: EventDefinition, state: GameState, catalog: ContentCa
 export function findCurrentEvent(state: GameState, catalog: ContentCatalog): EventDefinition | undefined {
   if (state.currentEventId === null) return undefined;
   return catalog.events.find(({ id }) => id === state.currentEventId)
-    ?? materializeMarketEvent(state, catalog, state.currentEventId);
+    ?? materializeMarketEvent(state, catalog, state.currentEventId)
+    ?? materializeNavigationEvent(state, catalog, state.currentEventId);
 }

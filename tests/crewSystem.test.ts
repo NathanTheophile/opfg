@@ -25,6 +25,20 @@ describe('Crew System V1', () => {
     expect(() => applyEffects(recruited, contentCatalog, [{ type: 'setNpcStatus', npcId: 'candidate', status: 'crew' }], context)).toThrow(/free crew capacity/);
   });
 
+  it('caps a shipless party at three people total, then defers to ship crewCapacity', () => {
+    const state = createInitialGameState();
+    state.npcs.a = npc('crew');
+    state.npcs.candidate = npc();
+    expect(evaluateCondition({ type: 'canRecruitNpc', npcId: 'candidate' }, state, contentCatalog)).toBe(true);
+
+    state.npcs.b = npc('crew');
+    expect(evaluateCondition({ type: 'canRecruitNpc', npcId: 'candidate' }, state, contentCatalog)).toBe(false);
+    expect(() => applyEffects(state, contentCatalog, [{ type: 'setNpcStatus', npcId: 'candidate', status: 'crew' }], context)).toThrow(/free crew capacity/);
+
+    state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
+    expect(evaluateCondition({ type: 'canRecruitNpc', npcId: 'candidate' }, state, contentCatalog)).toBe(true);
+  });
+
   it('keeps crew after ship loss and refuses a ship too small for the current NPC crew', () => {
     const state = withShip();
     state.npcs.mira.status = 'crew';

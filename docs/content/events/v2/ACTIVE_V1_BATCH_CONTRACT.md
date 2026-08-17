@@ -2,7 +2,7 @@
 
 > **Status: authoritative specialized Active V1 production contract.**
 >
-> **Scope:** Active ordinary Event batches, career-content batches, Active Lifetime Threads, Personal Affiliation authoring targets, travel/local-life content, and the first complete Active → Ending production corridor.
+> **Scope:** Active ordinary Event batches, career-content batches, Active Lifetime Threads, career narrative spines, travel/local-life content, and the first complete Active → Ending production corridor.
 >
 > This contract is the authoritative Active counterpart to `CHILDHOOD_V2_BATCH_CONTRACT.md`. It does not reopen Childhood and does not create new gameplay primitives by itself.
 
@@ -45,15 +45,15 @@ Active starts at **180 ageMonths / 15 years**.
 
 ### 2.2 Career horizon
 
-The V1 safety horizon is **40 years old = 480 ageMonths**.
+The V1 career horizon is **35 years old = 420 ageMonths**.
 
-This horizon is a last-resort safety Ending when authored Endings have not resolved the run. It is not the normal target Ending age and must not replace career accomplishment.
+This horizon is a **normal V1 Ending**, not a hidden 40-year safety fallback. Authored accomplishment Endings and death may end a run earlier, but a surviving run that reaches 420 months must terminate cleanly through the horizon Ending.
 
-A normal long run may spend roughly **15–25 years in Active**, depending on survival and Ending timing.
+The intended V1 life span is broad enough for strong/long runs to reach their thirties. Production should support runs ending roughly across **30–40 years old** rather than forcing every career into one exact age.
 
 ### 2.3 Active opener
 
-The first normal Active experience must include a career-aware opener around age 15.
+The first normal Active experience must include a **mandatory, career-aware opener around age 15**.
 
 The opener should be selected from a small contextual pool using the actual state where useful:
 
@@ -65,6 +65,15 @@ The opener should be selected from a small contextual pool using the actual stat
 - current ship/crew state.
 
 Do not create a Cartesian opener matrix. The purpose is to make the handoff feel lived, not to reskin one scene for every origin combination.
+
+A character reaching Active through the Civilian handoff receives an **initial career-selection scene**, normally framed as a social conversation such as several people talking in a tavern. That scene may offer exactly:
+
+- remain `civilian`;
+- become `pirate`;
+- join the `marine`;
+- join the `revolutionary` path.
+
+This one age-15 choice is the **initial Active career selection**, not a mid-career affiliation-change system. `bounty_hunter` is never offered. Once the Active opener has resolved, V1 authored content does not change the player's career affiliation.
 
 ### 2.4 Royal Family parental affiliation — temporarily disabled
 
@@ -95,18 +104,20 @@ Playable Active careers for V1 are exactly:
 
 `bounty_hunter` is **out of V1 scope**. Existing engine/schema/rank definitions may remain inert for future use, but V1 content must not make that career reachable.
 
-### 3.1 No career changes in V1 content
+### 3.1 Career selection lock
 
-The engine may retain generic career-change capability, but **V1 authored content must not offer affiliation changes**.
+The engine may retain generic career-change capability, but V1 authored content must not offer mid-career affiliation changes.
 
-Therefore:
+The **only** V1 exception is the initial age-15 Civilian handoff described in §2.3, which establishes the player's Active career before ordinary Active progression begins.
 
-- no Civilian → Pirate/Marine/Revolutionary/Bounty Hunter conversion Event;
-- no Pirate → Civilian/etc. conversion Event;
+After that opener:
+
+- no Civilian → Pirate/Marine/Revolutionary conversion Event;
+- no Pirate/Marine/Revolutionary → another career conversion Event;
 - no leaving then rejoining an organization;
-- no Personal Affiliation restart/swap logic is required for V1.
+- no Bounty Hunter route.
 
-This is a scope lock, not a permanent engine limitation.
+This is a V1 scope lock, not a permanent engine limitation.
 
 ### 3.2 Civilian
 
@@ -114,44 +125,57 @@ Civilian is a complete career identity, not a temporary waiting room and not a `
 
 For V1:
 
-- the Civilian Personal Affiliation production line is **commercial**;
-- no profession state, profession menu, profession rank, or profession-specific persistent subsystem is added;
-- the player remains `civilian` throughout the run;
-- future post-V1 Civilian sagas may represent medicine, exploration, craft, navigation, local leadership, or other life paths without changing the career model.
+- the player may simply remain `civilian` after the age-15 opener;
+- commercial contacts, trading and an increasingly useful network may become more visible after roughly the first Active year;
+- those developments are represented only through existing Events, History, NPC relationships, Reputation, Berrys, Items and Ships;
+- no profession state, profession menu, profession rank, business-management subsystem, organization stats or second affiliation is added.
+
+Future post-V1 Civilian content may represent medicine, exploration, craft, navigation, local leadership or other life paths without changing the career model.
 
 ### 3.3 Pirate
 
 A player entering Active as Pirate is a Pirate immediately, but receives **no automatic guarantee** of:
 
 - a ship;
-- leadership;
 - crew members.
 
-Those states must come from actual inherited state or authored Active Events.
+The player is the implicit captain/leader for personal-crew purposes and does not consume a CrewRole.
 
 Pirate progression is read through the combination of Reputation, bounty, crew, ship, titles/exploits and History. Pirate has no rigid rank ladder.
 
 ### 3.4 Marine and Revolutionary
 
-Marine and Revolutionary characters may receive authored institutional transport without owning a personal ship.
+Early Marine progression is intentionally structured around superiors, assignments and institutional transport. A Marine does not need a player-built personal crew to remain progressable during the first Active years.
 
-Marine rank progression may skip intermediate ranks when an exceptional authored milestone justifies it. Reaching the top of a rank ladder should be rare but realistically attainable in an excellent run.
+A Revolutionary begins as a recognized member of the movement but should become **personally autonomous fairly quickly**. Institutional help and transport may exist, but Revolutionary V1 should still support obtaining a personal ship and building a recurring crew like Pirate/Civilian.
 
-For Marines, some promotion/command milestones may assign subordinates. These subordinates are **real persistent NPC crew members**:
+Authored institutional Marine/Revolutionary transport may use a real temporary `ShipState` when the scene requires a concrete vessel. This does not create a second ship system.
+
+For Marines, later promotion/command milestones may assign subordinates. These subordinates are **real persistent NPC crew members**:
 
 - they have normal NPC state and relationship;
 - they have one fixed CrewRole;
-- they can die/depart/become unavailable;
 - they consume normal ship crew capacity;
 - they are assigned by authored Events, never silently by the rank system.
 
-### 3.5 Reputation and bounty
+### 3.5 Reputation, bounty and promotion
 
-Reputation remains one global `0..100` notoriety value, not morality.
+Reputation remains one global `0..100` **notoriety/fame** value, not morality.
 
-High Reputation should open both opportunity and danger.
+For V1 authoring:
 
-In V1 content, an active Marine must **not receive a bounty** because the V1 surface does not expose the career-change resolution that such a contradiction would require. The engine may continue to support bounty on arbitrary affiliations for future content.
+- Reputation is **monotonic**: it accumulates and does not decrease;
+- high Reputation means the player is widely known, whether admired or hated;
+- Reputation thresholds may select Events and unlock/lock Choices;
+- Pirate bounty is a separate value influenced by crimes/exploits and by authored narrative tiers/pivotal Events;
+- an active Marine must not receive a bounty in V1.
+
+Marine/Revolutionary promotions require both:
+
+1. the authored criteria to be satisfied;
+2. a dedicated promotion Event.
+
+A resolved promotion is not refused through a second generic confirmation. Exceptional feats may justify rapid advancement; do not impose artificial minimum age or tenure when the fiction and criteria already support the promotion. Career progression should remain reasonably regular rather than forcing multi-year stagnation solely for pacing.
 
 ---
 
@@ -192,7 +216,7 @@ Root
 
 Immediate nodes must add a new decision, changed situation, information, check, consequence, or resolution. Continue-only padding does not count.
 
-Major Personal Affiliation chapters normally use this same short-scene shape.
+Major career chapters normally use this same short-scene shape.
 
 ---
 
@@ -227,31 +251,33 @@ Hard qualitative rules:
 - Scheduled is used only when time genuinely needs to pass;
 - each returning chapter must make prior causality recognizable;
 - do not recursively inflate the graph solely to hit a node count;
-- the thread must not become a second Personal Affiliation Saga.
+- the thread must not duplicate the main career narrative spine.
 
 The manifest must identify the seed, recurring anchor, expected age span, major divergences, and intended reconvergence/termination behavior.
 
 ---
 
-## 8. Personal Affiliation Saga — V1 target
+## 8. Career narrative spine — V1 target
 
-Personal Affiliation is the main Active career spine.
+There is **no Personal Affiliation gameplay system in V1**. The player has one career affiliation/way (`civilian`, `pirate`, `marine`, `revolutionary`), period.
+
+If legacy schema/authoring metadata still uses a label such as `personal_affiliation` for a Major Narrative Track type, that label is an internal compatibility detail only. It does **not** authorize a second affiliation, organization state, fleet/cell/company management layer, or organization statistics.
 
 ### 8.1 Start
 
-It begins **after a few ordinary Active roots**, not automatically on the first Active root. The exact first-chapter trigger is authored from current state/History rather than a universal profession menu.
+The main career narrative begins after the mandatory Active opener and a small amount of ordinary Active life. Major career progression may become visible around the first year when appropriate, but exact milestones remain content-driven rather than a universal profession menu.
 
 ### 8.2 Structure
 
 The full V1 production target is approximately **10–14 major chapters per career**.
 
-Chapters are **milestone-driven**, not a fixed age ladder. Eligibility may react to:
+Chapters are milestone-driven. Eligibility may react to:
 
-- career state;
+- career affiliation/state;
 - Reputation;
 - rank where applicable;
 - bounty where applicable;
-- History and prior saga outcomes;
+- History and prior outcomes;
 - crew/ship/NPC state;
 - geography;
 - assets;
@@ -260,20 +286,18 @@ Chapters are **milestone-driven**, not a fixed age ladder. Eligibility may react
 
 A normal chapter is a structural root with roughly **1–3 Immediate continuations** when dramatic depth warrants it.
 
-Do not add a generic quest state or persistent saga counter if current MajorTrack metadata + History can represent progression.
+Do not add a generic quest state, organization state, persistent saga counter or second affiliation if current MajorTrack metadata + History can represent progression.
 
-### 8.3 V1 career sagas
+### 8.3 V1 career trajectories
 
-V1 needs Personal Affiliation coverage for:
+V1 needs main-career narrative coverage for:
 
-- Civilian — commercial trajectory;
+- Civilian — with commerce/networking as a recurring content theme, not a management subsystem;
 - Pirate;
 - Marine;
 - Revolutionary.
 
-Bounty Hunter has no V1 Personal Affiliation Saga.
-
-Because V1 content exposes no career changes, a Personal Affiliation Saga never needs to transfer to another career during a V1 run.
+Bounty Hunter has no V1 trajectory.
 
 ### 8.4 Vertical-slice allowance
 
@@ -283,25 +307,42 @@ The first end-to-end vertical slice may implement a thin reachable corridor thro
 
 ## 9. Adult Family coexistence
 
-Adult Family remains a distinct Major Narrative Track continuation.
+Adult Family remains a distinct Major Narrative Track continuation and should be **regular but secondary** to the main career flow.
 
-Its Active chapters use **broad age windows + current family/History state**, not a copy of the five fixed Childhood checkpoints.
+Its Active chapters use broad age windows + current family/History state, not a copy of the five fixed Childhood checkpoints.
 
-Personal Affiliation and Adult Family may both become due. Runtime selection must prevent either track from starving the other through an overdue/fairness mechanism. No arbitrary permanent priority between the two is locked by this contract.
+Career narrative and Adult Family may both become due. Runtime selection must prevent either from starving the other through an overdue/fairness mechanism. No arbitrary permanent priority between the two is locked by this contract.
 
-Adult Family authoring may remain deferred until the minimal Active corridor is stable, but the Active architecture must not block this coexistence.
+Family NPCs may become crew when the fiction and normal recruitment conditions support it. Childhood NPCs may also return as important Active characters without joining the crew.
+
+Adult Family mass-authoring may remain deferred until the minimal Active corridor is stable, but the Active architecture must not block this coexistence.
 
 ---
 
 ## 10. Local life and departure
 
-Arrival does not force departure.
+There is **no permanent “Take the sea” button** in ordinary Active play.
 
-A standard departure from a Location should not become available until the player has resolved at least **two genuine local root Events** after arriving.
+On land, departure is offered through a **non-root System Event** that consumes neither the monthly root nor biological time. It becomes eligible when either:
 
-Use History to derive this whenever practical. Do not add a generic per-location visit counter unless implementation proves History insufficient.
+1. the player has spent **more than 6 biological months physically in the current Location**; or
+2. the current Location has **no eligible local root Event left**.
 
-Internal movement inside a Location hierarchy does not reset the local-life requirement by itself.
+The six-month timer counts biological months spent physically in the Location regardless of whether the resolved root was ordinary, Family, career or another valid local narrative root.
+
+The System Event offers at least:
+
+- take the sea;
+- stay.
+
+If the player chooses **stay**:
+
+- while eligible local roots remain, the departure opportunity is deferred for **6 months**;
+- when no eligible local root remains, the departure opportunity may immediately reappear in a loop until the player leaves or another authored option becomes available.
+
+Normal self-directed sea departure requires a usable personal ship and leadership. A player without a personal ship may still use **authored transport opportunities** (merchant passage, institutional movement, escort, etc.) when the fiction supports them.
+
+Acquiring even a small personal vessel may immediately surface the non-root departure opportunity; buying a first dinghy does not require a ceremonial major Event.
 
 ---
 
@@ -309,67 +350,71 @@ Internal movement inside a Location hierarchy does not reset the local-life requ
 
 Normal travel in the four Blues is intentionally not direct destination selection.
 
-For a Leader with a usable ship:
+For a Leader with a usable personal ship:
 
 ```text
 on_land
-→ player chooses to take the sea
+→ non-root departure System Event
 → at_sea
-→ one or more maritime roots
+→ one or more maritime monthly roots
 → after each maritime root, seeded arrival resolution may continue travel or land
 → on arrival, destination is seeded among valid destinations in the current Blue
 ```
 
 Rules:
 
-- the player normally chooses **whether to depart**, not the exact destination;
+- the player chooses **whether to depart**, not the exact ordinary Blue destination;
 - normal departure does not pre-lock a destination;
-- a crossing contains **one or more maritime roots**;
-- after each maritime root, the runtime may resolve arrival or continue the crossing;
+- a typical Blue crossing lasts **1–3 maritime roots/months**;
+- arrival probability rises as the crossing continues and may also be modified by zone, ship, Navigator and authored circumstances;
 - maritime content mixes danger, weather, encounters, opportunities, calmer beats, ship/crew pressure and navigation problems;
 - the maritime pool should be riskier than ordinary land life;
-- danger/context should vary materially by sea/region;
-- travel without a personal ship still uses authored transport when fiction supports it.
+- losing a ship at sea opens survival/rescue/wreck/capture-style content rather than automatic death.
+
+Travel **without a personal ship** uses authored transport when fiction supports it. Such abstract/institutional transport is instant at the monthly-root level: it does not force the player through the personal-ship maritime root loop unless the Event explicitly turns the transport into a concrete playable ship situation.
 
 ---
 
 ## 12. Navigator annual power
 
-A crew NPC with fixed CrewRole `navigator` unlocks the existing annual Navigator power through a dedicated UI button.
+A usable crew NPC with fixed CrewRole `navigator` unlocks the existing annual Navigator power through the existing crew-role power surface.
 
-The power is usable **once per biological year** according to the existing annual crew-role power system.
+The power is usable **once per biological year** according to the existing annual crew-role power system and is unavailable if the Navigator is no longer a usable crew member.
 
 ### 12.1 Blues
 
-When the player is in one of the four Blues, Navigator allows the player to choose directly:
+When activated from one of the four Blues, Navigator allows direct choice of:
 
-- any runtime destination in the current Blue;
+- any compatible runtime destination in the current Blue;
 - **Reverse Mountain**.
 
-The move resolves immediately at the gameplay level. Fiction may present this as exceptional route mastery rather than literal teleportation.
+The move resolves immediately at the gameplay level and consumes no monthly root.
 
 ### 12.2 Paradise
 
-Navigator destination-jump is **disabled in Paradise**.
+Navigator destination-jump is **disabled when activated from Paradise**.
 
-Paradise continues to use its authored route progression. The initial route after Twin Capes remains seeded rather than chosen from a seven-route menu.
+Paradise uses its seeded authored route progression and Log Pose travel rules.
 
 ### 12.3 New World
 
-In the New World, Navigator allows direct choice of **any runtime island in the world** for that annual use.
+When activated from the New World, Navigator allows direct choice of **any compatible maritime runtime Location in the world**, including valid destinations in Paradise and the Blues.
 
-This is an explicit exception to ordinary New World random/Event-driven progression.
+This is an explicit exception to ordinary navigation.
 
 ### 12.4 Reverse Mountain access
 
-Reverse Mountain is not reachable through ordinary non-Marine Blue navigation.
+Reverse Mountain is not reachable through ordinary random Blue arrival.
 
 V1 access paths are:
 
-1. the annual Navigator power while in a Blue;
-2. authored **Marine institutional transport**.
+1. annual Navigator power while in a Blue;
+2. rare explicitly authored narrative opportunities;
+3. authored Marine institutional transport.
 
-Do not add a generic high-Navigation-stat bypass, Log Pose bypass, or rare ordinary Event bypass in V1.
+Do not add a generic high-Navigation-stat or Log Pose bypass.
+
+Reverse Mountain is a **mandatory multi-Event mini-arc** before Twin Capes rather than an instant one-click transition.
 
 ---
 
@@ -377,19 +422,21 @@ Do not add a generic high-Navigation-stat bypass, Log Pose bypass, or rare ordin
 
 Reverse Mountain → Twin Capes remains the common Paradise ingress.
 
+At Twin Capes, one of the **seven authored Paradise routes is seeded definitively** for the run.
+
 Paradise:
 
-- route family is selected seededly through authored route-start logic;
-- normal progression follows that route family;
-- Navigator annual destination-jump is disabled;
-- route membership remains derivable/authoring structure rather than a required persistent `routeId`.
+- ordinary progression follows that seeded route rather than offering free destination selection;
+- Navigator direct-jump cannot be activated from Paradise;
+- with a compatible Log Pose, crossings use the normal intended number of maritime roots;
+- without a Log Pose, crossings require roughly **double the normal maritime roots** and inject additional dangerous roots into the eligible sea pool;
+- route identity should remain derivable through authored route-start/History structure when practical rather than adding a new persistent `routeId` solely for convenience.
 
 New World:
 
-- ordinary progression remains random/Event-driven;
-- the player does not normally choose every destination;
-- the Navigator annual power is the explicit direct-choice exception;
-- the New World should become a **substantial part of the majority of strong/long V1 runs**, not merely an end-card destination.
+- ordinary navigation is **much freer** than Paradise and may be random/Event-driven or offer broader authored movement according to content;
+- the Navigator annual power is the explicit global direct-destination exception;
+- the New World should become a substantial part of strong/long V1 runs rather than merely an end-card destination.
 
 ---
 
@@ -407,7 +454,7 @@ Rules:
 
 Cargo/trade is important for commercial Civilian runs but remains optional for other careers.
 
-The Civilian V1 Personal Affiliation Saga should use commerce as its career spine rather than adding a profession subsystem.
+Civilian V1 content should use commerce and recurring contacts as narrative themes while staying entirely inside the existing Event/History/NPC/Reputation/Berrys/Item/Ship primitives.
 
 ---
 
@@ -417,15 +464,23 @@ Crew member = persistent NPC with status `crew`.
 
 Companion = animal Item and never a crew NPC.
 
-CrewRole is fixed for the NPC in V1.
+CrewRole is fixed for the NPC in V1. The player is the implicit captain/leader for a personal crew and does **not** occupy a CrewRole.
 
 Active authoring should respect a total V1 persistent-NPC target of roughly **25 definitions**. Reuse established NPCs aggressively and keep throwaway characters in local prose.
 
-Childhood NPCs may become crew in Active when the fiction supports it.
+Childhood and Family NPCs may become crew in Active when the fiction and normal conditions support it. Childhood NPCs may also recur without becoming crew.
 
-Marine-assigned subordinates are not an anonymous second crew system: they use the same persistent NPC/crew model.
+### 15.1 Capacity before and after the first ship
 
-### 15.1 Early Active recruitment pressure
+Before owning a ship, the party may contain **three people total including the player**: therefore at most **2 crew NPCs**.
+
+Those NPCs are genuine persistent crew members. The absence of a ship prevents normal self-directed sea departure; it does not prevent the first two recruitments.
+
+Once a ship is owned, the only crew-size limit is the vessel's existing `crewCapacity`. Do not add a second global crew cap.
+
+A player who invests heavily in crew building may reasonably reach roughly **4–5 people total around age 18**, provided the owned ship supports that capacity.
+
+### 15.2 Early Active recruitment pressure
 
 The first three Active years are a deliberate crew-building window for:
 
@@ -439,32 +494,49 @@ The window is exactly:
 180 <= ageMonths < 216
 ```
 
-During those 36 monthly roots, ordinary/career content must be **strongly punctuated by Events that can lead to recruiting a persistent crewmate**. Recruitment is an important early-production lane for these three careers so they can build the people needed for independent travel and ship life quickly.
+During those 36 monthly roots, ordinary/career content must be strongly punctuated by **2–4 Event recruitment mini-arcs** that can lead to recruiting a persistent crewmate.
 
-This is a content-density rule, not a guarantee that every offer succeeds or that every root is a recruitment Event. The player must still be able to refuse, fail, alienate, postpone or lose a candidate when the authored situation supports it.
+Candidate pool:
 
-Each recruitable persistent NPC keeps one fixed `CrewRole` in V1. Recruitment-focused Event eligibility must respect role occupancy:
+- mix new Active NPCs with eligible established Childhood/Family NPCs;
+- an established Childhood candidate requires a **strict authored minimum relationship threshold** before their recruitment route is eligible;
+- a failed recruitment arc may permanently close that candidate when authored History/outcome conditions encode the failure.
+
+Early recruitment should prioritize:
+
+- `navigator`;
+- `medic`;
+- `cook`;
+- `shipwright`;
+- `fighter`.
+
+`gunner`, `musician`, `scholar`, `helmsman` and `quartermaster` should appear mainly after age 18 unless a specific story strongly justifies an earlier candidate.
+
+Each recruitable persistent NPC keeps exactly one fixed CrewRole in V1. Recruitment-focused Event eligibility must respect role occupancy:
 
 ```text
 target role R
 → Event eligible only if NOT hasCrewRole(R)
 → normal leader recruitment may also gate on canRecruitNpc(candidate)
-→ authored non-leader recruitment uses setNpcStatus(... allowWithoutLeadership: true), whose runtime check still enforces free crew capacity
+→ authored non-leader recruitment uses setNpcStatus(... allowWithoutLeadership: true)
 ```
 
 Therefore:
 
-- if the target CrewRole is already occupied by a current crew NPC, do **not** propose another recruitment-focused Event for that same role;
-- do not merely surface the Event with a permanently locked recruitment Choice when its main purpose is to offer that occupied role;
-- if the role later becomes vacant because its crew NPC dies, departs or is no longer `crew`, future recruitment content for that role may become eligible again;
-- distribute early opportunities across several useful CrewRoles instead of repeatedly pushing the same role;
-- use the existing `hasCrewRole` + `not` Conditions for role vacancy rather than adding duplicate crew-vacancy state;
-- use the existing `canRecruitNpc` Condition for normal leader recruitment;
-- when a story legitimately recruits before the player has formal leadership, **do not** also gate that Choice on `canRecruitNpc`; instead use `setNpcStatus` with the existing `allowWithoutLeadership: true` escape hatch, which still checks crew capacity at effect application; the Event must explain that relationship and must not silently grant leadership as a side effect.
+- if the target CrewRole is already occupied by a current crew NPC, the **entire recruitment-focused Event is ineligible**;
+- do not surface the Event with a permanently locked recruit Choice when recruitment is its main purpose;
+- if a role becomes vacant because its crew NPC dies or otherwise ceases to be crew, future recruitment content for that role may become eligible again;
+- use existing `hasCrewRole` + `not` Conditions rather than duplicate vacancy state;
+- no systematic post-recruitment personal mini-thread is required;
+- no crew-to-crew relationship subsystem is added;
+- no voluntary crew dismissal, betrayal or departure system is authored in V1;
+- avoid temporary crew capture/separation states in V1;
+- a crew-role power is unavailable when its holder is not a usable current crew member;
+- crew death is permanent and immediately frees the role.
 
-Marine is intentionally **excluded** from this early recruitment-density requirement. A Marine should be able to progress through approximately the first three Active years while relying on superiors, institutional transport and assigned structure rather than being forced to assemble a personal crew immediately. Organic Marine recruitment may still occur when authored, and later command/promotion Events may assign real crew NPCs through the normal model.
+Marine is intentionally excluded from this early recruitment-density requirement. Early Marine progression must remain viable through superiors, assignments and institutional transport without a player-built crew.
 
-For Revolutionary, institutional transport remains valid but must not replace the intended early opportunity to build a personal recurring crew/cell cast.
+Revolutionary institutional support is allowed, but it must not replace the intended progression toward an autonomous personal crew and ship.
 
 ---
 
@@ -486,11 +558,11 @@ Haki should become common enough to matter on combat-oriented trajectories while
 
 ## 17. Endings and final score
 
-Normal Endings become reachable from **career accomplishment/state**, not from one universal minimum age.
+Normal Endings become reachable from career accomplishment/state, death, or the V1 career horizon.
 
-Retirement may be voluntary only when an authored Event presents that Ending opportunity.
+The **35-year / 420 ageMonths horizon is a normal terminating Ending** for a surviving run that has not already ended. It replaces the older 40-year safety-net assumption.
 
-The 40-year horizon is a safety net, not a normal retirement rule.
+Retirement may also be presented earlier when an authored Event supports that Ending opportunity.
 
 ### 17.1 Ending inventory
 
@@ -531,29 +603,34 @@ Each must be able to demonstrate:
 
 ```text
 age 15 Active handoff
-→ contextual opener
+→ contextual opener / initial career lock
 → ordinary local/career life
 → visible career progression
 → travel or authored transport where relevant
 → persistent consequences
-→ reachable Ending
+→ reachable Ending (including the 420-month horizon)
 → full six-axis score/final screen
 ```
 
 The gate must also prove:
 
 - zero normal starvation/dead-end terminations;
-- land and sea fallbacks exist and are diagnostic safety, not normal content;
-- Blue maritime travel can sustain 1+ sea roots and arrive;
-- Reverse Mountain access obeys Navigator/Marine rules;
-- Paradise ingress and seeded route start work;
+- every healthy Active month produces one monthly root;
+- land/sea fallbacks remain diagnostic safety, not normal content;
+- no permanent monthly destination-selection UI blocks Event selection;
+- land departure is a non-root System Event after >6 months in place or local-root exhaustion;
+- choosing stay defers the offer 6 months while roots remain and may loop immediately when exhausted;
+- normal Blue self-travel requires a ship, sustains 1–3 typical maritime roots and arrives without exact destination selection;
+- Reverse Mountain ordinary access is excluded; Navigator/rare authored/Marine routes obey §12;
+- Reverse Mountain multi-Event passage and Twin Capes seeded Paradise route work;
+- Log Pose vs no-Log-Pose Paradise crossing pressure is observable;
 - at least one path can progress substantially into the New World;
-- fallback use is measured;
-- no Bounty Hunter or career-change Event becomes reachable;
 - `royal_family` is unavailable to new Origins selection while existing Royal states remain compatible;
-- Civilian/Pirate/Revolutionary runs receive recurring recruitment opportunities during `180 <= ageMonths < 216`;
+- Civilian/Pirate/Revolutionary runs receive recurring recruitment mini-arcs during `180 <= ageMonths < 216`;
+- no shipless state can exceed **2 crew NPCs**;
 - recruitment-focused Events never target a CrewRole already occupied by current crew;
-- early Marine progression remains viable without requiring a player-owned crew.
+- early Marine progression remains viable without requiring a player-owned crew;
+- no Bounty Hunter or post-opener career-change Event becomes reachable.
 
 ---
 
@@ -609,7 +686,8 @@ Every standard Active batch manifest must report at least:
 
 - Reputation/rank/bounty/title changes used;
 - ship/crew/economy interactions;
-- for batches touching ages 15–18: recruitment-offer roots by career, targeted CrewRole, and the vacancy gate used;
+- for batches touching ages 15–18: recruitment mini-arc roots by career, targeted CrewRole, relationship gate when reusing a Childhood NPC, failure-closure behavior, and vacancy gate;
+- for travel batches: departure System Event trigger/cooldown behavior, typical sea-root counts, arrival logic and special-route exclusions;
 - Power interactions;
 - possible Ending interactions;
 - starvation/fallback concerns;
@@ -621,27 +699,31 @@ Every standard Active batch manifest must report at least:
 
 A standard Active V1 batch fails review if any of the following is true:
 
-1. it exposes Bounty Hunter or an affiliation-change route;
-2. it adds a Civilian profession subsystem;
+1. it exposes Bounty Hunter or a post-opener affiliation-change route;
+2. it adds a Civilian profession, Personal Affiliation, organization/fleet/cell/business-management subsystem;
 3. its root Dice percentage is outside **55–65%** without an explicit approved exception;
 4. fewer than roughly **40%** or more than roughly **50%** of roots open meaningful Immediate mini-arcs without a justified domain-specific reason;
 5. it lacks its one primary Lifetime Thread;
-6. its Lifetime is only a cosmetic callback or duplicates Personal Affiliation;
+6. its Lifetime is only a cosmetic callback or duplicates the main career spine;
 7. risky failures are routinely consequence-free;
 8. it adds new persistent state where History/current state already suffices;
 9. it assumes direct player destination choice for ordinary Blue travel;
-10. it lets ordinary non-Marine travel reach Reverse Mountain without the Navigator annual power;
-11. it makes Navigator destination-jump available in Paradise;
-12. it creates a second crew, companion, market, profession, route, quest, or career system;
-13. it silently promotes/ranks/assigns Marine crew without an authored Event;
-14. it awakens player Conqueror's Haki in V1;
-15. it consumes the monthly root merely because the optional arrival market was opened;
-16. it makes standard departure available before two genuine local roots after arrival;
-17. it treats the 40-year safety horizon as the normal Ending;
-18. it cannot participate in a complete Active → Ending + score corridor;
-19. it makes `royal_family` selectable in new V1 Origins before the dedicated Royal Childhood → Active transition exists;
-20. a recruitment-focused Event for Civilian/Pirate/Revolutionary ages 15–18 can be selected while its target CrewRole is already occupied;
-21. an early Marine corridor requires the player to own/build a personal crew in order to keep progressing.
+10. it exposes a permanent monthly “take the sea / choose destination” UI for ordinary travel;
+11. it lets ordinary random Blue travel reach Reverse Mountain;
+12. it makes Navigator destination-jump activatable from Paradise;
+13. it creates a second crew, Companion-NPC model, market, profession, route, quest or career system;
+14. it silently promotes/ranks/assigns Marine crew without an authored Event;
+15. it awakens player Conqueror's Haki in V1;
+16. it consumes the monthly root merely because a System Event such as market/departure was opened;
+17. it makes the normal departure System Event available before >6 months in the Location while eligible local roots remain, except an explicit immediate post-ship-acquisition hook;
+18. choosing stay cannot produce the required 6-month deferral / exhausted-location loop behavior;
+19. it treats 420 ageMonths as non-terminating or reintroduces a required 480-month safety horizon;
+20. it makes `royal_family` selectable in new V1 Origins before the dedicated Royal Childhood → Active transition exists;
+21. a recruitment-focused Event for Civilian/Pirate/Revolutionary ages 15–18 can be selected while its target CrewRole is already occupied;
+22. a shipless party can contain more than **2 crew NPCs**;
+23. an early Marine corridor requires the player to own/build a personal crew in order to keep progressing;
+24. a Paradise crossing without Log Pose is no more demanding than the equivalent valid Log Pose crossing without an explicit exception;
+25. it cannot participate in a complete Active → Ending + score corridor.
 
 ---
 
@@ -661,13 +743,17 @@ The Active simulation gate must eventually record at least:
 - `reachedEnding`;
 - `deadEnd`;
 - `fallbackCount`;
-- `safetyLimit`;
+- `horizonEnding`;
 - `finalCareer`;
 - `locationsVisited`;
 - `careerProgress`;
 - `recruitmentOffers` by career during `180 <= ageMonths < 216`;
-- `crewRolesOccupiedAt216`;
+- `crewCountAt216` and `crewRolesOccupiedAt216`;
+- shipless crew-cap violations;
 - duplicate-role recruitment offers suppressed / observed;
+- land departure offers / stay deferrals / exhausted-location repeat offers;
+- maritime roots per crossing and Blue arrival distribution;
+- Paradise crossing root counts with vs without Log Pose;
 - final score and score-axis breakdown.
 
 Production sequence:
@@ -692,11 +778,13 @@ This contract does not authorize:
 - Bounty Hunter V1 content;
 - career-change content;
 - Civilian profession state;
+- any player-facing Personal Affiliation / organization / fleet / cell / company-management state;
 - `QuestState` / `ArcState` / duplicate Major Track progress state;
 - a second inventory;
 - a second crew or Companion-NPC model;
 - a separate commerce engine;
 - persistent Paradise `routeId` solely for authoring convenience;
+- permanent monthly navigation/destination UI;
 - universal direct-destination navigation;
 - player Conqueror's Haki in V1;
 - a persistent `powerLevel`;

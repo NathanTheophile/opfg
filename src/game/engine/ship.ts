@@ -29,7 +29,7 @@ export function availableCargoSlots(ship: ShipState, catalog: ContentCatalog, pa
 export function canRecruitNpc(state: GameState, catalog: ContentCatalog, npcId: string, allowWithoutLeadership = false): boolean {
   if (!state.isLeader && !allowWithoutLeadership) return false;
   if (state.npcs[npcId]?.status === 'crew') return true;
-  if (state.ship === null) return true;
+  if (state.ship === null) return countCurrentCrew(state) < 2;
   return countCurrentCrew(state) + 1 <= findShipDefinition(catalog, state.ship.shipId).crewCapacity;
 }
 
