@@ -2,12 +2,89 @@ import worldData from '../content/data/locationsV1.json';
 import type { ContentCatalog, EventDefinition } from '../content/schema';
 import type { GameState, LocationId, MaritimeEmergencyState, NpcId, ShipDamageCause } from '../model/schema';
 import { nextRandom } from './rng';
-import { getOrdinaryDestinationIds, movePlayerToLocation } from './locations';
+import { getLocationAncestors, getOrdinaryDestinationIds, movePlayerToLocation } from './locations';
 
 const FALLBACK_IDS = new Set(['dead_end_on_land', 'dead_end_at_sea']);
 const EXCLUDED_EXTREME_SEAS = new Set(['sky', 'underwater', 'red_line']);
 const outsideMetadata = new Map(worldData.outsideBlueLocations.map((location) => [location.id, location]));
 const BLUE_SEAS = new Set(['east_blue', 'west_blue', 'north_blue', 'south_blue']);
+
+const PARADISE_ROUTE_FLAG_PREFIX = 'paradise_route:';
+const PARADISE_ROUTE_IDS = Object.keys(worldData.paradiseRouteGraph)
+  .filter((routeId) => routeId !== 'P0_INGRESS')
+  .sort();
+
+export function activeParadiseRouteId(state: GameState): string | undefined {
+  return PARADISE_ROUTE_IDS.find((routeId) => state.flags.includes(`${PARADISE_ROUTE_FLAG_PREFIX}${routeId}`));
+}
+
+export function seedParadiseRouteAtTwinCapes(state: GameState): GameState {
+  if (state.locationId !== 'twin_capes' || activeParadiseRouteId(state) !== undefined) return state;
+  const random = nextRandom(state.rngState);
+  const routeId = PARADISE_ROUTE_IDS[Math.floor(random.value * PARADISE_ROUTE_IDS.length)];
+  return {
+    ...state,
+    rngState: random.nextState,
+    flags: [...state.flags, `${PARADISE_ROUTE_FLAG_PREFIX}${routeId}`],
+  };
+}
+
+function paradiseRouteSequence(routeId: string): readonly string[] | undefined {
+  const route = worldData.paradiseRouteGraph[routeId as keyof typeof worldData.paradiseRouteGraph];
+  return route?.sequence;
+}
+
+export function paradiseNextDestinationId(state: GameState, catalog: ContentCatalog): LocationId | undefined {
+  const routeId = activeParadiseRouteId(state);
+  const sequence = routeId === undefined ? undefined : paradiseRouteSequence(routeId);
+  if (!sequence || sequence.length === 0) return undefined;
+
+  const routeLocationId = getLocationAncestors(catalog, state.locationId).at(-1)?.id ?? state.locationId;
+  if (routeLocationId === 'twin_capes') return sequence[0];
+
+  const currentIndex = sequence.indexOf(routeLocationId);
+  return currentIndex >= 0 && currentIndex + 1 < sequence.length
+    ? sequence[currentIndex + 1]
+    : undefined;
+}
+
+/** Preserve existing departure behavior everywhere except a finished Paradise route. */
+export function ordinaryDepartureHasDestination(state: GameState, catalog: ContentCatalog): boolean {
+  const current = catalog.locations.find(({ id }) => id === state.locationId);
+  return current?.seaId !== 'grand_line_paradise' || paradiseNextDestinationId(state, catalog) !== undefined;
+}
+
+export function paradiseArrivalProbabilityForCrossingRoot(rootCount: number, hasParadiseLogPose: boolean): number {
+  const effectiveRootCount = hasParadiseLogPose ? rootCount : Math.floor(rootCount / 2);
+  return blueArrivalProbabilityForCrossingRoot(effectiveRootCount);
+}
+
+function hasActiveParadiseLogPose(state: GameState, catalog: ContentCatalog): boolean {
+  if (state.player.logPose === null) return false;
+  return catalog.items.find(({ id }) => id === state.player.logPose?.itemId)?.logPoseType === 'paradise';
+}
+
+export function resolveOrdinaryParadiseArrivalAfterMonthlyRoot(state: GameState, catalog: ContentCatalog): boolean {
+  if (state.careerStatus !== 'active' || state.careerPhase !== 'active' || state.travelState !== 'at_sea' || state.ship === null || state.maritimeEmergency !== null) return false;
+  if (state.player.stats.health <= 0 || state.ship.health <= 0 || state.navigationDecisionAgeMonths === null) return false;
+  const current = catalog.locations.find(({ id }) => id === state.locationId);
+  if (current?.seaId !== 'grand_line_paradise') return false;
+
+  const destinationId = paradiseNextDestinationId(state, catalog);
+  if (destinationId === undefined || !catalog.locations.some(({ id }) => id === destinationId)) return false;
+
+  const crossingRoots = state.ageMonths - state.navigationDecisionAgeMonths;
+  const probability = paradiseArrivalProbabilityForCrossingRoot(crossingRoots, hasActiveParadiseLogPose(state, catalog));
+  if (probability <= 0) return false;
+
+  const arrivalRoll = nextRandom(state.rngState);
+  state.rngState = arrivalRoll.nextState;
+  if (arrivalRoll.value >= probability) return false;
+
+  movePlayerToLocation(state, destinationId, 'on_land');
+  return true;
+}
+
 
 export function blueArrivalProbabilityForCrossingRoot(rootCount: number): number {
   if (rootCount <= 0) return 0;
@@ -20,7 +97,12 @@ export function resolveOrdinaryBlueArrivalAfterMonthlyRoot(state: GameState, cat
   if (state.careerStatus !== 'active' || state.careerPhase !== 'active' || state.travelState !== 'at_sea' || state.ship === null || state.maritimeEmergency !== null) return false;
   if (state.player.stats.health <= 0 || state.ship.health <= 0 || state.navigationDecisionAgeMonths === null) return false;
   const current = catalog.locations.find(({ id }) => id === state.locationId);
-  if (!current || !BLUE_SEAS.has(current.seaId)) return false;
+  if (!current) return false;
+  if (!BLUE_SEAS.has(current.seaId)) {
+    return current.seaId === 'grand_line_paradise'
+      ? resolveOrdinaryParadiseArrivalAfterMonthlyRoot(state, catalog)
+      : false;
+  }
 
   const crossingRoots = state.ageMonths - state.navigationDecisionAgeMonths;
   const probability = blueArrivalProbabilityForCrossingRoot(crossingRoots);

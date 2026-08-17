@@ -1,6 +1,7 @@
 import type { ChoiceDefinition, ContentCatalog, EventDefinition } from '../content/schema';
 import type { GameState, LocationId } from '../model/schema';
 import { findDockableAccess } from './locations';
+import { ordinaryDepartureHasDestination } from './maritime';
 
 export const DEPARTURE_SYSTEM_EVENT_ID = 'system_navigation:departure';
 
@@ -49,6 +50,7 @@ export function createDepartureSystemEvent(
     || !state.isLeader
     || state.ship === null
     || findDockableAccess(catalog, state.locationId) === undefined
+    || !ordinaryDepartureHasDestination(state, catalog)
   ) return null;
 
   const hasResolvedActiveRoot = state.history.some(({ ageMonths }) => ageMonths >= 180);

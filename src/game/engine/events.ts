@@ -8,7 +8,7 @@ import { materializeEventCast } from './npcNames';
 import { createDepartureSystemEvent, materializeNavigationEvent } from './navigation';
 import { finalizePendingSlot } from './time';
 import { findDockableAccess } from './locations';
-import { countFallbackStreak } from './maritime';
+import { countFallbackStreak, seedParadiseRouteAtTwinCapes } from './maritime';
 import { createArrivalMarketEvent, materializeMarketEvent } from './marketEvents';
 
 export const FALLBACK_EVENT_IDS = ['dead_end_on_land', 'dead_end_at_sea'] as const;
@@ -33,6 +33,17 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
       return selectNextEvent(skipped.immediateEventQueue.length === 0 ? finalizePendingSlot(skipped, catalog) : skipped, catalog);
     }
     return selectEvent(state, catalog, immediate);
+  }
+
+  state = seedParadiseRouteAtTwinCapes(state);
+
+  if (state.locationId === 'reverse_mountain') {
+    const reverseMountainEntry = catalog.events.find((event): event is NormalDefinition =>
+      event.id === 'active_reverse_mountain_01_entry' && event.kind === 'normal',
+    );
+    if (reverseMountainEntry && isNormalOccurrenceEligible(reverseMountainEntry, state) && isEligible(reverseMountainEntry, state, catalog)) {
+      return selectEvent(state, catalog, reverseMountainEntry);
+    }
   }
 
   if (state.shipMarketArrivalPending) {
