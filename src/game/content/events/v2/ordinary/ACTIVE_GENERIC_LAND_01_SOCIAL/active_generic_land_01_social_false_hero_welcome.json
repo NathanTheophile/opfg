@@ -1,0 +1,204 @@
+{
+  "id": "active_generic_land_01_social_false_hero_welcome",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_01_social_false_hero_welcome.title",
+  "textKey": "event.active_generic_land_01_social_false_hero_welcome.text",
+  "choices": [
+    {
+      "id": "correct_the_crowd",
+      "textKey": "event.active_generic_land_01_social_false_hero_welcome.choice.correct_the_crowd.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "correction_backfires",
+            "textKey": "event.active_generic_land_01_social_false_hero_welcome.choice.correct_the_crowd.outcome.correction_backfires.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_false_hero_welcome_i01_real_rescuer"
+              }
+            ]
+          },
+          "failure": {
+            "id": "correction_ignored",
+            "textKey": "event.active_generic_land_01_social_false_hero_welcome.choice.correct_the_crowd.outcome.correction_ignored.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_false_hero_welcome_i01_real_rescuer"
+              }
+            ]
+          },
+          "success": {
+            "id": "correction_heard",
+            "textKey": "event.active_generic_land_01_social_false_hero_welcome.choice.correct_the_crowd.outcome.correction_heard.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_false_hero_welcome_i01_real_rescuer"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "correction_clean",
+            "textKey": "event.active_generic_land_01_social_false_hero_welcome.choice.correct_the_crowd.outcome.correction_clean.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_false_hero_welcome_i01_real_rescuer"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "find_the_real_hero",
+      "textKey": "event.active_generic_land_01_social_false_hero_welcome.choice.find_the_real_hero.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "wrong_person",
+            "textKey": "event.active_generic_land_01_social_false_hero_welcome.choice.find_the_real_hero.outcome.wrong_person.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_false_hero_welcome_i01_real_rescuer"
+              }
+            ]
+          },
+          "failure": {
+            "id": "hero_missing",
+            "textKey": "event.active_generic_land_01_social_false_hero_welcome.choice.find_the_real_hero.outcome.hero_missing.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_false_hero_welcome_i01_real_rescuer"
+              }
+            ]
+          },
+          "success": {
+            "id": "clue_in_crowd",
+            "textKey": "event.active_generic_land_01_social_false_hero_welcome.choice.find_the_real_hero.outcome.clue_in_crowd.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_false_hero_welcome_i01_real_rescuer"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hero_found",
+            "textKey": "event.active_generic_land_01_social_false_hero_welcome.choice.find_the_real_hero.outcome.hero_found.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_false_hero_welcome_i01_real_rescuer"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "take_the_applause",
+      "textKey": "event.active_generic_land_01_social_false_hero_welcome.choice.take_the_applause.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accepted_credit",
+          "textKey": "event.active_generic_land_01_social_false_hero_welcome.choice.take_the_applause.outcome.accepted_credit.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_false_hero_welcome_i01_real_rescuer"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step_off_stage",
+      "textKey": "event.active_generic_land_01_social_false_hero_welcome.choice.step_off_stage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "walked_off",
+          "textKey": "event.active_generic_land_01_social_false_hero_welcome.choice.step_off_stage.outcome.walked_off.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_false_hero_welcome_i01_real_rescuer"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

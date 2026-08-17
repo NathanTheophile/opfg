@@ -1,0 +1,210 @@
+{
+  "id": "active_generic_land_01_social_rumor_chorus",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_01_social_rumor_chorus.title",
+  "textKey": "event.active_generic_land_01_social_rumor_chorus.text",
+  "choices": [
+    {
+      "id": "correct_the_rumor",
+      "textKey": "event.active_generic_land_01_social_rumor_chorus.choice.correct_the_rumor.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rumor_grows",
+            "textKey": "event.active_generic_land_01_social_rumor_chorus.choice.correct_the_rumor.outcome.rumor_grows.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_rumor_chorus_i01_new_version"
+              }
+            ]
+          },
+          "failure": {
+            "id": "correction_becomes_verse",
+            "textKey": "event.active_generic_land_01_social_rumor_chorus.choice.correct_the_rumor.outcome.correction_becomes_verse.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_rumor_chorus_i01_new_version"
+              }
+            ]
+          },
+          "success": {
+            "id": "rumor_softens",
+            "textKey": "event.active_generic_land_01_social_rumor_chorus.choice.correct_the_rumor.outcome.rumor_softens.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_rumor_chorus_i01_new_version"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "rumor_reversed",
+            "textKey": "event.active_generic_land_01_social_rumor_chorus.choice.correct_the_rumor.outcome.rumor_reversed.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_rumor_chorus_i01_new_version"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "laugh_with_them",
+      "textKey": "event.active_generic_land_01_social_rumor_chorus.choice.laugh_with_them.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "laugh_forced",
+            "textKey": "event.active_generic_land_01_social_rumor_chorus.choice.laugh_with_them.outcome.laugh_forced.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_rumor_chorus_i01_new_version"
+              }
+            ]
+          },
+          "failure": {
+            "id": "joke_sticks",
+            "textKey": "event.active_generic_land_01_social_rumor_chorus.choice.laugh_with_them.outcome.joke_sticks.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_rumor_chorus_i01_new_version"
+              }
+            ]
+          },
+          "success": {
+            "id": "joke_defused",
+            "textKey": "event.active_generic_land_01_social_rumor_chorus.choice.laugh_with_them.outcome.joke_defused.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_rumor_chorus_i01_new_version"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crowd_laughs_with",
+            "textKey": "event.active_generic_land_01_social_rumor_chorus.choice.laugh_with_them.outcome.crowd_laughs_with.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_rumor_chorus_i01_new_version"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "let_it_spread",
+      "textKey": "event.active_generic_land_01_social_rumor_chorus.choice.let_it_spread.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rumor_spreads",
+          "textKey": "event.active_generic_land_01_social_rumor_chorus.choice.let_it_spread.outcome.rumor_spreads.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_rumor_chorus_i01_new_version"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "embellish_it",
+      "textKey": "event.active_generic_land_01_social_rumor_chorus.choice.embellish_it.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "deceptive"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rumor_embellished",
+          "textKey": "event.active_generic_land_01_social_rumor_chorus.choice.embellish_it.outcome.rumor_embellished.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_rumor_chorus_i01_new_version"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

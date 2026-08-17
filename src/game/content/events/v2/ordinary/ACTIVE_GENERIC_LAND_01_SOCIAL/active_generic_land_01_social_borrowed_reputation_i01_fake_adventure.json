@@ -1,0 +1,71 @@
+{
+  "id": "active_generic_land_01_social_borrowed_reputation_i01_fake_adventure",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_01_social_borrowed_reputation_i01_fake_adventure.title",
+  "textKey": "event.active_generic_land_01_social_borrowed_reputation_i01_fake_adventure.text",
+  "choices": [
+    {
+      "id": "ask_for_the_ending",
+      "textKey": "event.active_generic_land_01_social_borrowed_reputation_i01_fake_adventure.choice.ask_for_the_ending.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ending_requested",
+          "textKey": "event.active_generic_land_01_social_borrowed_reputation_i01_fake_adventure.choice.ask_for_the_ending.outcome.ending_requested.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_borrowed_reputation_i02_family_arrives"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "correct_the_story",
+      "textKey": "event.active_generic_land_01_social_borrowed_reputation_i01_fake_adventure.choice.correct_the_story.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "story_corrected",
+          "textKey": "event.active_generic_land_01_social_borrowed_reputation_i01_fake_adventure.choice.correct_the_story.outcome.story_corrected.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_borrowed_reputation_i02_family_arrives"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "bluff_along",
+      "textKey": "event.active_generic_land_01_social_borrowed_reputation_i01_fake_adventure.choice.bluff_along.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "deceptive"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bluff_shared",
+          "textKey": "event.active_generic_land_01_social_borrowed_reputation_i01_fake_adventure.choice.bluff_along.outcome.bluff_shared.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_borrowed_reputation_i02_family_arrives"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

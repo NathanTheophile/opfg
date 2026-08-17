@@ -1,0 +1,100 @@
+{
+  "id": "active_generic_land_01_social_ceremonial_sash",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_01_social_ceremonial_sash.title",
+  "textKey": "event.active_generic_land_01_social_ceremonial_sash.text",
+  "choices": [
+    {
+      "id": "accept_and_speak",
+      "textKey": "event.active_generic_land_01_social_ceremonial_sash.choice.accept_and_speak.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sash_accepted",
+          "textKey": "event.active_generic_land_01_social_ceremonial_sash.choice.accept_and_speak.outcome.sash_accepted.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_ceremonial_sash_i01_expected_promise"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "return_it_politely",
+      "textKey": "event.active_generic_land_01_social_ceremonial_sash.choice.return_it_politely.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sash_returned",
+          "textKey": "event.active_generic_land_01_social_ceremonial_sash.choice.return_it_politely.outcome.sash_returned.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_ceremonial_sash_i01_expected_promise"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pass_it_to_a_local",
+      "textKey": "event.active_generic_land_01_social_ceremonial_sash.choice.pass_it_to_a_local.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sash_passed",
+          "textKey": "event.active_generic_land_01_social_ceremonial_sash.choice.pass_it_to_a_local.outcome.sash_passed.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_ceremonial_sash_i01_expected_promise"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "invite_other_guests",
+      "textKey": "event.active_generic_land_01_social_ceremonial_sash.choice.invite_other_guests.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "sociable"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "guests_join",
+          "textKey": "event.active_generic_land_01_social_ceremonial_sash.choice.invite_other_guests.outcome.guests_join.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_ceremonial_sash_i01_expected_promise"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

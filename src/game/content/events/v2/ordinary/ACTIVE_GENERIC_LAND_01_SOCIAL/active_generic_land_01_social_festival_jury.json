@@ -1,0 +1,206 @@
+{
+  "id": "active_generic_land_01_social_festival_jury",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_01_social_festival_jury.title",
+  "textKey": "event.active_generic_land_01_social_festival_jury.text",
+  "choices": [
+    {
+      "id": "judge_the_details",
+      "textKey": "event.active_generic_land_01_social_festival_jury.choice.judge_the_details.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "detail_missed",
+            "textKey": "event.active_generic_land_01_social_festival_jury.choice.judge_the_details.outcome.detail_missed.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_festival_jury_i01_appeal"
+              }
+            ]
+          },
+          "failure": {
+            "id": "verdict_doubted",
+            "textKey": "event.active_generic_land_01_social_festival_jury.choice.judge_the_details.outcome.verdict_doubted.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_festival_jury_i01_appeal"
+              }
+            ]
+          },
+          "success": {
+            "id": "verdict_explained",
+            "textKey": "event.active_generic_land_01_social_festival_jury.choice.judge_the_details.outcome.verdict_explained.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_festival_jury_i01_appeal"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "verdict_respected",
+            "textKey": "event.active_generic_land_01_social_festival_jury.choice.judge_the_details.outcome.verdict_respected.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_festival_jury_i01_appeal"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "set_clear_rules",
+      "textKey": "event.active_generic_land_01_social_festival_jury.choice.set_clear_rules.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rules_mocked",
+            "textKey": "event.active_generic_land_01_social_festival_jury.choice.set_clear_rules.outcome.rules_mocked.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_festival_jury_i01_appeal"
+              }
+            ]
+          },
+          "failure": {
+            "id": "rules_argued",
+            "textKey": "event.active_generic_land_01_social_festival_jury.choice.set_clear_rules.outcome.rules_argued.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_festival_jury_i01_appeal"
+              }
+            ]
+          },
+          "success": {
+            "id": "rules_accepted",
+            "textKey": "event.active_generic_land_01_social_festival_jury.choice.set_clear_rules.outcome.rules_accepted.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_festival_jury_i01_appeal"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "rules_become_show",
+            "textKey": "event.active_generic_land_01_social_festival_jury.choice.set_clear_rules.outcome.rules_become_show.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_festival_jury_i01_appeal"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "let_crowd_decide",
+      "textKey": "event.active_generic_land_01_social_festival_jury.choice.let_crowd_decide.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crowd_vote",
+          "textKey": "event.active_generic_land_01_social_festival_jury.choice.let_crowd_decide.outcome.crowd_vote.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_festival_jury_i01_appeal"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pick_the_strongest",
+      "textKey": "event.active_generic_land_01_social_festival_jury.choice.pick_the_strongest.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "competitive"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hard_verdict",
+          "textKey": "event.active_generic_land_01_social_festival_jury.choice.pick_the_strongest.outcome.hard_verdict.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_festival_jury_i01_appeal"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

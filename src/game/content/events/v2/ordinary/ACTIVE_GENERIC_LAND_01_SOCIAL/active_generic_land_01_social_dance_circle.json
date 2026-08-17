@@ -1,0 +1,220 @@
+{
+  "id": "active_generic_land_01_social_dance_circle",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_01_social_dance_circle.title",
+  "textKey": "event.active_generic_land_01_social_dance_circle.text",
+  "choices": [
+    {
+      "id": "match_the_steps",
+      "textKey": "event.active_generic_land_01_social_dance_circle.choice.match_the_steps.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bad_fall",
+            "textKey": "event.active_generic_land_01_social_dance_circle.choice.match_the_steps.outcome.bad_fall.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_dance_circle_i01_champion_steps_in"
+              }
+            ]
+          },
+          "failure": {
+            "id": "missed_steps",
+            "textKey": "event.active_generic_land_01_social_dance_circle.choice.match_the_steps.outcome.missed_steps.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_dance_circle_i01_champion_steps_in"
+              }
+            ]
+          },
+          "success": {
+            "id": "steps_matched",
+            "textKey": "event.active_generic_land_01_social_dance_circle.choice.match_the_steps.outcome.steps_matched.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_dance_circle_i01_champion_steps_in"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "steps_owned",
+            "textKey": "event.active_generic_land_01_social_dance_circle.choice.match_the_steps.outcome.steps_owned.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_dance_circle_i01_champion_steps_in"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "turn_it_comic",
+      "textKey": "event.active_generic_land_01_social_dance_circle.choice.turn_it_comic.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "joke_flat",
+            "textKey": "event.active_generic_land_01_social_dance_circle.choice.turn_it_comic.outcome.joke_flat.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_dance_circle_i01_champion_steps_in"
+              }
+            ]
+          },
+          "failure": {
+            "id": "laugh_at_you",
+            "textKey": "event.active_generic_land_01_social_dance_circle.choice.turn_it_comic.outcome.laugh_at_you.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_dance_circle_i01_champion_steps_in"
+              }
+            ]
+          },
+          "success": {
+            "id": "laugh_with_you",
+            "textKey": "event.active_generic_land_01_social_dance_circle.choice.turn_it_comic.outcome.laugh_with_you.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_dance_circle_i01_champion_steps_in"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "circle_follows",
+            "textKey": "event.active_generic_land_01_social_dance_circle.choice.turn_it_comic.outcome.circle_follows.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_dance_circle_i01_champion_steps_in"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "bow_out",
+      "textKey": "event.active_generic_land_01_social_dance_circle.choice.bow_out.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bowed_out",
+          "textKey": "event.active_generic_land_01_social_dance_circle.choice.bow_out.outcome.bowed_out.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_dance_circle_i01_champion_steps_in"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_the_champion",
+      "textKey": "event.active_generic_land_01_social_dance_circle.choice.call_the_champion.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "competitive"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "champion_called",
+          "textKey": "event.active_generic_land_01_social_dance_circle.choice.call_the_champion.outcome.champion_called.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_dance_circle_i01_champion_steps_in"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

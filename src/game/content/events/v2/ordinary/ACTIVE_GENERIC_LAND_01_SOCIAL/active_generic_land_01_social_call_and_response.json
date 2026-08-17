@@ -1,0 +1,162 @@
+{
+  "id": "active_generic_land_01_social_call_and_response",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_01_social_call_and_response.title",
+  "textKey": "event.active_generic_land_01_social_call_and_response.text",
+  "choices": [
+    {
+      "id": "improvise_a_verse",
+      "textKey": "event.active_generic_land_01_social_call_and_response.choice.improvise_a_verse.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "verse_flops",
+            "textKey": "event.active_generic_land_01_social_call_and_response.choice.improvise_a_verse.outcome.verse_flops.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "verse_teased",
+            "textKey": "event.active_generic_land_01_social_call_and_response.choice.improvise_a_verse.outcome.verse_teased.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "verse_works",
+            "textKey": "event.active_generic_land_01_social_call_and_response.choice.improvise_a_verse.outcome.verse_works.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "verse_repeated",
+            "textKey": "event.active_generic_land_01_social_call_and_response.choice.improvise_a_verse.outcome.verse_repeated.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "mirror_the_pattern",
+      "textKey": "event.active_generic_land_01_social_call_and_response.choice.mirror_the_pattern.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "pattern_missed",
+            "textKey": "event.active_generic_land_01_social_call_and_response.choice.mirror_the_pattern.outcome.pattern_missed.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "pattern_stiff",
+            "textKey": "event.active_generic_land_01_social_call_and_response.choice.mirror_the_pattern.outcome.pattern_stiff.text",
+            "effects": []
+          },
+          "success": {
+            "id": "pattern_caught",
+            "textKey": "event.active_generic_land_01_social_call_and_response.choice.mirror_the_pattern.outcome.pattern_caught.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "pattern_twisted",
+            "textKey": "event.active_generic_land_01_social_call_and_response.choice.mirror_the_pattern.outcome.pattern_twisted.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clap_instead",
+      "textKey": "event.active_generic_land_01_social_call_and_response.choice.clap_instead.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "beat_kept",
+          "textKey": "event.active_generic_land_01_social_call_and_response.choice.clap_instead.outcome.beat_kept.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "pull_others_in",
+      "textKey": "event.active_generic_land_01_social_call_and_response.choice.pull_others_in.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "sociable"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "neighbors_join",
+          "textKey": "event.active_generic_land_01_social_call_and_response.choice.pull_others_in.outcome.neighbors_join.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

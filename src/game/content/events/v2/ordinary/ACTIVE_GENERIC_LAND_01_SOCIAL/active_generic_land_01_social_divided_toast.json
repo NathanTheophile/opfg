@@ -1,0 +1,202 @@
+{
+  "id": "active_generic_land_01_social_divided_toast",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_01_social_divided_toast.title",
+  "textKey": "event.active_generic_land_01_social_divided_toast.text",
+  "choices": [
+    {
+      "id": "toast_everyone",
+      "textKey": "event.active_generic_land_01_social_divided_toast.choice.toast_everyone.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "toast_booed",
+            "textKey": "event.active_generic_land_01_social_divided_toast.choice.toast_everyone.outcome.toast_booed.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_divided_toast_i01_chanting_sides"
+              }
+            ]
+          },
+          "failure": {
+            "id": "toast_split",
+            "textKey": "event.active_generic_land_01_social_divided_toast.choice.toast_everyone.outcome.toast_split.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_divided_toast_i01_chanting_sides"
+              }
+            ]
+          },
+          "success": {
+            "id": "toast_shared",
+            "textKey": "event.active_generic_land_01_social_divided_toast.choice.toast_everyone.outcome.toast_shared.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_divided_toast_i01_chanting_sides"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "toast_unites",
+            "textKey": "event.active_generic_land_01_social_divided_toast.choice.toast_everyone.outcome.toast_unites.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_divided_toast_i01_chanting_sides"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "name_the_common_work",
+      "textKey": "event.active_generic_land_01_social_divided_toast.choice.name_the_common_work.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "wrong_credit",
+            "textKey": "event.active_generic_land_01_social_divided_toast.choice.name_the_common_work.outcome.wrong_credit.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_divided_toast_i01_chanting_sides"
+              }
+            ]
+          },
+          "failure": {
+            "id": "detail_disputed",
+            "textKey": "event.active_generic_land_01_social_divided_toast.choice.name_the_common_work.outcome.detail_disputed.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_divided_toast_i01_chanting_sides"
+              }
+            ]
+          },
+          "success": {
+            "id": "shared_credit",
+            "textKey": "event.active_generic_land_01_social_divided_toast.choice.name_the_common_work.outcome.shared_credit.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_divided_toast_i01_chanting_sides"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "precise_credit",
+            "textKey": "event.active_generic_land_01_social_divided_toast.choice.name_the_common_work.outcome.precise_credit.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_divided_toast_i01_chanting_sides"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "toast_the_hosts",
+      "textKey": "event.active_generic_land_01_social_divided_toast.choice.toast_the_hosts.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hosts_named",
+          "textKey": "event.active_generic_land_01_social_divided_toast.choice.toast_the_hosts.outcome.hosts_named.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_divided_toast_i01_chanting_sides"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "reject_the_ranking",
+      "textKey": "event.active_generic_land_01_social_divided_toast.choice.reject_the_ranking.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "rebellious"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ranking_refused",
+          "textKey": "event.active_generic_land_01_social_divided_toast.choice.reject_the_ranking.outcome.ranking_refused.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_divided_toast_i01_chanting_sides"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
