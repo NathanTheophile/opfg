@@ -3,6 +3,7 @@ import {
   useMemo,
   useRef,
   useState,
+  useLayoutEffect,
 } from 'react';
 import {
   AnimatePresence,
@@ -330,6 +331,13 @@ export function EventPreview({
 
   const adventureScrollRef =
     useRef<HTMLDivElement | null>(null);
+  // OPFG responsive gameplay scaling refs
+  const gameScreenRef =
+    useRef<HTMLElement | null>(null);
+  const gameScaleRef =
+    useRef<HTMLDivElement | null>(null);
+
+
 
   const translate: Translator = (key, params) =>
     t(key, locale, {
@@ -362,6 +370,294 @@ export function EventPreview({
     },
     [],
   );
+  // OPFG responsive gameplay scaling effect
+  useLayoutEffect(() => {
+    if (!session.gameState) return undefined;
+
+    const screen = gameScreenRef.current;
+    const stage = gameScaleRef.current;
+
+    if (!screen || !stage) return undefined;
+
+    let frame = 0;
+    let settleTimer = 0;
+
+    const px = (value: string) =>
+      Number.parseFloat(value) || 0;
+
+    const measureAndFit = () => {
+      /*
+       * Always measure from a true unscaled frame.
+       * Reading offsetWidth immediately after changing the CSS variable
+       * forces Chromium/WebKit to commit the style before bounds are read.
+       */
+      stage.style.setProperty(
+        '--opfg-game-ui-scale',
+        '1',
+      );
+
+      void stage.offsetWidth;
+
+      const viewport =
+        window.visualViewport;
+
+      const viewportWidth =
+        viewport?.width
+        ?? document.documentElement.clientWidth
+        ?? window.innerWidth;
+
+      const viewportHeight =
+        viewport?.height
+        ?? document.documentElement.clientHeight
+        ?? window.innerHeight;
+
+      const screenStyle =
+        window.getComputedStyle(screen);
+
+      const horizontalPadding =
+        px(screenStyle.paddingLeft)
+        + px(screenStyle.paddingRight);
+
+      const verticalPadding =
+        px(screenStyle.paddingTop)
+        + px(screenStyle.paddingBottom);
+
+      const availableWidth =
+        Math.max(
+          1,
+          viewportWidth
+            - horizontalPadding
+            - 12,
+        );
+
+      const availableHeight =
+        Math.max(
+          1,
+          viewportHeight
+            - verticalPadding
+            - 12,
+        );
+
+      const candidates = [
+        ...stage.querySelectorAll<HTMLElement>(
+          '[data-opfg-scale-bound="true"],'
+          + '.opfg-top-world-hud',
+        ),
+      ];
+
+      const nodes =
+        candidates.filter((node) => {
+          const style =
+            window.getComputedStyle(node);
+
+          if (
+            style.display === 'none'
+            || style.visibility === 'hidden'
+          ) {
+            return false;
+          }
+
+          const rect =
+            node.getBoundingClientRect();
+
+          return (
+            rect.width > 0
+            && rect.height > 0
+          );
+        });
+
+      if (nodes.length === 0) return;
+
+      let left =
+        Number.POSITIVE_INFINITY;
+      let top =
+        Number.POSITIVE_INFINITY;
+      let right =
+        Number.NEGATIVE_INFINITY;
+      let bottom =
+        Number.NEGATIVE_INFINITY;
+
+      for (const node of nodes) {
+        const rect =
+          node.getBoundingClientRect();
+
+        left =
+          Math.min(left, rect.left);
+
+        top =
+          Math.min(top, rect.top);
+
+        right =
+          Math.max(right, rect.right);
+
+        bottom =
+          Math.max(bottom, rect.bottom);
+      }
+
+      const naturalWidth =
+        Math.max(
+          1,
+          right - left,
+        );
+
+      const naturalHeight =
+        Math.max(
+          1,
+          bottom - top,
+        );
+
+      const scale =
+        Math.max(
+          0.25,
+          Math.min(
+            availableWidth / naturalWidth,
+            availableHeight / naturalHeight,
+            4,
+          ),
+        );
+
+      const value =
+        scale.toFixed(4);
+
+      stage.style.setProperty(
+        '--opfg-game-ui-scale',
+        value,
+      );
+
+      document.documentElement
+        .style
+        .setProperty(
+          '--opfg-game-ui-scale',
+          value,
+        );
+    };
+
+    const fit = () => {
+      window.cancelAnimationFrame(frame);
+
+      frame =
+        window.requestAnimationFrame(
+          measureAndFit,
+        );
+
+      /*
+       * A resize can also flip portrait/landscape media queries.
+       * Re-run once after that CSS reflow has fully settled.
+       */
+      window.clearTimeout(settleTimer);
+
+      settleTimer =
+        window.setTimeout(
+          () => {
+            window.cancelAnimationFrame(frame);
+
+            frame =
+              window.requestAnimationFrame(
+                measureAndFit,
+              );
+          },
+          80,
+        );
+    };
+
+    const observer =
+      new ResizeObserver(fit);
+
+    observer.observe(screen);
+    observer.observe(stage);
+    observer.observe(
+      document.documentElement,
+    );
+
+    const observed = [
+      ...stage.querySelectorAll<HTMLElement>(
+        '[data-opfg-scale-bound="true"],'
+        + '.opfg-top-world-hud',
+      ),
+    ];
+
+    for (const node of observed) {
+      observer.observe(node);
+    }
+
+    const orientationQuery =
+      window.matchMedia(
+        '(orientation: portrait)',
+      );
+
+    window.addEventListener(
+      'resize',
+      fit,
+      { passive: true },
+    );
+
+    window.addEventListener(
+      'orientationchange',
+      fit,
+      { passive: true },
+    );
+
+    window.visualViewport
+      ?.addEventListener(
+        'resize',
+        fit,
+        { passive: true },
+      );
+
+    orientationQuery
+      .addEventListener(
+        'change',
+        fit,
+      );
+
+    /*
+     * Fonts can change intrinsic panel dimensions after the first paint.
+     */
+    void document.fonts?.ready.then(
+      fit,
+    );
+
+    fit();
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(settleTimer);
+
+      observer.disconnect();
+
+      window.removeEventListener(
+        'resize',
+        fit,
+      );
+
+      window.removeEventListener(
+        'orientationchange',
+        fit,
+      );
+
+      window.visualViewport
+        ?.removeEventListener(
+          'resize',
+          fit,
+      );
+
+      orientationQuery
+        .removeEventListener(
+          'change',
+          fit,
+        );
+
+      document.documentElement
+        .style
+        .removeProperty(
+          '--opfg-game-ui-scale',
+        );
+    };
+  }, [session.gameState !== null]);
+
+
+
+
 
   const eventView =
     useMemo<EventViewModel | null>(() => {
@@ -900,9 +1196,18 @@ export function EventPreview({
   };
 
   return (
-    <main className="min-h-dvh w-full overflow-x-hidden overflow-y-auto pl-[max(var(--layout-gutter),var(--safe-area-left))] pr-[max(var(--layout-gutter),var(--safe-area-right))] pt-[max(var(--layout-gutter),var(--safe-area-top))] pb-[max(var(--layout-gutter),var(--safe-area-bottom))]">
-      <div className="mx-auto w-full max-w-[78rem]">
-        <div className="mb-3 flex items-center justify-end gap-3 px-1">
+    <main
+      ref={gameScreenRef}
+      className="opfg-game-screen min-h-dvh w-full overflow-x-hidden overflow-y-auto pl-[max(var(--layout-gutter),var(--safe-area-left))] pr-[max(var(--layout-gutter),var(--safe-area-right))] pt-[max(var(--layout-gutter),var(--safe-area-top))] pb-[max(var(--layout-gutter),var(--safe-area-bottom))]"
+    >
+      <div
+        ref={gameScaleRef}
+        className="opfg-game-scale-content mx-auto w-full max-w-[78rem]"
+      >
+        <div
+          data-opfg-scale-bound="true"
+          className="opfg-game-restart-row mb-3 flex items-center justify-end gap-3 px-1"
+        >
           <button
             className="text-xs text-fg-muted transition hover:text-fg-secondary"
             onClick={restartRun}
@@ -915,12 +1220,21 @@ export function EventPreview({
 
         <TopWorldHud {...hudProps} />
 
-        <div className="relative mx-auto mt-4 w-full max-w-[52rem]">
-          <div className="absolute right-[calc(100%+1rem)] top-0 z-10 hidden w-[14rem] justify-end xl:flex">
+        <div
+          data-opfg-scale-bound="true"
+          className="opfg-game-adventure-region relative mx-auto mt-4 w-full max-w-[52rem]"
+        >
+          <div
+            data-opfg-scale-bound="true"
+            className="opfg-game-side-rail opfg-game-side-rail--stats absolute right-[calc(100%+1rem)] top-0 z-10 hidden w-[14rem] justify-end xl:flex"
+          >
             {statsRail}
           </div>
 
-          <div className="absolute left-[calc(100%+1rem)] top-0 z-10 hidden xl:block">
+          <div
+            data-opfg-scale-bound="true"
+            className="opfg-game-side-rail opfg-game-side-rail--crew absolute left-[calc(100%+1rem)] top-0 z-10 hidden xl:block"
+          >
             {crewRail}
           </div>
 

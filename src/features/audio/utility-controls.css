@@ -366,3 +366,54 @@
   justify-self: center;
   align-self: center;
 }
+
+/* OPFG FLAG HARD CENTER START */
+
+/*
+ * The SVG itself was ending up at the left edge despite grid alignment.
+ * Absolute centering makes the visual position independent from Tailwind,
+ * intrinsic SVG sizing and button layout.
+ */
+.opfg-language-controls__button {
+  position: relative !important;
+  overflow: hidden;
+}
+
+.opfg-language-controls__button > img {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  display: block !important;
+  width: 1.55rem !important;
+  height: 1.05rem !important;
+  margin: 0 !important;
+  justify-self: auto !important;
+  align-self: auto !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform:
+    translate(-50%, -50%) !important;
+}
+
+/* Keep both fixed utility columns inside safe-area bounds. */
+.opfg-language-controls,
+.opfg-audio-controls {
+  right:
+    max(
+      1.25rem,
+      var(--safe-area-right)
+    ) !important;
+}
+
+@media (max-width: 48rem) {
+  .opfg-language-controls,
+  .opfg-audio-controls {
+    right:
+      max(
+        0.75rem,
+        var(--safe-area-right)
+      ) !important;
+  }
+}
+
+/* OPFG FLAG HARD CENTER END */
