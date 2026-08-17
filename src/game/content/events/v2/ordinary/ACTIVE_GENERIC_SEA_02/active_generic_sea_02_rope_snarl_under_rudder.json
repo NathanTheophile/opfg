@@ -1,0 +1,159 @@
+{
+  "id": "active_generic_sea_02_rope_snarl_under_rudder",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_02_rope_snarl_under_rudder.title",
+  "textKey": "event.active_generic_sea_02_rope_snarl_under_rudder.text",
+  "choices": [
+    {
+      "id": "crawl_over_stern",
+      "textKey": "event.active_generic_sea_02_rope_snarl_under_rudder.choice.crawl_over_stern.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "crawl_over_stern_criticalFailure",
+            "textKey": "event.active_generic_sea_02_rope_snarl_under_rudder.outcome.crawl_over_stern_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "crawl_over_stern_failure",
+            "textKey": "event.active_generic_sea_02_rope_snarl_under_rudder.outcome.crawl_over_stern_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "crawl_over_stern_success",
+            "textKey": "event.active_generic_sea_02_rope_snarl_under_rudder.outcome.crawl_over_stern_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_rope_snarl_under_rudder_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crawl_over_stern_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_rope_snarl_under_rudder.outcome.crawl_over_stern_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_rope_snarl_under_rudder_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "work_it_from_deck",
+      "textKey": "event.active_generic_sea_02_rope_snarl_under_rudder.choice.work_it_from_deck.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "work_it_from_deck_criticalFailure",
+            "textKey": "event.active_generic_sea_02_rope_snarl_under_rudder.outcome.work_it_from_deck_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "work_it_from_deck_failure",
+            "textKey": "event.active_generic_sea_02_rope_snarl_under_rudder.outcome.work_it_from_deck_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "work_it_from_deck_success",
+            "textKey": "event.active_generic_sea_02_rope_snarl_under_rudder.outcome.work_it_from_deck_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_rope_snarl_under_rudder_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "work_it_from_deck_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_rope_snarl_under_rudder.outcome.work_it_from_deck_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_rope_snarl_under_rudder_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cut_everything_loose",
+      "textKey": "event.active_generic_sea_02_rope_snarl_under_rudder.choice.cut_everything_loose.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_everything_loose_result",
+          "textKey": "event.active_generic_sea_02_rope_snarl_under_rudder.outcome.cut_everything_loose_result.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

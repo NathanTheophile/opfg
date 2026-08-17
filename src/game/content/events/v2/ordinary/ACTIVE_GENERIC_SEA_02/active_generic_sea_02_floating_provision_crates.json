@@ -1,0 +1,144 @@
+{
+  "id": "active_generic_sea_02_floating_provision_crates",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_02_floating_provision_crates.title",
+  "textKey": "event.active_generic_sea_02_floating_provision_crates.text",
+  "choices": [
+    {
+      "id": "smell_for_spoilage",
+      "textKey": "event.active_generic_sea_02_floating_provision_crates.choice.smell_for_spoilage.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "smell_for_spoilage_criticalFailure",
+            "textKey": "event.active_generic_sea_02_floating_provision_crates.outcome.smell_for_spoilage_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "smell_for_spoilage_failure",
+            "textKey": "event.active_generic_sea_02_floating_provision_crates.outcome.smell_for_spoilage_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "smell_for_spoilage_success",
+            "textKey": "event.active_generic_sea_02_floating_provision_crates.outcome.smell_for_spoilage_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_floating_provision_crates_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "smell_for_spoilage_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_floating_provision_crates.outcome.smell_for_spoilage_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_floating_provision_crates_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_the_packaging",
+      "textKey": "event.active_generic_sea_02_floating_provision_crates.choice.read_the_packaging.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_the_packaging_criticalFailure",
+            "textKey": "event.active_generic_sea_02_floating_provision_crates.outcome.read_the_packaging_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_the_packaging_failure",
+            "textKey": "event.active_generic_sea_02_floating_provision_crates.outcome.read_the_packaging_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "read_the_packaging_success",
+            "textKey": "event.active_generic_sea_02_floating_provision_crates.outcome.read_the_packaging_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_floating_provision_crates_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_the_packaging_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_floating_provision_crates.outcome.read_the_packaging_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_floating_provision_crates_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "leave_spoiled_food",
+      "textKey": "event.active_generic_sea_02_floating_provision_crates.choice.leave_spoiled_food.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_spoiled_food_result",
+          "textKey": "event.active_generic_sea_02_floating_provision_crates.outcome.leave_spoiled_food_result.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  }
+}

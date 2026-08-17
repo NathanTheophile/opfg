@@ -1,0 +1,140 @@
+{
+  "id": "active_generic_sea_02_sealed_water_casks",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_02_sealed_water_casks.title",
+  "textKey": "event.active_generic_sea_02_sealed_water_casks.text",
+  "choices": [
+    {
+      "id": "inspect_the_seals",
+      "textKey": "event.active_generic_sea_02_sealed_water_casks.choice.inspect_the_seals.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "inspect_the_seals_criticalFailure",
+            "textKey": "event.active_generic_sea_02_sealed_water_casks.outcome.inspect_the_seals_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "inspect_the_seals_failure",
+            "textKey": "event.active_generic_sea_02_sealed_water_casks.outcome.inspect_the_seals_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "inspect_the_seals_success",
+            "textKey": "event.active_generic_sea_02_sealed_water_casks.outcome.inspect_the_seals_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_sealed_water_casks_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "inspect_the_seals_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_sealed_water_casks.outcome.inspect_the_seals_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_sealed_water_casks_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "test_one_cask",
+      "textKey": "event.active_generic_sea_02_sealed_water_casks.choice.test_one_cask.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "test_one_cask_criticalFailure",
+            "textKey": "event.active_generic_sea_02_sealed_water_casks.outcome.test_one_cask_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "test_one_cask_failure",
+            "textKey": "event.active_generic_sea_02_sealed_water_casks.outcome.test_one_cask_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "test_one_cask_success",
+            "textKey": "event.active_generic_sea_02_sealed_water_casks.outcome.test_one_cask_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_sealed_water_casks_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "test_one_cask_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_sealed_water_casks.outcome.test_one_cask_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_sealed_water_casks_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ignore_the_casks",
+      "textKey": "event.active_generic_sea_02_sealed_water_casks.choice.ignore_the_casks.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ignore_the_casks_result",
+          "textKey": "event.active_generic_sea_02_sealed_water_casks.outcome.ignore_the_casks_result.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  }
+}

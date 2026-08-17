@@ -1,0 +1,164 @@
+{
+  "id": "active_generic_sea_02_leaking_lamp_oil",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_02_leaking_lamp_oil.title",
+  "textKey": "event.active_generic_sea_02_leaking_lamp_oil.text",
+  "choices": [
+    {
+      "id": "separate_sound_casks",
+      "textKey": "event.active_generic_sea_02_leaking_lamp_oil.choice.separate_sound_casks.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "separate_sound_casks_criticalFailure",
+            "textKey": "event.active_generic_sea_02_leaking_lamp_oil.outcome.separate_sound_casks_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "separate_sound_casks_failure",
+            "textKey": "event.active_generic_sea_02_leaking_lamp_oil.outcome.separate_sound_casks_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_leaking_lamp_oil_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "separate_sound_casks_success",
+            "textKey": "event.active_generic_sea_02_leaking_lamp_oil.outcome.separate_sound_casks_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_leaking_lamp_oil_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "separate_sound_casks_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_leaking_lamp_oil.outcome.separate_sound_casks_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_leaking_lamp_oil_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "plug_the_leak",
+      "textKey": "event.active_generic_sea_02_leaking_lamp_oil.choice.plug_the_leak.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "plug_the_leak_criticalFailure",
+            "textKey": "event.active_generic_sea_02_leaking_lamp_oil.outcome.plug_the_leak_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "plug_the_leak_failure",
+            "textKey": "event.active_generic_sea_02_leaking_lamp_oil.outcome.plug_the_leak_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_leaking_lamp_oil_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "plug_the_leak_success",
+            "textKey": "event.active_generic_sea_02_leaking_lamp_oil.outcome.plug_the_leak_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_leaking_lamp_oil_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "plug_the_leak_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_leaking_lamp_oil.outcome.plug_the_leak_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_leaking_lamp_oil_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "leave_the_oil",
+      "textKey": "event.active_generic_sea_02_leaking_lamp_oil.choice.leave_the_oil.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_the_oil_result",
+          "textKey": "event.active_generic_sea_02_leaking_lamp_oil.outcome.leave_the_oil_result.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

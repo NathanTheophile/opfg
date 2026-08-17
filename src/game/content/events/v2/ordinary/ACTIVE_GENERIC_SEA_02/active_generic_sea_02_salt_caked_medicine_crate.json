@@ -1,0 +1,75 @@
+{
+  "id": "active_generic_sea_02_salt_caked_medicine_crate",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_02_salt_caked_medicine_crate.title",
+  "textKey": "event.active_generic_sea_02_salt_caked_medicine_crate.text",
+  "choices": [
+    {
+      "id": "open_outer_case",
+      "textKey": "event.active_generic_sea_02_salt_caked_medicine_crate.choice.open_outer_case.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "open_outer_case_result",
+          "textKey": "event.active_generic_sea_02_salt_caked_medicine_crate.outcome.open_outer_case_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_02_salt_caked_medicine_crate_i01"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_medic_check_it",
+      "textKey": "event.active_generic_sea_02_salt_caked_medicine_crate.choice.let_medic_check_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "let_medic_check_it_result",
+          "textKey": "event.active_generic_sea_02_salt_caked_medicine_crate.outcome.let_medic_check_it_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_02_salt_caked_medicine_crate_i01"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "medic"
+      }
+    },
+    {
+      "id": "leave_unknown_medicine",
+      "textKey": "event.active_generic_sea_02_salt_caked_medicine_crate.choice.leave_unknown_medicine.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_unknown_medicine_result",
+          "textKey": "event.active_generic_sea_02_salt_caked_medicine_crate.outcome.leave_unknown_medicine_result.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  }
+}

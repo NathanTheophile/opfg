@@ -1,0 +1,160 @@
+{
+  "id": "active_generic_sea_02_driftwood_lattice",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_02_driftwood_lattice.title",
+  "textKey": "event.active_generic_sea_02_driftwood_lattice.text",
+  "choices": [
+    {
+      "id": "hook_the_frame",
+      "textKey": "event.active_generic_sea_02_driftwood_lattice.choice.hook_the_frame.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hook_the_frame_criticalFailure",
+            "textKey": "event.active_generic_sea_02_driftwood_lattice.outcome.hook_the_frame_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "hook_the_frame_failure",
+            "textKey": "event.active_generic_sea_02_driftwood_lattice.outcome.hook_the_frame_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "hook_the_frame_success",
+            "textKey": "event.active_generic_sea_02_driftwood_lattice.outcome.hook_the_frame_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_driftwood_lattice_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hook_the_frame_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_driftwood_lattice.outcome.hook_the_frame_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_driftwood_lattice_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "thread_the_lines",
+      "textKey": "event.active_generic_sea_02_driftwood_lattice.choice.thread_the_lines.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "thread_the_lines_criticalFailure",
+            "textKey": "event.active_generic_sea_02_driftwood_lattice.outcome.thread_the_lines_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "thread_the_lines_failure",
+            "textKey": "event.active_generic_sea_02_driftwood_lattice.outcome.thread_the_lines_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "thread_the_lines_success",
+            "textKey": "event.active_generic_sea_02_driftwood_lattice.outcome.thread_the_lines_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_driftwood_lattice_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "thread_the_lines_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_driftwood_lattice.outcome.thread_the_lines_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_driftwood_lattice_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "leave_it",
+      "textKey": "event.active_generic_sea_02_driftwood_lattice.choice.leave_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_it_result",
+          "textKey": "event.active_generic_sea_02_driftwood_lattice.outcome.leave_it_result.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}
