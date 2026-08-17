@@ -182,12 +182,17 @@ function fallbackDestinationIds(currentId: LocationId, catalog: ContentCatalog):
   const current = findLocation(catalog, currentId);
   if (!current) return [];
   if (current.seaId === 'grand_line_paradise') {
-    const routeCurrent = getLocationAncestors(catalog, currentId).at(-1)?.id ?? currentId;
+    const routeCandidates = [current, ...getLocationAncestors(catalog, currentId)];
     const forward = Object.values(worldData.paradiseRouteGraph).flatMap((route) => {
-      const index = route.sequence.indexOf(routeCurrent);
-      return index >= 0 && index + 1 < route.sequence.length ? [route.sequence[index + 1]] : [];
+      const sequence: readonly string[] = route.sequence;
+      const routeCurrent = routeCandidates.find(({ id }) => sequence.includes(id));
+      if (!routeCurrent) return [];
+      const index = sequence.indexOf(routeCurrent.id);
+      return index >= 0 && index + 1 < sequence.length ? [sequence[index + 1]] : [];
     });
-    const safeForward = [...new Set(forward)].filter((id) => isSafeDestination(id, catalog));
+    const safeForward = [...new Set(forward)]
+      .filter((id) => id !== currentId)
+      .filter((id) => isSafeDestination(id, catalog));
     if (safeForward.length > 0) return safeForward;
   }
   const metadata = new Map(worldData.outsideBlueLocations.map((location) => [location.id, location]));
