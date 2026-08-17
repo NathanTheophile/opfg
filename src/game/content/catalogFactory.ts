@@ -183,6 +183,23 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
           { id: 'active_10_what_the_flag_means', phase: 'active' as const, dueAgeMonths: 408 },
         ],
       },
+      {
+        id: 'career_revolutionary',
+        type: 'personal_affiliation' as const,
+        eligibility: { type: 'careerAffiliationIs' as const, affiliationId: 'revolutionary' },
+        chapters: [
+          { id: 'active_01_recognition', phase: 'active' as const, dueAgeMonths: 180 },
+          { id: 'active_02_first_cell', phase: 'active' as const, dueAgeMonths: 204 },
+          { id: 'active_03_counterpressure', phase: 'active' as const, dueAgeMonths: 228 },
+          { id: 'active_04_autonomy', phase: 'active' as const, dueAgeMonths: 252 },
+          { id: 'active_05_network_war', phase: 'active' as const, dueAgeMonths: 276 },
+          { id: 'active_06_command', phase: 'active' as const, dueAgeMonths: 300 },
+          { id: 'active_07_fracture', phase: 'active' as const, dueAgeMonths: 324 },
+          { id: 'active_08_regional_front', phase: 'active' as const, dueAgeMonths: 348 },
+          { id: 'active_09_legacy', phase: 'active' as const, dueAgeMonths: 372 },
+          { id: 'active_10_resolution', phase: 'active' as const, dueAgeMonths: 396 },
+        ],
+      },
     ],
     events,
   };

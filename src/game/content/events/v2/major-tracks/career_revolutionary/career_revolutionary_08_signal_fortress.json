@@ -1,0 +1,244 @@
+{
+  "id": "career_revolutionary_08_signal_fortress",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_07_exposed_methods",
+            "choiceId": "strike"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_07_town_council",
+            "choiceId": "strike"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_07_hardline_bomb",
+            "choiceId": "strike"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_07_doctrine_split",
+            "choiceId": "strike"
+          }
+        ]
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_revolutionary",
+    "chapterId": "active_08_regional_front",
+    "nodeId": "career_revolutionary_08_signal_fortress",
+    "parentNodeIds": [
+      "career_revolutionary_07_exposed_methods",
+      "career_revolutionary_07_town_council",
+      "career_revolutionary_07_hardline_bomb",
+      "career_revolutionary_07_doctrine_split"
+    ],
+    "selectionPriority": 30
+  },
+  "titleKey": "event.career_revolutionary_08_signal_fortress.title",
+  "textKey": "event.career_revolutionary_08_signal_fortress.text",
+  "choices": [
+    {
+      "id": "network",
+      "textKey": "event.career_revolutionary_08_signal_fortress.choice.network.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "network_criticalFailure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_08_signal_fortress_i01"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1500
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.career_revolutionary_08_signal_fortress.choice.network.outcome.network_criticalFailure.text"
+          },
+          "failure": {
+            "id": "network_failure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_08_signal_fortress_i01"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 500
+              }
+            ],
+            "textKey": "event.career_revolutionary_08_signal_fortress.choice.network.outcome.network_failure.text"
+          },
+          "success": {
+            "id": "network_success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_08_signal_fortress_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.career_revolutionary_08_signal_fortress.choice.network.outcome.network_success.text"
+          },
+          "criticalSuccess": {
+            "id": "network_criticalSuccess",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_08_signal_fortress_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.career_revolutionary_08_signal_fortress.choice.network.outcome.network_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "people",
+      "textKey": "event.career_revolutionary_08_signal_fortress.choice.people.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "people",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_revolutionary_08_signal_fortress_i01"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_revolutionary_08_signal_fortress.choice.people.outcome.people.text"
+        }
+      }
+    },
+    {
+      "id": "strike",
+      "textKey": "event.career_revolutionary_08_signal_fortress.choice.strike.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "strike_criticalFailure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_08_signal_fortress_i01"
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 2000
+              }
+            ],
+            "textKey": "event.career_revolutionary_08_signal_fortress.choice.strike.outcome.strike_criticalFailure.text"
+          },
+          "failure": {
+            "id": "strike_failure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_08_signal_fortress_i01"
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1000
+              }
+            ],
+            "textKey": "event.career_revolutionary_08_signal_fortress.choice.strike.outcome.strike_failure.text"
+          },
+          "success": {
+            "id": "strike_success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_08_signal_fortress_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1500
+              }
+            ],
+            "textKey": "event.career_revolutionary_08_signal_fortress.choice.strike.outcome.strike_success.text"
+          },
+          "criticalSuccess": {
+            "id": "strike_criticalSuccess",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_08_signal_fortress_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 3000
+              }
+            ],
+            "textKey": "event.career_revolutionary_08_signal_fortress.choice.strike.outcome.strike_criticalSuccess.text"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "id": "career_revolutionary_08_missing_commander_i01",
+  "kind": "immediate",
+  "titleKey": "event.career_revolutionary_08_missing_commander_i01.title",
+  "textKey": "event.career_revolutionary_08_missing_commander_i01.text",
+  "choices": [
+    {
+      "id": "accept_regional_commander",
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerRankIs",
+            "rankId": "revolutionary_officer"
+          },
+          {
+            "type": "reputationAtLeast",
+            "value": 70
+          }
+        ]
+      },
+      "textKey": "event.career_revolutionary_08_missing_commander_i01.choice.accept_regional_commander.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "regional_commander",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "revolutionary_regional_commander"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 5
+            }
+          ],
+          "textKey": "event.career_revolutionary_08_missing_commander_i01.choice.accept_regional_commander.outcome.regional_commander.text"
+        }
+      }
+    },
+    {
+      "id": "accept_officer_late",
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerRankIs",
+            "rankId": "revolutionary_operator"
+          },
+          {
+            "type": "reputationAtLeast",
+            "value": 50
+          }
+        ]
+      },
+      "textKey": "event.career_revolutionary_08_missing_commander_i01.choice.accept_officer_late.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "officer_late",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "revolutionary_officer"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            }
+          ],
+          "textKey": "event.career_revolutionary_08_missing_commander_i01.choice.accept_officer_late.outcome.officer_late.text"
+        }
+      }
+    },
+    {
+      "id": "keep_mobile_command",
+      "textKey": "event.career_revolutionary_08_missing_commander_i01.choice.keep_mobile_command.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mobile_command",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ],
+          "textKey": "event.career_revolutionary_08_missing_commander_i01.choice.keep_mobile_command.outcome.mobile_command.text"
+        }
+      }
+    }
+  ]
+}

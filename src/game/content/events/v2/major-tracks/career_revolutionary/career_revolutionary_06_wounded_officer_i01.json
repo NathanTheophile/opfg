@@ -1,0 +1,93 @@
+{
+  "id": "career_revolutionary_06_wounded_officer_i01",
+  "kind": "immediate",
+  "titleKey": "event.career_revolutionary_06_wounded_officer_i01.title",
+  "textKey": "event.career_revolutionary_06_wounded_officer_i01.text",
+  "choices": [
+    {
+      "id": "accept_officer",
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerRankIs",
+            "rankId": "revolutionary_operator"
+          },
+          {
+            "type": "reputationAtLeast",
+            "value": 50
+          }
+        ]
+      },
+      "textKey": "event.career_revolutionary_06_wounded_officer_i01.choice.accept_officer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "officer",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "revolutionary_officer"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            }
+          ],
+          "textKey": "event.career_revolutionary_06_wounded_officer_i01.choice.accept_officer.outcome.officer.text"
+        }
+      }
+    },
+    {
+      "id": "accept_operator_late",
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerRankIs",
+            "rankId": "revolutionary_agent"
+          },
+          {
+            "type": "reputationAtLeast",
+            "value": 30
+          }
+        ]
+      },
+      "textKey": "event.career_revolutionary_06_wounded_officer_i01.choice.accept_operator_late.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "operator_late",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "revolutionary_operator"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            }
+          ],
+          "textKey": "event.career_revolutionary_06_wounded_officer_i01.choice.accept_operator_late.outcome.operator_late.text"
+        }
+      }
+    },
+    {
+      "id": "stay_field_command",
+      "textKey": "event.career_revolutionary_06_wounded_officer_i01.choice.stay_field_command.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "field_command",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ],
+          "textKey": "event.career_revolutionary_06_wounded_officer_i01.choice.stay_field_command.outcome.field_command.text"
+        }
+      }
+    }
+  ]
+}

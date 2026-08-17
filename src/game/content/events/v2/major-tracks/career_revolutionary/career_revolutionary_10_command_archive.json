@@ -1,0 +1,246 @@
+{
+  "id": "career_revolutionary_10_command_archive",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_09_copied_secrecy",
+            "choiceId": "strike"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_09_free_towns",
+            "choiceId": "strike"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_09_ceasefire_offer",
+            "choiceId": "strike"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_09_what_remains",
+            "choiceId": "strike"
+          }
+        ]
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_revolutionary",
+    "chapterId": "active_10_resolution",
+    "nodeId": "career_revolutionary_10_command_archive",
+    "parentNodeIds": [
+      "career_revolutionary_09_copied_secrecy",
+      "career_revolutionary_09_free_towns",
+      "career_revolutionary_09_ceasefire_offer",
+      "career_revolutionary_09_what_remains"
+    ],
+    "selectionPriority": 30,
+    "milestoneId": "revolutionary_strike_legacy",
+    "specialPathId": "revolutionary_strike"
+  },
+  "titleKey": "event.career_revolutionary_10_command_archive.title",
+  "textKey": "event.career_revolutionary_10_command_archive.text",
+  "choices": [
+    {
+      "id": "network",
+      "textKey": "event.career_revolutionary_10_command_archive.choice.network.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "network",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_revolutionary_10_command_archive_i01"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_revolutionary_10_command_archive.choice.network.outcome.network.text"
+        }
+      }
+    },
+    {
+      "id": "people",
+      "textKey": "event.career_revolutionary_10_command_archive.choice.people.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "people_criticalFailure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_10_command_archive_i01"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1500
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.career_revolutionary_10_command_archive.choice.people.outcome.people_criticalFailure.text"
+          },
+          "failure": {
+            "id": "people_failure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_10_command_archive_i01"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 500
+              }
+            ],
+            "textKey": "event.career_revolutionary_10_command_archive.choice.people.outcome.people_failure.text"
+          },
+          "success": {
+            "id": "people_success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_10_command_archive_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.career_revolutionary_10_command_archive.choice.people.outcome.people_success.text"
+          },
+          "criticalSuccess": {
+            "id": "people_criticalSuccess",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_10_command_archive_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.career_revolutionary_10_command_archive.choice.people.outcome.people_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "strike",
+      "textKey": "event.career_revolutionary_10_command_archive.choice.strike.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "strike_criticalFailure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_10_command_archive_i01"
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 2000
+              }
+            ],
+            "textKey": "event.career_revolutionary_10_command_archive.choice.strike.outcome.strike_criticalFailure.text"
+          },
+          "failure": {
+            "id": "strike_failure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_10_command_archive_i01"
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1000
+              }
+            ],
+            "textKey": "event.career_revolutionary_10_command_archive.choice.strike.outcome.strike_failure.text"
+          },
+          "success": {
+            "id": "strike_success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_10_command_archive_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1500
+              }
+            ],
+            "textKey": "event.career_revolutionary_10_command_archive.choice.strike.outcome.strike_success.text"
+          },
+          "criticalSuccess": {
+            "id": "strike_criticalSuccess",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_10_command_archive_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 3000
+              }
+            ],
+            "textKey": "event.career_revolutionary_10_command_archive.choice.strike.outcome.strike_criticalSuccess.text"
+          }
+        }
+      }
+    }
+  ]
+}

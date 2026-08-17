@@ -1,0 +1,244 @@
+{
+  "id": "career_revolutionary_07_exposed_methods",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_06_trusted_liaison",
+            "choiceId": "network"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_06_too_few_boats",
+            "choiceId": "network"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_06_bridge_demolition",
+            "choiceId": "network"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_06_wounded_officer",
+            "choiceId": "network"
+          }
+        ]
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_revolutionary",
+    "chapterId": "active_07_fracture",
+    "nodeId": "career_revolutionary_07_exposed_methods",
+    "parentNodeIds": [
+      "career_revolutionary_06_trusted_liaison",
+      "career_revolutionary_06_too_few_boats",
+      "career_revolutionary_06_bridge_demolition",
+      "career_revolutionary_06_wounded_officer"
+    ],
+    "selectionPriority": 30
+  },
+  "titleKey": "event.career_revolutionary_07_exposed_methods.title",
+  "textKey": "event.career_revolutionary_07_exposed_methods.text",
+  "choices": [
+    {
+      "id": "network",
+      "textKey": "event.career_revolutionary_07_exposed_methods.choice.network.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "network_criticalFailure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_07_exposed_methods_i01"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1500
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.career_revolutionary_07_exposed_methods.choice.network.outcome.network_criticalFailure.text"
+          },
+          "failure": {
+            "id": "network_failure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_07_exposed_methods_i01"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 500
+              }
+            ],
+            "textKey": "event.career_revolutionary_07_exposed_methods.choice.network.outcome.network_failure.text"
+          },
+          "success": {
+            "id": "network_success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_07_exposed_methods_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.career_revolutionary_07_exposed_methods.choice.network.outcome.network_success.text"
+          },
+          "criticalSuccess": {
+            "id": "network_criticalSuccess",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_07_exposed_methods_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.career_revolutionary_07_exposed_methods.choice.network.outcome.network_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "people",
+      "textKey": "event.career_revolutionary_07_exposed_methods.choice.people.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "people",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_revolutionary_07_exposed_methods_i01"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_revolutionary_07_exposed_methods.choice.people.outcome.people.text"
+        }
+      }
+    },
+    {
+      "id": "strike",
+      "textKey": "event.career_revolutionary_07_exposed_methods.choice.strike.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "strike_criticalFailure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_07_exposed_methods_i01"
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 2000
+              }
+            ],
+            "textKey": "event.career_revolutionary_07_exposed_methods.choice.strike.outcome.strike_criticalFailure.text"
+          },
+          "failure": {
+            "id": "strike_failure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_07_exposed_methods_i01"
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1000
+              }
+            ],
+            "textKey": "event.career_revolutionary_07_exposed_methods.choice.strike.outcome.strike_failure.text"
+          },
+          "success": {
+            "id": "strike_success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_07_exposed_methods_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1500
+              }
+            ],
+            "textKey": "event.career_revolutionary_07_exposed_methods.choice.strike.outcome.strike_success.text"
+          },
+          "criticalSuccess": {
+            "id": "strike_criticalSuccess",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_07_exposed_methods_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 3000
+              }
+            ],
+            "textKey": "event.career_revolutionary_07_exposed_methods.choice.strike.outcome.strike_criticalSuccess.text"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "id": "career_revolutionary_04_silent_snail_i01",
+  "kind": "immediate",
+  "titleKey": "event.career_revolutionary_04_silent_snail_i01.title",
+  "textKey": "event.career_revolutionary_04_silent_snail_i01.text",
+  "choices": [
+    {
+      "id": "accept_operator",
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerRankIs",
+            "rankId": "revolutionary_agent"
+          },
+          {
+            "type": "reputationAtLeast",
+            "value": 30
+          }
+        ]
+      },
+      "textKey": "event.career_revolutionary_04_silent_snail_i01.choice.accept_operator.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "operator",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "revolutionary_operator"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            }
+          ],
+          "textKey": "event.career_revolutionary_04_silent_snail_i01.choice.accept_operator.outcome.operator.text"
+        }
+      }
+    },
+    {
+      "id": "accept_agent_late",
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerRankIs",
+            "rankId": "revolutionary_recruit"
+          },
+          {
+            "type": "reputationAtLeast",
+            "value": 10
+          }
+        ]
+      },
+      "textKey": "event.career_revolutionary_04_silent_snail_i01.choice.accept_agent_late.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "agent_late",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "revolutionary_agent"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ],
+          "textKey": "event.career_revolutionary_04_silent_snail_i01.choice.accept_agent_late.outcome.agent_late.text"
+        }
+      }
+    },
+    {
+      "id": "keep_autonomy",
+      "textKey": "event.career_revolutionary_04_silent_snail_i01.choice.keep_autonomy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "autonomy",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_revolutionary_04_silent_snail_i01.choice.keep_autonomy.outcome.autonomy.text"
+        }
+      }
+    }
+  ]
+}
