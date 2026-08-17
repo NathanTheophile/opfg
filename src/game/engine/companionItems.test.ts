@@ -204,6 +204,9 @@ describe('Companion Item architecture', () => {
     const state = createInitialGameState();
     state.player.companion = stack('test_puppy');
     state.npcs.mira = { ...createDefaultNpcState(), status: 'crew' };
+    state.locationId = 'foosha_village';
+    state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
+    state.isLeader = true;
 
     expect(countCurrentCrew(state)).toBe(1);
     expect(canUseCrewRolePower(state, catalog, 'navigator')).toBe(true);

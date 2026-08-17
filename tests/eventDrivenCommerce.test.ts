@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 import { createContentCatalog } from '../src/game/content/catalogFactory';
 import { findCurrentEvent, selectNextEvent } from '../src/game/engine/events';
 import { movePlayerToLocation } from '../src/game/engine/locations';
-import { applyMonthlyNavigationChoice } from '../src/game/engine/navigation';
 import { resolveChoice } from '../src/game/engine/resolution';
 import { deserializeGameState, serializeGameState } from '../src/game/engine/save';
 import { consumePhaseSlot } from '../src/game/engine/time';
@@ -55,15 +54,15 @@ describe('event-driven commerce architecture', () => {
     movePlayerToLocation(state, marketLocation!.id, 'at_sea');
     expect(state.shipMarketArrivalPending).toBe(false);
 
-    const docked = applyMonthlyNavigationChoice(state, catalog, 'dock');
-    expect(docked).toMatchObject({
+    movePlayerToLocation(state, marketLocation!.id, 'on_land');
+    expect(state).toMatchObject({
       locationId: marketLocation!.id,
       travelState: 'on_land',
       shipMarketArrivalPending: true,
       navigationDecisionAgeMonths: 180,
     });
 
-    const selected = selectNextEvent(docked, catalog);
+    const selected = selectNextEvent(state, catalog);
     expect(selected.currentEventId).toBe('system_market:arrival');
     expect(findCurrentEvent(selected, catalog)?.kind).toBe('system');
   });

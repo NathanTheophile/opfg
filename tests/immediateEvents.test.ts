@@ -38,7 +38,12 @@ describe('Immediate Event chains', () => {
     state = resolveChoice(state, content, 'a', 'go').state;
     expect(state.ageMonths).toBe(180);
     state = resolveChoice(state, content, 'b', 'go').state;
-    expect(state).toMatchObject({ ageMonths: 181, slotInMonth: 0, currentEventId: null });
+    expect(state).toMatchObject({
+      ageMonths: 181,
+      slotInMonth: 0,
+      pendingSlotPhase: null,
+      immediateEventQueue: [],
+    });
   });
 
   it('lets Critical stabilize before resuming the pending chain', () => {

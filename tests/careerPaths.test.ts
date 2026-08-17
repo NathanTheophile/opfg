@@ -27,7 +27,10 @@ describe('critical events', () => {
     expect(selected.currentEventId).toBe('critical_ship_destroyed');
     selected = resolveChoice(selected, contentCatalog, 'critical_ship_destroyed', 'reach_shore').state;
     expect(selected.ship).toBeNull();
-    expect(selected.locationId).toBe('rare_animal_island');
+    expect(selected.travelState).toBe('on_land');
+    expect(selected.maritimeEmergency).toBeNull();
+    expect(selected.locationId).not.toBe('rare_animal_island');
+    expect(contentCatalog.locations.find(({ id }) => id === selected.locationId)?.seaId).toBe('east_blue');
     expect(selected.slotInMonth).toBe(0);
   });
 });

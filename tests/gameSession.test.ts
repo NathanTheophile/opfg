@@ -3,7 +3,7 @@ import { contentCatalog } from '../src/game/content/definitions';
 import type { EventDefinition } from '../src/game/content/schema';
 import { resolveChoice } from '../src/game/engine/resolution';
 import { createInitialGameState } from '../src/game/model/initialState';
-import { chooseInSession, chooseMonthlyNavigationInSession, createSessionState, getSessionNavigationOptions, startNewRun, type GameSessionState } from '../src/game/session/gameSession';
+import { chooseInSession, createSessionState, startNewRun, type GameSessionState } from '../src/game/session/gameSession';
 
 function choose(session: GameSessionState, choiceId: string, input?: string): GameSessionState {
   return chooseInSession(session, contentCatalog, choiceId, input);
@@ -67,16 +67,26 @@ describe('GameSession', () => {
     expect(actual.gameState).toEqual(expected.state);
   });
 
-  it('exposes monthly navigation as session state without creating history', () => {
+  it('runs navigation through the departure System Event without creating history', () => {
     const state = createInitialGameState(5);
     state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
-    state.careerPhase = 'active'; state.ageMonths = 180; state.locationId = 'foosha_village'; state.travelState = 'on_land';
-    const session = createSessionState(state);
-    const options = getSessionNavigationOptions(session, contentCatalog);
-    expect(options[0]?.id).toBe('stay');
-    expect(options.some(({ id }) => id.startsWith('sailTo:'))).toBe(true);
-    const next = chooseMonthlyNavigationInSession(session, contentCatalog, options.find(({ id }) => id.startsWith('sailTo:'))!.id);
-    expect(next.gameState).toMatchObject({ travelState: 'at_sea', slotInMonth: 0, navigationDecisionAgeMonths: 180 });
+    state.careerPhase = 'active';
+    state.ageMonths = 187;
+    state.locationId = 'foosha_village';
+    state.travelState = 'on_land';
+    state.navigationDecisionAgeMonths = 180;
+
+    const session = createSessionState(state, contentCatalog);
+    expect(session.gameState?.currentEventId).toBe('system_navigation:departure');
+    expect(session.gameState?.history).toEqual([]);
+
+    const next = chooseInSession(session, contentCatalog, 'navigation:depart');
+    expect(next.gameState).toMatchObject({
+      locationId: 'foosha_village',
+      travelState: 'at_sea',
+      slotInMonth: 0,
+      navigationDecisionAgeMonths: 187,
+    });
     expect(next.gameState?.history).toEqual([]);
   });
 });
