@@ -179,44 +179,117 @@ A resolved promotion is not refused through a second generic confirmation. Excep
 
 ---
 
-## 4. Standard Active batch shape
+## 4. Active production batch profiles
 
-A standard narrative Active batch targets approximately **20 Normal root Events**, plus Immediate/Scheduled support.
+Active V1 no longer uses one universal "20 roots + one Lifetime" quota. Each batch declares one production profile and follows the profile-specific continuity rules below.
 
-Small system/fallback/fix patches are not treated as standard narrative batches and do not need to fake narrative quotas.
+### 4.1 Ordinary Generic Sea / Generic Land
 
-Every standard batch must declare a narrow production territory, for example:
+Recommended size: approximately **20 Normal roots per batch**.
 
-- career-specific ordinary life;
-- local/port life;
-- maritime travel;
-- commerce;
-- crew/recruitment;
-- powers;
-- a specific World V1 region;
-- another clearly bounded Active domain.
+- target **~75% of roots** opening a genuine Immediate mini-arc;
+- most mini-arcs are Root → 1 Immediate; L3 is useful but should remain a minority;
+- **no Scheduled/Lifetime structure is required or desired** in these generic pools;
+- Generic Sea must be meaningfully riskier than Generic Land;
+- batch themes must stay narrow enough that parallel workers do not all author the same situations.
 
-A batch must not attempt to solve the whole Active game at once.
+### 4.2 Regional Blue batch
+
+Each Blue batch targets approximately **30 Normal roots**.
+
+- target **~50% of roots** opening Immediate mini-arcs;
+- exactly **5 short-term Scheduled threads** are the default production target;
+- each short-term thread uses at most **3 temporal layers total including its seed** and completes within **24 biological months**;
+- add **1 genuine long regional Lifetime Thread** when the premise supports the Blue's identity;
+- regional Events may reference locations/NPCs from that Blue, but location specificity is optional rather than mandatory.
+
+### 4.3 Career / Affiliation Saga
+
+Each V1 career receives one large Major Narrative Track DAG:
+
+- `civilian`;
+- `pirate`;
+- `marine`;
+- `revolutionary`.
+
+Production target:
+
+- **10 temporal Layers / chapters maximum for V1**;
+- approximately **60–90 total authored EventDefinitions** including branch nodes and Immediate support;
+- **2 Layer-1 entry roots**: one for a character whose pre-Active History already strongly connects them to that career, and one contextual fallback for a newly established Active career;
+- later layers should diverge and reconverge like the Family Saga DAG rather than grow as a binary tree;
+- chapter spacing should normally represent roughly **1–2 biological years**;
+- the Saga should normally resolve between the player's mid-twenties and mid-thirties;
+- no post-opener career change is authored.
+
+This profile is a Major Track and does **not** require an additional generic Lifetime Thread.
+
+### 4.4 NPC Recruitment batch
+
+Recruitment batches are smaller focused production lots. They may target roughly **12–20 roots** depending on cast reuse.
+
+- prioritize existing persistent NPC definitions where fiction supports it;
+- add new persistent NPC definitions sparingly because the complete V1 cast budget remains limited;
+- recruitment-focused roots obey CrewRole vacancy gating;
+- no Lifetime is required merely because the batch contains recruitment content.
+
+### 4.5 Rival batch
+
+The dedicated Rival batch contains **4 long-form rival threads**, one for each V1 career.
+
+Each rival thread may reach approximately **L10** and should permit a relationship spectrum such as hostility, competitive respect, circumstantial alliance or friendship when fiction supports it.
+
+The Rival batch is explicitly exempt from any "one Lifetime per batch" assumption.
+
+### 4.6 Paradise route batch
+
+Paradise production is split into **7 route-owned batches**, one per authored route.
+
+For every island in the route sequence:
+
+- author at least **5 Normal local roots** eligible on that island or its local cluster.
+
+Each route also contains **one route-wide Scheduled arc**:
+
+- normally **L4–L6**;
+- starts after route selection;
+- can recur across several route islands;
+- must be able to terminate by or before Sabaody;
+- uses History/current route-start Event as authority and adds no persistent `routeId`.
+
+### 4.7 Dice target
+
+The existing **55–65% Dice-root target** remains the ordinary target unless a declared batch profile has a clear domain-specific reason to differ.
+
+A batch must not distort scenes solely to hit the percentage.
 
 ---
 
 ## 5. Immediate mini-arcs
 
-Target **40–50% of roots** opening a genuine Immediate mini-arc.
+Immediate density is profile-specific.
 
-For a 20-root batch, this normally means **8–10 mini-arc roots**.
+Default ordinary Active target remains **40–50%** when no specialized profile overrides it.
 
-Normal shape when the scene warrants depth:
+Explicit V1 profile targets:
+
+- Generic Sea: **~75%**;
+- Generic Land: **~75%**;
+- Blue regional batches: **~50%**;
+- Career Sagas: use Immediate depth where a chapter needs dramatic resolution rather than a global percentage;
+- Paradise route batches: prefer short local mini-arcs where useful, but island coverage is more important than forcing a quota.
+
+Normal generic shape:
 
 ```text
 Root
-→ 1–3 Immediate
+→ 1 Immediate
 → resolution
 ```
 
-Immediate nodes must add a new decision, changed situation, information, check, consequence, or resolution. Continue-only padding does not count.
+Use a second Immediate layer when the changed situation genuinely creates another decision. L3 should be a minority in Generic Sea/Land rather than a default.
 
-Major career chapters normally use this same short-scene shape.
+Immediate nodes must add a new decision, changed situation, information, check, consequence, or resolution. Continue-only padding does not count.
 
 ---
 
@@ -237,23 +310,55 @@ Existing Dice outcome/stakes rules remain authoritative:
 
 ---
 
-## 7. Lifetime Thread requirement
+## 7. Scheduled continuity and long-form threads
 
-Every standard narrative Active batch contains **one primary qualifying Lifetime Thread**.
+Active V1 **does not require one Lifetime Thread per standard batch**.
 
-The thread must represent genuine long-form continuity: a recurring person, obligation, rivalry, commercial relationship, investigation, promise, institution, craft, debt, correspondence, or comparable subject that can return across years.
+Continuity is selected because the premise needs time to pass, not to satisfy a universal quota.
 
-For Active V1 this contract deliberately does **not** impose the old legacy breadth/depth graph quotas. The exact number of Scheduled nodes and branch topology is premise-dependent.
+### 7.1 Short-term Scheduled threads
 
-Hard qualitative rules:
+Active should use **many more short-term Scheduled consequences** than Childhood.
 
-- the thread must contain real future returns rather than one callback;
-- Scheduled is used only when time genuinely needs to pass;
-- each returning chapter must make prior causality recognizable;
-- do not recursively inflate the graph solely to hit a node count;
-- the thread must not duplicate the main career narrative spine.
+Default short-term structure:
 
-The manifest must identify the seed, recurring anchor, expected age span, major divergences, and intended reconvergence/termination behavior.
+```text
+L1 seed
+→ L2 Scheduled return
+→ optional L3 Scheduled resolution
+```
+
+Hard rules:
+
+- maximum **3 temporal layers total including the seed**;
+- the whole structure normally resolves within **3–24 months**, and never exceeds 24 months without being reclassified as a long-form thread;
+- each resolved node schedules only its **next** future node;
+- branches may form a small pyramid and reconverge;
+- the returning scene must make the original causality recognizable;
+- Scheduled eligibility should not require the player to remain on one tiny Location for months unless a fallback/cancel path exists;
+- use Scheduled only when elapsed time materially improves the story.
+
+### 7.2 Long-form / Lifetime threads
+
+Long-form threads are reserved for batch profiles that explicitly call for them:
+
+- one regional Lifetime in each Blue batch;
+- four Rival threads in the dedicated Rival batch;
+- another approved premise where multi-year continuity is the core value.
+
+Long threads do not have a universal node-count requirement. Their graph should be only as large as needed for recognizable, branching multi-year continuity.
+
+### 7.3 Career Saga is not a Lifetime quota
+
+The main Career/Affiliation Saga is a Major Narrative Track DAG and already supplies long-form structure. Do not add a second Lifetime merely to satisfy an old batch rule.
+
+### 7.4 Paradise route-wide continuity
+
+The one route-wide Paradise thread is a bounded Scheduled arc, normally L4–L6, intended to live across the route and terminate by Sabaody.
+
+### 7.5 Generic Sea / Generic Land
+
+Generic Sea and Generic Land batches deliberately contain **no Scheduled threads**.
 
 ---
 
@@ -673,14 +778,18 @@ Every standard Active batch manifest must report at least:
 - any one-Dice-approach justification;
 - difficulty distribution.
 
-### Lifetime
+### Continuity / Scheduled
 
-- primary Lifetime seed;
-- recurring anchor/cast;
-- future Scheduled return IDs;
-- intended age span;
-- major divergences;
-- expected reconvergence/termination logic.
+- declared batch profile;
+- short-term Scheduled seed IDs and return IDs;
+- temporal layer count for each short-term thread;
+- maximum elapsed months from seed to final return;
+- confirmation that each node schedules only its next node;
+- any long-form/Lifetime seed and recurring anchor/cast when the profile requires one;
+- intended age/time span;
+- major divergences and reconvergence/termination logic;
+- for Generic Sea/Land: confirmation that no Scheduled thread was authored;
+- for Paradise: route-wide arc seed, route span and intended termination before/by Sabaody.
 
 ### Progression and safety
 
@@ -702,9 +811,9 @@ A standard Active V1 batch fails review if any of the following is true:
 1. it exposes Bounty Hunter or a post-opener affiliation-change route;
 2. it adds a Civilian profession, Personal Affiliation, organization/fleet/cell/business-management subsystem;
 3. its root Dice percentage is outside **55–65%** without an explicit approved exception;
-4. fewer than roughly **40%** or more than roughly **50%** of roots open meaningful Immediate mini-arcs without a justified domain-specific reason;
-5. it lacks its one primary Lifetime Thread;
-6. its Lifetime is only a cosmetic callback or duplicates the main career spine;
+4. its Immediate mini-arc density materially violates its declared batch profile without a justified exception;
+5. it violates the Scheduled/continuity rules of its declared batch profile;
+6. a short-term Scheduled thread exceeds L3 / 24 months, pre-schedules multiple future layers at once, or is only a cosmetic callback;
 7. risky failures are routinely consequence-free;
 8. it adds new persistent state where History/current state already suffices;
 9. it assumes direct player destination choice for ordinary Blue travel;
