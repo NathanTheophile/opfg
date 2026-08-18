@@ -1,0 +1,74 @@
+{
+  "id": "career_marine_promotion_rear_admiral",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 58
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_recruit"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerRankAtLeast",
+          "rankId": "marine_rear_admiral"
+        }
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_07_base_forty_two"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_07_discipline_court"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_07_cannon_square"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_07_three_bases"
+          }
+        ]
+      }
+    ]
+  },
+  "titleKey": "event.career_marine_promotion_rear_admiral.title",
+  "textKey": "event.career_marine_promotion_rear_admiral.text",
+  "choices": [
+    {
+      "id": "assume_rank",
+      "textKey": "event.career_marine_promotion_rear_admiral.choice.assume_rank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "promoted",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_rear_admiral"
+            }
+          ],
+          "textKey": "event.career_marine_promotion_rear_admiral.choice.assume_rank.outcome.promoted.text"
+        }
+      }
+    }
+  ]
+}

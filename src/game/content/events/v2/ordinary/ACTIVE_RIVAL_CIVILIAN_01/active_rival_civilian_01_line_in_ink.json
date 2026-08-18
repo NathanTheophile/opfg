@@ -1,0 +1,118 @@
+{
+  "id": "active_rival_civilian_01_line_in_ink",
+  "kind": "scheduled",
+  "cast": [
+    "neighborhood_merchant"
+  ],
+  "titleKey": "event.active_rival_civilian_01_line_in_ink.title",
+  "textKey": "event.active_rival_civilian_01_line_in_ink.text",
+  "choices": [
+    {
+      "id": "accept_boundary",
+      "textKey": "event.active_rival_civilian_01_line_in_ink.choice.accept_boundary.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_boundary",
+          "textKey": "event.active_rival_civilian_01_line_in_ink.choice.accept_boundary.outcome.accept_boundary.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send_terms",
+      "textKey": "event.active_rival_civilian_01_line_in_ink.choice.send_terms.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "send_terms",
+          "textKey": "event.active_rival_civilian_01_line_in_ink.choice.send_terms.outcome.send_terms.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_fighting",
+      "textKey": "event.active_rival_civilian_01_line_in_ink.choice.keep_fighting.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_fighting",
+          "textKey": "event.active_rival_civilian_01_line_in_ink.choice.keep_fighting.outcome.keep_fighting.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -6
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerPhaseIs",
+          "phase": "active"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerAffiliationIs",
+          "affiliationId": "civilian"
+        }
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "dead"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "departed"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "unavailable"
+      }
+    ]
+  }
+}

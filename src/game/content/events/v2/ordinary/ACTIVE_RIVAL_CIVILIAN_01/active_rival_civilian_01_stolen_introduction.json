@@ -1,0 +1,189 @@
+{
+  "id": "active_rival_civilian_01_stolen_introduction",
+  "kind": "scheduled",
+  "cast": [
+    "neighborhood_merchant"
+  ],
+  "titleKey": "event.active_rival_civilian_01_stolen_introduction.title",
+  "textKey": "event.active_rival_civilian_01_stolen_introduction.text",
+  "choices": [
+    {
+      "id": "pay_cost",
+      "textKey": "event.active_rival_civilian_01_stolen_introduction.choice.pay_cost.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_cost",
+          "textKey": "event.active_rival_civilian_01_stolen_introduction.choice.pay_cost.outcome.pay_cost.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_civilian_01_warehouse_fire",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "tear_invoice",
+      "textKey": "event.active_rival_civilian_01_stolen_introduction.choice.tear_invoice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tear_invoice",
+          "textKey": "event.active_rival_civilian_01_stolen_introduction.choice.tear_invoice.outcome.tear_invoice.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -6
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_civilian_01_warehouse_fire",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send_counterbill",
+      "textKey": "event.active_rival_civilian_01_stolen_introduction.choice.send_counterbill.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "counterbill_cf",
+            "textKey": "event.active_rival_civilian_01_stolen_introduction.choice.send_counterbill.outcome.counterbill_cf.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -750
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": -6
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_civilian_01_warehouse_fire",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "counterbill_f",
+            "textKey": "event.active_rival_civilian_01_stolen_introduction.choice.send_counterbill.outcome.counterbill_f.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": -5
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_civilian_01_warehouse_fire",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "counterbill_s",
+            "textKey": "event.active_rival_civilian_01_stolen_introduction.choice.send_counterbill.outcome.counterbill_s.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": -2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_civilian_01_warehouse_fire",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "counterbill_cs",
+            "textKey": "event.active_rival_civilian_01_stolen_introduction.choice.send_counterbill.outcome.counterbill_cs.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_civilian_01_warehouse_fire",
+                "delayMonths": 18
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerPhaseIs",
+          "phase": "active"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerAffiliationIs",
+          "affiliationId": "civilian"
+        }
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "dead"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "departed"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "unavailable"
+      }
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "id": "career_marine_promotion_admiral",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 78
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_recruit"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerRankAtLeast",
+          "rankId": "marine_admiral"
+        }
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_09_reinforcement_map"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_09_arsenal_quarter"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_09_ghost_squadron"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_09_white_table"
+          }
+        ]
+      }
+    ]
+  },
+  "titleKey": "event.career_marine_promotion_admiral.title",
+  "textKey": "event.career_marine_promotion_admiral.text",
+  "choices": [
+    {
+      "id": "assume_rank",
+      "textKey": "event.career_marine_promotion_admiral.choice.assume_rank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "promoted",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_admiral"
+            }
+          ],
+          "textKey": "event.career_marine_promotion_admiral.choice.assume_rank.outcome.promoted.text"
+        }
+      }
+    }
+  ]
+}

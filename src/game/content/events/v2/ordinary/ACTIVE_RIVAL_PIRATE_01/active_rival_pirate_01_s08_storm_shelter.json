@@ -1,0 +1,183 @@
+{
+  "id": "active_rival_pirate_01_s08_storm_shelter",
+  "kind": "scheduled",
+  "titleKey": "event.active_rival_pirate_01_s08_storm_shelter.title",
+  "textKey": "event.active_rival_pirate_01_s08_storm_shelter.text",
+  "choices": [
+    {
+      "id": "put_weapons_down_first",
+      "textKey": "event.active_rival_pirate_01_s08_storm_shelter.choice.put_weapons_down_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "put_weapons_down_first_outcome",
+          "textKey": "event.active_rival_pirate_01_s08_storm_shelter.choice.put_weapons_down_first.outcome.put_weapons_down_first_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_rival_pirate_01_captain",
+              "amount": 5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_pirate_01_s09_two_flags",
+              "delayMonths": 12
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "active_rival_pirate_01_s07_friend_in_crossfire"
+          },
+          {
+            "type": "npcRelationshipAtLeast",
+            "npcId": "active_rival_pirate_01_captain",
+            "value": 18
+          }
+        ]
+      }
+    },
+    {
+      "id": "ask_for_one_last_clean_race",
+      "textKey": "event.active_rival_pirate_01_s08_storm_shelter.choice.ask_for_one_last_clean_race.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_for_one_last_clean_race_outcome",
+          "textKey": "event.active_rival_pirate_01_s08_storm_shelter.choice.ask_for_one_last_clean_race.outcome.ask_for_one_last_clean_race_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_rival_pirate_01_captain",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_pirate_01_s09_clean_horizon",
+              "delayMonths": 12
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "active_rival_pirate_01_captain",
+        "value": 0
+      }
+    },
+    {
+      "id": "settle_it_before_dawn",
+      "textKey": "event.active_rival_pirate_01_s08_storm_shelter.choice.settle_it_before_dawn.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "settle_it_before_dawn_outcome",
+          "textKey": "event.active_rival_pirate_01_s08_storm_shelter.choice.settle_it_before_dawn.outcome.settle_it_before_dawn_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_rival_pirate_01_captain",
+              "amount": -3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_pirate_01_s09_broken_bell",
+              "delayMonths": 12
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "active_rival_pirate_01_s07_knife_wake"
+          },
+          {
+            "type": "npcRelationshipAtMost",
+            "npcId": "active_rival_pirate_01_captain",
+            "value": -8
+          }
+        ]
+      }
+    },
+    {
+      "id": "accept_one_night_of_truce",
+      "textKey": "event.active_rival_pirate_01_s08_storm_shelter.choice.accept_one_night_of_truce.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_one_night_of_truce_outcome",
+          "textKey": "event.active_rival_pirate_01_s08_storm_shelter.choice.accept_one_night_of_truce.outcome.accept_one_night_of_truce_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_rival_pirate_01_captain",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_pirate_01_s09_parallel_wakes",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "active_rival_pirate_01_captain"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerAffiliationIs",
+          "affiliationId": "pirate"
+        }
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "active_rival_pirate_01_captain",
+        "status": "dead"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "active_rival_pirate_01_captain",
+        "status": "departed"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "active_rival_pirate_01_captain",
+        "status": "unavailable"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "active_rival_pirate_01_captain",
+        "status": "crew"
+      }
+    ]
+  }
+}

@@ -17,7 +17,7 @@
     "active_10"
   ],
   "rules": {
-    "enforceScenarioCoverage": false,
+    "enforceScenarioCoverage": true,
     "requireMiniArcForSpecializedRoots": false,
     "requireTerminalPersistentReward": true,
     "persistentRewardEffectTypes": [
@@ -45,8 +45,8 @@
         "en": "What Your Name Means Now"
       },
       "text": {
-        "fr": "Au premier matin de ta vie active, un employé du port reconnaît ton nom dans les papiers. Cargaison, route, réparation et conflit local attendent tous quelqu’un; ton héritage n’a plus qu’une valeur: celle que tu lui donnes.",
-        "en": "On the first morning of your active life, a port clerk recognizes your name on the papers. Cargo, route, repair, and a local dispute all need someone; your inheritance now has only the value you give it."
+        "fr": "Un an après ton entrée dans la vie active, ton nom circule déjà parmi ceux qui cherchent quelqu’un de fiable. Le même jour, on te confie quatre problèmes : une cargaison, une route, une pompe et un conflit de voisinage.",
+        "en": "A year into your active life, your name already circulates among people looking for someone reliable. On the same day, four problems reach you: cargo, a route, a pump, and a neighborhood dispute."
       },
       "eligibility": {
         "type": "all",
@@ -103,6 +103,9 @@
                 "eventId": "family_civilian_05_community_fallback"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -124,8 +127,8 @@
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu fais passer le problème par les comptes et les engagements. L’accord tient, mais il crée une nouvelle attente autour de toi.",
-                "en": "You route the problem through accounts and commitments. The deal holds, but it creates a new expectation around you."
+                "fr": "Tu reprends les comptes, fais signer chaque transfert et récupères une petite marge. Les chargeurs savent désormais quel nom chercher quand un accord menace de casser.",
+                "en": "You rebuild the accounts, get every transfer signed, and keep a small margin. The loaders now know whose name to look for when a deal is about to break."
               },
               "effects": [
                 {
@@ -151,8 +154,8 @@
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu parcours la route, compares les repères contradictoires et rends un relevé utilisable. La prochaine traversée part avec moins d’inconnues que la précédente.",
+                "en": "You walk the route, compare the conflicting markers, and return a usable survey. The next crossing leaves with fewer unknowns than the last."
               },
               "effects": [
                 {
@@ -179,8 +182,8 @@
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu démontes la pompe, récupères les pièces encore saines et la remets en service. Le bruit du mécanisme revenu couvre enfin les conseils des spectateurs.",
+                "en": "You strip the pump, salvage the sound parts, and put it back into service. The returning mechanism finally drowns out the spectators' advice."
               },
               "effects": [
                 {
@@ -207,8 +210,8 @@
             "outcome": {
               "id": "community",
               "text": {
-                "fr": "Tu mets les personnes concernées dans la décision. Le résultat est plus lent, mais il devient difficile à ignorer.",
-                "en": "You put the people affected inside the decision. The result is slower, but harder to ignore."
+                "fr": "Tu obliges les voisins à nommer ce qu’ils refusent réellement de céder. Le compromis ne satisfait personne entièrement, mais la rue cesse d’être prise en otage.",
+                "en": "You make the neighbors name what they actually refuse to give up. The compromise satisfies nobody completely, but the street stops being held hostage."
               },
               "effects": [
                 {
@@ -229,56 +232,60 @@
       "id": "career_civilian_01_inherited_stake_i01",
       "kind": "immediate",
       "title": {
-        "fr": "Ce que ton nom vaut maintenant — Le dernier détail",
-        "en": "What Your Name Means Now — The Last Detail"
+        "fr": "Ce que ton nom vaut maintenant — La limite",
+        "en": "What Your Name Means Now — The Limit"
       },
       "text": {
-        "fr": "Ton premier mouvement ne suffit pas: un détail bloque encore décision. Tout le monde attend de voir si tu assumes le coût maintenant ou si tu réduis la promesse.",
-        "en": "Your first move is not enough: one detail still blocks the decision. Everyone waits to see whether you absorb the cost now or narrow the promise."
+        "fr": "Au moment de clore l’affaire, une dépense imprévue reste à ta charge. Tu peux avancer 500 Berrys pour tenir exactement ta promesse, ou annoncer la limite maintenant avant que d’autres ne s’engagent davantage.",
+        "en": "As the job closes, one unexpected expense remains yours. You can advance 500 Berrys to keep the promise exactly, or state the limit now before anyone commits further."
       },
       "choices": [
         {
           "id": "carry_it",
           "text": {
-            "fr": "Assumer le coût du décision",
-            "en": "Carry the decision cost"
+            "fr": "Avancer les 500 Berrys",
+            "en": "Advance the 500 Berrys"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "carry_it",
               "text": {
-                "fr": "Tu tiens l’engagement jusqu’au bout. Ceux qui dépendaient de toi n’ont pas à payer le changement de plan.",
-                "en": "You carry the commitment through. The people depending on you do not pay for the change of plan."
-              },
-              "effects": [
-                {
-                  "type": "modifyReputation",
-                  "amount": 2
-                }
-              ]
-            }
-          }
-        },
-        {
-          "id": "narrow_it",
-          "text": {
-            "fr": "Réduire la promesse proprement",
-            "en": "Narrow the promise cleanly"
-          },
-          "resolution": {
-            "type": "deterministic",
-            "outcome": {
-              "id": "narrow_it",
-              "text": {
-                "fr": "Tu annonces clairement ce qui reste possible et ce qui ne l’est plus. La confiance baisse moins que si tu avais bluffé.",
-                "en": "You state clearly what remains possible and what no longer is. Trust suffers less than if you had bluffed."
+                "fr": "Tu avances la différence sans la reporter sur ceux qui comptaient sur toi. La dépense te coûte, mais ta parole devient plus crédible.",
+                "en": "You cover the difference instead of pushing it onto the people counting on you. The expense hurts, but your word becomes more credible."
               },
               "effects": [
                 {
                   "type": "modifyBerries",
                   "amount": -500
                 },
+                {
+                  "type": "modifyReputation",
+                  "amount": 2
+                }
+              ]
+            }
+          },
+          "availableIf": {
+            "type": "berriesAtLeast",
+            "value": 500
+          }
+        },
+        {
+          "id": "narrow_it",
+          "text": {
+            "fr": "Annoncer la limite avant signature",
+            "en": "State the limit before signing"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "narrow_it",
+              "text": {
+                "fr": "Tu annonces ce que tu peux encore garantir et retires le reste avant la signature. La promesse vaut moins, mais personne ne découvre la limite après coup.",
+                "en": "You state what you can still guarantee and remove the rest before signing. The promise is smaller, but nobody discovers the limit afterward."
+              },
+              "effects": [
                 {
                   "type": "modifyReputation",
                   "amount": 1
@@ -297,8 +304,8 @@
         "en": "No Institution Behind You"
       },
       "text": {
-        "fr": "Ton opener de carrière te laisse Civil sans uniforme ni organisation. Avant midi, le tableau du port affiche quatre problèmes payés: une cargaison litigieuse, un chenal mal relevé, une pompe cassée et une querelle de loyers.",
-        "en": "Your career opener leaves you Civilian, with no uniform or organization behind you. Before noon, the port board lists four paid problems: disputed cargo, a poorly charted channel, a broken pump, and a rent quarrel."
+        "fr": "Un an après avoir choisi de rester Civil, personne ne t’a offert d’uniforme ni de poste tout tracé. Quatre urgences payées réclament aujourd’hui quelqu’un : une cargaison litigieuse, un chenal mal relevé, une pompe cassée et une querelle de loyers.",
+        "en": "A year after choosing to remain Civilian, nobody has handed you a uniform or a fixed post. Four paid problems need someone today: disputed cargo, a poorly charted channel, a broken pump, and a rent quarrel."
       },
       "eligibility": {
         "type": "all",
@@ -310,6 +317,9 @@
           {
             "type": "careerAffiliationIs",
             "affiliationId": "civilian"
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -331,8 +341,8 @@
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu fais passer le problème par les comptes et les engagements. L’accord tient, mais il crée une nouvelle attente autour de toi.",
-                "en": "You route the problem through accounts and commitments. The deal holds, but it creates a new expectation around you."
+                "fr": "Tu retrouves la caisse qui a changé de main sans signature et fais corriger le registre avant le départ. Ta première marge vient d’un problème que personne ne voulait porter.",
+                "en": "You trace the crate that changed hands without a signature and correct the ledger before departure. Your first margin comes from a problem nobody wanted to own."
               },
               "effects": [
                 {
@@ -354,8 +364,8 @@
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu refais le relevé depuis la berge et marques les deux passages qui trompaient les bateliers. Le chenal reste capricieux, mais il n’est plus aveugle.",
+                "en": "You resurvey from the bank and mark the two passages that were fooling boatmen. The channel remains temperamental, but it is no longer blind."
               },
               "effects": [
                 {
@@ -378,8 +388,8 @@
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu ouvres la pompe, remplaces ce qui peut l’être et improvises le reste. Elle repart assez longtemps pour rendre le service attendu.",
+                "en": "You open the pump, replace what can be replaced, and improvise the rest. It runs long enough to deliver the service people need."
               },
               "effects": [
                 {
@@ -402,8 +412,8 @@
             "outcome": {
               "id": "community",
               "text": {
-                "fr": "Tu mets les personnes concernées dans la décision. Le résultat est plus lent, mais il devient difficile à ignorer.",
-                "en": "You put the people affected inside the decision. The result is slower, but harder to ignore."
+                "fr": "Tu sépares l’urgence du vieux ressentiment et fais écrire les concessions devant les locataires. La querelle perd au moins une raison de recommencer demain.",
+                "en": "You separate the urgent issue from the old resentment and put the concessions in writing in front of the tenants. The quarrel loses at least one reason to restart tomorrow."
               },
               "effects": [
                 {
@@ -452,6 +462,9 @@
                 "choiceId": "trade"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -750,6 +763,9 @@
                 "choiceId": "horizon"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -1035,6 +1051,9 @@
                 "choiceId": "craft"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -1240,6 +1259,9 @@
                 "choiceId": "community"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -1431,6 +1453,9 @@
           {
             "type": "careerAffiliationIs",
             "affiliationId": "civilian"
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -1592,6 +1617,9 @@
                 "choiceId": "trade"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -1828,6 +1856,9 @@
                 "choiceId": "horizon"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -2051,6 +2082,9 @@
                 "choiceId": "craft"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -2354,6 +2388,9 @@
                 "choiceId": "community"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -2628,6 +2665,9 @@
           {
             "type": "careerAffiliationIs",
             "affiliationId": "civilian"
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -2792,6 +2832,9 @@
                 "choiceId": "trade"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -3112,6 +3155,9 @@
                 "choiceId": "horizon"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -3284,6 +3330,9 @@
                 "choiceId": "craft"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -3456,6 +3505,9 @@
                 "choiceId": "community"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -3738,6 +3790,9 @@
           {
             "type": "careerAffiliationIs",
             "affiliationId": "civilian"
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -3910,6 +3965,9 @@
                 "choiceId": "trade"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -4150,6 +4208,9 @@
                 "choiceId": "horizon"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -4461,6 +4522,9 @@
                 "choiceId": "craft"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -4772,6 +4836,9 @@
                 "choiceId": "community"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -4970,6 +5037,9 @@
           {
             "type": "careerAffiliationIs",
             "affiliationId": "civilian"
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -5142,6 +5212,9 @@
                 "choiceId": "trade"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -5462,6 +5535,9 @@
                 "choiceId": "horizon"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -5634,6 +5710,9 @@
                 "choiceId": "craft"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -5865,6 +5944,9 @@
                 "choiceId": "community"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -6075,6 +6157,9 @@
           {
             "type": "careerAffiliationIs",
             "affiliationId": "civilian"
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -6247,6 +6332,9 @@
                 "choiceId": "trade"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -6495,6 +6583,9 @@
                 "choiceId": "horizon"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -6810,6 +6901,9 @@
                 "choiceId": "craft"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -7125,6 +7219,9 @@
                 "choiceId": "community"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -7331,6 +7428,9 @@
           {
             "type": "careerAffiliationIs",
             "affiliationId": "civilian"
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -7511,6 +7611,9 @@
                 "choiceId": "trade"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -7683,6 +7786,9 @@
                 "choiceId": "horizon"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -7855,6 +7961,9 @@
                 "choiceId": "craft"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -8027,6 +8136,9 @@
                 "choiceId": "community"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -8237,6 +8349,9 @@
           {
             "type": "careerAffiliationIs",
             "affiliationId": "civilian"
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -8409,6 +8524,9 @@
                 "choiceId": "trade"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -8729,6 +8847,9 @@
                 "choiceId": "horizon"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -9036,6 +9157,9 @@
                 "choiceId": "craft"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -9267,6 +9391,9 @@
                 "choiceId": "community"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -9469,6 +9596,9 @@
           {
             "type": "careerAffiliationIs",
             "affiliationId": "civilian"
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -9641,6 +9771,9 @@
                 "choiceId": "trade"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -9978,6 +10111,9 @@
                 "choiceId": "horizon"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -10298,6 +10434,9 @@
                 "choiceId": "craft"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -10618,6 +10757,9 @@
                 "choiceId": "community"
               }
             ]
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -10912,6 +11054,9 @@
           {
             "type": "careerAffiliationIs",
             "affiliationId": "civilian"
+          },
+          {
+            "type": "isOnLand"
           }
         ]
       },
@@ -11051,12 +11196,1793 @@
       ]
     }
   ],
-  "scenarios": [],
+  "scenarios": [
+    {
+      "id": "active_01_fresh_start",
+      "expectedEventId": "career_civilian_01_fresh_start",
+      "ageMonths": 192,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": []
+    },
+    {
+      "id": "active_01_inherited_stake",
+      "expectedEventId": "career_civilian_01_inherited_stake",
+      "ageMonths": 192,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_civilian_05_community_fallback",
+          "choiceId": "inheritance",
+          "outcomeId": "inheritance",
+          "ageMonths": 168
+        }
+      ]
+    },
+    {
+      "id": "active_02_trade",
+      "expectedEventId": "career_civilian_02_trade_the_missing_manifest",
+      "ageMonths": 216,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        }
+      ]
+    },
+    {
+      "id": "active_02_horizon",
+      "expectedEventId": "career_civilian_02_horizon_the_passage_under_fog",
+      "ageMonths": 216,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 192
+        }
+      ]
+    },
+    {
+      "id": "active_02_craft",
+      "expectedEventId": "career_civilian_02_craft_the_split_pump",
+      "ageMonths": 216,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 192
+        }
+      ]
+    },
+    {
+      "id": "active_02_community",
+      "expectedEventId": "career_civilian_02_community_the_alley_on_fire",
+      "ageMonths": 216,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 192
+        }
+      ]
+    },
+    {
+      "id": "active_02_fallback_compatibility",
+      "expectedEventId": "career_civilian_02_fallback",
+      "ageMonths": 216,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "legacy_route",
+          "outcomeId": "legacy_route",
+          "ageMonths": 192
+        }
+      ]
+    },
+    {
+      "id": "active_03_trade",
+      "expectedEventId": "career_civilian_03_trade_the_price_of_the_scales",
+      "ageMonths": 240,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        }
+      ]
+    },
+    {
+      "id": "active_03_horizon",
+      "expectedEventId": "career_civilian_03_horizon_the_missing_markers",
+      "ageMonths": 240,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_horizon_the_passage_under_fog",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 216
+        }
+      ]
+    },
+    {
+      "id": "active_03_craft",
+      "expectedEventId": "career_civilian_03_craft_the_lighthouse_lens",
+      "ageMonths": 240,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_craft_the_split_pump",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 216
+        }
+      ]
+    },
+    {
+      "id": "active_03_community",
+      "expectedEventId": "career_civilian_03_community_the_dock_levy",
+      "ageMonths": 240,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_community_the_alley_on_fire",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 216
+        }
+      ]
+    },
+    {
+      "id": "active_03_fallback_compatibility",
+      "expectedEventId": "career_civilian_03_fallback",
+      "ageMonths": 240,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "legacy_route",
+          "outcomeId": "legacy_route",
+          "ageMonths": 216
+        }
+      ]
+    },
+    {
+      "id": "active_04_trade",
+      "expectedEventId": "career_civilian_04_trade_the_exclusive_contract",
+      "ageMonths": 264,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_trade_the_price_of_the_scales",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 240
+        }
+      ]
+    },
+    {
+      "id": "active_04_horizon",
+      "expectedEventId": "career_civilian_04_horizon_the_impatient_patron",
+      "ageMonths": 264,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_horizon_the_passage_under_fog",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_horizon_the_missing_markers",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 240
+        }
+      ]
+    },
+    {
+      "id": "active_04_craft",
+      "expectedEventId": "career_civilian_04_craft_the_patrons_claim",
+      "ageMonths": 264,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_craft_the_split_pump",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_craft_the_lighthouse_lens",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 240
+        }
+      ]
+    },
+    {
+      "id": "active_04_community",
+      "expectedEventId": "career_civilian_04_community_the_rent_of_silence",
+      "ageMonths": 264,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_community_the_alley_on_fire",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_community_the_dock_levy",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 240
+        }
+      ]
+    },
+    {
+      "id": "active_04_fallback_compatibility",
+      "expectedEventId": "career_civilian_04_fallback",
+      "ageMonths": 264,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_trade_the_price_of_the_scales",
+          "choiceId": "legacy_route",
+          "outcomeId": "legacy_route",
+          "ageMonths": 240
+        }
+      ]
+    },
+    {
+      "id": "active_05_trade",
+      "expectedEventId": "career_civilian_05_trade_the_withheld_wages",
+      "ageMonths": 288,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_trade_the_price_of_the_scales",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_trade_the_exclusive_contract",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 264
+        }
+      ]
+    },
+    {
+      "id": "active_05_horizon",
+      "expectedEventId": "career_civilian_05_horizon_those_following_your_route",
+      "ageMonths": 288,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_horizon_the_passage_under_fog",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_horizon_the_missing_markers",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_horizon_the_impatient_patron",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 264
+        }
+      ]
+    },
+    {
+      "id": "active_05_craft",
+      "expectedEventId": "career_civilian_05_craft_the_jammed_sterilizer",
+      "ageMonths": 288,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_craft_the_split_pump",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_craft_the_lighthouse_lens",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_craft_the_patrons_claim",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 264
+        }
+      ]
+    },
+    {
+      "id": "active_05_community",
+      "expectedEventId": "career_civilian_05_community_the_shelter_overflows",
+      "ageMonths": 288,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_community_the_alley_on_fire",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_community_the_dock_levy",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_community_the_rent_of_silence",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 264
+        }
+      ]
+    },
+    {
+      "id": "active_05_fallback_compatibility",
+      "expectedEventId": "career_civilian_05_fallback",
+      "ageMonths": 288,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_trade_the_price_of_the_scales",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_trade_the_exclusive_contract",
+          "choiceId": "legacy_route",
+          "outcomeId": "legacy_route",
+          "ageMonths": 264
+        }
+      ]
+    },
+    {
+      "id": "active_06_trade",
+      "expectedEventId": "career_civilian_06_trade_scales_bearing_your_name",
+      "ageMonths": 312,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_trade_the_price_of_the_scales",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_trade_the_exclusive_contract",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_trade_the_withheld_wages",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 288
+        }
+      ]
+    },
+    {
+      "id": "active_06_horizon",
+      "expectedEventId": "career_civilian_06_horizon_the_map_worth_too_much",
+      "ageMonths": 312,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_horizon_the_passage_under_fog",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_horizon_the_missing_markers",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_horizon_the_impatient_patron",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_horizon_those_following_your_route",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 288
+        }
+      ]
+    },
+    {
+      "id": "active_06_craft",
+      "expectedEventId": "career_civilian_06_craft_the_crane_before_everyone",
+      "ageMonths": 312,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_craft_the_split_pump",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_craft_the_lighthouse_lens",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_craft_the_patrons_claim",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_craft_the_jammed_sterilizer",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 288
+        }
+      ]
+    },
+    {
+      "id": "active_06_community",
+      "expectedEventId": "career_civilian_06_community_the_empty_seat",
+      "ageMonths": 312,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_community_the_alley_on_fire",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_community_the_dock_levy",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_community_the_rent_of_silence",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_community_the_shelter_overflows",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 288
+        }
+      ]
+    },
+    {
+      "id": "active_06_fallback_compatibility",
+      "expectedEventId": "career_civilian_06_fallback",
+      "ageMonths": 312,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_trade_the_price_of_the_scales",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_trade_the_exclusive_contract",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_trade_the_withheld_wages",
+          "choiceId": "legacy_route",
+          "outcomeId": "legacy_route",
+          "ageMonths": 288
+        }
+      ]
+    },
+    {
+      "id": "active_07_trade",
+      "expectedEventId": "career_civilian_07_trade_the_empty_granary",
+      "ageMonths": 336,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_trade_the_price_of_the_scales",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_trade_the_exclusive_contract",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_trade_the_withheld_wages",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_trade_scales_bearing_your_name",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 312
+        }
+      ]
+    },
+    {
+      "id": "active_07_horizon",
+      "expectedEventId": "career_civilian_07_horizon_the_flagless_toll",
+      "ageMonths": 336,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_horizon_the_passage_under_fog",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_horizon_the_missing_markers",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_horizon_the_impatient_patron",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_horizon_those_following_your_route",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_horizon_the_map_worth_too_much",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 312
+        }
+      ]
+    },
+    {
+      "id": "active_07_craft",
+      "expectedEventId": "career_civilian_07_craft_the_falling_crane",
+      "ageMonths": 336,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_craft_the_split_pump",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_craft_the_lighthouse_lens",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_craft_the_patrons_claim",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_craft_the_jammed_sterilizer",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_craft_the_crane_before_everyone",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 312
+        }
+      ]
+    },
+    {
+      "id": "active_07_community",
+      "expectedEventId": "career_civilian_07_community_the_cut_cisterns",
+      "ageMonths": 336,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_community_the_alley_on_fire",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_community_the_dock_levy",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_community_the_rent_of_silence",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_community_the_shelter_overflows",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_community_the_empty_seat",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 312
+        }
+      ]
+    },
+    {
+      "id": "active_07_fallback_compatibility",
+      "expectedEventId": "career_civilian_07_fallback",
+      "ageMonths": 336,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_trade_the_price_of_the_scales",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_trade_the_exclusive_contract",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_trade_the_withheld_wages",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_trade_scales_bearing_your_name",
+          "choiceId": "legacy_route",
+          "outcomeId": "legacy_route",
+          "ageMonths": 312
+        }
+      ]
+    },
+    {
+      "id": "active_08_trade",
+      "expectedEventId": "career_civilian_08_trade_the_clean_black_market",
+      "ageMonths": 360,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_trade_the_price_of_the_scales",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_trade_the_exclusive_contract",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_trade_the_withheld_wages",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_trade_scales_bearing_your_name",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_trade_the_empty_granary",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 336
+        }
+      ]
+    },
+    {
+      "id": "active_08_horizon",
+      "expectedEventId": "career_civilian_08_horizon_the_ship_behind_us",
+      "ageMonths": 360,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_horizon_the_passage_under_fog",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_horizon_the_missing_markers",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_horizon_the_impatient_patron",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_horizon_those_following_your_route",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_horizon_the_map_worth_too_much",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_horizon_the_flagless_toll",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 336
+        }
+      ]
+    },
+    {
+      "id": "active_08_craft",
+      "expectedEventId": "career_civilian_08_craft_the_machine_they_want_arme",
+      "ageMonths": 360,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_craft_the_split_pump",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_craft_the_lighthouse_lens",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_craft_the_patrons_claim",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_craft_the_jammed_sterilizer",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_craft_the_crane_before_everyone",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_craft_the_falling_crane",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 336
+        }
+      ]
+    },
+    {
+      "id": "active_08_community",
+      "expectedEventId": "career_civilian_08_community_the_punishment_list",
+      "ageMonths": 360,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_community_the_alley_on_fire",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_community_the_dock_levy",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_community_the_rent_of_silence",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_community_the_shelter_overflows",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_community_the_empty_seat",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_community_the_cut_cisterns",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 336
+        }
+      ]
+    },
+    {
+      "id": "active_08_fallback_compatibility",
+      "expectedEventId": "career_civilian_08_fallback",
+      "ageMonths": 360,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_trade_the_price_of_the_scales",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_trade_the_exclusive_contract",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_trade_the_withheld_wages",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_trade_scales_bearing_your_name",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_trade_the_empty_granary",
+          "choiceId": "legacy_route",
+          "outcomeId": "legacy_route",
+          "ageMonths": 336
+        }
+      ]
+    },
+    {
+      "id": "active_09_trade",
+      "expectedEventId": "career_civilian_09_trade_the_granary_route",
+      "ageMonths": 384,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_trade_the_price_of_the_scales",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_trade_the_exclusive_contract",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_trade_the_withheld_wages",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_trade_scales_bearing_your_name",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_trade_the_empty_granary",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_trade_the_clean_black_market",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 360
+        }
+      ]
+    },
+    {
+      "id": "active_09_horizon",
+      "expectedEventId": "career_civilian_09_horizon_the_map_to_publish",
+      "ageMonths": 384,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_horizon_the_passage_under_fog",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_horizon_the_missing_markers",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_horizon_the_impatient_patron",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_horizon_those_following_your_route",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_horizon_the_map_worth_too_much",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_horizon_the_flagless_toll",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_horizon_the_ship_behind_us",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 360
+        }
+      ]
+    },
+    {
+      "id": "active_09_craft",
+      "expectedEventId": "career_civilian_09_craft_hands_that_copy",
+      "ageMonths": 384,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_craft_the_split_pump",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_craft_the_lighthouse_lens",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_craft_the_patrons_claim",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_craft_the_jammed_sterilizer",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_craft_the_crane_before_everyone",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_craft_the_falling_crane",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_craft_the_machine_they_want_arme",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 360
+        }
+      ]
+    },
+    {
+      "id": "active_09_community",
+      "expectedEventId": "career_civilian_09_community_two_docks_one_square",
+      "ageMonths": 384,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_community_the_alley_on_fire",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_community_the_dock_levy",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_community_the_rent_of_silence",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_community_the_shelter_overflows",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_community_the_empty_seat",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_community_the_cut_cisterns",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_community_the_punishment_list",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 360
+        }
+      ]
+    },
+    {
+      "id": "active_09_fallback_compatibility",
+      "expectedEventId": "career_civilian_09_fallback",
+      "ageMonths": 384,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_trade_the_price_of_the_scales",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_trade_the_exclusive_contract",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_trade_the_withheld_wages",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_trade_scales_bearing_your_name",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_trade_the_empty_granary",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_trade_the_clean_black_market",
+          "choiceId": "legacy_route",
+          "outcomeId": "legacy_route",
+          "ageMonths": 360
+        }
+      ]
+    },
+    {
+      "id": "active_10_trade",
+      "expectedEventId": "career_civilian_10_trade_nobodys_convoy",
+      "ageMonths": 408,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_trade_the_price_of_the_scales",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_trade_the_exclusive_contract",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_trade_the_withheld_wages",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_trade_scales_bearing_your_name",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_trade_the_empty_granary",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_trade_the_clean_black_market",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 360
+        },
+        {
+          "eventId": "career_civilian_09_trade_the_granary_route",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 384
+        }
+      ]
+    },
+    {
+      "id": "active_10_horizon",
+      "expectedEventId": "career_civilian_10_horizon_the_last_marker",
+      "ageMonths": 408,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_horizon_the_passage_under_fog",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_horizon_the_missing_markers",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_horizon_the_impatient_patron",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_horizon_those_following_your_route",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_horizon_the_map_worth_too_much",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_horizon_the_flagless_toll",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_horizon_the_ship_behind_us",
+          "choiceId": "horizon",
+          "outcomeId": "horizon",
+          "ageMonths": 360
+        },
+        {
+          "eventId": "career_civilian_09_horizon_the_map_to_publish",
+          "choiceId": "horizon",
+          "outcomeId": "horizon_success",
+          "ageMonths": 384
+        }
+      ]
+    },
+    {
+      "id": "active_10_craft",
+      "expectedEventId": "career_civilian_10_craft_the_city_without_a_pump",
+      "ageMonths": 408,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_craft_the_split_pump",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_craft_the_lighthouse_lens",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_craft_the_patrons_claim",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_craft_the_jammed_sterilizer",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_craft_the_crane_before_everyone",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_craft_the_falling_crane",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_craft_the_machine_they_want_arme",
+          "choiceId": "craft",
+          "outcomeId": "craft",
+          "ageMonths": 360
+        },
+        {
+          "eventId": "career_civilian_09_craft_hands_that_copy",
+          "choiceId": "craft",
+          "outcomeId": "craft_success",
+          "ageMonths": 384
+        }
+      ]
+    },
+    {
+      "id": "active_10_community",
+      "expectedEventId": "career_civilian_10_community_when_the_administration_le",
+      "ageMonths": 408,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_community_the_alley_on_fire",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_community_the_dock_levy",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_community_the_rent_of_silence",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_community_the_shelter_overflows",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_community_the_empty_seat",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_community_the_cut_cisterns",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_community_the_punishment_list",
+          "choiceId": "community",
+          "outcomeId": "community",
+          "ageMonths": 360
+        },
+        {
+          "eventId": "career_civilian_09_community_two_docks_one_square",
+          "choiceId": "community",
+          "outcomeId": "community_success",
+          "ageMonths": 384
+        }
+      ]
+    },
+    {
+      "id": "active_10_fallback_compatibility",
+      "expectedEventId": "career_civilian_10_fallback",
+      "ageMonths": 408,
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_trade_the_missing_manifest",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_trade_the_price_of_the_scales",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_trade_the_exclusive_contract",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_trade_the_withheld_wages",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_trade_scales_bearing_your_name",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_trade_the_empty_granary",
+          "choiceId": "trade",
+          "outcomeId": "trade_success",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_trade_the_clean_black_market",
+          "choiceId": "trade",
+          "outcomeId": "trade",
+          "ageMonths": 360
+        },
+        {
+          "eventId": "career_civilian_09_trade_the_granary_route",
+          "choiceId": "legacy_route",
+          "outcomeId": "legacy_route",
+          "ageMonths": 384
+        }
+      ]
+    }
+  ],
   "notes": [
-    "Active Personal Affiliation Saga for Civilian. Authoring source only; shared MajorTrack registration belongs to the later integrator.",
-    "Layer 1 specializes on real current family_civilian Layer-5 History IDs and falls back for any newly established Active civilian.",
-    "Route identity is History-derived from the previous Major root choice: trade / horizon / craft / community. Every layer allows a pivot and one route-local fallback reconvergence.",
-    "No post-opener career switch, no Bounty Hunter, no Lifetime thread, no Scheduled branch, and no new persistent definition.",
-    "Routing scenarios are intentionally left out of executable source because the current Saga scenario runner hard-codes careerPhase=childhood; see batch report."
+    "Active V1 Civilian Career Saga hardened by ACTIVE_CAREER_HARDENING_CIVILIAN_01.",
+    "Layer 1 keeps the inherited family_civilian handoff and a universal fresh-start fallback for any established Civilian career.",
+    "The Career spine begins at 192 ageMonths, after the mandatory age-15 career opener and ordinary Active life; later layers remain 24 months apart through 408.",
+    "All Civilian Major roots require isOnLand; no exact Location is required, so maritime travel delays rather than deadlocks the Career spine.",
+    "Route identity remains History-derived from the previous Major root choice: trade / horizon / craft / community. Clean-route scenarios cover every specialized root.",
+    "Route-local fallback scenarios deliberately model persisted legacy History whose old choice ID no longer maps to the four current routes.",
+    "No post-opener career switch, no Bounty Hunter, no Lifetime thread, no Scheduled branch, and no new persistent definition."
   ]
 }

@@ -6,12 +6,20 @@
   "choices": [
     {
       "id": "carry_it",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      },
       "textKey": "event.career_civilian_01_inherited_stake_i01.choice.carry_it.text",
       "resolution": {
         "type": "deterministic",
         "outcome": {
           "id": "carry_it",
           "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            },
             {
               "type": "modifyReputation",
               "amount": 2
@@ -29,10 +37,6 @@
         "outcome": {
           "id": "narrow_it",
           "effects": [
-            {
-              "type": "modifyBerries",
-              "amount": -500
-            },
             {
               "type": "modifyReputation",
               "amount": 1
