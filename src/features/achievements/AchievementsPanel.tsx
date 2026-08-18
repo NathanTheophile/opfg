@@ -61,7 +61,11 @@ export function AchievementsPanel({ metaProgression, locale }: AchievementsPanel
           const GroupIllustration = FAMILY_ILLUSTRATIONS[family];
 
           return (
-            <section key={family} className="opfg-achievements__group">
+            <section
+              key={family}
+              className="opfg-achievements__group"
+              data-family={family}
+            >
               <span className="opfg-achievements__group-watermark" aria-hidden="true">
                 <GroupIllustration className="size-24" strokeWidth={1.75} />
               </span>

@@ -544,12 +544,23 @@ export function EventPreview({
        */
       const adventureScroll = adventureScrollRef.current;
       if (adventureScroll) {
-        const stageRect = stage.getBoundingClientRect();
         const scrollRect = adventureScroll.getBoundingClientRect();
-        const scrollTopInStage = Math.max(0, (scrollRect.top - stageRect.top) / scale);
+        const mobileTabs = document.querySelector<HTMLElement>(
+          '.opfg-mobile-side-tabs',
+        );
+        const mobileTabsVisible = mobileTabs
+          ? window.getComputedStyle(mobileTabs).display !== 'none'
+          : false;
+        const mobileTabsTop = mobileTabsVisible
+          ? mobileTabs?.getBoundingClientRect().top ?? viewportHeight
+          : viewportHeight;
+        const visibleBottom = Math.max(
+          scrollRect.top + 160 * scale,
+          Math.min(viewportHeight, mobileTabsTop) - 10,
+        );
         const maxNaturalScrollHeight = Math.max(
           160,
-          availableHeight / scale - scrollTopInStage - 8,
+          (visibleBottom - scrollRect.top) / scale,
         );
 
         adventureScroll.style.setProperty(

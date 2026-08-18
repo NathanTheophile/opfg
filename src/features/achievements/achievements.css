@@ -620,3 +620,181 @@
     font-size: 0.58rem;
   }
 }
+
+/* UI_POLISH_20260818_FIX5_ACHIEVEMENTS_REPAIR
+ * Fix3 made each group overflow:hidden. Inside the fixed-height scrolling grid
+ * that removes the automatic min-size of grid items, so rows are allowed to
+ * collapse to their heading and clip every Achievement card. Keep watermark
+ * artwork inside the group instead and force content-sized implicit rows.
+ */
+.opfg-achievements__groups {
+  grid-auto-rows: max-content !important;
+  align-content: start !important;
+}
+
+.opfg-achievements__group {
+  position: relative;
+  display: grid !important;
+  height: auto !important;
+  min-height: max-content !important;
+  overflow: visible !important;
+  align-content: start;
+  isolation: isolate;
+}
+
+.opfg-achievements__list {
+  position: relative;
+  z-index: 2;
+  display: grid !important;
+  height: auto !important;
+  min-height: min-content !important;
+  visibility: visible !important;
+}
+
+.opfg-achievement-card {
+  position: relative;
+  z-index: 2;
+  display: grid !important;
+  height: auto !important;
+  visibility: visible !important;
+}
+
+/* Shared family palette for cards + category watermarks. */
+.opfg-achievements__group,
+.opfg-achievement-card {
+  --achievement-illustration-a: #f4b942;
+  --achievement-illustration-b: #e66a2c;
+}
+
+:is(.opfg-achievements__group, .opfg-achievement-card)[data-family="progression"] {
+  --achievement-illustration-a: #ffd166;
+  --achievement-illustration-b: #f97316;
+}
+
+:is(.opfg-achievements__group, .opfg-achievement-card)[data-family="origins"] {
+  --achievement-illustration-a: #4cc9f0;
+  --achievement-illustration-b: #4361ee;
+}
+
+:is(.opfg-achievements__group, .opfg-achievement-card)[data-family="family"] {
+  --achievement-illustration-a: #ff8fab;
+  --achievement-illustration-b: #d946ef;
+}
+
+:is(.opfg-achievements__group, .opfg-achievement-card)[data-family="grades"] {
+  --achievement-illustration-a: #c084fc;
+  --achievement-illustration-b: #6d5dfc;
+}
+
+:is(.opfg-achievements__group, .opfg-achievement-card)[data-family="bounty"] {
+  --achievement-illustration-a: #fb7185;
+  --achievement-illustration-b: #dc2626;
+}
+
+:is(.opfg-achievements__group, .opfg-achievement-card)[data-family="powers"] {
+  --achievement-illustration-a: #a78bfa;
+  --achievement-illustration-b: #22d3ee;
+}
+
+:is(.opfg-achievements__group, .opfg-achievement-card)[data-family="world"] {
+  --achievement-illustration-a: #34d399;
+  --achievement-illustration-b: #0ea5e9;
+}
+
+:is(.opfg-achievements__group, .opfg-achievement-card)[data-family="crew"] {
+  --achievement-illustration-a: #38bdf8;
+  --achievement-illustration-b: #2563eb;
+}
+
+:is(.opfg-achievements__group, .opfg-achievement-card)[data-family="endings"] {
+  --achievement-illustration-a: #fbbf24;
+  --achievement-illustration-b: #ef4444;
+}
+
+/* Color enters the category itself very lightly without competing with copy. */
+.opfg-achievements__group {
+  background:
+    radial-gradient(
+      circle at 92% 62%,
+      color-mix(
+        in srgb,
+        var(--achievement-illustration-b) 12%,
+        transparent
+      ),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(
+        in srgb,
+        var(--achievement-illustration-a) 7%,
+        transparent
+      ),
+      transparent 42%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(23 17 12 / 0.48),
+      rgb(12 8 6 / 0.28)
+    ) !important;
+}
+
+.opfg-achievements__group-watermark {
+  right: 0.45rem !important;
+  bottom: 0.4rem !important;
+  z-index: 0 !important;
+  width: 7rem !important;
+  height: 7rem !important;
+  opacity: 1 !important;
+  color:
+    color-mix(
+      in srgb,
+      var(--achievement-illustration-a) 38%,
+      transparent
+    ) !important;
+  background:
+    radial-gradient(
+      circle,
+      color-mix(
+        in srgb,
+        var(--achievement-illustration-b) 18%,
+        transparent
+      ),
+      transparent 68%
+    );
+  border-radius: 999px;
+  filter:
+    drop-shadow(
+      0 0 10px
+      color-mix(
+        in srgb,
+        var(--achievement-illustration-b) 20%,
+        transparent
+      )
+    );
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.opfg-achievements__group-watermark svg {
+  width: 86% !important;
+  height: 86% !important;
+  stroke: currentColor;
+}
+
+.opfg-achievements__group > h3 {
+  position: relative;
+  z-index: 3;
+}
+
+/* Keep the requested 3-up portrait layout after repairing group sizing. */
+@media (max-width: 42rem) {
+  .opfg-achievements__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .opfg-achievements__group-watermark {
+    width: 5.5rem !important;
+    height: 5.5rem !important;
+  }
+}
