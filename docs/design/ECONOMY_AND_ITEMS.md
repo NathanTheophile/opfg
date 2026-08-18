@@ -35,16 +35,10 @@ Every Item definition declares:
 
 V1 categories:
 
-- key;
-- document;
-- material;
-- trade_good;
-- consumable;
+- item;
 - equipment;
-- treasure;
-- devil_fruit.
 
-An Item with `market: null` has no generic buy/sell price. It may still be exchanged, stolen, rewarded or valued by authored Events. This is the default for quest documents, unique story objects and Devil Fruits.
+An Item with `market: null` has no generic buy/sell price. It may still be exchanged, stolen, rewarded or valued by authored Events. This is the default for quest documents, unique story objects and Devil Fruit Items.
 
 ## 4. Inventory
 
@@ -67,7 +61,13 @@ A generic purchase requires all of:
 - enough Berrys;
 - enough inventory/stack capacity.
 
-Generic resale uses **50% of base purchase price**, rounded down per unit with a minimum of 1 Berry for an item that has a market price.
+Generic resale uses the catalog base price modified by the current resale formula:
+
+```text
+max(0, 1 + 0.10 × (Charisma d20 modifier + Luck d20 modifier))
+```
+
+Optional negotiation then applies the authored ±20% result where relevant.
 
 The engine exposes atomic `buyItem` / `sellItem` Effects so money and inventory cannot partially update.
 
@@ -88,7 +88,7 @@ This is enough for Event-driven shops, bribes, travel preparation, tools, docume
 
 ## 7. Initial price anchor
 
-Only existing generic material `timber` receives a baseline generic market price in this foundation pass: **500 Berrys per unit** at Locations with the `trade` service.
+Only existing generic material `timber` receives a baseline generic market price in this foundation pass: **5,000 Berrys per unit** at Locations with the `trade` service.
 
 Existing unique documents and Devil Fruit Items remain non-market by default. Future V2 Item batches must establish their prices deliberately rather than inheriting arbitrary values from legacy Events.
 

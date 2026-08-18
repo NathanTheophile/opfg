@@ -6,8 +6,8 @@
 
 ## Runtime baseline
 
-- Save version: **21**.
-- Content Schema version: **14**.
+- Save version: **23**.
+- Content Schema version: **16**.
 - Career phases: `origins` → `childhood` → `active`.
 - Childhood uses **20 root slots** and reaches Active at age 15.
 - Active uses one root Event per month.
@@ -48,8 +48,8 @@ Adult Family continuation and the Personal Affiliation Saga remain future produc
 - Playable inherited affiliations are Civilian, Marine, Pirate, Revolutionary and Royal Family; Bandit, Prisoner, Slave and Celestial Dragon remain visible but locked.
 - The validated Trait catalogue contains **28 Traits** with symmetric oppositions where defined.
 - Devil Fruit content contains **20 playable** and **25 reference-only** Fruits.
-- Six generic ship chassis, inventory/equipment, Log Pose, Berrys/market primitives, crew roles, companions and persistent NPC state are implemented.
-- NPCs support persisted runtime display names, immutable sex metadata, canonical father/mother family roles and localization grammar parameters.
+- Six generic ship chassis, inventory/equipment, Log Pose, Berrys/market primitives, runtime crew-role assignment, crew-role powers, companions and persistent NPC state are implemented.
+- NPCs support persisted runtime display names, seeded Stats, mutable runtime `crewRoleId`, immutable sex metadata, canonical father/mother family roles and localization grammar parameters.
 - French remains the source/fallback locale with partial English support.
 
 ## Content production state

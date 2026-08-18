@@ -123,7 +123,7 @@ No automatic Fruit respawn after owner death; reappearance remains Event-driven.
 - Canon and original/generic NPCs are both allowed.
 - Generic NPCs are important to avoid constant canon fan-service.
 - Throwaway characters should remain Event-local text rather than persistent `NpcDefinition`s.
-- CrewRole is fixed in V1.
+- CrewRole ownership belongs to runtime crew state, not NPC identity.
 
 ### Origins family
 
@@ -158,18 +158,30 @@ V1 roster:
 
 - `navigator`
 - `medic`
-- `cook`
 - `shipwright`
+- `recruiter`
+- `first_mate`
 - `helmsman`
-- `gunner`
+- `cook`
 - `musician`
 - `scholar`
-- `fighter`
-- `quartermaster`
+- `foreman`
 
 No `captain` CrewRole. Captain/command is structural/narrative leadership.
 
-Crew roles provide no automatic global bonuses; Events explicitly query them.
+Crew-role ownership lives in `NpcState.crewRoleId`. `NpcDefinition` may describe a character's fiction, skills, job or personality, but it does not mechanically reserve a role. Any recruited NPC may be assigned to any currently assignable CrewRole, with no stat prerequisite or NPC-specific role list.
+
+Rules:
+
+- one crewmate has exactly one role after assignment;
+- one role has at most one holder;
+- newly recruited NPCs enter crew with no role and must be assigned through Crew management;
+- full reassignment happens only at the biological year boundary;
+- a role vacated during a year remains unavailable until the next yearly reassignment.
+
+Active roles (`navigator`, `medic`, `shipwright`, `recruiter`, `first_mate`) expose annual system powers. Passive roles (`helmsman`, `cook`, `musician`, `scholar`, `foreman`) provide derived effective modifiers or annual income according to runtime implementation. Content must not manually re-grant global passive effects.
+
+`hasCrewRole(roleId)` and `actor.type = crewRole` always refer to the current runtime assignment, not to a fixed NPC identity.
 
 ## 7. Ships
 

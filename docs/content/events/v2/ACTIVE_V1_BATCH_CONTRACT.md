@@ -154,7 +154,7 @@ Authored institutional Marine/Revolutionary transport may use a real temporary `
 For Marines, later promotion/command milestones may assign subordinates. These subordinates are **real persistent NPC crew members**:
 
 - they have normal NPC state and relationship;
-- they have one fixed CrewRole;
+- they receive one runtime CrewRole through the same assignment model as other crewmates;
 - they consume normal ship crew capacity;
 - they are assigned by authored Events, never silently by the rank system.
 
@@ -230,7 +230,7 @@ Recruitment batches are smaller focused production lots. They may target roughly
 
 - prioritize existing persistent NPC definitions where fiction supports it;
 - add new persistent NPC definitions sparingly because the complete V1 cast budget remains limited;
-- recruitment-focused roots obey CrewRole vacancy gating;
+- recruitment-focused roots obey candidate/story eligibility and current Crew capacity;
 - no Lifetime is required merely because the batch contains recruitment content.
 
 ### 4.5 Rival batch
@@ -482,7 +482,7 @@ Travel **without a personal ship** uses authored transport when fiction supports
 
 ## 12. Navigator annual power
 
-A usable crew NPC with fixed CrewRole `navigator` unlocks the existing annual Navigator power through the existing crew-role power surface.
+A usable crew NPC currently assigned to CrewRole `navigator` unlocks the existing annual Navigator power through the existing crew-role power surface.
 
 The power is usable **once per biological year** according to the existing annual crew-role power system and is unavailable if the Navigator is no longer a usable crew member.
 
@@ -569,7 +569,25 @@ Crew member = persistent NPC with status `crew`.
 
 Companion = animal Item and never a crew NPC.
 
-CrewRole is fixed for the NPC in V1. The player is the implicit captain/leader for a personal crew and does **not** occupy a CrewRole.
+CrewRole ownership lives in runtime `NpcState.crewRoleId`. NPC identity and CrewRole are separate: a character may have narrative skills without mechanically reserving that role. The player is the implicit captain/leader for a personal crew and does **not** occupy a CrewRole.
+
+Current V1 role roster:
+
+- active: `navigator`, `medic`, `shipwright`, `recruiter`, `first_mate`;
+- passive: `helmsman`, `cook`, `musician`, `scholar`, `foreman`.
+
+Removed V1 role IDs: `gunner`, `fighter`, `quartermaster`.
+
+Role assignment rules:
+
+- any recruited NPC may be assigned to any currently assignable CrewRole;
+- one crewmate has exactly one role after assignment;
+- one role has at most one holder;
+- no stat prerequisite or NPC-specific role list gates assignment;
+- full reassignment is available only at the biological year boundary;
+- a role vacated during a year remains unavailable until the next yearly reassignment.
+
+Role-conditioned Event Choices remain legal: `hasCrewRole(roleId)` means a current runtime assignment. Role-based Dice remains legal: `actor.type = crewRole` resolves the current holder.
 
 Active authoring should respect a total V1 persistent-NPC target of roughly **25 definitions**. Reuse established NPCs aggressively and keep throwaway characters in local prose.
 
@@ -577,13 +595,13 @@ Childhood and Family NPCs may become crew in Active when the fiction and normal 
 
 ### 15.1 Capacity before and after the first ship
 
-Before owning a ship, the party may contain **three people total including the player**: therefore at most **2 crew NPCs**.
+Before owning a ship, max crew size is **3 NPCs**.
 
-Those NPCs are genuine persistent crew members. The absence of a ship prevents normal self-directed sea departure; it does not prevent the first two recruitments.
+Those NPCs are genuine persistent crew members. The absence of a ship prevents normal self-directed sea departure; it does not prevent early shipless recruitment up to that cap.
 
 Once a ship is owned, the only crew-size limit is the vessel's existing `crewCapacity`. Do not add a second global crew cap.
 
-A player who invests heavily in crew building may reasonably reach roughly **4–5 people total around age 18**, provided the owned ship supports that capacity.
+A player who invests heavily in crew building may reasonably reach roughly **4–5 crew NPCs around age 18**, provided the owned ship supports that capacity.
 
 ### 15.2 Early Active recruitment pressure
 
@@ -607,37 +625,30 @@ Candidate pool:
 - an established Childhood candidate requires a **strict authored minimum relationship threshold** before their recruitment route is eligible;
 - a failed recruitment arc may permanently close that candidate when authored History/outcome conditions encode the failure.
 
-Early recruitment should prioritize:
+Early recruitment should prioritize character-first coverage: recurring NPCs, credible local candidates, ship-life competence, social ties, medical or navigational fiction, and campaign needs. It is not a target-role coverage matrix.
 
-- `navigator`;
-- `medic`;
-- `cook`;
-- `shipwright`;
-- `fighter`.
-
-`gunner`, `musician`, `scholar`, `helmsman` and `quartermaster` should appear mainly after age 18 unless a specific story strongly justifies an earlier candidate.
-
-Each recruitable persistent NPC keeps exactly one fixed CrewRole in V1. Recruitment-focused Event eligibility must respect role occupancy:
+Successful recruitment leaves role choice to Crew management. Recruitment-focused Event eligibility must describe candidate/story/capacity validity:
 
 ```text
-target role R
-→ Event eligible only if NOT hasCrewRole(R)
-→ normal leader recruitment may also gate on canRecruitNpc(candidate)
+candidate and scene are currently plausible
+→ normal leader recruitment gates on canRecruitNpc(candidate)
 → authored non-leader recruitment uses setNpcStatus(... allowWithoutLeadership: true)
+→ runtime Crew management assigns the role afterward
 ```
 
 Therefore:
 
-- if the target CrewRole is already occupied by a current crew NPC, the **entire recruitment-focused Event is ineligible**;
-- do not surface the Event with a permanently locked recruit Choice when recruitment is its main purpose;
-- if a role becomes vacant because its crew NPC dies or otherwise ceases to be crew, future recruitment content for that role may become eligible again;
-- use existing `hasCrewRole` + `not` Conditions rather than duplicate vacancy state;
+- do not gate a recruitment root by target-role vacancy;
+- do not state that recruiting a candidate mechanically makes them Navigator/Cook/Medic/Shipwright/etc.;
+- do not use candidate Stats to qualify or disqualify a mechanical role assignment;
+- a candidate's fictional skills may remain in prose and may inform the player's later choice, but no automatic role recommendation is authored;
+- ensure every Normal recruitment root is eligible only when the scene still makes narrative sense, because the Recruiter power can request currently eligible Normal recruitment Events;
 - no systematic post-recruitment personal mini-thread is required;
 - no crew-to-crew relationship subsystem is added;
 - no voluntary crew dismissal, betrayal or departure system is authored in V1;
 - avoid temporary crew capture/separation states in V1;
 - a crew-role power is unavailable when its holder is not a usable current crew member;
-- crew death is permanent and immediately frees the role.
+- crew death is permanent and vacates the role, but the role remains unavailable for reassignment until the next yearly reassignment.
 
 Marine is intentionally excluded from this early recruitment-density requirement. Early Marine progression must remain viable through superiors, assignments and institutional transport without a player-built crew.
 
@@ -732,8 +743,8 @@ The gate must also prove:
 - at least one path can progress substantially into the New World;
 - `royal_family` is unavailable to new Origins selection while existing Royal states remain compatible;
 - Civilian/Pirate/Revolutionary runs receive recurring recruitment mini-arcs during `180 <= ageMonths < 216`;
-- no shipless state can exceed **2 crew NPCs**;
-- recruitment-focused Events never target a CrewRole already occupied by current crew;
+- no shipless state can exceed **3 crew NPCs**;
+- recruitment-focused Events use candidate/story/capacity eligibility and do not target fixed CrewRole vacancy;
 - early Marine progression remains viable without requiring a player-owned crew;
 - no Bounty Hunter or post-opener career-change Event becomes reachable.
 
@@ -795,7 +806,7 @@ Every standard Active batch manifest must report at least:
 
 - Reputation/rank/bounty/title changes used;
 - ship/crew/economy interactions;
-- for batches touching ages 15–18: recruitment mini-arc roots by career, targeted CrewRole, relationship gate when reusing a Childhood NPC, failure-closure behavior, and vacancy gate;
+- for batches touching ages 15–18: recruitment mini-arc roots by career, candidate identity/story role, relationship gate when reusing a Childhood NPC, failure-closure behavior, and capacity guard;
 - for travel batches: departure System Event trigger/cooldown behavior, typical sea-root counts, arrival logic and special-route exclusions;
 - Power interactions;
 - possible Ending interactions;
@@ -828,8 +839,8 @@ A standard Active V1 batch fails review if any of the following is true:
 18. choosing stay cannot produce the required 6-month deferral / exhausted-location loop behavior;
 19. it treats 420 ageMonths as non-terminating or reintroduces a required 480-month safety horizon;
 20. it makes `royal_family` selectable in new V1 Origins before the dedicated Royal Childhood → Active transition exists;
-21. a recruitment-focused Event for Civilian/Pirate/Revolutionary ages 15–18 can be selected while its target CrewRole is already occupied;
-22. a shipless party can contain more than **2 crew NPCs**;
+21. a recruitment-focused Event for Civilian/Pirate/Revolutionary ages 15–18 relies on fixed CrewRole vacancy instead of candidate/story/capacity eligibility;
+22. a shipless party can contain more than **3 crew NPCs**;
 23. an early Marine corridor requires the player to own/build a personal crew in order to keep progressing;
 24. a Paradise crossing without Log Pose is no more demanding than the equivalent valid Log Pose crossing without an explicit exception;
 25. it cannot participate in a complete Active → Ending + score corridor.
@@ -859,7 +870,7 @@ The Active simulation gate must eventually record at least:
 - `recruitmentOffers` by career during `180 <= ageMonths < 216`;
 - `crewCountAt216` and `crewRolesOccupiedAt216`;
 - shipless crew-cap violations;
-- duplicate-role recruitment offers suppressed / observed;
+- recruitment offers selected by Recruiter power and candidate/capacity guards;
 - land departure offers / stay deferrals / exhausted-location repeat offers;
 - maritime roots per crossing and Blue arrival distribution;
 - Paradise crossing root counts with vs without Log Pose;
