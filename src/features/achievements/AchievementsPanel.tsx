@@ -42,6 +42,7 @@ const FAMILY_ICONS: Record<AchievementFamily, LucideIcon> = {
 
 export function AchievementsPanel({ metaProgression, locale }: AchievementsPanelProps) {
   const unlockedCount = Object.keys(metaProgression.unlocks).length;
+  const progressPercent = Math.round((unlockedCount / ACHIEVEMENTS.length) * 100);
 
   return (
     <div className="opfg-achievements">
@@ -49,15 +50,22 @@ export function AchievementsPanel({ metaProgression, locale }: AchievementsPanel
         <strong>{unlockedCount} / {ACHIEVEMENTS.length}</strong>
         <span>{ACHIEVEMENT_UI_COPY[locale].progress}</span>
       </div>
+      <div className="opfg-achievements__progress" aria-hidden="true">
+        <span style={{ width: `${progressPercent}%` }} />
+      </div>
 
       <div className="opfg-achievements__groups">
         {FAMILY_ORDER.map((family) => {
           const achievements = ACHIEVEMENTS.filter((entry) => entry.family === family);
           if (achievements.length === 0) return null;
+          const familyUnlockedCount = achievements.filter(({ id }) => metaProgression.unlocks[id] !== undefined).length;
 
           return (
             <section key={family} className="opfg-achievements__group">
-              <h3>{ACHIEVEMENT_FAMILY_LABELS[locale][family]}</h3>
+              <h3>
+                <span>{ACHIEVEMENT_FAMILY_LABELS[locale][family]}</span>
+                <strong>{familyUnlockedCount}/{achievements.length}</strong>
+              </h3>
               <div className="opfg-achievements__list">
                 {achievements.map(({ id, family }) => {
                   const unlocked = metaProgression.unlocks[id] !== undefined;

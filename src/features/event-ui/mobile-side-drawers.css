@@ -58,11 +58,18 @@
 
   .opfg-mobile-side-drawer {
     position: fixed;
-    z-index: 82;
+    z-index: 140;
+    top: max(0.75rem, var(--safe-area-top));
     right: max(0.75rem, var(--safe-area-right));
-    bottom: calc(max(0px, var(--safe-area-bottom)) + 4.75rem);
+    bottom: calc(max(0px, var(--safe-area-bottom)) + var(--opfg-mobile-bottom-bar-height, 4.75rem) + 0.75rem);
     left: max(0.75rem, var(--safe-area-left));
-    max-height: min(58dvh, 31rem);
+    max-height: calc(
+      100dvh
+      - max(0.75rem, var(--safe-area-top))
+      - max(0px, var(--safe-area-bottom))
+      - var(--opfg-mobile-bottom-bar-height, 4.75rem)
+      - 1.5rem
+    );
     overflow: auto;
     overscroll-behavior: contain;
     animation:

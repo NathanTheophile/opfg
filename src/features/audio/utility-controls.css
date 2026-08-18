@@ -424,7 +424,18 @@
 /* OPFG FLAG HARD CENTER END */
 
 @media (orientation: portrait) {
-  body:has(.opfg-game-screen) .opfg-language-controls,
+  :root {
+    --opfg-mobile-bottom-bar-height: 4.75rem;
+    --opfg-mobile-utility-size: 2.65rem;
+    --opfg-mobile-utility-gap: 0.55rem;
+    --opfg-mobile-utility-bottom: calc(
+      max(0px, var(--safe-area-bottom))
+      + var(--opfg-mobile-bottom-bar-height)
+      + var(--opfg-mobile-utility-gap)
+    );
+  }
+
+  .opfg-language-controls,
   .opfg-audio-controls {
     right: auto !important;
     left:
@@ -434,14 +445,21 @@
       ) !important;
   }
 
-  body:has(.opfg-game-screen) .opfg-language-controls {
-    bottom: calc(max(0px, var(--safe-area-bottom)) + 10.6rem) !important;
+  .opfg-language-controls {
+    bottom: calc(
+      var(--opfg-mobile-utility-bottom)
+      + var(--opfg-mobile-utility-size)
+      + var(--opfg-mobile-utility-gap)
+      + var(--opfg-mobile-utility-size)
+      + var(--opfg-mobile-utility-gap)
+    ) !important;
   }
 
   .opfg-audio-controls {
-    bottom: calc(max(0px, var(--safe-area-bottom)) + 5.45rem) !important;
+    bottom: var(--opfg-mobile-utility-bottom) !important;
     width: 2.65rem;
     align-items: stretch;
+    gap: var(--opfg-mobile-utility-gap);
   }
 
   .opfg-audio-controls > .opfg-utility-square {
