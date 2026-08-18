@@ -88,7 +88,7 @@ Career coverage: Civilian / Pirate / Marine / Revolutionary equally eligible. No
 
 - Root checks use Navigation, Observation, Agility, Strength and Charisma, plus optional crew-role actors where the fiction supports them.
 - Optional crew-role approaches never replace the unconditional/player-resolvable path.
-- CrewRole uses in this package: `navigator`, `medic`, `shipwright`, `gunner`.
+- CrewRole uses in this package: `navigator`, `medic`, `shipwright`; `powder_barrels` uses generic crew support via `hasCrew`/`bestCrew`.
 - Typical thresholds: Standard 11 and Difficult 14.
 - Dangerous failures cost Health, Ship Health, Berrys, Morale, or position/opportunity; critical failures are visibly worse.
 

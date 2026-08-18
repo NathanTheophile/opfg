@@ -22,7 +22,7 @@
 - [x] No bounty effects; therefore no Marine-bounty violation.
 - [x] FR + EN namespaced localization fragments.
 - [x] No new persistent definitions.
-- [x] Recruitment respects `canRecruitNpc`, fixed CrewRole vacancy, NPC live/present state and cast metadata.
+- [x] Recruitment respects `canRecruitNpc`, candidate live/present state, `canRecruitNpc` and cast metadata.
 - [x] Short/Lifetime seed age caps leave room to resolve before the 420-month horizon.
 
 ## Mechanical spread

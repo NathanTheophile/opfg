@@ -196,9 +196,9 @@ coastwatch_bell
 ## Ship / recruitment opportunities
 
 - `loguetown_ship_row`: real `buyShip` choices for Dinghy / Sloop, gated by `canAcquireShip` + exact Berrys thresholds.
-- `baratie_short_cook`: existing persistent NPC `rohan` may become crew Cook through `canRecruitNpc`, Cook-role vacancy and live/present-state guards.
-- `crew_notice_board`: existing persistent NPC `owen` may become crew Shipwright through `canRecruitNpc`, Shipwright-role vacancy and live/present-state guards.
-- `clinic_triage_i01_last_bandage`: existing persistent NPC `ari` may become crew Medic through `canRecruitNpc`, Medic-role vacancy and live/present-state guards.
+- `baratie_short_cook`: existing persistent NPC `rohan` may join the crew through `canRecruitNpc` and live/present-state guards; Cook remains fiction/profile, not fixed recruitment assignment.
+- `crew_notice_board`: existing persistent NPC `owen` may join the crew through `canRecruitNpc` and live/present-state guards; Shipwright remains fiction/profile, not fixed recruitment assignment.
+- `clinic_triage_i01_last_bandage`: existing persistent NPC `ari` may join the crew through `canRecruitNpc` and live/present-state guards; Medic remains fiction/profile, not fixed recruitment assignment.
 - No new persistent NPC/Item/Ship definition proposed.
 
 ## Existing persistent definitions used

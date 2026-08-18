@@ -106,11 +106,11 @@ Difficulty distribution uses thresholds 11 / 14 / 17. Every Dice root offers two
 |---|---|---|---|
 | `active_generic_sea_03_danger_chain_shot` | `shipwright` | free damaged rigging | yes, NPC Health |
 | `active_generic_sea_03_danger_waterline_hit` | `shipwright` | patch waterline breach | yes, NPC Health |
-| `active_generic_sea_03_danger_mast_sniper` | `gunner` | counter-sniper | yes, NPC Health |
-| `active_generic_sea_03_danger_squid_arm` | `fighter` | pull player free | yes, NPC Health |
+| `active_generic_sea_03_danger_mast_sniper` | generic crew | counter-sniper | yes, NPC Health |
+| `active_generic_sea_03_danger_squid_arm` | generic crew | pull player free | yes, NPC Health |
 | `active_generic_sea_03_danger_electric_jellies` | `navigator` | route through jelly field | yes, NPC Health |
 
-Dynamic CrewRole Dice actors use the current `crewRole` actor contract. Their failure branches target `npcSelector: diceActor` Health, creating real persistent crew injury risk without inventing crew state or NPC definitions.
+Role-specific Dice actors use the current `crewRole` actor contract; generic crew assists use `bestCrew`. Their failure branches target `npcSelector: diceActor` Health, creating real persistent crew injury risk without inventing crew state or NPC definitions.
 
 ## Eligibility / coverage
 Every root requires:
@@ -133,7 +133,7 @@ Location coverage: sea-agnostic; no exact destination, route, Location ID or tel
 - no automatic generic cargo/item reward is created.
 
 ## Existing persistent definitions used
-- CrewRoles: `shipwright`, `gunner`, `fighter`, `navigator`;
+- CrewRoles: `shipwright`, `navigator`; generic crew assists cover former gunner/fighter beats.
 - equipped cutting weapon condition in `spiked_chain`;
 - Berrys;
 - player/ship/NPC existing Stats.

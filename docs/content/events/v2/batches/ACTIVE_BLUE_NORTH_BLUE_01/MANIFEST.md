@@ -148,7 +148,7 @@ All Lifetime callbacks are portable correspondence/news. A player may leave Nort
 ## Ship / recruitment opportunities
 
 - `whiteport_used_sloop`: a real authored ship opportunity; `Buy the sloop` is visible but gated by existing `canAcquireShip(sloop)` and resolves through `buyShip` at the existing market price.
-- `mira_navigator_offer`: age-15-to-17 North Blue port recruitment opportunity using existing persistent NPC `mira`, fixed CrewRole `navigator`, `canRecruitNpc`, relationship and `setNpcStatus(crew)`.
+- `mira_navigator_offer`: age-15-to-17 North Blue port recruitment opportunity using existing persistent NPC `mira`, character-first recruitment, `canRecruitNpc`, relationship and `setNpcStatus(crew)`.
 - No extra recruit definition is silently added. Broader North Blue recruit variety should come from a dedicated shared-cast integration pass, not this isolated batch.
 
 ## Canon / timeline notes

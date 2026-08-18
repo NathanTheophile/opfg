@@ -134,7 +134,7 @@ Optional approaches use only existing roles:
 - `shipwright`
 - `scholar`
 - `musician`
-- `quartermaster`
+- generic crew sorter (`hasCrew`/`bestCrew`)
 - `helmsman`
 
 Crew-role approaches are never the only resolvable option.
