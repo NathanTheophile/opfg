@@ -270,6 +270,11 @@
   margin-bottom: 0;
 }
 
+.opfg-music-player-toggle,
+.opfg-music-player-popover {
+  display: none;
+}
+
 /* Player buttons are deliberately small and secondary to the title/seekbar. */
 .opfg-music-player__controls {
   gap: 0.42rem;
@@ -417,3 +422,55 @@
 }
 
 /* OPFG FLAG HARD CENTER END */
+
+@media (orientation: portrait) {
+  body:has(.opfg-game-screen) .opfg-language-controls,
+  .opfg-audio-controls {
+    right: auto !important;
+    left:
+      max(
+        0.85rem,
+        var(--safe-area-left)
+      ) !important;
+  }
+
+  body:has(.opfg-game-screen) .opfg-language-controls {
+    bottom: calc(max(0px, var(--safe-area-bottom)) + 10.6rem) !important;
+  }
+
+  .opfg-audio-controls {
+    bottom: calc(max(0px, var(--safe-area-bottom)) + 5.45rem) !important;
+    width: 2.65rem;
+    align-items: stretch;
+  }
+
+  .opfg-audio-controls > .opfg-utility-square {
+    margin-left: 0;
+  }
+
+  .opfg-audio-controls > .opfg-music-player {
+    display: none;
+  }
+
+  .opfg-music-player-toggle {
+    display: grid;
+  }
+
+  .opfg-audio-mixer,
+  .opfg-language-controls__menu,
+  .opfg-music-player-popover {
+    right: auto;
+    left: calc(100% + 0.5rem);
+  }
+
+  .opfg-music-player-popover {
+    position: absolute;
+    bottom: 0;
+    display: block;
+    width: min(14.4rem, calc(100vw - 4.6rem));
+  }
+
+  .opfg-music-player-popover .opfg-music-player {
+    display: grid;
+  }
+}

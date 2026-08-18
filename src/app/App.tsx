@@ -18,6 +18,7 @@ export function App() {
         catalog={contentCatalog}
         storage={window.localStorage}
         autoStartNewRun={view === 'new'}
+        onHome={() => setView('landing')}
       />
     );
   }

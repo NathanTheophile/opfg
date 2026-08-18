@@ -2,18 +2,13 @@ import {
   Anchor,
   Backpack,
   Boxes,
-  CalendarDays,
-  Clock3,
   Coins,
   House,
-  Star,
   LockKeyhole,
-  MapPin,
   Navigation,
   Package,
   ShieldCheck,
   UserRound,
-  Waves,
 } from 'lucide-react';
 import { Panel } from '@/components/ui';
 import type {
@@ -94,7 +89,7 @@ function getItemLabel(
     : stack.itemId;
 }
 
-function getLocationPath(
+export function getLocationPath(
   state: GameState,
   catalog: ContentCatalog,
 ): LocationDefinition[] {
@@ -153,7 +148,7 @@ function buildCargoOccupants(
   ];
 }
 
-function getCalendarLabel(
+export function getCalendarLabel(
   ageMonths: number,
   translate: Translator,
 ): string {
@@ -286,16 +281,7 @@ export function IdentityEnvironmentHudPanel({
   translate,
   calendarAgeMonths,
 }: TopWorldHudProps) {
-  const locationPath = getLocationPath(state, catalog);
-  const rootLocation = locationPath[0];
-  const subLocations = locationPath.slice(1);
-  const currentLocation = locationPath[locationPath.length - 1];
-  const sea = catalog.seas.find(({ id }) => id === (currentLocation?.seaId ?? state.player.profile.originSeaId));
-  const locationLabel = rootLocation ? translate(rootLocation.nameKey) : state.locationId;
-  const subLocationLabel = subLocations.length > 0 ? subLocations.map((location) => translate(location.nameKey)).join(' › ') : '—';
-  const shownAgeMonths = calendarAgeMonths ?? state.ageMonths;
   const affiliationTitle = getAffiliationTitle(state, catalog, translate);
-  const calendarLabel = getCalendarLabel(shownAgeMonths, translate);
 
   return (
     <Panel variant="strong" padding="none" className="opfg-hud-panel opfg-hud-panel--identity">
@@ -307,51 +293,6 @@ export function IdentityEnvironmentHudPanel({
         </div>
         <div className="opfg-hud-identity__title">{affiliationTitle}</div>
         <div className="opfg-hud-identity__separator" />
-
-        <div className="opfg-hud-identity__grid">
-          <ContextTooltip
-            className="opfg-hud-identity__column is-left"
-            title={translate('ui.environment')}
-            detail={translate(getUiTooltipKey('world'))}
-            side="bottom"
-          >
-            <div className="opfg-hud-info-row is-primary">
-              <MapPin className="size-4" aria-hidden="true" />
-              <strong>{locationLabel}</strong>
-            </div>
-            <div className="opfg-hud-info-row is-muted">
-              <Navigation className="size-4" aria-hidden="true" />
-              <strong>{subLocationLabel}</strong>
-            </div>
-            <div className="opfg-hud-info-row is-muted">
-              <Waves className="size-4" aria-hidden="true" />
-              <strong>{sea ? translate(sea.nameKey) : '—'}</strong>
-            </div>
-          </ContextTooltip>
-
-          <div className="opfg-hud-identity__column is-right">
-            <ContextTooltip className="opfg-hud-info-row is-primary" title={translate('ui.age')} detail={translate('ui.age.description')} side="bottom">
-              <Clock3 className="size-4" aria-hidden="true" />
-              <strong>{Math.floor(shownAgeMonths / 12)} {translate('ui.unit.years')}</strong>
-            </ContextTooltip>
-
-            <ContextTooltip className="opfg-hud-info-row is-muted" title={translate('ui.date')} detail={translate('ui.date.description')} side="bottom">
-              <CalendarDays className="size-4" aria-hidden="true" />
-              <strong>{calendarLabel}</strong>
-            </ContextTooltip>
-
-            <ContextTooltip
-              className="opfg-hud-info-row opfg-hud-reputation"
-              title={translate('ui.reputation')}
-              detail={translate('ui.reputation.description')}
-              meta={`${state.player.career.reputation}/100`}
-              side="bottom"
-            >
-              <Star className="size-4" aria-hidden="true" />
-              <strong>{state.player.career.reputation}/100</strong>
-            </ContextTooltip>
-          </div>
-        </div>
       </div>
     </Panel>
   );

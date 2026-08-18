@@ -61,10 +61,12 @@ export interface PlayerStatsRailProps {
   traitLabel: (traitId: string) => string;
   translate: Translator;
   catalog: ContentCatalog;
+  forceExpanded?: boolean;
 }
 
-export function PlayerStatsRail({ state, previousState, statLabel, traitLabel, translate, catalog }: PlayerStatsRailProps) {
+export function PlayerStatsRail({ state, previousState, statLabel, traitLabel, translate, catalog, forceExpanded = false }: PlayerStatsRailProps) {
   const [expanded, setExpanded] = useState(false);
+  const isExpanded = forceExpanded || expanded;
   const [displayedStats, setDisplayedStats] = useState<GameState['player']['stats']>(() => buildPresentationStats(state, previousState));
   const stateRef = useRef(state);
   stateRef.current = state;
@@ -86,7 +88,7 @@ export function PlayerStatsRail({ state, previousState, statLabel, traitLabel, t
   const compactTraits = traits.slice(0, 3);
 
   return (
-    <div className={`opfg-player-stats-module ${expanded ? 'is-expanded' : ''}`}>
+    <div className={`opfg-player-stats-module ${isExpanded ? 'is-expanded' : ''}`}>
       <Panel variant="strong" padding="none" className="opfg-player-stats-rail" aria-label={translate('ui.stats.playerAria')}>
         <div className="opfg-player-stats-rail__list">
           {STAT_IDS.map((id) => {
@@ -177,15 +179,17 @@ export function PlayerStatsRail({ state, previousState, statLabel, traitLabel, t
           </div>
         </div>
 
-        <button
-          type="button"
-          className="opfg-player-stats-rail__toggle-bottom"
-          onClick={() => setExpanded((value) => !value)}
-          aria-expanded={expanded}
-          aria-label={translate(expanded ? 'ui.stats.collapse' : 'ui.stats.expand')}
-        >
-          {expanded ? <ChevronRight className="size-4" aria-hidden="true" /> : <ChevronLeft className="size-4" aria-hidden="true" />}
-        </button>
+        {!forceExpanded && (
+          <button
+            type="button"
+            className="opfg-player-stats-rail__toggle-bottom"
+            onClick={() => setExpanded((value) => !value)}
+            aria-expanded={expanded}
+            aria-label={translate(expanded ? 'ui.stats.collapse' : 'ui.stats.expand')}
+          >
+            {expanded ? <ChevronRight className="size-4" aria-hidden="true" /> : <ChevronLeft className="size-4" aria-hidden="true" />}
+          </button>
+        )}
       </Panel>
     </div>
   );

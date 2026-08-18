@@ -4,6 +4,11 @@ import {
   motion,
 } from 'motion/react';
 import {
+  CalendarDays,
+  Clock3,
+  MapPin,
+} from 'lucide-react';
+import {
   Panel,
   PanelBody,
   PanelHeader,
@@ -22,6 +27,11 @@ export type EventPanelMode =
 
 export interface EventPanelProps {
   event: EventViewModel;
+  meta?: {
+    location: string;
+    age: string;
+    date: string;
+  };
   onChoice: (
     choice: EventChoiceViewModel,
     input?: string,
@@ -56,6 +66,7 @@ function isSameNarrative(
 
 export function EventPanel({
   event,
+  meta,
   onChoice,
   error,
   mode = 'interactive',
@@ -205,7 +216,25 @@ export function EventPanel({
       }
     >
       <PanelHeader className="opfg-event-panel__header mb-0 bg-gradient-to-b from-black/[0.38] to-black/[0.24] px-5 md:px-6">
-        {displayEvent.eyebrow && (
+        {meta ? (
+          <div className="opfg-event-panel__meta-row">
+            <span className="opfg-event-panel__meta-location">
+              <MapPin className="size-3.5" aria-hidden="true" />
+              <span>{meta.location}</span>
+            </span>
+
+            <span className="opfg-event-panel__meta-time">
+              <span>
+                {meta.age}
+                <Clock3 className="size-3.5" aria-hidden="true" />
+              </span>
+              <span>
+                {meta.date}
+                <CalendarDays className="size-3.5" aria-hidden="true" />
+              </span>
+            </span>
+          </div>
+        ) : displayEvent.eyebrow && (
           <p className="opfg-event-panel__location-flag text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-gold">
             {displayEvent.eyebrow}
           </p>
