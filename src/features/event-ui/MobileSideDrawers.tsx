@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import {
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -41,6 +42,8 @@ export function MobileSideDrawers({
   onHome,
 }: MobileSideDrawersProps) {
   const [openDrawer, setOpenDrawer] = useState<DrawerId | null>(null);
+  const drawerRef = useRef<HTMLElement | null>(null);
+  const tabsRef = useRef<HTMLDivElement | null>(null);
 
   const drawers: DrawerDefinition[] = [
     { id: 'stats', label: translate('ui.stats'), icon: BarChart3, content: stats },
@@ -53,11 +56,32 @@ export function MobileSideDrawers({
 
   useEffect(() => {
     if (!openDrawer) return;
+
+    const closeIfOutside = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+
+      if (
+        drawerRef.current?.contains(target) ||
+        tabsRef.current?.contains(target)
+      ) {
+        return;
+      }
+
+      setOpenDrawer(null);
+    };
+
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setOpenDrawer(null);
     };
+
+    window.addEventListener('pointerdown', closeIfOutside);
     window.addEventListener('keydown', closeOnEscape);
-    return () => window.removeEventListener('keydown', closeOnEscape);
+
+    return () => {
+      window.removeEventListener('pointerdown', closeIfOutside);
+      window.removeEventListener('keydown', closeOnEscape);
+    };
   }, [openDrawer]);
 
   return (
@@ -76,14 +100,16 @@ export function MobileSideDrawers({
 
       {current && (
         <aside
+          ref={drawerRef}
           className="opfg-mobile-side-drawer"
+          data-drawer={current.id}
           aria-label={current.label}
         >
           {current.content}
         </aside>
       )}
 
-      <div className="opfg-mobile-side-tabs">
+      <div ref={tabsRef} className="opfg-mobile-side-tabs">
         {drawers.map(({ id, label, icon: Icon }) => (
           <button
             key={id}

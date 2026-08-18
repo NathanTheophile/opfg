@@ -286,13 +286,19 @@ export function IdentityEnvironmentHudPanel({
   return (
     <Panel variant="strong" padding="none" className="opfg-hud-panel opfg-hud-panel--identity">
       <div className="opfg-hud-panel__body opfg-hud-identity">
-        <div className="opfg-hud-identity__nameplate">
-          <span aria-hidden="true" />
-          <strong>{state.player.profile.name ?? '—'}</strong>
-          <span aria-hidden="true" />
+        <div className="opfg-hud-identity__upper">
+          {state.player.profile.name && (
+            <div className="opfg-hud-identity__nameplate">
+              <span aria-hidden="true" />
+              <strong>{state.player.profile.name}</strong>
+              <span aria-hidden="true" />
+            </div>
+          )}
         </div>
-        <div className="opfg-hud-identity__title">{affiliationTitle}</div>
         <div className="opfg-hud-identity__separator" />
+        <div className="opfg-hud-identity__lower">
+          <div className="opfg-hud-identity__title">{affiliationTitle}</div>
+        </div>
       </div>
     </Panel>
   );

@@ -176,3 +176,44 @@
     display: none !important;
   }
 }
+
+/* UI_POLISH_20260818_FIX2_MOBILE_DRAWERS */
+@media (orientation: portrait) {
+  /* Same utility layer as language/audio settings; drawers stay above it. */
+  .opfg-mobile-home-button {
+    z-index: 100;
+  }
+
+  /* Inventory and Ship are modal-like utility panels: center them in the
+   * usable viewport above the persistent bottom navigation. */
+  .opfg-mobile-side-drawer:is(
+    [data-drawer="inventory"],
+    [data-drawer="ship"]
+  ) {
+    top: calc(50% - 2.375rem);
+    bottom: auto;
+    transform: translateY(-50%);
+    animation-name: opfg-mobile-panel-center-in;
+  }
+}
+
+@keyframes opfg-mobile-panel-center-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-50% + 0.55rem));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-mobile-side-drawer:is(
+    [data-drawer="inventory"],
+    [data-drawer="ship"]
+  ) {
+    animation-duration: 1ms;
+  }
+}
