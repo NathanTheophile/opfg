@@ -126,11 +126,17 @@ describe('Active Paradise navigation foundation', () => {
     state = selectNextEvent(state, contentCatalog);
     expect(state.currentEventId).toBe('active_reverse_mountain_01_entry');
 
-    state = resolveChoice(state, contentCatalog, 'active_reverse_mountain_01_entry', 'hold_line').state;
-    expect(state.currentEventId).toBe('active_reverse_mountain_01_climb');
-    state = resolveChoice(state, contentCatalog, 'active_reverse_mountain_01_climb', 'follow_current').state;
-    expect(state.currentEventId).toBe('active_reverse_mountain_01_descent');
-    state = resolveChoice(state, contentCatalog, 'active_reverse_mountain_01_descent', 'enter_paradise').state;
+    state = resolveChoice(state, contentCatalog, 'active_reverse_mountain_01_entry', 'watch_current').state;
+    expect(state.currentEventId).toBe('active_reverse_mountain_01_i01_first_current');
+    state = resolveChoice(state, contentCatalog, 'active_reverse_mountain_01_i01_first_current', 'drop_low').state;
+    expect(state.currentEventId).toBe('active_reverse_mountain_01_i02_red_wall');
+    state = resolveChoice(state, contentCatalog, 'active_reverse_mountain_01_i02_red_wall', 'hold_center').state;
+    expect(state.currentEventId).toBe('active_reverse_mountain_01_i03_climb');
+    state = resolveChoice(state, contentCatalog, 'active_reverse_mountain_01_i03_climb', 'trust_centerline').state;
+    expect(state.currentEventId).toBe('active_reverse_mountain_01_i04_crest');
+    state = resolveChoice(state, contentCatalog, 'active_reverse_mountain_01_i04_crest', 'stay_low').state;
+    expect(state.currentEventId).toBe('active_reverse_mountain_01_i05_descent');
+    state = resolveChoice(state, contentCatalog, 'active_reverse_mountain_01_i05_descent', 'lock_down').state;
 
     expect(state.locationId).toBe('twin_capes');
     expect(PARADISE_ROUTE_START_EVENT_IDS).toContain(state.currentEventId);

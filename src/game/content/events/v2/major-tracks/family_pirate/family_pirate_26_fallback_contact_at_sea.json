@@ -1,0 +1,86 @@
+{
+  "id": "family_pirate_26_fallback_contact_at_sea",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_pirate",
+    "chapterId": "adult_family_03",
+    "nodeId": "family_pirate_26_fallback_contact_at_sea",
+    "parentNodeIds": [
+      "family_pirate_22_bounty_reaches_old_harbor",
+      "family_pirate_22_family_name_on_clean_paper",
+      "family_pirate_22_fallback_debt_without_map"
+    ],
+    "fallback": true
+  },
+  "titleKey": "event.family_pirate_26_fallback_contact_at_sea.title",
+  "textKey": "event.family_pirate_26_fallback_contact_at_sea.text",
+  "choices": [
+    {
+      "id": "keep_one_harbor",
+      "textKey": "event.family_pirate_26_fallback_contact_at_sea.choice.keep_one_harbor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_one_harbor",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "family_pirate_safe_harbor_known"
+            }
+          ],
+          "textKey": "event.family_pirate_26_fallback_contact_at_sea.choice.keep_one_harbor.outcome.keep_one_harbor.text"
+        }
+      }
+    },
+    {
+      "id": "use_old_key",
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "family_pirate_13_safe_harbor_key"
+      },
+      "textKey": "event.family_pirate_26_fallback_contact_at_sea.choice.use_old_key.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "use_old_key",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "family_pirate_safe_harbor_access"
+            }
+          ],
+          "textKey": "event.family_pirate_26_fallback_contact_at_sea.choice.use_old_key.outcome.use_old_key.text"
+        }
+      }
+    },
+    {
+      "id": "end_open_promises",
+      "textKey": "event.family_pirate_26_fallback_contact_at_sea.choice.end_open_promises.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "end_open_promises",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "family_pirate_home_boundary"
+            }
+          ],
+          "textKey": "event.family_pirate_26_fallback_contact_at_sea.choice.end_open_promises.outcome.end_open_promises.text"
+        }
+      }
+    },
+    {
+      "id": "news_only",
+      "textKey": "event.family_pirate_26_fallback_contact_at_sea.choice.news_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "news_only",
+          "effects": [],
+          "textKey": "event.family_pirate_26_fallback_contact_at_sea.choice.news_only.outcome.news_only.text"
+        }
+      }
+    }
+  ]
+}

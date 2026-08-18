@@ -7,7 +7,7 @@ import { nextRandom } from './rng';
 import { materializeEventCast } from './npcNames';
 import { createDepartureSystemEvent, materializeNavigationEvent } from './navigation';
 import { finalizePendingSlot } from './time';
-import { findDockableAccess } from './locations';
+import { findDockableAccess, isLocationWithin } from './locations';
 import { activeParadiseRouteId, countFallbackStreak, isParadiseRouteStartEventId } from './maritime';
 import { createArrivalMarketEvent, materializeMarketEvent } from './marketEvents';
 import { requiresCrewManagement } from './crew';
@@ -22,6 +22,7 @@ export const NEW_WORLD_ROUTE_START_EVENT_IDS = [
 
 const NEW_WORLD_ROUTE_START_EVENT_ID_SET = new Set<string>(NEW_WORLD_ROUTE_START_EVENT_IDS);
 const SABAODY_RED_LINE_PASSAGE_EVENT_ID = 'active_sabaody_red_line_passage';
+const FISH_MAN_ISLAND_LOCATION_ID = 'fish_man_island';
 
 interface DueMajorSelection {
   candidates: NormalDefinition[];
@@ -107,7 +108,7 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     : undefined;
   if (sabaodyPassage) return selectEvent(state, catalog, sabaodyPassage);
 
-  if (state.locationId === 'fish_man_island') {
+  if (isLocationWithin(catalog, state.locationId, FISH_MAN_ISLAND_LOCATION_ID)) {
     const newWorldRouteStarts = catalog.events.filter((event): event is NormalDefinition =>
       event.kind === 'normal'
         && NEW_WORLD_ROUTE_START_EVENT_ID_SET.has(event.id)

@@ -9,7 +9,12 @@
     "childhood_02",
     "childhood_03",
     "childhood_04",
-    "childhood_05"
+    "childhood_05",
+    "adult_family_01",
+    "adult_family_02",
+    "adult_family_03",
+    "adult_family_04",
+    "adult_family_05"
   ],
   "rules": {
     "enforceScenarioCoverage": false,
@@ -18847,6 +18852,3159 @@
               "text": {
                 "fr": "Tu ne signes pas aujourd'hui. Si tu reviens plus tard, ce sera une nouvelle décision.",
                 "en": "You do not sign today. If you return later, it will be a new decision."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a01_service_call",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_01",
+        "nodeId": "family_marine_a01_service_call",
+        "parentNodeIds": [
+          "family_marine_13_chest_he_left",
+          "family_marine_13_decide_for_yourself",
+          "family_marine_13_duty_not_obedience",
+          "family_marine_13_insignia_in_palm",
+          "family_marine_13_on_your_terms",
+          "family_marine_13_our_name_is_not_theirs",
+          "family_marine_13_wear_it_better",
+          "family_marine_13_what_remains_of_him",
+          "family_marine_13_your_future_is_yours",
+          "family_marine_13_your_name_on_roll"
+        ],
+        "selectionPriority": 40
+      },
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "active"
+          }
+        ]
+      },
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Un appel de service",
+        "en": "A Service Call"
+      },
+      "text": {
+        "fr": "Le Den Den Mushi de service sonne. Ton père a retrouvé ton numéro dans les relais de la Marine. Il ne demande pas ton grade : il demande quel genre de Marine tu es devenu.",
+        "en": "The service Den Den Mushi rings. Your father found your number through Marine relays. He does not ask your rank; he asks what kind of Marine you became."
+      },
+      "choices": [
+        {
+          "id": "answer_plainly",
+          "text": {
+            "fr": "Répondre sans détour",
+            "en": "Answer plainly"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer_plainly",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a01_service_call_i01_same_uniform"
+                }
+              ],
+              "text": {
+                "fr": "Tu réponds par des faits, sans chercher son approbation.",
+                "en": "You answer with facts, without seeking his approval."
+              }
+            }
+          }
+        },
+        {
+          "id": "invoke_inheritance",
+          "text": {
+            "fr": "Rappeler ce que tu as accepté",
+            "en": "Recall what you accepted"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "invoke_inheritance",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a01_service_call_i01_same_uniform"
+                }
+              ],
+              "text": {
+                "fr": "Tu repars du choix fait à quinze ans, pas de l'uniforme qu'il imaginait.",
+                "en": "You start from the choice you made at fifteen, not the uniform he imagined."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "any",
+            "conditions": [
+              {
+                "type": "hasPlayed",
+                "eventId": "family_marine_13_insignia_in_palm"
+              },
+              {
+                "type": "hasPlayed",
+                "eventId": "family_marine_13_on_your_terms"
+              },
+              {
+                "type": "hasPlayed",
+                "eventId": "family_marine_13_wear_it_better"
+              },
+              {
+                "type": "hasPlayed",
+                "eventId": "family_marine_13_your_name_on_roll"
+              }
+            ]
+          }
+        },
+        {
+          "id": "draw_boundary",
+          "text": {
+            "fr": "Fixer une limite",
+            "en": "Set a boundary"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "draw_boundary",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a01_service_call_i01_same_uniform"
+                }
+              ],
+              "text": {
+                "fr": "Tu lui dis que ton service ne lui appartient pas.",
+                "en": "You tell him your service does not belong to him."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a01_service_call_i01_same_uniform",
+      "kind": "immediate",
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Le même uniforme ?",
+        "en": "The Same Uniform?"
+      },
+      "text": {
+        "fr": "Ton père laisse passer un silence, puis demande si l'uniforme t'a donné une route ou simplement une nouvelle manière de porter la dette familiale.",
+        "en": "Your father lets the silence stretch, then asks whether the uniform gave you a path or only a new way to carry the family debt."
+      },
+      "choices": [
+        {
+          "id": "answer_plainly",
+          "text": {
+            "fr": "Parler de ton propre devoir",
+            "en": "Speak of your own duty"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "own_duty",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 5
+                }
+              ],
+              "text": {
+                "fr": "Tu décris un devoir que tu as choisi de redéfinir toi-même.",
+                "en": "You describe a duty you chose to redefine for yourself."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasChosen",
+            "eventId": "family_marine_a01_service_call",
+            "choiceId": "answer_plainly"
+          }
+        },
+        {
+          "id": "invoke_inheritance",
+          "text": {
+            "fr": "Nommer l'héritage sans t'y enfermer",
+            "en": "Name the inheritance without being trapped by it"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "named_inheritance",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 8
+                }
+              ],
+              "text": {
+                "fr": "Il entend enfin que tu as accepté une part de l'héritage, pas une copie de sa vie.",
+                "en": "He finally hears that you accepted part of the inheritance, not a copy of his life."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasChosen",
+            "eventId": "family_marine_a01_service_call",
+            "choiceId": "invoke_inheritance"
+          }
+        },
+        {
+          "id": "draw_boundary",
+          "text": {
+            "fr": "Maintenir la limite",
+            "en": "Hold the boundary"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "boundary_held",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -3
+                }
+              ],
+              "text": {
+                "fr": "La conversation s'achève proprement, mais plus froide qu'elle n'a commencé.",
+                "en": "The conversation ends cleanly, but colder than it began."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasChosen",
+            "eventId": "family_marine_a01_service_call",
+            "choiceId": "draw_boundary"
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a01_other_colors",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_01",
+        "nodeId": "family_marine_a01_other_colors",
+        "parentNodeIds": [
+          "family_marine_13_chest_he_left",
+          "family_marine_13_decide_for_yourself",
+          "family_marine_13_duty_not_obedience",
+          "family_marine_13_insignia_in_palm",
+          "family_marine_13_on_your_terms",
+          "family_marine_13_our_name_is_not_theirs",
+          "family_marine_13_wear_it_better",
+          "family_marine_13_what_remains_of_him",
+          "family_marine_13_your_future_is_yours",
+          "family_marine_13_your_name_on_roll"
+        ],
+        "selectionPriority": 40
+      },
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "any",
+            "conditions": [
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "civilian"
+              },
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "pirate"
+              },
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "revolutionary"
+              }
+            ]
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "active"
+          }
+        ]
+      },
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "D'autres couleurs",
+        "en": "Other Colors"
+      },
+      "text": {
+        "fr": "Ton père obtient enfin une ligne jusqu'à toi. Il connaît ta carrière actuelle et ne fait aucune offre de recrutement. Il demande seulement ce que le nom familial signifie hors de la Marine.",
+        "en": "Your father finally gets a line through to you. He knows your current career and makes no recruitment offer. He only asks what the family name means outside the Marines."
+      },
+      "choices": [
+        {
+          "id": "name_choice",
+          "text": {
+            "fr": "Nommer ton choix",
+            "en": "Name your choice"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "name_choice",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a01_other_colors_i01_name_between_you"
+                }
+              ],
+              "text": {
+                "fr": "Tu nommes la vie que tu as choisie au lieu de la comparer à la sienne.",
+                "en": "You name the life you chose instead of comparing it with his."
+              }
+            }
+          }
+        },
+        {
+          "id": "recall_refusal",
+          "text": {
+            "fr": "Rappeler ton refus d'alors",
+            "en": "Recall your refusal"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "recall_refusal",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a01_other_colors_i01_name_between_you"
+                }
+              ],
+              "text": {
+                "fr": "Tu lui rappelles que la divergence n'a pas commencé aujourd'hui.",
+                "en": "You remind him that the divergence did not begin today."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "any",
+            "conditions": [
+              {
+                "type": "hasPlayed",
+                "eventId": "family_marine_13_decide_for_yourself"
+              },
+              {
+                "type": "hasPlayed",
+                "eventId": "family_marine_13_duty_not_obedience"
+              },
+              {
+                "type": "hasPlayed",
+                "eventId": "family_marine_13_our_name_is_not_theirs"
+              }
+            ]
+          }
+        },
+        {
+          "id": "keep_family",
+          "text": {
+            "fr": "Séparer famille et uniforme",
+            "en": "Separate family from uniform"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_family",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a01_other_colors_i01_name_between_you"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de laisser vos carrières décider à elles seules de votre lien.",
+                "en": "You refuse to let your careers decide your relationship by themselves."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a01_other_colors_i01_name_between_you",
+      "kind": "immediate",
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Le nom entre vous",
+        "en": "The Name Between You"
+      },
+      "text": {
+        "fr": "Il répète ton choix à voix basse. La question n'est plus de te ramener dans la Marine, mais de savoir s'il peut respecter une vie qu'il n'aurait pas choisie.",
+        "en": "He repeats your choice quietly. The question is no longer whether to bring you into the Marines, but whether he can respect a life he would not have chosen."
+      },
+      "choices": [
+        {
+          "id": "own_path",
+          "text": {
+            "fr": "Assumer la divergence",
+            "en": "Own the divergence"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "path_owned",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -5
+                }
+              ],
+              "text": {
+                "fr": "Tu ne demandes ni permission ni pardon. Il encaisse la distance entre vos vies.",
+                "en": "You ask for neither permission nor forgiveness. He absorbs the distance between your lives."
+              }
+            }
+          }
+        },
+        {
+          "id": "name_old_refusal",
+          "text": {
+            "fr": "Dire que tu l'avais déjà choisi",
+            "en": "Say you had already chosen it"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "old_refusal_named",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -8
+                }
+              ],
+              "text": {
+                "fr": "Le vieux refus remonte entre vous avec des mots d'adulte. Rien n'est résolu, mais rien n'est maquillé.",
+                "en": "The old refusal rises between you in adult words. Nothing is resolved, but nothing is disguised."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "any",
+            "conditions": [
+              {
+                "type": "hasPlayed",
+                "eventId": "family_marine_13_decide_for_yourself"
+              },
+              {
+                "type": "hasPlayed",
+                "eventId": "family_marine_13_duty_not_obedience"
+              },
+              {
+                "type": "hasPlayed",
+                "eventId": "family_marine_13_our_name_is_not_theirs"
+              }
+            ]
+          }
+        },
+        {
+          "id": "keep_family",
+          "text": {
+            "fr": "Garder une place à la famille",
+            "en": "Keep a place for family"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "family_kept",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 5
+                }
+              ],
+              "text": {
+                "fr": "Tu lui offres une place dans ta vie, pas un droit de commandement sur elle.",
+                "en": "You offer him a place in your life, not command over it."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a01_message_catches_up",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_01",
+        "nodeId": "family_marine_a01_message_catches_up",
+        "parentNodeIds": [
+          "family_marine_13_chest_he_left",
+          "family_marine_13_decide_for_yourself",
+          "family_marine_13_duty_not_obedience",
+          "family_marine_13_insignia_in_palm",
+          "family_marine_13_on_your_terms",
+          "family_marine_13_our_name_is_not_theirs",
+          "family_marine_13_wear_it_better",
+          "family_marine_13_what_remains_of_him",
+          "family_marine_13_your_future_is_yours",
+          "family_marine_13_your_name_on_roll"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Le message qui rattrape",
+        "en": "The Message That Catches Up"
+      },
+      "text": {
+        "fr": "Un relais Marine finit par te transmettre un avis familial réexpédié pendant des années. Il ne dit pas qui est encore disponible. Il prouve seulement que ton ancien dossier n'a jamais cessé de te suivre.",
+        "en": "A Marine relay finally gets a family notice to you after years of forwarding. It does not say who is still available. It only proves your old record never stopped following you."
+      },
+      "choices": [
+        {
+          "id": "open_now",
+          "text": {
+            "fr": "L'ouvrir maintenant",
+            "en": "Open it now"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "open_now",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a01_message_catches_up_i01_forwarded_years"
+                }
+              ],
+              "text": {
+                "fr": "Tu brises le cachet et lis jusqu'au bout.",
+                "en": "You break the seal and read to the end."
+              }
+            }
+          }
+        },
+        {
+          "id": "keep_sealed",
+          "text": {
+            "fr": "Le garder fermé",
+            "en": "Keep it sealed"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_sealed",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a01_message_catches_up_i01_forwarded_years"
+                }
+              ],
+              "text": {
+                "fr": "Tu glisses l'avis intact parmi tes affaires.",
+                "en": "You keep the notice intact among your belongings."
+              }
+            }
+          }
+        },
+        {
+          "id": "set_insignia_beside",
+          "text": {
+            "fr": "Poser l'insigne à côté",
+            "en": "Set the insignia beside it"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "set_insignia_beside",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a01_message_catches_up_i01_forwarded_years"
+                }
+              ],
+              "text": {
+                "fr": "L'ancien insigne familial donne soudain un poids concret à ces quelques lignes.",
+                "en": "The old family insignia suddenly gives those few lines real weight."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasItem",
+            "itemId": "family_marine_insignia"
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a01_message_catches_up_i01_forwarded_years",
+      "kind": "immediate",
+      "title": {
+        "fr": "Des années de relais",
+        "en": "Years of Relays"
+      },
+      "text": {
+        "fr": "L'avis ne contient ni ordre ni convocation. Il demande seulement si le contact familial doit rester ouvert dans les registres de la Marine.",
+        "en": "The notice contains neither order nor summons. It only asks whether the family contact should remain open in Marine records."
+      },
+      "choices": [
+        {
+          "id": "leave_open",
+          "text": {
+            "fr": "Laisser le contact ouvert",
+            "en": "Leave contact open"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "contact_open",
+              "effects": [],
+              "text": {
+                "fr": "Tu laisses une adresse possible derrière toi, sans promettre d'y répondre.",
+                "en": "You leave a possible address behind you without promising to answer it."
+              }
+            }
+          }
+        },
+        {
+          "id": "archive_only",
+          "text": {
+            "fr": "Passer en contact d'archive",
+            "en": "Mark it archive-only"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "archive_only",
+              "effects": [],
+              "text": {
+                "fr": "Le lien reste dans les registres, mais cesse de te poursuivre comme une urgence.",
+                "en": "The link remains in the records but stops following you like an emergency."
+              }
+            }
+          }
+        },
+        {
+          "id": "no_reply",
+          "text": {
+            "fr": "Ne rien renvoyer",
+            "en": "Send nothing back"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "no_reply",
+              "effects": [],
+              "text": {
+                "fr": "Le relais se referme sur ton silence. Le dossier, lui, conserve cette absence de réponse.",
+                "en": "The relay closes on your silence. The record keeps that lack of answer."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a02_promotion_question",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_02",
+        "nodeId": "family_marine_a02_promotion_question",
+        "parentNodeIds": [
+          "family_marine_a01_service_call",
+          "family_marine_a01_other_colors",
+          "family_marine_a01_message_catches_up"
+        ],
+        "selectionPriority": 40
+      },
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "active"
+          }
+        ]
+      },
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "La question du grade",
+        "en": "The Rank Question"
+      },
+      "text": {
+        "fr": "Ton père t'appelle après avoir vu ton nom dans une circulation interne. Il demande pourquoi tu n'es pas monté plus vite, comme si une carrière pouvait se mesurer à la distance entre deux galons.",
+        "en": "Your father calls after seeing your name in an internal circular. He asks why you have not risen faster, as if a career could be measured by the distance between two stripes."
+      },
+      "choices": [
+        {
+          "id": "explain_method",
+          "text": {
+            "fr": "Expliquer ta méthode",
+            "en": "Explain your method"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "explain_method",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a02_promotion_question_i01_speed_or_weight"
+                }
+              ],
+              "text": {
+                "fr": "Tu lui expliques ce que tu refuses de sacrifier pour monter plus vite.",
+                "en": "You explain what you refuse to sacrifice to rise faster."
+              }
+            }
+          }
+        },
+        {
+          "id": "reject_measure",
+          "text": {
+            "fr": "Refuser cette mesure",
+            "en": "Reject that measure"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "reject_measure",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a02_promotion_question_i01_speed_or_weight"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de confondre vitesse et valeur.",
+                "en": "You refuse to confuse speed with worth."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasTrait",
+            "traitId": "rebellious"
+          }
+        },
+        {
+          "id": "ask_regret",
+          "text": {
+            "fr": "Lui demander son propre regret",
+            "en": "Ask about his own regret"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_regret",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a02_promotion_question_i01_speed_or_weight"
+                }
+              ],
+              "text": {
+                "fr": "Tu retournes la question vers la carrière qu'il a réellement vécue.",
+                "en": "You turn the question toward the career he actually lived."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a02_promotion_question_i01_speed_or_weight",
+      "kind": "immediate",
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Vitesse ou poids",
+        "en": "Speed or Weight"
+      },
+      "text": {
+        "fr": "Il admet avoir vu des officiers monter en laissant des gens derrière eux. Il veut savoir ce que tu comptes préserver si la prochaine promotion finit par venir.",
+        "en": "He admits he saw officers rise by leaving people behind. He wants to know what you intend to preserve if the next promotion eventually comes."
+      },
+      "choices": [
+        {
+          "id": "method",
+          "text": {
+            "fr": "Garder tes limites",
+            "en": "Keep your limits"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "limits_kept",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 5
+                }
+              ],
+              "text": {
+                "fr": "Il n'approuve pas tout, mais il cesse de traiter ton rythme comme un échec.",
+                "en": "He does not approve of everything, but stops treating your pace as failure."
+              }
+            }
+          }
+        },
+        {
+          "id": "reject",
+          "text": {
+            "fr": "Refuser le classement",
+            "en": "Reject the ranking"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ranking_rejected",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -5
+                }
+              ],
+              "text": {
+                "fr": "Tu lui dis que son tableau n'est pas ta boussole. La vieille tension revient aussitôt.",
+                "en": "You tell him his ladder is not your compass. The old tension returns at once."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasTrait",
+            "traitId": "rebellious"
+          }
+        },
+        {
+          "id": "regret",
+          "text": {
+            "fr": "Écouter son regret",
+            "en": "Hear his regret"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "regret_heard",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 5
+                }
+              ],
+              "text": {
+                "fr": "Pour une fois, il parle de ce que sa carrière lui a coûté plutôt que de ce qu'elle lui a donné.",
+                "en": "For once, he speaks about what his career cost him rather than what it gave him."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a02_outside_the_chain",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_02",
+        "nodeId": "family_marine_a02_outside_the_chain",
+        "parentNodeIds": [
+          "family_marine_a01_service_call",
+          "family_marine_a01_other_colors",
+          "family_marine_a01_message_catches_up"
+        ],
+        "selectionPriority": 40
+      },
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "any",
+            "conditions": [
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "civilian"
+              },
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "pirate"
+              },
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "revolutionary"
+              }
+            ]
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "active"
+          }
+        ]
+      },
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Hors de la chaîne",
+        "en": "Outside the Chain"
+      },
+      "text": {
+        "fr": "Ton père te lit une note où un officier a souligné votre nom de famille à côté de ta carrière actuelle. Il déteste que l'institution transforme votre divergence en commentaire de dossier.",
+        "en": "Your father reads you a note where an officer underlined your family name beside your current career. He hates that the institution has turned your divergence into a file-room comment."
+      },
+      "choices": [
+        {
+          "id": "own_path",
+          "text": {
+            "fr": "Assumer ta voie",
+            "en": "Own your path"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "own_path",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a02_outside_the_chain_i01_family_name"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses d'adoucir ta carrière pour rendre son dossier plus confortable.",
+                "en": "You refuse to soften your career to make his record more comfortable."
+              }
+            }
+          }
+        },
+        {
+          "id": "ask_embarrassed",
+          "text": {
+            "fr": "Lui demander s'il a honte",
+            "en": "Ask if he is ashamed"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_embarrassed",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a02_outside_the_chain_i01_family_name"
+                }
+              ],
+              "text": {
+                "fr": "Tu forces la question qu'il évitait depuis des années.",
+                "en": "You force the question he has avoided for years."
+              }
+            }
+          }
+        },
+        {
+          "id": "offer_truce",
+          "text": {
+            "fr": "Proposer une trêve privée",
+            "en": "Offer a private truce"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "offer_truce",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a02_outside_the_chain_i01_family_name"
+                }
+              ],
+              "text": {
+                "fr": "Tu proposes de laisser l'institution hors de votre prochaine conversation.",
+                "en": "You propose keeping the institution out of your next conversation."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a02_outside_the_chain_i01_family_name",
+      "kind": "immediate",
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Le nom de famille",
+        "en": "The Family Name"
+      },
+      "text": {
+        "fr": "Il froisse la copie de la note. Ce qui reste entre vous n'est plus une question d'enrôlement, mais de savoir qui a le droit d'utiliser votre nom pour juger l'autre.",
+        "en": "He crumples the copy of the note. What remains between you is no longer about enlistment, but about who gets to use your name to judge the other."
+      },
+      "choices": [
+        {
+          "id": "own",
+          "text": {
+            "fr": "Ne rien excuser",
+            "en": "Apologize for nothing"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "nothing_excused",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -3
+                }
+              ],
+              "text": {
+                "fr": "Tu assumes ta vie sans lui demander d'en porter la responsabilité.",
+                "en": "You own your life without asking him to carry responsibility for it."
+              }
+            }
+          }
+        },
+        {
+          "id": "shame",
+          "text": {
+            "fr": "Exiger une réponse",
+            "en": "Demand an answer"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer_demanded",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -5
+                }
+              ],
+              "text": {
+                "fr": "Il nie avoir honte, trop vite pour que la réponse soit simple.",
+                "en": "He denies being ashamed, too quickly for the answer to be simple."
+              }
+            }
+          }
+        },
+        {
+          "id": "truce",
+          "text": {
+            "fr": "Sortir la Marine de la pièce",
+            "en": "Take the Marines out of the room"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "private_truce",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 5
+                }
+              ],
+              "text": {
+                "fr": "Vous convenez d'une prochaine conversation où aucun dossier ne servira d'argument.",
+                "en": "You agree that no file will be used as an argument in the next conversation."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a02_between_ports",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_02",
+        "nodeId": "family_marine_a02_between_ports",
+        "parentNodeIds": [
+          "family_marine_a01_service_call",
+          "family_marine_a01_other_colors",
+          "family_marine_a01_message_catches_up"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Entre deux relais",
+        "en": "Between Relays"
+      },
+      "text": {
+        "fr": "Un bref message familial te rejoint par les relais de la Marine. Plusieurs cachets de ports différents couvrent la marge. Le contenu tient en trois lignes et ne suppose pas que tu sois resté quelque part.",
+        "en": "A brief family message reaches you through Marine relays. Stamps from several different ports cover the margin. The contents fit in three lines and do not assume you stayed anywhere."
+      },
+      "choices": [
+        {
+          "id": "reply_to_him",
+          "text": {
+            "fr": "Répondre à ton père",
+            "en": "Reply to your father"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "reply_to_him",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a02_between_ports_i01_thin_line"
+                }
+              ],
+              "text": {
+                "fr": "Tu donnes au relais une réponse assez courte pour repartir aussitôt.",
+                "en": "You give the relay an answer short enough to send on immediately."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "active"
+          }
+        },
+        {
+          "id": "file_message",
+          "text": {
+            "fr": "Classer le message",
+            "en": "File the message"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "file_message",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a02_between_ports_i01_thin_line"
+                }
+              ],
+              "text": {
+                "fr": "Tu gardes la trace sans rouvrir la conversation.",
+                "en": "You keep the trace without reopening the conversation."
+              }
+            }
+          }
+        },
+        {
+          "id": "return_blank",
+          "text": {
+            "fr": "Renvoyer l'enveloppe vide",
+            "en": "Return the envelope empty"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "return_blank",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a02_between_ports_i01_thin_line"
+                }
+              ],
+              "text": {
+                "fr": "Tu renvoies le support sans ajouter une seule ligne.",
+                "en": "You send the carrier back without adding a single line."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a02_between_ports_i01_thin_line",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une ligne mince",
+        "en": "A Thin Line"
+      },
+      "text": {
+        "fr": "Le relais attend seulement une décision de contact. Rien ne t'oblige à transformer ces trois lignes en réconciliation, en rupture ou en voyage de retour.",
+        "en": "The relay waits only for a contact decision. Nothing forces you to turn those three lines into reconciliation, rupture, or a journey home."
+      },
+      "choices": [
+        {
+          "id": "reply",
+          "text": {
+            "fr": "Maintenir le fil",
+            "en": "Keep the thread"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "thread_kept",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 3
+                }
+              ],
+              "text": {
+                "fr": "Ta réponse ne résout rien, mais elle empêche le silence de décider à ta place.",
+                "en": "Your reply resolves nothing, but keeps silence from deciding for you."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasChosen",
+            "eventId": "family_marine_a02_between_ports",
+            "choiceId": "reply_to_him"
+          }
+        },
+        {
+          "id": "file",
+          "text": {
+            "fr": "Garder la trace",
+            "en": "Keep the trace"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "trace_kept",
+              "effects": [],
+              "text": {
+                "fr": "Tu conserves le message comme une preuve de distance, pas comme une dette.",
+                "en": "You keep the message as evidence of distance, not a debt."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasChosen",
+            "eventId": "family_marine_a02_between_ports",
+            "choiceId": "file_message"
+          }
+        },
+        {
+          "id": "blank",
+          "text": {
+            "fr": "Assumer le silence",
+            "en": "Own the silence"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "silence_owned",
+              "effects": [],
+              "text": {
+                "fr": "L'absence de réponse devient elle aussi un choix dans votre histoire.",
+                "en": "The lack of reply becomes a choice in your history too."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasChosen",
+            "eventId": "family_marine_a02_between_ports",
+            "choiceId": "return_blank"
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_1"
+      ]
+    },
+    {
+      "id": "family_marine_a03_rank_and_name",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_03",
+        "nodeId": "family_marine_a03_rank_and_name",
+        "parentNodeIds": [
+          "family_marine_a02_promotion_question",
+          "family_marine_a02_outside_the_chain",
+          "family_marine_a02_between_ports"
+        ],
+        "selectionPriority": 50
+      },
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          },
+          {
+            "type": "careerRankAtLeast",
+            "rankId": "marine_lieutenant"
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "active"
+          }
+        ]
+      },
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Le grade et le nom",
+        "en": "Rank and Name"
+      },
+      "text": {
+        "fr": "Ton père t'appelle par ton grade avant de se reprendre et d'utiliser ton nom. La correction est petite, mais elle révèle à quel point ta progression Marine a envahi sa manière de te regarder.",
+        "en": "Your father calls you by rank before correcting himself and using your name. It is a small correction, but it shows how deeply your Marine progression has entered the way he sees you."
+      },
+      "choices": [
+        {
+          "id": "let_rank_stand",
+          "text": {
+            "fr": "Le laisser dire le grade",
+            "en": "Let the rank stand"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "let_rank_stand",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a03_rank_and_name_i01_debt_after_promotion"
+                }
+              ],
+              "text": {
+                "fr": "Tu ne corriges pas la première formule.",
+                "en": "You do not correct the first form of address."
+              }
+            }
+          }
+        },
+        {
+          "id": "correct_to_name",
+          "text": {
+            "fr": "Lui donner ton nom",
+            "en": "Give him your name"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "correct_to_name",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a03_rank_and_name_i01_debt_after_promotion"
+                }
+              ],
+              "text": {
+                "fr": "Tu lui rappelles que le grade n'est pas votre lien de parenté.",
+                "en": "You remind him that rank is not your family bond."
+              }
+            }
+          }
+        },
+        {
+          "id": "open_journal",
+          "text": {
+            "fr": "Ouvrir son journal de service",
+            "en": "Open his service journal"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "open_journal",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a03_rank_and_name_i01_debt_after_promotion"
+                }
+              ],
+              "text": {
+                "fr": "Tu poses son ancien journal à côté de ton propre grade.",
+                "en": "You set his old service journal beside your own rank."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasItem",
+            "itemId": "family_marine_service_journal"
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a03_rank_and_name_i01_debt_after_promotion",
+      "kind": "immediate",
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Après la promotion",
+        "en": "After Promotion"
+      },
+      "text": {
+        "fr": "Il demande si chaque galon supplémentaire réduit la dette envers la famille ou la rend simplement plus visible. Cette fois, il attend réellement ta réponse.",
+        "en": "He asks whether each additional stripe reduces the debt to the family or only makes it more visible. This time, he actually waits for your answer."
+      },
+      "choices": [
+        {
+          "id": "rank",
+          "text": {
+            "fr": "Garder le grade à sa place",
+            "en": "Keep rank in its place"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "rank_in_place",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 3
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes le respect professionnel sans lui laisser remplacer le lien familial.",
+                "en": "You accept professional respect without letting it replace the family bond."
+              }
+            }
+          }
+        },
+        {
+          "id": "name",
+          "text": {
+            "fr": "Exiger ton nom d'abord",
+            "en": "Demand your name first"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "name_first",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 6
+                }
+              ],
+              "text": {
+                "fr": "Il répète ton nom sans titre. Le geste est maladroit, mais il le fait.",
+                "en": "He repeats your name without title. The gesture is awkward, but he does it."
+              }
+            }
+          }
+        },
+        {
+          "id": "journal",
+          "text": {
+            "fr": "Comparer les deux parcours",
+            "en": "Compare the two paths"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "paths_compared",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 8
+                }
+              ],
+              "text": {
+                "fr": "Le journal montre assez de différences pour que la comparaison cesse enfin d'être une compétition.",
+                "en": "The journal shows enough differences for the comparison to stop being a competition."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasItem",
+            "itemId": "family_marine_service_journal"
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a03_record_without_him",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_03",
+        "nodeId": "family_marine_a03_record_without_him",
+        "parentNodeIds": [
+          "family_marine_a02_promotion_question",
+          "family_marine_a02_outside_the_chain",
+          "family_marine_a02_between_ports"
+        ],
+        "selectionPriority": 40
+      },
+      "eligibility": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "dead"
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "departed"
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "unavailable"
+          }
+        ]
+      },
+      "title": {
+        "fr": "Le dossier sans lui",
+        "en": "The Record Without Him"
+      },
+      "text": {
+        "fr": "Les archives centrales te transmettent une copie du dossier de service de ton père pour correction. Son statut actuel l'empêche de répondre lui-même. Une marge vide attend ta version des faits.",
+        "en": "Central records send you a copy of your father's service file for correction. His current status prevents him from answering himself. An empty margin waits for your version of events."
+      },
+      "choices": [
+        {
+          "id": "preserve",
+          "text": {
+            "fr": "Conserver le dossier intact",
+            "en": "Preserve the file"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "preserve",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a03_record_without_him_i01_margin_note"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de transformer son absence en occasion de réécrire sa vie.",
+                "en": "You refuse to turn his absence into an opportunity to rewrite his life."
+              }
+            }
+          }
+        },
+        {
+          "id": "annotate",
+          "text": {
+            "fr": "Ajouter ce que le journal omet",
+            "en": "Add what the journal omits"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "annotate",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a03_record_without_him_i01_margin_note"
+                }
+              ],
+              "text": {
+                "fr": "Tu prépares une note sur ce que les états de service ne disent jamais.",
+                "en": "You prepare a note on what service records never say."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasItem",
+            "itemId": "family_marine_service_journal"
+          }
+        },
+        {
+          "id": "return",
+          "text": {
+            "fr": "Renvoyer sans correction",
+            "en": "Return it unchanged"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "return",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a03_record_without_him_i01_margin_note"
+                }
+              ],
+              "text": {
+                "fr": "Tu refermes le dossier et le renvoies tel quel.",
+                "en": "You close the file and send it back unchanged."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a03_record_without_him_i01_margin_note",
+      "kind": "immediate",
+      "title": {
+        "fr": "La note en marge",
+        "en": "The Margin Note"
+      },
+      "text": {
+        "fr": "La case de correction ne demande pas un éloge. Elle demande seulement si le dossier doit rester strictement militaire ou conserver une trace de ce que le service a coûté à la famille.",
+        "en": "The correction box does not ask for praise. It only asks whether the file should remain strictly military or preserve a trace of what service cost the family."
+      },
+      "choices": [
+        {
+          "id": "military_only",
+          "text": {
+            "fr": "Laisser seulement le service",
+            "en": "Leave only the service"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "service_only",
+              "effects": [],
+              "text": {
+                "fr": "Tu laisses les archives parler de missions, de dates et de grades, rien de plus.",
+                "en": "You leave the archives to speak of missions, dates, and ranks, nothing more."
+              }
+            }
+          }
+        },
+        {
+          "id": "family_cost",
+          "text": {
+            "fr": "Noter le coût familial",
+            "en": "Record the family cost"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "family_cost_recorded",
+              "effects": [],
+              "text": {
+                "fr": "Tu ajoutes une phrase sur les absences que les tableaux de service ne comptent pas.",
+                "en": "You add one line about absences that service tables never count."
+              }
+            }
+          }
+        },
+        {
+          "id": "close",
+          "text": {
+            "fr": "Fermer sans commentaire",
+            "en": "Close without comment"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "closed_without_comment",
+              "effects": [],
+              "text": {
+                "fr": "Tu renvoies le dossier sans offrir aux archives le dernier mot sur votre histoire.",
+                "en": "You return the file without giving the archives the last word on your history."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a03_you_write_first",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_03",
+        "nodeId": "family_marine_a03_you_write_first",
+        "parentNodeIds": [
+          "family_marine_a02_promotion_question",
+          "family_marine_a02_outside_the_chain",
+          "family_marine_a02_between_ports"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Écrire le premier",
+        "en": "Write First"
+      },
+      "text": {
+        "fr": "Un formulaire de relais te propose une seule adresse familiale à confirmer. Pour une fois, aucun ordre ni message ne t'attend : c'est à toi de décider si quelque chose doit partir.",
+        "en": "A relay form offers one family address to confirm. For once, no order or message is waiting for you: you must decide whether anything should be sent."
+      },
+      "choices": [
+        {
+          "id": "call_him",
+          "text": {
+            "fr": "Ouvrir une ligne vers lui",
+            "en": "Open a line to him"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "call_him",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a03_you_write_first_i01_contact_choice"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes au relais d'établir la connexion tant qu'elle est possible.",
+                "en": "You ask the relay to establish the connection while it is possible."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "active"
+          }
+        },
+        {
+          "id": "write_archive",
+          "text": {
+            "fr": "Écrire pour le dossier",
+            "en": "Write for the record"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "write_archive",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a03_you_write_first_i01_contact_choice"
+                }
+              ],
+              "text": {
+                "fr": "Tu écris sans exiger qu'une personne précise soit encore là pour répondre.",
+                "en": "You write without requiring any particular person to still be there to answer."
+              }
+            }
+          }
+        },
+        {
+          "id": "leave_blank",
+          "text": {
+            "fr": "Laisser la case vide",
+            "en": "Leave it blank"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "leave_blank",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a03_you_write_first_i01_contact_choice"
+                }
+              ],
+              "text": {
+                "fr": "Tu rends le formulaire sans adresse confirmée.",
+                "en": "You return the form without a confirmed address."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a03_you_write_first_i01_contact_choice",
+      "kind": "immediate",
+      "title": {
+        "fr": "Choisir le contact",
+        "en": "Choosing Contact"
+      },
+      "text": {
+        "fr": "Le relais ne te demande pas pourquoi. Il attend seulement de savoir si le prochain mouvement vient de toi, des archives, ou de personne.",
+        "en": "The relay does not ask why. It only waits to know whether the next move comes from you, the records, or nobody."
+      },
+      "choices": [
+        {
+          "id": "call",
+          "text": {
+            "fr": "Parler sans prétexte",
+            "en": "Speak without a pretext"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "spoke_without_pretext",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 5
+                }
+              ],
+              "text": {
+                "fr": "Tu l'appelles sans promotion, crise ou ordre à commenter. La simplicité désarme une partie de la distance.",
+                "en": "You call him without a promotion, crisis, or order to discuss. The simplicity disarms part of the distance."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasChosen",
+            "eventId": "family_marine_a03_you_write_first",
+            "choiceId": "call_him"
+          }
+        },
+        {
+          "id": "archive",
+          "text": {
+            "fr": "Laisser une trace lisible",
+            "en": "Leave a readable trace"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "trace_written",
+              "effects": [],
+              "text": {
+                "fr": "Tu écris ce que tu veux qu'un futur dossier comprenne, même si personne ne répond aujourd'hui.",
+                "en": "You write what you want a future record to understand, even if nobody answers today."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasChosen",
+            "eventId": "family_marine_a03_you_write_first",
+            "choiceId": "write_archive"
+          }
+        },
+        {
+          "id": "blank",
+          "text": {
+            "fr": "Ne pas relancer l'histoire",
+            "en": "Do not restart the story"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "history_not_restarted",
+              "effects": [],
+              "text": {
+                "fr": "Tu laisses le relais se fermer sans transformer le silence en accident.",
+                "en": "You let the relay close without pretending the silence was an accident."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasChosen",
+            "eventId": "family_marine_a03_you_write_first",
+            "choiceId": "leave_blank"
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_1"
+      ]
+    },
+    {
+      "id": "family_marine_a04_family_under_scrutiny",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_04",
+        "nodeId": "family_marine_a04_family_under_scrutiny",
+        "parentNodeIds": [
+          "family_marine_a03_rank_and_name",
+          "family_marine_a03_record_without_him",
+          "family_marine_a03_you_write_first"
+        ],
+        "selectionPriority": 60
+      },
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "active"
+          },
+          {
+            "type": "reputationAtLeast",
+            "value": 35
+          }
+        ]
+      },
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Deux dossiers sous la loupe",
+        "en": "Two Files Under Scrutiny"
+      },
+      "text": {
+        "fr": "Un officier de liaison te contacte : ta notoriété a poussé quelqu'un à rapprocher ton dossier de celui de ton père. Ce qui était une histoire familiale devient soudain une comparaison institutionnelle.",
+        "en": "A liaison officer contacts you: your notoriety made someone compare your record with your father's. What was a family history has suddenly become an institutional comparison."
+      },
+      "choices": [
+        {
+          "id": "separate_records",
+          "text": {
+            "fr": "Séparer les deux dossiers",
+            "en": "Separate the two files"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "separate_records",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a04_family_under_scrutiny_i01_two_records"
+                }
+              ],
+              "text": {
+                "fr": "Tu exiges que vos carrières soient examinées séparément.",
+                "en": "You demand that your careers be judged separately."
+              }
+            }
+          }
+        },
+        {
+          "id": "defend_father",
+          "text": {
+            "fr": "Protéger son nom",
+            "en": "Protect his name"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "defend_father",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a04_family_under_scrutiny_i01_two_records"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses que sa carrière serve de raccourci pour parler de la tienne.",
+                "en": "You refuse to let his career become shorthand for yours."
+              }
+            }
+          }
+        },
+        {
+          "id": "answer_as_marine",
+          "text": {
+            "fr": "Répondre en Marine",
+            "en": "Answer as a Marine"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer_as_marine",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a04_family_under_scrutiny_i01_two_records"
+                }
+              ],
+              "text": {
+                "fr": "Tu réponds sur les règles de service plutôt que sur la famille.",
+                "en": "You answer in terms of service rules rather than family."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          }
+        },
+        {
+          "id": "refuse_authority",
+          "text": {
+            "fr": "Refuser leur droit de juger",
+            "en": "Reject their right to judge"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "refuse_authority",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a04_family_under_scrutiny_i01_two_records"
+                }
+              ],
+              "text": {
+                "fr": "Tu contestes publiquement le droit de l'institution à transformer votre parenté en dossier commun.",
+                "en": "You publicly challenge the institution's right to turn your family bond into a shared file."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "any",
+            "conditions": [
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "civilian"
+              },
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "pirate"
+              },
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "revolutionary"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a04_family_under_scrutiny_i01_two_records",
+      "kind": "immediate",
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Deux histoires",
+        "en": "Two Histories"
+      },
+      "text": {
+        "fr": "Ton père rejoint la ligne après l'officier. Il veut savoir si tu comptes protéger son nom, t'en séparer, ou forcer la Marine à reconnaître que deux vies ne forment pas un seul dossier.",
+        "en": "Your father joins the line after the officer. He wants to know whether you will protect his name, separate from it, or force the Marines to admit that two lives do not make one file."
+      },
+      "choices": [
+        {
+          "id": "separate",
+          "text": {
+            "fr": "Tracer la frontière",
+            "en": "Draw the line"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "records_separated",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 3
+                }
+              ],
+              "text": {
+                "fr": "Tu sépares proprement vos responsabilités. Il accepte la frontière sans la prendre pour un rejet.",
+                "en": "You separate your responsibilities cleanly. He accepts the boundary without treating it as rejection."
+              }
+            }
+          }
+        },
+        {
+          "id": "defend",
+          "text": {
+            "fr": "Le défendre sans t'effacer",
+            "en": "Defend him without erasing yourself"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "name_defended",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 8
+                },
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Ta défense circule avec l'affaire. Son nom gagne un peu d'air, et le tien un peu plus de visibilité.",
+                "en": "Your defense circulates with the matter. His name gets room to breathe, and yours gets a little more visibility."
+              }
+            }
+          }
+        },
+        {
+          "id": "marine",
+          "text": {
+            "fr": "Clore par la procédure",
+            "en": "Close it by procedure"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "closed_by_procedure",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 5
+                }
+              ],
+              "text": {
+                "fr": "Tu fais fermer la comparaison sur une règle de dossier. Ton père reconnaît une méthode qu'il comprend.",
+                "en": "You close the comparison through procedure. Your father recognizes a method he understands."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          }
+        },
+        {
+          "id": "refuse",
+          "text": {
+            "fr": "Faire de ton refus une position publique",
+            "en": "Make your refusal public"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "public_refusal",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -5
+                },
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Ton refus attire l'attention au lieu de la réduire. Ton père déteste la méthode, mais plus personne ne peut prétendre parler à ta place.",
+                "en": "Your refusal draws attention instead of reducing it. Your father hates the method, but nobody can pretend to speak for you."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "any",
+            "conditions": [
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "civilian"
+              },
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "pirate"
+              },
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "revolutionary"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a04_last_watch",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_04",
+        "nodeId": "family_marine_a04_last_watch",
+        "parentNodeIds": [
+          "family_marine_a03_rank_and_name",
+          "family_marine_a03_record_without_him",
+          "family_marine_a03_you_write_first"
+        ],
+        "selectionPriority": 40
+      },
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "active"
+          },
+          {
+            "type": "npcRelationshipAtLeast",
+            "npcId": "player_parent_1",
+            "value": 25
+          }
+        ]
+      },
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "La dernière garde",
+        "en": "The Last Watch"
+      },
+      "text": {
+        "fr": "Ton père annonce qu'il quitte enfin le service régulier. Avant de ranger l'uniforme, il te demande si partir maintenant ressemble à un repos mérité ou à un abandon tardif.",
+        "en": "Your father says he is finally leaving regular service. Before putting away the uniform, he asks whether leaving now looks like earned rest or a late abandonment."
+      },
+      "choices": [
+        {
+          "id": "tell_rest",
+          "text": {
+            "fr": "Lui dire de se reposer",
+            "en": "Tell him to rest"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "tell_rest",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a04_last_watch_i01_after_uniform"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de mesurer sa retraite comme une défaite.",
+                "en": "You refuse to measure his retirement as defeat."
+              }
+            }
+          }
+        },
+        {
+          "id": "ask_stay_close",
+          "text": {
+            "fr": "Lui demander de rester proche",
+            "en": "Ask him to stay close"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_stay_close",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a04_last_watch_i01_after_uniform"
+                }
+              ],
+              "text": {
+                "fr": "Tu distingues clairement la fin du service de la fin de votre lien.",
+                "en": "You clearly separate the end of service from the end of your bond."
+              }
+            }
+          }
+        },
+        {
+          "id": "let_go",
+          "text": {
+            "fr": "Le laisser partir sans promesse",
+            "en": "Let him go without promises"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "let_go",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a04_last_watch_i01_after_uniform"
+                }
+              ],
+              "text": {
+                "fr": "Tu lui laisses une sortie qui n'exige pas une nouvelle obligation familiale.",
+                "en": "You give him an exit that does not demand a new family obligation."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a04_last_watch_i01_after_uniform",
+      "kind": "immediate",
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Après l'uniforme",
+        "en": "After the Uniform"
+      },
+      "text": {
+        "fr": "Il pose son insigne hors champ. Pour la première fois, la question n'est plus ce que la Marine exige de lui, mais la place qu'il veut encore tenir dans ta vie.",
+        "en": "He sets his badge out of sight. For the first time, the question is not what the Marines require of him, but what place he still wants in your life."
+      },
+      "choices": [
+        {
+          "id": "rest",
+          "text": {
+            "fr": "Accepter la retraite",
+            "en": "Accept the retirement"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "retirement_accepted",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 5
+                }
+              ],
+              "text": {
+                "fr": "Tu lui accordes le droit de s'arrêter sans effacer ce que ses absences vous ont coûté.",
+                "en": "You grant him the right to stop without erasing what his absences cost you."
+              }
+            }
+          }
+        },
+        {
+          "id": "stay",
+          "text": {
+            "fr": "Demander une présence, pas un grade",
+            "en": "Ask for presence, not rank"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "presence_requested",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 8
+                }
+              ],
+              "text": {
+                "fr": "Il promet d'essayer d'être joignable comme père plutôt que comme Marine.",
+                "en": "He promises to try being reachable as a father rather than as a Marine."
+              }
+            }
+          }
+        },
+        {
+          "id": "depart",
+          "text": {
+            "fr": "Laisser la distance devenir réelle",
+            "en": "Let the distance become real"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "distance_made_real",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 3
+                },
+                {
+                  "type": "setNpcStatus",
+                  "npcId": "player_parent_1",
+                  "status": "departed"
+                }
+              ],
+              "text": {
+                "fr": "Vous vous quittez sans dispute. Il part vivre hors de tes relais habituels, et la distance devient un état accepté.",
+                "en": "You part without argument. He leaves your usual relays, and the distance becomes an accepted state."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a04_old_uniform",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_04",
+        "nodeId": "family_marine_a04_old_uniform",
+        "parentNodeIds": [
+          "family_marine_a03_rank_and_name",
+          "family_marine_a03_record_without_him",
+          "family_marine_a03_you_write_first"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Une ligne d'inventaire",
+        "en": "An Inventory Line"
+      },
+      "text": {
+        "fr": "Un quartier-maître te demande quoi faire d'un ancien lot de service encore associé à ton dossier familial. Aucun retour au foyer n'est nécessaire : le registre attend seulement une instruction.",
+        "en": "A quartermaster asks what to do with an old service lot still associated with your family file. No return home is required: the register only needs an instruction."
+      },
+      "choices": [
+        {
+          "id": "keep_record",
+          "text": {
+            "fr": "Conserver la mention",
+            "en": "Keep the entry"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_record",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a04_old_uniform_i01_inventory_line"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes que la mention reste dans l'inventaire historique.",
+                "en": "You ask that the entry remain in the historical inventory."
+              }
+            }
+          }
+        },
+        {
+          "id": "return_depot",
+          "text": {
+            "fr": "Rendre le lot au dépôt",
+            "en": "Return the lot to depot"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "return_depot",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a04_old_uniform_i01_inventory_line"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes au dépôt de reprendre ce qui n'a plus à attendre une famille.",
+                "en": "You ask the depot to reclaim what no longer needs to wait for a family."
+              }
+            }
+          }
+        },
+        {
+          "id": "compare_insignia",
+          "text": {
+            "fr": "Comparer avec ton insigne",
+            "en": "Compare it with your insignia"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "compare_insignia",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a04_old_uniform_i01_inventory_line"
+                }
+              ],
+              "text": {
+                "fr": "Tu vérifies la mention contre l'insigne que tu portes encore parmi tes affaires.",
+                "en": "You compare the entry with the insignia you still carry among your belongings."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasItem",
+            "itemId": "family_marine_insignia"
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a04_old_uniform_i01_inventory_line",
+      "kind": "immediate",
+      "title": {
+        "fr": "La ligne du registre",
+        "en": "The Registry Line"
+      },
+      "text": {
+        "fr": "Le quartier-maître confirme que le choix ne change aucun grade ni aucune carrière. Il décide seulement de la manière dont cette vieille trace familiale restera lisible.",
+        "en": "The quartermaster confirms the choice changes no rank or career. It only decides how that old family trace will remain readable."
+      },
+      "choices": [
+        {
+          "id": "preserve",
+          "text": {
+            "fr": "Garder la trace",
+            "en": "Keep the trace"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "trace_preserved",
+              "effects": [],
+              "text": {
+                "fr": "La ligne reste au registre, reliée à une histoire que tu n'es pas obligé de répéter.",
+                "en": "The line stays in the registry, tied to a history you are not required to repeat."
+              }
+            }
+          }
+        },
+        {
+          "id": "return",
+          "text": {
+            "fr": "Clore l'inventaire",
+            "en": "Close the inventory"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "inventory_closed",
+              "effects": [],
+              "text": {
+                "fr": "Le dépôt reprend le lot et ferme l'entrée matérielle sans effacer l'histoire.",
+                "en": "The depot reclaims the lot and closes the material entry without erasing the history."
+              }
+            }
+          }
+        },
+        {
+          "id": "compare",
+          "text": {
+            "fr": "Reconnaître ce qui a survécu",
+            "en": "Recognize what survived"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "surviving_mark",
+              "effects": [],
+              "text": {
+                "fr": "L'insigne dans ta main et la ligne du registre ne racontent pas exactement la même famille. Tu gardes cette différence.",
+                "en": "The insignia in your hand and the registry line do not tell exactly the same family story. You keep that difference."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasItem",
+            "itemId": "family_marine_insignia"
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a05_reconciliation",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_05",
+        "nodeId": "family_marine_a05_reconciliation",
+        "parentNodeIds": [
+          "family_marine_a04_family_under_scrutiny",
+          "family_marine_a04_last_watch",
+          "family_marine_a04_old_uniform"
+        ],
+        "selectionPriority": 50
+      },
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "active"
+          },
+          {
+            "type": "npcRelationshipAtLeast",
+            "npcId": "player_parent_1",
+            "value": 25
+          }
+        ]
+      },
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Sans grade entre vous",
+        "en": "No Rank Between You"
+      },
+      "text": {
+        "fr": "Ton père demande une dernière longue conversation avant que les années n'en décident autrement. Il coupe lui-même les formules de service et dit qu'il veut parler comme ton père, pas comme un Marine.",
+        "en": "Your father asks for one last long conversation before the years decide otherwise. He cuts off the service formalities himself and says he wants to speak as your father, not as a Marine."
+      },
+      "choices": [
+        {
+          "id": "speak_first",
+          "text": {
+            "fr": "Parler le premier",
+            "en": "Speak first"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "speak_first",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a05_reconciliation_i01_without_rank"
+                }
+              ],
+              "text": {
+                "fr": "Tu poses d'abord ce que tu refuses encore de pardonner ou d'oublier.",
+                "en": "You first state what you still refuse to forgive or forget."
+              }
+            }
+          }
+        },
+        {
+          "id": "let_him_speak",
+          "text": {
+            "fr": "Le laisser commencer",
+            "en": "Let him begin"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "let_him_speak",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a05_reconciliation_i01_without_rank"
+                }
+              ],
+              "text": {
+                "fr": "Tu lui laisses le risque de commencer sans se cacher derrière le service.",
+                "en": "You let him take the risk of starting without hiding behind service."
+              }
+            }
+          }
+        },
+        {
+          "id": "set_insignia_aside",
+          "text": {
+            "fr": "Écarter l'insigne familial",
+            "en": "Set the family insignia aside"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "set_insignia_aside",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a05_reconciliation_i01_without_rank"
+                }
+              ],
+              "text": {
+                "fr": "Tu poses l'insigne hors de la conversation pour qu'il ne parle pas à votre place.",
+                "en": "You set the insignia outside the conversation so it cannot speak for either of you."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasItem",
+            "itemId": "family_marine_insignia"
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a05_reconciliation_i01_without_rank",
+      "kind": "immediate",
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Ce qui reste à donner",
+        "en": "What Remains to Give"
+      },
+      "text": {
+        "fr": "Il ne demande pas d'effacer le passé. Il propose trois choses concrètes : solder une petite épargne familiale, reconnaître publiquement ton propre parcours, ou te laisser partir sans autre dette entre vous.",
+        "en": "He does not ask to erase the past. He offers three concrete things: settle a small family fund, publicly recognize your own path, or let you go with no further debt between you."
+      },
+      "choices": [
+        {
+          "id": "take_fund",
+          "text": {
+            "fr": "Accepter l'épargne familiale",
+            "en": "Accept the family fund"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "fund_accepted",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": 5000
+                },
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 5
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes l'argent comme un solde, pas comme un prix pour la réconciliation.",
+                "en": "You accept the money as a settlement, not a price for reconciliation."
+              }
+            }
+          }
+        },
+        {
+          "id": "share_record",
+          "text": {
+            "fr": "Faire reconnaître ton parcours",
+            "en": "Have your path recognized"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "path_recognized",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 8
+                }
+              ],
+              "text": {
+                "fr": "Il signe une courte note qui distingue clairement tes choix des siens. La reconnaissance circule avec ton nom.",
+                "en": "He signs a short note clearly separating your choices from his. The recognition travels with your name."
+              }
+            }
+          }
+        },
+        {
+          "id": "let_him_go",
+          "text": {
+            "fr": "Clore la dette entre vous",
+            "en": "Close the debt between you"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "debt_closed",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 10
+                },
+                {
+                  "type": "setNpcStatus",
+                  "npcId": "player_parent_1",
+                  "status": "departed"
+                }
+              ],
+              "text": {
+                "fr": "Vous vous quittez sans nouvelle promesse. Il se retire de tes relais habituels, mais pas de l'histoire que vous avez enfin nommée.",
+                "en": "You part without a new promise. He withdraws from your usual relays, but not from the history you finally named."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a05_fracture",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_05",
+        "nodeId": "family_marine_a05_fracture",
+        "parentNodeIds": [
+          "family_marine_a04_family_under_scrutiny",
+          "family_marine_a04_last_watch",
+          "family_marine_a04_old_uniform"
+        ],
+        "selectionPriority": 50
+      },
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "active"
+          },
+          {
+            "type": "npcRelationshipAtMost",
+            "npcId": "player_parent_1",
+            "value": 0
+          }
+        ]
+      },
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Le dernier compte",
+        "en": "The Last Account"
+      },
+      "text": {
+        "fr": "Ton père demande un dernier échange parce que votre relation ne tient plus sur les silences accumulés. Il ne parle ni de recrutement ni de pardon : seulement de ce qui doit rester réglé entre vous.",
+        "en": "Your father asks for one last exchange because your relationship can no longer rest on accumulated silence. He speaks of neither recruitment nor forgiveness, only what still has to be settled between you."
+      },
+      "choices": [
+        {
+          "id": "hear_him",
+          "text": {
+            "fr": "L'écouter jusqu'au bout",
+            "en": "Hear him out"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "hear_him",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a05_fracture_i01_last_account"
+                }
+              ],
+              "text": {
+                "fr": "Tu le laisses terminer sans lui offrir d'avance une réconciliation.",
+                "en": "You let him finish without offering reconciliation in advance."
+              }
+            }
+          }
+        },
+        {
+          "id": "state_boundary",
+          "text": {
+            "fr": "Énoncer ta limite",
+            "en": "State your boundary"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "state_boundary",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a05_fracture_i01_last_account"
+                }
+              ],
+              "text": {
+                "fr": "Tu poses clairement ce qui ne sera plus négocié.",
+                "en": "You state clearly what will no longer be negotiated."
+              }
+            }
+          }
+        },
+        {
+          "id": "end_now",
+          "text": {
+            "fr": "Dire que c'est la dernière fois",
+            "en": "Say this is the last time"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "end_now",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a05_fracture_i01_last_account"
+                }
+              ],
+              "text": {
+                "fr": "Tu annonces que cet échange devra suffire.",
+                "en": "You say this exchange will have to be enough."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a05_fracture_i01_last_account",
+      "kind": "immediate",
+      "cast": [
+        "player_parent_1"
+      ],
+      "title": {
+        "fr": "Solder sans réparer",
+        "en": "Settle Without Repair"
+      },
+      "text": {
+        "fr": "Il reste un petit solde familial, une version officielle de votre rupture et la possibilité de couper le contact. Aucun de ces choix ne réparera ce qui s'est cassé.",
+        "en": "A small family balance, an official version of your break, and the option to cut contact remain. None of those choices will repair what broke."
+      },
+      "choices": [
+        {
+          "id": "take_balance",
+          "text": {
+            "fr": "Accepter seulement le solde dû",
+            "en": "Accept only the balance owed"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "balance_taken",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": 2500
+                },
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -3
+                }
+              ],
+              "text": {
+                "fr": "Tu prends ce qui t'était dû et refuses d'en faire un geste d'affection.",
+                "en": "You take what was owed to you and refuse to treat it as affection."
+              }
+            }
+          }
+        },
+        {
+          "id": "make_break_public",
+          "text": {
+            "fr": "Assumer publiquement la rupture",
+            "en": "Make the break public"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "break_public",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -8
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses les versions polies. La rupture devient connue, et ton nom circule davantage avec elle.",
+                "en": "You refuse the polite versions. The break becomes known, and your name travels farther with it."
+              }
+            }
+          }
+        },
+        {
+          "id": "close_contact",
+          "text": {
+            "fr": "Couper le contact",
+            "en": "Cut contact"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "contact_closed",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -12
+                },
+                {
+                  "type": "setNpcStatus",
+                  "npcId": "player_parent_1",
+                  "status": "departed"
+                }
+              ],
+              "text": {
+                "fr": "Vous fermez la ligne en sachant qu'aucun relais familial ne sera entretenu entre vous.",
+                "en": "You close the line knowing no family relay will be maintained between you."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a05_what_remains",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_marine",
+        "chapterId": "adult_family_05",
+        "nodeId": "family_marine_a05_what_remains",
+        "parentNodeIds": [
+          "family_marine_a04_family_under_scrutiny",
+          "family_marine_a04_last_watch",
+          "family_marine_a04_old_uniform"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Ce que le dossier laisse",
+        "en": "What the Record Leaves"
+      },
+      "text": {
+        "fr": "Après des années de vie adulte, les archives Marine demandent comment clore l'ancien dossier familial. La procédure peut te joindre où que tu sois et n'exige la présence d'aucun parent.",
+        "en": "After years of adult life, Marine records ask how to close the old family file. The procedure can reach you wherever you are and requires no parent to be present."
+      },
+      "choices": [
+        {
+          "id": "preserve_family_line",
+          "text": {
+            "fr": "Préserver la ligne familiale",
+            "en": "Preserve the family line"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "preserve_family_line",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a05_what_remains_i01_archive_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes que le dossier garde une trace du lien familial, sans en faire une obligation.",
+                "en": "You ask the file to keep a trace of the family bond without turning it into an obligation."
+              }
+            }
+          }
+        },
+        {
+          "id": "separate_histories",
+          "text": {
+            "fr": "Séparer définitivement les parcours",
+            "en": "Separate the histories for good"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "separate_histories",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a05_what_remains_i01_archive_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes que les carrières et les choix soient archivés comme deux vies distinctes.",
+                "en": "You ask that the careers and choices be archived as two separate lives."
+              }
+            }
+          }
+        },
+        {
+          "id": "close_on_facts",
+          "text": {
+            "fr": "Clore sur les faits",
+            "en": "Close on the facts"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "close_on_facts",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_marine_a05_what_remains_i01_archive_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses l'éloge comme le règlement de comptes et demandes un dossier strictement factuel.",
+                "en": "You refuse both praise and score-settling and ask for a strictly factual record."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_marine_a05_what_remains_i01_archive_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "La résolution d'archive",
+        "en": "The Archive Resolution"
+      },
+      "text": {
+        "fr": "Le bureau confirme trois conséquences possibles déjà prévues par le dossier : un reliquat financier, une note publique de filiation, ou la restitution d'un dépôt familial plus important resté bloqué.",
+        "en": "The office confirms three consequences already provided for in the file: a small financial remainder, a public lineage note, or the return of a larger family deposit that remained blocked."
+      },
+      "choices": [
+        {
+          "id": "take_remainder",
+          "text": {
+            "fr": "Recevoir le reliquat",
+            "en": "Receive the remainder"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "remainder_received",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": 2500
+                }
+              ],
+              "text": {
+                "fr": "Tu récupères le petit reliquat sans lui donner plus de sens que le dossier n'en contient.",
+                "en": "You recover the small remainder without giving it more meaning than the file contains."
+              }
+            }
+          }
+        },
+        {
+          "id": "publish_lineage_note",
+          "text": {
+            "fr": "Faire publier la note de filiation",
+            "en": "Publish the lineage note"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "lineage_published",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "La note distingue ton parcours de l'héritage Marine tout en reconnaissant publiquement d'où tu viens.",
+                "en": "The note separates your path from the Marine inheritance while publicly acknowledging where you came from."
+              }
+            }
+          }
+        },
+        {
+          "id": "recover_deposit",
+          "text": {
+            "fr": "Récupérer le dépôt bloqué",
+            "en": "Recover the blocked deposit"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "deposit_recovered",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": 5000
+                }
+              ],
+              "text": {
+                "fr": "Le dépôt familial est enfin libéré. Il clôt un compte matériel sans prétendre résoudre l'histoire.",
+                "en": "The family deposit is finally released. It closes a material account without pretending to resolve the history."
               }
             }
           }

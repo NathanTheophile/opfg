@@ -1,0 +1,179 @@
+{
+  "id": "active_new_world_frontier_b_01_stormgrave_watch_shakedown",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.title",
+  "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.text",
+  "choices": [
+    {
+      "id": "spot_fake_stamps",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.choice.spot_fake_stamps.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "spot_fake_stamps_criticalfailure",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.choice.spot_fake_stamps.outcome.spot_fake_stamps_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_watch_shakedown_i01_receipt"
+              }
+            ]
+          },
+          "failure": {
+            "id": "spot_fake_stamps_failure",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.choice.spot_fake_stamps.outcome.spot_fake_stamps_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_watch_shakedown_i01_receipt"
+              }
+            ]
+          },
+          "success": {
+            "id": "spot_fake_stamps_success",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.choice.spot_fake_stamps.outcome.spot_fake_stamps_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_watch_shakedown_i01_receipt"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "spot_fake_stamps_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.choice.spot_fake_stamps.outcome.spot_fake_stamps_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_watch_shakedown_i01_receipt"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_bluff",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.choice.call_bluff.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "call_bluff_criticalfailure",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.choice.call_bluff.outcome.call_bluff_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1000
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_watch_shakedown_i01_receipt"
+              }
+            ]
+          },
+          "failure": {
+            "id": "call_bluff_failure",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.choice.call_bluff.outcome.call_bluff_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_watch_shakedown_i01_receipt"
+              }
+            ]
+          },
+          "success": {
+            "id": "call_bluff_success",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.choice.call_bluff.outcome.call_bluff_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_watch_shakedown_i01_receipt"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "call_bluff_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.choice.call_bluff.outcome.call_bluff_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_watch_shakedown_i01_receipt"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_fee",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.choice.pay_fee.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_fee_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.choice.pay_fee.outcome.pay_fee_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -750
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 750
+      }
+    },
+    {
+      "id": "take_other_lane",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.choice.take_other_lane.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_other_lane_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_stormgrave_watch_shakedown.choice.take_other_lane.outcome.take_other_lane_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "stormgrave_island"
+      }
+    ]
+  }
+}

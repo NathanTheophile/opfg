@@ -1,0 +1,132 @@
+{
+  "id": "family_civilian_adult_01_two_parent_parcel_i01_reaction",
+  "kind": "immediate",
+  "cast": [
+    "player_parent_1",
+    "player_parent_2"
+  ],
+  "titleKey": "event.family_civilian_adult_01_two_parent_parcel_i01_reaction.title",
+  "textKey": "event.family_civilian_adult_01_two_parent_parcel_i01_reaction.text",
+  "choices": [
+    {
+      "id": "answer_numbers",
+      "textKey": "event.family_civilian_adult_01_two_parent_parcel_i01_reaction.choice.answer_numbers.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_numbers",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 4
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_2",
+              "amount": 4
+            }
+          ],
+          "textKey": "event.family_civilian_adult_01_two_parent_parcel_i01_reaction.choice.answer_numbers.outcome.answer_numbers.text"
+        }
+      }
+    },
+    {
+      "id": "cover_one_bill",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2500
+      },
+      "textKey": "event.family_civilian_adult_01_two_parent_parcel_i01_reaction.choice.cover_one_bill.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cover_one_bill",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2500
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 5
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_2",
+              "amount": 5
+            }
+          ],
+          "textKey": "event.family_civilian_adult_01_two_parent_parcel_i01_reaction.choice.cover_one_bill.outcome.cover_one_bill.text"
+        }
+      }
+    },
+    {
+      "id": "set_limit",
+      "textKey": "event.family_civilian_adult_01_two_parent_parcel_i01_reaction.choice.set_limit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "set_limit",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -3
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_2",
+              "amount": -3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.family_civilian_adult_01_two_parent_parcel_i01_reaction.choice.set_limit.outcome.set_limit.text"
+        }
+      }
+    },
+    {
+      "id": "trust_old_terms",
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "npcRelationshipAtLeast",
+            "npcId": "player_parent_1",
+            "value": 15
+          },
+          {
+            "type": "npcRelationshipAtLeast",
+            "npcId": "player_parent_2",
+            "value": 15
+          }
+        ]
+      },
+      "textKey": "event.family_civilian_adult_01_two_parent_parcel_i01_reaction.choice.trust_old_terms.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trust_old_terms",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 6
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_2",
+              "amount": 6
+            }
+          ],
+          "textKey": "event.family_civilian_adult_01_two_parent_parcel_i01_reaction.choice.trust_old_terms.outcome.trust_old_terms.text"
+        }
+      }
+    }
+  ]
+}

@@ -9,7 +9,12 @@
     "childhood_02",
     "childhood_03",
     "childhood_04",
-    "childhood_05"
+    "childhood_05",
+    "adult_family_01",
+    "adult_family_02",
+    "adult_family_03",
+    "adult_family_04",
+    "adult_family_05"
   ],
   "rules": {
     "enforceScenarioCoverage": true,
@@ -25,7 +30,8 @@
       "acquireShip",
       "setNpcDevilFruit",
       "awakenHaki",
-      "raiseConquerorHakiTo"
+      "raiseConquerorHakiTo",
+      "modifyNpcRelationship"
     ]
   },
   "events": [
@@ -10497,6 +10503,3393 @@
           }
         }
       ]
+    },
+    {
+      "id": "family_revolutionary_a01_mothers_coded_call",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_01",
+        "nodeId": "family_revolutionary_a01_mothers_coded_call",
+        "parentNodeIds": [
+          "family_revolutionary_13_money_without_ownership",
+          "family_revolutionary_13_mothers_unclaimed_post",
+          "family_revolutionary_13_two_keys_two_paths",
+          "family_revolutionary_13_invitation_not_guardianship",
+          "family_revolutionary_13_relief_without_debt",
+          "family_revolutionary_13_open_door_no_oath",
+          "family_revolutionary_13_minor_courier_boundary",
+          "family_revolutionary_13_tactic_without_break",
+          "family_revolutionary_13_parent_not_cell",
+          "family_revolutionary_13_protected_witness",
+          "family_revolutionary_13_household_fallback",
+          "family_revolutionary_13_network_fallback"
+        ],
+        "selectionPriority": 30
+      },
+      "title": {
+        "fr": "Le code de ta mère revient",
+        "en": "Your Mother's Code Returns"
+      },
+      "text": {
+        "fr": "Des années après ton départ du foyer, un relais transmet un message chiffré avec l’ancien code familial. Ta mère est joignable, mais elle refuse que le réseau décide à sa place de ce que vous devez vous dire.",
+        "en": "Years after you left home, a relay delivers a cipher using the old family code. Your mother can be reached, but she refuses to let the network decide what the two of you should say."
+      },
+      "choices": [
+        {
+          "id": "answer_plain",
+          "text": {
+            "fr": "Répondre sans code",
+            "en": "Answer without the code"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer_plain",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a01_mothers_coded_call_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu dictes une réponse ordinaire; le relais hésite à l’insérer dans la chaîne clandestine.",
+                "en": "You dictate a plain reply; the relay hesitates to put it into the clandestine chain."
+              }
+            }
+          }
+        },
+        {
+          "id": "answer_code",
+          "text": {
+            "fr": "Employer le vieux code",
+            "en": "Use the old code"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer_code",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a01_mothers_coded_call_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu reprends le code familial; le relais reconnaît aussitôt une réponse exploitable par le réseau.",
+                "en": "You use the family code; the relay immediately recognizes a reply the network can route."
+              }
+            }
+          }
+        },
+        {
+          "id": "ask_private_channel",
+          "text": {
+            "fr": "Demander un canal privé",
+            "en": "Ask for a private channel"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_private_channel",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a01_mothers_coded_call_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes un moyen de parler à ta mère sans faire de chaque échange une transmission opérationnelle.",
+                "en": "You ask for a way to speak with your mother without turning every exchange into an operational message."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "originParentPresent",
+        "role": "mother"
+      },
+      "cast": [
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_revolutionary_a01_mothers_coded_call_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une relation, pas un poste",
+        "en": "A Relationship, Not a Post"
+      },
+      "text": {
+        "fr": "Ta mère confirme qu’elle veut garder un lien avec toi, pas rouvrir automatiquement son ancien rôle. Il faut décider ce que l’ancien code signifie encore entre vous.",
+        "en": "Your mother confirms she wants to keep a bond with you, not automatically reopen her old role. You must decide what the old code still means between you."
+      },
+      "choices": [
+        {
+          "id": "family_only",
+          "text": {
+            "fr": "Réserver le code à la famille",
+            "en": "Keep the code family-only"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "family_only",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 8
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Vous gardez une version du code pour vos messages privés; le réseau n’en reçoit plus les réponses.",
+                "en": "You keep a version of the code for private family messages; the network no longer receives those replies."
+              }
+            }
+          }
+        },
+        {
+          "id": "limited_relay",
+          "text": {
+            "fr": "Autoriser un relais précis",
+            "en": "Allow one named relay"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "limited_relay",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 5
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Un seul relais est accepté, avec droit de le révoquer si l’usage redevient opérationnel.",
+                "en": "You authorize one relay, with the right to revoke it if the channel becomes operational again."
+              }
+            }
+          }
+        },
+        {
+          "id": "retire_code",
+          "text": {
+            "fr": "Abandonner le vieux code",
+            "en": "Retire the old code"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "retire_code",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 6
+                }
+              ],
+              "text": {
+                "fr": "Vous convenez d’un canal neuf; l’ancien code cesse d’être un raccourci vers votre relation.",
+                "en": "You agree on a new channel; the old code stops being a shortcut into your relationship."
+              }
+            }
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_revolutionary_a01_mothers_unclaimed_trace",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_01",
+        "nodeId": "family_revolutionary_a01_mothers_unclaimed_trace",
+        "parentNodeIds": [
+          "family_revolutionary_13_mothers_unclaimed_post"
+        ],
+        "selectionPriority": 40
+      },
+      "title": {
+        "fr": "La trace laissée par son absence",
+        "en": "The Trace Left by Her Absence"
+      },
+      "text": {
+        "fr": "Un ancien relais retrouve un message que ta mère avait préparé avant de disparaître du circuit. Il contient une adresse de réponse, mais rien ne prouve qu’elle soit encore sûre ni qu’elle mène encore à elle.",
+        "en": "An old relay finds a message your mother prepared before she vanished from the circuit. It contains a reply address, but nothing proves it is still safe or still leads to her."
+      },
+      "choices": [
+        {
+          "id": "trace_sender",
+          "text": {
+            "fr": "Remonter la chaîne",
+            "en": "Trace the chain"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "trace_sender",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a01_mothers_unclaimed_trace_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes la liste des derniers relais au lieu d’écrire directement à l’adresse.",
+                "en": "You ask for the last handoffs instead of writing directly to the address."
+              }
+            }
+          }
+        },
+        {
+          "id": "leave_sealed",
+          "text": {
+            "fr": "Garder le message scellé",
+            "en": "Keep it sealed"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "leave_sealed",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a01_mothers_unclaimed_trace_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses d’ouvrir davantage le message tant que son destinataire actuel n’est pas vérifié.",
+                "en": "You refuse to open more of the message until its current recipient is verified."
+              }
+            }
+          }
+        },
+        {
+          "id": "ask_family_news",
+          "text": {
+            "fr": "Chercher seulement des nouvelles",
+            "en": "Ask only for family news"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_family_news",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a01_mothers_unclaimed_trace_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes si quelqu’un sait ce qu’elle est devenue, sans reprendre son ancien poste comme point de départ.",
+                "en": "You ask whether anyone knows what became of her, without treating her old post as the starting point."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "family_revolutionary_13_mothers_unclaimed_post"
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "originParentPresent",
+              "role": "mother"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "family_revolutionary_a01_mothers_unclaimed_trace_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une piste n’est pas une succession",
+        "en": "A Lead Is Not a Succession"
+      },
+      "text": {
+        "fr": "Le relais accepte de séparer recherche familiale et reprise opérationnelle. La trace peut être suivie, archivée ou abandonnée sans te transférer la fonction de ta mère.",
+        "en": "The relay agrees to separate a family search from operational succession. The lead can be followed, archived, or abandoned without transferring your mother's role to you."
+      },
+      "choices": [
+        {
+          "id": "verify_first",
+          "text": {
+            "fr": "Vérifier avant tout contact",
+            "en": "Verify before contact"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "verify_first",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "intelligence",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "La chaîne est vérifiée relais par relais avant qu’un message personnel ne parte.",
+                "en": "The chain is verified handoff by handoff before any personal message is sent."
+              }
+            }
+          }
+        },
+        {
+          "id": "archive_trace",
+          "text": {
+            "fr": "Archiver la piste",
+            "en": "Archive the lead"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "archive_trace",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu conserves l’information dans ton histoire sans l’utiliser comme nouvelle mission.",
+                "en": "You keep the information as part of your history without turning it into a new assignment."
+              }
+            }
+          }
+        },
+        {
+          "id": "close_trace",
+          "text": {
+            "fr": "Clore la recherche",
+            "en": "Close the search"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "close_trace",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes que le réseau cesse de te solliciter avec cette piste tant qu’aucun fait nouveau n’apparaît.",
+                "en": "You ask the network to stop contacting you about the lead unless something genuinely new appears."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_revolutionary_a01_two_keys_at_distance",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_01",
+        "nodeId": "family_revolutionary_a01_two_keys_at_distance",
+        "parentNodeIds": [
+          "family_revolutionary_13_two_keys_two_paths"
+        ],
+        "selectionPriority": 35
+      },
+      "title": {
+        "fr": "Deux serrures, loin du foyer",
+        "en": "Two Locks, Far from Home"
+      },
+      "text": {
+        "fr": "Un courrier t’apprend qu’une ancienne serrure du refuge familial a été forcée. La clé du réseau et la clé privée avaient toujours été séparées; personne ne sait laquelle a été copiée.",
+        "en": "A courier tells you an old lock at the family refuge was forced. The network key and private family key had always been separate; nobody knows which one was copied."
+      },
+      "choices": [
+        {
+          "id": "verify_safehouse",
+          "text": {
+            "fr": "Faire vérifier le refuge",
+            "en": "Have the safehouse checked"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "verify_safehouse",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a01_two_keys_at_distance_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes une inspection avant de déclarer l’une des deux clés compromise.",
+                "en": "You ask for an inspection before declaring either key compromised."
+              }
+            }
+          }
+        },
+        {
+          "id": "retire_network_key",
+          "text": {
+            "fr": "Retirer l’accès réseau",
+            "en": "Retire network access"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "retire_network_key",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a01_two_keys_at_distance_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu proposes de changer d’abord la serrure du refuge plutôt que la porte familiale.",
+                "en": "You propose changing the safehouse lock first rather than the family door."
+              }
+            }
+          }
+        },
+        {
+          "id": "protect_private_key",
+          "text": {
+            "fr": "Protéger la clé familiale",
+            "en": "Protect the family key"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "protect_private_key",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a01_two_keys_at_distance_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes qu’aucun nouveau relais ne reçoive de copie de la clé privée.",
+                "en": "You ask that no new relay receive a copy of the private key."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "hasPlayed",
+        "eventId": "family_revolutionary_13_two_keys_two_paths"
+      }
+    },
+    {
+      "id": "family_revolutionary_a01_two_keys_at_distance_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Ce que les clés protégeaient vraiment",
+        "en": "What the Keys Really Protected"
+      },
+      "text": {
+        "fr": "L’incident rappelle pourquoi deux accès avaient été séparés : un refuge peut changer de protocole sans faire de la maison familiale une extension du réseau.",
+        "en": "The incident recalls why the two accesses were separated: a safehouse can change protocol without turning the family home into an extension of the network."
+      },
+      "choices": [
+        {
+          "id": "rotate_network_access",
+          "text": {
+            "fr": "Changer seulement l’accès réseau",
+            "en": "Rotate network access"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "rotate_network_access",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "intelligence",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Le refuge reçoit un nouveau protocole; l’accès familial n’est pas inclus dans la rotation.",
+                "en": "The safehouse gets a new protocol; family access is not included in the rotation."
+              }
+            }
+          }
+        },
+        {
+          "id": "freeze_both",
+          "text": {
+            "fr": "Suspendre les deux accès",
+            "en": "Suspend both accesses"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "freeze_both",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Vous bloquez temporairement les deux accès jusqu’à comprendre la fuite, au prix d’une vraie distance familiale.",
+                "en": "You temporarily freeze both accesses until the leak is understood, at the cost of real family distance."
+              }
+            }
+          }
+        },
+        {
+          "id": "keep_separation",
+          "text": {
+            "fr": "Maintenir deux règles",
+            "en": "Keep two rules"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_separation",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "La réparation conserve deux procédures distinctes au lieu de simplifier la sécurité en une seule serrure.",
+                "en": "The repair keeps two distinct procedures instead of simplifying security into one lock."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_revolutionary_a01_long_distance_packet",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_01",
+        "nodeId": "family_revolutionary_a01_long_distance_packet",
+        "parentNodeIds": [
+          "family_revolutionary_13_money_without_ownership",
+          "family_revolutionary_13_mothers_unclaimed_post",
+          "family_revolutionary_13_two_keys_two_paths",
+          "family_revolutionary_13_invitation_not_guardianship",
+          "family_revolutionary_13_relief_without_debt",
+          "family_revolutionary_13_open_door_no_oath",
+          "family_revolutionary_13_minor_courier_boundary",
+          "family_revolutionary_13_tactic_without_break",
+          "family_revolutionary_13_parent_not_cell",
+          "family_revolutionary_13_protected_witness",
+          "family_revolutionary_13_household_fallback",
+          "family_revolutionary_13_network_fallback"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Le paquet qui te suit jusqu’au port",
+        "en": "The Packet That Follows You"
+      },
+      "text": {
+        "fr": "Un paquet t’attend à ton prochain relais sûr : nouvelles du vieux réseau, demandes d’aide et une note expliquant qu’on ignore désormais où te joindre durablement. Ton enfance clandestine vient de rattraper ta vie mobile.",
+        "en": "A packet waits at your next safe relay: news from the old network, requests for help, and a note admitting they no longer know how to reach you reliably. Your clandestine childhood has caught up with your mobile life."
+      },
+      "choices": [
+        {
+          "id": "answer_once",
+          "text": {
+            "fr": "Répondre une fois",
+            "en": "Reply once"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer_once",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a01_long_distance_packet_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu réponds à cette demande précise sans fournir d’adresse permanente.",
+                "en": "You answer this specific request without giving a permanent address."
+              }
+            }
+          }
+        },
+        {
+          "id": "return_packet",
+          "text": {
+            "fr": "Renvoyer le paquet",
+            "en": "Send it back"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "return_packet",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a01_long_distance_packet_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu renvoies le paquet avec la mention que ta route adulte n’est pas une boîte aux lettres familiale.",
+                "en": "You send the packet back with a note that your adult route is not a family mailbox."
+              }
+            }
+          }
+        },
+        {
+          "id": "set_boundary",
+          "text": {
+            "fr": "Fixer une règle de contact",
+            "en": "Set a contact rule"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "set_boundary",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a01_long_distance_packet_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu écris quand et par qui le réseau peut te joindre sans suivre chacun de tes déplacements.",
+                "en": "You write when and through whom the network may contact you without following every move."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_revolutionary_a01_long_distance_packet_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une famille qui sait laisser partir",
+        "en": "A Family That Knows How to Let Go"
+      },
+      "text": {
+        "fr": "Le réseau doit accepter que distance et mobilité ne soient pas une disparition à corriger. Tu peux rester joignable sans être localisable en permanence.",
+        "en": "The network must accept that distance and mobility are not a disappearance to fix. You can remain reachable without being permanently traceable."
+      },
+      "choices": [
+        {
+          "id": "one_relay",
+          "text": {
+            "fr": "Garder un relais unique",
+            "en": "Keep one relay"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "one_relay",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Un seul relais devient point de contact; personne ne reçoit ton itinéraire complet.",
+                "en": "One relay becomes the contact point; nobody receives your full itinerary."
+              }
+            }
+          }
+        },
+        {
+          "id": "contact_on_request",
+          "text": {
+            "fr": "N’accepter que les urgences",
+            "en": "Accept emergencies only"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "contact_on_request",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Les messages ordinaires attendront; seules les urgences familiales utilisent encore cette chaîne.",
+                "en": "Routine messages will wait; only family emergencies use the chain."
+              }
+            }
+          }
+        },
+        {
+          "id": "no_fixed_channel",
+          "text": {
+            "fr": "Refuser tout canal fixe",
+            "en": "Refuse a fixed channel"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "no_fixed_channel",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "intelligence",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu gardes l’initiative de reprendre contact; le réseau cesse de chercher un itinéraire stable vers toi.",
+                "en": "You keep the initiative to reconnect; the network stops trying to build a stable route to you."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_revolutionary_a02_family_address_under_pressure",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_02",
+        "nodeId": "family_revolutionary_a02_family_address_under_pressure",
+        "parentNodeIds": [
+          "family_revolutionary_a01_mothers_coded_call",
+          "family_revolutionary_a01_mothers_unclaimed_trace",
+          "family_revolutionary_a01_two_keys_at_distance",
+          "family_revolutionary_a01_long_distance_packet"
+        ],
+        "selectionPriority": 30
+      },
+      "title": {
+        "fr": "L’adresse familiale dans ton ordre de mission",
+        "en": "The Family Address in Your Orders"
+      },
+      "text": {
+        "fr": "Un opérateur révolutionnaire propose d’utiliser un ancien contact familial comme relais pour une opération dont tu as désormais la responsabilité. Le plan est efficace précisément parce que personne ne soupçonne encore ce lien.",
+        "en": "A Revolutionary operator proposes using an old family contact as a relay for an operation now under your responsibility. The plan works precisely because nobody suspects that link yet."
+      },
+      "choices": [
+        {
+          "id": "move_drop",
+          "text": {
+            "fr": "Déplacer le relais",
+            "en": "Move the handoff"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "move_drop",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a02_family_address_under_pressure_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes une autre boîte morte avant que l’adresse familiale n’entre dans le plan final.",
+                "en": "You ask for another dead drop before the family address enters the final plan."
+              }
+            }
+          }
+        },
+        {
+          "id": "accept_once",
+          "text": {
+            "fr": "L’accepter pour cette mission",
+            "en": "Allow it once"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "accept_once",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a02_family_address_under_pressure_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes un usage unique, mais l’opérateur veut savoir qui décidera que l’exception est terminée.",
+                "en": "You allow one use, but the operator wants to know who decides when the exception ends."
+              }
+            }
+          }
+        },
+        {
+          "id": "refuse_family_route",
+          "text": {
+            "fr": "Refuser l’adresse familiale",
+            "en": "Refuse the family address"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "refuse_family_route",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a02_family_address_under_pressure_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu retires le contact du plan; l’opération devra absorber le risque ailleurs.",
+                "en": "You remove the contact from the plan; the operation will have to absorb the risk elsewhere."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      }
+    },
+    {
+      "id": "family_revolutionary_a02_family_address_under_pressure_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Tes méthodes portent ton nom maintenant",
+        "en": "Your Methods Carry Your Name Now"
+      },
+      "text": {
+        "fr": "Tu n’es plus l’enfant à qui l’on impose un protocole : c’est toi qui peux désormais exposer les proches des autres. Le choix devient une responsabilité opérationnelle adulte.",
+        "en": "You are no longer the child subjected to a protocol: you can now expose other people's relatives. The choice is an adult operational responsibility."
+      },
+      "choices": [
+        {
+          "id": "professional_route",
+          "text": {
+            "fr": "Créer un relais professionnel",
+            "en": "Create a professional relay"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "professional_route",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "intelligence",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "L’équipe construit une chaîne qui dépend de l’opération, pas de ton histoire familiale.",
+                "en": "The team builds a chain tied to the operation, not your family history."
+              }
+            }
+          }
+        },
+        {
+          "id": "one_use_signed",
+          "text": {
+            "fr": "Nommer l’exception et sa fin",
+            "en": "Name the exception and its end"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "one_use_signed",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "L’usage familial est accepté une fois, avec un responsable et une date de fermeture explicites.",
+                "en": "Family access is used once, with a named owner and explicit closing point."
+              }
+            }
+          }
+        },
+        {
+          "id": "never_family_asset",
+          "text": {
+            "fr": "Interdire les relais familiaux automatiques",
+            "en": "Ban automatic family relays"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "never_family_asset",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Ton équipe inscrit que parenté et disponibilité opérationnelle sont deux choses différentes.",
+                "en": "Your team records that kinship and operational availability are different things."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_revolutionary_a02_uniform_on_the_line",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_02",
+        "nodeId": "family_revolutionary_a02_uniform_on_the_line",
+        "parentNodeIds": [
+          "family_revolutionary_a01_mothers_coded_call",
+          "family_revolutionary_a01_mothers_unclaimed_trace",
+          "family_revolutionary_a01_two_keys_at_distance",
+          "family_revolutionary_a01_long_distance_packet"
+        ],
+        "selectionPriority": 40
+      },
+      "title": {
+        "fr": "L’uniforme entre ta mère et le dossier",
+        "en": "The Uniform Between Your Mother and the File"
+      },
+      "text": {
+        "fr": "Un dossier Marine sur un vieux réseau révolutionnaire reprend un code que ta mère utilisait autrefois. Un supérieur te demande de confirmer devant elle si ce détail permet d’identifier d’autres contacts.",
+        "en": "A Marine file on an old Revolutionary network contains a code your mother once used. A superior asks you, in front of her, whether that detail can identify other contacts."
+      },
+      "choices": [
+        {
+          "id": "recuse_self",
+          "text": {
+            "fr": "Te retirer du dossier",
+            "en": "Recuse yourself"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "recuse_self",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a02_uniform_on_the_line_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu annonces que ton histoire familiale te rend mauvais arbitre pour cette partie du dossier.",
+                "en": "You state that your family history makes you a poor judge for this part of the case."
+              }
+            }
+          }
+        },
+        {
+          "id": "facts_only",
+          "text": {
+            "fr": "Confirmer seulement les faits",
+            "en": "Confirm facts only"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "facts_only",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a02_uniform_on_the_line_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu confirmes le code connu sans fournir les noms que ta mère pourrait encore reconnaître.",
+                "en": "You confirm the known code without supplying names your mother might still recognize."
+              }
+            }
+          }
+        },
+        {
+          "id": "ask_mother",
+          "text": {
+            "fr": "Laisser ta mère répondre",
+            "en": "Let your mother answer"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_mother",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a02_uniform_on_the_line_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de traduire son histoire à sa place et lui rends la question directement.",
+                "en": "You refuse to translate her history for her and hand the question directly back to her."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          },
+          {
+            "type": "originParentPresent",
+            "role": "mother"
+          }
+        ]
+      },
+      "cast": [
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_revolutionary_a02_uniform_on_the_line_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Servir la Marine sans réquisitionner ta mère",
+        "en": "Serving the Marines Without Requisitioning Your Mother"
+      },
+      "text": {
+        "fr": "Ta mère accepte que ton métier soit le tien. Elle refuse seulement que votre lien familial transforme sa mémoire en source institutionnelle automatique.",
+        "en": "Your mother accepts that your career is yours. She only refuses to let your family bond turn her memory into an automatic institutional source."
+      },
+      "choices": [
+        {
+          "id": "formal_recusal",
+          "text": {
+            "fr": "Faire acter ton retrait",
+            "en": "Record the recusal"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "formal_recusal",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 10
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Le dossier passe à un autre officier pour tout ce qui dépend directement de ta famille.",
+                "en": "The family-dependent portion of the file passes to another officer."
+              }
+            }
+          }
+        },
+        {
+          "id": "public_facts",
+          "text": {
+            "fr": "Limiter aux faits publics",
+            "en": "Limit it to public facts"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "public_facts",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 5
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu aides sur ce qui est déjà vérifiable sans demander à ta mère de devenir informatrice.",
+                "en": "You help with what is already verifiable without asking your mother to become an informant."
+              }
+            }
+          }
+        },
+        {
+          "id": "press_for_names",
+          "text": {
+            "fr": "Insister pour obtenir des noms",
+            "en": "Press for names"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "press_for_names",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": -10
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "intelligence",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Ta mère refuse. Le dossier gagne peut-être une piste, mais votre confiance encaisse le prix de l’uniforme.",
+                "en": "Your mother refuses. The file may gain a lead, but your trust absorbs the price of the uniform."
+              }
+            }
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_revolutionary_a02_black_flag_reaches_home",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_02",
+        "nodeId": "family_revolutionary_a02_black_flag_reaches_home",
+        "parentNodeIds": [
+          "family_revolutionary_a01_mothers_coded_call",
+          "family_revolutionary_a01_mothers_unclaimed_trace",
+          "family_revolutionary_a01_two_keys_at_distance",
+          "family_revolutionary_a01_long_distance_packet"
+        ],
+        "selectionPriority": 35
+      },
+      "title": {
+        "fr": "Ton pavillon atteint l’ancienne famille",
+        "en": "Your Flag Reaches the Old Family"
+      },
+      "text": {
+        "fr": "Un intermédiaire reconnaît ton héritage révolutionnaire et propose de protéger tes proches contre des rivaux pirates — en échange d’un service. La menace existe surtout parce que ton propre nom circule désormais en mer.",
+        "en": "An intermediary recognizes your Revolutionary family history and offers to protect your relatives from pirate rivals—in exchange for a service. The threat exists largely because your own name now travels the seas."
+      },
+      "choices": [
+        {
+          "id": "reject_bargain",
+          "text": {
+            "fr": "Refuser le marché",
+            "en": "Reject the bargain"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "reject_bargain",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a02_black_flag_reaches_home_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de transformer la sécurité familiale en dette envers un intermédiaire pirate.",
+                "en": "You refuse to turn family safety into debt to a pirate intermediary."
+              }
+            }
+          }
+        },
+        {
+          "id": "shield_names",
+          "text": {
+            "fr": "Cacher les noms familiaux",
+            "en": "Shield family names"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "shield_names",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a02_black_flag_reaches_home_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes que ton équipage cesse d’utiliser les anciens contacts familiaux comme références ou garanties.",
+                "en": "You ask your crew to stop using old family contacts as references or guarantees."
+              }
+            }
+          }
+        },
+        {
+          "id": "own_risk",
+          "text": {
+            "fr": "Ramener le risque vers toi",
+            "en": "Pull the risk back to you"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "own_risk",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a02_black_flag_reaches_home_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu fais passer le message que toute pression doit viser ta carrière, pas ton héritage familial.",
+                "en": "You send word that any pressure should target your career, not your family history."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      }
+    },
+    {
+      "id": "family_revolutionary_a02_black_flag_reaches_home_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une réputation n’est pas un bouclier gratuit",
+        "en": "A Reputation Is Not a Free Shield"
+      },
+      "text": {
+        "fr": "Plus ton nom pirate grandit, plus des gens chercheront des leviers. Protéger la famille demande surtout de réduire les points de prise, pas de promettre une violence infinie.",
+        "en": "As your pirate name grows, more people will look for leverage. Protecting family mostly means reducing handles, not promising endless violence."
+      },
+      "choices": [
+        {
+          "id": "strip_references",
+          "text": {
+            "fr": "Retirer les références familiales",
+            "en": "Remove family references"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "strip_references",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Les anciens noms et adresses cessent d’apparaître dans les affaires de ton équipage.",
+                "en": "Old names and addresses stop appearing in your crew's business."
+              }
+            }
+          }
+        },
+        {
+          "id": "public_boundary",
+          "text": {
+            "fr": "Rendre la limite publique",
+            "en": "Make the boundary public"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "public_boundary",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu fais savoir que ton pavillon ne garantit aucune dette familiale; cette déclaration attire aussi davantage l’attention sur toi.",
+                "en": "You make it known that your flag guarantees no family debt; the declaration also draws more attention to you."
+              }
+            }
+          }
+        },
+        {
+          "id": "quiet_distance",
+          "text": {
+            "fr": "Créer de la distance",
+            "en": "Create quiet distance"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "quiet_distance",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "intelligence",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu cesses de répondre aux demandes qui passent par les vieux relais révolutionnaires, même lorsque cela te coûte des informations utiles.",
+                "en": "You stop answering requests routed through old Revolutionary relays, even when it costs useful information."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_revolutionary_a02_keep_one_private_channel",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_02",
+        "nodeId": "family_revolutionary_a02_keep_one_private_channel",
+        "parentNodeIds": [
+          "family_revolutionary_a01_mothers_coded_call",
+          "family_revolutionary_a01_mothers_unclaimed_trace",
+          "family_revolutionary_a01_two_keys_at_distance",
+          "family_revolutionary_a01_long_distance_packet"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Le dernier canal qui n’appartient à personne",
+        "en": "The Last Channel Nobody Owns"
+      },
+      "text": {
+        "fr": "Le vieux réseau propose de garder un canal vers toi pour les urgences familiales. Personne ne réclame une mission, mais chacun sait qu’un canal ouvert peut redevenir utile politiquement dès que la pression monte.",
+        "en": "The old network proposes keeping one channel to you for family emergencies. Nobody asks for a mission, but everyone knows an open channel can become politically useful as soon as pressure rises."
+      },
+      "choices": [
+        {
+          "id": "family_only",
+          "text": {
+            "fr": "Réserver le canal aux proches",
+            "en": "Reserve it for family"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "family_only",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a02_keep_one_private_channel_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes que le canal existe seulement pour les nouvelles et urgences familiales.",
+                "en": "You accept the channel only for family news and emergencies."
+              }
+            }
+          }
+        },
+        {
+          "id": "neutral_relay",
+          "text": {
+            "fr": "Choisir un relais neutre",
+            "en": "Choose a neutral relay"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "neutral_relay",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a02_keep_one_private_channel_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes un intermédiaire qui n’appartient ni à ta carrière ni à l’ancienne cellule.",
+                "en": "You ask for an intermediary tied to neither your career nor the old cell."
+              }
+            }
+          }
+        },
+        {
+          "id": "close_channel",
+          "text": {
+            "fr": "Fermer le canal",
+            "en": "Close the channel"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "close_channel",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a02_keep_one_private_channel_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu préfères reprendre contact toi-même plutôt que maintenir une porte permanente.",
+                "en": "You prefer to reconnect yourself rather than maintain a permanent door."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_revolutionary_a02_keep_one_private_channel_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Rester joignable sans rester disponible",
+        "en": "Reachable Without Remaining Available"
+      },
+      "text": {
+        "fr": "Le réseau accepte que l’accès à ta personne ne soit pas un héritage. Le canal choisi ne donne aucun droit sur ton temps, ton navire, ton uniforme ou tes proches.",
+        "en": "The network accepts that access to you is not inherited. The chosen channel grants no right over your time, ship, uniform, or relatives."
+      },
+      "choices": [
+        {
+          "id": "family_emergencies",
+          "text": {
+            "fr": "Limiter aux urgences familiales",
+            "en": "Family emergencies only"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "family_emergencies",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Le relais refuse toute demande politique qui n’est pas explicitement acceptée par toi.",
+                "en": "The relay rejects any political request you have not explicitly accepted."
+              }
+            }
+          }
+        },
+        {
+          "id": "rotate_relay",
+          "text": {
+            "fr": "Changer régulièrement de relais",
+            "en": "Rotate the relay"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "rotate_relay",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Le contact reste possible sans créer une adresse fixe qui pourrait suivre toute ta carrière.",
+                "en": "Contact remains possible without creating a fixed address that can follow your whole career."
+              }
+            }
+          }
+        },
+        {
+          "id": "self_initiated",
+          "text": {
+            "fr": "Garder l’initiative",
+            "en": "Keep the initiative"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "self_initiated",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "intelligence",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Aucun canal permanent n’est conservé; c’est toi qui réouvres la conversation quand tu le décides.",
+                "en": "No permanent channel remains; you reopen the conversation when you decide."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_revolutionary_a03_inherited_object_is_a_risk",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_03",
+        "nodeId": "family_revolutionary_a03_inherited_object_is_a_risk",
+        "parentNodeIds": [
+          "family_revolutionary_a02_family_address_under_pressure",
+          "family_revolutionary_a02_uniform_on_the_line",
+          "family_revolutionary_a02_black_flag_reaches_home",
+          "family_revolutionary_a02_keep_one_private_channel"
+        ],
+        "selectionPriority": 35
+      },
+      "title": {
+        "fr": "L’objet que quelqu’un saurait reconnaître",
+        "en": "The Object Someone Would Recognize"
+      },
+      "text": {
+        "fr": "Un vieux sympathisant t’avertit que l’objet reçu à la fin de ton enfance reste identifiable par certains détails. Si tu le possèdes encore, le montrer peut exposer les gens qui l’ont fabriqué ou transmis.",
+        "en": "An old sympathizer warns that the object you received at the end of childhood remains identifiable by certain details. If you still possess it, showing it can expose the people who made or passed it on."
+      },
+      "choices": [
+        {
+          "id": "hide_provenance",
+          "text": {
+            "fr": "Cacher sa provenance",
+            "en": "Hide its provenance"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "hide_provenance",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a03_inherited_object_is_a_risk_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu ranges l’objet avant que le sympathisant n’explique devant d’autres personnes d’où il vient.",
+                "en": "You put the object away before the sympathizer explains its origin in front of others."
+              }
+            }
+          }
+        },
+        {
+          "id": "ask_recognition",
+          "text": {
+            "fr": "Demander ce qui le trahit",
+            "en": "Ask what gives it away"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_recognition",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a03_inherited_object_is_a_risk_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu lui demandes quel détail permet de rattacher l’objet au vieux réseau.",
+                "en": "You ask which detail ties the object to the old network."
+              }
+            }
+          }
+        },
+        {
+          "id": "retire_symbol",
+          "text": {
+            "fr": "Envisager de le retirer",
+            "en": "Consider retiring it"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "retire_symbol",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a03_inherited_object_is_a_risk_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes ce que protégerait réellement le fait de ne plus le porter ni l’utiliser.",
+                "en": "You ask what would actually be protected by no longer carrying or using it."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "family_revolutionary_a01_mothers_unclaimed_trace"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_revolutionary_a01_two_keys_at_distance"
+          }
+        ]
+      }
+    },
+    {
+      "id": "family_revolutionary_a03_inherited_object_is_a_risk_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Un héritage peut devenir une balise",
+        "en": "An Inheritance Can Become a Beacon"
+      },
+      "text": {
+        "fr": "Ce que tu as reçu reste à toi, mais son usage adulte peut exposer d’anciens relais. Tu dois arbitrer entre mémoire, utilité et sécurité.",
+        "en": "What you received remains yours, but adult use can expose old relays. You must balance memory, utility, and safety."
+      },
+      "choices": [
+        {
+          "id": "retire_notebook",
+          "text": {
+            "fr": "Mettre le carnet hors circuit",
+            "en": "Retire the notebook"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "retire_notebook",
+              "effects": [
+                {
+                  "type": "removeItem",
+                  "itemId": "revolutionary_handoff_notebook",
+                  "quantity": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu cesses de transporter le carnet reconnaissable; son contenu ne voyage plus avec toi.",
+                "en": "You stop carrying the recognizable notebook; its contents no longer travel with you."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasItem",
+            "itemId": "revolutionary_handoff_notebook"
+          }
+        },
+        {
+          "id": "retire_keys",
+          "text": {
+            "fr": "Mettre les anciennes clés hors circuit",
+            "en": "Retire the old keys"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "retire_keys",
+              "effects": [
+                {
+                  "type": "removeItem",
+                  "itemId": "revolutionary_boundary_keys",
+                  "quantity": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Les anciennes clés quittent ton inventaire actif; les accès qu’elles symbolisaient devront être renégociés autrement.",
+                "en": "The old keys leave your active possession; the access they symbolized will need to be renegotiated another way."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "hasItem",
+            "itemId": "revolutionary_boundary_keys"
+          }
+        },
+        {
+          "id": "change_protocol",
+          "text": {
+            "fr": "Neutraliser l’ancien protocole",
+            "en": "Retire the old protocol"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "change_protocol",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Que l’objet soit encore avec toi ou non, il cesse de valoir comme preuve, laissez-passer ou signe de reconnaissance.",
+                "en": "Whether you still have the object or not, it stops serving as proof, pass, or recognition sign."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_revolutionary_a03_parent_chooses_the_risk",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_03",
+        "nodeId": "family_revolutionary_a03_parent_chooses_the_risk",
+        "parentNodeIds": [
+          "family_revolutionary_a02_family_address_under_pressure",
+          "family_revolutionary_a02_uniform_on_the_line",
+          "family_revolutionary_a02_black_flag_reaches_home",
+          "family_revolutionary_a02_keep_one_private_channel"
+        ],
+        "selectionPriority": 25
+      },
+      "title": {
+        "fr": "Ta mère choisit encore pour elle-même",
+        "en": "Your Mother Still Chooses for Herself"
+      },
+      "text": {
+        "fr": "Ta mère t’annonce qu’elle a accepté de servir une dernière fois de relais pour quelqu’un du vieux réseau. Elle ne te demande pas la permission, mais elle refuse aussi que sa décision soit présentée comme une dette que tu devras reprendre.",
+        "en": "Your mother tells you she agreed to act as a relay one more time for someone from the old network. She is not asking permission, but refuses to let her decision become a debt you will inherit."
+      },
+      "choices": [
+        {
+          "id": "ask_risk",
+          "text": {
+            "fr": "Demander quel risque elle accepte",
+            "en": "Ask what risk she accepts"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_risk",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a03_parent_chooses_the_risk_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu lui demandes les limites exactes de ce qu’elle a choisi plutôt que de juger le principe.",
+                "en": "You ask the exact limits of what she chose instead of judging the principle."
+              }
+            }
+          }
+        },
+        {
+          "id": "ask_exit",
+          "text": {
+            "fr": "Demander sa sortie prévue",
+            "en": "Ask for her exit plan"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_exit",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a03_parent_chooses_the_risk_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu veux savoir comment elle peut se retirer si la mission change en cours de route.",
+                "en": "You want to know how she can leave if the mission changes midstream."
+              }
+            }
+          }
+        },
+        {
+          "id": "say_no_inheritance",
+          "text": {
+            "fr": "Rappeler que rien ne t’est transmis",
+            "en": "Restate no inheritance"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "say_no_inheritance",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a03_parent_chooses_the_risk_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu lui confirmes que son choix restera le sien, même si l’opération tourne mal.",
+                "en": "You confirm her choice remains hers, even if the operation goes badly."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "originParentPresent",
+        "role": "mother"
+      },
+      "cast": [
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_revolutionary_a03_parent_chooses_the_risk_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Protéger quelqu’un sans lui retirer son choix",
+        "en": "Protecting Someone Without Taking Their Choice"
+      },
+      "text": {
+        "fr": "Votre désaccord éventuel porte sur le risque, pas sur son droit à décider. La frontière familiale doit fonctionner dans les deux sens.",
+        "en": "Any disagreement is about the risk, not her right to decide. The family boundary has to work both ways."
+      },
+      "choices": [
+        {
+          "id": "support_choice",
+          "text": {
+            "fr": "Soutenir son choix avec une limite claire",
+            "en": "Support her choice with a clear limit"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "support_choice",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 8
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu l’aides à préparer sa sortie sans transformer ton soutien en commandement.",
+                "en": "You help prepare her exit without turning support into command."
+              }
+            }
+          }
+        },
+        {
+          "id": "ask_step_back",
+          "text": {
+            "fr": "Lui demander de se retirer",
+            "en": "Ask her to step back"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_step_back",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 4
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu lui demandes franchement d’abandonner le relais; elle entend la peur sans la confondre avec un ordre.",
+                "en": "You plainly ask her to abandon the relay; she hears the fear without mistaking it for an order."
+              }
+            }
+          }
+        },
+        {
+          "id": "claim_family_duty",
+          "text": {
+            "fr": "Dire que la famille doit suivre",
+            "en": "Say family must follow"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "claim_family_duty",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": -8
+                }
+              ],
+              "text": {
+                "fr": "Tu transformes son choix personnel en devoir familial. Elle refuse immédiatement cette lecture.",
+                "en": "You turn her personal choice into family duty. She rejects that interpretation immediately."
+              }
+            }
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_revolutionary_a03_shelter_has_a_price",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_03",
+        "nodeId": "family_revolutionary_a03_shelter_has_a_price",
+        "parentNodeIds": [
+          "family_revolutionary_a02_family_address_under_pressure",
+          "family_revolutionary_a02_uniform_on_the_line",
+          "family_revolutionary_a02_black_flag_reaches_home",
+          "family_revolutionary_a02_keep_one_private_channel"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Le refuge qui demande quelque chose en retour",
+        "en": "The Shelter That Wants Something Back"
+      },
+      "text": {
+        "fr": "Un ancien refuge accepte d’héberger un proche ou un contact lié à ton histoire familiale, puis présente une dépense inattendue. Personne ne parle de loyauté, mais la vieille confusion entre aide et dette revient autrement.",
+        "en": "An old safehouse agrees to shelter someone tied to your family history, then presents an unexpected expense. Nobody speaks of loyalty, but the old confusion between aid and debt returns in another form."
+      },
+      "choices": [
+        {
+          "id": "ask_cost",
+          "text": {
+            "fr": "Demander le coût réel",
+            "en": "Ask the real cost"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_cost",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a03_shelter_has_a_price_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes quelles dépenses sont réellement liées à l’hébergement avant d’accepter une dette vague.",
+                "en": "You ask which costs actually belong to the shelter before accepting a vague debt."
+              }
+            }
+          }
+        },
+        {
+          "id": "find_other_shelter",
+          "text": {
+            "fr": "Chercher un autre refuge",
+            "en": "Find another shelter"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "find_other_shelter",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a03_shelter_has_a_price_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de laisser l’urgence rendre n’importe quel prix acceptable.",
+                "en": "You refuse to let urgency make any price acceptable."
+              }
+            }
+          }
+        },
+        {
+          "id": "pay_directly",
+          "text": {
+            "fr": "Proposer de payer toi-même",
+            "en": "Offer to pay directly"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "pay_directly",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a03_shelter_has_a_price_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu proposes de couvrir une part précise plutôt que de laisser la dette devenir politique.",
+                "en": "You offer to cover a precise share rather than let the debt become political."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_revolutionary_a03_shelter_has_a_price_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une aide adulte a aussi des limites",
+        "en": "Adult Help Has Limits Too"
+      },
+      "text": {
+        "fr": "Le refuge peut être remboursé sans acheter ton futur service. Le problème n’est pas qu’un coût existe, mais qu’il reste nommé et borné.",
+        "en": "The safehouse can be reimbursed without buying your future service. The issue is not that a cost exists, but that it stays named and bounded."
+      },
+      "choices": [
+        {
+          "id": "pay_5000",
+          "text": {
+            "fr": "Payer 5 000 Berrys",
+            "en": "Pay 5,000 Berrys"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "pay_5000",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": -5000
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu rembourses une dépense précise et obtiens un reçu; aucune faveur future n’est ajoutée.",
+                "en": "You reimburse a specific expense and get a receipt; no future favor is added."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "berriesAtLeast",
+            "value": 5000
+          }
+        },
+        {
+          "id": "split_cost",
+          "text": {
+            "fr": "Partager la dépense",
+            "en": "Split the cost"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "split_cost",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "intelligence",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Le refuge et toi partagez la dépense réelle; personne ne transforme le reste en dette de loyauté.",
+                "en": "You and the safehouse split the real cost; nobody turns the remainder into loyalty debt."
+              }
+            }
+          }
+        },
+        {
+          "id": "leave_shelter",
+          "text": {
+            "fr": "Quitter le refuge",
+            "en": "Leave the safehouse"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "leave_shelter",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Vous trouvez une solution moins confortable et refusez une dette dont les termes changent après l’accueil.",
+                "en": "You find a less comfortable solution and refuse a debt whose terms changed after shelter was given."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_revolutionary_a04_revolutionary_methods_at_home",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_04",
+        "nodeId": "family_revolutionary_a04_revolutionary_methods_at_home",
+        "parentNodeIds": [
+          "family_revolutionary_a03_inherited_object_is_a_risk",
+          "family_revolutionary_a03_parent_chooses_the_risk",
+          "family_revolutionary_a03_shelter_has_a_price"
+        ],
+        "selectionPriority": 35
+      },
+      "title": {
+        "fr": "Ta mère reconnaît une méthode qu’elle détestait",
+        "en": "Your Mother Recognizes a Method She Hated"
+      },
+      "text": {
+        "fr": "Ta mère découvre que ton unité révolutionnaire utilise les proches d’agents comme relais discrets, avec leur accord mais sous forte pression. Elle te rappelle les mêmes arguments que ton foyer opposait autrefois au réseau.",
+        "en": "Your mother learns your Revolutionary unit uses agents' relatives as discreet relays, with consent but under heavy pressure. She repeats the same arguments your household once used against the network."
+      },
+      "choices": [
+        {
+          "id": "show_protocol",
+          "text": {
+            "fr": "Lui montrer le protocole",
+            "en": "Show her the protocol"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "show_protocol",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a04_revolutionary_methods_at_home_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu lui montres les protections prévues, y compris la possibilité de refuser chaque mission.",
+                "en": "You show her the safeguards, including the right to refuse each mission."
+              }
+            }
+          }
+        },
+        {
+          "id": "admit_pressure",
+          "text": {
+            "fr": "Reconnaître la pression",
+            "en": "Acknowledge the pressure"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "admit_pressure",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a04_revolutionary_methods_at_home_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu admets que l’accord formel ne suffit pas si refuser met un proche en difficulté avec l’unité.",
+                "en": "You admit formal consent is not enough if refusal harms a relative's standing with the unit."
+              }
+            }
+          }
+        },
+        {
+          "id": "defend_need",
+          "text": {
+            "fr": "Défendre la nécessité",
+            "en": "Defend the necessity"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "defend_need",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a04_revolutionary_methods_at_home_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu soutiens que la clandestinité exige parfois ces compromis; elle te demande qui porte réellement le risque.",
+                "en": "You argue clandestine work sometimes requires these compromises; she asks who actually carries the risk."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          },
+          {
+            "type": "originParentPresent",
+            "role": "mother"
+          }
+        ]
+      },
+      "cast": [
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_revolutionary_a04_revolutionary_methods_at_home_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Ce que tu fais de l’héritage",
+        "en": "What You Do With the Inheritance"
+      },
+      "text": {
+        "fr": "Le désaccord n’est plus théorique : tes propres méthodes peuvent reproduire ce que tu avais appris à contester. Ta mère attend moins une excuse qu’une décision.",
+        "en": "The disagreement is no longer theoretical: your own methods can reproduce what you learned to challenge. Your mother wants a decision more than an excuse."
+      },
+      "choices": [
+        {
+          "id": "change_method",
+          "text": {
+            "fr": "Changer la méthode",
+            "en": "Change the method"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "change_method",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 10
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Ton unité cesse de solliciter des proches comme solution par défaut et construit des relais professionnels.",
+                "en": "Your unit stops using relatives as a default solution and builds professional relays."
+              }
+            }
+          }
+        },
+        {
+          "id": "keep_with_exit",
+          "text": {
+            "fr": "Garder la méthode avec sortie réelle",
+            "en": "Keep it with a real exit"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_with_exit",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 5
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "intelligence",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Chaque proche reçoit un canal indépendant pour refuser ou quitter sans passer par l’agent de sa famille.",
+                "en": "Every relative gets an independent way to refuse or leave without going through their family agent."
+              }
+            }
+          }
+        },
+        {
+          "id": "defend_operation",
+          "text": {
+            "fr": "Maintenir la pratique",
+            "en": "Keep the practice"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "defend_operation",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": -10
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu assumes l’efficacité du système malgré sa pression. Ta mère cesse de prétendre que vos méthodes se ressemblent encore.",
+                "en": "You accept the system's efficiency despite its pressure. Your mother stops pretending your methods still resemble hers."
+              }
+            }
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_revolutionary_a04_marine_evidence_in_the_family",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_04",
+        "nodeId": "family_revolutionary_a04_marine_evidence_in_the_family",
+        "parentNodeIds": [
+          "family_revolutionary_a03_inherited_object_is_a_risk",
+          "family_revolutionary_a03_parent_chooses_the_risk",
+          "family_revolutionary_a03_shelter_has_a_price"
+        ],
+        "selectionPriority": 35
+      },
+      "title": {
+        "fr": "Le nom que la Marine veut lui faire prononcer",
+        "en": "The Name the Marines Want Her to Say"
+      },
+      "text": {
+        "fr": "Une enquête Marine rouvre un dossier ancien et convoque ta mère comme témoin potentiel. Le nom recherché appartient à quelqu’un qu’elle a peut-être connu, mais elle refuse que ton grade transforme votre relation en interrogatoire.",
+        "en": "A Marine investigation reopens an old file and calls your mother as a possible witness. The name may belong to someone she once knew, but she refuses to let your rank turn your relationship into an interrogation."
+      },
+      "choices": [
+        {
+          "id": "leave_room",
+          "text": {
+            "fr": "Quitter l’entretien",
+            "en": "Leave the interview"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "leave_room",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a04_marine_evidence_in_the_family_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes qu’un autre officier conduise l’entretien afin qu’elle puisse répondre sans te répondre à toi.",
+                "en": "You ask another officer to conduct the interview so she can answer without answering you."
+              }
+            }
+          }
+        },
+        {
+          "id": "public_record",
+          "text": {
+            "fr": "Limiter aux éléments publics",
+            "en": "Limit it to public record"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "public_record",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a04_marine_evidence_in_the_family_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu fais retirer toutes les questions qui dépendent uniquement de souvenirs familiaux non vérifiables.",
+                "en": "You remove questions that depend only on unverifiable family memories."
+              }
+            }
+          }
+        },
+        {
+          "id": "ask_directly",
+          "text": {
+            "fr": "Poser la question toi-même",
+            "en": "Ask her yourself"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_directly",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a04_marine_evidence_in_the_family_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu assumes de poser la question en tant qu’officier; elle te demande si tu accepteras son refus.",
+                "en": "You choose to ask as an officer; she asks whether you will accept her refusal."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          },
+          {
+            "type": "originParentPresent",
+            "role": "mother"
+          }
+        ]
+      },
+      "cast": [
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_revolutionary_a04_marine_evidence_in_the_family_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Un témoignage ne vient pas avec le lien de sang",
+        "en": "Testimony Does Not Come With Blood Ties"
+      },
+      "text": {
+        "fr": "Ta mère peut témoigner, refuser ou demander un autre interlocuteur. Le dossier doit rester valable même si votre relation familiale n’y produit aucune information.",
+        "en": "Your mother can testify, refuse, or request another interviewer. The case must remain valid even if your family relationship yields no information."
+      },
+      "choices": [
+        {
+          "id": "independent_officer",
+          "text": {
+            "fr": "Confier l’entretien à un autre officier",
+            "en": "Use an independent officer"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "independent_officer",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 10
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu sors de la chaîne de décision; elle choisit elle-même ce qu’elle accepte de dire.",
+                "en": "You step out of the decision chain; she chooses what she is willing to say."
+              }
+            }
+          }
+        },
+        {
+          "id": "corroborated_only",
+          "text": {
+            "fr": "N’utiliser que les faits corroborés",
+            "en": "Use corroborated facts only"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "corroborated_only",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 5
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Ses souvenirs ne deviennent exploitables que lorsqu’une source indépendante les confirme.",
+                "en": "Her memories become usable only when an independent source confirms them."
+              }
+            }
+          }
+        },
+        {
+          "id": "press_witness",
+          "text": {
+            "fr": "Insister malgré son refus",
+            "en": "Press despite her refusal"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "press_witness",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": -10
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "intelligence",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu poursuis l’interrogatoire. Elle répond moins à la Marine qu’à l’enfant devenu institution.",
+                "en": "You continue questioning. She is answering less to the Marines than to the child who became an institution."
+              }
+            }
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_revolutionary_a04_different_methods_same_inheritance",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_04",
+        "nodeId": "family_revolutionary_a04_different_methods_same_inheritance",
+        "parentNodeIds": [
+          "family_revolutionary_a03_inherited_object_is_a_risk",
+          "family_revolutionary_a03_parent_chooses_the_risk",
+          "family_revolutionary_a03_shelter_has_a_price"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Le même vieux principe dans une autre vie",
+        "en": "The Same Old Principle in Another Life"
+      },
+      "text": {
+        "fr": "Un ancien contact familial te demande d’arbitrer une dispute : peut-on invoquer le nom de ta famille pour obtenir protection, passage ou silence dans ta vie adulte ? Ton métier actuel n’était pas prévu quand ces codes ont été créés.",
+        "en": "An old family contact asks you to settle a dispute: can your family name be invoked to obtain protection, passage, or silence in your adult life? Your current career did not exist in the old rules."
+      },
+      "choices": [
+        {
+          "id": "no_blanket_right",
+          "text": {
+            "fr": "Refuser tout droit automatique",
+            "en": "Refuse automatic rights"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "no_blanket_right",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a04_different_methods_same_inheritance_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu annonces que l’héritage familial ne vaut ni laissez-passer ni service automatique.",
+                "en": "You state that family history grants neither a pass nor automatic service."
+              }
+            }
+          }
+        },
+        {
+          "id": "case_by_case",
+          "text": {
+            "fr": "Décider au cas par cas",
+            "en": "Decide case by case"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "case_by_case",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a04_different_methods_same_inheritance_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes d’écouter chaque demande, sans transformer l’ancienne confiance en obligation générale.",
+                "en": "You agree to hear each request without turning old trust into a general obligation."
+              }
+            }
+          }
+        },
+        {
+          "id": "keep_one_emergency",
+          "text": {
+            "fr": "Garder une exception d’urgence",
+            "en": "Keep one emergency exception"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_one_emergency",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a04_different_methods_same_inheritance_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes qu’un danger familial immédiat puisse ouvrir une porte, mais rien de plus.",
+                "en": "You accept that immediate family danger may open one door, but nothing more."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_revolutionary_a04_different_methods_same_inheritance_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une règle qui survit au changement de carrière",
+        "en": "A Rule That Survives Career Change"
+      },
+      "text": {
+        "fr": "Le principe devient indépendant de ton pavillon, uniforme ou profession : l’héritage explique une relation, il n’achète pas une ressource.",
+        "en": "The principle becomes independent of flag, uniform, or profession: inheritance explains a relationship, it does not buy a resource."
+      },
+      "choices": [
+        {
+          "id": "written_boundary",
+          "text": {
+            "fr": "Écrire la règle en une phrase",
+            "en": "Write the rule in one sentence"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "written_boundary",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "intelligence",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Le vieux contact repart avec une limite simple : demander n’est jamais obtenir d’avance.",
+                "en": "The old contact leaves with a simple boundary: asking never means receiving in advance."
+              }
+            }
+          }
+        },
+        {
+          "id": "personal_discretion",
+          "text": {
+            "fr": "Garder ta décision personnelle",
+            "en": "Keep personal discretion"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "personal_discretion",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Aucune règle institutionnelle n’est créée; tu gardes le droit d’aider ou non selon la situation.",
+                "en": "No institutional rule is created; you keep the right to help or refuse case by case."
+              }
+            }
+          }
+        },
+        {
+          "id": "emergency_only",
+          "text": {
+            "fr": "Limiter aux urgences vitales",
+            "en": "Limit it to life-threatening emergencies"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "emergency_only",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Seul un danger immédiat pour un proche peut contourner le canal normal; le reste doit attendre ton accord.",
+                "en": "Only immediate danger to a relative can bypass the normal channel; everything else waits for your consent."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_revolutionary_a05_mothers_last_boundary",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_05",
+        "nodeId": "family_revolutionary_a05_mothers_last_boundary",
+        "parentNodeIds": [
+          "family_revolutionary_a04_revolutionary_methods_at_home",
+          "family_revolutionary_a04_marine_evidence_in_the_family",
+          "family_revolutionary_a04_different_methods_same_inheritance"
+        ],
+        "selectionPriority": 35
+      },
+      "title": {
+        "fr": "Le nom de ta mère dans le dernier registre",
+        "en": "Your Mother's Name in the Last Register"
+      },
+      "text": {
+        "fr": "À l’approche de tes trente-cinq ans, le vieux réseau veut archiver le nom de ta mère avec le tien comme une même « lignée de service ». Elle te transmet le formulaire avant de répondre : elle refuse qu’une vie entière soit résumée par une succession automatique.",
+        "en": "As you approach thirty-five, the old network wants to archive your mother's name with yours as one 'line of service.' She sends you the form before answering: she refuses to let two lives be summarized as automatic succession."
+      },
+      "choices": [
+        {
+          "id": "separate_names",
+          "text": {
+            "fr": "Séparer les deux notices",
+            "en": "Separate the entries"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "separate_names",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a05_mothers_last_boundary_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes deux notices distinctes, avec des choix et des désaccords propres à chacun.",
+                "en": "You ask for two separate entries, with each person's choices and disagreements intact."
+              }
+            }
+          }
+        },
+        {
+          "id": "family_connection",
+          "text": {
+            "fr": "Nommer le lien sans succession",
+            "en": "Name the bond without succession"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "family_connection",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a05_mothers_last_boundary_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes que le lien familial soit mentionné, mais pas comme preuve d’une continuité politique.",
+                "en": "You allow the family bond to be mentioned, but not as proof of political continuity."
+              }
+            }
+          }
+        },
+        {
+          "id": "let_archive_write",
+          "text": {
+            "fr": "Laisser le réseau écrire",
+            "en": "Let the archive decide"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "let_archive_write",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a05_mothers_last_boundary_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu laisses les archivistes produire leur version; ta mère te demande alors si elle peut encore corriger la sienne.",
+                "en": "You let the archivists write their version; your mother asks whether she can still correct hers."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "originParentPresent",
+        "role": "mother"
+      },
+      "cast": [
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_revolutionary_a05_mothers_last_boundary_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Ce qui vous appartient encore",
+        "en": "What Still Belongs to You"
+      },
+      "text": {
+        "fr": "Il ne reste plus à protéger une chambre ou une clé, mais le sens de deux vies. Votre dernière frontière familiale porte sur le droit de ne pas être réduits l’un à l’autre.",
+        "en": "There is no longer a room or key to protect, but the meaning of two lives. Your final family boundary is the right not to be reduced to each other."
+      },
+      "choices": [
+        {
+          "id": "two_histories",
+          "text": {
+            "fr": "Faire conserver deux histoires",
+            "en": "Preserve two histories"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "two_histories",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 10
+                },
+                {
+                  "type": "addTrait",
+                  "traitId": "protective"
+                }
+              ],
+              "text": {
+                "fr": "Les archives séparent vos parcours et notent explicitement les moments où vos méthodes ont divergé.",
+                "en": "The archive separates your paths and explicitly records where your methods diverged."
+              }
+            }
+          }
+        },
+        {
+          "id": "linked_not_inherited",
+          "text": {
+            "fr": "Relier sans parler d’héritier",
+            "en": "Link without naming an heir"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "linked_not_inherited",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 6
+                },
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Le lien familial reste visible, mais aucune fonction, conviction ou dette n’est présentée comme transmise.",
+                "en": "The family bond remains visible, but no role, conviction, or debt is presented as inherited."
+              }
+            }
+          }
+        },
+        {
+          "id": "archive_overrides",
+          "text": {
+            "fr": "Accepter la version du réseau",
+            "en": "Accept the network's version"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "archive_overrides",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": -8
+                },
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "La notice vous présente comme une continuité parfaite. Ta mère signe seulement pour signaler qu’elle n’approuve pas cette lecture.",
+                "en": "The entry presents you as perfect continuity. Your mother signs only to note she does not approve that reading."
+              }
+            }
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_revolutionary_a05_fathers_last_boundary",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_05",
+        "nodeId": "family_revolutionary_a05_fathers_last_boundary",
+        "parentNodeIds": [
+          "family_revolutionary_a04_revolutionary_methods_at_home",
+          "family_revolutionary_a04_marine_evidence_in_the_family",
+          "family_revolutionary_a04_different_methods_same_inheritance"
+        ],
+        "selectionPriority": 25
+      },
+      "title": {
+        "fr": "Ce que ton père a gardé quand elle n’était plus là",
+        "en": "What Your Father Kept When She Was Gone"
+      },
+      "text": {
+        "fr": "Ta mère n’est plus disponible, mais ton père a conservé les anciennes règles qui séparaient foyer, réseau et choix personnel. Le vieux réseau lui demande maintenant s’il peut rattacher ton nom au sien dans ses archives.",
+        "en": "Your mother is no longer available, but your father kept the old rules separating home, network, and personal choice. The old network now asks whether it may attach your name to his in its archives."
+      },
+      "choices": [
+        {
+          "id": "ask_father_version",
+          "text": {
+            "fr": "Demander sa version",
+            "en": "Ask for his version"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_father_version",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a05_fathers_last_boundary_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes d’abord ce que lui veut voir conservé, plutôt que de répondre au réseau.",
+                "en": "You first ask what he wants preserved rather than answering the network."
+              }
+            }
+          }
+        },
+        {
+          "id": "separate_record",
+          "text": {
+            "fr": "Proposer deux notices",
+            "en": "Propose two entries"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "separate_record",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a05_fathers_last_boundary_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses que la disparition ou l’absence de ta mère transforme ton père en voix de toute la famille.",
+                "en": "You refuse to let your mother's absence turn your father into the voice of the whole family."
+              }
+            }
+          }
+        },
+        {
+          "id": "close_archive",
+          "text": {
+            "fr": "Refuser l’archive familiale",
+            "en": "Refuse the family archive"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "close_archive",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a05_fathers_last_boundary_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu proposes que le réseau conserve seulement les faits opérationnels nécessaires, sans construire de lignée.",
+                "en": "You propose the network keep only necessary operational facts without constructing a lineage."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "originParentPresent",
+            "role": "father"
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "originParentPresent",
+              "role": "mother"
+            }
+          }
+        ]
+      },
+      "cast": [
+        "player_parent_1"
+      ]
+    },
+    {
+      "id": "family_revolutionary_a05_fathers_last_boundary_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Un parent restant n’est pas la voix de tous",
+        "en": "One Remaining Parent Is Not Everyone's Voice"
+      },
+      "text": {
+        "fr": "Ton père peut raconter sa part et votre lien, mais il ne parle ni pour ta mère absente ni pour ta carrière adulte. Cette limite devient la dernière décision commune.",
+        "en": "Your father can tell his part and your bond, but speaks neither for your absent mother nor for your adult career. That limit becomes your last shared decision."
+      },
+      "choices": [
+        {
+          "id": "father_own_story",
+          "text": {
+            "fr": "Laisser ton père raconter sa part",
+            "en": "Let your father tell his part"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "father_own_story",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 10
+                },
+                {
+                  "type": "addTrait",
+                  "traitId": "protective"
+                }
+              ],
+              "text": {
+                "fr": "Il enregistre son histoire à son nom et te laisse décider séparément de la tienne.",
+                "en": "He records his story in his own name and leaves yours for you to decide separately."
+              }
+            }
+          }
+        },
+        {
+          "id": "linked_entries",
+          "text": {
+            "fr": "Relier deux notices séparées",
+            "en": "Link two separate entries"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "linked_entries",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 6
+                },
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Vos notices se référencent sans fusionner vos engagements ni vos désaccords.",
+                "en": "Your entries reference each other without merging commitments or disagreements."
+              }
+            }
+          }
+        },
+        {
+          "id": "silence_family",
+          "text": {
+            "fr": "Ne rien archiver comme famille",
+            "en": "Archive nothing as a family"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "silence_family",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 8
+                },
+                {
+                  "type": "modifyBerries",
+                  "amount": 2500
+                }
+              ],
+              "text": {
+                "fr": "Ton père accepte que le réseau renonce à une belle histoire de lignée plutôt que parler au nom des absents. Il te remet aussi le reliquat de 2 500 Berrys de l’ancienne caisse d’urgence familiale.",
+                "en": "Your father accepts losing a neat lineage story rather than speaking for absent people. He also returns the remaining 2,500 Berrys from the old family emergency fund."
+              }
+            }
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_1"
+      ]
+    },
+    {
+      "id": "family_revolutionary_a05_what_the_network_remembers",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_revolutionary",
+        "chapterId": "adult_family_05",
+        "nodeId": "family_revolutionary_a05_what_the_network_remembers",
+        "parentNodeIds": [
+          "family_revolutionary_a04_revolutionary_methods_at_home",
+          "family_revolutionary_a04_marine_evidence_in_the_family",
+          "family_revolutionary_a04_different_methods_same_inheritance"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Ce que le réseau dira de ta famille",
+        "en": "What the Network Will Say About Your Family"
+      },
+      "text": {
+        "fr": "Le vieux réseau prépare une courte histoire publique de ta famille : refuges, désaccords, aides et refus mêlés. Aucun parent disponible ne peut la corriger aujourd’hui; on te demande quelle version peut porter ton nom.",
+        "en": "The old network prepares a short public history of your family: safehouses, disagreements, aid, and refusals mixed together. No available parent can correct it today; they ask which version may carry your name."
+      },
+      "choices": [
+        {
+          "id": "factual_version",
+          "text": {
+            "fr": "Exiger une version factuelle",
+            "en": "Require a factual version"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "factual_version",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a05_what_the_network_remembers_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes que les actes soient datés et séparés des interprétations politiques.",
+                "en": "You ask for actions to be dated and separated from political interpretation."
+              }
+            }
+          }
+        },
+        {
+          "id": "name_disagreement",
+          "text": {
+            "fr": "Conserver aussi les désaccords",
+            "en": "Keep the disagreements"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "name_disagreement",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a05_what_the_network_remembers_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses une légende lisse et demandes que les ruptures de méthode restent visibles.",
+                "en": "You reject a smooth legend and ask that methodological breaks remain visible."
+              }
+            }
+          }
+        },
+        {
+          "id": "public_refusal",
+          "text": {
+            "fr": "Refuser publiquement l’hommage",
+            "en": "Publicly refuse the tribute"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "public_refusal",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_revolutionary_a05_what_the_network_remembers_i01_resolution"
+                }
+              ],
+              "text": {
+                "fr": "Tu annonces que l’histoire familiale n’est pas disponible comme matériau de propagande sans contradiction.",
+                "en": "You state that family history is not available as propaganda material without contradiction."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_revolutionary_a05_what_the_network_remembers_i01_resolution",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une mémoire n’est pas une dette",
+        "en": "Memory Is Not a Debt"
+      },
+      "text": {
+        "fr": "Quelle que soit ta carrière, ton origine révolutionnaire reste une partie de ton histoire plutôt qu’un second grade ou une affiliation parallèle. La manière dont tu la corriges devient elle-même publique.",
+        "en": "Whatever your career, Revolutionary origins remain part of your history rather than a second rank or parallel affiliation. How you correct that history becomes public in its own right."
+      },
+      "choices": [
+        {
+          "id": "publish_facts",
+          "text": {
+            "fr": "Signer la version factuelle",
+            "en": "Sign the factual version"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "publish_facts",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Le réseau publie une notice sobre qui sépare aide, choix, désaccords et carrière actuelle.",
+                "en": "The network publishes a restrained entry separating aid, choices, disagreements, and current career."
+              }
+            }
+          }
+        },
+        {
+          "id": "publish_dissent",
+          "text": {
+            "fr": "Signer une version avec désaccords",
+            "en": "Sign a version with dissent"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "publish_dissent",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 2
+                }
+              ],
+              "text": {
+                "fr": "Les divergences restent dans la notice; ton nom gagne en visibilité sans être présenté comme continuation automatique.",
+                "en": "The disagreements remain in the entry; your name gains visibility without being framed as automatic continuation."
+              }
+            }
+          }
+        },
+        {
+          "id": "refuse_publicly",
+          "text": {
+            "fr": "Refuser l’hommage en ton nom",
+            "en": "Refuse the tribute in your name"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "refuse_publicly",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Ton refus devient lui-même public et attire l’attention sur la frontière que tu défends.",
+                "en": "Your refusal itself becomes public and draws attention to the boundary you defend."
+              }
+            }
+          }
+        }
+      ]
     }
   ],
   "scenarios": [
@@ -12449,6 +15842,1908 @@
           "ageMonths": 120
         }
       ]
+    },
+    {
+      "id": "adult01_mother_present",
+      "expectedEventId": "family_revolutionary_a01_mothers_coded_call",
+      "ageMonths": 222,
+      "familyStructureId": "single_parent",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "npcStatuses": {
+        "player_parent_2": "known"
+      }
+    },
+    {
+      "id": "adult01_mother_unclaimed",
+      "expectedEventId": "family_revolutionary_a01_mothers_unclaimed_trace",
+      "ageMonths": 222,
+      "familyStructureId": "single_parent",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_mothers_unclaimed_post",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "npcStatuses": {
+        "player_parent_2": "departed"
+      }
+    },
+    {
+      "id": "adult01_two_keys",
+      "expectedEventId": "family_revolutionary_a01_two_keys_at_distance",
+      "ageMonths": 222,
+      "familyStructureId": "two_parents",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_two_keys_two_paths",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "npcStatuses": {
+        "player_parent_1": "known",
+        "player_parent_2": "known"
+      }
+    },
+    {
+      "id": "adult01_fallback",
+      "expectedEventId": "family_revolutionary_a01_long_distance_packet",
+      "ageMonths": 222,
+      "familyStructureId": "orphan",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ]
+    },
+    {
+      "id": "adult02_revolutionary",
+      "expectedEventId": "family_revolutionary_a02_family_address_under_pressure",
+      "ageMonths": 270,
+      "familyStructureId": "orphan",
+      "careerAffiliationId": "revolutionary",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_revolutionary_a01_long_distance_packet",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "career_revolutionary_01_new_cell",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_revolutionary_02_leader_arrested",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_revolutionary_03_early_charge",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_revolutionary_04_workers_ultimatum",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_revolutionary_05_three_requests",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_revolutionary_06_trusted_liaison",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_revolutionary_07_town_council",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_revolutionary_08_missing_commander",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_revolutionary_09_what_remains",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_revolutionary_10_regional_assembly",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ]
+    },
+    {
+      "id": "adult02_marine_mother",
+      "expectedEventId": "family_revolutionary_a02_uniform_on_the_line",
+      "ageMonths": 270,
+      "familyStructureId": "single_parent",
+      "careerAffiliationId": "marine",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_revolutionary_a01_mothers_coded_call",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "career_marine_01_new_uniform",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_marine_02_night_roster",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_marine_03_incomplete_report",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_marine_04_missing_signature",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_marine_05_harbor_curfew",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_marine_06_priority_chart",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_marine_07_discipline_court",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_marine_08_closed_door_order",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_marine_09_white_table",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_marine_10_ordered_justice",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "npcStatuses": {
+        "player_parent_2": "known"
+      }
+    },
+    {
+      "id": "adult02_pirate",
+      "expectedEventId": "family_revolutionary_a02_black_flag_reaches_home",
+      "ageMonths": 270,
+      "familyStructureId": "orphan",
+      "careerAffiliationId": "pirate",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_revolutionary_a01_long_distance_packet",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "career_pirate_01_first_flag",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_pirate_02_first_story_spreads",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_pirate_03_small_flag_big_sea",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_pirate_04_poster_on_wall",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_pirate_05_captain_without_permission",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_pirate_06_captains_table",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_pirate_07_name_reaches_ahead",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_pirate_08_captain_at_crossroads",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_pirate_09_crew_crown",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_pirate_10_flag_beyond_you",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ]
+    },
+    {
+      "id": "adult02_fallback_civilian",
+      "expectedEventId": "family_revolutionary_a02_keep_one_private_channel",
+      "ageMonths": 270,
+      "familyStructureId": "orphan",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_revolutionary_a01_long_distance_packet",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ]
+    },
+    {
+      "id": "adult03_inherited_object",
+      "expectedEventId": "family_revolutionary_a03_inherited_object_is_a_risk",
+      "ageMonths": 318,
+      "familyStructureId": "two_parents",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_two_keys_two_paths",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_revolutionary_a01_two_keys_at_distance",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_revolutionary_a02_keep_one_private_channel",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "npcStatuses": {
+        "player_parent_1": "known",
+        "player_parent_2": "unavailable"
+      }
+    },
+    {
+      "id": "adult03_parent_choice",
+      "expectedEventId": "family_revolutionary_a03_parent_chooses_the_risk",
+      "ageMonths": 318,
+      "familyStructureId": "single_parent",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_revolutionary_a01_mothers_coded_call",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_revolutionary_a02_keep_one_private_channel",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "npcStatuses": {
+        "player_parent_2": "known"
+      }
+    },
+    {
+      "id": "adult03_fallback",
+      "expectedEventId": "family_revolutionary_a03_shelter_has_a_price",
+      "ageMonths": 318,
+      "familyStructureId": "orphan",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_revolutionary_a01_long_distance_packet",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_revolutionary_a02_keep_one_private_channel",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ]
+    },
+    {
+      "id": "adult04_revolutionary_mother",
+      "expectedEventId": "family_revolutionary_a04_revolutionary_methods_at_home",
+      "ageMonths": 366,
+      "familyStructureId": "single_parent",
+      "careerAffiliationId": "revolutionary",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_revolutionary_a01_mothers_coded_call",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_revolutionary_a02_family_address_under_pressure",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "family_revolutionary_a03_parent_chooses_the_risk",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 318
+        },
+        {
+          "eventId": "career_revolutionary_01_new_cell",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_revolutionary_02_leader_arrested",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_revolutionary_03_early_charge",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_revolutionary_04_workers_ultimatum",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_revolutionary_05_three_requests",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_revolutionary_06_trusted_liaison",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_revolutionary_07_town_council",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_revolutionary_08_missing_commander",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_revolutionary_09_what_remains",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_revolutionary_10_regional_assembly",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "npcStatuses": {
+        "player_parent_2": "known"
+      }
+    },
+    {
+      "id": "adult04_marine_mother",
+      "expectedEventId": "family_revolutionary_a04_marine_evidence_in_the_family",
+      "ageMonths": 366,
+      "familyStructureId": "single_parent",
+      "careerAffiliationId": "marine",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_revolutionary_a01_mothers_coded_call",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_revolutionary_a02_uniform_on_the_line",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "family_revolutionary_a03_parent_chooses_the_risk",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 318
+        },
+        {
+          "eventId": "career_marine_01_new_uniform",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_marine_02_night_roster",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_marine_03_incomplete_report",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_marine_04_missing_signature",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_marine_05_harbor_curfew",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_marine_06_priority_chart",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_marine_07_discipline_court",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_marine_08_closed_door_order",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_marine_09_white_table",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_marine_10_ordered_justice",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "npcStatuses": {
+        "player_parent_2": "known"
+      }
+    },
+    {
+      "id": "adult04_fallback",
+      "expectedEventId": "family_revolutionary_a04_different_methods_same_inheritance",
+      "ageMonths": 366,
+      "familyStructureId": "orphan",
+      "careerAffiliationId": "pirate",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_revolutionary_a01_long_distance_packet",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_revolutionary_a02_black_flag_reaches_home",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "family_revolutionary_a03_shelter_has_a_price",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 318
+        },
+        {
+          "eventId": "career_pirate_01_first_flag",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_pirate_02_first_story_spreads",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_pirate_03_small_flag_big_sea",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_pirate_04_poster_on_wall",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_pirate_05_captain_without_permission",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_pirate_06_captains_table",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_pirate_07_name_reaches_ahead",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_pirate_08_captain_at_crossroads",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_pirate_09_crew_crown",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_pirate_10_flag_beyond_you",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ]
+    },
+    {
+      "id": "adult05_mother",
+      "expectedEventId": "family_revolutionary_a05_mothers_last_boundary",
+      "ageMonths": 414,
+      "familyStructureId": "single_parent",
+      "careerAffiliationId": "revolutionary",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_revolutionary_a01_mothers_coded_call",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_revolutionary_a02_family_address_under_pressure",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "family_revolutionary_a03_parent_chooses_the_risk",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 318
+        },
+        {
+          "eventId": "family_revolutionary_a04_revolutionary_methods_at_home",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 366
+        },
+        {
+          "eventId": "career_revolutionary_01_new_cell",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_revolutionary_02_leader_arrested",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_revolutionary_03_early_charge",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_revolutionary_04_workers_ultimatum",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_revolutionary_05_three_requests",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_revolutionary_06_trusted_liaison",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_revolutionary_07_town_council",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_revolutionary_08_missing_commander",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_revolutionary_09_what_remains",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_revolutionary_10_regional_assembly",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "npcStatuses": {
+        "player_parent_2": "known"
+      }
+    },
+    {
+      "id": "adult05_father_only",
+      "expectedEventId": "family_revolutionary_a05_fathers_last_boundary",
+      "ageMonths": 414,
+      "familyStructureId": "two_parents",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_revolutionary_a01_long_distance_packet",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_revolutionary_a02_keep_one_private_channel",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "family_revolutionary_a03_shelter_has_a_price",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 318
+        },
+        {
+          "eventId": "family_revolutionary_a04_different_methods_same_inheritance",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 366
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "npcStatuses": {
+        "player_parent_1": "known",
+        "player_parent_2": "unavailable"
+      }
+    },
+    {
+      "id": "adult05_fallback",
+      "expectedEventId": "family_revolutionary_a05_what_the_network_remembers",
+      "ageMonths": 414,
+      "familyStructureId": "orphan",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_revolutionary_01_shutter_mark",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_revolutionary_04_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_revolutionary_07_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_revolutionary_10_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_revolutionary_13_network_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_revolutionary_a01_long_distance_packet",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_revolutionary_a02_keep_one_private_channel",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "family_revolutionary_a03_shelter_has_a_price",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 318
+        },
+        {
+          "eventId": "family_revolutionary_a04_different_methods_same_inheritance",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 366
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ]
     }
   ],
   "notes": [
@@ -12456,6 +17751,11 @@
     "The sole Revolutionary Special Association is revolutionary_wealthy_patronage. No Revolutionary Fish-Man signature path is authored.",
     "Layer 5 resolves intent at 168 months only through terminal History outcome IDs. Childhood contains no setCareerAffiliation or setCareerRank Effect; the 180-month boundary performs the career handoff.",
     "All Saga progression is Normal Major root -> Immediate resolution; Scheduled Events are not used for Family progression.",
-    "Routing scenarios use the current V1.1-compatible flat shape: expectedEventId + explicit profile fields + npcStatuses + complete prior History."
+    "Routing scenarios use the current V1.1-compatible flat shape: expectedEventId + explicit profile fields + npcStatuses + complete prior History.",
+    "Wave 5 Adult Family continuation: adult_family_01..adult_family_05 at current post-gate cadence.",
+    "Adult Family uses Major roots plus Immediate continuations only; no scheduleEvent advances Family chapters.",
+    "Adult continuation is travel-safe: no birthplace/location requirement and no movement Effect.",
+    "Adult career reactivity is authored without changing career: Revolutionary/Marine/Pirate specialization plus shared Civilian-safe convergence.",
+    "Adult terminal leaves include relationship, reputation, Trait, and one explicit small family-fund settlement so the current Saga terminal-reward/diversity validator remains satisfied after Adult chapters become the final authored layer."
   ]
 }

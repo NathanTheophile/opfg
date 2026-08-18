@@ -1,0 +1,69 @@
+{
+  "id": "family_marine_a02_promotion_question_i01_speed_or_weight",
+  "kind": "immediate",
+  "cast": [
+    "player_parent_1"
+  ],
+  "titleKey": "event.family_marine_a02_promotion_question_i01_speed_or_weight.title",
+  "textKey": "event.family_marine_a02_promotion_question_i01_speed_or_weight.text",
+  "choices": [
+    {
+      "id": "method",
+      "textKey": "event.family_marine_a02_promotion_question_i01_speed_or_weight.choice.method.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "limits_kept",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 5
+            }
+          ],
+          "textKey": "event.family_marine_a02_promotion_question_i01_speed_or_weight.choice.method.outcome.limits_kept.text"
+        }
+      }
+    },
+    {
+      "id": "reject",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "rebellious"
+      },
+      "textKey": "event.family_marine_a02_promotion_question_i01_speed_or_weight.choice.reject.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ranking_rejected",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -5
+            }
+          ],
+          "textKey": "event.family_marine_a02_promotion_question_i01_speed_or_weight.choice.reject.outcome.ranking_rejected.text"
+        }
+      }
+    },
+    {
+      "id": "regret",
+      "textKey": "event.family_marine_a02_promotion_question_i01_speed_or_weight.choice.regret.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "regret_heard",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 5
+            }
+          ],
+          "textKey": "event.family_marine_a02_promotion_question_i01_speed_or_weight.choice.regret.outcome.regret_heard.text"
+        }
+      }
+    }
+  ]
+}

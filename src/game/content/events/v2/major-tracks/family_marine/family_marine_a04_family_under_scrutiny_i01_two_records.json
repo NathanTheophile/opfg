@@ -1,0 +1,112 @@
+{
+  "id": "family_marine_a04_family_under_scrutiny_i01_two_records",
+  "kind": "immediate",
+  "cast": [
+    "player_parent_1"
+  ],
+  "titleKey": "event.family_marine_a04_family_under_scrutiny_i01_two_records.title",
+  "textKey": "event.family_marine_a04_family_under_scrutiny_i01_two_records.text",
+  "choices": [
+    {
+      "id": "separate",
+      "textKey": "event.family_marine_a04_family_under_scrutiny_i01_two_records.choice.separate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "records_separated",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 3
+            }
+          ],
+          "textKey": "event.family_marine_a04_family_under_scrutiny_i01_two_records.choice.separate.outcome.records_separated.text"
+        }
+      }
+    },
+    {
+      "id": "defend",
+      "textKey": "event.family_marine_a04_family_under_scrutiny_i01_two_records.choice.defend.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "name_defended",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 8
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.family_marine_a04_family_under_scrutiny_i01_two_records.choice.defend.outcome.name_defended.text"
+        }
+      }
+    },
+    {
+      "id": "marine",
+      "availableIf": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      "textKey": "event.family_marine_a04_family_under_scrutiny_i01_two_records.choice.marine.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "closed_by_procedure",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 5
+            }
+          ],
+          "textKey": "event.family_marine_a04_family_under_scrutiny_i01_two_records.choice.marine.outcome.closed_by_procedure.text"
+        }
+      }
+    },
+    {
+      "id": "refuse",
+      "availableIf": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      },
+      "textKey": "event.family_marine_a04_family_under_scrutiny_i01_two_records.choice.refuse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "public_refusal",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -5
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.family_marine_a04_family_under_scrutiny_i01_two_records.choice.refuse.outcome.public_refusal.text"
+        }
+      }
+    }
+  ]
+}

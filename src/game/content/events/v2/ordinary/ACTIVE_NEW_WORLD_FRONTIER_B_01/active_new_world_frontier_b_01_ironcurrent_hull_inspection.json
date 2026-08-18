@@ -1,0 +1,110 @@
+{
+  "id": "active_new_world_frontier_b_01_ironcurrent_hull_inspection",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_b_01_ironcurrent_hull_inspection.title",
+  "textKey": "event.active_new_world_frontier_b_01_ironcurrent_hull_inspection.text",
+  "choices": [
+    {
+      "id": "full_reinforcement",
+      "textKey": "event.active_new_world_frontier_b_01_ironcurrent_hull_inspection.choice.full_reinforcement.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "full_reinforcement_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_ironcurrent_hull_inspection.choice.full_reinforcement.outcome.full_reinforcement_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2500
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 6
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2500
+      }
+    },
+    {
+      "id": "shipwright_patch",
+      "textKey": "event.active_new_world_frontier_b_01_ironcurrent_hull_inspection.choice.shipwright_patch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shipwright_patch_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_ironcurrent_hull_inspection.choice.shipwright_patch.outcome.shipwright_patch_outcome.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": 5
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    },
+    {
+      "id": "cheap_plate",
+      "textKey": "event.active_new_world_frontier_b_01_ironcurrent_hull_inspection.choice.cheap_plate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cheap_plate_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_ironcurrent_hull_inspection.choice.cheap_plate.outcome.cheap_plate_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -750
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 750
+      }
+    },
+    {
+      "id": "decline_work",
+      "textKey": "event.active_new_world_frontier_b_01_ironcurrent_hull_inspection.choice.decline_work.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decline_work_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_ironcurrent_hull_inspection.choice.decline_work.outcome.decline_work_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "ironcurrent_island"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

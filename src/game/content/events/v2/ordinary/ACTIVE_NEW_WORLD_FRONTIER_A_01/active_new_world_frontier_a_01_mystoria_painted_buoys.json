@@ -1,0 +1,92 @@
+{
+  "id": "active_new_world_frontier_a_01_mystoria_painted_buoys",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_a_01_mystoria_painted_buoys.title",
+  "textKey": "event.active_new_world_frontier_a_01_mystoria_painted_buoys.text",
+  "choices": [
+    {
+      "id": "compare_old_marks",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_painted_buoys.choice.compare_old_marks.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "scraped",
+          "textKey": "event.active_new_world_frontier_a_01_mystoria_painted_buoys.choice.compare_old_marks.outcome.scraped.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "post_warning",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_painted_buoys.choice.post_warning.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "posted",
+          "textKey": "event.active_new_world_frontier_a_01_mystoria_painted_buoys.choice.post_warning.outcome.posted.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "navigator_sequence",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_painted_buoys.choice.navigator_sequence.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sequence",
+          "textKey": "event.active_new_world_frontier_a_01_mystoria_painted_buoys.choice.navigator_sequence.outcome.sequence.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "navigator"
+      }
+    },
+    {
+      "id": "leave_painters",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_painted_buoys.choice.leave_painters.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "left",
+          "textKey": "event.active_new_world_frontier_a_01_mystoria_painted_buoys.choice.leave_painters.outcome.left.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "mystoria_island"
+      }
+    ]
+  }
+}

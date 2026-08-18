@@ -555,6 +555,14 @@ function applyScenarioGiven(
     setScenarioNpcStatus(state, String(given.npcId), String(given.status) as NpcStatus);
     return;
   }
+  if (type === 'npcRelationshipAtMost') {
+    setScenarioNpcRelationship(state, String(given.npcId), Number(given.value));
+    return;
+  }
+  if (type === 'npcRelationshipAtLeast') {
+    setScenarioNpcRelationship(state, String(given.npcId), Number(given.value));
+    return;
+  }
   if (type === 'originParentPresent') {
     const npcId = catalog.npcs.find(({ familyRole }) => familyRole === given.role)?.id;
     if (!npcId) throw new Error(`Scenario given originParentPresent references unknown role "${String(given.role)}".`);
@@ -582,6 +590,13 @@ function setScenarioNpcStatus(state: GameState, npcId: string, status: NpcStatus
   state.npcs[npcId] = {
     ...(state.npcs[npcId] ?? createDefaultNpcState()),
     status,
+  };
+}
+
+function setScenarioNpcRelationship(state: GameState, npcId: string, relationship: number): void {
+  state.npcs[npcId] = {
+    ...(state.npcs[npcId] ?? createDefaultNpcState()),
+    relationship,
   };
 }
 

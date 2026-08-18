@@ -1,0 +1,124 @@
+{
+  "id": "family_marine_a01_other_colors",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_marine",
+    "chapterId": "adult_family_01",
+    "nodeId": "family_marine_a01_other_colors",
+    "parentNodeIds": [
+      "family_marine_13_chest_he_left",
+      "family_marine_13_decide_for_yourself",
+      "family_marine_13_duty_not_obedience",
+      "family_marine_13_insignia_in_palm",
+      "family_marine_13_on_your_terms",
+      "family_marine_13_our_name_is_not_theirs",
+      "family_marine_13_wear_it_better",
+      "family_marine_13_what_remains_of_him",
+      "family_marine_13_your_future_is_yours",
+      "family_marine_13_your_name_on_roll"
+    ],
+    "selectionPriority": 40
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "player_parent_1",
+        "status": "active"
+      }
+    ]
+  },
+  "cast": [
+    "player_parent_1"
+  ],
+  "titleKey": "event.family_marine_a01_other_colors.title",
+  "textKey": "event.family_marine_a01_other_colors.text",
+  "choices": [
+    {
+      "id": "name_choice",
+      "textKey": "event.family_marine_a01_other_colors.choice.name_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "name_choice",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a01_other_colors_i01_name_between_you"
+            }
+          ],
+          "textKey": "event.family_marine_a01_other_colors.choice.name_choice.outcome.name_choice.text"
+        }
+      }
+    },
+    {
+      "id": "recall_refusal",
+      "availableIf": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "family_marine_13_decide_for_yourself"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_marine_13_duty_not_obedience"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_marine_13_our_name_is_not_theirs"
+          }
+        ]
+      },
+      "textKey": "event.family_marine_a01_other_colors.choice.recall_refusal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "recall_refusal",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a01_other_colors_i01_name_between_you"
+            }
+          ],
+          "textKey": "event.family_marine_a01_other_colors.choice.recall_refusal.outcome.recall_refusal.text"
+        }
+      }
+    },
+    {
+      "id": "keep_family",
+      "textKey": "event.family_marine_a01_other_colors.choice.keep_family.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_family",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a01_other_colors_i01_name_between_you"
+            }
+          ],
+          "textKey": "event.family_marine_a01_other_colors.choice.keep_family.outcome.keep_family.text"
+        }
+      }
+    }
+  ]
+}

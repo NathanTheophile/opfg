@@ -1,0 +1,96 @@
+{
+  "id": "active_new_world_frontier_a_01_mystoria_pier_work_call",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_a_01_mystoria_pier_work_call.title",
+  "textKey": "event.active_new_world_frontier_a_01_mystoria_pier_work_call.text",
+  "choices": [
+    {
+      "id": "take_shift",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_pier_work_call.choice.take_shift.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "worked",
+          "textKey": "event.active_new_world_frontier_a_01_mystoria_pier_work_call.choice.take_shift.outcome.worked.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1000
+            },
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "sort_first",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_pier_work_call.choice.sort_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sorted",
+          "textKey": "event.active_new_world_frontier_a_01_mystoria_pier_work_call.choice.sort_first.outcome.sorted.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "foreman_plan",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_pier_work_call.choice.foreman_plan.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "staged",
+          "textKey": "event.active_new_world_frontier_a_01_mystoria_pier_work_call.choice.foreman_plan.outcome.staged.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1500
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "foreman"
+      }
+    },
+    {
+      "id": "decline",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_pier_work_call.choice.decline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "declined",
+          "textKey": "event.active_new_world_frontier_a_01_mystoria_pier_work_call.choice.decline.outcome.declined.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "mystoria_island"
+      }
+    ]
+  }
+}

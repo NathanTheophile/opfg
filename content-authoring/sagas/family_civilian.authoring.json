@@ -9,7 +9,12 @@
     "childhood_02",
     "childhood_03",
     "childhood_04",
-    "childhood_05"
+    "childhood_05",
+    "adult_family_01",
+    "adult_family_02",
+    "adult_family_03",
+    "adult_family_04",
+    "adult_family_05"
   ],
   "rules": {
     "enforceScenarioCoverage": true,
@@ -11291,6 +11296,3258 @@
           }
         }
       ]
+    },
+    {
+      "id": "family_civilian_adult_01_two_parent_parcel",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_01",
+        "nodeId": "family_civilian_adult_01_two_parent_parcel",
+        "selectionPriority": 30,
+        "parentNodeIds": [
+          "family_civilian_05_workshop_inheritance",
+          "family_civilian_05_household_savings",
+          "family_civilian_05_orphan_network",
+          "family_civilian_05_business_stewardship",
+          "family_civilian_05_adapted_place",
+          "family_civilian_05_neighborhood_name",
+          "family_civilian_05_father_boundary",
+          "family_civilian_05_two_parent_future",
+          "family_civilian_05_livelihood_fallback",
+          "family_civilian_05_community_fallback"
+        ]
+      },
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "familyStructureIs",
+            "familyStructureId": "two_parents"
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "known"
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_2",
+            "status": "known"
+          }
+        ]
+      },
+      "title": {
+        "fr": "Deux écritures sur le même colis",
+        "en": "Two Handwritings on the Same Parcel"
+      },
+      "text": {
+        "fr": "Un colis rattrape ton itinéraire avec les deux écritures de tes parents sur l’étiquette. À l’intérieur, le vieux registre du foyer porte de nouvelles dépenses et une seule question : qu’est-ce qui est encore « chez vous » maintenant que tu vis ailleurs ?",
+        "en": "A parcel catches up with your route, both parents’ handwriting on the label. Inside, the old household ledger carries new expenses and one question: what still counts as “home” now that your life is elsewhere?"
+      },
+      "choices": [
+        {
+          "id": "open",
+          "text": {
+            "fr": "Ouvrir le registre avant la lettre",
+            "en": "Open the ledger before the letter"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "open",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_01_two_parent_parcel_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu regardes d’abord les chiffres. Les marges montrent ce que tes parents ont cessé de payer pour toi depuis ton départ.",
+                "en": "You look at the numbers first. The margins show what your parents stopped paying for you after you left."
+              }
+            }
+          }
+        },
+        {
+          "id": "letter",
+          "text": {
+            "fr": "Lire la lettre avant les comptes",
+            "en": "Read the letter before the accounts"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "letter",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_01_two_parent_parcel_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu lis d’abord leur lettre. Les comptes deviennent ensuite la preuve concrète de ce qui a changé au foyer.",
+                "en": "You read their letter first. The accounts then become concrete proof of what changed at home."
+              }
+            }
+          }
+        },
+        {
+          "id": "delay",
+          "text": {
+            "fr": "Garder le colis fermé jusqu’au calme",
+            "en": "Keep it closed until things are quiet"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "delay",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_01_two_parent_parcel_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu attends un moment où tu peux répondre sans traiter le foyer comme une tâche entre deux autres.",
+                "en": "You wait for a moment when you can answer without treating home like one more task between others."
+              }
+            }
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_1",
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_civilian_adult_01_two_parent_parcel_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Ce que vous payez encore les uns pour les autres",
+        "en": "What You Still Pay for One Another"
+      },
+      "text": {
+        "fr": "Le registre ne demande pas de reprendre la vie d’avant. Il montre seulement les charges que tes parents portent encore, celles qu’ils ont abandonnées et ce qu’ils attendent réellement de toi.",
+        "en": "The ledger does not ask you to resume your old life. It only shows what your parents still carry, what they stopped carrying, and what they actually expect from you."
+      },
+      "choices": [
+        {
+          "id": "answer_numbers",
+          "text": {
+            "fr": "Répondre avec tes propres comptes",
+            "en": "Answer with your own numbers"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer_numbers",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 4
+                },
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 4
+                }
+              ],
+              "text": {
+                "fr": "Tu leur montres ce que ta vie adulte coûte réellement. La discussion quitte les suppositions et revient à des limites concrètes.",
+                "en": "You show them what your adult life actually costs. The conversation leaves assumptions behind and returns to concrete limits."
+              }
+            }
+          }
+        },
+        {
+          "id": "cover_one_bill",
+          "text": {
+            "fr": "Payer une dépense précise",
+            "en": "Cover one specific bill"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "cover_one_bill",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": -2500
+                },
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 5
+                },
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 5
+                }
+              ],
+              "text": {
+                "fr": "Tu paies une dépense nommée, pas une obligation sans fin. Tes parents savent ce que ce geste vaut et ce qu’il ne promet pas.",
+                "en": "You cover one named expense, not an endless obligation. Your parents know what the gesture means and what it does not promise."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "berriesAtLeast",
+            "value": 2500
+          }
+        },
+        {
+          "id": "set_limit",
+          "text": {
+            "fr": "Tracer une limite dans la marge",
+            "en": "Write a limit in the margin"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "set_limit",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -3
+                },
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": -3
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu écris ce que tu n’assumeras pas à distance. Le désaccord pique, mais personne ne pourra prétendre plus tard que la promesse était autre.",
+                "en": "You write down what you will not carry from afar. The disagreement stings, but no one can later pretend the promise was different."
+              }
+            }
+          }
+        },
+        {
+          "id": "trust_old_terms",
+          "text": {
+            "fr": "Reprendre vos anciens termes",
+            "en": "Return to your old terms"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "trust_old_terms",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 6
+                },
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 6
+                }
+              ],
+              "text": {
+                "fr": "Parce que la confiance tient encore, vous reprenez les limites que vous aviez déjà apprises à poser ensemble.",
+                "en": "Because the trust still holds, you return to limits you had already learned to set together."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "npcRelationshipAtLeast",
+                "npcId": "player_parent_1",
+                "value": 15
+              },
+              {
+                "type": "npcRelationshipAtLeast",
+                "npcId": "player_parent_2",
+                "value": 15
+              }
+            ]
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_1",
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_civilian_adult_01_father_ledger",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_01",
+        "nodeId": "family_civilian_adult_01_father_ledger",
+        "selectionPriority": 20,
+        "parentNodeIds": [
+          "family_civilian_05_workshop_inheritance",
+          "family_civilian_05_household_savings",
+          "family_civilian_05_orphan_network",
+          "family_civilian_05_business_stewardship",
+          "family_civilian_05_adapted_place",
+          "family_civilian_05_neighborhood_name",
+          "family_civilian_05_father_boundary",
+          "family_civilian_05_two_parent_future",
+          "family_civilian_05_livelihood_fallback",
+          "family_civilian_05_community_fallback"
+        ]
+      },
+      "eligibility": {
+        "type": "npcStatusIs",
+        "npcId": "player_parent_1",
+        "status": "known"
+      },
+      "title": {
+        "fr": "Le reçu plié par ton père",
+        "en": "The Receipt Folded by Your Father"
+      },
+      "text": {
+        "fr": "Une lettre de ton père contient un reçu de l’ancienne échoppe, plié autour de quelques lignes écrites vite. Il ne te demande pas de revenir : il veut savoir si ce travail reste une affaire entre vous ou seulement un souvenir d’enfance.",
+        "en": "A letter from your father contains a receipt from the old shop, folded around a few hurried lines. He is not asking you to return: he wants to know whether that work still belongs between you or only to childhood."
+      },
+      "choices": [
+        {
+          "id": "unfold",
+          "text": {
+            "fr": "Déplier le reçu en premier",
+            "en": "Unfold the receipt first"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "unfold",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_01_father_ledger_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Le prix et la date te ramènent aussitôt à l’échoppe. Sa lettre paraît moins abstraite une fois le travail posé devant toi.",
+                "en": "The price and date pull you straight back to the shop. His letter feels less abstract with the work laid out in front of you."
+              }
+            }
+          }
+        },
+        {
+          "id": "read",
+          "text": {
+            "fr": "Lire ses lignes sans regarder le prix",
+            "en": "Read his lines without checking the price"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "read",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_01_father_ledger_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu laisses le reçu fermé et lis ce qu’il ose enfin demander sans passer par le comptoir.",
+                "en": "You leave the receipt folded and read what he finally dares to ask without hiding behind the counter."
+              }
+            }
+          }
+        },
+        {
+          "id": "reply",
+          "text": {
+            "fr": "Commencer ta réponse avant de finir",
+            "en": "Start your reply before finishing"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "reply",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_01_father_ledger_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu écris les premiers mots avant même d’avoir tout lu. Le ton de ta réponse devient une décision en soi.",
+                "en": "You write the first words before you have finished reading. The tone of your answer becomes a decision of its own."
+              }
+            }
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_1"
+      ]
+    },
+    {
+      "id": "family_civilian_adult_01_father_ledger_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une relation qui n’a plus d’horaires",
+        "en": "A Relationship Without Shop Hours"
+      },
+      "text": {
+        "fr": "Ton père a rayé l’ancienne colonne « heures dues ». Il laisse à la place un espace vide où tu peux écrire ce que vous vous devez encore comme père et enfant adultes.",
+        "en": "Your father crossed out the old “hours owed” column. In its place he left a blank space where you can write what you still owe each other as adult parent and child."
+      },
+      "choices": [
+        {
+          "id": "keep_contact",
+          "text": {
+            "fr": "Fixer un rendez-vous régulier",
+            "en": "Set a regular time to write"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_contact",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 7
+                }
+              ],
+              "text": {
+                "fr": "Tu proposes un rythme que tu peux réellement tenir. Le lien gagne en fiabilité sans redevenir une obligation de travail.",
+                "en": "You propose a rhythm you can actually keep. The bond becomes more reliable without turning back into work."
+              }
+            }
+          }
+        },
+        {
+          "id": "keep_work_separate",
+          "text": {
+            "fr": "Séparer le travail de vos nouvelles",
+            "en": "Keep work out of your letters"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_work_separate",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 3
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "charisma",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu lui demandes de ne plus utiliser les commandes comme prétexte pour écrire. Il le prend mal, puis accepte que votre relation mérite son propre langage.",
+                "en": "You ask him to stop using orders as an excuse to write. He takes it badly, then accepts that your relationship deserves its own language."
+              }
+            }
+          }
+        },
+        {
+          "id": "leave_distance",
+          "text": {
+            "fr": "Ne promettre aucun rythme",
+            "en": "Promise no schedule"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "leave_distance",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -5
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de fabriquer une proximité que ta vie ne permet pas. Ton père garde la lettre, mais votre distance cesse au moins d’être déguisée.",
+                "en": "You refuse to manufacture closeness your life cannot support. Your father keeps the letter, but at least the distance is no longer disguised."
+              }
+            }
+          }
+        },
+        {
+          "id": "answer_old_hurt",
+          "text": {
+            "fr": "Nommer ce qui reste en travers",
+            "en": "Name what still hurts"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer_old_hurt",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -2
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu réponds sans politesse de façade. La discussion devient plus dure, mais enfin précise.",
+                "en": "You answer without polite cover. The conversation gets harsher, but finally precise."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "npcRelationshipAtMost",
+            "npcId": "player_parent_1",
+            "value": -10
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_1"
+      ]
+    },
+    {
+      "id": "family_civilian_adult_01_home_postmark_fallback",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_01",
+        "nodeId": "family_civilian_adult_01_home_postmark_fallback",
+        "selectionPriority": 0,
+        "parentNodeIds": [
+          "family_civilian_05_workshop_inheritance",
+          "family_civilian_05_household_savings",
+          "family_civilian_05_orphan_network",
+          "family_civilian_05_business_stewardship",
+          "family_civilian_05_adapted_place",
+          "family_civilian_05_neighborhood_name",
+          "family_civilian_05_father_boundary",
+          "family_civilian_05_two_parent_future",
+          "family_civilian_05_livelihood_fallback",
+          "family_civilian_05_community_fallback"
+        ],
+        "fallback": true
+      },
+      "eligibility": {
+        "type": "affiliationIs",
+        "affiliationId": "civilian"
+      },
+      "title": {
+        "fr": "Le cachet de l’ancienne adresse",
+        "en": "The Postmark From the Old Address"
+      },
+      "text": {
+        "fr": "Un petit paquet finit par te retrouver après plusieurs réexpéditions. Il vient de ton ancien quartier : une facture réglée, une coupure de journal et trois lignes montrent que la vie familiale a continué sans attendre ton retour.",
+        "en": "A small package finally catches up with you after several redirects. It comes from your old neighborhood: a paid bill, a clipping, and three lines show that family life kept moving without waiting for your return."
+      },
+      "choices": [
+        {
+          "id": "sort",
+          "text": {
+            "fr": "Trier ce qui te concerne encore",
+            "en": "Sort what still concerns you"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "sort",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_01_home_postmark_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu sépares les souvenirs des demandes réelles. Une seule chose exige une réponse maintenant.",
+                "en": "You separate memories from actual requests. Only one thing truly needs an answer now."
+              }
+            }
+          }
+        },
+        {
+          "id": "trace",
+          "text": {
+            "fr": "Suivre les tampons de réexpédition",
+            "en": "Trace the forwarding stamps"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "trace",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_01_home_postmark_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu comptes les ports et bureaux traversés par le paquet. La distance devient une histoire concrète plutôt qu’un silence vague.",
+                "en": "You count the ports and offices the package crossed. Distance becomes a concrete history instead of vague silence."
+              }
+            }
+          }
+        },
+        {
+          "id": "reply",
+          "text": {
+            "fr": "Écrire au dernier expéditeur",
+            "en": "Write to the last sender"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "reply",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_01_home_postmark_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu réponds à la personne qui a réussi à te retrouver, sans supposer que tout le quartier parle d’une seule voix.",
+                "en": "You answer the person who actually found you, without pretending the whole neighborhood speaks with one voice."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_01_home_postmark_fallback_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une adresse qui n’est plus une laisse",
+        "en": "An Address That Is No Longer a Leash"
+      },
+      "text": {
+        "fr": "Le paquet ne contient aucun ordre de rentrer. Il te force seulement à décider si l’ancienne adresse reste un endroit où l’on peut encore te joindre.",
+        "en": "The package contains no order to come home. It only forces you to decide whether the old address remains somewhere people can still reach you through."
+      },
+      "choices": [
+        {
+          "id": "keep_channel",
+          "text": {
+            "fr": "Donner une adresse de réponse",
+            "en": "Leave a reply address"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_channel",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "charisma",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu laisses un moyen précis de te joindre sans promettre où tu seras ensuite.",
+                "en": "You leave one precise way to reach you without promising where you will be next."
+              }
+            }
+          }
+        },
+        {
+          "id": "send_help",
+          "text": {
+            "fr": "Renvoyer une petite aide",
+            "en": "Send back a small contribution"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "send_help",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": -2500
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu joins une somme limitée pour une dépense nommée. Le geste aide sans recréer une dette familiale illimitée.",
+                "en": "You send a limited amount for one named expense. The gesture helps without rebuilding an unlimited family debt."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "berriesAtLeast",
+            "value": 2500
+          }
+        },
+        {
+          "id": "close_channel",
+          "text": {
+            "fr": "Ne laisser aucune adresse",
+            "en": "Leave no forwarding address"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "close_channel",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu réponds une dernière fois sans donner de nouvelle adresse. La distance devient volontaire plutôt qu’accidentelle.",
+                "en": "You answer once without giving a new address. The distance becomes deliberate rather than accidental."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_02_career_name_reaches_home",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_02",
+        "nodeId": "family_civilian_adult_02_career_name_reaches_home",
+        "selectionPriority": 30,
+        "parentNodeIds": [
+          "family_civilian_adult_01_two_parent_parcel",
+          "family_civilian_adult_01_father_ledger",
+          "family_civilian_adult_01_home_postmark_fallback"
+        ]
+      },
+      "eligibility": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      },
+      "title": {
+        "fr": "Ton métier arrive avant ta lettre",
+        "en": "Your Career Arrives Before Your Letter"
+      },
+      "text": {
+        "fr": "Un avis public portant ton nom et ta carrière atteint l’ancien quartier avant tes propres nouvelles. Des voisins l’ont déjà montré au foyer ; la question n’est plus de cacher ce que tu es devenu, mais de décider ce que ta famille doit en porter.",
+        "en": "A public notice bearing your name and career reaches the old neighborhood before your own news does. Neighbors already showed it around; the question is no longer hiding what you became, but deciding what your family should have to carry."
+      },
+      "choices": [
+        {
+          "id": "read",
+          "text": {
+            "fr": "Lire ce que les autres ont ajouté dans la marge",
+            "en": "Read what others wrote in the margin"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "read",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_02_career_name_reaches_home_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Des commentaires de voisinage entourent ton nom. Certains sont fiers, d’autres inquiets, aucun n’est neutre.",
+                "en": "Neighborhood comments crowd around your name. Some are proud, others worried, none neutral."
+              }
+            }
+          }
+        },
+        {
+          "id": "answer",
+          "text": {
+            "fr": "Écrire ta version des faits",
+            "en": "Write your version of events"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_02_career_name_reaches_home_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu prépares une réponse qui ne demande pas à ta famille de défendre une histoire qu’elle ne connaît pas.",
+                "en": "You prepare an answer that does not ask your family to defend a story they do not know."
+              }
+            }
+          }
+        },
+        {
+          "id": "cut",
+          "text": {
+            "fr": "Découper seulement ton nom",
+            "en": "Cut out only your name"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "cut",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_02_career_name_reaches_home_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu retires ton nom de l’avis et laisses le reste. L’image suffit à montrer combien ta carrière a pénétré une vie qui n’était pas la sienne.",
+                "en": "You cut your name out of the notice and leave the rest. The gap is enough to show how far your career entered a life that was not its own."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_02_career_name_reaches_home_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Ce que la famille n’a pas choisi",
+        "en": "What the Family Never Chose"
+      },
+      "text": {
+        "fr": "Tu ne peux pas rendre ta carrière privée, mais tu peux décider quelles explications, protections ou silences tu demandes à ceux qui t’ont connu avant elle.",
+        "en": "You cannot make your career private again, but you can decide what explanations, protections, or silence you ask from people who knew you before it."
+      },
+      "choices": [
+        {
+          "id": "plain_truth",
+          "text": {
+            "fr": "Donner une version sobre",
+            "en": "Give them the plain version"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "plain_truth",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "charisma",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu racontes ce qui les concerne et rien de plus. Ta famille reçoit des faits au lieu d’un rôle à jouer.",
+                "en": "You tell them what concerns them and nothing more. Your family gets facts instead of a role to perform."
+              }
+            }
+          }
+        },
+        {
+          "id": "pirate_own_flag",
+          "text": {
+            "fr": "Assumer ton pavillon",
+            "en": "Own the flag as yours"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "pirate_own_flag",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses que le quartier transforme ta famille en équipage imaginaire. Ce pavillon est ton choix, pas leur héritage.",
+                "en": "You refuse to let the neighborhood turn your family into an imaginary crew. That flag is your choice, not their inheritance."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          }
+        },
+        {
+          "id": "marine_separate_uniform",
+          "text": {
+            "fr": "Séparer l’uniforme du nom familial",
+            "en": "Separate the uniform from the family name"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "marine_separate_uniform",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "charisma",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu précises que ton service n’accorde aucun statut à ta famille et ne lui impose aucune loyauté institutionnelle.",
+                "en": "You make clear that your service grants your family no status and imposes no institutional loyalty on them."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          }
+        },
+        {
+          "id": "revolutionary_cut_details",
+          "text": {
+            "fr": "Couper les détails opérationnels",
+            "en": "Cut out operational details"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "revolutionary_cut_details",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu leur donnes assez de vérité pour comprendre le risque, pas assez pour en faire des dépositaires involontaires.",
+                "en": "You give them enough truth to understand the risk, not enough to turn them into unwilling keepers of operational details."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_02_civilian_return_offer",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_02",
+        "nodeId": "family_civilian_adult_02_civilian_return_offer",
+        "selectionPriority": 20,
+        "parentNodeIds": [
+          "family_civilian_adult_01_two_parent_parcel",
+          "family_civilian_adult_01_father_ledger",
+          "family_civilian_adult_01_home_postmark_fallback"
+        ]
+      },
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "any",
+            "conditions": [
+              {
+                "type": "hasPlayed",
+                "eventId": "family_civilian_05_workshop_inheritance"
+              },
+              {
+                "type": "hasPlayed",
+                "eventId": "family_civilian_05_business_stewardship"
+              },
+              {
+                "type": "hasPlayed",
+                "eventId": "family_civilian_05_two_parent_future"
+              },
+              {
+                "type": "hasPlayed",
+                "eventId": "family_civilian_05_livelihood_fallback"
+              },
+              {
+                "type": "hasPlayed",
+                "eventId": "family_civilian_05_adapted_place"
+              }
+            ]
+          }
+        ]
+      },
+      "title": {
+        "fr": "Une semaine de travail, pas un retour",
+        "en": "A Week of Work, Not a Return"
+      },
+      "text": {
+        "fr": "Une ancienne relation de travail te fait suivre une liasse de commandes et propose de te payer une semaine pour vérifier les comptes à distance. Le travail te rejoint là où tu es, sans transformer l’aide familiale en ordre de retour.",
+        "en": "An old work contact forwards a bundle of orders and offers to pay you for a week of checking the accounts remotely. The work reaches you where you are, without turning family help into an order to return."
+      },
+      "choices": [
+        {
+          "id": "terms",
+          "text": {
+            "fr": "Demander les dates et le prix",
+            "en": "Ask for dates and pay"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "terms",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_02_civilian_return_offer_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu réclames les termes avant de répondre. L’invitation devient un contrat court plutôt qu’un appel sentimental au devoir.",
+                "en": "You ask for the terms before answering. The invitation becomes a short contract instead of a sentimental call to duty."
+              }
+            }
+          }
+        },
+        {
+          "id": "work",
+          "text": {
+            "fr": "Demander la tâche exacte",
+            "en": "Ask for the exact task"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "work",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_02_civilian_return_offer_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes ce qu’ils veulent réellement de toi. Le travail tient en quelques lignes et cesse de porter tout le poids du mot « famille ».",
+                "en": "You ask what they actually need from you. The job fits in a few lines and stops carrying the whole weight of the word “family.”"
+              }
+            }
+          }
+        },
+        {
+          "id": "decline",
+          "text": {
+            "fr": "Préparer un refus sans excuse",
+            "en": "Prepare a refusal without an excuse"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "decline",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_02_civilian_return_offer_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu rédiges un non propre, sans inventer de tempête ni de maladie. Leur offre mérite une réponse, pas une justification infinie.",
+                "en": "You draft a clean no without inventing a storm or illness. Their offer deserves an answer, not endless justification."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_02_civilian_return_offer_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une offre avec une fin écrite",
+        "en": "An Offer With an End Date"
+      },
+      "text": {
+        "fr": "Le message précise enfin le prix, l’échéance et les pages à renvoyer. Tu peux aider depuis ta vie actuelle sans laisser un travail temporaire redevenir une place réservée au foyer.",
+        "en": "The message finally states the price, deadline, and pages to send back. You can help from your current life without letting temporary work become a reserved place back home."
+      },
+      "choices": [
+        {
+          "id": "take_contract",
+          "text": {
+            "fr": "Accepter la semaine à distance",
+            "en": "Take the remote week"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "take_contract",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": 2500
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "intelligence",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes le travail limité, corriges la liasse et renvoies les comptes avant l’échéance. La famille obtient de l’aide sans récupérer ton quotidien.",
+                "en": "You take the limited job, correct the bundle, and send the accounts back before the deadline. The family gets help without reclaiming your daily life."
+              }
+            }
+          }
+        },
+        {
+          "id": "refer_someone",
+          "text": {
+            "fr": "Proposer quelqu’un d’autre",
+            "en": "Refer someone else"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "refer_someone",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "charisma",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu aides à résoudre le besoin sans te rendre indispensable. L’offre cesse d’être un test de loyauté.",
+                "en": "You help solve the need without making yourself indispensable. The offer stops being a loyalty test."
+              }
+            }
+          }
+        },
+        {
+          "id": "decline_cleanly",
+          "text": {
+            "fr": "Refuser sans rompre",
+            "en": "Decline without cutting ties"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "decline_cleanly",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses le contrat et gardes la conversation ouverte. Dire non n’efface ni ton enfance ni ta compétence.",
+                "en": "You decline the contract and keep the conversation open. Saying no erases neither your childhood nor your skill."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_02_distance_account_fallback",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_02",
+        "nodeId": "family_civilian_adult_02_distance_account_fallback",
+        "selectionPriority": 0,
+        "parentNodeIds": [
+          "family_civilian_adult_01_two_parent_parcel",
+          "family_civilian_adult_01_father_ledger",
+          "family_civilian_adult_01_home_postmark_fallback"
+        ],
+        "fallback": true
+      },
+      "eligibility": {
+        "type": "affiliationIs",
+        "affiliationId": "civilian"
+      },
+      "title": {
+        "fr": "Quatre ans de nouvelles inégales",
+        "en": "Four Years of Uneven News"
+      },
+      "text": {
+        "fr": "Quatre ans après le premier message adulte, une liasse de réponses montre les trous : mois sans nouvelles, changements d’adresse, promesses tenues trop tard. Personne ne te réclame un rattrapage complet ; il faut seulement décider ce que tu veux encore entretenir.",
+        "en": "Four years after the first adult message, a bundle of replies shows the gaps: months without news, changed addresses, promises kept too late. No one asks you to catch up on everything; you only have to decide what you still want to maintain."
+      },
+      "choices": [
+        {
+          "id": "timeline",
+          "text": {
+            "fr": "Mettre les lettres dans l’ordre",
+            "en": "Put the letters in order"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "timeline",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_02_distance_account_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu reconstruis ce qui s’est réellement passé au lieu de remplir les silences avec des suppositions.",
+                "en": "You reconstruct what actually happened instead of filling the silences with assumptions."
+              }
+            }
+          }
+        },
+        {
+          "id": "names",
+          "text": {
+            "fr": "Rayer les adresses mortes",
+            "en": "Cross out dead addresses"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "names",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_02_distance_account_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu retires les contacts qui ne répondent plus. Le réseau familial devient plus petit et plus honnête.",
+                "en": "You remove contacts that no longer answer. The family network becomes smaller and more honest."
+              }
+            }
+          }
+        },
+        {
+          "id": "one",
+          "text": {
+            "fr": "Choisir une personne à rappeler",
+            "en": "Choose one person to contact"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "one",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_02_distance_account_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de répondre à tout le monde par culpabilité. Une relation précise passe avant un rattrapage impossible.",
+                "en": "You refuse to answer everyone out of guilt. One specific relationship comes before an impossible catch-up."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_02_distance_account_fallback_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Ce qui mérite encore ton temps",
+        "en": "What Still Deserves Your Time"
+      },
+      "text": {
+        "fr": "La pile devient assez courte pour être lisible. Tu peux entretenir un lien précis, répondre seulement aux urgences ou accepter que certaines relations se soient défaites.",
+        "en": "The pile becomes short enough to read. You can maintain one precise bond, answer only emergencies, or accept that some relationships have come apart."
+      },
+      "choices": [
+        {
+          "id": "one_link",
+          "text": {
+            "fr": "Entretenir un lien précis",
+            "en": "Maintain one specific tie"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "one_link",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "charisma",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu choisis une relation que tu peux réellement nourrir au lieu d’un foyer imaginaire intact.",
+                "en": "You choose one relationship you can actually maintain instead of an imaginary intact household."
+              }
+            }
+          }
+        },
+        {
+          "id": "emergencies_only",
+          "text": {
+            "fr": "Répondre seulement aux urgences",
+            "en": "Answer emergencies only"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "emergencies_only",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu annonces clairement la limite. Elle paraît froide, mais elle évite des promesses que ta vie ne peut pas tenir.",
+                "en": "You state the limit clearly. It sounds cold, but it prevents promises your life cannot keep."
+              }
+            }
+          }
+        },
+        {
+          "id": "let_go",
+          "text": {
+            "fr": "Laisser certaines lettres sans réponse",
+            "en": "Let some letters remain unanswered"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "let_go",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes que toutes les relations d’enfance ne survivent pas à la distance. Le manque reste réel sans devenir une dette.",
+                "en": "You accept that not every childhood relationship survives distance. The loss remains real without becoming a debt."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_03_father_shorter_hours",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_03",
+        "nodeId": "family_civilian_adult_03_father_shorter_hours",
+        "selectionPriority": 20,
+        "parentNodeIds": [
+          "family_civilian_adult_02_career_name_reaches_home",
+          "family_civilian_adult_02_civilian_return_offer",
+          "family_civilian_adult_02_distance_account_fallback"
+        ]
+      },
+      "eligibility": {
+        "type": "npcStatusIs",
+        "npcId": "player_parent_1",
+        "status": "known"
+      },
+      "title": {
+        "fr": "Les heures raccourcies de ton père",
+        "en": "Your Father’s Shorter Hours"
+      },
+      "text": {
+        "fr": "Ton père t’envoie le nouvel horaire de l’échoppe : il ferme désormais plusieurs jours plus tôt, parce que ses mains et son dos ne tiennent plus les mêmes semaines. Il ne demande pas que tu reprennes sa place ; il te demande quoi faire de ce qui devient trop lourd.",
+        "en": "Your father sends the shop’s new hours: he now closes early several days because his hands and back no longer carry the same weeks. He is not asking you to take his place; he is asking what to do with what has become too heavy."
+      },
+      "choices": [
+        {
+          "id": "compare",
+          "text": {
+            "fr": "Comparer avec l’ancien horaire",
+            "en": "Compare it with the old schedule"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "compare",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_03_father_shorter_hours_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu mesures ce qu’il a déjà réduit sans te le dire. Le problème n’est plus futur : il a commencé.",
+                "en": "You measure what he already cut without telling you. The problem is no longer future; it has begun."
+              }
+            }
+          }
+        },
+        {
+          "id": "ask",
+          "text": {
+            "fr": "Demander ce qu’il veut abandonner",
+            "en": "Ask what he wants to give up"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_03_father_shorter_hours_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu lui demandes quelles tâches il déteste encore et lesquelles comptent réellement pour lui.",
+                "en": "You ask which tasks he still hates and which ones genuinely matter to him."
+              }
+            }
+          }
+        },
+        {
+          "id": "money",
+          "text": {
+            "fr": "Compter ce qu’une aide coûterait",
+            "en": "Price out some help"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "money",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_03_father_shorter_hours_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu chiffres une aide extérieure avant de proposer ton propre retour. Une solution concrète apparaît entre « tout faire » et « fermer ».",
+                "en": "You price outside help before offering your own return. A concrete option appears between “do everything” and “close.”"
+              }
+            }
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_1"
+      ]
+    },
+    {
+      "id": "family_civilian_adult_03_father_shorter_hours_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Aider sans reprendre sa vie",
+        "en": "Help Without Taking Over His Life"
+      },
+      "text": {
+        "fr": "Ton père accepte de parler de réduction, d’aide payée ou de fermeture partielle. Pour la première fois, vieillir n’est pas traité comme un échec de travail.",
+        "en": "Your father agrees to discuss cutting hours, paid help, or partial closure. For the first time, aging is not treated as a failure to work."
+      },
+      "choices": [
+        {
+          "id": "fund_help",
+          "text": {
+            "fr": "Payer une aide ponctuelle",
+            "en": "Pay for temporary help"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "fund_help",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": -5000
+                },
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 8
+                }
+              ],
+              "text": {
+                "fr": "Tu finances quelques semaines d’aide au lieu de promettre ton retour. Ton père garde du temps et toi ta trajectoire.",
+                "en": "You fund a few weeks of help instead of promising to return. Your father keeps time, and you keep your trajectory."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "berriesAtLeast",
+            "value": 5000
+          }
+        },
+        {
+          "id": "tell_him_close",
+          "text": {
+            "fr": "Lui dire de fermer davantage",
+            "en": "Tell him to close more"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "tell_him_close",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 4
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de traiter chaque heure supprimée comme une perte. Il râle, puis barre deux créneaux de plus.",
+                "en": "You refuse to treat every removed hour as a loss. He grumbles, then crosses out two more shifts."
+              }
+            }
+          }
+        },
+        {
+          "id": "no_return_promise",
+          "text": {
+            "fr": "Refuser de promettre ton retour",
+            "en": "Refuse to promise you will return"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "no_return_promise",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -4
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "charisma",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu lui dis clairement qu’il doit décider sans compter sur ton remplacement futur. La franchise fait mal, mais elle lui rend son choix.",
+                "en": "You tell him clearly he has to decide without counting on you as a future replacement. The honesty hurts, but gives the decision back to him."
+              }
+            }
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_1"
+      ]
+    },
+    {
+      "id": "family_civilian_adult_03_neighborhood_request",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_03",
+        "nodeId": "family_civilian_adult_03_neighborhood_request",
+        "selectionPriority": 25,
+        "parentNodeIds": [
+          "family_civilian_adult_02_career_name_reaches_home",
+          "family_civilian_adult_02_civilian_return_offer",
+          "family_civilian_adult_02_distance_account_fallback"
+        ]
+      },
+      "eligibility": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "familyStructureIs",
+            "familyStructureId": "orphan"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_civilian_05_orphan_network"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_civilian_05_neighborhood_name"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_civilian_05_community_fallback"
+          }
+        ]
+      },
+      "title": {
+        "fr": "Ton nom demandé pour quelqu’un d’autre",
+        "en": "Your Name Requested for Someone Else"
+      },
+      "text": {
+        "fr": "Un adolescent du quartier cherche une chambre ou un premier emploi loin de chez lui. Une lettre te demande une référence, parce que ton nom a déjà servi de porte ou de garantie — et parce que tu sais ce qu’une promesse vague peut coûter.",
+        "en": "A teenager from the old neighborhood is looking for a room or first job away from home. A letter asks for your reference because your name has already opened doors—and because you know what a vague promise can cost."
+      },
+      "choices": [
+        {
+          "id": "facts",
+          "text": {
+            "fr": "Demander les faits avant de signer",
+            "en": "Ask for facts before signing"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "facts",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_03_neighborhood_request_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu réclames ce que l’adolescent sait faire, ce qu’il cherche et qui répondra si ça tourne mal.",
+                "en": "You ask what the teenager can do, what they need, and who answers if it goes wrong."
+              }
+            }
+          }
+        },
+        {
+          "id": "call",
+          "text": {
+            "fr": "Écrire directement à l’adolescent",
+            "en": "Write directly to the teenager"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "call",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_03_neighborhood_request_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses d’être seulement un nom sur une feuille. Tu veux savoir ce qu’il demande lui-même.",
+                "en": "You refuse to be only a name on a page. You want to know what the teenager is asking for personally."
+              }
+            }
+          }
+        },
+        {
+          "id": "refuse",
+          "text": {
+            "fr": "Préparer un refus précis",
+            "en": "Prepare a precise refusal"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "refuse",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_03_neighborhood_request_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses l’idée qu’une enfance commune suffise à garantir quelqu’un. Si tu dis non, tu expliqueras pourquoi.",
+                "en": "You reject the idea that shared childhood is enough to guarantee someone. If you say no, you will say why."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_03_neighborhood_request_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une faveur qui engage ton nom",
+        "en": "A Favor That Uses Your Name"
+      },
+      "text": {
+        "fr": "La demande devient précise : une adresse, une durée, une personne responsable. Tu peux maintenant aider, limiter ta garantie ou refuser sans laisser l’autre dans le flou.",
+        "en": "The request becomes precise: an address, a duration, and a responsible person. You can now help, limit your guarantee, or refuse without leaving them in the dark."
+      },
+      "choices": [
+        {
+          "id": "sign",
+          "text": {
+            "fr": "Signer une référence limitée",
+            "en": "Sign a limited reference"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "sign",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "charisma",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu garantis seulement ce que tu sais vrai. Ton nom ouvre une porte sans devenir une caution pour toute une vie.",
+                "en": "You guarantee only what you know to be true. Your name opens one door without becoming a lifetime bond."
+              }
+            }
+          }
+        },
+        {
+          "id": "offer_cash",
+          "text": {
+            "fr": "Envoyer une petite avance",
+            "en": "Send a small advance"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "offer_cash",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": -2500
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu préfères donner une aide limitée plutôt que prêter une réputation que tu ne peux pas contrôler.",
+                "en": "You prefer to give limited help rather than lend a reputation you cannot control."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "berriesAtLeast",
+            "value": 2500
+          }
+        },
+        {
+          "id": "refuse_name",
+          "text": {
+            "fr": "Refuser d’engager ton nom",
+            "en": "Refuse to put your name on it"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "refuse_name",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "charisma",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu expliques ce que tu ignores et refuses de transformer une solidarité réelle en garantie mensongère.",
+                "en": "You explain what you do not know and refuse to turn real solidarity into a dishonest guarantee."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_03_household_changes_fallback",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_03",
+        "nodeId": "family_civilian_adult_03_household_changes_fallback",
+        "selectionPriority": 0,
+        "parentNodeIds": [
+          "family_civilian_adult_02_career_name_reaches_home",
+          "family_civilian_adult_02_civilian_return_offer",
+          "family_civilian_adult_02_distance_account_fallback"
+        ],
+        "fallback": true
+      },
+      "eligibility": {
+        "type": "affiliationIs",
+        "affiliationId": "civilian"
+      },
+      "title": {
+        "fr": "La photo de la devanture",
+        "en": "The Photograph of the Storefront"
+      },
+      "text": {
+        "fr": "Une photo récente montre l’endroit où tu as grandi : enseigne changée, pièce louée, comptoir déplacé ou porte murée. Le message au dos ne demande aucune permission. Il te prévient simplement que le décor de ton enfance ne t’attend pas intact.",
+        "en": "A recent photograph shows the place where you grew up: a changed sign, rented room, moved counter, or sealed doorway. The note on the back asks no permission. It simply warns that the scenery of your childhood is not waiting intact."
+      },
+      "choices": [
+        {
+          "id": "details",
+          "text": {
+            "fr": "Chercher ce qui a vraiment changé",
+            "en": "Look for what actually changed"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "details",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_03_household_changes_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu observes les détails avant de décider ce que cette image te fait. Certains repères sont encore là, d’autres non.",
+                "en": "You study the details before deciding what the image means to you. Some landmarks remain; others do not."
+              }
+            }
+          }
+        },
+        {
+          "id": "back",
+          "text": {
+            "fr": "Lire le dos jusqu’au bout",
+            "en": "Read the back all the way through"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "back",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_03_household_changes_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Les quelques lignes expliquent les changements sans demander ton approbation. Tu n’es plus copropriétaire automatique de chaque souvenir.",
+                "en": "The few lines explain the changes without asking your approval. You are no longer an automatic co-owner of every memory."
+              }
+            }
+          }
+        },
+        {
+          "id": "keep",
+          "text": {
+            "fr": "Glisser la photo avec les anciens papiers",
+            "en": "File it with the old papers"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_03_household_changes_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu gardes une trace du nouveau lieu au lieu de protéger mentalement une version qui n’existe plus.",
+                "en": "You keep a record of the new place instead of protecting a version that no longer exists."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_03_household_changes_fallback_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Un foyer qui sait vivre sans toi",
+        "en": "A Home That Knows How to Live Without You"
+      },
+      "text": {
+        "fr": "La photo ne ferme aucune porte ; elle retire seulement l’idée que revenir signifierait reprendre exactement ta place d’avant.",
+        "en": "The photograph closes no doors; it only removes the idea that returning would mean stepping back into exactly the place you left."
+      },
+      "choices": [
+        {
+          "id": "accept_change",
+          "text": {
+            "fr": "Accepter le nouveau plan",
+            "en": "Accept the new layout"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "accept_change",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu laisses le lieu devenir autre chose sans le prendre comme un effacement personnel.",
+                "en": "You let the place become something else without treating it as a personal erasure."
+              }
+            }
+          }
+        },
+        {
+          "id": "ask_one_kept",
+          "text": {
+            "fr": "Demander ce qui a été gardé",
+            "en": "Ask what they kept"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_one_kept",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes un seul repère resté volontairement. La réponse donne plus de poids à ce choix qu’à une pièce entière figée pour toi.",
+                "en": "You ask for one thing they deliberately kept. The answer gives that choice more weight than an entire room frozen for you."
+              }
+            }
+          }
+        },
+        {
+          "id": "feel_loss",
+          "text": {
+            "fr": "Admettre que ça te blesse",
+            "en": "Admit that it hurts"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "feel_loss",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu ne maquilles pas la perte en maturité parfaite. Le lieu a changé, et une part de toi le vit mal.",
+                "en": "You do not disguise the loss as perfect maturity. The place changed, and part of you resents it."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_04_career_consequences_at_home",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_04",
+        "nodeId": "family_civilian_adult_04_career_consequences_at_home",
+        "selectionPriority": 30,
+        "parentNodeIds": [
+          "family_civilian_adult_03_father_shorter_hours",
+          "family_civilian_adult_03_neighborhood_request",
+          "family_civilian_adult_03_household_changes_fallback"
+        ]
+      },
+      "eligibility": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      },
+      "title": {
+        "fr": "Les questions qui arrivent chez eux",
+        "en": "The Questions That Reach Them"
+      },
+      "text": {
+        "fr": "Des inconnus ont commencé à poser des questions sur toi dans l’ancien quartier : admiration, méfiance ou simple curiosité selon ta carrière. Une lettre te demande une seule chose : quelle réponse ta famille peut-elle donner sans devenir ton bureau, ton alibi ou ta vitrine ?",
+        "en": "Strangers have started asking about you in the old neighborhood: admiration, suspicion, or plain curiosity depending on your career. A letter asks one thing: what can your family say without becoming your office, alibi, or showcase?"
+      },
+      "choices": [
+        {
+          "id": "script",
+          "text": {
+            "fr": "Écrire une réponse d’une phrase",
+            "en": "Write a one-sentence answer"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "script",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_04_career_consequences_at_home_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu cherches une phrase que n’importe quel proche puisse répéter sans apprendre tes secrets ni mentir pour toi.",
+                "en": "You look for one sentence any relative can repeat without learning your secrets or lying for you."
+              }
+            }
+          }
+        },
+        {
+          "id": "boundary",
+          "text": {
+            "fr": "Lister ce qu’ils ne doivent jamais confirmer",
+            "en": "List what they should never confirm"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "boundary",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_04_career_consequences_at_home_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu transformes les zones dangereuses en limites simples plutôt qu’en consignes opaques.",
+                "en": "You turn dangerous subjects into simple limits instead of opaque instructions."
+              }
+            }
+          }
+        },
+        {
+          "id": "silence",
+          "text": {
+            "fr": "Autoriser le silence complet",
+            "en": "Allow complete silence"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "silence",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_04_career_consequences_at_home_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu leur rappelles qu’ils n’ont aucune obligation de répondre au monde au nom de ta carrière.",
+                "en": "You remind them they owe the world no answers on behalf of your career."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_04_career_consequences_at_home_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Un nom public, une famille privée",
+        "en": "A Public Name, a Private Family"
+      },
+      "text": {
+        "fr": "La réponse doit protéger leur autonomie autant que tes informations. Ce que tu choisis maintenant dira au quartier si tes proches sont des relais, des témoins ou simplement des gens qui t’ont connu.",
+        "en": "The answer has to protect their autonomy as much as your information. What you choose now tells the neighborhood whether your relatives are contacts, witnesses, or simply people who knew you."
+      },
+      "choices": [
+        {
+          "id": "generic_boundary",
+          "text": {
+            "fr": "Dire : « C’est sa vie, demandez-lui »",
+            "en": "Say: “It’s their life—ask them”"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "generic_boundary",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "charisma",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu leur donnes une phrase qui ne promet rien et ne ment pas. La frontière devient facile à tenir.",
+                "en": "You give them a line that promises nothing and tells no lie. The boundary becomes easy to hold."
+              }
+            }
+          }
+        },
+        {
+          "id": "pirate_no_harbor",
+          "text": {
+            "fr": "Interdire d’utiliser l’adresse comme refuge",
+            "en": "Forbid using the address as a safe harbor"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "pirate_no_harbor",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "charisma",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses que ton pavillon transforme le foyer en annexe de tes risques. Cette limite coûte du confort, pas leur sécurité.",
+                "en": "You refuse to let your flag turn home into an annex of your risks. The boundary costs convenience, not their safety."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          }
+        },
+        {
+          "id": "marine_no_favor",
+          "text": {
+            "fr": "Refuser tout passe-droit pour eux",
+            "en": "Refuse any institutional favor for them"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "marine_no_favor",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes explicitement que ton service n’achète ni traitement de faveur ni obligation pour ta famille.",
+                "en": "You explicitly ask that your service buy neither favors nor obligations for your family."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          }
+        },
+        {
+          "id": "revolutionary_no_cell",
+          "text": {
+            "fr": "Couper toute fonction de relais",
+            "en": "Cut off any relay role"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "revolutionary_no_cell",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu gardes ton foyer hors des transmissions et des rendez-vous. Ils n’ont pas choisi ta lutte et ne serviront pas de boîte aux lettres.",
+                "en": "You keep home out of messages and meetings. They did not choose your struggle and will not become a dead drop."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_04_old_work_claim",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_04",
+        "nodeId": "family_civilian_adult_04_old_work_claim",
+        "selectionPriority": 20,
+        "parentNodeIds": [
+          "family_civilian_adult_03_father_shorter_hours",
+          "family_civilian_adult_03_neighborhood_request",
+          "family_civilian_adult_03_household_changes_fallback"
+        ]
+      },
+      "eligibility": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "family_civilian_05_workshop_inheritance"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_civilian_05_business_stewardship"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_civilian_05_adapted_place"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_civilian_05_two_parent_future"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_civilian_05_livelihood_fallback"
+          }
+        ]
+      },
+      "title": {
+        "fr": "La commande signée de ton ancien nom",
+        "en": "The Order Signed With Your Old Name"
+      },
+      "text": {
+        "fr": "Un client a présenté une vieille recommandation portant ton nom pour obtenir un service du foyer. Personne ne l’a encore acceptée : la famille veut savoir si cet ancien accès signifie toujours quelque chose ou si le papier doit enfin cesser de circuler.",
+        "en": "A customer presented an old recommendation bearing your name to obtain a service from home. Nobody accepted it yet: the family wants to know whether that old access still means anything or whether the paper should finally stop circulating."
+      },
+      "choices": [
+        {
+          "id": "read",
+          "text": {
+            "fr": "Lire la recommandation originale",
+            "en": "Read the original recommendation"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "read",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_04_old_work_claim_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu regardes exactement ce que ton nom promettait à l’époque. Le document est moins large que le client ne le prétend.",
+                "en": "You read exactly what your name promised back then. The document is narrower than the customer claims."
+              }
+            }
+          }
+        },
+        {
+          "id": "call",
+          "text": {
+            "fr": "Demander pourquoi il l’a gardée",
+            "en": "Ask why the client kept it"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "call",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_04_old_work_claim_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu veux savoir si ce papier a dormi dans un tiroir ou servi plusieurs fois sans que personne ne te le dise.",
+                "en": "You want to know whether the paper slept in a drawer or was used repeatedly without your knowledge."
+              }
+            }
+          }
+        },
+        {
+          "id": "void",
+          "text": {
+            "fr": "Préparer une copie barrée",
+            "en": "Prepare a voided copy"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "void",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_04_old_work_claim_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu envisages de mettre fin à l’ambiguïté sans accuser le client d’avoir inventé le document.",
+                "en": "You consider ending the ambiguity without accusing the customer of inventing the document."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_04_old_work_claim_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Ce que ton nom autorise encore",
+        "en": "What Your Name Still Authorizes"
+      },
+      "text": {
+        "fr": "Le client accepte que la vieille recommandation ne vaille pas indéfiniment. Il reste à décider si tu honores ce cas, si tu rediriges la demande ou si tu clos l’ancien accès.",
+        "en": "The customer accepts that the old recommendation cannot last forever. You still have to decide whether to honor this case, redirect it, or close the old access."
+      },
+      "choices": [
+        {
+          "id": "honor_once",
+          "text": {
+            "fr": "L’honorer une dernière fois",
+            "en": "Honor it once"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "honor_once",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "charisma",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes ce cas précis et dates clairement la fin de l’ancien accord. La faveur ne devient pas un droit transmissible.",
+                "en": "You honor this one case and clearly date the end of the old agreement. The favor does not become a transferable right."
+              }
+            }
+          }
+        },
+        {
+          "id": "redirect",
+          "text": {
+            "fr": "Rediriger vers le bon contact",
+            "en": "Redirect them to the right contact"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "redirect",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "intelligence",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu aides le client à trouver la bonne personne sans utiliser ton nom comme monnaie héritée.",
+                "en": "You help the client find the right person without using your name as inherited currency."
+              }
+            }
+          }
+        },
+        {
+          "id": "void",
+          "text": {
+            "fr": "Annuler l’ancien accès",
+            "en": "Void the old access"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "void",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "charisma",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu fais barrer le document. Le foyer perd un raccourci commercial, mais gagne une limite que personne ne peut mal lire.",
+                "en": "You have the document struck through. Home loses a commercial shortcut but gains a boundary nobody can misread."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_04_no_reserved_room_fallback",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_04",
+        "nodeId": "family_civilian_adult_04_no_reserved_room_fallback",
+        "selectionPriority": 0,
+        "parentNodeIds": [
+          "family_civilian_adult_03_father_shorter_hours",
+          "family_civilian_adult_03_neighborhood_request",
+          "family_civilian_adult_03_household_changes_fallback"
+        ],
+        "fallback": true
+      },
+      "eligibility": {
+        "type": "affiliationIs",
+        "affiliationId": "civilian"
+      },
+      "title": {
+        "fr": "La chambre qui n’est plus gardée",
+        "en": "The Room No Longer Kept for You"
+      },
+      "text": {
+        "fr": "Une lettre prévient que l’espace autrefois réservé pour toi sert désormais à quelqu’un d’autre : locataire, apprenti, parent âgé ou simple stockage. On ne te chasse pas ; on cesse seulement d’organiser une maison entière autour d’un retour hypothétique.",
+        "en": "A letter says the space once kept for you now serves someone else: a tenant, apprentice, aging relative, or plain storage. Nobody is throwing you out; the household is simply done arranging an entire home around a hypothetical return."
+      },
+      "choices": [
+        {
+          "id": "ask",
+          "text": {
+            "fr": "Demander où tu dormirais en visite",
+            "en": "Ask where you would sleep on a visit"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_04_no_reserved_room_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu poses la question pratique au lieu de réclamer l’ancienne pièce. Une solution temporaire existe déjà.",
+                "en": "You ask the practical question instead of claiming the old room. A temporary solution already exists."
+              }
+            }
+          }
+        },
+        {
+          "id": "object",
+          "text": {
+            "fr": "Dire que ça te blesse",
+            "en": "Say that it hurts"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "object",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_04_no_reserved_room_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de jouer l’adulte parfaitement détaché. Le foyer peut changer et la perte peut quand même faire mal.",
+                "en": "You refuse to play the perfectly detached adult. Home can change and the loss can still hurt."
+              }
+            }
+          }
+        },
+        {
+          "id": "approve",
+          "text": {
+            "fr": "Répondre qu’ils ont bien fait",
+            "en": "Tell them they were right to use it"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "approve",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_04_no_reserved_room_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu confirmes qu’une pièce vide n’était pas une preuve d’amour. Le lieu peut servir aux vivants sans t’effacer.",
+                "en": "You confirm that an empty room was never proof of love. The space can serve the living without erasing you."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_04_no_reserved_room_fallback_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une place qui ne dépend plus d’une pièce",
+        "en": "A Place That No Longer Depends on a Room"
+      },
+      "text": {
+        "fr": "Le foyer te propose un couchage quand tu passes, pas une chambre figée à l’année. Le compromis paraît plus petit, mais il correspond mieux à ta vie réelle.",
+        "en": "Home offers you somewhere to sleep when you visit, not a room frozen all year. The compromise looks smaller, but it fits your actual life better."
+      },
+      "choices": [
+        {
+          "id": "accept_guest",
+          "text": {
+            "fr": "Accepter d’être invité chez toi",
+            "en": "Accept being a guest in your old home"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "accept_guest",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes que revenir soit une visite plutôt qu’un retour à l’enfance.",
+                "en": "You accept that coming back means visiting rather than returning to childhood."
+              }
+            }
+          }
+        },
+        {
+          "id": "ask_key",
+          "text": {
+            "fr": "Demander seulement une clé de passage",
+            "en": "Ask only for a spare key"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_key",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "observation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes un accès pratique, pas la propriété d’une pièce. La différence clarifie ce que le foyer te doit encore.",
+                "en": "You ask for practical access, not ownership of a room. The difference clarifies what home still owes you."
+              }
+            }
+          }
+        },
+        {
+          "id": "keep_distance",
+          "text": {
+            "fr": "Ne rien réserver du tout",
+            "en": "Ask them to reserve nothing"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_distance",
+              "effects": [
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": -1
+                }
+              ],
+              "text": {
+                "fr": "Tu leur demandes de ne plus organiser le lieu autour de tes retours possibles. La liberté laisse aussi un vide.",
+                "en": "You ask them to stop arranging the place around your possible returns. The freedom leaves a gap too."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_05_father_closes_shop",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_05",
+        "nodeId": "family_civilian_adult_05_father_closes_shop",
+        "selectionPriority": 30,
+        "parentNodeIds": [
+          "family_civilian_adult_04_career_consequences_at_home",
+          "family_civilian_adult_04_old_work_claim",
+          "family_civilian_adult_04_no_reserved_room_fallback"
+        ]
+      },
+      "eligibility": {
+        "type": "npcStatusIs",
+        "npcId": "player_parent_1",
+        "status": "known"
+      },
+      "title": {
+        "fr": "La clé que ton père n’utilisera plus",
+        "en": "The Key Your Father Will No Longer Use"
+      },
+      "text": {
+        "fr": "Ton père t’écrit qu’il ferme enfin l’échoppe de son vivant. Le bail est résilié, les dernières commandes terminées et la vieille clé ne sert plus à ouvrir un avenir : seulement à décider ce que vous gardez de ce travail partagé.",
+        "en": "Your father writes that he is finally closing the shop while he is still alive. The lease is ended, the last orders finished, and the old key no longer opens a future—only a decision about what the two of you keep from that work."
+      },
+      "choices": [
+        {
+          "id": "inventory",
+          "text": {
+            "fr": "Lire la liste de ce qui reste",
+            "en": "Read the list of what remains"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "inventory",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_05_father_closes_shop_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Quelques outils, deux chaises et une caisse vide suffisent à raconter la fermeture sans transformer le lieu en héritage obligatoire.",
+                "en": "A few tools, two chairs, and an empty till are enough to tell the story without turning the place into compulsory inheritance."
+              }
+            }
+          }
+        },
+        {
+          "id": "key",
+          "text": {
+            "fr": "Demander pourquoi il garde la clé",
+            "en": "Ask why he kept the key"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "key",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_05_father_closes_shop_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu lui demandes ce qu’une clé inutile signifie encore pour lui. Sa réponse parle moins du commerce que de vous deux.",
+                "en": "You ask what a useless key still means to him. His answer is less about the business than about the two of you."
+              }
+            }
+          }
+        },
+        {
+          "id": "date",
+          "text": {
+            "fr": "Choisir une date pour le dernier appel",
+            "en": "Choose a date for one last call"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "date",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_05_father_closes_shop_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de laisser la fermeture devenir une suite de messages reportés. Vous fixez un moment précis pour finir la conversation.",
+                "en": "You refuse to let the closure become a chain of postponed messages. You set a precise time to finish the conversation."
+              }
+            }
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_1"
+      ]
+    },
+    {
+      "id": "family_civilian_adult_05_father_closes_shop_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Fermer sans disparaître",
+        "en": "Close the Shop Without Disappearing"
+      },
+      "text": {
+        "fr": "Le commerce s’arrête ; votre relation, elle, doit trouver un autre sujet. Ton père te demande ce que tu veux garder quand il n’y aura plus ni caisse, ni horaires, ni clé utile.",
+        "en": "The business stops; your relationship has to find another subject. Your father asks what you want to keep when there is no till, schedule, or useful key left."
+      },
+      "choices": [
+        {
+          "id": "keep_key",
+          "text": {
+            "fr": "Garder la vieille clé",
+            "en": "Keep the old key"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_key",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 8
+                }
+              ],
+              "text": {
+                "fr": "Tu gardes la clé comme souvenir, pas comme titre de propriété. Ton père accepte enfin qu’elle puisse ne plus servir.",
+                "en": "You keep the key as a memory, not a deed. Your father finally accepts that it may never need to work again."
+              }
+            }
+          }
+        },
+        {
+          "id": "take_small_share",
+          "text": {
+            "fr": "Prendre ta part des dernières ventes",
+            "en": "Take your share of the final sales"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "take_small_share",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": 2500
+                },
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 3
+                }
+              ],
+              "text": {
+                "fr": "Ton père te remet une petite part clairement comptée. Le solde ferme un compte au lieu d’en ouvrir un nouveau.",
+                "en": "Your father gives you a small, clearly counted share. The settlement closes an account instead of opening a new one."
+              }
+            }
+          }
+        },
+        {
+          "id": "leave_key",
+          "text": {
+            "fr": "Lui laisser la clé",
+            "en": "Leave the key with him"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "leave_key",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": 5
+                }
+              ],
+              "text": {
+                "fr": "Tu lui laisses le dernier objet du lieu. Ce qui reste entre vous ne dépend plus d’un outil de travail.",
+                "en": "You leave him the last object from the place. What remains between you no longer depends on a work tool."
+              }
+            }
+          }
+        },
+        {
+          "id": "name_old_resentment",
+          "text": {
+            "fr": "Finir par nommer l’ancienne rancœur",
+            "en": "Finally name the old resentment"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "name_old_resentment",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_1",
+                  "amount": -4
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses que la fermeture efface ce qui a fait mal. Votre relation perd un peu de douceur, mais gagne une fin qui ne ment pas.",
+                "en": "You refuse to let the closure erase what hurt. The relationship loses some softness but gains an ending that does not lie."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "npcRelationshipAtMost",
+            "npcId": "player_parent_1",
+            "value": -10
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_1"
+      ]
+    },
+    {
+      "id": "family_civilian_adult_05_community_final_ledger",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_05",
+        "nodeId": "family_civilian_adult_05_community_final_ledger",
+        "selectionPriority": 20,
+        "parentNodeIds": [
+          "family_civilian_adult_04_career_consequences_at_home",
+          "family_civilian_adult_04_old_work_claim",
+          "family_civilian_adult_04_no_reserved_room_fallback"
+        ]
+      },
+      "eligibility": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "familyStructureIs",
+            "familyStructureId": "orphan"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_civilian_05_orphan_network"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_civilian_05_neighborhood_name"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_civilian_05_community_fallback"
+          }
+        ]
+      },
+      "title": {
+        "fr": "La dernière page du carnet",
+        "en": "The Last Page of the Ledger"
+      },
+      "text": {
+        "fr": "Le vieux carnet de faveurs du quartier est presque plein. Avant de le remplacer, on t’envoie une copie de ta page : adresses, services rendus et promesses barrées. Personne ne te demande de revenir ; on te demande ce qui doit survivre au changement de carnet.",
+        "en": "The neighborhood favor ledger is nearly full. Before replacing it, someone sends you a copy of your page: addresses, returned favors, crossed-out promises. Nobody asks you to come back; they ask what should survive into the next ledger."
+      },
+      "choices": [
+        {
+          "id": "read",
+          "text": {
+            "fr": "Relire les lignes barrées",
+            "en": "Read the crossed-out lines"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "read",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_05_community_final_ledger_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu regardes aussi ce qui a été soldé. Un réseau réel se mesure autant aux dettes terminées qu’aux portes encore ouvertes.",
+                "en": "You read what was settled too. A real network is measured as much by finished debts as by doors still open."
+              }
+            }
+          }
+        },
+        {
+          "id": "keep",
+          "text": {
+            "fr": "Entourer une seule promesse",
+            "en": "Circle one promise"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_05_community_final_ledger_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu choisis une obligation encore vivante au lieu de faire recopier toute ton enfance par habitude.",
+                "en": "You choose one living obligation instead of copying your whole childhood forward by habit."
+              }
+            }
+          }
+        },
+        {
+          "id": "erase",
+          "text": {
+            "fr": "Barrer ton nom avant la copie",
+            "en": "Cross out your name before copying"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "erase",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_05_community_final_ledger_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu envisages de laisser le nouveau carnet commencer sans toi. Le geste fermerait un système, pas forcément les personnes.",
+                "en": "You consider letting the new ledger begin without you. The gesture would close a system, not necessarily the people."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_05_community_final_ledger_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Ce que le quartier transmet",
+        "en": "What the Neighborhood Carries Forward"
+      },
+      "text": {
+        "fr": "Le nouveau carnet attend. Ton choix peut laisser ton nom comme référence, solder les anciennes faveurs ou transformer ce réseau en aide pour quelqu’un qui commence à son tour.",
+        "en": "The new ledger is waiting. Your choice can keep your name as a reference, settle old favors, or turn the network into help for someone just starting out."
+      },
+      "choices": [
+        {
+          "id": "keep_reference",
+          "text": {
+            "fr": "Laisser ton nom comme référence",
+            "en": "Keep your name as a reference"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_reference",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 2
+                }
+              ],
+              "text": {
+                "fr": "Ton nom reste dans le nouveau carnet avec une portée limitée : on peut dire qu’on t’a connu, pas parler à ta place.",
+                "en": "Your name stays in the new ledger with a limited meaning: people may say they knew you, not speak for you."
+              }
+            }
+          }
+        },
+        {
+          "id": "settle_favors",
+          "text": {
+            "fr": "Solder les faveurs restantes",
+            "en": "Settle the remaining favors"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "settle_favors",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu aides à fermer les vieux comptes avant la copie. Le quartier retient surtout que les promesses ont eu une fin.",
+                "en": "You help close the old accounts before copying anything over. The neighborhood mainly remembers that promises had an end."
+              }
+            }
+          }
+        },
+        {
+          "id": "fund_next",
+          "text": {
+            "fr": "Financer le prochain départ",
+            "en": "Fund someone else’s departure"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "fund_next",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": -5000
+                },
+                {
+                  "type": "modifyReputation",
+                  "amount": 2
+                }
+              ],
+              "text": {
+                "fr": "Tu mets une petite somme dans la caisse qui aidera le prochain jeune à partir sans transformer ton geste en dette personnelle.",
+                "en": "You put a small amount into the fund that will help the next young person leave without turning your gesture into personal debt."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "berriesAtLeast",
+            "value": 5000
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_05_last_envelope_fallback",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_civilian",
+        "chapterId": "adult_family_05",
+        "nodeId": "family_civilian_adult_05_last_envelope_fallback",
+        "selectionPriority": 0,
+        "parentNodeIds": [
+          "family_civilian_adult_04_career_consequences_at_home",
+          "family_civilian_adult_04_old_work_claim",
+          "family_civilian_adult_04_no_reserved_room_fallback"
+        ],
+        "fallback": true
+      },
+      "eligibility": {
+        "type": "affiliationIs",
+        "affiliationId": "civilian"
+      },
+      "title": {
+        "fr": "La dernière enveloppe sans urgence",
+        "en": "The Last Envelope Without an Emergency"
+      },
+      "text": {
+        "fr": "Une enveloppe te retrouve avec un dernier relevé, une adresse à jour et aucune demande pressante. Après des années où la famille revenait par dettes, travail, disputes ou nouvelles, ce courrier pose enfin une question simple : que veux-tu encore recevoir d’ici ?",
+        "en": "An envelope finds you with one last statement, an updated address, and no urgent request. After years of family returning through debts, work, arguments, or news, the letter finally asks something simple: what do you still want to receive from here?"
+      },
+      "choices": [
+        {
+          "id": "account",
+          "text": {
+            "fr": "Vérifier qu’aucun compte ne reste ouvert",
+            "en": "Check that no account remains open"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "account",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_05_last_envelope_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu relis les chiffres et les anciennes promesses. Rien n’exige un retour forcé pour être réglé.",
+                "en": "You check the numbers and old promises. Nothing requires a forced return to be settled."
+              }
+            }
+          }
+        },
+        {
+          "id": "address",
+          "text": {
+            "fr": "Recopier l’adresse actuelle",
+            "en": "Copy the current address"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "address",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_05_last_envelope_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu gardes l’adresse comme un choix conscient, pas comme un point de respawn familial.",
+                "en": "You keep the address as a conscious choice, not a family respawn point."
+              }
+            }
+          }
+        },
+        {
+          "id": "blank",
+          "text": {
+            "fr": "Retourner une feuille presque blanche",
+            "en": "Send back an almost blank sheet"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "blank",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_civilian_adult_05_last_envelope_fallback_i01_reaction"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de fabriquer un grand discours de clôture. Quelques mots suffisent si aucun compte n’attend derrière.",
+                "en": "You refuse to manufacture a grand closing speech. A few words are enough when no account is waiting behind them."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_civilian_adult_05_last_envelope_fallback_i01_reaction",
+      "kind": "immediate",
+      "title": {
+        "fr": "Un lien qui n’a plus besoin de dette",
+        "en": "A Tie That No Longer Needs a Debt"
+      },
+      "text": {
+        "fr": "Il n’y a plus de chapitre à garantir après celui-ci. Tu peux garder une adresse, solder un reste concret ou accepter un petit solde qui t’était encore dû, sans transformer cela en destin professionnel.",
+        "en": "There is no guaranteed family chapter after this one. You can keep an address, settle one concrete remainder, or accept a small balance still owed to you without turning it into professional destiny."
+      },
+      "choices": [
+        {
+          "id": "keep_address",
+          "text": {
+            "fr": "Garder une adresse de retour",
+            "en": "Keep a return address"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_address",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Le quartier conserve une manière simple de te joindre. Ton nom y circule encore, mais seulement comme celui d’une personne qui a réellement vécu là.",
+                "en": "The neighborhood keeps one simple way to reach you. Your name still travels there, but only as someone who actually lived there."
+              }
+            }
+          }
+        },
+        {
+          "id": "pay_remainder",
+          "text": {
+            "fr": "Solder un reste à ta charge",
+            "en": "Settle one remainder you still owe"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "pay_remainder",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": -2500
+                },
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Tu paies la dernière petite somme qui t’appartient vraiment. Le compte se ferme sans transférer le reste de la vie familiale sur toi.",
+                "en": "You pay the last small amount that is genuinely yours. The account closes without transferring the rest of family life onto you."
+              }
+            }
+          },
+          "availableIf": {
+            "type": "berriesAtLeast",
+            "value": 2500
+          }
+        },
+        {
+          "id": "take_balance",
+          "text": {
+            "fr": "Accepter le solde resté à ton nom",
+            "en": "Accept the balance still in your name"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "take_balance",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": 2500
+                }
+              ],
+              "text": {
+                "fr": "Un ancien dépôt te revient enfin. La somme est modeste, mais elle clôt proprement un droit resté ouvert depuis ton départ.",
+                "en": "An old deposit finally comes back to you. The amount is modest, but it cleanly closes a right that stayed open since you left."
+              }
+            }
+          }
+        }
+      ]
     }
   ],
   "scenarios": [
@@ -13120,6 +16377,1416 @@
           "ageMonths": 120
         }
       ]
+    },
+    {
+      "id": "adult_01_two_parent_parcel",
+      "expectedEventId": "family_civilian_adult_01_two_parent_parcel",
+      "ageMonths": 222,
+      "raceId": "human",
+      "familyStructureId": "two_parents",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "npcStatuses": {
+        "player_parent_1": "known",
+        "player_parent_2": "known"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_two_parent_future",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        }
+      ]
+    },
+    {
+      "id": "adult_01_father_ledger",
+      "expectedEventId": "family_civilian_adult_01_father_ledger",
+      "ageMonths": 222,
+      "raceId": "human",
+      "familyStructureId": "single_parent",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "npcStatuses": {
+        "player_parent_1": "known",
+        "player_parent_2": "departed"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_father_boundary",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        }
+      ]
+    },
+    {
+      "id": "adult_01_home_postmark_fallback",
+      "expectedEventId": "family_civilian_adult_01_home_postmark_fallback",
+      "ageMonths": 222,
+      "raceId": "human",
+      "familyStructureId": "orphan",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "npcStatuses": {
+        "player_parent_1": "departed",
+        "player_parent_2": "departed"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_orphan_network",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        }
+      ]
+    },
+    {
+      "id": "adult_02_career_name_reaches_home",
+      "expectedEventId": "family_civilian_adult_02_career_name_reaches_home",
+      "ageMonths": 270,
+      "raceId": "human",
+      "familyStructureId": "orphan",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "pirate",
+      "npcStatuses": {
+        "player_parent_1": "departed",
+        "player_parent_2": "departed"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_orphan_network",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_civilian_adult_01_home_postmark_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "career_pirate_01_first_flag",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_pirate_02_first_story_spreads",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_pirate_03_small_flag_big_sea",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_pirate_04_poster_on_wall",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 264
+        }
+      ]
+    },
+    {
+      "id": "adult_02_civilian_return_offer",
+      "expectedEventId": "family_civilian_adult_02_civilian_return_offer",
+      "ageMonths": 270,
+      "raceId": "human",
+      "familyStructureId": "single_parent",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "npcStatuses": {
+        "player_parent_1": "known",
+        "player_parent_2": "departed"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_workshop_inheritance",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_civilian_adult_01_father_ledger",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 264
+        }
+      ]
+    },
+    {
+      "id": "adult_02_distance_account_fallback",
+      "expectedEventId": "family_civilian_adult_02_distance_account_fallback",
+      "ageMonths": 270,
+      "raceId": "human",
+      "familyStructureId": "orphan",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "npcStatuses": {
+        "player_parent_1": "departed",
+        "player_parent_2": "departed"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_orphan_network",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_civilian_adult_01_home_postmark_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 264
+        }
+      ]
+    },
+    {
+      "id": "adult_03_father_shorter_hours",
+      "expectedEventId": "family_civilian_adult_03_father_shorter_hours",
+      "ageMonths": 318,
+      "raceId": "human",
+      "familyStructureId": "single_parent",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "npcStatuses": {
+        "player_parent_1": "known",
+        "player_parent_2": "departed"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_household_savings",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_civilian_adult_01_home_postmark_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_civilian_adult_02_distance_account_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 312
+        }
+      ]
+    },
+    {
+      "id": "adult_03_neighborhood_request",
+      "expectedEventId": "family_civilian_adult_03_neighborhood_request",
+      "ageMonths": 318,
+      "raceId": "human",
+      "familyStructureId": "orphan",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "npcStatuses": {
+        "player_parent_1": "departed",
+        "player_parent_2": "departed"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_orphan_network",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_civilian_adult_01_home_postmark_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_civilian_adult_02_distance_account_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 312
+        }
+      ]
+    },
+    {
+      "id": "adult_03_household_changes_fallback",
+      "expectedEventId": "family_civilian_adult_03_household_changes_fallback",
+      "ageMonths": 318,
+      "raceId": "human",
+      "familyStructureId": "single_parent",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "npcStatuses": {
+        "player_parent_1": "departed",
+        "player_parent_2": "departed"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_household_savings",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_civilian_adult_01_home_postmark_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_civilian_adult_02_distance_account_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 312
+        }
+      ]
+    },
+    {
+      "id": "adult_04_career_consequences_at_home",
+      "expectedEventId": "family_civilian_adult_04_career_consequences_at_home",
+      "ageMonths": 366,
+      "raceId": "human",
+      "familyStructureId": "single_parent",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "pirate",
+      "npcStatuses": {
+        "player_parent_1": "departed",
+        "player_parent_2": "departed"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_household_savings",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_civilian_adult_01_home_postmark_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_civilian_adult_02_career_name_reaches_home",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "family_civilian_adult_03_household_changes_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 318
+        },
+        {
+          "eventId": "career_pirate_01_first_flag",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_pirate_02_first_story_spreads",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_pirate_03_small_flag_big_sea",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_pirate_04_poster_on_wall",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_pirate_05_black_market_lantern",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_pirate_06_captains_table",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_pirate_07_old_home_message",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_pirate_08_captain_at_crossroads",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 360
+        }
+      ]
+    },
+    {
+      "id": "adult_04_old_work_claim",
+      "expectedEventId": "family_civilian_adult_04_old_work_claim",
+      "ageMonths": 366,
+      "raceId": "human",
+      "familyStructureId": "single_parent",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "npcStatuses": {
+        "player_parent_1": "departed",
+        "player_parent_2": "departed"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_workshop_inheritance",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_civilian_adult_01_home_postmark_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_civilian_adult_02_distance_account_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "family_civilian_adult_03_household_changes_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 318
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 360
+        }
+      ]
+    },
+    {
+      "id": "adult_04_no_reserved_room_fallback",
+      "expectedEventId": "family_civilian_adult_04_no_reserved_room_fallback",
+      "ageMonths": 366,
+      "raceId": "human",
+      "familyStructureId": "single_parent",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "npcStatuses": {
+        "player_parent_1": "departed",
+        "player_parent_2": "departed"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_household_savings",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_civilian_adult_01_home_postmark_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_civilian_adult_02_distance_account_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "family_civilian_adult_03_household_changes_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 318
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 360
+        }
+      ]
+    },
+    {
+      "id": "adult_05_father_closes_shop",
+      "expectedEventId": "family_civilian_adult_05_father_closes_shop",
+      "ageMonths": 414,
+      "raceId": "human",
+      "familyStructureId": "single_parent",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "npcStatuses": {
+        "player_parent_1": "known",
+        "player_parent_2": "departed"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_household_savings",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_civilian_adult_01_home_postmark_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_civilian_adult_02_distance_account_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "family_civilian_adult_03_household_changes_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 318
+        },
+        {
+          "eventId": "family_civilian_adult_04_no_reserved_room_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 366
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 360
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 384
+        },
+        {
+          "eventId": "career_civilian_10_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 408
+        }
+      ]
+    },
+    {
+      "id": "adult_05_community_final_ledger",
+      "expectedEventId": "family_civilian_adult_05_community_final_ledger",
+      "ageMonths": 414,
+      "raceId": "human",
+      "familyStructureId": "orphan",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "npcStatuses": {
+        "player_parent_1": "departed",
+        "player_parent_2": "departed"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_orphan_network",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_civilian_adult_01_home_postmark_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_civilian_adult_02_distance_account_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "family_civilian_adult_03_household_changes_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 318
+        },
+        {
+          "eventId": "family_civilian_adult_04_no_reserved_room_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 366
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 360
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 384
+        },
+        {
+          "eventId": "career_civilian_10_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 408
+        }
+      ]
+    },
+    {
+      "id": "adult_05_last_envelope_fallback",
+      "expectedEventId": "family_civilian_adult_05_last_envelope_fallback",
+      "ageMonths": 414,
+      "raceId": "human",
+      "familyStructureId": "single_parent",
+      "socialClassId": "modest",
+      "profileAffiliationId": "civilian",
+      "careerAffiliationId": "civilian",
+      "npcStatuses": {
+        "player_parent_1": "departed",
+        "player_parent_2": "departed"
+      },
+      "history": [
+        {
+          "eventId": "family_civilian_01_fathers_work_bell",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 12
+        },
+        {
+          "eventId": "family_civilian_02_father_customer_book",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 48
+        },
+        {
+          "eventId": "family_civilian_03_school_or_shift",
+          "choiceId": "take",
+          "outcomeId": "take",
+          "ageMonths": 84
+        },
+        {
+          "eventId": "family_civilian_04_apprenticeship_offer",
+          "choiceId": "touch",
+          "outcomeId": "touch",
+          "ageMonths": 120
+        },
+        {
+          "eventId": "family_civilian_05_household_savings",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 168
+        },
+        {
+          "eventId": "family_civilian_adult_01_home_postmark_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 222
+        },
+        {
+          "eventId": "family_civilian_adult_02_distance_account_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 270
+        },
+        {
+          "eventId": "family_civilian_adult_03_household_changes_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 318
+        },
+        {
+          "eventId": "family_civilian_adult_04_no_reserved_room_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 366
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 192
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 216
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 240
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 264
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 288
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 312
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 336
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 360
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 384
+        },
+        {
+          "eventId": "career_civilian_10_fallback",
+          "choiceId": "scenario",
+          "outcomeId": "scenario",
+          "ageMonths": 408
+        }
+      ]
     }
   ],
   "notes": {
@@ -13127,5 +17794,10 @@
     "specialAssociation": "none",
     "careerHandoff": "All terminal History outcomes resolve to Active Civilian at 180 months; no Childhood setCareerAffiliation/setCareerRank Effects.",
     "proposedDefinitions": "None"
-  }
+  },
+  "wave5AdultFamilyNotes": [
+    "ACTIVE_ADULT_FAMILY_CIVILIAN_01: Adult Family continuation authored against Wave 5 post-gate dev.",
+    "Adult chapters advance only through MajorTrack History/parentNodeIds; no scheduleEvent is used for Family progression.",
+    "Adult scenes are correspondence/distance-safe by default and introduce no new persistent definitions."
+  ]
 }

@@ -1,0 +1,141 @@
+{
+  "id": "active_fish_man_corridor_01_i02_under_red_line",
+  "kind": "immediate",
+  "titleKey": "events.active_fish_man_corridor_01_i02_under_red_line.title",
+  "textKey": "events.active_fish_man_corridor_01_i02_under_red_line.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_fish_man_corridor_01_i01_descent_prep"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_the_black_current",
+      "textKey": "events.active_fish_man_corridor_01_i02_under_red_line.choices.read_the_black_current.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_fish_man_corridor_01_i02_under_red_line_read_the_black_current_critical_failure",
+            "textKey": "events.active_fish_man_corridor_01_i02_under_red_line.choices.read_the_black_current.outcomes.critical_failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -7
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_fish_man_corridor_01_i03_arrival"
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_fish_man_corridor_01_i02_under_red_line_read_the_black_current_failure",
+            "textKey": "events.active_fish_man_corridor_01_i02_under_red_line.choices.read_the_black_current.outcomes.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_fish_man_corridor_01_i03_arrival"
+              }
+            ]
+          },
+          "success": {
+            "id": "active_fish_man_corridor_01_i02_under_red_line_read_the_black_current_success",
+            "textKey": "events.active_fish_man_corridor_01_i02_under_red_line.choices.read_the_black_current.outcomes.success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_fish_man_corridor_01_i03_arrival"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_fish_man_corridor_01_i02_under_red_line_read_the_black_current_critical_success",
+            "textKey": "events.active_fish_man_corridor_01_i02_under_red_line.choices.read_the_black_current.outcomes.critical_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_fish_man_corridor_01_i03_arrival"
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "hasOutcome",
+              "eventId": "active_fish_man_corridor_01_i01_descent_prep",
+              "outcomeId": "active_fish_man_corridor_01_i01_descent_prep_brace_the_descent_success"
+            },
+            "value": 2,
+            "displayLabelKey": "events.active_fish_man_corridor_01_i02_under_red_line.modifiers.clean_descent"
+          },
+          {
+            "condition": {
+              "type": "hasOutcome",
+              "eventId": "active_fish_man_corridor_01_i01_descent_prep",
+              "outcomeId": "active_fish_man_corridor_01_i01_descent_prep_brace_the_descent_critical_success"
+            },
+            "value": 4,
+            "displayLabelKey": "events.active_fish_man_corridor_01_i02_under_red_line.modifiers.perfect_descent"
+          },
+          {
+            "condition": {
+              "type": "hasOutcome",
+              "eventId": "active_fish_man_corridor_01_i01_descent_prep",
+              "outcomeId": "active_fish_man_corridor_01_i01_descent_prep_brace_the_descent_failure"
+            },
+            "value": -2,
+            "displayLabelKey": "events.active_fish_man_corridor_01_i02_under_red_line.modifiers.shaken_descent"
+          },
+          {
+            "condition": {
+              "type": "hasOutcome",
+              "eventId": "active_fish_man_corridor_01_i01_descent_prep",
+              "outcomeId": "active_fish_man_corridor_01_i01_descent_prep_brace_the_descent_critical_failure"
+            },
+            "value": -4,
+            "displayLabelKey": "events.active_fish_man_corridor_01_i02_under_red_line.modifiers.damaged_descent"
+          }
+        ]
+      }
+    }
+  ]
+}

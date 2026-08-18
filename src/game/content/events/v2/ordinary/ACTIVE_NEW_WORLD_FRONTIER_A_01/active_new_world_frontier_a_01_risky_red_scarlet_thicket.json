@@ -1,0 +1,172 @@
+{
+  "id": "active_new_world_frontier_a_01_risky_red_scarlet_thicket",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.title",
+  "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.text",
+  "choices": [
+    {
+      "id": "read_floor",
+      "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.choice.read_floor.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_floor_criticalfailure",
+            "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.choice.read_floor.outcome.read_floor_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_floor_failure",
+            "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.choice.read_floor.outcome.read_floor_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "read_floor_success",
+            "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.choice.read_floor.outcome.read_floor_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_floor_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.choice.read_floor.outcome.read_floor_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cut_corridor",
+      "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.choice.cut_corridor.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cut_corridor_criticalfailure",
+            "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.choice.cut_corridor.outcome.cut_corridor_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "cut_corridor_failure",
+            "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.choice.cut_corridor.outcome.cut_corridor_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "cut_corridor_success",
+            "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.choice.cut_corridor.outcome.cut_corridor_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cut_corridor_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.choice.cut_corridor.outcome.cut_corridor_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "turn_back",
+      "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.choice.turn_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "turned",
+          "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.choice.turn_back.outcome.turned.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "cautious_probe",
+      "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.choice.cautious_probe.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "probed",
+          "textKey": "event.active_new_world_frontier_a_01_risky_red_scarlet_thicket.choice.cautious_probe.outcome.probed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "cautious"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "risky_red_island"
+      }
+    ]
+  }
+}

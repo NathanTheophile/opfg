@@ -1,0 +1,107 @@
+{
+  "id": "active_new_world_frontier_a_01_mystoria_last_room",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_a_01_mystoria_last_room.title",
+  "textKey": "event.active_new_world_frontier_a_01_mystoria_last_room.text",
+  "choices": [
+    {
+      "id": "organize_common_room",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_last_room.choice.organize_common_room.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shared",
+          "textKey": "event.active_new_world_frontier_a_01_mystoria_last_room.choice.organize_common_room.outcome.shared.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pay_store_room",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_last_room.choice.pay_store_room.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paid",
+          "textKey": "event.active_new_world_frontier_a_01_mystoria_last_room.choice.pay_store_room.outcome.paid.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    },
+    {
+      "id": "take_outside",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_last_room.choice.take_outside.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "outside",
+          "textKey": "event.active_new_world_frontier_a_01_mystoria_last_room.choice.take_outside.outcome.outside.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "disciplined_roster",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_last_room.choice.disciplined_roster.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "roster",
+          "textKey": "event.active_new_world_frontier_a_01_mystoria_last_room.choice.disciplined_roster.outcome.roster.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "disciplined"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "mystoria_island"
+      }
+    ]
+  }
+}

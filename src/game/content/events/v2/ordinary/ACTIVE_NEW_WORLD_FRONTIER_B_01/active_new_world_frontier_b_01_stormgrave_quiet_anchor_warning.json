@@ -1,0 +1,88 @@
+{
+  "id": "active_new_world_frontier_b_01_stormgrave_quiet_anchor_warning",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_b_01_stormgrave_quiet_anchor_warning.title",
+  "textKey": "event.active_new_world_frontier_b_01_stormgrave_quiet_anchor_warning.text",
+  "choices": [
+    {
+      "id": "move_berth",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_quiet_anchor_warning.choice.move_berth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "move_berth_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_stormgrave_quiet_anchor_warning.choice.move_berth.outcome.move_berth_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    },
+    {
+      "id": "double_watch",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_quiet_anchor_warning.choice.double_watch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "double_watch_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_stormgrave_quiet_anchor_warning.choice.double_watch.outcome.double_watch_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "navigator_check",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_quiet_anchor_warning.choice.navigator_check.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "navigator_check_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_stormgrave_quiet_anchor_warning.choice.navigator_check.outcome.navigator_check_outcome.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "navigator"
+      }
+    },
+    {
+      "id": "ignore_warning",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_quiet_anchor_warning.choice.ignore_warning.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ignore_warning_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_stormgrave_quiet_anchor_warning.choice.ignore_warning.outcome.ignore_warning_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "stormgrave_island"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "id": "family_pirate_22_family_name_on_clean_paper",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_pirate",
+    "chapterId": "adult_family_02",
+    "nodeId": "family_pirate_22_family_name_on_clean_paper",
+    "parentNodeIds": [
+      "family_pirate_18_wanted_name_at_family_door",
+      "family_pirate_18_uniform_over_old_flag",
+      "family_pirate_18_parent_cannot_answer",
+      "family_pirate_18_fallback_message_without_homeport"
+    ],
+    "selectionPriority": 10
+  },
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      }
+    ]
+  },
+  "titleKey": "event.family_pirate_22_family_name_on_clean_paper.title",
+  "textKey": "event.family_pirate_22_family_name_on_clean_paper.text",
+  "choices": [
+    {
+      "id": "sign_personally",
+      "textKey": "event.family_pirate_22_family_name_on_clean_paper.choice.sign_personally.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sign_personally",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_pirate_22_family_name_on_clean_paper_i01_signature"
+            }
+          ],
+          "textKey": "event.family_pirate_22_family_name_on_clean_paper.choice.sign_personally.outcome.sign_personally.text"
+        }
+      }
+    },
+    {
+      "id": "sign_marine_rank",
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          },
+          {
+            "type": "careerRankAtLeast",
+            "rankId": "marine_lieutenant"
+          }
+        ]
+      },
+      "textKey": "event.family_pirate_22_family_name_on_clean_paper.choice.sign_marine_rank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sign_marine_rank",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_pirate_22_family_name_on_clean_paper_i01_signature"
+            }
+          ],
+          "textKey": "event.family_pirate_22_family_name_on_clean_paper.choice.sign_marine_rank.outcome.sign_marine_rank.text"
+        }
+      }
+    },
+    {
+      "id": "sign_revolutionary_rank",
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          },
+          {
+            "type": "careerRankAtLeast",
+            "rankId": "revolutionary_agent"
+          }
+        ]
+      },
+      "textKey": "event.family_pirate_22_family_name_on_clean_paper.choice.sign_revolutionary_rank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sign_revolutionary_rank",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_pirate_22_family_name_on_clean_paper_i01_signature"
+            }
+          ],
+          "textKey": "event.family_pirate_22_family_name_on_clean_paper.choice.sign_revolutionary_rank.outcome.sign_revolutionary_rank.text"
+        }
+      }
+    },
+    {
+      "id": "refuse_institutional_shield",
+      "textKey": "event.family_pirate_22_family_name_on_clean_paper.choice.refuse_institutional_shield.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_institutional_shield",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_pirate_22_family_name_on_clean_paper_i01_signature"
+            }
+          ],
+          "textKey": "event.family_pirate_22_family_name_on_clean_paper.choice.refuse_institutional_shield.outcome.refuse_institutional_shield.text"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "id": "family_marine_a02_promotion_question",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_marine",
+    "chapterId": "adult_family_02",
+    "nodeId": "family_marine_a02_promotion_question",
+    "parentNodeIds": [
+      "family_marine_a01_service_call",
+      "family_marine_a01_other_colors",
+      "family_marine_a01_message_catches_up"
+    ],
+    "selectionPriority": 40
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "player_parent_1",
+        "status": "active"
+      }
+    ]
+  },
+  "cast": [
+    "player_parent_1"
+  ],
+  "titleKey": "event.family_marine_a02_promotion_question.title",
+  "textKey": "event.family_marine_a02_promotion_question.text",
+  "choices": [
+    {
+      "id": "explain_method",
+      "textKey": "event.family_marine_a02_promotion_question.choice.explain_method.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "explain_method",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a02_promotion_question_i01_speed_or_weight"
+            }
+          ],
+          "textKey": "event.family_marine_a02_promotion_question.choice.explain_method.outcome.explain_method.text"
+        }
+      }
+    },
+    {
+      "id": "reject_measure",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "rebellious"
+      },
+      "textKey": "event.family_marine_a02_promotion_question.choice.reject_measure.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reject_measure",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a02_promotion_question_i01_speed_or_weight"
+            }
+          ],
+          "textKey": "event.family_marine_a02_promotion_question.choice.reject_measure.outcome.reject_measure.text"
+        }
+      }
+    },
+    {
+      "id": "ask_regret",
+      "textKey": "event.family_marine_a02_promotion_question.choice.ask_regret.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_regret",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a02_promotion_question_i01_speed_or_weight"
+            }
+          ],
+          "textKey": "event.family_marine_a02_promotion_question.choice.ask_regret.outcome.ask_regret.text"
+        }
+      }
+    }
+  ]
+}

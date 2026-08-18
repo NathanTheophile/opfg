@@ -1,0 +1,80 @@
+{
+  "id": "active_fish_man_corridor_01_local_gyoncorde_cargo_circle",
+  "kind": "normal",
+  "titleKey": "events.active_fish_man_corridor_01_local_gyoncorde_cargo_circle.title",
+  "textKey": "events.active_fish_man_corridor_01_local_gyoncorde_cargo_circle.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "gyoncorde_plaza"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "break_the_cargo_circle",
+      "textKey": "events.active_fish_man_corridor_01_local_gyoncorde_cargo_circle.choices.break_the_cargo_circle.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 13,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_fish_man_corridor_01_local_gyoncorde_cargo_circle_break_the_cargo_circle_critical_failure",
+            "textKey": "events.active_fish_man_corridor_01_local_gyoncorde_cargo_circle.choices.break_the_cargo_circle.outcomes.critical_failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_fish_man_corridor_01_local_gyoncorde_cargo_circle_break_the_cargo_circle_failure",
+            "textKey": "events.active_fish_man_corridor_01_local_gyoncorde_cargo_circle.choices.break_the_cargo_circle.outcomes.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              }
+            ]
+          },
+          "success": {
+            "id": "active_fish_man_corridor_01_local_gyoncorde_cargo_circle_break_the_cargo_circle_success",
+            "textKey": "events.active_fish_man_corridor_01_local_gyoncorde_cargo_circle.choices.break_the_cargo_circle.outcomes.success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_fish_man_corridor_01_local_gyoncorde_cargo_circle_break_the_cargo_circle_critical_success",
+            "textKey": "events.active_fish_man_corridor_01_local_gyoncorde_cargo_circle.choices.break_the_cargo_circle.outcomes.critical_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "id": "family_marine_a05_reconciliation",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_marine",
+    "chapterId": "adult_family_05",
+    "nodeId": "family_marine_a05_reconciliation",
+    "parentNodeIds": [
+      "family_marine_a04_family_under_scrutiny",
+      "family_marine_a04_last_watch",
+      "family_marine_a04_old_uniform"
+    ],
+    "selectionPriority": 50
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "npcStatusIs",
+        "npcId": "player_parent_1",
+        "status": "active"
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "player_parent_1",
+        "value": 25
+      }
+    ]
+  },
+  "cast": [
+    "player_parent_1"
+  ],
+  "titleKey": "event.family_marine_a05_reconciliation.title",
+  "textKey": "event.family_marine_a05_reconciliation.text",
+  "choices": [
+    {
+      "id": "speak_first",
+      "textKey": "event.family_marine_a05_reconciliation.choice.speak_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "speak_first",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a05_reconciliation_i01_without_rank"
+            }
+          ],
+          "textKey": "event.family_marine_a05_reconciliation.choice.speak_first.outcome.speak_first.text"
+        }
+      }
+    },
+    {
+      "id": "let_him_speak",
+      "textKey": "event.family_marine_a05_reconciliation.choice.let_him_speak.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "let_him_speak",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a05_reconciliation_i01_without_rank"
+            }
+          ],
+          "textKey": "event.family_marine_a05_reconciliation.choice.let_him_speak.outcome.let_him_speak.text"
+        }
+      }
+    },
+    {
+      "id": "set_insignia_aside",
+      "availableIf": {
+        "type": "hasItem",
+        "itemId": "family_marine_insignia"
+      },
+      "textKey": "event.family_marine_a05_reconciliation.choice.set_insignia_aside.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "set_insignia_aside",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a05_reconciliation_i01_without_rank"
+            }
+          ],
+          "textKey": "event.family_marine_a05_reconciliation.choice.set_insignia_aside.outcome.set_insignia_aside.text"
+        }
+      }
+    }
+  ]
+}

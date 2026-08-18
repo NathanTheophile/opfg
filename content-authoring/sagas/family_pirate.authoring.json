@@ -9,7 +9,12 @@
     "childhood_02",
     "childhood_03",
     "childhood_04",
-    "childhood_05"
+    "childhood_05",
+    "adult_family_01",
+    "adult_family_02",
+    "adult_family_03",
+    "adult_family_04",
+    "adult_family_05"
   ],
   "rules": {
     "enforceScenarioCoverage": true,
@@ -11359,6 +11364,2726 @@
           }
         }
       ]
+    },
+    {
+      "id": "family_pirate_18_wanted_name_at_family_door",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_01",
+        "nodeId": "family_pirate_18_wanted_name_at_family_door",
+        "parentNodeIds": [
+          "family_pirate_13_flag_means_mine",
+          "family_pirate_13_safe_harbor_key",
+          "family_pirate_13_ledger_of_names",
+          "family_pirate_13_mothers_salt_chart",
+          "family_pirate_13_crew_has_limits",
+          "family_pirate_13_return_the_share",
+          "family_pirate_13_no_innocents_code",
+          "family_pirate_13_own_depth",
+          "family_pirate_13_fallback_pursuit",
+          "family_pirate_13_fallback_household",
+          "family_pirate_13_fallback_legacy"
+        ],
+        "selectionPriority": 10
+      },
+      "title": {
+        "fr": "Le nom sur l'avis de recherche",
+        "en": "The Name on the Wanted Notice"
+      },
+      "text": {
+        "fr": "Un avis portant ton nom atteint un ancien relais familial. Un messager te le transmet : de vieux contacts veulent savoir si ta carrière pirate les inclut encore.",
+        "en": "A notice bearing your name reaches an old family relay. A messenger passes it on: old contacts want to know whether your pirate career still includes them."
+      },
+      "choices": [
+        {
+          "id": "answer_as_yourself",
+          "text": {
+            "fr": "Répondre sous ton propre nom",
+            "en": "Answer under your own name"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer_as_yourself",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_18_wanted_name_at_family_door_i01_boundary"
+                }
+              ],
+              "text": {
+                "fr": "Tu signes sans emprunter le pavillon familial.",
+                "en": "You sign without borrowing the family flag."
+              }
+            }
+          }
+        },
+        {
+          "id": "invoke_old_harbor",
+          "text": {
+            "fr": "Répondre avec l'ancien signe du port",
+            "en": "Answer with the old harbor sign"
+          },
+          "availableIf": {
+            "type": "hasPlayed",
+            "eventId": "family_pirate_13_safe_harbor_key"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "invoke_old_harbor",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_18_wanted_name_at_family_door_i01_boundary"
+                }
+              ],
+              "text": {
+                "fr": "Tu rappelles un ancien code de refuge avant de répondre.",
+                "en": "You invoke an old safe-harbor code before answering."
+              }
+            }
+          }
+        },
+        {
+          "id": "keep_family_out",
+          "text": {
+            "fr": "Interdire qu'on cite la famille",
+            "en": "Forbid them from naming the family"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_family_out",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_18_wanted_name_at_family_door_i01_boundary"
+                }
+              ],
+              "text": {
+                "fr": "Tu poses une limite avant toute autre discussion.",
+                "en": "You set a boundary before any further discussion."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      }
+    },
+    {
+      "id": "family_pirate_18_wanted_name_at_family_door_i01_boundary",
+      "kind": "immediate",
+      "title": {
+        "fr": "Sang et pavillon",
+        "en": "Blood and Flag"
+      },
+      "text": {
+        "fr": "Le messager veut une règle claire avant de repartir : ce que ton nom ouvre aujourd'hui ne doit pas automatiquement engager ta famille.",
+        "en": "The messenger wants a clear rule before leaving: whatever your name opens today must not automatically bind your family."
+      },
+      "choices": [
+        {
+          "id": "family_not_crew",
+          "text": {
+            "fr": "Séparer famille et équipage",
+            "en": "Separate family from crew"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "family_not_crew",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_home_boundary"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses que le sang vaille ordre d'équipage.",
+                "en": "You refuse to let blood count as a crew order."
+              }
+            }
+          }
+        },
+        {
+          "id": "use_contacts_with_limits",
+          "text": {
+            "fr": "Garder les refuges, pas les dettes",
+            "en": "Keep harbors, not debts"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "use_contacts_with_limits",
+              "effects": [],
+              "text": {
+                "fr": "Tu gardes les contacts utiles sans reprendre leurs comptes.",
+                "en": "You keep useful contacts without inheriting their accounts."
+              }
+            }
+          }
+        },
+        {
+          "id": "let_name_travel",
+          "text": {
+            "fr": "Assumer que le nom circule",
+            "en": "Let the name travel"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "let_name_travel",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Ton nom circule un peu plus loin, avec ses propres conséquences.",
+                "en": "Your name travels a little farther, with consequences of its own."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_pirate_18_uniform_over_old_flag",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_01",
+        "nodeId": "family_pirate_18_uniform_over_old_flag",
+        "parentNodeIds": [
+          "family_pirate_13_flag_means_mine",
+          "family_pirate_13_safe_harbor_key",
+          "family_pirate_13_ledger_of_names",
+          "family_pirate_13_mothers_salt_chart",
+          "family_pirate_13_crew_has_limits",
+          "family_pirate_13_return_the_share",
+          "family_pirate_13_no_innocents_code",
+          "family_pirate_13_own_depth",
+          "family_pirate_13_fallback_pursuit",
+          "family_pirate_13_fallback_household",
+          "family_pirate_13_fallback_legacy"
+        ],
+        "selectionPriority": 10
+      },
+      "title": {
+        "fr": "L'uniforme sur l'ancien pavillon",
+        "en": "The Uniform Over the Old Flag"
+      },
+      "text": {
+        "fr": "Une question liée à ta famille pirate arrive par tes canaux de Marine. Le dossier demande si ton uniforme protège les tiens, les expose, ou ne change rien à leurs actes.",
+        "en": "A question tied to your pirate family arrives through Marine channels. The file asks whether your uniform protects them, exposes them, or changes nothing about their actions."
+      },
+      "choices": [
+        {
+          "id": "answer_off_record",
+          "text": {
+            "fr": "Répondre hors registre",
+            "en": "Answer off the record"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer_off_record",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_18_uniform_over_old_flag_i01_record"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de transformer le lien familial en pièce à conviction automatique.",
+                "en": "You refuse to turn family ties into automatic evidence."
+              }
+            }
+          }
+        },
+        {
+          "id": "answer_in_uniform",
+          "text": {
+            "fr": "Répondre comme Marine",
+            "en": "Answer as a Marine"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer_in_uniform",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_18_uniform_over_old_flag_i01_record"
+                }
+              ],
+              "text": {
+                "fr": "Tu assumes ton poste sans réécrire ton enfance.",
+                "en": "You stand by your office without rewriting your childhood."
+              }
+            }
+          }
+        },
+        {
+          "id": "sign_with_rank",
+          "text": {
+            "fr": "Signer avec ton grade",
+            "en": "Sign with your rank"
+          },
+          "availableIf": {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "marine"
+              },
+              {
+                "type": "careerRankAtLeast",
+                "rankId": "marine_lieutenant"
+              }
+            ]
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "sign_with_rank",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_18_uniform_over_old_flag_i01_record"
+                }
+              ],
+              "text": {
+                "fr": "Tu signes de ton grade actuel et assumes la trace institutionnelle.",
+                "en": "You sign with your current rank and accept the institutional trail."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      }
+    },
+    {
+      "id": "family_pirate_18_uniform_over_old_flag_i01_record",
+      "kind": "immediate",
+      "title": {
+        "fr": "Ce que l'uniforme ne rachète pas",
+        "en": "What the Uniform Does Not Redeem"
+      },
+      "text": {
+        "fr": "Le dossier se réduit à une décision simple : traiter les actes présents, protéger les innocents, ou couper tout accès familial à ton autorité.",
+        "en": "The file narrows to a simple decision: judge current acts, protect innocents, or cut off all family access to your authority."
+      },
+      "choices": [
+        {
+          "id": "judge_current_acts",
+          "text": {
+            "fr": "Juger les actes présents",
+            "en": "Judge current acts"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "judge_current_acts",
+              "effects": [],
+              "text": {
+                "fr": "Tu refuses les faveurs comme les condamnations héritées.",
+                "en": "You refuse inherited favors as well as inherited guilt."
+              }
+            }
+          }
+        },
+        {
+          "id": "protect_innocents",
+          "text": {
+            "fr": "Protéger les innocents seulement",
+            "en": "Protect innocents only"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "protect_innocents",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_no_innocents_code"
+                }
+              ],
+              "text": {
+                "fr": "Tu gardes une seule règle : personne ne paie pour ton nom ou celui de ta famille.",
+                "en": "You keep one rule: no one pays merely for your name or your family's."
+              }
+            }
+          }
+        },
+        {
+          "id": "cut_authority_access",
+          "text": {
+            "fr": "Fermer l'accès à ton autorité",
+            "en": "Cut off access to your authority"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "cut_authority_access",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_home_boundary"
+                }
+              ],
+              "text": {
+                "fr": "Tu interdis à la famille d'utiliser ton uniforme comme passe-droit.",
+                "en": "You forbid the family from using your uniform as a pass."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_pirate_18_parent_cannot_answer",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_01",
+        "nodeId": "family_pirate_18_parent_cannot_answer",
+        "parentNodeIds": [
+          "family_pirate_13_flag_means_mine",
+          "family_pirate_13_safe_harbor_key",
+          "family_pirate_13_ledger_of_names",
+          "family_pirate_13_mothers_salt_chart",
+          "family_pirate_13_crew_has_limits",
+          "family_pirate_13_return_the_share",
+          "family_pirate_13_no_innocents_code",
+          "family_pirate_13_own_depth",
+          "family_pirate_13_fallback_pursuit",
+          "family_pirate_13_fallback_household",
+          "family_pirate_13_fallback_legacy"
+        ],
+        "selectionPriority": 20
+      },
+      "title": {
+        "fr": "La réponse qui ne viendra pas",
+        "en": "The Answer That Will Not Come"
+      },
+      "text": {
+        "fr": "Un ancien contact familial te transmet une promesse laissée en suspens par l'un de tes parents. Ce parent ne peut plus répondre lui-même, et le contact veut savoir ce que tu acceptes d'en porter.",
+        "en": "An old family contact forwards a promise one of your parents left unfinished. That parent can no longer answer for it, and the contact wants to know what you will carry."
+      },
+      "choices": [
+        {
+          "id": "keep_one_promise",
+          "text": {
+            "fr": "Garder une seule promesse",
+            "en": "Keep one promise"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_one_promise",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_18_parent_cannot_answer_i01_promises"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses l'héritage en bloc, mais pas toute mémoire.",
+                "en": "You refuse the inheritance as a whole, but not every memory."
+              }
+            }
+          }
+        },
+        {
+          "id": "close_accounts",
+          "text": {
+            "fr": "Fermer ses comptes",
+            "en": "Close her accounts"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "close_accounts",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_18_parent_cannot_answer_i01_promises"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes qu'aucune nouvelle dette ne soit ajoutée à son nom.",
+                "en": "You ask that no new debt be added to her name."
+              }
+            }
+          }
+        },
+        {
+          "id": "follow_salt_marks",
+          "text": {
+            "fr": "Relire ses marques de sel",
+            "en": "Read her salt marks again"
+          },
+          "availableIf": {
+            "type": "hasPlayed",
+            "eventId": "family_pirate_13_mothers_salt_chart"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "follow_salt_marks",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_18_parent_cannot_answer_i01_promises"
+                }
+              ],
+              "text": {
+                "fr": "Tu repars de ce qu'elle t'a réellement laissé, pas des rumeurs.",
+                "en": "You start from what she actually left you, not from rumors."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "dead"
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "departed"
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_1",
+            "status": "unavailable"
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_2",
+            "status": "dead"
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_2",
+            "status": "departed"
+          },
+          {
+            "type": "npcStatusIs",
+            "npcId": "player_parent_2",
+            "status": "unavailable"
+          }
+        ]
+      }
+    },
+    {
+      "id": "family_pirate_18_parent_cannot_answer_i01_promises",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une dette n'est pas un souvenir",
+        "en": "A Debt Is Not a Memory"
+      },
+      "text": {
+        "fr": "Le contact distingue enfin les noms, les refuges et les dettes. Tu peux préserver une trace sans accepter toutes les obligations qui l'accompagnent.",
+        "en": "The contact finally separates names, harbors, and debts. You can preserve a trace without accepting every obligation attached to it."
+      },
+      "choices": [
+        {
+          "id": "memory_not_debt",
+          "text": {
+            "fr": "Garder la mémoire, pas la dette",
+            "en": "Keep the memory, not the debt"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "memory_not_debt",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_home_boundary"
+                }
+              ],
+              "text": {
+                "fr": "Tu conserves la trace et refuses qu'elle devienne un ordre posthume.",
+                "en": "You keep the trace and refuse to let it become a posthumous order."
+              }
+            }
+          }
+        },
+        {
+          "id": "keep_watch",
+          "text": {
+            "fr": "Garder un contact discret",
+            "en": "Keep one quiet contact"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_watch",
+              "effects": [],
+              "text": {
+                "fr": "Un seul contact reste ouvert, sans promesse de service.",
+                "en": "One contact remains open, without any promise of service."
+              }
+            }
+          }
+        },
+        {
+          "id": "end_inherited_accounts",
+          "text": {
+            "fr": "Clore les comptes hérités",
+            "en": "Close inherited accounts"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "end_inherited_accounts",
+              "effects": [],
+              "text": {
+                "fr": "Tu demandes que les créanciers parlent désormais à toi, jamais à son absence.",
+                "en": "You tell creditors to speak to you now, never to her absence."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_pirate_18_fallback_message_without_homeport",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_01",
+        "nodeId": "family_pirate_18_fallback_message_without_homeport",
+        "parentNodeIds": [
+          "family_pirate_13_flag_means_mine",
+          "family_pirate_13_safe_harbor_key",
+          "family_pirate_13_ledger_of_names",
+          "family_pirate_13_mothers_salt_chart",
+          "family_pirate_13_crew_has_limits",
+          "family_pirate_13_return_the_share",
+          "family_pirate_13_no_innocents_code",
+          "family_pirate_13_own_depth",
+          "family_pirate_13_fallback_pursuit",
+          "family_pirate_13_fallback_household",
+          "family_pirate_13_fallback_legacy"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Un message sans port d'attache",
+        "en": "A Message Without a Home Port"
+      },
+      "text": {
+        "fr": "Une lettre familiale finit par te rejoindre sans exiger ton retour au lieu de naissance. Elle pose une question adulte : quelle part de cet héritage pirate peut encore utiliser ton nom ?",
+        "en": "A family letter eventually finds you without demanding a return to your birthplace. It asks an adult question: what part of this pirate inheritance may still use your name?"
+      },
+      "choices": [
+        {
+          "id": "keep_contact",
+          "text": {
+            "fr": "Garder un contact",
+            "en": "Keep one contact"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_contact",
+              "effects": [],
+              "text": {
+                "fr": "Tu réponds à une seule adresse et rien de plus.",
+                "en": "You answer one address and nothing more."
+              }
+            }
+          }
+        },
+        {
+          "id": "keep_distance",
+          "text": {
+            "fr": "Poser une limite nette",
+            "en": "Set a firm boundary"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_distance",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_home_boundary"
+                }
+              ],
+              "text": {
+                "fr": "La famille peut te joindre, pas parler en ton nom.",
+                "en": "The family may reach you, but not speak in your name."
+              }
+            }
+          }
+        },
+        {
+          "id": "answer_from_code",
+          "text": {
+            "fr": "Répondre avec ton ancien code",
+            "en": "Answer with your old code"
+          },
+          "availableIf": {
+            "type": "hasPlayed",
+            "eventId": "family_pirate_13_no_innocents_code"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer_from_code",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_no_innocents_code"
+                }
+              ],
+              "text": {
+                "fr": "Tu réaffirmes la seule règle d'enfance que tu acceptes encore.",
+                "en": "You reaffirm the one childhood rule you still accept."
+              }
+            }
+          }
+        },
+        {
+          "id": "answer_as_revolutionary",
+          "text": {
+            "fr": "Refuser les réseaux pirates comme raccourci",
+            "en": "Refuse pirate networks as a shortcut"
+          },
+          "availableIf": {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer_as_revolutionary",
+              "effects": [],
+              "text": {
+                "fr": "Ta carrière révolutionnaire ne transformera pas la famille en cellule ni en couverture.",
+                "en": "Your Revolutionary career will not turn the family into a cell or a cover."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_pirate_22_bounty_reaches_old_harbor",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_02",
+        "nodeId": "family_pirate_22_bounty_reaches_old_harbor",
+        "parentNodeIds": [
+          "family_pirate_18_wanted_name_at_family_door",
+          "family_pirate_18_uniform_over_old_flag",
+          "family_pirate_18_parent_cannot_answer",
+          "family_pirate_18_fallback_message_without_homeport"
+        ],
+        "selectionPriority": 10
+      },
+      "title": {
+        "fr": "Le prix d'un nom au vieux port",
+        "en": "The Price of a Name at the Old Harbor"
+      },
+      "text": {
+        "fr": "D'anciens intermédiaires familiaux comparent maintenant ton nom pirate à tes avis et à ta notoriété. Avant d'accepter un nouveau service, ils exigent une règle sur ce qui se paie et ce qui ne se vend pas.",
+        "en": "Old family intermediaries now compare your pirate name with your notices and notoriety. Before accepting another favor, they demand a rule for what can be paid and what cannot be sold."
+      },
+      "choices": [
+        {
+          "id": "show_wanted_poster",
+          "text": {
+            "fr": "Montrer l'avis actuel",
+            "en": "Show the current wanted notice"
+          },
+          "availableIf": {
+            "type": "bountyAtLeast",
+            "value": 1
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "show_wanted_poster",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_22_bounty_reaches_old_harbor_i01_price"
+                }
+              ],
+              "text": {
+                "fr": "Tu poses ta situation actuelle sur la table, sans demander d'effacer le passé.",
+                "en": "You put your current situation on the table without asking anyone to erase the past."
+              }
+            }
+          }
+        },
+        {
+          "id": "name_your_reputation",
+          "text": {
+            "fr": "Assumer ta réputation",
+            "en": "Own your reputation"
+          },
+          "availableIf": {
+            "type": "reputationAtLeast",
+            "value": 20
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "name_your_reputation",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_22_bounty_reaches_old_harbor_i01_price"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses qu'ils confondent ta notoriété avec une dette familiale.",
+                "en": "You refuse to let them confuse your notoriety with a family debt."
+              }
+            }
+          }
+        },
+        {
+          "id": "refuse_family_price",
+          "text": {
+            "fr": "Refuser qu'on tarife la famille",
+            "en": "Refuse to price the family"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "refuse_family_price",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_22_bounty_reaches_old_harbor_i01_price"
+                }
+              ],
+              "text": {
+                "fr": "Tu obliges l'intermédiaire à parler d'une dette précise, pas d'un nom.",
+                "en": "You force the intermediary to name a specific debt, not a family name."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      }
+    },
+    {
+      "id": "family_pirate_22_bounty_reaches_old_harbor_i01_price",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une dette précise",
+        "en": "A Specific Debt"
+      },
+      "text": {
+        "fr": "Une seule créance vérifiable reste sur la table. Tu peux la payer, limiter l'échange à l'information, ou laisser l'intermédiaire repartir sans accord.",
+        "en": "Only one verifiable claim remains on the table. You can pay it, limit the exchange to information, or let the intermediary leave without a deal."
+      },
+      "choices": [
+        {
+          "id": "pay_verified_debt",
+          "text": {
+            "fr": "Payer 5 000 Berrys",
+            "en": "Pay 5,000 Berrys"
+          },
+          "availableIf": {
+            "type": "berriesAtLeast",
+            "value": 5000
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "pay_verified_debt",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": -5000
+                },
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_debt_repaid"
+                }
+              ],
+              "text": {
+                "fr": "Tu règles cette dette-là, pas une dette infinie de naissance.",
+                "en": "You settle this debt, not an infinite debt of birth."
+              }
+            }
+          }
+        },
+        {
+          "id": "information_only",
+          "text": {
+            "fr": "Échanger seulement des informations",
+            "en": "Trade information only"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "information_only",
+              "effects": [],
+              "text": {
+                "fr": "Aucun Berry ne change de main et aucun service futur n'est promis.",
+                "en": "No Berrys change hands and no future favor is promised."
+              }
+            }
+          }
+        },
+        {
+          "id": "walk_away",
+          "text": {
+            "fr": "Laisser le compte ouvert",
+            "en": "Leave the account open"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "walk_away",
+              "effects": [],
+              "text": {
+                "fr": "Tu refuses de transformer l'urgence du moment en héritage permanent.",
+                "en": "You refuse to turn today's urgency into permanent inheritance."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_pirate_22_family_name_on_clean_paper",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_02",
+        "nodeId": "family_pirate_22_family_name_on_clean_paper",
+        "parentNodeIds": [
+          "family_pirate_18_wanted_name_at_family_door",
+          "family_pirate_18_uniform_over_old_flag",
+          "family_pirate_18_parent_cannot_answer",
+          "family_pirate_18_fallback_message_without_homeport"
+        ],
+        "selectionPriority": 10
+      },
+      "title": {
+        "fr": "Le nom pirate sur du papier propre",
+        "en": "The Pirate Name on Clean Paper"
+      },
+      "text": {
+        "fr": "Un ancien créancier familial t'envoie un document où ta carrière actuelle apparaît à côté de ton origine pirate. Il veut une signature claire, pas une faveur implicite de ton organisation.",
+        "en": "An old family creditor sends a document placing your current career beside your pirate origin. They want a clear signature, not an implied favor from your organization."
+      },
+      "choices": [
+        {
+          "id": "sign_personally",
+          "text": {
+            "fr": "Signer à titre personnel",
+            "en": "Sign personally"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "sign_personally",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_22_family_name_on_clean_paper_i01_signature"
+                }
+              ],
+              "text": {
+                "fr": "Tu signes comme individu, sans engager ton organisation.",
+                "en": "You sign as an individual without binding your organization."
+              }
+            }
+          }
+        },
+        {
+          "id": "sign_marine_rank",
+          "text": {
+            "fr": "Signer avec ton grade Marine",
+            "en": "Sign with your Marine rank"
+          },
+          "availableIf": {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "marine"
+              },
+              {
+                "type": "careerRankAtLeast",
+                "rankId": "marine_lieutenant"
+              }
+            ]
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "sign_marine_rank",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_22_family_name_on_clean_paper_i01_signature"
+                }
+              ],
+              "text": {
+                "fr": "Tu rends la démarche officielle et traçable.",
+                "en": "You make the process official and traceable."
+              }
+            }
+          }
+        },
+        {
+          "id": "sign_revolutionary_rank",
+          "text": {
+            "fr": "Signer avec ton rang révolutionnaire",
+            "en": "Sign with your Revolutionary rank"
+          },
+          "availableIf": {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "careerAffiliationIs",
+                "affiliationId": "revolutionary"
+              },
+              {
+                "type": "careerRankAtLeast",
+                "rankId": "revolutionary_agent"
+              }
+            ]
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "sign_revolutionary_rank",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_22_family_name_on_clean_paper_i01_signature"
+                }
+              ],
+              "text": {
+                "fr": "Tu assumes que cette trace peut circuler dans l'organisation.",
+                "en": "You accept that this paper trail may circulate within the organization."
+              }
+            }
+          }
+        },
+        {
+          "id": "refuse_institutional_shield",
+          "text": {
+            "fr": "Refuser tout passe-droit",
+            "en": "Refuse any institutional shield"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "refuse_institutional_shield",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_22_family_name_on_clean_paper_i01_signature"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes une dette vérifiable ou aucune signature.",
+                "en": "You demand a verifiable debt or no signature."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      }
+    },
+    {
+      "id": "family_pirate_22_family_name_on_clean_paper_i01_signature",
+      "kind": "immediate",
+      "title": {
+        "fr": "Signer sans hériter de tout",
+        "en": "Sign Without Inheriting Everything"
+      },
+      "text": {
+        "fr": "Le créancier accepte de séparer trois choses : tes actes, ceux de ta famille et l'autorité de ton organisation. Il reste à décider ce que tu assumes réellement.",
+        "en": "The creditor agrees to separate three things: your acts, your family's, and your organization's authority. You still have to decide what you actually assume."
+      },
+      "choices": [
+        {
+          "id": "separate_past_job",
+          "text": {
+            "fr": "Séparer passé et fonction",
+            "en": "Separate past from office"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "separate_past_job",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_home_boundary"
+                }
+              ],
+              "text": {
+                "fr": "Ton poste ne devient ni bouclier familial ni dette familiale.",
+                "en": "Your office becomes neither a family shield nor a family debt."
+              }
+            }
+          }
+        },
+        {
+          "id": "settle_specific_debt",
+          "text": {
+            "fr": "Régler 5 000 Berrys",
+            "en": "Settle 5,000 Berrys"
+          },
+          "availableIf": {
+            "type": "berriesAtLeast",
+            "value": 5000
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "settle_specific_debt",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": -5000
+                },
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_debt_repaid"
+                }
+              ],
+              "text": {
+                "fr": "Tu règles le montant vérifié et clos cette ligne précise.",
+                "en": "You settle the verified amount and close that specific line."
+              }
+            }
+          }
+        },
+        {
+          "id": "leave_dispute_open",
+          "text": {
+            "fr": "Laisser le litige ouvert",
+            "en": "Leave the dispute open"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "leave_dispute_open",
+              "effects": [],
+              "text": {
+                "fr": "Tu refuses de signer ce que les preuves ne suffisent pas à établir.",
+                "en": "You refuse to sign what the evidence does not establish."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_pirate_22_fallback_debt_without_map",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_02",
+        "nodeId": "family_pirate_22_fallback_debt_without_map",
+        "parentNodeIds": [
+          "family_pirate_18_wanted_name_at_family_door",
+          "family_pirate_18_uniform_over_old_flag",
+          "family_pirate_18_parent_cannot_answer",
+          "family_pirate_18_fallback_message_without_homeport"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Une dette sans carte",
+        "en": "A Debt Without a Map"
+      },
+      "text": {
+        "fr": "Une copie de registre familial te rejoint loin des anciens quais. Le port d'origine n'a aucune importance : trois noms réclament encore une réponse, mais un seul montant est documenté.",
+        "en": "A copy of the family ledger reaches you far from the old docks. The home port no longer matters: three names still want an answer, but only one amount is documented."
+      },
+      "choices": [
+        {
+          "id": "verify_names",
+          "text": {
+            "fr": "Vérifier les noms",
+            "en": "Verify the names"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "verify_names",
+              "effects": [],
+              "text": {
+                "fr": "Tu réponds uniquement aux lignes que tu peux confirmer.",
+                "en": "You answer only the lines you can verify."
+              }
+            }
+          }
+        },
+        {
+          "id": "compare_old_ledger",
+          "text": {
+            "fr": "Comparer à ton ancien registre",
+            "en": "Compare with your old ledger"
+          },
+          "availableIf": {
+            "type": "hasPlayed",
+            "eventId": "family_pirate_13_ledger_of_names"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "compare_old_ledger",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_ledger_sealed"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses toute nouvelle ligne absente du registre que tu as réellement connu.",
+                "en": "You reject any new line absent from the ledger you actually knew."
+              }
+            }
+          }
+        },
+        {
+          "id": "pay_small_part",
+          "text": {
+            "fr": "Payer 2 500 Berrys",
+            "en": "Pay 2,500 Berrys"
+          },
+          "availableIf": {
+            "type": "berriesAtLeast",
+            "value": 2500
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "pay_small_part",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": -2500
+                }
+              ],
+              "text": {
+                "fr": "Tu règles la seule petite créance vérifiable, rien de plus.",
+                "en": "You settle the one small verifiable claim, nothing more."
+              }
+            }
+          }
+        },
+        {
+          "id": "deny_blank_debt",
+          "text": {
+            "fr": "Refuser la dette en blanc",
+            "en": "Reject a blank debt"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "deny_blank_debt",
+              "effects": [],
+              "text": {
+                "fr": "Le document repart sans signature générale de ta part.",
+                "en": "The document leaves without any blanket signature from you."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_pirate_26_crew_inherits_a_boundary",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_03",
+        "nodeId": "family_pirate_26_crew_inherits_a_boundary",
+        "parentNodeIds": [
+          "family_pirate_22_bounty_reaches_old_harbor",
+          "family_pirate_22_family_name_on_clean_paper",
+          "family_pirate_22_fallback_debt_without_map"
+        ],
+        "selectionPriority": 10
+      },
+      "title": {
+        "fr": "Ce que l'équipage n'hérite pas",
+        "en": "What the Crew Does Not Inherit"
+      },
+      "text": {
+        "fr": "Un relais familial propose à ton équipage les mêmes usages de refuge que ceux de ton enfance. Accepter sans règle confondrait famille, navire et dettes anciennes.",
+        "en": "A family relay offers your crew the same safe-harbor customs you knew as a child. Accepting without a rule would blur family, ship, and old debts."
+      },
+      "choices": [
+        {
+          "id": "let_crew_read_code",
+          "text": {
+            "fr": "Faire lire le code à l'équipage",
+            "en": "Let the crew read the code"
+          },
+          "availableIf": {
+            "type": "hasCrew"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "let_crew_read_code",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_26_crew_inherits_a_boundary_i01_code"
+                }
+              ],
+              "text": {
+                "fr": "Tu rends les limites explicites avant que quelqu'un les interprète à sa façon.",
+                "en": "You make the limits explicit before anyone interprets them their own way."
+              }
+            }
+          }
+        },
+        {
+          "id": "mark_ship_boundary",
+          "text": {
+            "fr": "Poser la limite sur ton navire",
+            "en": "Set the boundary on your ship"
+          },
+          "availableIf": {
+            "type": "hasShip"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "mark_ship_boundary",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_26_crew_inherits_a_boundary_i01_code"
+                }
+              ],
+              "text": {
+                "fr": "Tu rappelles que posséder un navire ne transforme pas ta famille en ressource d'équipage.",
+                "en": "You state that owning a ship does not turn your family into a crew resource."
+              }
+            }
+          }
+        },
+        {
+          "id": "answer_alone",
+          "text": {
+            "fr": "Répondre seul",
+            "en": "Answer alone"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "answer_alone",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_26_crew_inherits_a_boundary_i01_code"
+                }
+              ],
+              "text": {
+                "fr": "Tu prends la responsabilité du lien sans la déléguer.",
+                "en": "You take responsibility for the connection without delegating it."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      }
+    },
+    {
+      "id": "family_pirate_26_crew_inherits_a_boundary_i01_code",
+      "kind": "immediate",
+      "title": {
+        "fr": "Famille, équipage, refuge",
+        "en": "Family, Crew, Harbor"
+      },
+      "text": {
+        "fr": "Le relais accepte de continuer seulement si une limite tient en une phrase. Tu dois choisir ce qui ne pourra jamais être réclamé au nom du sang.",
+        "en": "The relay will continue only if the boundary fits in one sentence. You must decide what can never be claimed in the name of blood."
+      },
+      "choices": [
+        {
+          "id": "crew_not_family_property",
+          "text": {
+            "fr": "L'équipage n'appartient pas à la famille",
+            "en": "The crew does not belong to the family"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "crew_not_family_property",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_crew_code"
+                }
+              ],
+              "text": {
+                "fr": "Aucun parent ne pourra donner d'ordre à ton équipage par héritage.",
+                "en": "No relative may command your crew by inheritance."
+              }
+            }
+          }
+        },
+        {
+          "id": "family_not_crew_property",
+          "text": {
+            "fr": "La famille n'appartient pas à l'équipage",
+            "en": "The family does not belong to the crew"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "family_not_crew_property",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_home_boundary"
+                }
+              ],
+              "text": {
+                "fr": "Aucun membre d'équipage ne pourra réclamer un proche comme paiement.",
+                "en": "No crew member may claim a relative as payment."
+              }
+            }
+          }
+        },
+        {
+          "id": "case_by_case",
+          "text": {
+            "fr": "Décider cas par cas",
+            "en": "Decide case by case"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "case_by_case",
+              "effects": [],
+              "text": {
+                "fr": "Tu refuses une règle qui transformerait chaque futur lien en contrat automatique.",
+                "en": "You refuse a rule that would turn every future connection into an automatic contract."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_pirate_26_institution_asks_about_family",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_03",
+        "nodeId": "family_pirate_26_institution_asks_about_family",
+        "parentNodeIds": [
+          "family_pirate_22_bounty_reaches_old_harbor",
+          "family_pirate_22_family_name_on_clean_paper",
+          "family_pirate_22_fallback_debt_without_map"
+        ],
+        "selectionPriority": 10
+      },
+      "title": {
+        "fr": "Le dossier porte ton nom de famille",
+        "en": "The File Bears Your Family Name"
+      },
+      "text": {
+        "fr": "Un rapport interne cite un ancien contact pirate de ta famille. Ton organisation veut ton interprétation avant d'agir, précisément parce que tu connais ce monde de l'intérieur.",
+        "en": "An internal report names an old pirate contact of your family. Your organization wants your interpretation before acting precisely because you know that world from the inside."
+      },
+      "choices": [
+        {
+          "id": "facts_only",
+          "text": {
+            "fr": "Donner seulement les faits",
+            "en": "Give facts only"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "facts_only",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_26_institution_asks_about_family_i01_evidence"
+                }
+              ],
+              "text": {
+                "fr": "Tu sépares ce que tu sais de ce que tu supposes.",
+                "en": "You separate what you know from what you assume."
+              }
+            }
+          }
+        },
+        {
+          "id": "protect_innocents_first",
+          "text": {
+            "fr": "Exiger de protéger les innocents",
+            "en": "Require protection for innocents"
+          },
+          "availableIf": {
+            "type": "hasPlayed",
+            "eventId": "family_pirate_13_no_innocents_code"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "protect_innocents_first",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_26_institution_asks_about_family_i01_evidence"
+                }
+              ],
+              "text": {
+                "fr": "Tu rappelles une limite que ton enfance t'a déjà apprise.",
+                "en": "You invoke a boundary your childhood already taught you."
+              }
+            }
+          }
+        },
+        {
+          "id": "recuse",
+          "text": {
+            "fr": "Te retirer de la décision",
+            "en": "Recuse yourself"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "recuse",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_26_institution_asks_about_family_i01_evidence"
+                }
+              ],
+              "text": {
+                "fr": "Tu fournis les faits puis refuses de juger seul un héritage qui te concerne.",
+                "en": "You provide the facts, then refuse to judge alone an inheritance that involves you."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      }
+    },
+    {
+      "id": "family_pirate_26_institution_asks_about_family_i01_evidence",
+      "kind": "immediate",
+      "title": {
+        "fr": "Ce que tu sais, ce que tu dois",
+        "en": "What You Know, What You Owe"
+      },
+      "text": {
+        "fr": "Le rapport peut maintenant avancer sans transformer ton origine en preuve. Il reste à décider si tu gardes un canal familial séparé ou si tout passe par ton organisation.",
+        "en": "The report can now proceed without turning your origin into evidence. You still must decide whether to keep a separate family channel or route everything through your organization."
+      },
+      "choices": [
+        {
+          "id": "evidence_line",
+          "text": {
+            "fr": "Tracer la ligne des preuves",
+            "en": "Draw the evidence line"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "evidence_line",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_home_boundary"
+                }
+              ],
+              "text": {
+                "fr": "Les liens familiaux restent un contexte, jamais une culpabilité automatique.",
+                "en": "Family ties remain context, never automatic guilt."
+              }
+            }
+          }
+        },
+        {
+          "id": "keep_private_channel",
+          "text": {
+            "fr": "Garder un canal privé",
+            "en": "Keep a private channel"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_private_channel",
+              "effects": [],
+              "text": {
+                "fr": "Un canal familial subsiste, sans immunité ni mandat politique.",
+                "en": "One family channel remains, with neither immunity nor political mandate."
+              }
+            }
+          }
+        },
+        {
+          "id": "institution_only",
+          "text": {
+            "fr": "Passer uniquement par l'organisation",
+            "en": "Use the organization only"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "institution_only",
+              "effects": [],
+              "text": {
+                "fr": "Tu fermes les raccourcis familiaux pour ce dossier.",
+                "en": "You close family shortcuts for this case."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_pirate_26_fallback_contact_at_sea",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_03",
+        "nodeId": "family_pirate_26_fallback_contact_at_sea",
+        "parentNodeIds": [
+          "family_pirate_22_bounty_reaches_old_harbor",
+          "family_pirate_22_family_name_on_clean_paper",
+          "family_pirate_22_fallback_debt_without_map"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Le contact qui te retrouve partout",
+        "en": "The Contact That Finds You Anywhere"
+      },
+      "text": {
+        "fr": "Un message familial te rejoint par des relais de marins et de ports, même loin de chez toi. Il ne demande pas ton retour : seulement si une vieille promesse de refuge existe encore.",
+        "en": "A family message finds you through sailors and port relays, even far from home. It does not ask you to return: only whether an old safe-harbor promise still exists."
+      },
+      "choices": [
+        {
+          "id": "keep_one_harbor",
+          "text": {
+            "fr": "Garder un seul refuge",
+            "en": "Keep one harbor"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_one_harbor",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_safe_harbor_known"
+                }
+              ],
+              "text": {
+                "fr": "Un seul contact reste valide; aucun réseau entier n'est réactivé.",
+                "en": "One contact remains valid; no entire network is reactivated."
+              }
+            }
+          }
+        },
+        {
+          "id": "use_old_key",
+          "text": {
+            "fr": "Répondre avec l'ancienne clé",
+            "en": "Answer with the old key"
+          },
+          "availableIf": {
+            "type": "hasPlayed",
+            "eventId": "family_pirate_13_safe_harbor_key"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "use_old_key",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_safe_harbor_access"
+                }
+              ],
+              "text": {
+                "fr": "Tu confirmes un accès précis hérité de ton adolescence.",
+                "en": "You confirm one specific access inherited from adolescence."
+              }
+            }
+          }
+        },
+        {
+          "id": "end_open_promises",
+          "text": {
+            "fr": "Fermer les promesses ouvertes",
+            "en": "Close open promises"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "end_open_promises",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_home_boundary"
+                }
+              ],
+              "text": {
+                "fr": "La famille peut écrire; elle ne peut plus engager ton nom à l'avance.",
+                "en": "The family may write; it can no longer pledge your name in advance."
+              }
+            }
+          }
+        },
+        {
+          "id": "news_only",
+          "text": {
+            "fr": "Demander seulement des nouvelles",
+            "en": "Ask only for news"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "news_only",
+              "effects": [],
+              "text": {
+                "fr": "Le relais devient un fil d'information, pas une dette.",
+                "en": "The relay becomes an information thread, not a debt."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_pirate_30_mother_draws_the_last_line",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_04",
+        "nodeId": "family_pirate_30_mother_draws_the_last_line",
+        "parentNodeIds": [
+          "family_pirate_26_crew_inherits_a_boundary",
+          "family_pirate_26_institution_asks_about_family",
+          "family_pirate_26_fallback_contact_at_sea"
+        ],
+        "selectionPriority": 20
+      },
+      "title": {
+        "fr": "La dernière ligne de ta mère",
+        "en": "Your Mother's Last Line"
+      },
+      "text": {
+        "fr": "Un appel en direct de ta mère finit par te joindre. Elle nomme une vieille décision familiale qui vous blesse encore et demande si la distance entre vous est devenue une règle.",
+        "en": "A live call from your mother finally reaches you. She names an old family decision that still hurts and asks whether the distance between you has become a rule."
+      },
+      "choices": [
+        {
+          "id": "hear_out",
+          "text": {
+            "fr": "L'écouter jusqu'au bout",
+            "en": "Hear her out"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "hear_out",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_30_mother_draws_the_last_line_i01_between_you"
+                }
+              ],
+              "text": {
+                "fr": "Tu la laisses finir sans promettre d'obéir.",
+                "en": "You let her finish without promising to obey."
+              }
+            }
+          }
+        },
+        {
+          "id": "defend_boundary",
+          "text": {
+            "fr": "Défendre ta limite",
+            "en": "Defend your boundary"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "defend_boundary",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_30_mother_draws_the_last_line_i01_between_you"
+                }
+              ],
+              "text": {
+                "fr": "Tu rappelles la limite avant de parler du reste.",
+                "en": "You restate the boundary before discussing anything else."
+              }
+            }
+          }
+        },
+        {
+          "id": "end_call",
+          "text": {
+            "fr": "Couper court",
+            "en": "End the call"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "end_call",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_30_mother_draws_the_last_line_i01_between_you"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses que l'ancien conflit reprenne tout l'espace.",
+                "en": "You refuse to let the old conflict take over again."
+              }
+            }
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_2"
+      ],
+      "eligibility": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "originParentPresent",
+            "role": "mother"
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "any",
+              "conditions": [
+                {
+                  "type": "npcStatusIs",
+                  "npcId": "player_parent_2",
+                  "status": "dead"
+                },
+                {
+                  "type": "npcStatusIs",
+                  "npcId": "player_parent_2",
+                  "status": "departed"
+                },
+                {
+                  "type": "npcStatusIs",
+                  "npcId": "player_parent_2",
+                  "status": "unavailable"
+                }
+              ]
+            }
+          },
+          {
+            "type": "npcRelationshipAtMost",
+            "npcId": "player_parent_2",
+            "value": 20
+          }
+        ]
+      }
+    },
+    {
+      "id": "family_pirate_30_mother_draws_the_last_line_i01_between_you",
+      "kind": "immediate",
+      "title": {
+        "fr": "Ce qui reste entre vous",
+        "en": "What Remains Between You"
+      },
+      "text": {
+        "fr": "Le passé ne change pas, mais la relation peut encore changer. Ta mère attend une réponse sur vous deux, pas sur la carrière qu'elle aurait choisie pour toi.",
+        "en": "The past does not change, but the relationship still can. Your mother waits for an answer about the two of you, not the career she would have chosen for you."
+      },
+      "choices": [
+        {
+          "id": "repair_without_obeying",
+          "text": {
+            "fr": "Réparer sans obéir",
+            "en": "Repair without obeying"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "repair_without_obeying",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 8
+                }
+              ],
+              "text": {
+                "fr": "Vous gardez vos désaccords, mais vous recommencez à vous parler.",
+                "en": "You keep your disagreements, but start speaking again."
+              }
+            }
+          }
+        },
+        {
+          "id": "state_limit",
+          "text": {
+            "fr": "Garder un lien avec limites",
+            "en": "Keep a bounded relationship"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "state_limit",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": 3
+                },
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_home_boundary"
+                }
+              ],
+              "text": {
+                "fr": "Le lien survit avec une frontière que vous nommez enfin.",
+                "en": "The relationship survives with a boundary you finally name."
+              }
+            }
+          }
+        },
+        {
+          "id": "break_contact",
+          "text": {
+            "fr": "Rompre le contact",
+            "en": "Break contact"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "break_contact",
+              "effects": [
+                {
+                  "type": "modifyNpcRelationship",
+                  "npcId": "player_parent_2",
+                  "amount": -8
+                }
+              ],
+              "text": {
+                "fr": "Tu mets fin à l'appel sans promettre de prochain échange.",
+                "en": "You end the call without promising another."
+              }
+            }
+          }
+        }
+      ],
+      "cast": [
+        "player_parent_2"
+      ]
+    },
+    {
+      "id": "family_pirate_30_name_bigger_than_story",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_04",
+        "nodeId": "family_pirate_30_name_bigger_than_story",
+        "parentNodeIds": [
+          "family_pirate_26_crew_inherits_a_boundary",
+          "family_pirate_26_institution_asks_about_family",
+          "family_pirate_26_fallback_contact_at_sea"
+        ],
+        "selectionPriority": 10
+      },
+      "title": {
+        "fr": "Quand ton nom dépasse l'histoire familiale",
+        "en": "When Your Name Outgrows the Family Story"
+      },
+      "text": {
+        "fr": "De vieux associés commencent à vendre l'accès à ton nom pirate comme s'il appartenait encore au patrimoine familial. Un intermédiaire t'envoie leurs tarifs avant qu'ils ne deviennent une habitude.",
+        "en": "Old associates begin selling access to your pirate name as if it still belonged to the family estate. An intermediary sends you their rates before the practice becomes routine."
+      },
+      "choices": [
+        {
+          "id": "stop_sale",
+          "text": {
+            "fr": "Faire cesser la vente",
+            "en": "Stop the sale"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "stop_sale",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_30_name_bigger_than_story_i01_borrowed_fame"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses qu'un lien de sang devienne un billet d'entrée.",
+                "en": "You refuse to let blood ties become an admission ticket."
+              }
+            }
+          }
+        },
+        {
+          "id": "license_nothing",
+          "text": {
+            "fr": "N'autoriser aucun usage",
+            "en": "Authorize no use"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "license_nothing",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_30_name_bigger_than_story_i01_borrowed_fame"
+                }
+              ],
+              "text": {
+                "fr": "Tu n'accordes aucun droit commercial sur ton nom.",
+                "en": "You grant no commercial right to your name."
+              }
+            }
+          }
+        },
+        {
+          "id": "use_once",
+          "text": {
+            "fr": "Utiliser la rumeur une fois",
+            "en": "Use the rumor once"
+          },
+          "availableIf": {
+            "type": "reputationAtLeast",
+            "value": 30
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "use_once",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_30_name_bigger_than_story_i01_borrowed_fame"
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes un seul avantage avant d'en fermer la porte.",
+                "en": "You accept one advantage before closing the door."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      }
+    },
+    {
+      "id": "family_pirate_30_name_bigger_than_story_i01_borrowed_fame",
+      "kind": "immediate",
+      "title": {
+        "fr": "Une réputation n'est pas un héritage",
+        "en": "A Reputation Is Not an Inheritance"
+      },
+      "text": {
+        "fr": "L'intermédiaire demande une consigne transmissible. Ce que tu décides aujourd'hui déterminera seulement l'usage du nom, pas l'affection ni les dettes entre proches.",
+        "en": "The intermediary asks for a rule others can repeat. What you decide now governs only use of the name, not affection or debts between relatives."
+      },
+      "choices": [
+        {
+          "id": "forbid_family_brand",
+          "text": {
+            "fr": "Interdire la marque familiale",
+            "en": "Forbid the family brand"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "forbid_family_brand",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_home_boundary"
+                }
+              ],
+              "text": {
+                "fr": "Ton nom ne peut plus être vendu comme propriété familiale.",
+                "en": "Your name can no longer be sold as family property."
+              }
+            }
+          }
+        },
+        {
+          "id": "one_harbor_only",
+          "text": {
+            "fr": "Tolérer un seul refuge",
+            "en": "Allow one harbor only"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "one_harbor_only",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_safe_harbor_known"
+                }
+              ],
+              "text": {
+                "fr": "Un seul refuge garde le droit de citer ton nom, sans le revendre.",
+                "en": "One harbor keeps permission to cite your name, but not resell it."
+              }
+            }
+          }
+        },
+        {
+          "id": "let_rumor_die",
+          "text": {
+            "fr": "Laisser la rumeur mourir",
+            "en": "Let the rumor die"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "let_rumor_die",
+              "effects": [],
+              "text": {
+                "fr": "Tu n'alimentes ni menace ni publicité; l'intermédiaire repart sans mandat.",
+                "en": "You feed neither threat nor publicity; the intermediary leaves without a mandate."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_pirate_30_fallback_empty_chair_in_ledger",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_04",
+        "nodeId": "family_pirate_30_fallback_empty_chair_in_ledger",
+        "parentNodeIds": [
+          "family_pirate_26_crew_inherits_a_boundary",
+          "family_pirate_26_institution_asks_about_family",
+          "family_pirate_26_fallback_contact_at_sea"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Les noms barrés du registre",
+        "en": "The Crossed-Out Names in the Ledger"
+      },
+      "text": {
+        "fr": "Une page copiée d'un ancien registre te rejoint avec plusieurs noms barrés. La famille ne demande plus qui avait raison : seulement ce qui mérite encore d'être transmis.",
+        "en": "A copied page from an old ledger reaches you with several names crossed out. The family no longer asks who was right, only what is still worth passing on."
+      },
+      "choices": [
+        {
+          "id": "preserve_names",
+          "text": {
+            "fr": "Conserver les noms",
+            "en": "Preserve the names"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "preserve_names",
+              "effects": [],
+              "text": {
+                "fr": "Tu gardes la mémoire sans réactiver les anciennes créances.",
+                "en": "You preserve the memory without reviving old claims."
+              }
+            }
+          }
+        },
+        {
+          "id": "seal_ledger",
+          "text": {
+            "fr": "Sceller le registre",
+            "en": "Seal the ledger"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "seal_ledger",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_ledger_sealed"
+                }
+              ],
+              "text": {
+                "fr": "Les pages restent consultables, mais aucune nouvelle dette n'y sera ajoutée.",
+                "en": "The pages remain readable, but no new debt will be added."
+              }
+            }
+          }
+        },
+        {
+          "id": "close_old_page",
+          "text": {
+            "fr": "Fermer cette page",
+            "en": "Close this page"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "close_old_page",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_home_boundary"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses de laisser un vieux registre décider de tes prochains liens.",
+                "en": "You refuse to let an old ledger decide your future relationships."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_pirate_34_code_under_your_own_name",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_05",
+        "nodeId": "family_pirate_34_code_under_your_own_name",
+        "parentNodeIds": [
+          "family_pirate_30_mother_draws_the_last_line",
+          "family_pirate_30_name_bigger_than_story",
+          "family_pirate_30_fallback_empty_chair_in_ledger"
+        ],
+        "selectionPriority": 10
+      },
+      "title": {
+        "fr": "Le code sous ton propre nom",
+        "en": "The Code Under Your Own Name"
+      },
+      "text": {
+        "fr": "Un dernier relais familial te propose de publier un code pirate sous ton nom, pas sous celui de tes parents. À trente-quatre ans, l'héritage ne peut plus se cacher derrière l'enfance.",
+        "en": "A final family relay offers to publish a pirate code under your name, not your parents'. At thirty-four, the inheritance can no longer hide behind childhood."
+      },
+      "choices": [
+        {
+          "id": "write_code",
+          "text": {
+            "fr": "Écrire ton code",
+            "en": "Write your code"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "write_code",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_34_code_under_your_own_name_i01_final_code"
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes de formuler ce qui t'appartient réellement.",
+                "en": "You agree to state what is truly yours."
+              }
+            }
+          }
+        },
+        {
+          "id": "refuse_banner",
+          "text": {
+            "fr": "Refuser le pavillon familial",
+            "en": "Refuse the family banner"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "refuse_banner",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_34_code_under_your_own_name_i01_final_code"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses que ton choix adulte soit signé par le passé.",
+                "en": "You refuse to let the past sign your adult choice."
+              }
+            }
+          }
+        },
+        {
+          "id": "make_public",
+          "text": {
+            "fr": "Rendre ta position publique",
+            "en": "Make your position public"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "make_public",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_34_code_under_your_own_name_i01_final_code"
+                }
+              ],
+              "text": {
+                "fr": "Tu choisis que le monde entende ta version, pas une légende familiale.",
+                "en": "You choose to let the world hear your version, not a family legend."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      }
+    },
+    {
+      "id": "family_pirate_34_code_under_your_own_name_i01_final_code",
+      "kind": "immediate",
+      "title": {
+        "fr": "Ce qui porte ton nom",
+        "en": "What Bears Your Name"
+      },
+      "text": {
+        "fr": "Le relais attend une seule phrase définitive. Elle ne change pas ta carrière : elle fixe seulement ce que ton nom pirate transmettra après toi.",
+        "en": "The relay waits for one definitive sentence. It does not change your career; it only fixes what your pirate name will pass on after you."
+      },
+      "choices": [
+        {
+          "id": "no_innocents",
+          "text": {
+            "fr": "Aucun innocent pour payer nos choix",
+            "en": "No innocent pays for our choices"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "no_innocents",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_no_innocents_code"
+                }
+              ],
+              "text": {
+                "fr": "Ton héritage retient une règle claire : les innocents ne paient pas pour votre réputation.",
+                "en": "Your legacy keeps one clear rule: innocents do not pay for your reputation."
+              }
+            }
+          }
+        },
+        {
+          "id": "own_name",
+          "text": {
+            "fr": "Mon nom répond de mes actes",
+            "en": "My name answers for my acts"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "own_name",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 2
+                }
+              ],
+              "text": {
+                "fr": "Ta position circule publiquement et ton nom gagne encore en notoriété.",
+                "en": "Your position travels publicly and your name gains further notoriety."
+              }
+            }
+          }
+        },
+        {
+          "id": "blood_not_flag",
+          "text": {
+            "fr": "Le sang n'est pas un pavillon",
+            "en": "Blood is not a flag"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "blood_not_flag",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Ta rupture avec l'idée d'un destin familial devient elle-même connue.",
+                "en": "Your rejection of a family destiny becomes known in its own right."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_pirate_34_old_debt_under_new_colors",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_05",
+        "nodeId": "family_pirate_34_old_debt_under_new_colors",
+        "parentNodeIds": [
+          "family_pirate_30_mother_draws_the_last_line",
+          "family_pirate_30_name_bigger_than_story",
+          "family_pirate_30_fallback_empty_chair_in_ledger"
+        ],
+        "selectionPriority": 10
+      },
+      "title": {
+        "fr": "La vieille dette sous de nouvelles couleurs",
+        "en": "The Old Debt Under New Colors"
+      },
+      "text": {
+        "fr": "Un dernier compte familial arrive par les circuits de ton organisation. Le document distingue enfin ce que ta famille devait, ce qu'on lui devait, et ce qui ne te concerne pas.",
+        "en": "A final family account arrives through your organization's channels. The document finally separates what your family owed, what was owed to it, and what does not belong to you."
+      },
+      "choices": [
+        {
+          "id": "open_account",
+          "text": {
+            "fr": "Ouvrir le compte",
+            "en": "Open the account"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "open_account",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_34_old_debt_under_new_colors_i01_final_account"
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes d'examiner les lignes une dernière fois.",
+                "en": "You agree to examine the lines one last time."
+              }
+            }
+          }
+        },
+        {
+          "id": "return_unsigned",
+          "text": {
+            "fr": "Le renvoyer sans signature",
+            "en": "Return it unsigned"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "return_unsigned",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_34_old_debt_under_new_colors_i01_final_account"
+                }
+              ],
+              "text": {
+                "fr": "Tu refuses toute responsabilité automatique liée au sang.",
+                "en": "You refuse automatic responsibility based on blood."
+              }
+            }
+          }
+        },
+        {
+          "id": "ask_proof",
+          "text": {
+            "fr": "Exiger les preuves",
+            "en": "Demand proof"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "ask_proof",
+              "effects": [
+                {
+                  "type": "queueImmediateEvent",
+                  "eventId": "family_pirate_34_old_debt_under_new_colors_i01_final_account"
+                }
+              ],
+              "text": {
+                "fr": "Tu demandes pièces et montants avant toute conclusion.",
+                "en": "You demand records and amounts before any conclusion."
+              }
+            }
+          }
+        }
+      ],
+      "eligibility": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      }
+    },
+    {
+      "id": "family_pirate_34_old_debt_under_new_colors_i01_final_account",
+      "kind": "immediate",
+      "title": {
+        "fr": "Le solde réel",
+        "en": "The Real Balance"
+      },
+      "text": {
+        "fr": "Les preuves laissent trois options réelles : régler une dette vérifiée, prendre une petite part qui revenait à la famille, ou rendre publique la séparation entre ton poste et cet héritage.",
+        "en": "The evidence leaves three real options: settle one verified debt, take a small share owed to the family, or publicly separate your office from that inheritance."
+      },
+      "choices": [
+        {
+          "id": "pay_balance",
+          "text": {
+            "fr": "Régler 5 000 Berrys",
+            "en": "Settle 5,000 Berrys"
+          },
+          "availableIf": {
+            "type": "berriesAtLeast",
+            "value": 5000
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "pay_balance",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": -5000
+                },
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_debt_repaid"
+                }
+              ],
+              "text": {
+                "fr": "Tu paies le solde vérifié et clos cette créance sans engager ton organisation.",
+                "en": "You pay the verified balance and close that claim without binding your organization."
+              }
+            }
+          }
+        },
+        {
+          "id": "take_returned_share",
+          "text": {
+            "fr": "Prendre la part restituée",
+            "en": "Take the returned share"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "take_returned_share",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": 2500
+                }
+              ],
+              "text": {
+                "fr": "Une part liquide de 2 500 Berrys te revient après vérification des comptes.",
+                "en": "A liquid 2,500-Berry share comes to you after the accounts are verified."
+              }
+            }
+          }
+        },
+        {
+          "id": "publish_distance",
+          "text": {
+            "fr": "Rendre la séparation publique",
+            "en": "Make the separation public"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "publish_distance",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Ta position devient connue : ta carrière actuelle ne rachète ni ne prolonge les crimes familiaux.",
+                "en": "Your position becomes known: your current career neither redeems nor extends family crimes."
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "family_pirate_34_fallback_what_name_means",
+      "kind": "normal",
+      "majorTrack": {
+        "trackId": "family_pirate",
+        "chapterId": "adult_family_05",
+        "nodeId": "family_pirate_34_fallback_what_name_means",
+        "parentNodeIds": [
+          "family_pirate_30_mother_draws_the_last_line",
+          "family_pirate_30_name_bigger_than_story",
+          "family_pirate_30_fallback_empty_chair_in_ledger"
+        ],
+        "fallback": true
+      },
+      "title": {
+        "fr": "Ce que le nom veut encore dire",
+        "en": "What the Name Still Means"
+      },
+      "text": {
+        "fr": "Le dernier message familial ne demande ni retour, ni carrière, ni pardon. Il contient une petite part d'argent, une adresse encore fiable et une feuille blanche pour ta réponse.",
+        "en": "The final family message asks for no return, career, or forgiveness. It contains a small cash share, one still-reliable address, and a blank page for your answer."
+      },
+      "choices": [
+        {
+          "id": "take_final_share",
+          "text": {
+            "fr": "Prendre la dernière part",
+            "en": "Take the final share"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "take_final_share",
+              "effects": [
+                {
+                  "type": "modifyBerries",
+                  "amount": 2500
+                }
+              ],
+              "text": {
+                "fr": "Tu acceptes 2 500 Berrys comme dernier transfert liquide, sans reprendre les dettes autour.",
+                "en": "You accept 2,500 Berrys as the final liquid transfer without taking the surrounding debts."
+              }
+            }
+          }
+        },
+        {
+          "id": "keep_one_contact",
+          "text": {
+            "fr": "Garder une seule adresse",
+            "en": "Keep one address"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "keep_one_contact",
+              "effects": [
+                {
+                  "type": "setFlag",
+                  "flagId": "family_pirate_safe_harbor_known"
+                }
+              ],
+              "text": {
+                "fr": "Une adresse reste ouverte, sans obligation de retour ni de service.",
+                "en": "One address remains open, with no duty to return or serve."
+              }
+            }
+          }
+        },
+        {
+          "id": "let_name_stand",
+          "text": {
+            "fr": "Répondre sous ton seul nom",
+            "en": "Answer under your name alone"
+          },
+          "resolution": {
+            "type": "deterministic",
+            "outcome": {
+              "id": "let_name_stand",
+              "effects": [
+                {
+                  "type": "modifyReputation",
+                  "amount": 1
+                }
+              ],
+              "text": {
+                "fr": "Ta réponse circule comme la conclusion adulte de cet héritage pirate.",
+                "en": "Your reply circulates as the adult conclusion of this pirate inheritance."
+              }
+            }
+          }
+        }
+      ]
     }
   ],
   "scenarios": [
@@ -12564,11 +15289,1655 @@
         }
       ],
       "expectNodeId": "family_pirate_13_fallback_legacy"
+    },
+    {
+      "id": "scenario_18_wanted_name_at_family_door",
+      "careerAffiliationId": "pirate",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "career_pirate_01_first_flag",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_pirate_02_first_story_spreads",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_pirate_03_small_flag_big_sea",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_pirate_04_poster_on_wall",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_pirate_05_captain_without_permission",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_pirate_06_captains_table",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_pirate_07_name_reaches_ahead",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_pirate_08_captain_at_crossroads",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_pirate_09_crew_crown",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_pirate_10_flag_beyond_you",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_18_wanted_name_at_family_door"
+    },
+    {
+      "id": "scenario_18_uniform_over_old_flag",
+      "careerAffiliationId": "marine",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "career_marine_01_new_uniform",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_marine_02_night_roster",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_marine_03_incomplete_report",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_marine_04_missing_signature",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_marine_05_harbor_curfew",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_marine_06_priority_chart",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_marine_07_discipline_court",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_marine_08_closed_door_order",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_marine_09_white_table",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_marine_10_ordered_justice",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_18_uniform_over_old_flag"
+    },
+    {
+      "id": "scenario_18_parent_cannot_answer",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_18_parent_cannot_answer",
+      "npcStatuses": {
+        "player_parent_2": "unavailable"
+      }
+    },
+    {
+      "id": "scenario_18_fallback_message_without_homeport",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_18_fallback_message_without_homeport"
+    },
+    {
+      "id": "scenario_22_bounty_reaches_old_harbor",
+      "careerAffiliationId": "pirate",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "family_pirate_18_wanted_name_at_family_door",
+          "choiceId": "answer_as_yourself",
+          "outcomeId": "answer_as_yourself"
+        },
+        {
+          "eventId": "career_pirate_01_first_flag",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_pirate_02_first_story_spreads",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_pirate_03_small_flag_big_sea",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_pirate_04_poster_on_wall",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_pirate_05_captain_without_permission",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_pirate_06_captains_table",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_pirate_07_name_reaches_ahead",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_pirate_08_captain_at_crossroads",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_pirate_09_crew_crown",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_pirate_10_flag_beyond_you",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_22_bounty_reaches_old_harbor"
+    },
+    {
+      "id": "scenario_22_family_name_on_clean_paper",
+      "careerAffiliationId": "marine",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "family_pirate_18_uniform_over_old_flag",
+          "choiceId": "answer_off_record",
+          "outcomeId": "answer_off_record"
+        },
+        {
+          "eventId": "career_marine_01_new_uniform",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_marine_02_night_roster",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_marine_03_incomplete_report",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_marine_04_missing_signature",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_marine_05_harbor_curfew",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_marine_06_priority_chart",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_marine_07_discipline_court",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_marine_08_closed_door_order",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_marine_09_white_table",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_marine_10_ordered_justice",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_22_family_name_on_clean_paper"
+    },
+    {
+      "id": "scenario_22_fallback_debt_without_map",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "family_pirate_18_fallback_message_without_homeport",
+          "choiceId": "keep_contact",
+          "outcomeId": "keep_contact"
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_22_fallback_debt_without_map"
+    },
+    {
+      "id": "scenario_26_crew_inherits_a_boundary",
+      "careerAffiliationId": "pirate",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "family_pirate_18_wanted_name_at_family_door",
+          "choiceId": "answer_as_yourself",
+          "outcomeId": "answer_as_yourself"
+        },
+        {
+          "eventId": "family_pirate_22_bounty_reaches_old_harbor",
+          "choiceId": "show_wanted_poster",
+          "outcomeId": "show_wanted_poster"
+        },
+        {
+          "eventId": "career_pirate_01_first_flag",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_pirate_02_first_story_spreads",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_pirate_03_small_flag_big_sea",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_pirate_04_poster_on_wall",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_pirate_05_captain_without_permission",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_pirate_06_captains_table",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_pirate_07_name_reaches_ahead",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_pirate_08_captain_at_crossroads",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_pirate_09_crew_crown",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_pirate_10_flag_beyond_you",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_26_crew_inherits_a_boundary"
+    },
+    {
+      "id": "scenario_26_institution_asks_about_family",
+      "careerAffiliationId": "marine",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "family_pirate_18_uniform_over_old_flag",
+          "choiceId": "answer_off_record",
+          "outcomeId": "answer_off_record"
+        },
+        {
+          "eventId": "family_pirate_22_family_name_on_clean_paper",
+          "choiceId": "sign_personally",
+          "outcomeId": "sign_personally"
+        },
+        {
+          "eventId": "career_marine_01_new_uniform",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_marine_02_night_roster",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_marine_03_incomplete_report",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_marine_04_missing_signature",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_marine_05_harbor_curfew",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_marine_06_priority_chart",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_marine_07_discipline_court",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_marine_08_closed_door_order",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_marine_09_white_table",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_marine_10_ordered_justice",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_26_institution_asks_about_family"
+    },
+    {
+      "id": "scenario_26_fallback_contact_at_sea",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "family_pirate_18_fallback_message_without_homeport",
+          "choiceId": "keep_contact",
+          "outcomeId": "keep_contact"
+        },
+        {
+          "eventId": "family_pirate_22_fallback_debt_without_map",
+          "choiceId": "verify_names",
+          "outcomeId": "verify_names"
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_26_fallback_contact_at_sea"
+    },
+    {
+      "id": "scenario_30_mother_draws_the_last_line",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "family_pirate_18_fallback_message_without_homeport",
+          "choiceId": "keep_contact",
+          "outcomeId": "keep_contact"
+        },
+        {
+          "eventId": "family_pirate_22_fallback_debt_without_map",
+          "choiceId": "verify_names",
+          "outcomeId": "verify_names"
+        },
+        {
+          "eventId": "family_pirate_26_fallback_contact_at_sea",
+          "choiceId": "keep_one_harbor",
+          "outcomeId": "keep_one_harbor"
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_30_mother_draws_the_last_line",
+      "given": [
+        {
+          "type": "familyStructureIs",
+          "familyStructureId": "single_parent"
+        },
+        {
+          "type": "originParentPresent",
+          "role": "mother"
+        },
+        {
+          "type": "npcRelationshipAtMost",
+          "npcId": "player_parent_2",
+          "value": 20
+        }
+      ]
+    },
+    {
+      "id": "scenario_30_name_bigger_than_story",
+      "careerAffiliationId": "pirate",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "family_pirate_18_wanted_name_at_family_door",
+          "choiceId": "answer_as_yourself",
+          "outcomeId": "answer_as_yourself"
+        },
+        {
+          "eventId": "family_pirate_22_bounty_reaches_old_harbor",
+          "choiceId": "show_wanted_poster",
+          "outcomeId": "show_wanted_poster"
+        },
+        {
+          "eventId": "family_pirate_26_crew_inherits_a_boundary",
+          "choiceId": "let_crew_read_code",
+          "outcomeId": "let_crew_read_code"
+        },
+        {
+          "eventId": "career_pirate_01_first_flag",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_pirate_02_first_story_spreads",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_pirate_03_small_flag_big_sea",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_pirate_04_poster_on_wall",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_pirate_05_captain_without_permission",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_pirate_06_captains_table",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_pirate_07_name_reaches_ahead",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_pirate_08_captain_at_crossroads",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_pirate_09_crew_crown",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_pirate_10_flag_beyond_you",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_30_name_bigger_than_story"
+    },
+    {
+      "id": "scenario_30_fallback_empty_chair_in_ledger",
+      "careerAffiliationId": "marine",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "family_pirate_18_uniform_over_old_flag",
+          "choiceId": "answer_off_record",
+          "outcomeId": "answer_off_record"
+        },
+        {
+          "eventId": "family_pirate_22_family_name_on_clean_paper",
+          "choiceId": "sign_personally",
+          "outcomeId": "sign_personally"
+        },
+        {
+          "eventId": "family_pirate_26_institution_asks_about_family",
+          "choiceId": "facts_only",
+          "outcomeId": "facts_only"
+        },
+        {
+          "eventId": "career_marine_01_new_uniform",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_marine_02_night_roster",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_marine_03_incomplete_report",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_marine_04_missing_signature",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_marine_05_harbor_curfew",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_marine_06_priority_chart",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_marine_07_discipline_court",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_marine_08_closed_door_order",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_marine_09_white_table",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_marine_10_ordered_justice",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_30_fallback_empty_chair_in_ledger"
+    },
+    {
+      "id": "scenario_34_code_under_your_own_name",
+      "careerAffiliationId": "pirate",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "family_pirate_18_wanted_name_at_family_door",
+          "choiceId": "answer_as_yourself",
+          "outcomeId": "answer_as_yourself"
+        },
+        {
+          "eventId": "family_pirate_22_bounty_reaches_old_harbor",
+          "choiceId": "show_wanted_poster",
+          "outcomeId": "show_wanted_poster"
+        },
+        {
+          "eventId": "family_pirate_26_crew_inherits_a_boundary",
+          "choiceId": "let_crew_read_code",
+          "outcomeId": "let_crew_read_code"
+        },
+        {
+          "eventId": "family_pirate_30_name_bigger_than_story",
+          "choiceId": "stop_sale",
+          "outcomeId": "stop_sale"
+        },
+        {
+          "eventId": "career_pirate_01_first_flag",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_pirate_02_first_story_spreads",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_pirate_03_small_flag_big_sea",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_pirate_04_poster_on_wall",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_pirate_05_captain_without_permission",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_pirate_06_captains_table",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_pirate_07_name_reaches_ahead",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_pirate_08_captain_at_crossroads",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_pirate_09_crew_crown",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_pirate_10_flag_beyond_you",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_34_code_under_your_own_name"
+    },
+    {
+      "id": "scenario_34_old_debt_under_new_colors",
+      "careerAffiliationId": "marine",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "family_pirate_18_uniform_over_old_flag",
+          "choiceId": "answer_off_record",
+          "outcomeId": "answer_off_record"
+        },
+        {
+          "eventId": "family_pirate_22_family_name_on_clean_paper",
+          "choiceId": "sign_personally",
+          "outcomeId": "sign_personally"
+        },
+        {
+          "eventId": "family_pirate_26_institution_asks_about_family",
+          "choiceId": "facts_only",
+          "outcomeId": "facts_only"
+        },
+        {
+          "eventId": "family_pirate_30_fallback_empty_chair_in_ledger",
+          "choiceId": "preserve_names",
+          "outcomeId": "preserve_names"
+        },
+        {
+          "eventId": "career_marine_01_new_uniform",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_marine_02_night_roster",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_marine_03_incomplete_report",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_marine_04_missing_signature",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_marine_05_harbor_curfew",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_marine_06_priority_chart",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_marine_07_discipline_court",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_marine_08_closed_door_order",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_marine_09_white_table",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_marine_10_ordered_justice",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_34_old_debt_under_new_colors"
+    },
+    {
+      "id": "scenario_34_fallback_what_name_means",
+      "careerAffiliationId": "civilian",
+      "history": [
+        {
+          "eventId": "family_pirate_01_trapdoor_knock",
+          "choiceId": "point",
+          "outcomeId": "point"
+        },
+        {
+          "eventId": "family_pirate_04_fallback_hunted",
+          "choiceId": "sleep",
+          "outcomeId": "sleep"
+        },
+        {
+          "eventId": "family_pirate_07_fallback_pursuit",
+          "choiceId": "carry_bag",
+          "outcomeId": "carry_bag"
+        },
+        {
+          "eventId": "family_pirate_10_fallback_pursuit",
+          "choiceId": "refuse_burn",
+          "outcomeId": "refuse_burn"
+        },
+        {
+          "eventId": "family_pirate_13_fallback_pursuit",
+          "choiceId": "defer",
+          "outcomeId": "defer"
+        },
+        {
+          "eventId": "family_pirate_18_fallback_message_without_homeport",
+          "choiceId": "keep_contact",
+          "outcomeId": "keep_contact"
+        },
+        {
+          "eventId": "family_pirate_22_fallback_debt_without_map",
+          "choiceId": "verify_names",
+          "outcomeId": "verify_names"
+        },
+        {
+          "eventId": "family_pirate_26_fallback_contact_at_sea",
+          "choiceId": "keep_one_harbor",
+          "outcomeId": "keep_one_harbor"
+        },
+        {
+          "eventId": "family_pirate_30_fallback_empty_chair_in_ledger",
+          "choiceId": "preserve_names",
+          "outcomeId": "preserve_names"
+        },
+        {
+          "eventId": "career_civilian_01_fresh_start",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 180
+        },
+        {
+          "eventId": "career_civilian_02_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 204
+        },
+        {
+          "eventId": "career_civilian_03_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 228
+        },
+        {
+          "eventId": "career_civilian_04_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 252
+        },
+        {
+          "eventId": "career_civilian_05_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 276
+        },
+        {
+          "eventId": "career_civilian_06_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 300
+        },
+        {
+          "eventId": "career_civilian_07_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 324
+        },
+        {
+          "eventId": "career_civilian_08_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 348
+        },
+        {
+          "eventId": "career_civilian_09_fallback",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 372
+        },
+        {
+          "eventId": "career_civilian_10_community_when_the_administration_le",
+          "choiceId": "scenario_complete",
+          "outcomeId": "scenario_complete",
+          "ageMonths": 396
+        }
+      ],
+      "expectNodeId": "family_pirate_34_fallback_what_name_means"
     }
   ],
   "notes": [
     "Scenarios are declarative authoring assertions: given contains only existing Condition objects, history contains the complete prior Major-root chain, and expectNodeId is the intended descendant.",
     "The single-parent sex lock for family_pirate is female: V1 single-parent Pirate Origins materialize the mother; this source never rerolls that identity.",
-    "Pirate x Fish-Man is the only Race special association in this V1 tree: pirate_fishman_underkeel."
+    "Pirate x Fish-Man is the only Race special association in this V1 tree: pirate_fishman_underkeel.",
+    "Wave 5 Adult Family continuation: five Active Family chapters at 222 / 270 / 318 / 366 / 414 ageMonths are runtime-owned by current dev; this source only supplies their family_pirate nodes.",
+    "Adult Family roots never schedule Major progression. Only Immediate continuations are queued from specialized roots.",
+    "Adult content is geography-safe by design: no birthplace/location eligibility is required; messages, relays, institutional channels and family contacts can reach the player's adult life away from home.",
+    "Adult career reactivity covers Pirate, Marine, Revolutionary and Civilian without changing career; bounty is read-only and Marine outcomes never modify bounty."
   ]
 }

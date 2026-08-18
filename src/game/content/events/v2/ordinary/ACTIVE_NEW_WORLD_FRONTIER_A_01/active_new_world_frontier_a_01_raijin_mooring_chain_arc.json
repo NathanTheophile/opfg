@@ -1,0 +1,169 @@
+{
+  "id": "active_new_world_frontier_a_01_raijin_mooring_chain_arc",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.title",
+  "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.text",
+  "choices": [
+    {
+      "id": "spot_break",
+      "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.choice.spot_break.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "spot_break_criticalfailure",
+            "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.choice.spot_break.outcome.spot_break_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "spot_break_failure",
+            "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.choice.spot_break.outcome.spot_break_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "spot_break_success",
+            "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.choice.spot_break.outcome.spot_break_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "spot_break_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.choice.spot_break.outcome.spot_break_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cut_line",
+      "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.choice.cut_line.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cut_line_criticalfailure",
+            "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.choice.cut_line.outcome.cut_line_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "cut_line_failure",
+            "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.choice.cut_line.outcome.cut_line_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "cut_line_success",
+            "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.choice.cut_line.outcome.cut_line_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cut_line_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.choice.cut_line.outcome.cut_line_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "protect_ship",
+      "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.choice.protect_ship.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ship_first",
+          "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.choice.protect_ship.outcome.ship_first.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "hasShip"
+      }
+    },
+    {
+      "id": "shipwright_order",
+      "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.choice.shipwright_order.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ordered",
+          "textKey": "event.active_new_world_frontier_a_01_raijin_mooring_chain_arc.choice.shipwright_order.outcome.ordered.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "raijin_island"
+      }
+    ]
+  }
+}

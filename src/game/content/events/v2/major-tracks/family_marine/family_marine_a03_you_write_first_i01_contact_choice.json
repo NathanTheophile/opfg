@@ -1,0 +1,68 @@
+{
+  "id": "family_marine_a03_you_write_first_i01_contact_choice",
+  "kind": "immediate",
+  "cast": [
+    "player_parent_1"
+  ],
+  "titleKey": "event.family_marine_a03_you_write_first_i01_contact_choice.title",
+  "textKey": "event.family_marine_a03_you_write_first_i01_contact_choice.text",
+  "choices": [
+    {
+      "id": "call",
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "family_marine_a03_you_write_first",
+        "choiceId": "call_him"
+      },
+      "textKey": "event.family_marine_a03_you_write_first_i01_contact_choice.choice.call.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "spoke_without_pretext",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 5
+            }
+          ],
+          "textKey": "event.family_marine_a03_you_write_first_i01_contact_choice.choice.call.outcome.spoke_without_pretext.text"
+        }
+      }
+    },
+    {
+      "id": "archive",
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "family_marine_a03_you_write_first",
+        "choiceId": "write_archive"
+      },
+      "textKey": "event.family_marine_a03_you_write_first_i01_contact_choice.choice.archive.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trace_written",
+          "effects": [],
+          "textKey": "event.family_marine_a03_you_write_first_i01_contact_choice.choice.archive.outcome.trace_written.text"
+        }
+      }
+    },
+    {
+      "id": "blank",
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "family_marine_a03_you_write_first",
+        "choiceId": "leave_blank"
+      },
+      "textKey": "event.family_marine_a03_you_write_first_i01_contact_choice.choice.blank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "history_not_restarted",
+          "effects": [],
+          "textKey": "event.family_marine_a03_you_write_first_i01_contact_choice.choice.blank.outcome.history_not_restarted.text"
+        }
+      }
+    }
+  ]
+}

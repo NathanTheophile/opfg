@@ -1,0 +1,132 @@
+{
+  "id": "active_fish_man_corridor_01_i01_descent_prep",
+  "kind": "immediate",
+  "titleKey": "events.active_fish_man_corridor_01_i01_descent_prep.title",
+  "textKey": "events.active_fish_man_corridor_01_i01_descent_prep.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_sabaody_red_line_passage"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "brace_the_descent",
+      "textKey": "events.active_fish_man_corridor_01_i01_descent_prep.choices.brace_the_descent.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 13,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_fish_man_corridor_01_i01_descent_prep_brace_the_descent_critical_failure",
+            "textKey": "events.active_fish_man_corridor_01_i01_descent_prep.choices.brace_the_descent.outcomes.critical_failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_fish_man_corridor_01_i02_under_red_line"
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_fish_man_corridor_01_i01_descent_prep_brace_the_descent_failure",
+            "textKey": "events.active_fish_man_corridor_01_i01_descent_prep.choices.brace_the_descent.outcomes.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_fish_man_corridor_01_i02_under_red_line"
+              }
+            ]
+          },
+          "success": {
+            "id": "active_fish_man_corridor_01_i01_descent_prep_brace_the_descent_success",
+            "textKey": "events.active_fish_man_corridor_01_i01_descent_prep.choices.brace_the_descent.outcomes.success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_fish_man_corridor_01_i02_under_red_line"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_fish_man_corridor_01_i01_descent_prep_brace_the_descent_critical_success",
+            "textKey": "events.active_fish_man_corridor_01_i01_descent_prep.choices.brace_the_descent.outcomes.critical_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_fish_man_corridor_01_i02_under_red_line"
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "hasChosen",
+              "eventId": "active_sabaody_red_line_passage",
+              "choiceId": "check_every_seam"
+            },
+            "value": 2,
+            "displayLabelKey": "events.active_fish_man_corridor_01_i01_descent_prep.modifiers.checked_seams"
+          },
+          {
+            "condition": {
+              "type": "hasChosen",
+              "eventId": "active_sabaody_red_line_passage",
+              "choiceId": "organize_people_and_cargo"
+            },
+            "value": 1,
+            "displayLabelKey": "events.active_fish_man_corridor_01_i01_descent_prep.modifiers.organized_load"
+          },
+          {
+            "condition": {
+              "type": "hasChosen",
+              "eventId": "active_sabaody_red_line_passage",
+              "choiceId": "commit_on_tide"
+            },
+            "value": -1,
+            "displayLabelKey": "events.active_fish_man_corridor_01_i01_descent_prep.modifiers.rushed_tide"
+          }
+        ]
+      }
+    }
+  ]
+}

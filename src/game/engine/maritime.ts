@@ -6,6 +6,7 @@ import {
   getLocationAncestors,
   getOrdinaryDestinationIds,
   getOrdinaryNewWorldDestinationIds,
+  isLocationWithin,
   movePlayerToLocation,
 } from './locations';
 
@@ -18,6 +19,7 @@ const LEGACY_PARADISE_ROUTE_FLAG_PREFIX = 'paradise_route:';
 const ORDINARY_DEPARTURE_BLOCKED_LOCATION_IDS = new Set<LocationId>([
   'reverse_mountain',
 ]);
+const FISH_MAN_ISLAND_LOCATION_ID = 'fish_man_island';
 const PARADISE_ROUTE_IDS = Object.keys(worldData.paradiseRouteGraph)
   .filter((routeId) => routeId !== 'P0_INGRESS')
   .sort();
@@ -77,6 +79,7 @@ export function paradiseNextDestinationId(state: GameState, catalog: ContentCata
 /** Preserve existing departure behavior everywhere except a finished Paradise route. */
 export function ordinaryDepartureHasDestination(state: GameState, catalog: ContentCatalog): boolean {
   if (ORDINARY_DEPARTURE_BLOCKED_LOCATION_IDS.has(state.locationId)) return false;
+  if (isLocationWithin(catalog, state.locationId, FISH_MAN_ISLAND_LOCATION_ID)) return false;
   const current = catalog.locations.find(({ id }) => id === state.locationId);
   return current?.seaId !== 'grand_line_paradise' || paradiseNextDestinationId(state, catalog) !== undefined;
 }

@@ -1,6 +1,8 @@
 {
   "id": "active_reverse_mountain_01_entry",
   "kind": "normal",
+  "titleKey": "event.active_reverse_mountain_01_entry.title",
+  "textKey": "event.active_reverse_mountain_01_entry.text",
   "eligibility": {
     "type": "all",
     "conditions": [
@@ -11,168 +13,68 @@
       {
         "type": "locationIs",
         "locationId": "reverse_mountain"
-      },
-      {
-        "type": "isOnLand"
       }
     ]
   },
-  "titleKey": "event.active_reverse_mountain_01_entry.title",
-  "textKey": "event.active_reverse_mountain_01_entry.text",
   "choices": [
     {
-      "id": "hold_line",
-      "textKey": "event.active_reverse_mountain_01_entry.choice.hold_line.text",
+      "id": "watch_current",
+      "textKey": "event.active_reverse_mountain_01_entry.choice.watch_current",
       "resolution": {
-        "type": "dice",
-        "actor": {
-          "type": "player"
-        },
-        "statId": "navigation",
-        "successThreshold": 11,
-        "outcomes": {
-          "criticalFailure": {
-            "id": "criticalFailure",
-            "textKey": "event.active_reverse_mountain_01_entry.outcome.criticalFailure.text",
-            "effects": [
-              {
-                "type": "modifyHealth",
-                "amount": -3
-              },
-              {
-                "type": "modifyStat",
-                "statId": "morale",
-                "amount": -2
-              },
-              {
-                "type": "queueImmediateEvent",
-                "eventId": "active_reverse_mountain_01_climb"
-              }
-            ]
-          },
-          "failure": {
-            "id": "failure",
-            "textKey": "event.active_reverse_mountain_01_entry.outcome.failure.text",
-            "effects": [
-              {
-                "type": "modifyStat",
-                "statId": "morale",
-                "amount": -2
-              },
-              {
-                "type": "queueImmediateEvent",
-                "eventId": "active_reverse_mountain_01_climb"
-              }
-            ]
-          },
-          "success": {
-            "id": "success",
-            "textKey": "event.active_reverse_mountain_01_entry.outcome.success.text",
-            "effects": [
-              {
-                "type": "modifyStat",
-                "statId": "morale",
-                "amount": 1
-              },
-              {
-                "type": "queueImmediateEvent",
-                "eventId": "active_reverse_mountain_01_climb"
-              }
-            ]
-          },
-          "criticalSuccess": {
-            "id": "criticalSuccess",
-            "textKey": "event.active_reverse_mountain_01_entry.outcome.criticalSuccess.text",
-            "effects": [
-              {
-                "type": "modifyStat",
-                "statId": "navigation",
-                "amount": 1
-              },
-              {
-                "type": "queueImmediateEvent",
-                "eventId": "active_reverse_mountain_01_climb"
-              }
-            ]
-          }
+        "type": "deterministic",
+        "outcome": {
+          "id": "watch_current",
+          "textKey": "event.active_reverse_mountain_01_entry.outcome.watch_current",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_reverse_mountain_01_i01_first_current"
+            }
+          ]
         }
       }
     },
     {
-      "id": "read_current",
-      "textKey": "event.active_reverse_mountain_01_entry.choice.read_current.text",
+      "id": "brace_early",
+      "textKey": "event.active_reverse_mountain_01_entry.choice.brace_early",
       "resolution": {
-        "type": "dice",
-        "actor": {
-          "type": "player"
-        },
-        "statId": "observation",
-        "successThreshold": 11,
-        "outcomes": {
-          "criticalFailure": {
-            "id": "criticalFailure",
-            "textKey": "event.active_reverse_mountain_01_entry.outcome.criticalFailure.text",
-            "effects": [
-              {
-                "type": "modifyHealth",
-                "amount": -3
-              },
-              {
-                "type": "modifyStat",
-                "statId": "morale",
-                "amount": -2
-              },
-              {
-                "type": "queueImmediateEvent",
-                "eventId": "active_reverse_mountain_01_climb"
-              }
-            ]
-          },
-          "failure": {
-            "id": "failure",
-            "textKey": "event.active_reverse_mountain_01_entry.outcome.failure.text",
-            "effects": [
-              {
-                "type": "modifyStat",
-                "statId": "morale",
-                "amount": -2
-              },
-              {
-                "type": "queueImmediateEvent",
-                "eventId": "active_reverse_mountain_01_climb"
-              }
-            ]
-          },
-          "success": {
-            "id": "success",
-            "textKey": "event.active_reverse_mountain_01_entry.outcome.success.text",
-            "effects": [
-              {
-                "type": "modifyStat",
-                "statId": "morale",
-                "amount": 1
-              },
-              {
-                "type": "queueImmediateEvent",
-                "eventId": "active_reverse_mountain_01_climb"
-              }
-            ]
-          },
-          "criticalSuccess": {
-            "id": "criticalSuccess",
-            "textKey": "event.active_reverse_mountain_01_entry.outcome.criticalSuccess.text",
-            "effects": [
-              {
-                "type": "modifyStat",
-                "statId": "observation",
-                "amount": 1
-              },
-              {
-                "type": "queueImmediateEvent",
-                "eventId": "active_reverse_mountain_01_climb"
-              }
-            ]
-          }
+        "type": "deterministic",
+        "outcome": {
+          "id": "brace_early",
+          "textKey": "event.active_reverse_mountain_01_entry.outcome.brace_early",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_reverse_mountain_01_i01_first_current"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "move_forward",
+      "textKey": "event.active_reverse_mountain_01_entry.choice.move_forward",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "move_forward",
+          "textKey": "event.active_reverse_mountain_01_entry.outcome.move_forward",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_reverse_mountain_01_i01_first_current"
+            }
+          ]
         }
       }
     }

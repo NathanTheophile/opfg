@@ -1,0 +1,158 @@
+{
+  "id": "active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup.title",
+  "textKey": "event.active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup.text",
+  "choices": [
+    {
+      "id": "read_claims",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup.choice.read_claims.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_claims_criticalfailure",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup.choice.read_claims.outcome.read_claims_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup_i01_claims_table"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_claims_failure",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup.choice.read_claims.outcome.read_claims_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup_i01_claims_table"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_claims_success",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup.choice.read_claims.outcome.read_claims_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup_i01_claims_table"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_claims_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup.choice.read_claims.outcome.read_claims_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup_i01_claims_table"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "talk_down_crews",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup.choice.talk_down_crews.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "talk_down_crews_criticalfailure",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup.choice.talk_down_crews.outcome.talk_down_crews_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup_i01_claims_table"
+              }
+            ]
+          },
+          "failure": {
+            "id": "talk_down_crews_failure",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup.choice.talk_down_crews.outcome.talk_down_crews_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup_i01_claims_table"
+              }
+            ]
+          },
+          "success": {
+            "id": "talk_down_crews_success",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup.choice.talk_down_crews.outcome.talk_down_crews_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup_i01_claims_table"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "talk_down_crews_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup.choice.talk_down_crews.outcome.talk_down_crews_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup_i01_claims_table"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "step_away",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup.choice.step_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "step_away_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_stormgrave_contraband_crate_mixup.choice.step_away.outcome.step_away_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "stormgrave_island"
+      }
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "id": "family_pirate_22_bounty_reaches_old_harbor",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_pirate",
+    "chapterId": "adult_family_02",
+    "nodeId": "family_pirate_22_bounty_reaches_old_harbor",
+    "parentNodeIds": [
+      "family_pirate_18_wanted_name_at_family_door",
+      "family_pirate_18_uniform_over_old_flag",
+      "family_pirate_18_parent_cannot_answer",
+      "family_pirate_18_fallback_message_without_homeport"
+    ],
+    "selectionPriority": 10
+  },
+  "eligibility": {
+    "type": "careerAffiliationIs",
+    "affiliationId": "pirate"
+  },
+  "titleKey": "event.family_pirate_22_bounty_reaches_old_harbor.title",
+  "textKey": "event.family_pirate_22_bounty_reaches_old_harbor.text",
+  "choices": [
+    {
+      "id": "show_wanted_poster",
+      "availableIf": {
+        "type": "bountyAtLeast",
+        "value": 1
+      },
+      "textKey": "event.family_pirate_22_bounty_reaches_old_harbor.choice.show_wanted_poster.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "show_wanted_poster",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_pirate_22_bounty_reaches_old_harbor_i01_price"
+            }
+          ],
+          "textKey": "event.family_pirate_22_bounty_reaches_old_harbor.choice.show_wanted_poster.outcome.show_wanted_poster.text"
+        }
+      }
+    },
+    {
+      "id": "name_your_reputation",
+      "availableIf": {
+        "type": "reputationAtLeast",
+        "value": 20
+      },
+      "textKey": "event.family_pirate_22_bounty_reaches_old_harbor.choice.name_your_reputation.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "name_your_reputation",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_pirate_22_bounty_reaches_old_harbor_i01_price"
+            }
+          ],
+          "textKey": "event.family_pirate_22_bounty_reaches_old_harbor.choice.name_your_reputation.outcome.name_your_reputation.text"
+        }
+      }
+    },
+    {
+      "id": "refuse_family_price",
+      "textKey": "event.family_pirate_22_bounty_reaches_old_harbor.choice.refuse_family_price.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_family_price",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_pirate_22_bounty_reaches_old_harbor_i01_price"
+            }
+          ],
+          "textKey": "event.family_pirate_22_bounty_reaches_old_harbor.choice.refuse_family_price.outcome.refuse_family_price.text"
+        }
+      }
+    }
+  ]
+}

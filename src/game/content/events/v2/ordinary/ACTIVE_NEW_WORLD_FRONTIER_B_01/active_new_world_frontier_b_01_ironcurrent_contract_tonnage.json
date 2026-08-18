@@ -1,0 +1,163 @@
+{
+  "id": "active_new_world_frontier_b_01_ironcurrent_contract_tonnage",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_b_01_ironcurrent_contract_tonnage.title",
+  "textKey": "event.active_new_world_frontier_b_01_ironcurrent_contract_tonnage.text",
+  "choices": [
+    {
+      "id": "rebuild_manifest",
+      "textKey": "event.active_new_world_frontier_b_01_ironcurrent_contract_tonnage.choice.rebuild_manifest.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rebuild_manifest_criticalfailure",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_contract_tonnage.choice.rebuild_manifest.outcome.rebuild_manifest_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_contract_tonnage_i01_settlement"
+              }
+            ]
+          },
+          "failure": {
+            "id": "rebuild_manifest_failure",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_contract_tonnage.choice.rebuild_manifest.outcome.rebuild_manifest_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_contract_tonnage_i01_settlement"
+              }
+            ]
+          },
+          "success": {
+            "id": "rebuild_manifest_success",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_contract_tonnage.choice.rebuild_manifest.outcome.rebuild_manifest_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_contract_tonnage_i01_settlement"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "rebuild_manifest_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_contract_tonnage.choice.rebuild_manifest.outcome.rebuild_manifest_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_contract_tonnage_i01_settlement"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pressure_broker",
+      "textKey": "event.active_new_world_frontier_b_01_ironcurrent_contract_tonnage.choice.pressure_broker.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "pressure_broker_criticalfailure",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_contract_tonnage.choice.pressure_broker.outcome.pressure_broker_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_contract_tonnage_i01_settlement"
+              }
+            ]
+          },
+          "failure": {
+            "id": "pressure_broker_failure",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_contract_tonnage.choice.pressure_broker.outcome.pressure_broker_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_contract_tonnage_i01_settlement"
+              }
+            ]
+          },
+          "success": {
+            "id": "pressure_broker_success",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_contract_tonnage.choice.pressure_broker.outcome.pressure_broker_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_contract_tonnage_i01_settlement"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "pressure_broker_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_contract_tonnage.choice.pressure_broker.outcome.pressure_broker_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_contract_tonnage_i01_settlement"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_penalty",
+      "textKey": "event.active_new_world_frontier_b_01_ironcurrent_contract_tonnage.choice.pay_penalty.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_penalty_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_ironcurrent_contract_tonnage.choice.pay_penalty.outcome.pay_penalty_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2000
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2000
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "ironcurrent_island"
+      }
+    ]
+  }
+}

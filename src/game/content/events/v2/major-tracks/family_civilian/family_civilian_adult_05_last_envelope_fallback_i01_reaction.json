@@ -1,0 +1,67 @@
+{
+  "id": "family_civilian_adult_05_last_envelope_fallback_i01_reaction",
+  "kind": "immediate",
+  "titleKey": "event.family_civilian_adult_05_last_envelope_fallback_i01_reaction.title",
+  "textKey": "event.family_civilian_adult_05_last_envelope_fallback_i01_reaction.text",
+  "choices": [
+    {
+      "id": "keep_address",
+      "textKey": "event.family_civilian_adult_05_last_envelope_fallback_i01_reaction.choice.keep_address.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_address",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.family_civilian_adult_05_last_envelope_fallback_i01_reaction.choice.keep_address.outcome.keep_address.text"
+        }
+      }
+    },
+    {
+      "id": "pay_remainder",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2500
+      },
+      "textKey": "event.family_civilian_adult_05_last_envelope_fallback_i01_reaction.choice.pay_remainder.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_remainder",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2500
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.family_civilian_adult_05_last_envelope_fallback_i01_reaction.choice.pay_remainder.outcome.pay_remainder.text"
+        }
+      }
+    },
+    {
+      "id": "take_balance",
+      "textKey": "event.family_civilian_adult_05_last_envelope_fallback_i01_reaction.choice.take_balance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_balance",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 2500
+            }
+          ],
+          "textKey": "event.family_civilian_adult_05_last_envelope_fallback_i01_reaction.choice.take_balance.outcome.take_balance.text"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "id": "family_pirate_18_fallback_message_without_homeport",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_pirate",
+    "chapterId": "adult_family_01",
+    "nodeId": "family_pirate_18_fallback_message_without_homeport",
+    "parentNodeIds": [
+      "family_pirate_13_flag_means_mine",
+      "family_pirate_13_safe_harbor_key",
+      "family_pirate_13_ledger_of_names",
+      "family_pirate_13_mothers_salt_chart",
+      "family_pirate_13_crew_has_limits",
+      "family_pirate_13_return_the_share",
+      "family_pirate_13_no_innocents_code",
+      "family_pirate_13_own_depth",
+      "family_pirate_13_fallback_pursuit",
+      "family_pirate_13_fallback_household",
+      "family_pirate_13_fallback_legacy"
+    ],
+    "fallback": true
+  },
+  "titleKey": "event.family_pirate_18_fallback_message_without_homeport.title",
+  "textKey": "event.family_pirate_18_fallback_message_without_homeport.text",
+  "choices": [
+    {
+      "id": "keep_contact",
+      "textKey": "event.family_pirate_18_fallback_message_without_homeport.choice.keep_contact.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_contact",
+          "effects": [],
+          "textKey": "event.family_pirate_18_fallback_message_without_homeport.choice.keep_contact.outcome.keep_contact.text"
+        }
+      }
+    },
+    {
+      "id": "keep_distance",
+      "textKey": "event.family_pirate_18_fallback_message_without_homeport.choice.keep_distance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_distance",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "family_pirate_home_boundary"
+            }
+          ],
+          "textKey": "event.family_pirate_18_fallback_message_without_homeport.choice.keep_distance.outcome.keep_distance.text"
+        }
+      }
+    },
+    {
+      "id": "answer_from_code",
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "family_pirate_13_no_innocents_code"
+      },
+      "textKey": "event.family_pirate_18_fallback_message_without_homeport.choice.answer_from_code.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_from_code",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "family_pirate_no_innocents_code"
+            }
+          ],
+          "textKey": "event.family_pirate_18_fallback_message_without_homeport.choice.answer_from_code.outcome.answer_from_code.text"
+        }
+      }
+    },
+    {
+      "id": "answer_as_revolutionary",
+      "availableIf": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      "textKey": "event.family_pirate_18_fallback_message_without_homeport.choice.answer_as_revolutionary.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_as_revolutionary",
+          "effects": [],
+          "textKey": "event.family_pirate_18_fallback_message_without_homeport.choice.answer_as_revolutionary.outcome.answer_as_revolutionary.text"
+        }
+      }
+    }
+  ]
+}

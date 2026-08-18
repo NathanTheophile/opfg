@@ -1,0 +1,171 @@
+{
+  "id": "active_new_world_frontier_b_01_stormgrave_water_pump_line",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_b_01_stormgrave_water_pump_line.title",
+  "textKey": "event.active_new_world_frontier_b_01_stormgrave_water_pump_line.text",
+  "choices": [
+    {
+      "id": "hold_line",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_water_pump_line.choice.hold_line.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hold_line_criticalfailure",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_water_pump_line.choice.hold_line.outcome.hold_line_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_water_pump_line_i01_pump_turn"
+              }
+            ]
+          },
+          "failure": {
+            "id": "hold_line_failure",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_water_pump_line.choice.hold_line.outcome.hold_line_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_water_pump_line_i01_pump_turn"
+              }
+            ]
+          },
+          "success": {
+            "id": "hold_line_success",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_water_pump_line.choice.hold_line.outcome.hold_line_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_water_pump_line_i01_pump_turn"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hold_line_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_water_pump_line.choice.hold_line.outcome.hold_line_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_water_pump_line_i01_pump_turn"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "move_barrels",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_water_pump_line.choice.move_barrels.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "move_barrels_criticalfailure",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_water_pump_line.choice.move_barrels.outcome.move_barrels_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_water_pump_line_i01_pump_turn"
+              }
+            ]
+          },
+          "failure": {
+            "id": "move_barrels_failure",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_water_pump_line.choice.move_barrels.outcome.move_barrels_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_water_pump_line_i01_pump_turn"
+              }
+            ]
+          },
+          "success": {
+            "id": "move_barrels_success",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_water_pump_line.choice.move_barrels.outcome.move_barrels_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_water_pump_line_i01_pump_turn"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "move_barrels_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_b_01_stormgrave_water_pump_line.choice.move_barrels.outcome.move_barrels_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_stormgrave_water_pump_line_i01_pump_turn"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "buy_water_elsewhere",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_water_pump_line.choice.buy_water_elsewhere.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy_water_elsewhere_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_stormgrave_water_pump_line.choice.buy_water_elsewhere.outcome.buy_water_elsewhere_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "stormgrave_island"
+      }
+    ]
+  }
+}

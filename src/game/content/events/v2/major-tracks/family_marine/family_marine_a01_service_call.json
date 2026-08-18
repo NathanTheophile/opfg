@@ -1,0 +1,115 @@
+{
+  "id": "family_marine_a01_service_call",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_marine",
+    "chapterId": "adult_family_01",
+    "nodeId": "family_marine_a01_service_call",
+    "parentNodeIds": [
+      "family_marine_13_chest_he_left",
+      "family_marine_13_decide_for_yourself",
+      "family_marine_13_duty_not_obedience",
+      "family_marine_13_insignia_in_palm",
+      "family_marine_13_on_your_terms",
+      "family_marine_13_our_name_is_not_theirs",
+      "family_marine_13_wear_it_better",
+      "family_marine_13_what_remains_of_him",
+      "family_marine_13_your_future_is_yours",
+      "family_marine_13_your_name_on_roll"
+    ],
+    "selectionPriority": 40
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "player_parent_1",
+        "status": "active"
+      }
+    ]
+  },
+  "cast": [
+    "player_parent_1"
+  ],
+  "titleKey": "event.family_marine_a01_service_call.title",
+  "textKey": "event.family_marine_a01_service_call.text",
+  "choices": [
+    {
+      "id": "answer_plainly",
+      "textKey": "event.family_marine_a01_service_call.choice.answer_plainly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_plainly",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a01_service_call_i01_same_uniform"
+            }
+          ],
+          "textKey": "event.family_marine_a01_service_call.choice.answer_plainly.outcome.answer_plainly.text"
+        }
+      }
+    },
+    {
+      "id": "invoke_inheritance",
+      "availableIf": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "family_marine_13_insignia_in_palm"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_marine_13_on_your_terms"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_marine_13_wear_it_better"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_marine_13_your_name_on_roll"
+          }
+        ]
+      },
+      "textKey": "event.family_marine_a01_service_call.choice.invoke_inheritance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "invoke_inheritance",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a01_service_call_i01_same_uniform"
+            }
+          ],
+          "textKey": "event.family_marine_a01_service_call.choice.invoke_inheritance.outcome.invoke_inheritance.text"
+        }
+      }
+    },
+    {
+      "id": "draw_boundary",
+      "textKey": "event.family_marine_a01_service_call.choice.draw_boundary.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "draw_boundary",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a01_service_call_i01_same_uniform"
+            }
+          ],
+          "textKey": "event.family_marine_a01_service_call.choice.draw_boundary.outcome.draw_boundary.text"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "id": "active_fish_man_corridor_01_local_gyoncorde_stall_dispute",
+  "kind": "normal",
+  "titleKey": "events.active_fish_man_corridor_01_local_gyoncorde_stall_dispute.title",
+  "textKey": "events.active_fish_man_corridor_01_local_gyoncorde_stall_dispute.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "gyoncorde_plaza"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "rebuild_the_measure",
+      "textKey": "events.active_fish_man_corridor_01_local_gyoncorde_stall_dispute.choices.rebuild_the_measure.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 12,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_fish_man_corridor_01_local_gyoncorde_stall_dispute_rebuild_the_measure_critical_failure",
+            "textKey": "events.active_fish_man_corridor_01_local_gyoncorde_stall_dispute.choices.rebuild_the_measure.outcomes.critical_failure",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -3000
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_fish_man_corridor_01_local_gyoncorde_stall_dispute_rebuild_the_measure_failure",
+            "textKey": "events.active_fish_man_corridor_01_local_gyoncorde_stall_dispute.choices.rebuild_the_measure.outcomes.failure",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1500
+              }
+            ]
+          },
+          "success": {
+            "id": "active_fish_man_corridor_01_local_gyoncorde_stall_dispute_rebuild_the_measure_success",
+            "textKey": "events.active_fish_man_corridor_01_local_gyoncorde_stall_dispute.choices.rebuild_the_measure.outcomes.success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_fish_man_corridor_01_local_gyoncorde_stall_dispute_rebuild_the_measure_critical_success",
+            "textKey": "events.active_fish_man_corridor_01_local_gyoncorde_stall_dispute.choices.rebuild_the_measure.outcomes.critical_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "raceIs",
+              "raceId": "fishman"
+            },
+            "value": 1,
+            "displayLabelKey": "events.active_fish_man_corridor_01_local_gyoncorde_stall_dispute.modifiers.local_read"
+          }
+        ]
+      }
+    }
+  ]
+}

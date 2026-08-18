@@ -1,0 +1,172 @@
+{
+  "id": "active_new_world_frontier_a_01_mystoria_damaged_cargo_auction",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_a_01_mystoria_damaged_cargo_auction.title",
+  "textKey": "event.active_new_world_frontier_a_01_mystoria_damaged_cargo_auction.text",
+  "choices": [
+    {
+      "id": "sort_lot",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_damaged_cargo_auction.choice.sort_lot.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "sort_lot_criticalfailure",
+            "textKey": "event.active_new_world_frontier_a_01_mystoria_damaged_cargo_auction.choice.sort_lot.outcome.sort_lot_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_a_01_mystoria_damaged_cargo_auction_i01_torn_lot"
+              }
+            ]
+          },
+          "failure": {
+            "id": "sort_lot_failure",
+            "textKey": "event.active_new_world_frontier_a_01_mystoria_damaged_cargo_auction.choice.sort_lot.outcome.sort_lot_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_a_01_mystoria_damaged_cargo_auction_i01_torn_lot"
+              }
+            ]
+          },
+          "success": {
+            "id": "sort_lot_success",
+            "textKey": "event.active_new_world_frontier_a_01_mystoria_damaged_cargo_auction.choice.sort_lot.outcome.sort_lot_success.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 750
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_a_01_mystoria_damaged_cargo_auction_i01_torn_lot"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "sort_lot_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_a_01_mystoria_damaged_cargo_auction.choice.sort_lot.outcome.sort_lot_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 1000
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_a_01_mystoria_damaged_cargo_auction_i01_torn_lot"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "calm_buyers",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_damaged_cargo_auction.choice.calm_buyers.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "calm_buyers_criticalfailure",
+            "textKey": "event.active_new_world_frontier_a_01_mystoria_damaged_cargo_auction.choice.calm_buyers.outcome.calm_buyers_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_a_01_mystoria_damaged_cargo_auction_i01_torn_lot"
+              }
+            ]
+          },
+          "failure": {
+            "id": "calm_buyers_failure",
+            "textKey": "event.active_new_world_frontier_a_01_mystoria_damaged_cargo_auction.choice.calm_buyers.outcome.calm_buyers_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_a_01_mystoria_damaged_cargo_auction_i01_torn_lot"
+              }
+            ]
+          },
+          "success": {
+            "id": "calm_buyers_success",
+            "textKey": "event.active_new_world_frontier_a_01_mystoria_damaged_cargo_auction.choice.calm_buyers.outcome.calm_buyers_success.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 750
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_a_01_mystoria_damaged_cargo_auction_i01_torn_lot"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "calm_buyers_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_a_01_mystoria_damaged_cargo_auction.choice.calm_buyers.outcome.calm_buyers_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 1000
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_a_01_mystoria_damaged_cargo_auction_i01_torn_lot"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "decline_job",
+      "textKey": "event.active_new_world_frontier_a_01_mystoria_damaged_cargo_auction.choice.decline_job.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "declined",
+          "textKey": "event.active_new_world_frontier_a_01_mystoria_damaged_cargo_auction.choice.decline_job.outcome.declined.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "mystoria_island"
+      }
+    ]
+  }
+}

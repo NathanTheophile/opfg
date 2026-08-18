@@ -1,0 +1,95 @@
+{
+  "id": "active_new_world_frontier_a_01_dressrosa_silk_crate_dispute",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_a_01_dressrosa_silk_crate_dispute.title",
+  "textKey": "event.active_new_world_frontier_a_01_dressrosa_silk_crate_dispute.text",
+  "choices": [
+    {
+      "id": "split_storage",
+      "textKey": "event.active_new_world_frontier_a_01_dressrosa_silk_crate_dispute.choice.split_storage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "held",
+          "textKey": "event.active_new_world_frontier_a_01_dressrosa_silk_crate_dispute.choice.split_storage.outcome.held.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "pay_hold",
+      "textKey": "event.active_new_world_frontier_a_01_dressrosa_silk_crate_dispute.choice.pay_hold.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paid",
+          "textKey": "event.active_new_world_frontier_a_01_dressrosa_silk_crate_dispute.choice.pay_hold.outcome.paid.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -750
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 750
+      }
+    },
+    {
+      "id": "side_manifest",
+      "textKey": "event.active_new_world_frontier_a_01_dressrosa_silk_crate_dispute.choice.side_manifest.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crew",
+          "textKey": "event.active_new_world_frontier_a_01_dressrosa_silk_crate_dispute.choice.side_manifest.outcome.crew.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "suspicious_seal",
+      "textKey": "event.active_new_world_frontier_a_01_dressrosa_silk_crate_dispute.choice.suspicious_seal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "seal",
+          "textKey": "event.active_new_world_frontier_a_01_dressrosa_silk_crate_dispute.choice.suspicious_seal.outcome.seal.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "suspicious"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "dressrosa"
+      }
+    ]
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "id": "active_reverse_mountain_01_i02_red_wall",
+  "kind": "immediate",
+  "titleKey": "event.active_reverse_mountain_01_i02_red_wall.title",
+  "textKey": "event.active_reverse_mountain_01_i02_red_wall.text",
+  "choices": [
+    {
+      "id": "count_surges",
+      "textKey": "event.active_reverse_mountain_01_i02_red_wall.choice.count_surges",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "count_surges",
+          "textKey": "event.active_reverse_mountain_01_i02_red_wall.outcome.count_surges",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_reverse_mountain_01_i03_climb"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hold_center",
+      "textKey": "event.active_reverse_mountain_01_i02_red_wall.choice.hold_center",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hold_center",
+          "textKey": "event.active_reverse_mountain_01_i02_red_wall.outcome.hold_center",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_reverse_mountain_01_i03_climb"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lean_into_spray",
+      "textKey": "event.active_reverse_mountain_01_i02_red_wall.choice.lean_into_spray",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lean_into_spray",
+          "textKey": "event.active_reverse_mountain_01_i02_red_wall.outcome.lean_into_spray",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_reverse_mountain_01_i03_climb"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

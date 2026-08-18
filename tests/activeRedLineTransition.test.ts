@@ -21,6 +21,7 @@ function activeState(seed = 123): GameState {
   state.travelState = 'on_land';
   state.navigationDecisionAgeMonths = 180;
   state.shipMarketArrivalPending = false;
+  state.player.profile.raceId = 'human';
   state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
   return state;
 }
@@ -31,15 +32,35 @@ function leaveFishManMarket(state: GameState): GameState {
     : state;
 }
 
+function crossFishManCorridor(state: GameState): GameState {
+  state = resolveChoice(state, contentCatalog, 'active_sabaody_red_line_passage', 'check_every_seam').state;
+  expect(state.currentEventId).toBe('active_fish_man_corridor_01_i01_descent_prep');
+
+  state = resolveChoice(state, contentCatalog, 'active_fish_man_corridor_01_i01_descent_prep', 'brace_the_descent').state;
+  expect(state.currentEventId).toBe('active_fish_man_corridor_01_i02_under_red_line');
+
+  state = resolveChoice(state, contentCatalog, 'active_fish_man_corridor_01_i02_under_red_line', 'read_the_black_current').state;
+  expect(state.currentEventId).toBe('active_fish_man_corridor_01_i03_arrival');
+
+  state = resolveChoice(state, contentCatalog, 'active_fish_man_corridor_01_i03_arrival', 'step_into_the_light').state;
+  expect(state.locationId).toBe('fish_man_island');
+
+  expect(state.scheduledEvents.some(({ eventId }) => eventId === 'active_fish_man_corridor_01_departure_window')).toBe(true);
+
+  state.currentEventId = 'active_fish_man_corridor_01_departure_window';
+  state = resolveChoice(state, contentCatalog, 'active_fish_man_corridor_01_departure_window', 'prepare_for_the_next_current').state;
+  state = leaveFishManMarket(selectNextEvent(state, contentCatalog));
+  return selectNextEvent(state, contentCatalog);
+}
+
 describe('Active Red Line transition', () => {
   it('forces the authored Sabaody passage, then seed-selects one New World entrance at Fish-Man Island', () => {
     let state = selectNextEvent(activeState(7), contentCatalog);
     expect(state.currentEventId).toBe('active_sabaody_red_line_passage');
 
-    state = resolveChoice(state, contentCatalog, 'active_sabaody_red_line_passage', 'descend').state;
+    state = crossFishManCorridor(state);
     expect(state.locationId).toBe('fish_man_island');
 
-    state = leaveFishManMarket(state);
     expect(NEW_WORLD_ROUTE_START_EVENT_IDS).toContain(state.currentEventId);
 
     const routeEventId = state.currentEventId as keyof typeof NEW_WORLD_DESTINATION_BY_EVENT_ID;
@@ -53,8 +74,8 @@ describe('Active Red Line transition', () => {
   it('uses the same Fish-Man route for the same seed and exposes all three entrances across seeds', () => {
     const selectedRoute = (seed: number) => {
       let state = selectNextEvent(activeState(seed), contentCatalog);
-      state = resolveChoice(state, contentCatalog, 'active_sabaody_red_line_passage', 'descend').state;
-      return leaveFishManMarket(state).currentEventId;
+      state = crossFishManCorridor(state);
+      return state.currentEventId;
     };
 
     expect(selectedRoute(17)).toBe(selectedRoute(17));
