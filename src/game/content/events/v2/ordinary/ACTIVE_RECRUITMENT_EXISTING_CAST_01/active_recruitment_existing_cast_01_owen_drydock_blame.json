@@ -1,0 +1,253 @@
+{
+  "id": "active_recruitment_existing_cast_01_owen_drydock_blame",
+  "kind": "normal",
+  "cast": [
+    "owen"
+  ],
+  "titleKey": "event.active_recruitment_existing_cast_01_owen_drydock_blame.title",
+  "textKey": "event.active_recruitment_existing_cast_01_owen_drydock_blame.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 215
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_blue_east_blue_01_crew_notice_board"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "owen"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "ship_repair"
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "owen",
+        "value": 0
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "find_the_old_crack",
+      "textKey": "event.active_recruitment_existing_cast_01_owen_drydock_blame.choice.find_the_old_crack.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_existing_cast_01_owen_drydock_blame.choice.find_the_old_crack.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "owen",
+                "amount": -6
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_existing_cast_01_owen_drydock_blame.choice.find_the_old_crack.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "owen",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_existing_cast_01_owen_drydock_blame.choice.find_the_old_crack.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "owen",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "owen",
+                "amount": 6
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_existing_cast_01_owen_drydock_blame.choice.find_the_old_crack.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "owen",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "owen",
+                "amount": 8
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "turn_the_crew_around",
+      "textKey": "event.active_recruitment_existing_cast_01_owen_drydock_blame.choice.turn_the_crew_around.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_existing_cast_01_owen_drydock_blame.choice.turn_the_crew_around.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "owen",
+                "amount": -5
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_existing_cast_01_owen_drydock_blame.choice.turn_the_crew_around.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "owen",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_existing_cast_01_owen_drydock_blame.choice.turn_the_crew_around.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "owen",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "owen",
+                "amount": 6
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_existing_cast_01_owen_drydock_blame.choice.turn_the_crew_around.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "owen",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "owen",
+                "amount": 8
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "accept_the_report",
+      "textKey": "event.active_recruitment_existing_cast_01_owen_drydock_blame.choice.accept_the_report.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept",
+          "textKey": "event.active_recruitment_existing_cast_01_owen_drydock_blame.choice.accept_the_report.outcome.accept.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "owen",
+              "amount": -8
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

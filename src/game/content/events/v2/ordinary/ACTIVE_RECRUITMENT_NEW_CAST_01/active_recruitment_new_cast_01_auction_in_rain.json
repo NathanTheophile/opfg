@@ -1,0 +1,191 @@
+{
+  "id": "active_recruitment_new_cast_01_auction_in_rain",
+  "kind": "normal",
+  "titleKey": "event.active_recruitment_new_cast_01_auction_in_rain.title",
+  "textKey": "event.active_recruitment_new_cast_01_auction_in_rain.text",
+  "choices": [
+    {
+      "id": "rebuild_the_order",
+      "textKey": "event.active_recruitment_new_cast_01_auction_in_rain.choice.rebuild_the_order.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rebuild_the_order_criticalfailure",
+            "textKey": "event.active_recruitment_new_cast_01_auction_in_rain.choice.rebuild_the_order.outcome.rebuild_the_order_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": -3
+              }
+            ]
+          },
+          "failure": {
+            "id": "rebuild_the_order_failure",
+            "textKey": "event.active_recruitment_new_cast_01_auction_in_rain.choice.rebuild_the_order.outcome.rebuild_the_order_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "rebuild_the_order_success",
+            "textKey": "event.active_recruitment_new_cast_01_auction_in_rain.choice.rebuild_the_order.outcome.rebuild_the_order_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": 3
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "rebuild_the_order_criticalsuccess",
+            "textKey": "event.active_recruitment_new_cast_01_auction_in_rain.choice.rebuild_the_order.outcome.rebuild_the_order_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "keep_the_crowd_bidding",
+      "textKey": "event.active_recruitment_new_cast_01_auction_in_rain.choice.keep_the_crowd_bidding.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "keep_the_crowd_bidding_criticalfailure",
+            "textKey": "event.active_recruitment_new_cast_01_auction_in_rain.choice.keep_the_crowd_bidding.outcome.keep_the_crowd_bidding_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "keep_the_crowd_bidding_failure",
+            "textKey": "event.active_recruitment_new_cast_01_auction_in_rain.choice.keep_the_crowd_bidding.outcome.keep_the_crowd_bidding_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "keep_the_crowd_bidding_success",
+            "textKey": "event.active_recruitment_new_cast_01_auction_in_rain.choice.keep_the_crowd_bidding.outcome.keep_the_crowd_bidding_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": 3
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "keep_the_crowd_bidding_criticalsuccess",
+            "textKey": "event.active_recruitment_new_cast_01_auction_in_rain.choice.keep_the_crowd_bidding.outcome.keep_the_crowd_bidding_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cover_the_chalk",
+      "textKey": "event.active_recruitment_new_cast_01_auction_in_rain.choice.cover_the_chalk.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cover_the_chalk_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_auction_in_rain.choice.cover_the_chalk.outcome.cover_the_chalk_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_lot_runner",
+              "amount": 4
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    }
+  ],
+  "cast": [
+    "active_recruit_lot_runner"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_new_cast_01_chalk_number_47"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_lot_runner",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_lot_runner",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_lot_runner",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_lot_runner",
+              "status": "crew"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

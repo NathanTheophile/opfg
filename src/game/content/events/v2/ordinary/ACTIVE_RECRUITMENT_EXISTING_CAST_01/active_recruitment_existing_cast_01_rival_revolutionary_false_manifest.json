@@ -1,0 +1,302 @@
+{
+  "id": "active_recruitment_existing_cast_01_rival_revolutionary_false_manifest",
+  "kind": "normal",
+  "cast": [
+    "childhood_rival"
+  ],
+  "titleKey": "event.active_recruitment_existing_cast_01_rival_revolutionary_false_manifest.title",
+  "textKey": "event.active_recruitment_existing_cast_01_rival_revolutionary_false_manifest.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 215
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "ch_v2_peers_01_rival_assistant_intro"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "childhood_rival"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "east_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "east_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "west_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "west_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "north_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "north_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "south_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "south_blue"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "childhood_rival",
+        "value": -10
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_the_false_line",
+      "textKey": "event.active_recruitment_existing_cast_01_rival_revolutionary_false_manifest.choice.read_the_false_line.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_revolutionary_false_manifest.choice.read_the_false_line.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": -6
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_revolutionary_false_manifest.choice.read_the_false_line.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_revolutionary_false_manifest.choice.read_the_false_line.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_rival",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_existing_cast_01_rival_revolutionary_false_manifest_i01_last_stamp"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_revolutionary_false_manifest.choice.read_the_false_line.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_rival",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 8
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_existing_cast_01_rival_revolutionary_false_manifest_i01_last_stamp"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "talk_past_the_guard",
+      "textKey": "event.active_recruitment_existing_cast_01_rival_revolutionary_false_manifest.choice.talk_past_the_guard.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_revolutionary_false_manifest.choice.talk_past_the_guard.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": -5
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_revolutionary_false_manifest.choice.talk_past_the_guard.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_revolutionary_false_manifest.choice.talk_past_the_guard.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_rival",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_existing_cast_01_rival_revolutionary_false_manifest_i01_last_stamp"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_revolutionary_false_manifest.choice.talk_past_the_guard.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_rival",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 8
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_existing_cast_01_rival_revolutionary_false_manifest_i01_last_stamp"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hand_back_the_manifest",
+      "textKey": "event.active_recruitment_existing_cast_01_rival_revolutionary_false_manifest.choice.hand_back_the_manifest.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "return",
+          "textKey": "event.active_recruitment_existing_cast_01_rival_revolutionary_false_manifest.choice.hand_back_the_manifest.outcome.return.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": -8
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

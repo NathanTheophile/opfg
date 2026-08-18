@@ -1,0 +1,217 @@
+{
+  "id": "active_recruitment_new_cast_01_three_debts_one_bell",
+  "kind": "normal",
+  "titleKey": "event.active_recruitment_new_cast_01_three_debts_one_bell.title",
+  "textKey": "event.active_recruitment_new_cast_01_three_debts_one_bell.text",
+  "choices": [
+    {
+      "id": "untangle_the_claims",
+      "textKey": "event.active_recruitment_new_cast_01_three_debts_one_bell.choice.untangle_the_claims.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "untangle_the_claims_criticalfailure",
+            "textKey": "event.active_recruitment_new_cast_01_three_debts_one_bell.choice.untangle_the_claims.outcome.untangle_the_claims_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": -3
+              }
+            ]
+          },
+          "failure": {
+            "id": "untangle_the_claims_failure",
+            "textKey": "event.active_recruitment_new_cast_01_three_debts_one_bell.choice.untangle_the_claims.outcome.untangle_the_claims_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "untangle_the_claims_success",
+            "textKey": "event.active_recruitment_new_cast_01_three_debts_one_bell.choice.untangle_the_claims.outcome.untangle_the_claims_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_three_debts_one_bell_i01_broken_tally"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "untangle_the_claims_criticalsuccess",
+            "textKey": "event.active_recruitment_new_cast_01_three_debts_one_bell.choice.untangle_the_claims.outcome.untangle_the_claims_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_three_debts_one_bell_i01_broken_tally"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pressure_the_creditors",
+      "textKey": "event.active_recruitment_new_cast_01_three_debts_one_bell.choice.pressure_the_creditors.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "pressure_the_creditors_criticalfailure",
+            "textKey": "event.active_recruitment_new_cast_01_three_debts_one_bell.choice.pressure_the_creditors.outcome.pressure_the_creditors_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "pressure_the_creditors_failure",
+            "textKey": "event.active_recruitment_new_cast_01_three_debts_one_bell.choice.pressure_the_creditors.outcome.pressure_the_creditors_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "pressure_the_creditors_success",
+            "textKey": "event.active_recruitment_new_cast_01_three_debts_one_bell.choice.pressure_the_creditors.outcome.pressure_the_creditors_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_three_debts_one_bell_i01_broken_tally"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "pressure_the_creditors_criticalsuccess",
+            "textKey": "event.active_recruitment_new_cast_01_three_debts_one_bell.choice.pressure_the_creditors.outcome.pressure_the_creditors_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_three_debts_one_bell_i01_broken_tally"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_one_debt",
+      "textKey": "event.active_recruitment_new_cast_01_three_debts_one_bell.choice.pay_one_debt.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_one_debt_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_three_debts_one_bell.choice.pay_one_debt.outcome.pay_one_debt_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_knot_runner",
+              "amount": 4
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_recruitment_new_cast_01_three_debts_one_bell_i01_broken_tally"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    }
+  ],
+  "cast": [
+    "active_recruit_knot_runner"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_new_cast_01_red_knot_crate"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "crew"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

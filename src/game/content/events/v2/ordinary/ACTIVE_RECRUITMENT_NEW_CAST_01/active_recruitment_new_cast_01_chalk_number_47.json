@@ -1,0 +1,203 @@
+{
+  "id": "active_recruitment_new_cast_01_chalk_number_47",
+  "kind": "normal",
+  "titleKey": "event.active_recruitment_new_cast_01_chalk_number_47.title",
+  "textKey": "event.active_recruitment_new_cast_01_chalk_number_47.text",
+  "choices": [
+    {
+      "id": "catch_the_tile",
+      "textKey": "event.active_recruitment_new_cast_01_chalk_number_47.choice.catch_the_tile.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "catch_the_tile_criticalfailure",
+            "textKey": "event.active_recruitment_new_cast_01_chalk_number_47.choice.catch_the_tile.outcome.catch_the_tile_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "catch_the_tile_failure",
+            "textKey": "event.active_recruitment_new_cast_01_chalk_number_47.choice.catch_the_tile.outcome.catch_the_tile_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "catch_the_tile_success",
+            "textKey": "event.active_recruitment_new_cast_01_chalk_number_47.choice.catch_the_tile.outcome.catch_the_tile_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_chalk_number_47_i01_roofline"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "catch_the_tile_criticalsuccess",
+            "textKey": "event.active_recruitment_new_cast_01_chalk_number_47.choice.catch_the_tile.outcome.catch_the_tile_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_chalk_number_47_i01_roofline"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "spot_the_switch",
+      "textKey": "event.active_recruitment_new_cast_01_chalk_number_47.choice.spot_the_switch.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "spot_the_switch_criticalfailure",
+            "textKey": "event.active_recruitment_new_cast_01_chalk_number_47.choice.spot_the_switch.outcome.spot_the_switch_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": -3
+              }
+            ]
+          },
+          "failure": {
+            "id": "spot_the_switch_failure",
+            "textKey": "event.active_recruitment_new_cast_01_chalk_number_47.choice.spot_the_switch.outcome.spot_the_switch_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "spot_the_switch_success",
+            "textKey": "event.active_recruitment_new_cast_01_chalk_number_47.choice.spot_the_switch.outcome.spot_the_switch_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_chalk_number_47_i01_roofline"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "spot_the_switch_criticalsuccess",
+            "textKey": "event.active_recruitment_new_cast_01_chalk_number_47.choice.spot_the_switch.outcome.spot_the_switch_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_chalk_number_47_i01_roofline"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "bid_on_47",
+      "textKey": "event.active_recruitment_new_cast_01_chalk_number_47.choice.bid_on_47.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bid_on_47_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_chalk_number_47.choice.bid_on_47.outcome.bid_on_47_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_lot_runner",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_recruitment_new_cast_01_chalk_number_47_i01_roofline"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "active_recruit_lot_runner"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_lot_runner",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_lot_runner",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_lot_runner",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_lot_runner",
+              "status": "crew"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

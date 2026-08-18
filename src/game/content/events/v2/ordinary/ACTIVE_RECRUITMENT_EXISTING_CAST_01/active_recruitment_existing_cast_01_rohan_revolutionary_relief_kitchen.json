@@ -1,0 +1,157 @@
+{
+  "id": "active_recruitment_existing_cast_01_rohan_revolutionary_relief_kitchen",
+  "kind": "normal",
+  "cast": [
+    "rohan"
+  ],
+  "titleKey": "event.active_recruitment_existing_cast_01_rohan_revolutionary_relief_kitchen.title",
+  "textKey": "event.active_recruitment_existing_cast_01_rohan_revolutionary_relief_kitchen.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 215
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_blue_east_blue_01_baratie_short_cook"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "rohan"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "food"
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "rohan",
+        "value": 0
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "finish_the_last_pot",
+      "textKey": "event.active_recruitment_existing_cast_01_rohan_revolutionary_relief_kitchen.choice.finish_the_last_pot.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "join",
+          "textKey": "event.active_recruitment_existing_cast_01_rohan_revolutionary_relief_kitchen.choice.finish_the_last_pot.outcome.join.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "rohan",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "rohan",
+              "amount": 7
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "move_the_kitchen",
+      "textKey": "event.active_recruitment_existing_cast_01_rohan_revolutionary_relief_kitchen.choice.move_the_kitchen.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "move",
+          "textKey": "event.active_recruitment_existing_cast_01_rohan_revolutionary_relief_kitchen.choice.move_the_kitchen.outcome.move.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "rohan",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "rohan",
+              "amount": 6
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "save_only_your_contact",
+      "textKey": "event.active_recruitment_existing_cast_01_rohan_revolutionary_relief_kitchen.choice.save_only_your_contact.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_recruitment_existing_cast_01_rohan_revolutionary_relief_kitchen.choice.save_only_your_contact.outcome.leave.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "rohan",
+              "amount": -7
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

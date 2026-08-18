@@ -1,0 +1,222 @@
+{
+  "id": "active_recruitment_new_cast_01_wrong_bell",
+  "kind": "normal",
+  "titleKey": "event.active_recruitment_new_cast_01_wrong_bell.title",
+  "textKey": "event.active_recruitment_new_cast_01_wrong_bell.text",
+  "choices": [
+    {
+      "id": "find_the_house",
+      "textKey": "event.active_recruitment_new_cast_01_wrong_bell.choice.find_the_house.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "find_the_house_criticalfailure",
+            "textKey": "event.active_recruitment_new_cast_01_wrong_bell.choice.find_the_house.outcome.find_the_house_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_wake_keeper",
+                "amount": -4
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "failure": {
+            "id": "find_the_house_failure",
+            "textKey": "event.active_recruitment_new_cast_01_wrong_bell.choice.find_the_house.outcome.find_the_house_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_wake_keeper",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "find_the_house_success",
+            "textKey": "event.active_recruitment_new_cast_01_wrong_bell.choice.find_the_house.outcome.find_the_house_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_wake_keeper",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_wrong_bell_i01_living_door"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "find_the_house_criticalsuccess",
+            "textKey": "event.active_recruitment_new_cast_01_wrong_bell.choice.find_the_house.outcome.find_the_house_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_wake_keeper",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_wrong_bell_i01_living_door"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "stop_the_procession",
+      "textKey": "event.active_recruitment_new_cast_01_wrong_bell.choice.stop_the_procession.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "stop_the_procession_criticalfailure",
+            "textKey": "event.active_recruitment_new_cast_01_wrong_bell.choice.stop_the_procession.outcome.stop_the_procession_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_wake_keeper",
+                "amount": -3
+              }
+            ]
+          },
+          "failure": {
+            "id": "stop_the_procession_failure",
+            "textKey": "event.active_recruitment_new_cast_01_wrong_bell.choice.stop_the_procession.outcome.stop_the_procession_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "stop_the_procession_success",
+            "textKey": "event.active_recruitment_new_cast_01_wrong_bell.choice.stop_the_procession.outcome.stop_the_procession_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_wake_keeper",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_wrong_bell_i01_living_door"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "stop_the_procession_criticalsuccess",
+            "textKey": "event.active_recruitment_new_cast_01_wrong_bell.choice.stop_the_procession.outcome.stop_the_procession_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_wake_keeper",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_wrong_bell_i01_living_door"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "let_the_bell_ring",
+      "textKey": "event.active_recruitment_new_cast_01_wrong_bell.choice.let_the_bell_ring.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "let_the_bell_ring_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_wrong_bell.choice.let_the_bell_ring.outcome.let_the_bell_ring_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_wake_keeper",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_recruitment_new_cast_01_wrong_bell_i01_living_door"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "active_recruit_wake_keeper"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "coastal"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          }
+        ]
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_new_cast_01_name_without_body"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "crew"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

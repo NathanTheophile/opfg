@@ -1,0 +1,165 @@
+{
+  "id": "active_recruitment_existing_cast_01_ari_quarantine_last_shift",
+  "kind": "normal",
+  "cast": [
+    "ari"
+  ],
+  "titleKey": "event.active_recruitment_existing_cast_01_ari_quarantine_last_shift.title",
+  "textKey": "event.active_recruitment_existing_cast_01_ari_quarantine_last_shift.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 215
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_blue_east_blue_01_clinic_triage"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "ari"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "medical"
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "ari",
+        "value": 0
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "close_the_shift_together",
+      "textKey": "event.active_recruitment_existing_cast_01_ari_quarantine_last_shift.choice.close_the_shift_together.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "join",
+          "textKey": "event.active_recruitment_existing_cast_01_ari_quarantine_last_shift.choice.close_the_shift_together.outcome.join.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "ari",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "ari",
+              "amount": 7
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fund_the_handover",
+      "textKey": "event.active_recruitment_existing_cast_01_ari_quarantine_last_shift.choice.fund_the_handover.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fund",
+          "textKey": "event.active_recruitment_existing_cast_01_ari_quarantine_last_shift.choice.fund_the_handover.outcome.fund.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "ari",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "ari",
+              "amount": 6
+            },
+            {
+              "type": "modifyBerries",
+              "amount": -2500
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2500
+      }
+    },
+    {
+      "id": "ask_ari_to_stay",
+      "textKey": "event.active_recruitment_existing_cast_01_ari_quarantine_last_shift.choice.ask_ari_to_stay.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stay",
+          "textKey": "event.active_recruitment_existing_cast_01_ari_quarantine_last_shift.choice.ask_ari_to_stay.outcome.stay.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "ari",
+              "amount": -4
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

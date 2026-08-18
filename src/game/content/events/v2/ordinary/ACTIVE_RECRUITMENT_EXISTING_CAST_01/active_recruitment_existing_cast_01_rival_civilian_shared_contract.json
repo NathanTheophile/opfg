@@ -1,0 +1,302 @@
+{
+  "id": "active_recruitment_existing_cast_01_rival_civilian_shared_contract",
+  "kind": "normal",
+  "cast": [
+    "childhood_rival"
+  ],
+  "titleKey": "event.active_recruitment_existing_cast_01_rival_civilian_shared_contract.title",
+  "textKey": "event.active_recruitment_existing_cast_01_rival_civilian_shared_contract.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 215
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "ch_v2_peers_01_rival_assistant_intro"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "childhood_rival"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "east_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "east_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "west_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "west_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "north_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "north_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "south_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "south_blue"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "childhood_rival",
+        "value": -10
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "win_both_places",
+      "textKey": "event.active_recruitment_existing_cast_01_rival_civilian_shared_contract.choice.win_both_places.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_civilian_shared_contract.choice.win_both_places.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": -7
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_civilian_shared_contract.choice.win_both_places.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_civilian_shared_contract.choice.win_both_places.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_rival",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 6
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_civilian_shared_contract.choice.win_both_places.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_rival",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 8
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 1000
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "beat_the_quota",
+      "textKey": "event.active_recruitment_existing_cast_01_rival_civilian_shared_contract.choice.beat_the_quota.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_civilian_shared_contract.choice.beat_the_quota.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": -5
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_civilian_shared_contract.choice.beat_the_quota.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_civilian_shared_contract.choice.beat_the_quota.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_rival",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 6
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_civilian_shared_contract.choice.beat_the_quota.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_rival",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 8
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "take_the_contract",
+      "textKey": "event.active_recruitment_existing_cast_01_rival_civilian_shared_contract.choice.take_the_contract.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "solo",
+          "textKey": "event.active_recruitment_existing_cast_01_rival_civilian_shared_contract.choice.take_the_contract.outcome.solo.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": -8
+            },
+            {
+              "type": "modifyBerries",
+              "amount": 1500
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,252 @@
+{
+  "id": "active_recruitment_existing_cast_01_friend_civilian_last_ferry",
+  "kind": "normal",
+  "cast": [
+    "childhood_friend"
+  ],
+  "titleKey": "event.active_recruitment_existing_cast_01_friend_civilian_last_ferry.title",
+  "textKey": "event.active_recruitment_existing_cast_01_friend_civilian_last_ferry.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 215
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "ch_v2_peers_01_friend_rule_intro"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_friend",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_friend",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_friend",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_friend",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "childhood_friend"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "east_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "east_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "west_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "west_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "north_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "north_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "south_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "south_blue"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "childhood_friend",
+        "value": 1
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "hold_the_ferry",
+      "textKey": "event.active_recruitment_existing_cast_01_friend_civilian_last_ferry.choice.hold_the_ferry.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_existing_cast_01_friend_civilian_last_ferry.choice.hold_the_ferry.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": -5
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_existing_cast_01_friend_civilian_last_ferry.choice.hold_the_ferry.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_existing_cast_01_friend_civilian_last_ferry.choice.hold_the_ferry.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_friend",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 6
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_existing_cast_01_friend_civilian_last_ferry.choice.hold_the_ferry.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_friend",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 8
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "honor_the_old_rule",
+      "textKey": "event.active_recruitment_existing_cast_01_friend_civilian_last_ferry.choice.honor_the_old_rule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "old_rule",
+          "textKey": "event.active_recruitment_existing_cast_01_friend_civilian_last_ferry.choice.honor_the_old_rule.outcome.old_rule.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "childhood_friend",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 7
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_the_ferry_go",
+      "textKey": "event.active_recruitment_existing_cast_01_friend_civilian_last_ferry.choice.let_the_ferry_go.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_recruitment_existing_cast_01_friend_civilian_last_ferry.choice.let_the_ferry_go.outcome.leave.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": -4
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

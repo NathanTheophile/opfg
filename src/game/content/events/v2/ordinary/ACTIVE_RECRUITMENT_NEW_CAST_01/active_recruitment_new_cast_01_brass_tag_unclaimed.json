@@ -1,0 +1,136 @@
+{
+  "id": "active_recruitment_new_cast_01_brass_tag_unclaimed",
+  "kind": "normal",
+  "titleKey": "event.active_recruitment_new_cast_01_brass_tag_unclaimed.title",
+  "textKey": "event.active_recruitment_new_cast_01_brass_tag_unclaimed.text",
+  "choices": [
+    {
+      "id": "offer_a_berth",
+      "textKey": "event.active_recruitment_new_cast_01_brass_tag_unclaimed.choice.offer_a_berth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "offer_a_berth_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_brass_tag_unclaimed.choice.offer_a_berth.outcome.offer_a_berth_outcome.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_wake_keeper",
+              "amount": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_for_one_blank_tag",
+      "textKey": "event.active_recruitment_new_cast_01_brass_tag_unclaimed.choice.ask_for_one_blank_tag.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_for_one_blank_tag_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_brass_tag_unclaimed.choice.ask_for_one_blank_tag.outcome.ask_for_one_blank_tag_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_wake_keeper",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_him_to_the_wakes",
+      "textKey": "event.active_recruitment_new_cast_01_brass_tag_unclaimed.choice.leave_him_to_the_wakes.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_him_to_the_wakes_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_brass_tag_unclaimed.choice.leave_him_to_the_wakes.outcome.leave_him_to_the_wakes_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_wake_keeper",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "active_recruit_wake_keeper"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "coastal"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          }
+        ]
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_new_cast_01_wrong_bell"
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "active_recruit_wake_keeper",
+        "value": 5
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "active_recruit_wake_keeper"
+      }
+    ]
+  }
+}

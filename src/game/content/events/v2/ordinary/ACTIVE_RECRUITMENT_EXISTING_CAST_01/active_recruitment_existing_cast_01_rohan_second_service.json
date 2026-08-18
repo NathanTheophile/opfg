@@ -1,0 +1,231 @@
+{
+  "id": "active_recruitment_existing_cast_01_rohan_second_service",
+  "kind": "normal",
+  "cast": [
+    "rohan"
+  ],
+  "titleKey": "event.active_recruitment_existing_cast_01_rohan_second_service.title",
+  "textKey": "event.active_recruitment_existing_cast_01_rohan_second_service.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 215
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "marine"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_blue_east_blue_01_baratie_short_cook"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "rohan"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "food"
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "rohan",
+        "value": 0
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "prove_the_missing_wages",
+      "textKey": "event.active_recruitment_existing_cast_01_rohan_second_service.choice.prove_the_missing_wages.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_existing_cast_01_rohan_second_service.choice.prove_the_missing_wages.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "rohan",
+                "amount": -6
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_existing_cast_01_rohan_second_service.choice.prove_the_missing_wages.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "rohan",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_existing_cast_01_rohan_second_service.choice.prove_the_missing_wages.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "rohan",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "rohan",
+                "amount": 6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_existing_cast_01_rohan_second_service_i01_kitchen_door"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_existing_cast_01_rohan_second_service.choice.prove_the_missing_wages.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "rohan",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "rohan",
+                "amount": 8
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 1500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_existing_cast_01_rohan_second_service_i01_kitchen_door"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cover_the_shortfall",
+      "textKey": "event.active_recruitment_existing_cast_01_rohan_second_service.choice.cover_the_shortfall.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay",
+          "textKey": "event.active_recruitment_existing_cast_01_rohan_second_service.choice.cover_the_shortfall.outcome.pay.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "rohan",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "rohan",
+              "amount": 6
+            },
+            {
+              "type": "modifyBerries",
+              "amount": -2000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_recruitment_existing_cast_01_rohan_second_service_i01_kitchen_door"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2000
+      }
+    },
+    {
+      "id": "leave_the_job_to_him",
+      "textKey": "event.active_recruitment_existing_cast_01_rohan_second_service.choice.leave_the_job_to_him.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_recruitment_existing_cast_01_rohan_second_service.choice.leave_the_job_to_him.outcome.leave.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "rohan",
+              "amount": -4
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
