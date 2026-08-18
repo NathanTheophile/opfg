@@ -1,13 +1,13 @@
 import {
   Anchor,
   Backpack,
-  Boxes,
   Coins,
   House,
   LockKeyhole,
   Navigation,
   Package,
   ShieldCheck,
+  Shirt,
   UserRound,
 } from 'lucide-react';
 import { Panel } from '@/components/ui';
@@ -186,7 +186,7 @@ export function InventoryHudPanel({
 
   return (
     <div className="opfg-hud-inventory-stack">
-      <button type="button" className="opfg-hud-home-button" onClick={onHome} disabled={!onHome}>
+      <button type="button" className="opfg-hud-home-button" onClick={onHome} disabled={!onHome} aria-label={translate('ui.action.home')}>
         <House className="size-4" aria-hidden="true" />
         <span>{translate('ui.action.home')}</span>
       </button>
@@ -253,7 +253,7 @@ export function InventoryHudPanel({
             {state.player.equipment.map((stack, index) => {
               const slot = { type: 'equipment' as const, index: index as 0 | 1 };
               return <button key={`equipment-${index}`} type="button" className={`opfg-hud-slot ${stack ? 'is-filled' : 'is-empty'}`} aria-label={stack ? getItemLabel(stack, catalog, translate) : translate('ui.equipment.empty')} {...interactionProps(slot, selectedStorageSlot, onStorageSlot)}>
-                <ShieldCheck className="size-4" aria-hidden="true" />
+                <Shirt className="size-4" aria-hidden="true" />
               </button>;
             })}
           </div>
@@ -352,20 +352,8 @@ export function ShipHudPanel({ state, catalog, translate, selectedStorageSlot, o
       </div>
 
       <div className="opfg-hud-panel__body opfg-hud-ship">
-        <div className="opfg-hud-cargo-group">
-          <ContextTooltip
-            className="opfg-hud-slot-wrap opfg-hud-cargo__storage-wrap"
-            title={translate('ui.cargo.hold')}
-            detail={translate('ui.cargo.description')}
-            meta={`${cargoOccupants.length}/${cargoCapacity}`}
-            side="bottom"
-            focusable
-          >
-            <span className="opfg-hud-cargo__storage-icon">
-              <Boxes className="size-[1.15rem]" aria-hidden="true" />
-            </span>
-          </ContextTooltip>
-
+        <div className="opfg-hud-storage-layout">
+          <div className="opfg-hud-cargo-group">
           <div className="opfg-hud-slots opfg-hud-cargo" aria-label={translate('ui.cargo')}>
             {Array.from({ length: CARGO_PREVIEW_SLOTS }, (_, index) => {
             const occupant = cargoOccupants[index];
@@ -402,9 +390,9 @@ export function ShipHudPanel({ state, catalog, translate, selectedStorageSlot, o
             );
             })}
           </div>
-        </div>
+          </div>
 
-        <div className="opfg-hud-special-slots" aria-label={translate('ui.specialSlots')}>
+          <div className="opfg-hud-special-slots" aria-label={translate('ui.specialSlots')}>
           <ContextTooltip
             className="opfg-hud-slot-wrap"
             title={translate('ui.logPose.title')}
@@ -440,6 +428,7 @@ export function ShipHudPanel({ state, catalog, translate, selectedStorageSlot, o
               <UserRound className="size-4" aria-hidden="true" />
             </button>
           </ContextTooltip>
+          </div>
         </div>
       </div>
     </Panel>

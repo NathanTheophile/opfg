@@ -66,8 +66,8 @@
   aspect-ratio: 1;
   place-items: center;
   overflow: hidden;
-  border: 1px solid
-    color-mix(in srgb, var(--gold) 30%, var(--border-strong));
+  border: 1.5px solid
+    color-mix(in srgb, var(--gold) 48%, var(--border-strong));
   border-radius: var(--ui-hud-slot-radius, 0.38rem);
   background:
     linear-gradient(
@@ -78,15 +78,17 @@
     color-mix(in srgb, var(--surface-raised) 82%, black);
   color: var(--gold);
   box-shadow:
-    inset 0 0 0 1px rgb(255 255 255 / 0.025),
+    inset 0 0 0 1px rgb(255 255 255 / 0.055),
     inset 0 1px 0 rgb(255 255 255 / 0.06),
-    0 2px 8px rgb(0 0 0 / 0.26);
+    0 4px 12px rgb(0 0 0 / 0.34);
 }
 
 .opfg-hud-slot.is-empty {
-  border-color: color-mix(in srgb, var(--gold) 22%, var(--border-strong));
-  background: color-mix(in srgb, var(--surface-raised) 68%, black);
-  opacity: 0.86;
+  border-color: color-mix(in srgb, var(--gold) 42%, var(--border-strong));
+  background:
+    radial-gradient(circle at 50% 45%, rgb(245 194 66 / 0.055), transparent 58%),
+    color-mix(in srgb, var(--surface-raised) 74%, black);
+  opacity: 0.94;
 }
 
 .opfg-hud-slot.is-empty::after {
@@ -206,10 +208,10 @@
 
 .opfg-hud-inventory {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: auto auto minmax(5rem, 1fr);
   align-content: center;
   align-items: center;
-  gap: 0.72rem;
+  gap: 0.58rem;
 }
 
 .opfg-hud-inventory__icon {
@@ -584,17 +586,21 @@
   display: grid;
   width: 100%;
   min-width: 0;
+  align-items: center;
+}
+
+.opfg-hud-storage-layout {
+  display: grid;
+  min-width: 0;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
 }
 
 .opfg-hud-cargo-group {
   display: grid;
   min-width: 0;
-  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 0.38rem;
 }
 
 .opfg-hud-cargo {
@@ -610,19 +616,6 @@
       var(--ui-hud-slot-size, 1.95rem)
     );
   justify-content: start;
-}
-
-.opfg-hud-cargo__storage-wrap {
-  display: grid;
-  place-items: center;
-}
-
-.opfg-hud-cargo__storage-icon {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  place-items: center;
-  color: color-mix(in srgb, var(--gold) 78%, var(--text-secondary));
 }
 
 .opfg-hud-special-slots {
@@ -879,6 +872,51 @@
 /* OPFG ORIENTATION HUD MODE START */
 
 @media (orientation: portrait) {
+  .opfg-hud-panel--inventory,
+  .opfg-hud-panel--ship {
+    width: min(21rem, calc(100vw - 1.5rem)) !important;
+    height: auto;
+  }
+
+  .opfg-hud-panel--inventory {
+    margin-left: auto;
+  }
+
+  .opfg-hud-panel--ship {
+    margin-left: auto;
+  }
+
+  .opfg-hud-panel--inventory,
+  .opfg-hud-panel--ship,
+  .opfg-hud-inventory-stack {
+    --ui-hud-slot-size: 2.35rem;
+    --ui-hud-slot-gap: 0.42rem;
+  }
+
+  .opfg-hud-inventory-stack {
+    width: min(21rem, calc(100vw - 1.5rem));
+  }
+
+  .opfg-hud-inventory {
+    grid-template-columns: auto auto minmax(0, 1fr);
+  }
+
+  .opfg-hud-storage-layout {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .opfg-hud-cargo {
+    grid-template-columns:
+      repeat(4, var(--ui-hud-slot-size, 2.35rem));
+    grid-template-rows:
+      repeat(2, var(--ui-hud-slot-size, 2.35rem));
+  }
+
+  .opfg-hud-special-slots {
+    grid-template-columns: var(--ui-hud-slot-size, 2.35rem);
+    grid-template-rows: repeat(2, var(--ui-hud-slot-size, 2.35rem));
+  }
+
   .opfg-top-world-hud {
     max-width:
       min(

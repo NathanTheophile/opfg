@@ -1,17 +1,6 @@
 import {
-  Anchor,
   Check,
-  Crown,
-  Flag,
-  Globe2,
   Lock,
-  Medal,
-  ScrollText,
-  ShipWheel,
-  Sparkles,
-  Trophy,
-  UsersRound,
-  type LucideIcon,
 } from 'lucide-react';
 import { ACHIEVEMENTS } from '@/game/achievements/catalog';
 import { ACHIEVEMENT_FAMILY_LABELS, ACHIEVEMENT_UI_COPY, getAchievementText } from '@/game/achievements/copy';
@@ -28,16 +17,16 @@ const FAMILY_ORDER: readonly AchievementFamily[] = [
   'progression', 'origins', 'family', 'grades', 'bounty', 'powers', 'world', 'crew', 'endings',
 ];
 
-const FAMILY_ICONS: Record<AchievementFamily, LucideIcon> = {
-  progression: Trophy,
-  origins: ScrollText,
-  family: Crown,
-  grades: Medal,
-  bounty: Flag,
-  powers: Sparkles,
-  world: Globe2,
-  crew: UsersRound,
-  endings: Anchor,
+const FAMILY_MARKS: Record<AchievementFamily, string> = {
+  progression: '★',
+  origins: '✦',
+  family: '♛',
+  grades: '◆',
+  bounty: '⚑',
+  powers: '✧',
+  world: '◎',
+  crew: '✚',
+  endings: '⚓',
 };
 
 export function AchievementsPanel({ metaProgression, locale }: AchievementsPanelProps) {
@@ -70,7 +59,6 @@ export function AchievementsPanel({ metaProgression, locale }: AchievementsPanel
                 {achievements.map(({ id, family }) => {
                   const unlocked = metaProgression.unlocks[id] !== undefined;
                   const copy = getAchievementText(id, locale);
-                  const FamilyIcon = FAMILY_ICONS[family] ?? ShipWheel;
                   return (
                     <article
                       key={id}
@@ -78,7 +66,7 @@ export function AchievementsPanel({ metaProgression, locale }: AchievementsPanel
                       data-family={family}
                     >
                       <span className="opfg-achievement-card__ornament" aria-hidden="true">
-                        <FamilyIcon className="size-4" />
+                        {FAMILY_MARKS[family]}
                       </span>
                       <span className="opfg-achievement-card__icon" aria-hidden="true">
                         {unlocked ? <Check className="size-4" /> : <Lock className="size-4" />}

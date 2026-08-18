@@ -1040,15 +1040,6 @@ export function EventPreview({
     session.continueAfterResolution();
   };
 
-  const restartRun = () => {
-    setOutcomeRevealed(false);
-    setShowOutcome(false);
-    setPendingDice(null);
-    setInputError(null);
-    clearResolvedEventUi();
-    session.restartRun();
-  };
-
   const handleStorageSlot = (slot: StorageSlot) => {
     const source = selectedStorageSlotRef.current;
     if (!source) {
@@ -1225,20 +1216,6 @@ export function EventPreview({
         ref={gameScaleRef}
         className="opfg-game-scale-content mx-auto w-full max-w-[78rem]"
       >
-        <div
-          data-opfg-scale-bound="true"
-          className="opfg-game-restart-row mb-3 flex items-center justify-end gap-3 px-1"
-        >
-          <button
-            className="text-xs text-fg-muted transition hover:text-fg-secondary"
-            onClick={restartRun}
-          >
-            {translate(
-              'ui.action.restartRun',
-            )}
-          </button>
-        </div>
-
         <TopWorldHud {...hudProps} />
 
         <div
