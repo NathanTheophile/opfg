@@ -1,6 +1,16 @@
 import {
+  Anchor,
   Check,
+  Coins,
+  Compass,
+  Flag,
+  Globe2,
   Lock,
+  Medal,
+  Sparkles,
+  Trophy,
+  UsersRound,
+  type LucideIcon,
 } from 'lucide-react';
 import { ACHIEVEMENTS } from '@/game/achievements/catalog';
 import { ACHIEVEMENT_FAMILY_LABELS, ACHIEVEMENT_UI_COPY, getAchievementText } from '@/game/achievements/copy';
@@ -17,16 +27,16 @@ const FAMILY_ORDER: readonly AchievementFamily[] = [
   'progression', 'origins', 'family', 'grades', 'bounty', 'powers', 'world', 'crew', 'endings',
 ];
 
-const FAMILY_MARKS: Record<AchievementFamily, string> = {
-  progression: '★',
-  origins: '✦',
-  family: '♛',
-  grades: '◆',
-  bounty: '⚑',
-  powers: '✧',
-  world: '◎',
-  crew: '✚',
-  endings: '⚓',
+const FAMILY_ILLUSTRATIONS: Record<AchievementFamily, LucideIcon> = {
+  progression: Trophy,
+  origins: Compass,
+  family: UsersRound,
+  grades: Medal,
+  bounty: Coins,
+  powers: Sparkles,
+  world: Globe2,
+  crew: Anchor,
+  endings: Flag,
 };
 
 export function AchievementsPanel({ metaProgression, locale }: AchievementsPanelProps) {
@@ -59,6 +69,7 @@ export function AchievementsPanel({ metaProgression, locale }: AchievementsPanel
                 {achievements.map(({ id, family }) => {
                   const unlocked = metaProgression.unlocks[id] !== undefined;
                   const copy = getAchievementText(id, locale);
+                  const Illustration = FAMILY_ILLUSTRATIONS[family];
                   return (
                     <article
                       key={id}
@@ -66,7 +77,7 @@ export function AchievementsPanel({ metaProgression, locale }: AchievementsPanel
                       data-family={family}
                     >
                       <span className="opfg-achievement-card__ornament" aria-hidden="true">
-                        {FAMILY_MARKS[family]}
+                        <Illustration className="size-[1.35rem]" strokeWidth={2.2} />
                       </span>
                       <span className="opfg-achievement-card__icon" aria-hidden="true">
                         {unlocked ? <Check className="size-4" /> : <Lock className="size-4" />}

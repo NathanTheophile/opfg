@@ -320,3 +320,126 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* UI_POLISH_20260818_ACHIEVEMENTS
+ * Hide the internal scrollbar and turn the family marker into a colorful,
+ * library-backed illustration badge.
+ */
+.opfg-achievements__groups {
+  padding-right: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.opfg-achievements__groups::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.opfg-achievement-card {
+  --achievement-illustration-a: #f4b942;
+  --achievement-illustration-b: #e66a2c;
+  --achievement-illustration-ink: #fff9e8;
+}
+
+.opfg-achievement-card[data-family="progression"] {
+  --achievement-illustration-a: #ffd166;
+  --achievement-illustration-b: #f97316;
+}
+
+.opfg-achievement-card[data-family="origins"] {
+  --achievement-illustration-a: #4cc9f0;
+  --achievement-illustration-b: #4361ee;
+}
+
+.opfg-achievement-card[data-family="family"] {
+  --achievement-illustration-a: #ff8fab;
+  --achievement-illustration-b: #d946ef;
+}
+
+.opfg-achievement-card[data-family="grades"] {
+  --achievement-illustration-a: #c084fc;
+  --achievement-illustration-b: #6d5dfc;
+}
+
+.opfg-achievement-card[data-family="bounty"] {
+  --achievement-illustration-a: #fb7185;
+  --achievement-illustration-b: #dc2626;
+}
+
+.opfg-achievement-card[data-family="powers"] {
+  --achievement-illustration-a: #a78bfa;
+  --achievement-illustration-b: #22d3ee;
+}
+
+.opfg-achievement-card[data-family="world"] {
+  --achievement-illustration-a: #34d399;
+  --achievement-illustration-b: #0ea5e9;
+}
+
+.opfg-achievement-card[data-family="crew"] {
+  --achievement-illustration-a: #38bdf8;
+  --achievement-illustration-b: #2563eb;
+}
+
+.opfg-achievement-card[data-family="endings"] {
+  --achievement-illustration-a: #fbbf24;
+  --achievement-illustration-b: #ef4444;
+}
+
+.opfg-achievement-card__ornament {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid rgb(255 255 255 / 0.28);
+  border-radius: 0.65rem;
+  color: var(--achievement-illustration-ink);
+  background:
+    radial-gradient(
+      circle at 28% 18%,
+      rgb(255 255 255 / 0.38),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      var(--achievement-illustration-a),
+      var(--achievement-illustration-b)
+    );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.34),
+    0 5px 14px rgb(0 0 0 / 0.24);
+  text-shadow: none;
+}
+
+.opfg-achievement-card:not(.is-unlocked)
+  .opfg-achievement-card__ornament {
+  filter: saturate(0.38) brightness(0.78);
+  opacity: 0.7;
+}
+
+.opfg-achievement-card.is-unlocked {
+  border-color: color-mix(
+    in srgb,
+    var(--achievement-illustration-a) 42%,
+    var(--border-strong)
+  );
+}
+
+.opfg-achievement-card.is-unlocked
+  .opfg-achievement-card__ornament {
+  filter: none;
+  opacity: 1;
+}
+
+@media (max-width: 42rem) {
+  .opfg-achievement-card__ornament {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.78rem;
+  }
+
+  .opfg-achievement-card__ornament > svg {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+}

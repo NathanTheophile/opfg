@@ -186,7 +186,7 @@ export function InventoryHudPanel({
 
   return (
     <div className="opfg-hud-inventory-stack">
-      <button type="button" className="opfg-hud-home-button" onClick={onHome} disabled={!onHome} aria-label={translate('ui.action.home')}>
+      <button type="button" className="opfg-hud-home-button opfg-hud-section-title" onClick={onHome} disabled={!onHome} aria-label={translate('ui.action.home')}>
         <House className="size-4" aria-hidden="true" />
         <span>{translate('ui.action.home')}</span>
       </button>
@@ -207,7 +207,7 @@ export function InventoryHudPanel({
           >
             <Backpack className="size-[1.15rem]" aria-hidden="true" />
           </ContextTooltip>
-          <span>{translate('ui.inventory')}</span>
+          <span className="opfg-hud-section-title">{translate('ui.inventory')}</span>
           <strong>{inventoryStacks.length}/{inventoryCapacity}</strong>
         </div>
 
@@ -330,8 +330,11 @@ export function ShipHudPanel({ state, catalog, translate, selectedStorageSlot, o
         </ContextTooltip>
 
         <div className="opfg-hud-ship__copy">
+          <div className="opfg-hud-ship__title-row">
+            <span className="opfg-hud-section-title">{translate('ui.ship')}</span>
+            <span className="opfg-hud-ship__type">{state.ship ? shipType : '—'}</span>
+          </div>
           <strong className="opfg-hud-ship__name">{state.ship?.name ?? translate('ui.ship.none')}</strong>
-          <span className="opfg-hud-ship__type">{state.ship ? shipType : '—'}</span>
         </div>
 
         <ContextTooltip

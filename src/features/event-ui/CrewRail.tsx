@@ -54,7 +54,7 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
       >
         <UsersRound className="opfg-crew-header__icon size-[1.05rem]" aria-hidden="true" />
       </ContextTooltip>
-      <span>{translate('ui.crew')}</span>
+      <span className="opfg-hud-section-title">{translate('ui.crew')}</span>
       <strong>{crew.length}/{capacity}</strong>
     </Panel>
 

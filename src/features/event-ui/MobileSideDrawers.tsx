@@ -2,6 +2,7 @@ import {
   Anchor,
   Backpack,
   BarChart3,
+  House,
   UsersRound,
 } from 'lucide-react';
 import {
@@ -10,6 +11,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { Translator } from '@/game/localization';
+import './hud-panel-header.css';
 import './mobile-side-drawers.css';
 
 type DrawerId = 'stats' | 'inventory' | 'crew' | 'ship';
@@ -27,6 +29,7 @@ export interface MobileSideDrawersProps {
   crew: ReactNode;
   ship: ReactNode;
   translate: Translator;
+  onHome?: () => void;
 }
 
 export function MobileSideDrawers({
@@ -35,6 +38,7 @@ export function MobileSideDrawers({
   crew,
   ship,
   translate,
+  onHome,
 }: MobileSideDrawersProps) {
   const [openDrawer, setOpenDrawer] = useState<DrawerId | null>(null);
 
@@ -58,6 +62,18 @@ export function MobileSideDrawers({
 
   return (
     <div className="opfg-mobile-side-ui">
+      <button
+        type="button"
+        className="opfg-hud-home-button opfg-hud-section-title opfg-mobile-home-button"
+        onClick={onHome}
+        disabled={!onHome}
+        aria-label={translate('ui.action.home')}
+        title={translate('ui.action.home')}
+      >
+        <House className="size-4" aria-hidden="true" />
+        <span>{translate('ui.action.home')}</span>
+      </button>
+
       {current && (
         <aside
           className="opfg-mobile-side-drawer"

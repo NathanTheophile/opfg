@@ -1367,6 +1367,7 @@ export function EventPreview({
 
       <MobileSideDrawers
         translate={translate}
+        onHome={onHome}
         stats={mobileStatsRail}
         inventory={
           <InventoryHudPanel

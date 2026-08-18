@@ -6,7 +6,6 @@ import {
 import {
   CalendarDays,
   Clock3,
-  MapPin,
 } from 'lucide-react';
 import {
   Panel,
@@ -217,32 +216,41 @@ export function EventPanel({
     >
       <PanelHeader className="opfg-event-panel__header mb-0 bg-gradient-to-b from-black/[0.38] to-black/[0.24] px-5 md:px-6">
         {meta ? (
-          <div className="opfg-event-panel__meta-row">
-            <span className="opfg-event-panel__meta-location">
-              <MapPin className="size-3.5" aria-hidden="true" />
-              <span>{meta.location}</span>
-            </span>
+          <div className="opfg-event-panel__header-layout">
+            <div className="opfg-event-panel__header-copy">
+              <span className="opfg-event-panel__meta-location">
+                {meta.location}
+              </span>
+
+              <PanelTitle className="opfg-event-panel__title">
+                {displayEvent.title}
+              </PanelTitle>
+            </div>
 
             <span className="opfg-event-panel__meta-time">
               <span>
                 {meta.age}
-                <Clock3 className="size-3.5" aria-hidden="true" />
+                <Clock3 className="size-3" aria-hidden="true" />
               </span>
               <span>
                 {meta.date}
-                <CalendarDays className="size-3.5" aria-hidden="true" />
+                <CalendarDays className="size-3" aria-hidden="true" />
               </span>
             </span>
           </div>
-        ) : displayEvent.eyebrow && (
-          <p className="opfg-event-panel__location-flag text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-gold">
-            {displayEvent.eyebrow}
-          </p>
-        )}
+        ) : (
+          <>
+            {displayEvent.eyebrow && (
+              <p className="opfg-event-panel__location-flag text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-gold">
+                {displayEvent.eyebrow}
+              </p>
+            )}
 
-        <PanelTitle className="opfg-event-panel__title">
-          {displayEvent.title}
-        </PanelTitle>
+            <PanelTitle className="opfg-event-panel__title">
+              {displayEvent.title}
+            </PanelTitle>
+          </>
+        )}
       </PanelHeader>
 
       {!collapsed && (
