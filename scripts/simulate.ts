@@ -4,13 +4,16 @@ import { loadNodeContentCatalog } from '../src/game/content/nodeContentCatalog';
 import { diagnoseContent } from '../src/game/simulation/diagnostics';
 import { simulateBatch } from '../src/game/simulation/simulateBatch';
 import { progressionSimulationPolicy, randomSimulationPolicy } from '../src/game/simulation/simulationPolicy';
+import { minmaxSimulationPolicy } from '../src/game/simulation/minmaxSimulationPolicy';
 import { validateContent } from '../src/game/validation/validateContent';
 
 const args = parseArguments(process.argv.slice(2));
 const catalog = loadNodeContentCatalog();
-const policy = args.policy === 'progression'
-  ? progressionSimulationPolicy
-  : randomSimulationPolicy;
+const policy = args.policy === 'minmax'
+  ? minmaxSimulationPolicy
+  : args.policy === 'progression'
+    ? progressionSimulationPolicy
+    : randomSimulationPolicy;
 const contentErrors = validateContent(catalog);
 if (contentErrors.length > 0) {
   contentErrors.forEach(({ path, message }) => console.error(`ERROR ${path}: ${message}`));
@@ -109,7 +112,7 @@ if (args.jsonPath) {
   console.log(`\nJSON report: ${outputPath}`);
 }
 
-type SimulationPolicyId = 'random' | 'progression';
+type SimulationPolicyId = 'random' | 'progression' | 'minmax';
 
 function parseArguments(values: string[]): { runs: number; seed: number; maxEvents: number; verbose: boolean; policy: SimulationPolicyId; jsonPath?: string } {
   const result: { runs: number; seed: number; maxEvents: number; verbose: boolean; policy: SimulationPolicyId; jsonPath?: string } = {
@@ -134,8 +137,8 @@ function parseArguments(values: string[]): { runs: number; seed: number; maxEven
 
 function simulationPolicyId(value: string | undefined): SimulationPolicyId {
   const resolved = requiredValue(value, '--policy');
-  if (resolved !== 'random' && resolved !== 'progression') {
-    throw new Error('--policy must be "random" or "progression".');
+  if (resolved !== 'random' && resolved !== 'progression' && resolved !== 'minmax') {
+    throw new Error('--policy must be "random", "progression", or "minmax".');
   }
   return resolved;
 }

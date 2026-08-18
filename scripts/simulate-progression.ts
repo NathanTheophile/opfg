@@ -2,9 +2,19 @@ import { performance } from 'node:perf_hooks';
 import type { SimulationObserver } from '../src/game/simulation/observation';
 import { simulateObservedRun } from '../src/game/simulation/simulateObservedRun';
 import { progressionSimulationPolicy } from '../src/game/simulation/simulationPolicy';
+import {
+  getMinMaxTelemetry,
+  minmaxSimulationPolicy,
+  resetMinMaxTelemetry,
+} from '../src/game/simulation/minmaxSimulationPolicy';
 import { average, inc, loadValidatedCatalog, parseSpecializedArgs, pct, quantile, topEntries, writeJson } from './simulation-specialized/shared';
 
-const args = parseSpecializedArgs(process.argv.slice(2), 'reports/sim-progression.json');
+const policyArgs = parseProgressionPolicyArgs(process.argv.slice(2));
+const args = parseSpecializedArgs(policyArgs.remaining, 'reports/sim-progression.json');
+const policy = policyArgs.policy === 'progression'
+  ? progressionSimulationPolicy
+  : minmaxSimulationPolicy;
+resetMinMaxTelemetry();
 const catalog = loadValidatedCatalog();
 const startedAt = performance.now();
 
@@ -170,7 +180,7 @@ for (let index = 0; index < args.runs; index += 1) {
     },
   };
 
-  const result = simulateObservedRun({ seed, catalog, maxResolvedEvents: args.maxEvents, observer, policy: progressionSimulationPolicy });
+  const result = simulateObservedRun({ seed, catalog, maxResolvedEvents: args.maxEvents, observer, policy });
   finalBerries.push(result.finalState.berries);
   finalReputation.push(result.finalState.player.career.reputation);
   finalBounty.push(result.finalState.player.career.bounty);
@@ -203,7 +213,7 @@ for (let index = 0; index < args.runs; index += 1) {
 }
 
 const report = {
-  config: { ...args, policy: progressionSimulationPolicy.id },
+  config: { ...args, policy: policy.id },
   elapsedMs: performance.now() - startedAt,
   summary: {
     runs: args.runs,
@@ -270,10 +280,11 @@ const report = {
   crewRecruitByEvent: topEntries(crewRecruitByEvent, 30),
   crewDepartureByEvent: topEntries(crewDepartureByEvent, 30),
   errors: topEntries(errors),
+  ...(policy.id === 'minmax' ? { minmax: getMinMaxTelemetry() } : {}),
 };
 
 console.log('OPFG Specialized Simulation — PROGRESSION / ECONOMY / POWERS / CREW');
-console.log(`Policy: ${progressionSimulationPolicy.id}`);
+console.log(`Policy: ${policy.id}`);
 console.log(`Runs: ${args.runs}`);
 console.log(`Avg income/run: ${average(totalIncome).toFixed(1)} B | Avg spend/run: ${average(totalSpend).toFixed(1)} B`);
 console.log(`Avg final Reputation: ${average(finalReputation).toFixed(2)} | Avg final Bounty: ${average(finalBounty).toFixed(1)}`);
@@ -294,4 +305,27 @@ function q(values: number[]) {
     p50: quantile(values, 0.50),
     p90: quantile(values, 0.90),
   };
+}
+
+
+type ProgressionReportPolicyId = 'minmax' | 'progression';
+
+function parseProgressionPolicyArgs(values: string[]): { policy: ProgressionReportPolicyId; remaining: string[] } {
+  let policy: ProgressionReportPolicyId = 'minmax';
+  const remaining: string[] = [];
+
+  for (let index = 0; index < values.length; index += 1) {
+    if (values[index] !== '--policy') {
+      remaining.push(values[index]);
+      continue;
+    }
+
+    const value = values[++index];
+    if (value !== 'minmax' && value !== 'progression') {
+      throw new Error('--policy for simulate-progression must be "minmax" or "progression".');
+    }
+    policy = value;
+  }
+
+  return { policy, remaining };
 }
