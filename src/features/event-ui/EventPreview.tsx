@@ -544,30 +544,45 @@ export function EventPreview({
        */
       const adventureScroll = adventureScrollRef.current;
       if (adventureScroll) {
-        const scrollRect = adventureScroll.getBoundingClientRect();
-        const mobileTabs = document.querySelector<HTMLElement>(
-          '.opfg-mobile-side-tabs',
-        );
-        const mobileTabsVisible = mobileTabs
-          ? window.getComputedStyle(mobileTabs).display !== 'none'
-          : false;
-        const mobileTabsTop = mobileTabsVisible
-          ? mobileTabs?.getBoundingClientRect().top ?? viewportHeight
-          : viewportHeight;
-        const visibleBottom = Math.max(
-          scrollRect.top + 160 * scale,
-          Math.min(viewportHeight, mobileTabsTop) - 10,
-        );
-        const maxNaturalScrollHeight = Math.max(
-          160,
-          (visibleBottom - scrollRect.top) / scale,
-        );
+        const portrait = window.matchMedia(
+          '(orientation: portrait)',
+        ).matches;
 
-        adventureScroll.style.setProperty(
-          'max-height',
-          maxNaturalScrollHeight.toFixed(2) + 'px',
-          'important',
-        );
+        if (!portrait) {
+          /*
+           * Landscape has no fixed bottom drawer. Keep a stable natural
+           * viewport and let the global stage scale handle short windows.
+           * This avoids a bad transient measurement collapsing the narrative
+           * viewport to ~160px and cutting the Choice list.
+           */
+          adventureScroll.style.setProperty(
+            'max-height',
+            '42rem',
+            'important',
+          );
+        } else {
+          const scrollRect = adventureScroll.getBoundingClientRect();
+          const mobileTabs = document.querySelector<HTMLElement>(
+            '.opfg-mobile-side-tabs',
+          );
+          const mobileTabsTop = mobileTabs
+            ? mobileTabs.getBoundingClientRect().top
+            : viewportHeight;
+          const visibleBottom = Math.max(
+            scrollRect.top + 160 * scale,
+            Math.min(viewportHeight, mobileTabsTop) - 10,
+          );
+          const maxNaturalScrollHeight = Math.max(
+            160,
+            (visibleBottom - scrollRect.top) / scale,
+          );
+
+          adventureScroll.style.setProperty(
+            'max-height',
+            maxNaturalScrollHeight.toFixed(2) + 'px',
+            'important',
+          );
+        }
       }
     };
 

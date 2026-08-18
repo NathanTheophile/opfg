@@ -1114,3 +1114,37 @@
   order: 2;
   align-self: center;
 }
+
+/* UI_POLISH_20260818_FIX6_HUD_SPACING */
+/* One literal box model for all three section headers. Increasing the shared
+ * horizontal inset also fixes Inventory's count visually touching the edge. */
+.opfg-hud-inventory__header,
+.opfg-hud-ship__header,
+.opfg-crew-header {
+  box-sizing: border-box !important;
+  min-height: 2.55rem !important;
+  padding-top: 0.42rem !important;
+  padding-right: 0.90rem !important;
+  padding-bottom: 0.42rem !important;
+  padding-left: 0.90rem !important;
+  column-gap: 0.45rem !important;
+}
+
+.opfg-hud-inventory__header > strong,
+.opfg-crew-header > strong,
+.opfg-hud-ship__resistance {
+  justify-self: end !important;
+  margin: 0 !important;
+}
+
+/* The money widget lives in the Inventory body, not the header, so give its
+ * right edge the same explicit breathing room instead of relying on the old
+ * compact body padding. */
+.opfg-hud-panel--inventory .opfg-hud-panel__body {
+  padding-right: 0.82rem !important;
+}
+
+.opfg-hud-inventory__money {
+  max-width: 100%;
+  margin-right: 0.10rem;
+}
