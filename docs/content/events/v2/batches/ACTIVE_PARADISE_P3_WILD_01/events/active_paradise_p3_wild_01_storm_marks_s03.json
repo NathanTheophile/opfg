@@ -1,0 +1,105 @@
+{
+  "id": "active_paradise_p3_wild_01_storm_marks_s03",
+  "kind": "scheduled",
+  "titleKey": "event.active_paradise_p3_wild_01_storm_marks_s03.title",
+  "textKey": "event.active_paradise_p3_wild_01_storm_marks_s03.text",
+  "delayMonths": 1,
+  "priority": 100,
+  "scheduledReach": "unrestricted",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p3_wild"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "grand_line_paradise"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read",
+      "textKey": "event.active_paradise_p3_wild_01_storm_marks_s03.choice.read.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "read_resolved",
+          "textKey": "event.active_paradise_p3_wild_01_storm_marks_s03.choice.read.outcome.read_resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p3_wild_01_storm_marks_s04",
+              "delayMonths": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "copy",
+      "textKey": "event.active_paradise_p3_wild_01_storm_marks_s03.choice.copy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "copy_resolved",
+          "textKey": "event.active_paradise_p3_wild_01_storm_marks_s03.choice.copy.outcome.copy_resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p3_wild_01_storm_marks_s04",
+              "delayMonths": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ignore",
+      "textKey": "event.active_paradise_p3_wild_01_storm_marks_s03.choice.ignore.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ignore_resolved",
+          "textKey": "event.active_paradise_p3_wild_01_storm_marks_s03.choice.ignore.outcome.ignore_resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p3_wild_01_storm_marks_s04",
+              "delayMonths": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "locationIs",
+        "locationId": "sabaody_archipelago"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "currentSeaIs",
+          "seaId": "grand_line_paradise"
+        }
+      }
+    ]
+  }
+}

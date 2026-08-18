@@ -1,0 +1,128 @@
+{
+  "id": "active_paradise_p2_trade_01_coating_queue_extortion",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p2_trade_01_coating_queue_extortion.title",
+  "textKey": "event.active_paradise_p2_trade_01_coating_queue_extortion.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p2_trade"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "sabaody_archipelago"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "intervene",
+      "textKey": "event.active_paradise_p2_trade_01_coating_queue_extortion.choice.intervene.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 13,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "intervene_criticalfailure",
+            "textKey": "event.active_paradise_p2_trade_01_coating_queue_extortion.choice.intervene.outcome.intervene_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "intervene_failure",
+            "textKey": "event.active_paradise_p2_trade_01_coating_queue_extortion.choice.intervene.outcome.intervene_failure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "intervene_success",
+            "textKey": "event.active_paradise_p2_trade_01_coating_queue_extortion.choice.intervene.outcome.intervene_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "intervene_criticalsuccess",
+            "textKey": "event.active_paradise_p2_trade_01_coating_queue_extortion.choice.intervene.outcome.intervene_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 1000
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "practical",
+      "textKey": "event.active_paradise_p2_trade_01_coating_queue_extortion.choice.practical.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "practical_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_coating_queue_extortion.choice.practical.outcome.practical_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "step_back",
+      "textKey": "event.active_paradise_p2_trade_01_coating_queue_extortion.choice.step_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "step_back_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_coating_queue_extortion.choice.step_back.outcome.step_back_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "use_shipwright",
+      "textKey": "event.active_paradise_p2_trade_01_coating_queue_extortion.choice.use_shipwright.text",
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "use_shipwright_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_coating_queue_extortion.choice.use_shipwright.outcome.use_shipwright_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

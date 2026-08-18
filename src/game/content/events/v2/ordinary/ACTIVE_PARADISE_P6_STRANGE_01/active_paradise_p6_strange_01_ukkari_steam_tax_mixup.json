@@ -1,0 +1,143 @@
+{
+  "id": "active_paradise_p6_strange_01_ukkari_steam_tax_mixup",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p6_strange_01_ukkari_steam_tax_mixup.title",
+  "textKey": "event.active_paradise_p6_strange_01_ukkari_steam_tax_mixup.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p6_strange"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "ukkari_onsen_island"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_the_room",
+      "textKey": "event.active_paradise_p6_strange_01_ukkari_steam_tax_mixup.choice.read_the_room",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_the_room_critical_failure",
+            "textKey": "event.active_paradise_p6_strange_01_ukkari_steam_tax_mixup.outcome.read_the_room.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_the_room_failure",
+            "textKey": "event.active_paradise_p6_strange_01_ukkari_steam_tax_mixup.outcome.read_the_room.failure",
+            "effects": []
+          },
+          "success": {
+            "id": "read_the_room_success",
+            "textKey": "event.active_paradise_p6_strange_01_ukkari_steam_tax_mixup.outcome.read_the_room.success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_the_room_critical_success",
+            "textKey": "event.active_paradise_p6_strange_01_ukkari_steam_tax_mixup.outcome.read_the_room.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "talk_him_down",
+      "textKey": "event.active_paradise_p6_strange_01_ukkari_steam_tax_mixup.choice.talk_him_down",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "talk_him_down_critical_failure",
+            "textKey": "event.active_paradise_p6_strange_01_ukkari_steam_tax_mixup.outcome.talk_him_down.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "talk_him_down_failure",
+            "textKey": "event.active_paradise_p6_strange_01_ukkari_steam_tax_mixup.outcome.talk_him_down.failure",
+            "effects": []
+          },
+          "success": {
+            "id": "talk_him_down_success",
+            "textKey": "event.active_paradise_p6_strange_01_ukkari_steam_tax_mixup.outcome.talk_him_down.success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "talk_him_down_critical_success",
+            "textKey": "event.active_paradise_p6_strange_01_ukkari_steam_tax_mixup.outcome.talk_him_down.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_and_enter",
+      "textKey": "event.active_paradise_p6_strange_01_ukkari_steam_tax_mixup.choice.pay_and_enter",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 200
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_and_enter",
+          "textKey": "event.active_paradise_p6_strange_01_ukkari_steam_tax_mixup.outcome.pay_and_enter",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -200
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

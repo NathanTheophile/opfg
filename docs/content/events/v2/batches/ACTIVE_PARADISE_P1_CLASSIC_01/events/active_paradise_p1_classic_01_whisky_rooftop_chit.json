@@ -1,0 +1,122 @@
+{
+  "id": "active_paradise_p1_classic_01_whisky_rooftop_chit",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p1_classic_01_whisky_rooftop_chit.title",
+  "textKey": "event.active_paradise_p1_classic_01_whisky_rooftop_chit.text",
+  "choices": [
+    {
+      "id": "chase_over_roofs",
+      "textKey": "event.active_paradise_p1_classic_01_whisky_rooftop_chit.choice.chase_over_roofs.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "chase_over_roofs_criticalfailure",
+            "textKey": "event.active_paradise_p1_classic_01_whisky_rooftop_chit.choice.chase_over_roofs.outcome.chase_over_roofs_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_whisky_rooftop_chit_i01_awning_corner"
+              }
+            ]
+          },
+          "failure": {
+            "id": "chase_over_roofs_failure",
+            "textKey": "event.active_paradise_p1_classic_01_whisky_rooftop_chit.choice.chase_over_roofs.outcome.chase_over_roofs_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_whisky_rooftop_chit_i01_awning_corner"
+              }
+            ]
+          },
+          "success": {
+            "id": "chase_over_roofs_success",
+            "textKey": "event.active_paradise_p1_classic_01_whisky_rooftop_chit.choice.chase_over_roofs.outcome.chase_over_roofs_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_whisky_rooftop_chit_i01_awning_corner"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "chase_over_roofs_criticalsuccess",
+            "textKey": "event.active_paradise_p1_classic_01_whisky_rooftop_chit.choice.chase_over_roofs.outcome.chase_over_roofs_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_whisky_rooftop_chit_i01_awning_corner"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "guard_the_gutter",
+      "textKey": "event.active_paradise_p1_classic_01_whisky_rooftop_chit.choice.guard_the_gutter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "guard_the_gutter_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_whisky_rooftop_chit.choice.guard_the_gutter.outcome.guard_the_gutter_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p1_classic_01_whisky_rooftop_chit_i01_awning_corner"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "warn_the_harbor",
+      "textKey": "event.active_paradise_p1_classic_01_whisky_rooftop_chit.choice.warn_the_harbor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "warn_the_harbor_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_whisky_rooftop_chit.choice.warn_the_harbor.outcome.warn_the_harbor_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p1_classic_01_whisky_rooftop_chit_i01_awning_corner"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p1_classic"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "whisky_peak"
+      }
+    ]
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "id": "active_paradise_p7_hazard_01_ashcurrent_pumice_ferry",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p7_hazard_01_ashcurrent_pumice_ferry.title",
+  "textKey": "event.active_paradise_p7_hazard_01_ashcurrent_pumice_ferry.text",
+  "choices": [
+    {
+      "id": "jump_pole",
+      "textKey": "event.active_paradise_p7_hazard_01_ashcurrent_pumice_ferry.choice.jump_pole.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "jump_pole_criticalFailure",
+            "textKey": "event.active_paradise_p7_hazard_01_ashcurrent_pumice_ferry.choice.jump_pole.outcome.jump_pole_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_ashcurrent_pumice_ferry_i01_pumice_split"
+              }
+            ]
+          },
+          "failure": {
+            "id": "jump_pole_failure",
+            "textKey": "event.active_paradise_p7_hazard_01_ashcurrent_pumice_ferry.choice.jump_pole.outcome.jump_pole_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_ashcurrent_pumice_ferry_i01_pumice_split"
+              }
+            ]
+          },
+          "success": {
+            "id": "jump_pole_success",
+            "textKey": "event.active_paradise_p7_hazard_01_ashcurrent_pumice_ferry.choice.jump_pole.outcome.jump_pole_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_ashcurrent_pumice_ferry_i01_pumice_split"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "jump_pole_criticalSuccess",
+            "textKey": "event.active_paradise_p7_hazard_01_ashcurrent_pumice_ferry.choice.jump_pole.outcome.jump_pole_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_ashcurrent_pumice_ferry_i01_pumice_split"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_eddy",
+      "textKey": "event.active_paradise_p7_hazard_01_ashcurrent_pumice_ferry.choice.read_eddy.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_eddy_criticalFailure",
+            "textKey": "event.active_paradise_p7_hazard_01_ashcurrent_pumice_ferry.choice.read_eddy.outcome.read_eddy_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_ashcurrent_pumice_ferry_i01_pumice_split"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_eddy_failure",
+            "textKey": "event.active_paradise_p7_hazard_01_ashcurrent_pumice_ferry.choice.read_eddy.outcome.read_eddy_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_ashcurrent_pumice_ferry_i01_pumice_split"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_eddy_success",
+            "textKey": "event.active_paradise_p7_hazard_01_ashcurrent_pumice_ferry.choice.read_eddy.outcome.read_eddy_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_ashcurrent_pumice_ferry_i01_pumice_split"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_eddy_criticalSuccess",
+            "textKey": "event.active_paradise_p7_hazard_01_ashcurrent_pumice_ferry.choice.read_eddy.outcome.read_eddy_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_ashcurrent_pumice_ferry_i01_pumice_split"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "dump_load",
+      "textKey": "event.active_paradise_p7_hazard_01_ashcurrent_pumice_ferry.choice.dump_load.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "dump_load_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_ashcurrent_pumice_ferry.choice.dump_load.outcome.dump_load_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p7_hazard_01_ashcurrent_pumice_ferry_i01_pumice_split"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p7_hazard"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "ashcurrent_island"
+      }
+    ]
+  }
+}

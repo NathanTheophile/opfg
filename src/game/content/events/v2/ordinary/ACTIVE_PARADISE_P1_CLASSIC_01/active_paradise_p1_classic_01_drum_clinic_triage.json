@@ -1,0 +1,102 @@
+{
+  "id": "active_paradise_p1_classic_01_drum_clinic_triage",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p1_classic_01_drum_clinic_triage.title",
+  "textKey": "event.active_paradise_p1_classic_01_drum_clinic_triage.text",
+  "choices": [
+    {
+      "id": "sort_the_patients",
+      "textKey": "event.active_paradise_p1_classic_01_drum_clinic_triage.choice.sort_the_patients.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "sort_the_patients_criticalfailure",
+            "textKey": "event.active_paradise_p1_classic_01_drum_clinic_triage.choice.sort_the_patients.outcome.sort_the_patients_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "sort_the_patients_failure",
+            "textKey": "event.active_paradise_p1_classic_01_drum_clinic_triage.choice.sort_the_patients.outcome.sort_the_patients_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "sort_the_patients_success",
+            "textKey": "event.active_paradise_p1_classic_01_drum_clinic_triage.choice.sort_the_patients.outcome.sort_the_patients_success.text",
+            "effects": []
+          },
+          "criticalSuccess": {
+            "id": "sort_the_patients_criticalsuccess",
+            "textKey": "event.active_paradise_p1_classic_01_drum_clinic_triage.choice.sort_the_patients.outcome.sort_the_patients_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_the_door",
+      "textKey": "event.active_paradise_p1_classic_01_drum_clinic_triage.choice.hold_the_door.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hold_the_door_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_drum_clinic_triage.choice.hold_the_door.outcome.hold_the_door_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "let_the_medic_lead",
+      "textKey": "event.active_paradise_p1_classic_01_drum_clinic_triage.choice.let_the_medic_lead.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "let_the_medic_lead_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_drum_clinic_triage.choice.let_the_medic_lead.outcome.let_the_medic_lead_outcome.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "medic"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p1_classic"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "drum_island"
+      }
+    ]
+  }
+}

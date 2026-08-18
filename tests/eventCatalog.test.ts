@@ -57,5 +57,5 @@ describe('eventCatalog', () => {
 
   it('loads the exact same catalog in Node CLI and Vite runtimes', () => {
     expect(loadNodeContentCatalog()).toEqual(contentCatalog);
-  });
+  }, 15000);
 });

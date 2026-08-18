@@ -1,0 +1,165 @@
+{
+  "id": "active_paradise_p6_strange_01_longring_nomad_rope_bridge",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p6_strange_01_longring_nomad_rope_bridge.title",
+  "textKey": "event.active_paradise_p6_strange_01_longring_nomad_rope_bridge.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p6_strange"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "long_ring_long_land"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "haul_the_rope",
+      "textKey": "event.active_paradise_p6_strange_01_longring_nomad_rope_bridge.choice.haul_the_rope",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "haul_the_rope_critical_failure",
+            "textKey": "event.active_paradise_p6_strange_01_longring_nomad_rope_bridge.outcome.haul_the_rope.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_longring_nomad_rope_bridge_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "haul_the_rope_failure",
+            "textKey": "event.active_paradise_p6_strange_01_longring_nomad_rope_bridge.outcome.haul_the_rope.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_longring_nomad_rope_bridge_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "haul_the_rope_success",
+            "textKey": "event.active_paradise_p6_strange_01_longring_nomad_rope_bridge.outcome.haul_the_rope.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_longring_nomad_rope_bridge_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "haul_the_rope_critical_success",
+            "textKey": "event.active_paradise_p6_strange_01_longring_nomad_rope_bridge.outcome.haul_the_rope.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_longring_nomad_rope_bridge_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "reroute_the_crossing",
+      "textKey": "event.active_paradise_p6_strange_01_longring_nomad_rope_bridge.choice.reroute_the_crossing",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "reroute_the_crossing_critical_failure",
+            "textKey": "event.active_paradise_p6_strange_01_longring_nomad_rope_bridge.outcome.reroute_the_crossing.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_longring_nomad_rope_bridge_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "reroute_the_crossing_failure",
+            "textKey": "event.active_paradise_p6_strange_01_longring_nomad_rope_bridge.outcome.reroute_the_crossing.failure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_longring_nomad_rope_bridge_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "reroute_the_crossing_success",
+            "textKey": "event.active_paradise_p6_strange_01_longring_nomad_rope_bridge.outcome.reroute_the_crossing.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_longring_nomad_rope_bridge_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "reroute_the_crossing_critical_success",
+            "textKey": "event.active_paradise_p6_strange_01_longring_nomad_rope_bridge.outcome.reroute_the_crossing.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_longring_nomad_rope_bridge_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "unload_the_carts",
+      "textKey": "event.active_paradise_p6_strange_01_longring_nomad_rope_bridge.choice.unload_the_carts",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "unload_the_carts",
+          "textKey": "event.active_paradise_p6_strange_01_longring_nomad_rope_bridge.outcome.unload_the_carts",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

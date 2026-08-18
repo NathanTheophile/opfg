@@ -1,0 +1,122 @@
+{
+  "id": "active_paradise_p1_classic_01_drum_medicine_sled",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p1_classic_01_drum_medicine_sled.title",
+  "textKey": "event.active_paradise_p1_classic_01_drum_medicine_sled.text",
+  "choices": [
+    {
+      "id": "brace_the_sled",
+      "textKey": "event.active_paradise_p1_classic_01_drum_medicine_sled.choice.brace_the_sled.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "brace_the_sled_criticalfailure",
+            "textKey": "event.active_paradise_p1_classic_01_drum_medicine_sled.choice.brace_the_sled.outcome.brace_the_sled_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_drum_medicine_sled_i01_second_slide"
+              }
+            ]
+          },
+          "failure": {
+            "id": "brace_the_sled_failure",
+            "textKey": "event.active_paradise_p1_classic_01_drum_medicine_sled.choice.brace_the_sled.outcome.brace_the_sled_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_drum_medicine_sled_i01_second_slide"
+              }
+            ]
+          },
+          "success": {
+            "id": "brace_the_sled_success",
+            "textKey": "event.active_paradise_p1_classic_01_drum_medicine_sled.choice.brace_the_sled.outcome.brace_the_sled_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_drum_medicine_sled_i01_second_slide"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "brace_the_sled_criticalsuccess",
+            "textKey": "event.active_paradise_p1_classic_01_drum_medicine_sled.choice.brace_the_sled.outcome.brace_the_sled_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_drum_medicine_sled_i01_second_slide"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cut_the_load_in_half",
+      "textKey": "event.active_paradise_p1_classic_01_drum_medicine_sled.choice.cut_the_load_in_half.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_the_load_in_half_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_drum_medicine_sled.choice.cut_the_load_in_half.outcome.cut_the_load_in_half_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p1_classic_01_drum_medicine_sled_i01_second_slide"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "signal_the_village",
+      "textKey": "event.active_paradise_p1_classic_01_drum_medicine_sled.choice.signal_the_village.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "signal_the_village_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_drum_medicine_sled.choice.signal_the_village.outcome.signal_the_village_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p1_classic_01_drum_medicine_sled_i01_second_slide"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p1_classic"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "drum_island"
+      }
+    ]
+  }
+}

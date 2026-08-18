@@ -1,0 +1,179 @@
+{
+  "id": "active_paradise_p7_hazard_01_banaro_cistern_rescue",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p7_hazard_01_banaro_cistern_rescue.title",
+  "textKey": "event.active_paradise_p7_hazard_01_banaro_cistern_rescue.text",
+  "choices": [
+    {
+      "id": "climb_down",
+      "textKey": "event.active_paradise_p7_hazard_01_banaro_cistern_rescue.choice.climb_down.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "climb_down_criticalFailure",
+            "textKey": "event.active_paradise_p7_hazard_01_banaro_cistern_rescue.choice.climb_down.outcome.climb_down_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_banaro_cistern_rescue_i01_well_rope"
+              }
+            ]
+          },
+          "failure": {
+            "id": "climb_down_failure",
+            "textKey": "event.active_paradise_p7_hazard_01_banaro_cistern_rescue.choice.climb_down.outcome.climb_down_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_banaro_cistern_rescue_i01_well_rope"
+              }
+            ]
+          },
+          "success": {
+            "id": "climb_down_success",
+            "textKey": "event.active_paradise_p7_hazard_01_banaro_cistern_rescue.choice.climb_down.outcome.climb_down_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_banaro_cistern_rescue_i01_well_rope"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "climb_down_criticalSuccess",
+            "textKey": "event.active_paradise_p7_hazard_01_banaro_cistern_rescue.choice.climb_down.outcome.climb_down_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_banaro_cistern_rescue_i01_well_rope"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "lower_loop",
+      "textKey": "event.active_paradise_p7_hazard_01_banaro_cistern_rescue.choice.lower_loop.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "lower_loop_criticalFailure",
+            "textKey": "event.active_paradise_p7_hazard_01_banaro_cistern_rescue.choice.lower_loop.outcome.lower_loop_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_banaro_cistern_rescue_i01_well_rope"
+              }
+            ]
+          },
+          "failure": {
+            "id": "lower_loop_failure",
+            "textKey": "event.active_paradise_p7_hazard_01_banaro_cistern_rescue.choice.lower_loop.outcome.lower_loop_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_banaro_cistern_rescue_i01_well_rope"
+              }
+            ]
+          },
+          "success": {
+            "id": "lower_loop_success",
+            "textKey": "event.active_paradise_p7_hazard_01_banaro_cistern_rescue.choice.lower_loop.outcome.lower_loop_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_banaro_cistern_rescue_i01_well_rope"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "lower_loop_criticalSuccess",
+            "textKey": "event.active_paradise_p7_hazard_01_banaro_cistern_rescue.choice.lower_loop.outcome.lower_loop_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_banaro_cistern_rescue_i01_well_rope"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "fetch_longer_rope",
+      "textKey": "event.active_paradise_p7_hazard_01_banaro_cistern_rescue.choice.fetch_longer_rope.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fetch_longer_rope_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_banaro_cistern_rescue.choice.fetch_longer_rope.outcome.fetch_longer_rope_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p7_hazard_01_banaro_cistern_rescue_i01_well_rope"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p7_hazard"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "banaro_island"
+      }
+    ]
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "id": "active_paradise_p7_hazard_01_needle_rope_toll",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p7_hazard_01_needle_rope_toll.title",
+  "textKey": "event.active_paradise_p7_hazard_01_needle_rope_toll.text",
+  "choices": [
+    {
+      "id": "pay_toll",
+      "textKey": "event.active_paradise_p7_hazard_01_needle_rope_toll.choice.pay_toll.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_toll_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_needle_rope_toll.choice.pay_toll.outcome.pay_toll_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "help_repair",
+      "textKey": "event.active_paradise_p7_hazard_01_needle_rope_toll.choice.help_repair.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "help_repair_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_needle_rope_toll.choice.help_repair.outcome.help_repair_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_long_path",
+      "textKey": "event.active_paradise_p7_hazard_01_needle_rope_toll.choice.take_long_path.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_long_path_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_needle_rope_toll.choice.take_long_path.outcome.take_long_path_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p7_hazard"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "needle_reach"
+      }
+    ]
+  }
+}

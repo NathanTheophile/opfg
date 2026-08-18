@@ -1,0 +1,212 @@
+{
+  "id": "active_paradise_p7_hazard_01_blackglass_front_s04",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "unrestricted",
+  "titleKey": "event.active_paradise_p7_hazard_01_blackglass_front_s04.title",
+  "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s04.text",
+  "choices": [
+    {
+      "id": "helmsman_hold",
+      "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s04.choice.helmsman_hold.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "helmsman_hold_criticalFailure",
+            "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s04.choice.helmsman_hold.outcome.helmsman_hold_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p7_hazard_01_blackglass_front_s05",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "failure": {
+            "id": "helmsman_hold_failure",
+            "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s04.choice.helmsman_hold.outcome.helmsman_hold_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p7_hazard_01_blackglass_front_s05",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "success": {
+            "id": "helmsman_hold_success",
+            "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s04.choice.helmsman_hold.outcome.helmsman_hold_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p7_hazard_01_blackglass_front_s05",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "helmsman_hold_criticalSuccess",
+            "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s04.choice.helmsman_hold.outcome.helmsman_hold_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p7_hazard_01_blackglass_front_s05",
+                "delayMonths": 3
+              }
+            ]
+          }
+        },
+        "actor": {
+          "type": "crewRole",
+          "roleId": "helmsman",
+          "statId": "navigation"
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "helmsman"
+      }
+    },
+    {
+      "id": "count_interval",
+      "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s04.choice.count_interval.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "count_interval_criticalFailure",
+            "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s04.choice.count_interval.outcome.count_interval_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p7_hazard_01_blackglass_front_s05",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "failure": {
+            "id": "count_interval_failure",
+            "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s04.choice.count_interval.outcome.count_interval_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p7_hazard_01_blackglass_front_s05",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "success": {
+            "id": "count_interval_success",
+            "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s04.choice.count_interval.outcome.count_interval_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p7_hazard_01_blackglass_front_s05",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "count_interval_criticalSuccess",
+            "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s04.choice.count_interval.outcome.count_interval_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p7_hazard_01_blackglass_front_s05",
+                "delayMonths": 3
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "stay_low",
+      "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s04.choice.stay_low.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stay_low_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s04.choice.stay_low.outcome.stay_low_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p7_hazard_01_blackglass_front_s05",
+              "delayMonths": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p7_hazard"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "grand_line_paradise"
+      }
+    ]
+  },
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "locationIs",
+        "locationId": "sabaody_archipelago"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "currentSeaIs",
+          "seaId": "grand_line_paradise"
+        }
+      }
+    ]
+  }
+}

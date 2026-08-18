@@ -1,0 +1,88 @@
+{
+  "id": "active_paradise_p4_kingdoms_01_ottankaina_grain_bid",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p4_kingdoms_01_ottankaina_grain_bid.title",
+  "textKey": "event.active_paradise_p4_kingdoms_01_ottankaina_grain_bid.text",
+  "choices": [
+    {
+      "id": "alt_1",
+      "textKey": "event.active_paradise_p4_kingdoms_01_ottankaina_grain_bid.choice.alt_1.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alt_1_outcome",
+          "textKey": "event.active_paradise_p4_kingdoms_01_ottankaina_grain_bid.choice.alt_1.outcome.alt_1_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p4_kingdoms_01_ottankaina_grain_bid_i01_split_sack"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "alt_2",
+      "textKey": "event.active_paradise_p4_kingdoms_01_ottankaina_grain_bid.choice.alt_2.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alt_2_outcome",
+          "textKey": "event.active_paradise_p4_kingdoms_01_ottankaina_grain_bid.choice.alt_2.outcome.alt_2_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p4_kingdoms_01_ottankaina_grain_bid_i01_split_sack"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    },
+    {
+      "id": "alt_3",
+      "textKey": "event.active_paradise_p4_kingdoms_01_ottankaina_grain_bid.choice.alt_3.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alt_3_outcome",
+          "textKey": "event.active_paradise_p4_kingdoms_01_ottankaina_grain_bid.choice.alt_3.outcome.alt_3_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p4_kingdoms_01_ottankaina_grain_bid_i01_split_sack"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p4_kingdoms"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "ottankaina_kingdom"
+      }
+    ]
+  }
+}

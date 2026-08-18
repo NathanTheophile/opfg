@@ -1,0 +1,179 @@
+{
+  "id": "active_paradise_p7_hazard_01_stormglass_charged_nets",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p7_hazard_01_stormglass_charged_nets.title",
+  "textKey": "event.active_paradise_p7_hazard_01_stormglass_charged_nets.text",
+  "choices": [
+    {
+      "id": "ground_line",
+      "textKey": "event.active_paradise_p7_hazard_01_stormglass_charged_nets.choice.ground_line.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "ground_line_criticalFailure",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_charged_nets.choice.ground_line.outcome.ground_line_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_stormglass_charged_nets_i01_glass_tide"
+              }
+            ]
+          },
+          "failure": {
+            "id": "ground_line_failure",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_charged_nets.choice.ground_line.outcome.ground_line_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_stormglass_charged_nets_i01_glass_tide"
+              }
+            ]
+          },
+          "success": {
+            "id": "ground_line_success",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_charged_nets.choice.ground_line.outcome.ground_line_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_stormglass_charged_nets_i01_glass_tide"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "ground_line_criticalSuccess",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_charged_nets.choice.ground_line.outcome.ground_line_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_stormglass_charged_nets_i01_glass_tide"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "time_pull",
+      "textKey": "event.active_paradise_p7_hazard_01_stormglass_charged_nets.choice.time_pull.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "time_pull_criticalFailure",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_charged_nets.choice.time_pull.outcome.time_pull_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_stormglass_charged_nets_i01_glass_tide"
+              }
+            ]
+          },
+          "failure": {
+            "id": "time_pull_failure",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_charged_nets.choice.time_pull.outcome.time_pull_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_stormglass_charged_nets_i01_glass_tide"
+              }
+            ]
+          },
+          "success": {
+            "id": "time_pull_success",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_charged_nets.choice.time_pull.outcome.time_pull_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_stormglass_charged_nets_i01_glass_tide"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "time_pull_criticalSuccess",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_charged_nets.choice.time_pull.outcome.time_pull_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p7_hazard_01_stormglass_charged_nets_i01_glass_tide"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cut_net",
+      "textKey": "event.active_paradise_p7_hazard_01_stormglass_charged_nets.choice.cut_net.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_net_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_stormglass_charged_nets.choice.cut_net.outcome.cut_net_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p7_hazard_01_stormglass_charged_nets_i01_glass_tide"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p7_hazard"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "stormglass_island"
+      }
+    ]
+  }
+}

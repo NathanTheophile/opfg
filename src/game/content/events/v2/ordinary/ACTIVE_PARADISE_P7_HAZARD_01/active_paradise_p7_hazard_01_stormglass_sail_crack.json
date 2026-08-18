@@ -1,0 +1,158 @@
+{
+  "id": "active_paradise_p7_hazard_01_stormglass_sail_crack",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p7_hazard_01_stormglass_sail_crack.title",
+  "textKey": "event.active_paradise_p7_hazard_01_stormglass_sail_crack.text",
+  "choices": [
+    {
+      "id": "ease_rig",
+      "textKey": "event.active_paradise_p7_hazard_01_stormglass_sail_crack.choice.ease_rig.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "ease_rig_criticalFailure",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_sail_crack.choice.ease_rig.outcome.ease_rig_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "ease_rig_failure",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_sail_crack.choice.ease_rig.outcome.ease_rig_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "ease_rig_success",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_sail_crack.choice.ease_rig.outcome.ease_rig_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "ease_rig_criticalSuccess",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_sail_crack.choice.ease_rig.outcome.ease_rig_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "crew_navigator",
+      "textKey": "event.active_paradise_p7_hazard_01_stormglass_sail_crack.choice.crew_navigator.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "crew_navigator_criticalFailure",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_sail_crack.choice.crew_navigator.outcome.crew_navigator_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "crew_navigator_failure",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_sail_crack.choice.crew_navigator.outcome.crew_navigator_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "crew_navigator_success",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_sail_crack.choice.crew_navigator.outcome.crew_navigator_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crew_navigator_criticalSuccess",
+            "textKey": "event.active_paradise_p7_hazard_01_stormglass_sail_crack.choice.crew_navigator.outcome.crew_navigator_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        },
+        "actor": {
+          "type": "crewRole",
+          "roleId": "navigator",
+          "statId": "navigation"
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "navigator"
+      }
+    },
+    {
+      "id": "drop_sail",
+      "textKey": "event.active_paradise_p7_hazard_01_stormglass_sail_crack.choice.drop_sail.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "drop_sail_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_stormglass_sail_crack.choice.drop_sail.outcome.drop_sail_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p7_hazard"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "stormglass_island"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

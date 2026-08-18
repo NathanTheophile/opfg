@@ -1,0 +1,73 @@
+{
+  "id": "active_paradise_p7_hazard_01_thunderhead_drum_shelter",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p7_hazard_01_thunderhead_drum_shelter.title",
+  "textKey": "event.active_paradise_p7_hazard_01_thunderhead_drum_shelter.text",
+  "choices": [
+    {
+      "id": "keep_rhythm",
+      "textKey": "event.active_paradise_p7_hazard_01_thunderhead_drum_shelter.choice.keep_rhythm.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_rhythm_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_thunderhead_drum_shelter.choice.keep_rhythm.outcome.keep_rhythm_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "musician_answer",
+      "textKey": "event.active_paradise_p7_hazard_01_thunderhead_drum_shelter.choice.musician_answer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "musician_answer_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_thunderhead_drum_shelter.choice.musician_answer.outcome.musician_answer_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "musician"
+      }
+    },
+    {
+      "id": "use_flags",
+      "textKey": "event.active_paradise_p7_hazard_01_thunderhead_drum_shelter.choice.use_flags.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "use_flags_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_thunderhead_drum_shelter.choice.use_flags.outcome.use_flags_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p7_hazard"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "thunderhead_island"
+      }
+    ]
+  }
+}

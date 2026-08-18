@@ -1,0 +1,143 @@
+{
+  "id": "active_paradise_p2_trade_01_split_cargo_mark",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p2_trade_01_split_cargo_mark.title",
+  "textKey": "event.active_paradise_p2_trade_01_split_cargo_mark.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p2_trade"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "glassreef_island"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "intervene",
+      "textKey": "event.active_paradise_p2_trade_01_split_cargo_mark.choice.intervene.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 13,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "intervene_criticalfailure",
+            "textKey": "event.active_paradise_p2_trade_01_split_cargo_mark.choice.intervene.outcome.intervene_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              },
+              {
+                "type": "modifyBerries",
+                "amount": -1000
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice",
+                "delayMonths": 2
+              }
+            ]
+          },
+          "failure": {
+            "id": "intervene_failure",
+            "textKey": "event.active_paradise_p2_trade_01_split_cargo_mark.choice.intervene.outcome.intervene_failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -500
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice",
+                "delayMonths": 2
+              }
+            ]
+          },
+          "success": {
+            "id": "intervene_success",
+            "textKey": "event.active_paradise_p2_trade_01_split_cargo_mark.choice.intervene.outcome.intervene_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice",
+                "delayMonths": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "intervene_criticalsuccess",
+            "textKey": "event.active_paradise_p2_trade_01_split_cargo_mark.choice.intervene.outcome.intervene_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 800
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice",
+                "delayMonths": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "practical",
+      "textKey": "event.active_paradise_p2_trade_01_split_cargo_mark.choice.practical.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "practical_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_split_cargo_mark.choice.practical.outcome.practical_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step_back",
+      "textKey": "event.active_paradise_p2_trade_01_split_cargo_mark.choice.step_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "step_back_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_split_cargo_mark.choice.step_back.outcome.step_back_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

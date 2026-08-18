@@ -1,0 +1,122 @@
+{
+  "id": "active_paradise_p1_classic_01_water_seven_runaway_punt",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p1_classic_01_water_seven_runaway_punt.title",
+  "textKey": "event.active_paradise_p1_classic_01_water_seven_runaway_punt.text",
+  "choices": [
+    {
+      "id": "jump_for_the_tiller",
+      "textKey": "event.active_paradise_p1_classic_01_water_seven_runaway_punt.choice.jump_for_the_tiller.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "jump_for_the_tiller_criticalfailure",
+            "textKey": "event.active_paradise_p1_classic_01_water_seven_runaway_punt.choice.jump_for_the_tiller.outcome.jump_for_the_tiller_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_water_seven_runaway_punt_i01_canal_gate"
+              }
+            ]
+          },
+          "failure": {
+            "id": "jump_for_the_tiller_failure",
+            "textKey": "event.active_paradise_p1_classic_01_water_seven_runaway_punt.choice.jump_for_the_tiller.outcome.jump_for_the_tiller_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_water_seven_runaway_punt_i01_canal_gate"
+              }
+            ]
+          },
+          "success": {
+            "id": "jump_for_the_tiller_success",
+            "textKey": "event.active_paradise_p1_classic_01_water_seven_runaway_punt.choice.jump_for_the_tiller.outcome.jump_for_the_tiller_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_water_seven_runaway_punt_i01_canal_gate"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "jump_for_the_tiller_criticalsuccess",
+            "textKey": "event.active_paradise_p1_classic_01_water_seven_runaway_punt.choice.jump_for_the_tiller.outcome.jump_for_the_tiller_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_water_seven_runaway_punt_i01_canal_gate"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_the_junction",
+      "textKey": "event.active_paradise_p1_classic_01_water_seven_runaway_punt.choice.clear_the_junction.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "clear_the_junction_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_water_seven_runaway_punt.choice.clear_the_junction.outcome.clear_the_junction_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p1_classic_01_water_seven_runaway_punt_i01_canal_gate"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "throw_a_line",
+      "textKey": "event.active_paradise_p1_classic_01_water_seven_runaway_punt.choice.throw_a_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "throw_a_line_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_water_seven_runaway_punt.choice.throw_a_line.outcome.throw_a_line_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p1_classic_01_water_seven_runaway_punt_i01_canal_gate"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p1_classic"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "water_seven"
+      }
+    ]
+  }
+}

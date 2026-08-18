@@ -1,0 +1,97 @@
+{
+  "id": "active_paradise_p1_classic_01_route_markers_l2_split_pennant",
+  "kind": "scheduled",
+  "titleKey": "event.active_paradise_p1_classic_01_route_markers_l2_split_pennant.title",
+  "textKey": "event.active_paradise_p1_classic_01_route_markers_l2_split_pennant.text",
+  "choices": [
+    {
+      "id": "compare_the_fabric",
+      "textKey": "event.active_paradise_p1_classic_01_route_markers_l2_split_pennant.choice.compare_the_fabric.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "compare_the_fabric_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_route_markers_l2_split_pennant.choice.compare_the_fabric.outcome.compare_the_fabric_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p1_classic_01_route_markers_l3_scraped_arrow",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "tie_both_halves_down",
+      "textKey": "event.active_paradise_p1_classic_01_route_markers_l2_split_pennant.choice.tie_both_halves_down.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tie_both_halves_down_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_route_markers_l2_split_pennant.choice.tie_both_halves_down.outcome.tie_both_halves_down_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p1_classic_01_route_markers_l3_scraped_arrow",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ignore_the_symbol",
+      "textKey": "event.active_paradise_p1_classic_01_route_markers_l2_split_pennant.choice.ignore_the_symbol.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ignore_the_symbol_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_route_markers_l2_split_pennant.choice.ignore_the_symbol.outcome.ignore_the_symbol_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p1_classic_01_route_markers_l3_scraped_arrow",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p1_classic"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "any",
+      "conditions": [
+        {
+          "type": "currentSeaIs",
+          "seaId": "grand_line_paradise"
+        },
+        {
+          "type": "currentSeaIs",
+          "seaId": "sky"
+        }
+      ]
+    }
+  }
+}

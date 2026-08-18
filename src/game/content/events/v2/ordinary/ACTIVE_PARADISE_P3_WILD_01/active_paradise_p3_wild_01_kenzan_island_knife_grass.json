@@ -1,0 +1,117 @@
+{
+  "id": "active_paradise_p3_wild_01_kenzan_island_knife_grass",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p3_wild_01_kenzan_island_knife_grass.title",
+  "textKey": "event.active_paradise_p3_wild_01_kenzan_island_knife_grass.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p3_wild"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "kenzan_island"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "act",
+      "textKey": "event.active_paradise_p3_wild_01_kenzan_island_knife_grass.choice.act.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "act_critical_failure",
+            "textKey": "event.active_paradise_p3_wild_01_kenzan_island_knife_grass.choice.act.outcome.act_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "act_failure",
+            "textKey": "event.active_paradise_p3_wild_01_kenzan_island_knife_grass.choice.act.outcome.act_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "act_success",
+            "textKey": "event.active_paradise_p3_wild_01_kenzan_island_knife_grass.choice.act.outcome.act_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "act_critical_success",
+            "textKey": "event.active_paradise_p3_wild_01_kenzan_island_knife_grass.choice.act.outcome.act_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "careful",
+      "textKey": "event.active_paradise_p3_wild_01_kenzan_island_knife_grass.choice.careful.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "careful_resolved",
+          "textKey": "event.active_paradise_p3_wild_01_kenzan_island_knife_grass.choice.careful.outcome.careful_resolved.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "withdraw",
+      "textKey": "event.active_paradise_p3_wild_01_kenzan_island_knife_grass.choice.withdraw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "withdraw_resolved",
+          "textKey": "event.active_paradise_p3_wild_01_kenzan_island_knife_grass.choice.withdraw.outcome.withdraw_resolved.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "crew_role",
+      "textKey": "event.active_paradise_p3_wild_01_kenzan_island_knife_grass.choice.crew_role.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crew_role_resolved",
+          "textKey": "event.active_paradise_p3_wild_01_kenzan_island_knife_grass.choice.crew_role.outcome.crew_role_resolved.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "navigator"
+      }
+    }
+  ]
+}

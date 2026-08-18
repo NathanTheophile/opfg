@@ -1,0 +1,107 @@
+{
+  "id": "active_paradise_p2_trade_01_night_tariff_board",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p2_trade_01_night_tariff_board.title",
+  "textKey": "event.active_paradise_p2_trade_01_night_tariff_board.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p2_trade"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "shade_port"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "intervene",
+      "textKey": "event.active_paradise_p2_trade_01_night_tariff_board.choice.intervene.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 13,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "intervene_criticalfailure",
+            "textKey": "event.active_paradise_p2_trade_01_night_tariff_board.choice.intervene.outcome.intervene_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1500
+              }
+            ]
+          },
+          "failure": {
+            "id": "intervene_failure",
+            "textKey": "event.active_paradise_p2_trade_01_night_tariff_board.choice.intervene.outcome.intervene_failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -500
+              }
+            ]
+          },
+          "success": {
+            "id": "intervene_success",
+            "textKey": "event.active_paradise_p2_trade_01_night_tariff_board.choice.intervene.outcome.intervene_success.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 1000
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "intervene_criticalsuccess",
+            "textKey": "event.active_paradise_p2_trade_01_night_tariff_board.choice.intervene.outcome.intervene_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 2000
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "practical",
+      "textKey": "event.active_paradise_p2_trade_01_night_tariff_board.choice.practical.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "practical_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_night_tariff_board.choice.practical.outcome.practical_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "step_back",
+      "textKey": "event.active_paradise_p2_trade_01_night_tariff_board.choice.step_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "step_back_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_night_tariff_board.choice.step_back.outcome.step_back_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}
