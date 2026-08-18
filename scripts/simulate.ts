@@ -3,17 +3,21 @@ import { resolve } from 'node:path';
 import { loadNodeContentCatalog } from '../src/game/content/nodeContentCatalog';
 import { diagnoseContent } from '../src/game/simulation/diagnostics';
 import { simulateBatch } from '../src/game/simulation/simulateBatch';
+import { progressionSimulationPolicy, randomSimulationPolicy } from '../src/game/simulation/simulationPolicy';
 import { validateContent } from '../src/game/validation/validateContent';
 
 const args = parseArguments(process.argv.slice(2));
 const catalog = loadNodeContentCatalog();
+const policy = args.policy === 'progression'
+  ? progressionSimulationPolicy
+  : randomSimulationPolicy;
 const contentErrors = validateContent(catalog);
 if (contentErrors.length > 0) {
   contentErrors.forEach(({ path, message }) => console.error(`ERROR ${path}: ${message}`));
   throw new Error(`Simulation aborted: ContentCatalog has ${contentErrors.length} structural error(s).`);
 }
 const startedAt = performance.now();
-const batch = simulateBatch({ runs: args.runs, baseSeed: args.seed, maxResolvedEvents: args.maxEvents, catalog });
+const batch = simulateBatch({ runs: args.runs, baseSeed: args.seed, maxResolvedEvents: args.maxEvents, catalog, policy });
 const elapsedMs = performance.now() - startedAt;
 const warnings = diagnoseContent(catalog);
 const neverSeen = batch.events.filter(({ timesResolved }) => timesResolved === 0);
@@ -24,6 +28,7 @@ const errors = batch.runResults.filter(({ terminationReason }) => terminationRea
 console.log('OPFG Simulation\n');
 row('Runs', batch.summary.runs);
 row('Base seed', batch.config.baseSeed);
+row('Policy', batch.config.policy);
 row('Max Events/run', batch.config.maxResolvedEvents);
 row('Elapsed', `${elapsedMs.toFixed(1)} ms`);
 console.log('');
@@ -104,18 +109,35 @@ if (args.jsonPath) {
   console.log(`\nJSON report: ${outputPath}`);
 }
 
-function parseArguments(values: string[]): { runs: number; seed: number; maxEvents: number; verbose: boolean; jsonPath?: string } {
-  const result: { runs: number; seed: number; maxEvents: number; verbose: boolean; jsonPath?: string } = { runs: 100, seed: 1, maxEvents: 1000, verbose: false };
+type SimulationPolicyId = 'random' | 'progression';
+
+function parseArguments(values: string[]): { runs: number; seed: number; maxEvents: number; verbose: boolean; policy: SimulationPolicyId; jsonPath?: string } {
+  const result: { runs: number; seed: number; maxEvents: number; verbose: boolean; policy: SimulationPolicyId; jsonPath?: string } = {
+    runs: 100,
+    seed: 1,
+    maxEvents: 1000,
+    verbose: false,
+    policy: 'random',
+  };
   for (let index = 0; index < values.length; index += 1) {
     const value = values[index];
     if (value === '--verbose') result.verbose = true;
     else if (value === '--runs') result.runs = positiveInteger(values[++index], '--runs');
     else if (value === '--seed') result.seed = uint32(values[++index], '--seed');
     else if (value === '--max-events') result.maxEvents = positiveInteger(values[++index], '--max-events');
+    else if (value === '--policy') result.policy = simulationPolicyId(values[++index]);
     else if (value === '--json') result.jsonPath = requiredValue(values[++index], '--json');
     else throw new Error(`Unknown argument "${value}".`);
   }
   return result;
+}
+
+function simulationPolicyId(value: string | undefined): SimulationPolicyId {
+  const resolved = requiredValue(value, '--policy');
+  if (resolved !== 'random' && resolved !== 'progression') {
+    throw new Error('--policy must be "random" or "progression".');
+  }
+  return resolved;
 }
 
 function positiveInteger(value: string | undefined, label: string): number {

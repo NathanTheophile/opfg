@@ -2,12 +2,14 @@ import type { ContentCatalog, DiceResult, EventDefinition, StatId } from '../con
 import type { GameState, ItemId, ItemStack } from '../model/schema';
 import type { SimulationRunResult, SimulationTerminationReason } from './types';
 import { simulateRun } from './simulateRun';
+import { randomSimulationPolicy, type SimulationPolicy } from './simulationPolicy';
 
 export interface SimulateBatchOptions {
   runs: number;
   baseSeed: number;
   catalog: ContentCatalog;
   maxResolvedEvents?: number;
+  policy?: SimulationPolicy;
 }
 
 export interface EventMetric {
@@ -45,7 +47,7 @@ export interface ActiveFinalStateMetrics {
 }
 
 export interface SimulationBatchResult {
-  config: { runs: number; baseSeed: number; maxResolvedEvents: number; policy: 'random'; seedDerivation: 'baseSeed + runIndex (uint32)' };
+  config: { runs: number; baseSeed: number; maxResolvedEvents: number; policy: string; seedDerivation: 'baseSeed + runIndex (uint32)' };
   summary: {
     runs: number;
     successfulSimulations: number;
@@ -89,10 +91,12 @@ export interface SimulationBatchResult {
 export function simulateBatch(options: SimulateBatchOptions): SimulationBatchResult {
   if (!Number.isInteger(options.runs) || options.runs < 1) throw new Error('runs must be a positive integer.');
   const maximum = options.maxResolvedEvents ?? 1000;
+  const policy = options.policy ?? randomSimulationPolicy;
   const runResults = Array.from({ length: options.runs }, (_, index) => simulateRun({
     seed: (options.baseSeed + index) >>> 0,
     catalog: options.catalog,
     maxResolvedEvents: maximum,
+    policy,
   }));
   const terminations = { careerEnded: 0, deadEnd: 0, safetyLimit: 0, simulationError: 0 };
   const dice = { total: 0, criticalFailure: 0, failure: 0, success: 0, criticalSuccess: 0 };
@@ -126,7 +130,7 @@ export function simulateBatch(options: SimulateBatchOptions): SimulationBatchRes
   const finalAges = runResults.map(({ finalState }) => finalState.ageMonths);
   const totalResolved = runResults.reduce((sum, result) => sum + result.resolvedEvents.length, 0);
   return {
-    config: { runs: options.runs, baseSeed: options.baseSeed >>> 0, maxResolvedEvents: maximum, policy: 'random', seedDerivation: 'baseSeed + runIndex (uint32)' },
+    config: { runs: options.runs, baseSeed: options.baseSeed >>> 0, maxResolvedEvents: maximum, policy: policy.id, seedDerivation: 'baseSeed + runIndex (uint32)' },
     summary: {
       runs: options.runs,
       successfulSimulations: options.runs - terminations.simulationError,

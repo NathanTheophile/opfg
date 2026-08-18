@@ -1,6 +1,7 @@
 import { performance } from 'node:perf_hooks';
 import type { SimulationObserver } from '../src/game/simulation/observation';
 import { simulateObservedRun } from '../src/game/simulation/simulateObservedRun';
+import { progressionSimulationPolicy } from '../src/game/simulation/simulationPolicy';
 import { average, inc, loadValidatedCatalog, parseSpecializedArgs, pct, quantile, topEntries, writeJson } from './simulation-specialized/shared';
 
 const args = parseSpecializedArgs(process.argv.slice(2), 'reports/sim-travel-coverage.json');
@@ -115,7 +116,7 @@ for (let index = 0; index < args.runs; index += 1) {
     },
   };
 
-  const result = simulateObservedRun({ seed, catalog, maxResolvedEvents: args.maxEvents, observer });
+  const result = simulateObservedRun({ seed, catalog, maxResolvedEvents: args.maxEvents, observer, policy: progressionSimulationPolicy });
   fallbackPerRun.push(fallbacks);
   uniqueLocationsPerRun.push(visited.size);
   seaEventsPerRun.push(seaEvents);
@@ -130,7 +131,7 @@ for (let index = 0; index < args.runs; index += 1) {
 }
 
 const report = {
-  config: args,
+  config: { ...args, policy: progressionSimulationPolicy.id },
   elapsedMs: performance.now() - startedAt,
   summary: {
     runs: args.runs,
@@ -167,6 +168,7 @@ const report = {
 };
 
 console.log('OPFG Specialized Simulation — TRAVEL / CONTENT COVERAGE');
+console.log(`Policy: ${progressionSimulationPolicy.id}`);
 console.log(`Runs: ${args.runs}`);
 console.log(`Fallbacks/run avg/p50/p90: ${average(fallbackPerRun).toFixed(2)} / ${quantile(fallbackPerRun, 0.50)} / ${quantile(fallbackPerRun, 0.90)}`);
 console.log(`Runs with fallback: ${runsWithFallback} (${pct(runsWithFallback, args.runs).toFixed(1)}%)`);

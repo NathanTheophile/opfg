@@ -1,10 +1,12 @@
 import type { ContentCatalog } from '../content/schema';
 import { getChoiceState } from '../engine/conditions';
+import { requiresCrewManagement } from '../engine/crew';
 import { findCurrentEvent, hasStartedLifetimeThread, selectNextEvent } from '../engine/events';
 import { resolveChoice } from '../engine/resolution';
 import { createInitialGameState } from '../model/initialState';
 import type { GameState } from '../model/schema';
 import { derivePolicySeed, randomSimulationPolicy, type SimulationPolicy } from './simulationPolicy';
+import { resolveRequiredSimulationCrewManagement } from './simulationCrewManagement';
 import { applyMonthlyNavigationChoice, getMonthlyNavigationOptions, needsMonthlyNavigationDecision } from '../engine/navigation';
 import type { DeadEndSnapshot, ResolvedSimulationEvent, SimulationRunResult, SimulationTerminationReason } from './types';
 import { assertValidSimulationState } from './stateDiagnostics';
@@ -54,6 +56,24 @@ export function simulateObservedRun(options: SimulateObservedRunOptions): Simula
       break;
     }
 
+    if (state.currentEventId === null && requiresCrewManagement(state)) {
+      try {
+        const management = resolveRequiredSimulationCrewManagement(
+          state,
+          options.catalog,
+          policy,
+          policyRngState,
+        );
+        policyRngState = management.nextRngState;
+        state = selectNextEvent(management.state, options.catalog);
+        continue;
+      } catch (caught) {
+        terminationReason = 'simulationError';
+        error = caught instanceof Error ? caught.message : String(caught);
+        break;
+      }
+    }
+
     if (state.currentEventId === null && needsMonthlyNavigationDecision(state)) {
       try {
         const beforeState = state;
@@ -96,7 +116,7 @@ export function simulateObservedRun(options: SimulateObservedRunOptions): Simula
       });
       if (availableChoices.length === 0) throw new Error(`Event "${event.id}" has no available Choice at Location "${state.locationId}".`);
 
-      const selection = policy.choose(availableChoices, policyRngState);
+      const selection = policy.choose(availableChoices, policyRngState, { event, state, catalog: options.catalog });
       policyRngState = selection.nextRngState;
       const beforeState = state;
       const result = resolveChoice(

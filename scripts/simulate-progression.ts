@@ -1,6 +1,7 @@
 import { performance } from 'node:perf_hooks';
 import type { SimulationObserver } from '../src/game/simulation/observation';
 import { simulateObservedRun } from '../src/game/simulation/simulateObservedRun';
+import { progressionSimulationPolicy } from '../src/game/simulation/simulationPolicy';
 import { average, inc, loadValidatedCatalog, parseSpecializedArgs, pct, quantile, topEntries, writeJson } from './simulation-specialized/shared';
 
 const args = parseSpecializedArgs(process.argv.slice(2), 'reports/sim-progression.json');
@@ -169,7 +170,7 @@ for (let index = 0; index < args.runs; index += 1) {
     },
   };
 
-  const result = simulateObservedRun({ seed, catalog, maxResolvedEvents: args.maxEvents, observer });
+  const result = simulateObservedRun({ seed, catalog, maxResolvedEvents: args.maxEvents, observer, policy: progressionSimulationPolicy });
   finalBerries.push(result.finalState.berries);
   finalReputation.push(result.finalState.player.career.reputation);
   finalBounty.push(result.finalState.player.career.bounty);
@@ -202,7 +203,7 @@ for (let index = 0; index < args.runs; index += 1) {
 }
 
 const report = {
-  config: args,
+  config: { ...args, policy: progressionSimulationPolicy.id },
   elapsedMs: performance.now() - startedAt,
   summary: {
     runs: args.runs,
@@ -272,6 +273,7 @@ const report = {
 };
 
 console.log('OPFG Specialized Simulation — PROGRESSION / ECONOMY / POWERS / CREW');
+console.log(`Policy: ${progressionSimulationPolicy.id}`);
 console.log(`Runs: ${args.runs}`);
 console.log(`Avg income/run: ${average(totalIncome).toFixed(1)} B | Avg spend/run: ${average(totalSpend).toFixed(1)} B`);
 console.log(`Avg final Reputation: ${average(finalReputation).toFixed(2)} | Avg final Bounty: ${average(finalBounty).toFixed(1)}`);

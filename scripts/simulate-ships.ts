@@ -2,6 +2,7 @@ import { performance } from 'node:perf_hooks';
 import type { GameState } from '../src/game/model/schema';
 import type { ObservedEventResolution, ObservedNavigationResolution, SimulationObserver } from '../src/game/simulation/observation';
 import { simulateObservedRun } from '../src/game/simulation/simulateObservedRun';
+import { progressionSimulationPolicy } from '../src/game/simulation/simulationPolicy';
 import {
   ageLabel,
   average,
@@ -284,6 +285,7 @@ for (let index = 0; index < args.runs; index += 1) {
     catalog,
     maxResolvedEvents: args.maxEvents,
     observer,
+    policy: progressionSimulationPolicy,
   });
 
   if (firstOwnedShipAge !== null) runsEverOwningShip += 1;
@@ -345,7 +347,7 @@ const yearlyShipStats = [...yearly.entries()]
 
 const report = {
   telemetryVersion: '1.2',
-  config: args,
+  config: { ...args, policy: progressionSimulationPolicy.id },
   elapsedMs: performance.now() - startedAt,
 
   summary: {
@@ -407,6 +409,7 @@ const report = {
 };
 
 console.log('OPFG Specialized Simulation — SHIPS / SEA INTEGRITY v1.2');
+console.log(`Policy: ${progressionSimulationPolicy.id}`);
 console.log(`Runs: ${args.runs}`);
 console.log(`START WITH SHIP: ${runsStartingWithShip} (${pct(runsStartingWithShip, args.runs).toFixed(1)}%)`);
 console.log(`EVER OWNED SHIP: ${runsEverOwningShip} (${pct(runsEverOwningShip, args.runs).toFixed(1)}%)`);
