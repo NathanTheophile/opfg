@@ -217,3 +217,43 @@
     animation-duration: 1ms;
   }
 }
+
+/* UI_POLISH_20260818_FIX3_MOBILE_DRAWERS */
+@media (orientation: portrait) {
+  .opfg-mobile-side-drawer:is(
+    [data-drawer="inventory"],
+    [data-drawer="ship"]
+  ) {
+    top: auto !important;
+    right: auto !important;
+    bottom: calc(
+      max(0px, var(--safe-area-bottom))
+      + var(--opfg-mobile-bottom-bar-height, 4.75rem)
+      + 0.75rem
+    ) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    animation-name: opfg-mobile-panel-horizontal-in !important;
+  }
+}
+
+@keyframes opfg-mobile-panel-horizontal-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 0.55rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-mobile-side-drawer:is(
+    [data-drawer="inventory"],
+    [data-drawer="ship"]
+  ) {
+    animation-duration: 1ms;
+  }
+}

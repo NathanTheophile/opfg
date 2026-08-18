@@ -58,9 +58,13 @@ export function AchievementsPanel({ metaProgression, locale }: AchievementsPanel
           const achievements = ACHIEVEMENTS.filter((entry) => entry.family === family);
           if (achievements.length === 0) return null;
           const familyUnlockedCount = achievements.filter(({ id }) => metaProgression.unlocks[id] !== undefined).length;
+          const GroupIllustration = FAMILY_ILLUSTRATIONS[family];
 
           return (
             <section key={family} className="opfg-achievements__group">
+              <span className="opfg-achievements__group-watermark" aria-hidden="true">
+                <GroupIllustration className="size-24" strokeWidth={1.75} />
+              </span>
               <h3>
                 <span>{ACHIEVEMENT_FAMILY_LABELS[locale][family]}</span>
                 <strong>{familyUnlockedCount}/{achievements.length}</strong>

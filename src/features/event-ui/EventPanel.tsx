@@ -6,6 +6,7 @@ import {
 import {
   CalendarDays,
   Clock3,
+  MapPin,
 } from 'lucide-react';
 import {
   Panel,
@@ -219,7 +220,8 @@ export function EventPanel({
           <div className="opfg-event-panel__header-layout">
             <div className="opfg-event-panel__header-copy">
               <span className="opfg-event-panel__meta-location">
-                {meta.location}
+                <MapPin className="size-[0.85rem]" aria-hidden="true" />
+                <span>{meta.location}</span>
               </span>
 
               <PanelTitle className="opfg-event-panel__title">
