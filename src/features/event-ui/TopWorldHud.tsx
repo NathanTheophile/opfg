@@ -265,9 +265,8 @@ export function InventoryHudPanel({
             meta={`${berryFormatter.format(state.berries)} B`}
             side="bottom"
           >
-            <Coins className="size-4" aria-hidden="true" />
             <strong>{berryFormatter.format(state.berries)}</strong>
-            <span>B</span>
+            <Coins className="size-4" aria-hidden="true" />
           </ContextTooltip>
         </div>
       </Panel>
@@ -336,11 +335,7 @@ export function ShipHudPanel({ state, catalog, translate, selectedStorageSlot, o
         </ContextTooltip>
 
         <div className="opfg-hud-ship__copy">
-          <div className="opfg-hud-ship__title-row">
-            <span className="opfg-hud-section-title">{translate('ui.ship')}</span>
-            <span className="opfg-hud-ship__type">{state.ship ? shipType : '—'}</span>
-          </div>
-          <strong className="opfg-hud-ship__name">{state.ship?.name ?? translate('ui.ship.none')}</strong>
+          <span className="opfg-hud-section-title">{translate('ui.ship')}</span>
         </div>
 
         <ContextTooltip

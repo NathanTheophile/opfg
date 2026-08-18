@@ -400,6 +400,8 @@ export function EventPreview({
         '1',
       );
 
+      adventureScrollRef.current?.style.removeProperty('max-height');
+
       void stage.offsetWidth;
 
       const viewport =
@@ -534,6 +536,28 @@ export function EventPreview({
           '--opfg-game-ui-scale',
           value,
         );
+
+      /*
+       * The whole HUD scales only from viewport changes. Story overflow is
+       * handled locally by the central narrative viewport instead of shrinking
+       * every panel when an unusually tall Event appears.
+       */
+      const adventureScroll = adventureScrollRef.current;
+      if (adventureScroll) {
+        const stageRect = stage.getBoundingClientRect();
+        const scrollRect = adventureScroll.getBoundingClientRect();
+        const scrollTopInStage = Math.max(0, (scrollRect.top - stageRect.top) / scale);
+        const maxNaturalScrollHeight = Math.max(
+          160,
+          availableHeight / scale - scrollTopInStage - 8,
+        );
+
+        adventureScroll.style.setProperty(
+          'max-height',
+          maxNaturalScrollHeight.toFixed(2) + 'px',
+          'important',
+        );
+      }
     };
 
     const fit = () => {
@@ -563,26 +587,6 @@ export function EventPreview({
           80,
         );
     };
-
-    const observer =
-      new ResizeObserver(fit);
-
-    observer.observe(screen);
-    observer.observe(stage);
-    observer.observe(
-      document.documentElement,
-    );
-
-    const observed = [
-      ...stage.querySelectorAll<HTMLElement>(
-        '[data-opfg-scale-bound="true"],'
-        + '.opfg-top-world-hud',
-      ),
-    ];
-
-    for (const node of observed) {
-      observer.observe(node);
-    }
 
     const orientationQuery =
       window.matchMedia(
@@ -626,8 +630,6 @@ export function EventPreview({
     return () => {
       window.cancelAnimationFrame(frame);
       window.clearTimeout(settleTimer);
-
-      observer.disconnect();
 
       window.removeEventListener(
         'resize',
