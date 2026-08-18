@@ -1,0 +1,147 @@
+{
+  "id": "active_recruitment_opportunities_01_owen_hidden_slipway_sweep",
+  "kind": "normal",
+  "cast": [
+    "owen"
+  ],
+  "titleKey": "event.active_recruitment_opportunities_01_owen_hidden_slipway_sweep.title",
+  "textKey": "event.active_recruitment_opportunities_01_owen_hidden_slipway_sweep.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 227
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "ship_repair"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_existing_cast_01_owen_revolutionary_hidden_keel"
+      },
+      {
+        "type": "npcMonthsSinceInteractionAtLeast",
+        "npcId": "owen",
+        "value": 1
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "owen"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "take_owen_before_the_sweep",
+      "textKey": "event.active_recruitment_opportunities_01_owen_hidden_slipway_sweep.choice.take_owen_before_the_sweep.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "join",
+          "textKey": "event.active_recruitment_opportunities_01_owen_hidden_slipway_sweep.choice.take_owen_before_the_sweep.outcome.join.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "owen",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "owen",
+              "amount": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "collapse_the_slipway_together",
+      "textKey": "event.active_recruitment_opportunities_01_owen_hidden_slipway_sweep.choice.collapse_the_slipway_together.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "collapse",
+          "textKey": "event.active_recruitment_opportunities_01_owen_hidden_slipway_sweep.choice.collapse_the_slipway_together.outcome.collapse.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "owen",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hand_over_the_plans",
+      "textKey": "event.active_recruitment_opportunities_01_owen_hidden_slipway_sweep.choice.hand_over_the_plans.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "betray",
+          "textKey": "event.active_recruitment_opportunities_01_owen_hidden_slipway_sweep.choice.hand_over_the_plans.outcome.betray.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "owen",
+              "amount": -7
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "id": "active_recruitment_opportunities_01_rohan_supplier_walkout",
+  "kind": "normal",
+  "cast": [
+    "rohan"
+  ],
+  "titleKey": "event.active_recruitment_opportunities_01_rohan_supplier_walkout.title",
+  "textKey": "event.active_recruitment_opportunities_01_rohan_supplier_walkout.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 227
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "food"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          }
+        ]
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_existing_cast_01_rohan_second_service"
+      },
+      {
+        "type": "npcMonthsSinceInteractionAtLeast",
+        "npcId": "rohan",
+        "value": 1
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "rohan"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "settle_the_supplier",
+      "textKey": "event.active_recruitment_opportunities_01_rohan_supplier_walkout.choice.settle_the_supplier.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_opportunities_01_rohan_supplier_walkout.choice.settle_the_supplier.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "rohan",
+                "amount": -4
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_opportunities_01_rohan_supplier_walkout.choice.settle_the_supplier.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "rohan",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_opportunities_01_rohan_supplier_walkout.choice.settle_the_supplier.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "rohan",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "rohan",
+                "amount": 5
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_opportunities_01_rohan_supplier_walkout.choice.settle_the_supplier.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "rohan",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "rohan",
+                "amount": 7
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_the_shortfall",
+      "textKey": "event.active_recruitment_opportunities_01_rohan_supplier_walkout.choice.pay_the_shortfall.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay",
+          "textKey": "event.active_recruitment_opportunities_01_rohan_supplier_walkout.choice.pay_the_shortfall.outcome.pay.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1500
+            },
+            {
+              "type": "setNpcStatus",
+              "npcId": "rohan",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "rohan",
+              "amount": 5
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1500
+      }
+    },
+    {
+      "id": "leave_him_with_the_bill",
+      "textKey": "event.active_recruitment_opportunities_01_rohan_supplier_walkout.choice.leave_him_with_the_bill.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_recruitment_opportunities_01_rohan_supplier_walkout.choice.leave_him_with_the_bill.outcome.leave.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "rohan",
+              "amount": -4
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

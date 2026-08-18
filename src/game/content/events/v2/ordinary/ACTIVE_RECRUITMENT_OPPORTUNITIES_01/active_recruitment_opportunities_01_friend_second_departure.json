@@ -1,0 +1,278 @@
+{
+  "id": "active_recruitment_opportunities_01_friend_second_departure",
+  "kind": "normal",
+  "cast": [
+    "childhood_friend"
+  ],
+  "titleKey": "event.active_recruitment_opportunities_01_friend_second_departure.title",
+  "textKey": "event.active_recruitment_opportunities_01_friend_second_departure.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 227
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "east_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "east_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "west_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "west_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "north_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "north_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "south_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "south_blue"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "active_recruitment_existing_cast_01_friend_civilian_last_ferry"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "active_recruitment_existing_cast_01_friend_pirate_split_flag"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "active_recruitment_existing_cast_01_friend_revolutionary_safehouse"
+          }
+        ]
+      },
+      {
+        "type": "npcMonthsSinceInteractionAtLeast",
+        "npcId": "childhood_friend",
+        "value": 1
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_friend",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_friend",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_friend",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_friend",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "childhood_friend"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "hold_the_gate_open",
+      "textKey": "event.active_recruitment_opportunities_01_friend_second_departure.choice.hold_the_gate_open.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_opportunities_01_friend_second_departure.choice.hold_the_gate_open.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": -4
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_opportunities_01_friend_second_departure.choice.hold_the_gate_open.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_opportunities_01_friend_second_departure.choice.hold_the_gate_open.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_friend",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 5
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_opportunities_01_friend_second_departure.choice.hold_the_gate_open.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_friend",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 7
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "invoke_the_old_rule",
+      "textKey": "event.active_recruitment_opportunities_01_friend_second_departure.choice.invoke_the_old_rule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "old_rule",
+          "textKey": "event.active_recruitment_opportunities_01_friend_second_departure.choice.invoke_the_old_rule.outcome.old_rule.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "childhood_friend",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 7
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "childhood_friend",
+        "value": 8
+      }
+    },
+    {
+      "id": "part_for_good",
+      "textKey": "event.active_recruitment_opportunities_01_friend_second_departure.choice.part_for_good.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "part",
+          "textKey": "event.active_recruitment_opportunities_01_friend_second_departure.choice.part_for_good.outcome.part.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": -6
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

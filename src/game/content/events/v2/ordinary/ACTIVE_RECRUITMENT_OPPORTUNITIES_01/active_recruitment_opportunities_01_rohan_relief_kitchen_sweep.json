@@ -1,0 +1,147 @@
+{
+  "id": "active_recruitment_opportunities_01_rohan_relief_kitchen_sweep",
+  "kind": "normal",
+  "cast": [
+    "rohan"
+  ],
+  "titleKey": "event.active_recruitment_opportunities_01_rohan_relief_kitchen_sweep.title",
+  "textKey": "event.active_recruitment_opportunities_01_rohan_relief_kitchen_sweep.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 227
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "food"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_existing_cast_01_rohan_revolutionary_relief_kitchen"
+      },
+      {
+        "type": "npcMonthsSinceInteractionAtLeast",
+        "npcId": "rohan",
+        "value": 1
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "rohan",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "rohan"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "take_rohan_out_with_the_pots",
+      "textKey": "event.active_recruitment_opportunities_01_rohan_relief_kitchen_sweep.choice.take_rohan_out_with_the_pots.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "join",
+          "textKey": "event.active_recruitment_opportunities_01_rohan_relief_kitchen_sweep.choice.take_rohan_out_with_the_pots.outcome.join.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "rohan",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "rohan",
+              "amount": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "burn_the_list_and_split",
+      "textKey": "event.active_recruitment_opportunities_01_rohan_relief_kitchen_sweep.choice.burn_the_list_and_split.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "split",
+          "textKey": "event.active_recruitment_opportunities_01_rohan_relief_kitchen_sweep.choice.burn_the_list_and_split.outcome.split.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "rohan",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_serving_under_watch",
+      "textKey": "event.active_recruitment_opportunities_01_rohan_relief_kitchen_sweep.choice.keep_serving_under_watch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stay",
+          "textKey": "event.active_recruitment_opportunities_01_rohan_relief_kitchen_sweep.choice.keep_serving_under_watch.outcome.stay.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "rohan",
+              "amount": -3
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

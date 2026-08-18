@@ -1,0 +1,208 @@
+{
+  "id": "active_recruitment_opportunities_01_knot_runner_customs_line",
+  "kind": "normal",
+  "cast": [
+    "active_recruit_knot_runner"
+  ],
+  "titleKey": "event.active_recruitment_opportunities_01_knot_runner_customs_line.title",
+  "textKey": "event.active_recruitment_opportunities_01_knot_runner_customs_line.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_new_cast_01_last_knot"
+      },
+      {
+        "type": "npcMonthsSinceInteractionAtLeast",
+        "npcId": "active_recruit_knot_runner",
+        "value": 3
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "active_recruit_knot_runner"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "cut_the_crate_loose",
+      "textKey": "event.active_recruitment_opportunities_01_knot_runner_customs_line.choice.cut_the_crate_loose.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_opportunities_01_knot_runner_customs_line.choice.cut_the_crate_loose.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": -4
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_opportunities_01_knot_runner_customs_line.choice.cut_the_crate_loose.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_opportunities_01_knot_runner_customs_line.choice.cut_the_crate_loose.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "active_recruit_knot_runner",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": 5
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_opportunities_01_knot_runner_customs_line.choice.cut_the_crate_loose.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "active_recruit_knot_runner",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": 7
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_in_the_old_favor",
+      "textKey": "event.active_recruitment_opportunities_01_knot_runner_customs_line.choice.call_in_the_old_favor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "old_favor",
+          "textKey": "event.active_recruitment_opportunities_01_knot_runner_customs_line.choice.call_in_the_old_favor.outcome.old_favor.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "active_recruit_knot_runner",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_knot_runner",
+              "amount": 6
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "active_recruit_knot_runner",
+        "value": 8
+      }
+    },
+    {
+      "id": "leave_the_knot_with_customs",
+      "textKey": "event.active_recruitment_opportunities_01_knot_runner_customs_line.choice.leave_the_knot_with_customs.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_recruitment_opportunities_01_knot_runner_customs_line.choice.leave_the_knot_with_customs.outcome.leave.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_knot_runner",
+              "amount": -3
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

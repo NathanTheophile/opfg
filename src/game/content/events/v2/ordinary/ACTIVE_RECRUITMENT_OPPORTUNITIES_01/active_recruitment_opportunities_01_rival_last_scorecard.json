@@ -1,0 +1,218 @@
+{
+  "id": "active_recruitment_opportunities_01_rival_last_scorecard",
+  "kind": "normal",
+  "cast": [
+    "childhood_rival"
+  ],
+  "titleKey": "event.active_recruitment_opportunities_01_rival_last_scorecard.title",
+  "textKey": "event.active_recruitment_opportunities_01_rival_last_scorecard.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 227
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "east_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "east_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "west_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "west_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "north_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "north_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "south_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "south_blue"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "active_recruitment_existing_cast_01_rival_civilian_shared_contract"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "active_recruitment_existing_cast_01_rival_pirate_boarding_score"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "active_recruitment_existing_cast_01_rival_revolutionary_false_manifest"
+          }
+        ]
+      },
+      {
+        "type": "npcMonthsSinceInteractionAtLeast",
+        "npcId": "childhood_rival",
+        "value": 1
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "childhood_rival"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "erase_the_score_and_invite_her",
+      "textKey": "event.active_recruitment_opportunities_01_rival_last_scorecard.choice.erase_the_score_and_invite_her.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "join",
+          "textKey": "event.active_recruitment_opportunities_01_rival_last_scorecard.choice.erase_the_score_and_invite_her.outcome.join.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "childhood_rival",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "settle_on_a_draw",
+      "textKey": "event.active_recruitment_opportunities_01_rival_last_scorecard.choice.settle_on_a_draw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "draw",
+          "textKey": "event.active_recruitment_opportunities_01_rival_last_scorecard.choice.settle_on_a_draw.outcome.draw.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "add_one_last_point",
+      "textKey": "event.active_recruitment_opportunities_01_rival_last_scorecard.choice.add_one_last_point.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "point",
+          "textKey": "event.active_recruitment_opportunities_01_rival_last_scorecard.choice.add_one_last_point.outcome.point.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": -4
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

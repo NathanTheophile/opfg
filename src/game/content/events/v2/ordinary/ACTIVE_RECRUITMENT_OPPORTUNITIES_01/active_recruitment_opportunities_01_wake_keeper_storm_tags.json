@@ -1,0 +1,161 @@
+{
+  "id": "active_recruitment_opportunities_01_wake_keeper_storm_tags",
+  "kind": "normal",
+  "cast": [
+    "active_recruit_wake_keeper"
+  ],
+  "titleKey": "event.active_recruitment_opportunities_01_wake_keeper_storm_tags.title",
+  "textKey": "event.active_recruitment_opportunities_01_wake_keeper_storm_tags.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "coastal"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          }
+        ]
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_new_cast_01_brass_tag_unclaimed"
+      },
+      {
+        "type": "npcMonthsSinceInteractionAtLeast",
+        "npcId": "active_recruit_wake_keeper",
+        "value": 3
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "active_recruit_wake_keeper"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "carry_the_tags_with_him",
+      "textKey": "event.active_recruitment_opportunities_01_wake_keeper_storm_tags.choice.carry_the_tags_with_him.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "join",
+          "textKey": "event.active_recruitment_opportunities_01_wake_keeper_storm_tags.choice.carry_the_tags_with_him.outcome.join.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_wake_keeper",
+              "amount": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ring_one_name",
+      "textKey": "event.active_recruitment_opportunities_01_wake_keeper_storm_tags.choice.ring_one_name.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ring",
+          "textKey": "event.active_recruitment_opportunities_01_wake_keeper_storm_tags.choice.ring_one_name.outcome.ring.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_wake_keeper",
+              "amount": -3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "recover_the_tags_then_part",
+      "textKey": "event.active_recruitment_opportunities_01_wake_keeper_storm_tags.choice.recover_the_tags_then_part.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "part",
+          "textKey": "event.active_recruitment_opportunities_01_wake_keeper_storm_tags.choice.recover_the_tags_then_part.outcome.part.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_wake_keeper",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "id": "active_recruitment_opportunities_01_owen_crane_claim",
+  "kind": "normal",
+  "cast": [
+    "owen"
+  ],
+  "titleKey": "event.active_recruitment_opportunities_01_owen_crane_claim.title",
+  "textKey": "event.active_recruitment_opportunities_01_owen_crane_claim.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 227
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "ship_repair"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          }
+        ]
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_existing_cast_01_owen_drydock_blame"
+      },
+      {
+        "type": "npcMonthsSinceInteractionAtLeast",
+        "npcId": "owen",
+        "value": 1
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "owen"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "prove_the_crane_fault",
+      "textKey": "event.active_recruitment_opportunities_01_owen_crane_claim.choice.prove_the_crane_fault.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_opportunities_01_owen_crane_claim.choice.prove_the_crane_fault.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "owen",
+                "amount": -4
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_opportunities_01_owen_crane_claim.choice.prove_the_crane_fault.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "owen",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_opportunities_01_owen_crane_claim.choice.prove_the_crane_fault.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "owen",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "owen",
+                "amount": 5
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_opportunities_01_owen_crane_claim.choice.prove_the_crane_fault.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "owen",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "owen",
+                "amount": 7
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_for_the_broken_keel",
+      "textKey": "event.active_recruitment_opportunities_01_owen_crane_claim.choice.pay_for_the_broken_keel.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay",
+          "textKey": "event.active_recruitment_opportunities_01_owen_crane_claim.choice.pay_for_the_broken_keel.outcome.pay.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2000
+            },
+            {
+              "type": "setNpcStatus",
+              "npcId": "owen",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "owen",
+              "amount": 5
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2000
+      }
+    },
+    {
+      "id": "leave_owen_with_the_claim",
+      "textKey": "event.active_recruitment_opportunities_01_owen_crane_claim.choice.leave_owen_with_the_claim.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_recruitment_opportunities_01_owen_crane_claim.choice.leave_owen_with_the_claim.outcome.leave.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "owen",
+              "amount": -4
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
