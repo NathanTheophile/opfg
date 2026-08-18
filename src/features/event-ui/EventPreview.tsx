@@ -49,6 +49,8 @@ import { notifyUiLocaleChanged } from '@/features/settings/localeSync';
 import { AchievementToast } from '@/features/achievements/AchievementToast';
 import { PlayerStatsRail } from './PlayerStatsRail';
 import {
+  getCalendarLabel,
+  getLocationPath,
   InventoryHudPanel,
   ShipHudPanel,
   TopWorldHud,
@@ -268,12 +270,14 @@ export interface EventPreviewProps {
   catalog: ContentCatalog;
   storage: StorageLike;
   autoStartNewRun?: boolean;
+  onHome?: () => void;
 }
 
 export function EventPreview({
   catalog,
   storage,
   autoStartNewRun = false,
+  onHome,
 }: EventPreviewProps) {
   const session = useGameSession(
     catalog,
@@ -302,9 +306,6 @@ export function EventPreview({
 
   const [inputError, setInputError] =
     useState<string | null>(null);
-
-  const [homeOpen, setHomeOpen] =
-    useState(false);
 
   const [showOutcome, setShowOutcome] =
     useState(false);
@@ -1040,7 +1041,6 @@ export function EventPreview({
   };
 
   const restartRun = () => {
-    setHomeOpen(false);
     setOutcomeRevealed(false);
     setShowOutcome(false);
     setPendingDice(null);
@@ -1106,29 +1106,6 @@ export function EventPreview({
   const state = session.gameState;
   const achievementToastId = session.newlyUnlockedAchievements[0];
 
-  if (homeOpen) {
-    return (
-      <main className="min-h-dvh grid place-items-center p-4 sm:p-6">
-        <Panel
-          variant="strong"
-          className="w-full max-w-lg text-center"
-        >
-          <h1 className="text-3xl font-bold text-gold">
-            {translate('ui.app.title')}
-          </h1>
-
-          <p className="my-5 text-fg-secondary">
-            {translate('ui.newRun.prompt')}
-          </p>
-
-          <Button size="lg" onClick={() => setHomeOpen(false)}>
-            {translate('ui.action.close')}
-          </Button>
-        </Panel>
-      </main>
-    );
-  }
-
   const displayState =
     pendingDice &&
     session.previousState
@@ -1165,6 +1142,32 @@ export function EventPreview({
     />
   );
 
+  const mobileStatsRail = (
+    <PlayerStatsRail
+      state={displayState}
+      catalog={catalog}
+      previousState={
+        displayPreviousState
+      }
+      statLabel={(id) =>
+        translate(STAT_KEYS[id])
+      }
+      translate={translate}
+      traitLabel={(id) => {
+        const trait =
+          catalog.traits.find(
+            (entry) =>
+              entry.id === id,
+          );
+
+        return trait
+          ? translate(trait.nameKey)
+          : id;
+      }}
+      forceExpanded
+    />
+  );
+
   const crewRail = (
     <CrewRail
       state={displayState}
@@ -1188,6 +1191,20 @@ export function EventPreview({
     outcomePresentationState?.ageMonths ??
     displayState.ageMonths;
 
+  const locationPath = getLocationPath(displayState, catalog);
+  const currentLocation = locationPath[locationPath.length - 1];
+  const parentLocation = locationPath.length > 1
+    ? locationPath[locationPath.length - 2]
+    : null;
+  const sea = catalog.seas.find(({ id }) => id === (currentLocation?.seaId ?? displayState.player.profile.originSeaId));
+  const locationLabel = currentLocation ? translate(currentLocation.nameKey) : displayState.locationId;
+  const parentLocationLabel = parentLocation ? translate(parentLocation.nameKey) : null;
+  const eventMeta = {
+    location: `${locationLabel}${parentLocationLabel ? ` (${parentLocationLabel})` : ''}${sea ? ` - ${translate(sea.nameKey)}` : ''}`,
+    age: `${Math.floor(calendarAgeMonths / 12)} ${translate('ui.unit.years')}`,
+    date: getCalendarLabel(calendarAgeMonths, translate),
+  };
+
   const hudProps = {
     state: displayState,
     catalog,
@@ -1196,7 +1213,7 @@ export function EventPreview({
     calendarAgeMonths,
     selectedStorageSlot,
     onStorageSlot: handleStorageSlot,
-    onHome: () => setHomeOpen(true),
+    onHome,
   };
 
   return (
@@ -1280,6 +1297,7 @@ export function EventPreview({
                       {resolvedEventView && (
                         <EventPanel
                           event={resolvedEventView}
+                          meta={eventMeta}
                           onChoice={() => {}}
                           mode="resolved"
                           selectedChoiceId={selectedChoiceId}
@@ -1327,6 +1345,7 @@ export function EventPreview({
                       {resolvedEventView && (
                         <EventPanel
                           event={resolvedEventView}
+                          meta={eventMeta}
                           onChoice={() => {}}
                           mode="collapsed"
                           selectedChoiceId={selectedChoiceId}
@@ -1349,6 +1368,7 @@ export function EventPreview({
                   ) : eventView ? (
                     <EventPanel
                       event={eventView}
+                      meta={eventMeta}
                       onChoice={selectChoice}
                       error={inputError}
                     />
@@ -1370,7 +1390,7 @@ export function EventPreview({
 
       <MobileSideDrawers
         translate={translate}
-        stats={statsRail}
+        stats={mobileStatsRail}
         inventory={
           <InventoryHudPanel
             {...hudProps}

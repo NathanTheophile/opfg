@@ -351,7 +351,7 @@ export function LandingPage({
 
           <Panel
             variant="strong"
-            className="opfg-landing__modal"
+            className={`opfg-landing__modal${activeSection === 'achievements' ? ' opfg-landing__modal--achievements' : ''}`}
             role="dialog"
             aria-modal="true"
             aria-label={activeSectionLabel}

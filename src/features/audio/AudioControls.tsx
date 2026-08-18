@@ -264,6 +264,8 @@ function MusicPlayer({
 export function AudioControls() {
   const [open, setOpen] =
     useState(false);
+  const [playerOpen, setPlayerOpen] =
+    useState(false);
   const audio = useAudio();
   const locale = useObservedUiLocale();
   const VolumeIcon =
@@ -342,9 +344,29 @@ export function AudioControls() {
         </div>
       )}
 
+      <button
+        type="button"
+        className="opfg-utility-square opfg-music-player-toggle"
+        aria-label={translate('ui.audio.music')}
+        aria-expanded={playerOpen}
+        onClick={() =>
+          setPlayerOpen((current) => !current)
+        }
+      >
+        <Music2 size={17} aria-hidden="true" />
+      </button>
+
       <MusicPlayer
         audioLabel={translate('ui.audio.music')}
       />
+
+      {playerOpen && (
+        <div className="opfg-music-player-popover">
+          <MusicPlayer
+            audioLabel={translate('ui.audio.music')}
+          />
+        </div>
+      )}
     </div>
   );
 }

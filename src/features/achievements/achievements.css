@@ -1,8 +1,9 @@
 .opfg-achievements {
   display: grid;
   gap: 1rem;
-  width: min(42rem, 78vw);
-  max-height: min(70vh, 46rem);
+  width: min(58rem, calc(100vw - 3rem));
+  max-height: min(76dvh, 46rem);
+  min-width: 0;
 }
 
 .opfg-achievements__summary {
@@ -20,6 +21,7 @@
 .opfg-achievements__groups {
   display: grid;
   gap: 1.15rem;
+  min-width: 0;
   overflow-y: auto;
   padding-right: 0.35rem;
 }
@@ -39,13 +41,15 @@
 
 .opfg-achievements__list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
   gap: 0.5rem;
 }
 
 .opfg-achievement-card {
+  position: relative;
   display: grid;
-  grid-template-columns: auto 1fr;
+  min-width: 0;
+  grid-template-columns: auto auto 1fr;
   gap: 0.65rem;
   align-items: start;
   padding: 0.7rem 0.75rem;
@@ -53,6 +57,18 @@
   border-radius: 0.65rem;
   background: rgb(7 11 18 / 0.42);
   opacity: 0.62;
+}
+
+.opfg-achievement-card__ornament {
+  display: grid;
+  width: 1.65rem;
+  height: 1.65rem;
+  place-items: center;
+  border-radius: 0.42rem;
+  color: color-mix(in srgb, var(--color-gold, #f5c242) 70%, var(--color-fg-muted, #928b7d));
+  background:
+    radial-gradient(circle at 50% 20%, rgb(245 194 66 / 0.18), transparent 62%),
+    rgb(255 255 255 / 0.04);
 }
 
 .opfg-achievement-card.is-unlocked {
@@ -79,6 +95,8 @@
 .opfg-achievement-card strong,
 .opfg-achievement-card small {
   display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .opfg-achievement-card strong {
@@ -159,10 +177,15 @@
 
 @media (max-width: 42rem) {
   .opfg-achievements {
-    width: min(34rem, 82vw);
+    width: min(34rem, calc(100vw - 2rem));
+    max-height: min(78dvh, 42rem);
   }
 
   .opfg-achievements__list {
     grid-template-columns: 1fr;
+  }
+
+  .opfg-achievement-card {
+    grid-template-columns: auto auto minmax(0, 1fr);
   }
 }
