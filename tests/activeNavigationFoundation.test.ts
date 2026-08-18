@@ -82,4 +82,12 @@ describe('Active V1 departure foundation', () => {
     expect(moved.travelState).toBe('at_sea');
     expect(moved.locationId).toBe('foosha_village');
   });
+
+  it('does not expose Reverse Mountain as a generic Blue departure choice', () => {
+    const state = activeState();
+    state.ageMonths = 187;
+    const event = createDepartureSystemEvent(state, contentCatalog)!;
+
+    expect(event.choices.map(({ id }) => id)).toEqual(['navigation:depart', 'navigation:stay']);
+  });
 });

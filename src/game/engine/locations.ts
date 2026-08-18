@@ -181,6 +181,7 @@ function moveToFallbackDestination(state: GameState, catalog: ContentCatalog): v
 function fallbackDestinationIds(currentId: LocationId, catalog: ContentCatalog): LocationId[] {
   const current = findLocation(catalog, currentId);
   if (!current) return [];
+  if (currentId === 'reverse_mountain') return [];
   if (current.seaId === 'grand_line_paradise') {
     const routeCandidates = [current, ...getLocationAncestors(catalog, currentId)];
     const forward = Object.values(worldData.paradiseRouteGraph).flatMap((route) => {

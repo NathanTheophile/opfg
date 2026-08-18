@@ -136,12 +136,12 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
     ],
     majorNarrativeTracks: [
       ...[
-        ['family_civilian', 'civilian'],
-        ['family_marine', 'marine'],
-        ['family_pirate', 'pirate'],
-        ['family_revolutionary', 'revolutionary'],
-        ['family_royal', 'royal_family'],
-      ].map(([id, affiliationId]) => ({
+        { id: 'family_civilian', affiliationId: 'civilian', supportsAdultFamily: true },
+        { id: 'family_marine', affiliationId: 'marine', supportsAdultFamily: true },
+        { id: 'family_pirate', affiliationId: 'pirate', supportsAdultFamily: true },
+        { id: 'family_revolutionary', affiliationId: 'revolutionary', supportsAdultFamily: true },
+        { id: 'family_royal', affiliationId: 'royal_family', supportsAdultFamily: false },
+      ].map(({ id, affiliationId, supportsAdultFamily }) => ({
         id,
         type: 'family_legacy' as const,
         eligibility: { type: 'affiliationIs' as const, affiliationId },
@@ -151,6 +151,13 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
           { id: 'childhood_03', phase: 'childhood' as const, dueAgeMonths: 84 },
           { id: 'childhood_04', phase: 'childhood' as const, dueAgeMonths: 120 },
           { id: 'childhood_05', phase: 'childhood' as const, dueAgeMonths: 168 },
+          ...(supportsAdultFamily ? [
+            { id: 'adult_family_01', phase: 'active' as const, dueAgeMonths: 222 },
+            { id: 'adult_family_02', phase: 'active' as const, dueAgeMonths: 270 },
+            { id: 'adult_family_03', phase: 'active' as const, dueAgeMonths: 318 },
+            { id: 'adult_family_04', phase: 'active' as const, dueAgeMonths: 366 },
+            { id: 'adult_family_05', phase: 'active' as const, dueAgeMonths: 414 },
+          ] : []),
         ],
       })),
       {

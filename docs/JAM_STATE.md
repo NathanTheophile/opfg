@@ -38,7 +38,7 @@ Each Family Saga has five guaranteed Childhood layers due at 12, 48, 84, 120 and
 
 Family Saga production sources live under `content-authoring/sagas/`; generated ownership manifests live under `content-authoring/.generated/`; compiled runtime Events live under `src/game/content/events/v2/major-tracks/`.
 
-Adult Family continuation and the Personal Affiliation Saga remain future production work.
+Adult Family runtime cadence is exposed for `family_civilian`, `family_marine`, `family_pirate` and `family_revolutionary` through five broad Active chapters due at 222, 270, 318, 366 and 414 months. Adult Family authoring remains future production work. `family_royal` remains load-compatible for existing states but has no Active Family chapters while Royal Origins stay locked.
 
 ## Content foundations
 

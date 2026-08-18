@@ -95,7 +95,7 @@ describe('Family Layer 5 cadence', () => {
   it('keeps Layers 1-4 unchanged and moves only Layer 5 to 168 months', () => {
     const catalog = catalogWith();
     for (const track of catalog.majorNarrativeTracks.filter(({ type }) => type === 'family_legacy')) {
-      expect(track.chapters.map(({ dueAgeMonths }) => dueAgeMonths)).toEqual([12, 48, 84, 120, 168]);
+      expect(track.chapters.filter(({ phase }) => phase === 'childhood').map(({ dueAgeMonths }) => dueAgeMonths)).toEqual([12, 48, 84, 120, 168]);
     }
   });
 

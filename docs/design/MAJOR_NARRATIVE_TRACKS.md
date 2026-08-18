@@ -15,7 +15,7 @@ Two **Major Narrative Tracks** form the long-term spine of a complete career:
 1. **Family Legacy Saga** — inherited from Origins and intended to remain relevant from Childhood to the end of the career.
 2. **Personal Affiliation Saga** — begins from age 15 and represents what the player chooses to become, including career identity, major successes, failures and long-term affiliation consequences.
 
-Only the generic infrastructure and the **Childhood portion of Family Legacy** are in the current D2 implementation scope. Adult Family continuation and Personal Affiliation authoring remain future work, but the architecture must not block them.
+Only the generic infrastructure and the **Childhood portion of Family Legacy** are in the current D2 implementation scope. The Active runtime surface exposes Adult Family chapter cadence for the four V1 playable inherited Family tracks (`civilian`, `marine`, `pirate`, `revolutionary`) without reactivating Royal Family. Adult Family authoring remains future work, but the architecture must not block it.
 
 ## 2. V1 playable Origins surface
 
@@ -238,7 +238,19 @@ Family Legacy Saga      = where you come from
 Personal Affiliation    = what you choose to become
 ```
 
-Family chapters in Active may react strongly when current career affiliation differs from inherited family affiliation. The exact adult chapter cadence, career-change semantics and coexistence rules are intentionally deferred until the Active redesign.
+Family chapters in Active may react strongly when current career affiliation differs from inherited family affiliation.
+
+Active V1 runtime cadence reserves five broad Adult Family chapter surfaces for each non-Royal V1 Family track:
+
+| Chapter | Due age |
+| --- | ---: |
+| `adult_family_01` | 222 months |
+| `adult_family_02` | 270 months |
+| `adult_family_03` | 318 months |
+| `adult_family_04` | 366 months |
+| `adult_family_05` | 414 months |
+
+These are History-derived Major Track chapters, not persistent progress state. They deliberately sit between career milestones so Adult Family remains regular but secondary to the Personal Affiliation flow. `family_royal` remains Childhood-compatible only while Royal Origins are locked.
 
 Childhood authoring must nevertheless leave meaningful states and decisions that can be paid off later.
 

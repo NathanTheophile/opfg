@@ -414,7 +414,7 @@ The first end-to-end vertical slice may implement a thin reachable corridor thro
 
 Adult Family remains a distinct Major Narrative Track continuation and should be **regular but secondary** to the main career flow.
 
-Its Active chapters use broad age windows + current family/History state, not a copy of the five fixed Childhood checkpoints.
+Its Active chapters use broad age windows + current family/History state, not a copy of the five fixed Childhood checkpoints. The V1 runtime surface exposes `adult_family_01` through `adult_family_05` for `family_civilian`, `family_marine`, `family_pirate` and `family_revolutionary`, due at 222, 270, 318, 366 and 414 ageMonths respectively. `family_royal` intentionally has no Active Family chapters while Royal Origins remain locked.
 
 Career narrative and Adult Family may both become due. Runtime selection must prevent either from starving the other through an overdue/fairness mechanism. No arbitrary permanent priority between the two is locked by this contract.
 

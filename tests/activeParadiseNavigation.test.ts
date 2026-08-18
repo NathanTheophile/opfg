@@ -142,4 +142,12 @@ describe('Active Paradise navigation foundation', () => {
     expect(activeParadiseRouteId(state)).toMatch(/^P[1-7]_/);
     expect(state.ageMonths).toBe(182);
   });
+
+  it('does not let ordinary departure or fallback bypass the Reverse Mountain passage', () => {
+    const state = activeState();
+    state.locationId = 'reverse_mountain';
+    state.navigationDecisionAgeMonths = 170;
+
+    expect(ordinaryDepartureHasDestination(state, contentCatalog)).toBe(false);
+  });
 });

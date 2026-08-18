@@ -35,9 +35,7 @@ describe('deprecated monthly navigation compatibility', () => {
 
     expect(departure?.id).toBe('system_navigation:departure');
     expect(departure?.kind).toBe('system');
-    expect(departure?.choices.map(({ id }) => id)).toEqual(
-      expect.arrayContaining(['navigation:depart', 'navigation:stay', 'navigation:grand_line']),
-    );
+    expect(departure?.choices.map(({ id }) => id)).toEqual(['navigation:depart', 'navigation:stay']);
   });
 
   it('does not create a departure System Event without leadership or a ship', () => {

@@ -70,6 +70,14 @@ describe('Active Red Line transition', () => {
     expect(getNavigatorDestinationIds('fish_man_island', contentCatalog)).toEqual([]);
   });
 
+  it('does not expose an ordinary departure from Sabaody while the Red Line passage is required', () => {
+    const state = activeState();
+    state.ageMonths = 240;
+    state.navigationDecisionAgeMonths = 180;
+
+    expect(ordinaryDepartureHasDestination(state, contentCatalog)).toBe(false);
+  });
+
   it('registers exactly the three authored New World entrance Events', () => {
     expect(NEW_WORLD_ROUTE_START_EVENT_IDS).toHaveLength(3);
     expect(NEW_WORLD_ROUTE_START_EVENT_IDS.every((eventId) =>

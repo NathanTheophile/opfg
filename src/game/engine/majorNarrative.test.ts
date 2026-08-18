@@ -176,4 +176,24 @@ describe('Layered Major Narrative Track selection', () => {
 
     expect(completedMajorNarrativeMilestones(state, catalog)).toEqual(['marine_giant_inheritance']);
   });
+
+  it('exposes Adult Family cadence for V1 families while keeping Royal compatibility inactive', () => {
+    const catalog = createContentCatalog([]);
+    const activeFamilies = ['family_civilian', 'family_marine', 'family_pirate', 'family_revolutionary'];
+
+    for (const trackId of activeFamilies) {
+      const track = catalog.majorNarrativeTracks.find(({ id }) => id === trackId)!;
+      expect(track.chapters.filter(({ phase }) => phase === 'active').map(({ id, dueAgeMonths }) => [id, dueAgeMonths])).toEqual([
+        ['adult_family_01', 222],
+        ['adult_family_02', 270],
+        ['adult_family_03', 318],
+        ['adult_family_04', 366],
+        ['adult_family_05', 414],
+      ]);
+    }
+
+    const royal = catalog.majorNarrativeTracks.find(({ id }) => id === 'family_royal')!;
+    expect(royal.chapters.some(({ phase }) => phase === 'active')).toBe(false);
+    expect(catalog.affiliations.find(({ id }) => id === 'royal_family')?.playableV1).toBe(false);
+  });
 });
