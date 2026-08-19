@@ -1,19 +1,36 @@
 .opfg-event-panel {
   position: relative;
+  overflow: visible !important;
+}
+
+/*
+ * Keep the panel content visually clipped to its rounded frame while allowing
+ * the decorative corners themselves to sit outside that frame.
+ */
+.opfg-event-panel__header {
+  border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+}
+
+.opfg-event-panel__choices {
+  border-radius: 0 0 var(--radius-panel) var(--radius-panel);
+}
+
+.opfg-event-panel[data-mode='collapsed'] .opfg-event-panel__header {
+  border-radius: var(--radius-panel);
 }
 
 .opfg-event-panel::before,
 .opfg-event-panel::after {
   position: absolute;
-  z-index: 0;
+  z-index: 10;
   content: '';
   pointer-events: none;
   user-select: none;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  opacity: 0.74;
-  filter: drop-shadow(0 3px 6px rgb(0 0 0 / 0.3));
+  opacity: 0.92;
+  filter: drop-shadow(0 3px 6px rgb(0 0 0 / 0.34));
 }
 
 .opfg-event-panel > * {
@@ -22,33 +39,32 @@
 }
 
 .opfg-event-panel::before {
-  top: -1px;
-  right: -1px;
-  width: clamp(54px, 5vw, 74px);
+  top: -10px;
+  right: -10px;
+  width: clamp(40px, 3.2vw, 48px);
   aspect-ratio: 256 / 282;
   background-image: url('./assets/panel-corner-rope-top.png');
   transform: scaleX(-1);
 }
 
 .opfg-event-panel::after {
-  bottom: -1px;
-  left: -1px;
-  width: clamp(56px, 5.2vw, 78px);
+  bottom: -10px;
+  left: -10px;
+  width: clamp(42px, 3.3vw, 50px);
   aspect-ratio: 256 / 266;
   background-image: url('./assets/panel-corner-rope-bottom.png');
 }
 
 @media (max-width: 768px) {
   .opfg-event-panel::before {
-    width: 54px;
+    top: -8px;
+    right: -8px;
+    width: 40px;
   }
 
   .opfg-event-panel::after {
-    width: 56px;
-  }
-
-  .opfg-event-panel::before,
-  .opfg-event-panel::after {
-    opacity: 0.64;
+    bottom: -8px;
+    left: -8px;
+    width: 42px;
   }
 }
