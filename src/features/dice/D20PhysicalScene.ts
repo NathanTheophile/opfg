@@ -128,9 +128,8 @@ export class D20Scene {
     this.renderer.toneMappingExposure = 0.92;
     this.renderer.shadowMap.enabled = false;
 
-    // Higher camera than the previous prototype: the die now genuinely rests
-    // on a horizontal table and the result is the top face, not a face aimed
-    // straight at the camera.
+    // Raised camera keeps the table depth readable while the predetermined
+    // result face is presented clearly toward the camera at the end.
     this.camera.position.set(0, 2.15, 6.15);
     this.camera.lookAt(0, -0.16, 0);
 
@@ -550,10 +549,12 @@ export class D20Scene {
     const localX = localY.clone().cross(localZ).normalize();
     localY.copy(localZ).cross(localX).normalize();
 
-    const targetZ = WORLD_UP.clone();
-    const targetY = FINAL_PLANAR
+    const targetZ = this.camera.position
       .clone()
-      .sub(this.camera.position)
+      .sub(FINAL_PLANAR)
+      .normalize();
+    const targetY = this.camera.up
+      .clone()
       .projectOnPlane(targetZ)
       .normalize();
     const targetX = targetY.clone().cross(targetZ).normalize();
