@@ -1,0 +1,54 @@
+.opfg-event-panel {
+  position: relative;
+}
+
+.opfg-event-panel::before,
+.opfg-event-panel::after {
+  position: absolute;
+  z-index: 0;
+  content: '';
+  pointer-events: none;
+  user-select: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.74;
+  filter: drop-shadow(0 3px 6px rgb(0 0 0 / 0.3));
+}
+
+.opfg-event-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.opfg-event-panel::before {
+  top: -1px;
+  right: -1px;
+  width: clamp(54px, 5vw, 74px);
+  aspect-ratio: 256 / 282;
+  background-image: url('./assets/panel-corner-rope-top.png');
+  transform: scaleX(-1);
+}
+
+.opfg-event-panel::after {
+  bottom: -1px;
+  left: -1px;
+  width: clamp(56px, 5.2vw, 78px);
+  aspect-ratio: 256 / 266;
+  background-image: url('./assets/panel-corner-rope-bottom.png');
+}
+
+@media (max-width: 768px) {
+  .opfg-event-panel::before {
+    width: 54px;
+  }
+
+  .opfg-event-panel::after {
+    width: 56px;
+  }
+
+  .opfg-event-panel::before,
+  .opfg-event-panel::after {
+    opacity: 0.64;
+  }
+}

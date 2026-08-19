@@ -60,6 +60,46 @@ const SECONDARY_ACTIONS = [
     Icon: HistoryIcon,
   },
 ] as const;
+const COMMUNITY_LINKS = [
+  {
+    id: 'x-global',
+    label: 'X',
+    href:
+      import.meta.env.VITE_SOCIAL_X_URL ||
+      'https://x.com/OPDestinies',
+  },
+  {
+    id: 'x-fr',
+    label: 'X FR',
+    href:
+      import.meta.env.VITE_SOCIAL_X_FR_URL ||
+      'https://x.com/OPDestiniesFR',
+  },
+  {
+    id: 'youtube',
+    label: 'YouTube',
+    href:
+      import.meta.env.VITE_SOCIAL_YOUTUBE_URL ||
+      'https://www.youtube.com/channel/UCYfktg5W_ylyZ4vdYyWZBbA',
+  },
+  {
+    id: 'tiktok',
+    label: 'TikTok',
+    href: import.meta.env.VITE_SOCIAL_TIKTOK_URL,
+  },
+  {
+    id: 'instagram',
+    label: 'Instagram',
+    href: import.meta.env.VITE_SOCIAL_INSTAGRAM_URL,
+  },
+  {
+    id: 'discord',
+    label: 'Discord',
+    href: import.meta.env.VITE_DISCORD_URL,
+  },
+] as const;
+
+const KOFI_URL = import.meta.env.VITE_KOFI_URL;
 
 function formatAge(
   ageMonths: number,
@@ -330,6 +370,42 @@ export function LandingPage({
             ),
           )}
         </nav>
+
+        <div className="opfg-landing__community">
+          <div className="opfg-landing__socials">
+            {COMMUNITY_LINKS.map(({ id, label, href }) =>
+              href ? (
+                <a
+                  key={id}
+                  className="opfg-landing__community-link"
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {label}
+                </a>
+              ) : null,
+            )}
+          </div>
+
+          {KOFI_URL ? (
+            <a
+              className="opfg-landing__community-link opfg-landing__community-link--kofi"
+              href={KOFI_URL}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Ko-fi
+            </a>
+          ) : (
+            <span
+              className="opfg-landing__community-link opfg-landing__community-link--kofi opfg-landing__community-link--disabled"
+              aria-disabled="true"
+            >
+              Ko-fi
+            </span>
+          )}
+        </div>
       </section>
 
       <LanguageControls

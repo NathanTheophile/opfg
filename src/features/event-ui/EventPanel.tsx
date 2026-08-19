@@ -19,6 +19,7 @@ import type {
   EventChoiceViewModel,
   EventViewModel,
 } from './types';
+import './event-panel-ornaments.css';
 
 export type EventPanelMode =
   | 'interactive'
