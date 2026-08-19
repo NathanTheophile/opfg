@@ -1,5 +1,7 @@
 import { performance } from 'node:perf_hooks';
 import type { SimulationObserver } from '../src/game/simulation/observation';
+import { hakiLevelAllowedByTotal, playerHakiSourceTotal } from '../src/game/engine/powers';
+import type { GameState } from '../src/game/model/schema';
 import { simulateObservedRun } from '../src/game/simulation/simulateObservedRun';
 import { progressionSimulationPolicy } from '../src/game/simulation/simulationPolicy';
 import {
@@ -47,6 +49,34 @@ const terminationReasons: Record<string, number> = {};
 const errors: Record<string, number> = {};
 const repThresholdAge: Record<string, number[]> = { '10': [], '25': [], '50': [], '75': [] };
 
+const FINAL_PLAYER_STAT_IDS = ['health', 'morale', 'strength', 'agility', 'observation', 'intelligence', 'navigation', 'charisma', 'luck'] as const;
+type FinalPlayerStatId = typeof FINAL_PLAYER_STAT_IDS[number];
+
+const finalPlayerStatsRaw = Object.fromEntries(FINAL_PLAYER_STAT_IDS.map((statId) => [statId, [] as number[]])) as Record<FinalPlayerStatId, number[]>;
+const horizonPlayerStatsRaw = Object.fromEntries(FINAL_PLAYER_STAT_IDS.map((statId) => [statId, [] as number[]])) as Record<FinalPlayerStatId, number[]>;
+const finalAgeMonths: number[] = [];
+
+const finalObservationSourceTotal: number[] = [];
+const finalArmamentSourceTotal: number[] = [];
+const maximumObservationSourceTotal: number[] = [];
+const maximumArmamentSourceTotal: number[] = [];
+const firstObservationReadyAge: number[] = [];
+const firstArmamentReadyAge: number[] = [];
+const finalObservationAllowedLevel: Record<string, number> = {};
+const finalArmamentAllowedLevel: Record<string, number> = {};
+let runsFinalObservationReady = 0;
+let runsFinalArmamentReady = 0;
+let runsFinalObservationReadyButUnawakened = 0;
+let runsFinalArmamentReadyButUnawakened = 0;
+let runsEverObservationReady = 0;
+let runsEverArmamentReady = 0;
+
+const deadEndByAgeBucket: Record<string, number> = {};
+const deadEndByLocation: Record<string, number> = {};
+const deadEndByTravelState: Record<string, number> = {};
+const deadEndAfterEvent: Record<string, number> = {};
+const simulationErrorContexts: Record<string, number> = {};
+
 const fruitConsumptionById: Record<string, number> = {};
 const fruitSourceEvents: Record<string, number> = {};
 const awakeningGainByEvent: Record<string, number> = {};
@@ -80,14 +110,29 @@ for (let index = 0; index < args.runs; index += 1) {
   let maxCrew = 0;
   let activeTraitsCaptured = false;
   const reachedRep = new Set<number>();
+  let maxObservationSource = Number.NEGATIVE_INFINITY;
+  let maxArmamentSource = Number.NEGATIVE_INFINITY;
+  let firstObservationReady: number | null = null;
+  let firstArmamentReady: number | null = null;
+
+  const captureHakiReadiness = (state: GameState) => {
+    const observationTotal = playerHakiSourceTotal(state, 'observation');
+    const armamentTotal = playerHakiSourceTotal(state, 'armament');
+    maxObservationSource = Math.max(maxObservationSource, observationTotal);
+    maxArmamentSource = Math.max(maxArmamentSource, armamentTotal);
+    if (firstObservationReady === null && observationTotal >= 75) firstObservationReady = state.ageMonths;
+    if (firstArmamentReady === null && armamentTotal >= 75) firstArmamentReady = state.ageMonths;
+  };
 
   const observer: SimulationObserver = {
     onInitialState(state) {
       maxCrew = crewSize(state);
+      captureHakiReadiness(state);
     },
     onEventResolved(entry) {
       const before = entry.beforeState;
       const after = entry.afterState;
+      captureHakiReadiness(after);
 
       const berryDelta = after.berries - before.berries;
       if (berryDelta > 0) {
@@ -175,12 +220,58 @@ for (let index = 0; index < args.runs; index += 1) {
         activeTraitsCaptured = true;
       }
     },
-    onTermination({ error }) {
-      if (error) inc(errors, error);
+    onTermination({ state, reason, error }) {
+      captureHakiReadiness(state);
+      if (reason === 'deadEnd') {
+        inc(deadEndByAgeBucket, ageBucket(state.ageMonths));
+        inc(deadEndByLocation, state.locationId);
+        inc(deadEndByTravelState, state.travelState);
+        inc(deadEndAfterEvent, state.history.at(-1)?.eventId ?? 'none');
+      }
+      if (error) {
+        inc(errors, error);
+        inc(
+          simulationErrorContexts,
+          [
+            error,
+            `event=${state.currentEventId ?? 'none'}`,
+            `age=${state.ageMonths}`,
+            `location=${state.locationId}`,
+            `travel=${state.travelState}`,
+            `berries=${state.berries}`,
+            `last=${state.history.at(-1)?.eventId ?? 'none'}`,
+          ].join(' | '),
+        );
+      }
     },
   };
 
   const result = simulateObservedRun({ seed, catalog, maxResolvedEvents: args.maxEvents, observer, policy });
+  finalAgeMonths.push(result.finalState.ageMonths);
+  for (const statId of FINAL_PLAYER_STAT_IDS) finalPlayerStatsRaw[statId].push(result.finalState.player.stats[statId]);
+  if (result.finalState.endingId === 'v1_career_horizon') {
+    for (const statId of FINAL_PLAYER_STAT_IDS) horizonPlayerStatsRaw[statId].push(result.finalState.player.stats[statId]);
+  }
+
+  const finalObservationTotal = playerHakiSourceTotal(result.finalState, 'observation');
+  const finalArmamentTotal = playerHakiSourceTotal(result.finalState, 'armament');
+  finalObservationSourceTotal.push(finalObservationTotal);
+  finalArmamentSourceTotal.push(finalArmamentTotal);
+  maximumObservationSourceTotal.push(maxObservationSource);
+  maximumArmamentSourceTotal.push(maxArmamentSource);
+  inc(finalObservationAllowedLevel, String(hakiLevelAllowedByTotal(finalObservationTotal)));
+  inc(finalArmamentAllowedLevel, String(hakiLevelAllowedByTotal(finalArmamentTotal)));
+
+  if (finalObservationTotal >= 75) {
+    runsFinalObservationReady += 1;
+    if (result.finalState.player.powers.haki.observation === 0) runsFinalObservationReadyButUnawakened += 1;
+  }
+  if (finalArmamentTotal >= 75) {
+    runsFinalArmamentReady += 1;
+    if (result.finalState.player.powers.haki.armament === 0) runsFinalArmamentReadyButUnawakened += 1;
+  }
+  if (firstObservationReady !== null) { runsEverObservationReady += 1; firstObservationReadyAge.push(firstObservationReady); }
+  if (firstArmamentReady !== null) { runsEverArmamentReady += 1; firstArmamentReadyAge.push(firstArmamentReady); }
   finalBerries.push(result.finalState.berries);
   finalReputation.push(result.finalState.player.career.reputation);
   finalBounty.push(result.finalState.player.career.bounty);
@@ -259,7 +350,53 @@ const report = {
       maxCrewSizeObserved: Math.max(...maxCrewPerRun),
     },
   },
-  careerTransitions: topEntries(affiliations),
+  finalPlayerStatsRaw: Object.fromEntries(
+    FINAL_PLAYER_STAT_IDS.map((statId) => [statId, fullDistribution(finalPlayerStatsRaw[statId])]),
+  ),
+  finalPlayerStatsRawAtHorizon: Object.fromEntries(
+    FINAL_PLAYER_STAT_IDS.map((statId) => [statId, fullDistribution(horizonPlayerStatsRaw[statId])]),
+  ),
+  hakiReadiness: {
+    rules: {
+      observationSource: ['observation', 'intelligence'],
+      armamentSource: ['strength', 'agility'],
+      awakeningThreshold: 75,
+      levelRule: '0 below 75; 1 at 75-79; +1 per 5 points; max 5',
+      conquerorUsesStatThreshold: false,
+      note: 'Observation/Armament readiness does not auto-awaken Haki; an authored awakenHaki effect is still required.',
+    },
+    observation: {
+      finalSourceTotal: fullDistribution(finalObservationSourceTotal),
+      maximumSourceTotalSeenPerRun: fullDistribution(maximumObservationSourceTotal),
+      finalAllowedLevelDistribution: sortNumericRecord(finalObservationAllowedLevel),
+      runsFinalReady: runsFinalObservationReady,
+      runsFinalReadyPct: pct(runsFinalObservationReady, args.runs),
+      runsFinalReadyButUnawakened: runsFinalObservationReadyButUnawakened,
+      runsEverReady: runsEverObservationReady,
+      runsEverReadyPct: pct(runsEverObservationReady, args.runs),
+      firstReadyAge: q(firstObservationReadyAge),
+    },
+    armament: {
+      finalSourceTotal: fullDistribution(finalArmamentSourceTotal),
+      maximumSourceTotalSeenPerRun: fullDistribution(maximumArmamentSourceTotal),
+      finalAllowedLevelDistribution: sortNumericRecord(finalArmamentAllowedLevel),
+      runsFinalReady: runsFinalArmamentReady,
+      runsFinalReadyPct: pct(runsFinalArmamentReady, args.runs),
+      runsFinalReadyButUnawakened: runsFinalArmamentReadyButUnawakened,
+      runsEverReady: runsEverArmamentReady,
+      runsEverReadyPct: pct(runsEverArmamentReady, args.runs),
+      firstReadyAge: q(firstArmamentReadyAge),
+    },
+  },
+  terminationDiagnostics: {
+    finalAgeMonths: fullDistribution(finalAgeMonths),
+    deadEndByAgeBucket: topEntries(deadEndByAgeBucket, 50),
+    deadEndByLocation: topEntries(deadEndByLocation, 50),
+    deadEndByTravelState: topEntries(deadEndByTravelState, 10),
+    deadEndAfterEvent: topEntries(deadEndAfterEvent, 50),
+    simulationErrorContexts: topEntries(simulationErrorContexts, 50),
+  },
+    careerTransitions: topEntries(affiliations),
   rankTransitions: topEntries(rankTransitions, 40),
   titleTransitions: topEntries(titleTransitions, 40),
   endings: topEntries(endings, 40),
@@ -289,6 +426,8 @@ console.log(`Runs: ${args.runs}`);
 console.log(`Avg income/run: ${average(totalIncome).toFixed(1)} B | Avg spend/run: ${average(totalSpend).toFixed(1)} B`);
 console.log(`Avg final Reputation: ${average(finalReputation).toFixed(2)} | Avg final Bounty: ${average(finalBounty).toFixed(1)}`);
 console.log(`Fruit runs: ${runsWithFruit} (${pct(runsWithFruit, args.runs).toFixed(1)}%)`);
+console.log(`Haki-ready final: Observation ${runsFinalObservationReady}/${args.runs} | Armament ${runsFinalArmamentReady}/${args.runs}`);
+console.log(`Haki-ready ever:  Observation ${runsEverObservationReady}/${args.runs} | Armament ${runsEverArmamentReady}/${args.runs}`);
 console.log(`Avg Traits at Active/end: ${average(traitsAtActive).toFixed(2)} / ${average(traitsAtEnd).toFixed(2)}`);
 console.log(`Crew runs: ${runsWithCrew} (${pct(runsWithCrew, args.runs).toFixed(1)}%) | Avg max crew: ${average(maxCrewPerRun).toFixed(2)}`);
 writeJson(args.jsonPath, report);
@@ -328,4 +467,32 @@ function parseProgressionPolicyArgs(values: string[]): { policy: ProgressionRepo
   }
 
   return { policy, remaining };
+}
+
+
+function fullDistribution(values: number[]) {
+  if (values.length === 0) return { count: 0, min: 0, average: 0, p10: 0, p50: 0, p90: 0, max: 0 };
+  return {
+    count: values.length,
+    min: Math.min(...values),
+    average: average(values),
+    p10: quantile(values, 0.10),
+    p50: quantile(values, 0.50),
+    p90: quantile(values, 0.90),
+    max: Math.max(...values),
+  };
+}
+
+function ageBucket(ageMonths: number): string {
+  if (ageMonths < 180) return '<15';
+  if (ageMonths < 216) return '15-17';
+  if (ageMonths < 240) return '18-19';
+  if (ageMonths < 300) return '20-24';
+  if (ageMonths < 360) return '25-29';
+  if (ageMonths < 420) return '30-34';
+  return '35+';
+}
+
+function sortNumericRecord(record: Record<string, number>): Record<string, number> {
+  return Object.fromEntries(Object.entries(record).sort(([a], [b]) => Number(a) - Number(b)));
 }
