@@ -9,7 +9,11 @@ import { createDepartureSystemEvent, materializeNavigationEvent } from './naviga
 import { finalizePendingSlot } from './time';
 import { findDockableAccess, isLocationWithin } from './locations';
 import { activeParadiseRouteId, countFallbackStreak, isParadiseRouteStartEventId } from './maritime';
-import { createArrivalMarketEvent, materializeMarketEvent } from './marketEvents';
+import {
+  createArrivalMarketEvent,
+  createShiplessMarketRecoveryEvent,
+  materializeMarketEvent,
+} from './marketEvents';
 import { requiresCrewManagement } from './crew';
 
 export const FALLBACK_EVENT_IDS = ['dead_end_on_land', 'dead_end_at_sea'] as const;
@@ -157,10 +161,19 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     if (state.travelState === 'on_land') {
       const exhaustedDeparture = createDepartureSystemEvent(state, catalog, true);
       if (exhaustedDeparture) return selectEvent({ ...state, scheduledEvents: scheduled.entries }, catalog, exhaustedDeparture);
+
+      const shiplessMarketRecovery = createShiplessMarketRecoveryEvent(state, catalog);
+      if (shiplessMarketRecovery) {
+        return selectEvent(
+          { ...state, scheduledEvents: scheduled.entries },
+          catalog,
+          shiplessMarketRecovery,
+        );
+      }
     }
     const fallbackId = state.travelState === 'at_sea' ? 'dead_end_at_sea' : 'dead_end_on_land';
     const fallback = catalog.events.find((event) => event.id === fallbackId && event.kind === 'normal');
-    const accessible = state.travelState === 'at_sea' || findDockableAccess(catalog, state.locationId) !== undefined;
+    const accessible = state.travelState === 'at_sea' || state.ship === null || findDockableAccess(catalog, state.locationId) !== undefined;
     return fallback && accessible
       ? selectEvent({ ...state, scheduledEvents: scheduled.entries }, catalog, fallback)
       : { ...state, scheduledEvents: scheduled.entries, currentEventId: null };

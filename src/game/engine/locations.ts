@@ -159,11 +159,11 @@ export function getLocationDisplayName(catalog: ContentCatalog, locationId: Loca
 
 export function recoverTravel(state: GameState, catalog: ContentCatalog, mode: 'land' | 'sea'): void {
   if (mode === 'land') {
-    if (!findDockableAccess(catalog, state.locationId)) throw new Error(`Location "${state.locationId}" has no dockable sea access.`);
     if (state.ship === null) {
       moveToFallbackDestination(state, catalog);
       return;
     }
+    if (!findDockableAccess(catalog, state.locationId)) throw new Error(`Location "${state.locationId}" has no dockable sea access.`);
     state.travelState = 'at_sea';
     return;
   }

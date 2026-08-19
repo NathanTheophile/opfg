@@ -13,6 +13,8 @@ import {
 
 const ID = 'system_market';
 export const MARKET_SYSTEM_EVENT_PREFIX = `${ID}:`;
+export const SHIPLESS_MARKET_RECOVERY_EVENT_ID = `${ID}:shipless_recovery`;
+const SHIPLESS_MARKET_RECOVERY_FLAG_PREFIX = 'market_shipless_recovery:';
 
 const outcome = (id: string, effects: Effect[] = []): Outcome => ({
   id,
@@ -93,13 +95,67 @@ export function createArrivalMarketEvent(
     choices.push(deterministic('market:port', 'ui.marketHub.port', [visitEffect]));
   }
 
-  choices.push(deterministic('market:explore', 'ui.marketHub.explore', [visitEffect]));
+  choices.push(
+    deterministic(
+      'market:explore',
+      'ui.marketHub.explore',
+      [visitEffect, ...shiplessMarketExitEffects(state)],
+    ),
+  );
 
   return shell(
     `${ID}:arrival`,
     'ui.marketHub.title',
     state.flags.includes(visitedFlag) ? 'ui.marketHub.returning' : 'ui.marketHub.arrival',
     choices,
+  );
+}
+
+function shiplessRecoveryFlag(state: GameState): string {
+  return `${SHIPLESS_MARKET_RECOVERY_FLAG_PREFIX}${state.locationId}:${state.ageMonths}`;
+}
+
+function shiplessMarketExitEffects(state: GameState): Effect[] {
+  if (state.ship !== null) return [];
+  return [{ type: 'setFlag', flagId: shiplessRecoveryFlag(state) }];
+}
+
+/**
+ * Last-chance access to an existing ship market when Active land content is
+ * exhausted. This stays event-driven and slotless: it reuses the Market
+ * System instead of adding a permanent UI entry point.
+ *
+ * The per-location/per-month flag prevents an immediate market loop if the
+ * player leaves the port without buying a ship. The normal fallback can then
+ * recover travel.
+ */
+export function createShiplessMarketRecoveryEvent(
+  state: GameState,
+  catalog: ContentCatalog,
+): EventDefinition | null {
+  const location = currentLocation(state, catalog);
+  if (
+    state.careerPhase !== 'active'
+    || state.travelState !== 'on_land'
+    || state.ship !== null
+    || !location?.hasMarketHub
+    || (location.shipMarket ?? 'none') === 'none'
+  ) {
+    return null;
+  }
+
+  const recoveryFlag = shiplessRecoveryFlag(state);
+  if (state.flags.includes(recoveryFlag)) return null;
+
+  const markAttempted: Effect = { type: 'setFlag', flagId: recoveryFlag };
+  return shell(
+    SHIPLESS_MARKET_RECOVERY_EVENT_ID,
+    'ui.marketHub.title',
+    'ui.marketHub.returning',
+    [
+      deterministic('market:port', 'ui.marketHub.port', [markAttempted]),
+      deterministic('market:explore', 'ui.marketHub.explore', [markAttempted]),
+    ],
   );
 }
 
@@ -116,7 +172,13 @@ function merchantEvent(state: GameState, catalog: ContentCatalog): EventDefiniti
     choices.push(deterministic('market:port', 'ui.marketHub.port'));
   }
 
-  choices.push(deterministic('market:explore', 'ui.marketHub.explore'));
+  choices.push(
+    deterministic(
+      'market:explore',
+      'ui.marketHub.explore',
+      shiplessMarketExitEffects(state),
+    ),
+  );
 
   return shell(
     `${ID}:merchant`,
@@ -264,7 +326,13 @@ function portEvent(state: GameState, catalog: ContentCatalog): EventDefinition {
     choices.push(deterministic('market:merchant', 'ui.marketHub.merchant'));
   }
 
-  choices.push(deterministic('market:explore', 'ui.marketHub.explore'));
+  choices.push(
+    deterministic(
+      'market:explore',
+      'ui.marketHub.explore',
+      shiplessMarketExitEffects(state),
+    ),
+  );
 
   return shell(
     `${ID}:port`,
@@ -359,6 +427,9 @@ export function materializeMarketEvent(
 
   if (eventId === `${ID}:arrival`) {
     return createArrivalMarketEvent(state, catalog) ?? undefined;
+  }
+  if (eventId === SHIPLESS_MARKET_RECOVERY_EVENT_ID) {
+    return createShiplessMarketRecoveryEvent(state, catalog) ?? undefined;
   }
   if (eventId === `${ID}:merchant`) return merchantEvent(state, catalog);
   if (eventId === `${ID}:port`) return portEvent(state, catalog);
