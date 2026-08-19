@@ -1,0 +1,191 @@
+{
+  "id": "ch_v2_combat_confrontation_01_padded_stick_mark",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_combat_confrontation_01_padded_stick_mark.title",
+  "textKey": "event.ch_v2_combat_confrontation_01_padded_stick_mark.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 84
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "bind_stick",
+      "textKey": "event.ch_v2_combat_confrontation_01_padded_stick_mark.choice.bind_stick",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bind_stick_criticalFailure",
+            "textKey": "event.ch_v2_combat_confrontation_01_padded_stick_mark.outcome.bind_stick_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_padded_stick_mark_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "bind_stick_failure",
+            "textKey": "event.ch_v2_combat_confrontation_01_padded_stick_mark.outcome.bind_stick_failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_padded_stick_mark_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "bind_stick_success",
+            "textKey": "event.ch_v2_combat_confrontation_01_padded_stick_mark.outcome.bind_stick_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_padded_stick_mark_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "bind_stick_criticalSuccess",
+            "textKey": "event.ch_v2_combat_confrontation_01_padded_stick_mark.outcome.bind_stick_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_padded_stick_mark_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_guard",
+      "textKey": "event.ch_v2_combat_confrontation_01_padded_stick_mark.choice.read_guard",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_guard_criticalFailure",
+            "textKey": "event.ch_v2_combat_confrontation_01_padded_stick_mark.outcome.read_guard_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_padded_stick_mark_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_guard_failure",
+            "textKey": "event.ch_v2_combat_confrontation_01_padded_stick_mark.outcome.read_guard_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_padded_stick_mark_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_guard_success",
+            "textKey": "event.ch_v2_combat_confrontation_01_padded_stick_mark.outcome.read_guard_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_padded_stick_mark_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_guard_criticalSuccess",
+            "textKey": "event.ch_v2_combat_confrontation_01_padded_stick_mark.outcome.read_guard_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_padded_stick_mark_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "circle_reset",
+      "textKey": "event.ch_v2_combat_confrontation_01_padded_stick_mark.choice.circle_reset",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "circle_reset_outcome",
+          "textKey": "event.ch_v2_combat_confrontation_01_padded_stick_mark.outcome.circle_reset_outcome",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_combat_confrontation_01_padded_stick_mark_i01"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

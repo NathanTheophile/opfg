@@ -1,0 +1,190 @@
+{
+  "id": "ch_v2_combat_confrontation_01_sand_circle_grapple",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_combat_confrontation_01_sand_circle_grapple.title",
+  "textKey": "event.ch_v2_combat_confrontation_01_sand_circle_grapple.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 95
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "break_base",
+      "textKey": "event.ch_v2_combat_confrontation_01_sand_circle_grapple.choice.break_base",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "break_base_criticalFailure",
+            "textKey": "event.ch_v2_combat_confrontation_01_sand_circle_grapple.outcome.break_base_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_sand_circle_grapple_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "break_base_failure",
+            "textKey": "event.ch_v2_combat_confrontation_01_sand_circle_grapple.outcome.break_base_failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_sand_circle_grapple_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "break_base_success",
+            "textKey": "event.ch_v2_combat_confrontation_01_sand_circle_grapple.outcome.break_base_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_sand_circle_grapple_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "break_base_criticalSuccess",
+            "textKey": "event.ch_v2_combat_confrontation_01_sand_circle_grapple.outcome.break_base_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_sand_circle_grapple_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "turn_out",
+      "textKey": "event.ch_v2_combat_confrontation_01_sand_circle_grapple.choice.turn_out",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "turn_out_criticalFailure",
+            "textKey": "event.ch_v2_combat_confrontation_01_sand_circle_grapple.outcome.turn_out_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_sand_circle_grapple_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "turn_out_failure",
+            "textKey": "event.ch_v2_combat_confrontation_01_sand_circle_grapple.outcome.turn_out_failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_sand_circle_grapple_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "turn_out_success",
+            "textKey": "event.ch_v2_combat_confrontation_01_sand_circle_grapple.outcome.turn_out_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_sand_circle_grapple_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "turn_out_criticalSuccess",
+            "textKey": "event.ch_v2_combat_confrontation_01_sand_circle_grapple.outcome.turn_out_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_sand_circle_grapple_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "tap_reset",
+      "textKey": "event.ch_v2_combat_confrontation_01_sand_circle_grapple.choice.tap_reset",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tap_reset_outcome",
+          "textKey": "event.ch_v2_combat_confrontation_01_sand_circle_grapple.outcome.tap_reset_outcome",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_combat_confrontation_01_sand_circle_grapple_i01"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

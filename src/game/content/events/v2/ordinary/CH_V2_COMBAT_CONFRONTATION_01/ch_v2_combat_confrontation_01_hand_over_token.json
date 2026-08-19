@@ -1,0 +1,186 @@
+{
+  "id": "ch_v2_combat_confrontation_01_hand_over_token",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_combat_confrontation_01_hand_over_token.title",
+  "textKey": "event.ch_v2_combat_confrontation_01_hand_over_token.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 143
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "hold_center",
+      "textKey": "event.ch_v2_combat_confrontation_01_hand_over_token.choice.hold_center",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hold_center_criticalFailure",
+            "textKey": "event.ch_v2_combat_confrontation_01_hand_over_token.outcome.hold_center_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_hand_over_token_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "hold_center_failure",
+            "textKey": "event.ch_v2_combat_confrontation_01_hand_over_token.outcome.hold_center_failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_hand_over_token_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "hold_center_success",
+            "textKey": "event.ch_v2_combat_confrontation_01_hand_over_token.outcome.hold_center_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_hand_over_token_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hold_center_criticalSuccess",
+            "textKey": "event.ch_v2_combat_confrontation_01_hand_over_token.outcome.hold_center_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_hand_over_token_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "break_ring",
+      "textKey": "event.ch_v2_combat_confrontation_01_hand_over_token.choice.break_ring",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "break_ring_criticalFailure",
+            "textKey": "event.ch_v2_combat_confrontation_01_hand_over_token.outcome.break_ring_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_hand_over_token_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "break_ring_failure",
+            "textKey": "event.ch_v2_combat_confrontation_01_hand_over_token.outcome.break_ring_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_hand_over_token_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "break_ring_success",
+            "textKey": "event.ch_v2_combat_confrontation_01_hand_over_token.outcome.break_ring_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_hand_over_token_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "break_ring_criticalSuccess",
+            "textKey": "event.ch_v2_combat_confrontation_01_hand_over_token.outcome.break_ring_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_hand_over_token_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "drop_token",
+      "textKey": "event.ch_v2_combat_confrontation_01_hand_over_token.choice.drop_token",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "drop_token_outcome",
+          "textKey": "event.ch_v2_combat_confrontation_01_hand_over_token.outcome.drop_token_outcome",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

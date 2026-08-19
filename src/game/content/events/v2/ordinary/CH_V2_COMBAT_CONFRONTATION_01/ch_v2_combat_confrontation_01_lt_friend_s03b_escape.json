@@ -1,0 +1,101 @@
+{
+  "id": "ch_v2_combat_confrontation_01_lt_friend_s03b_escape",
+  "kind": "scheduled",
+  "priority": 100,
+  "titleKey": "event.ch_v2_combat_confrontation_01_lt_friend_s03b_escape.title",
+  "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s03b_escape.text",
+  "choices": [
+    {
+      "id": "pivot_free",
+      "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s03b_escape.choice.pivot_free",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pivot_free_outcome",
+          "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s03b_escape.outcome.pivot_free_outcome",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_confrontation_01_lt_friend_s04b_escape_note",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "frame_exit",
+      "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s03b_escape.choice.frame_exit",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "frame_exit_outcome",
+          "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s03b_escape.outcome.frame_exit_outcome",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_confrontation_01_lt_friend_s04b_escape_note",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_reset",
+      "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s03b_escape.choice.call_reset",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "call_reset_outcome",
+          "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s03b_escape.outcome.call_reset_outcome",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_confrontation_01_lt_friend_s04b_escape_note",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cancelIf": {
+    "type": "npcStatusIs",
+    "npcId": "childhood_friend",
+    "status": "dead"
+  },
+  "cast": [
+    "childhood_friend"
+  ]
+}
