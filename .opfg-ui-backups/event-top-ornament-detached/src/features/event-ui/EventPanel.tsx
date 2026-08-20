@@ -210,7 +210,7 @@ export function EventPanel({
     <Panel
       variant="strong"
       padding="none"
-      className="opfg-event-panel w-full"
+      className="opfg-event-panel w-full overflow-hidden shadow-overlay"
       data-mode={displayMode}
       data-content-visible={
         contentVisible ? 'true' : 'false'

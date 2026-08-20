@@ -1235,21 +1235,6 @@ export function EventPreview({
     onHome,
   };
 
-  const showDetachedTopEventOrnament =
-    !state.pendingOverflow &&
-    !requiresCrewManagement(state) &&
-    Boolean(
-      (showOutcome &&
-        outcomeView !== null &&
-        resolvedEventView !== null) ||
-      (pendingDice !== null &&
-        resolvedEventView !== null) ||
-      (!showOutcome &&
-        pendingDice === null &&
-        session.navigationOptions.length === 0 &&
-        eventView !== null),
-    );
-
   return (
     <main
       ref={gameScreenRef}
@@ -1265,12 +1250,6 @@ export function EventPreview({
           data-opfg-scale-bound="true"
           className="opfg-game-adventure-region relative mx-auto mt-4 w-full max-w-[52rem]"
         >
-          {showDetachedTopEventOrnament && (
-            <div
-              className="opfg-event-fixed-ornament--top-right"
-              aria-hidden="true"
-            />
-          )}
           <div
             data-opfg-scale-bound="true"
             className="opfg-game-side-rail opfg-game-side-rail--stats absolute right-[calc(100%+1rem)] top-0 z-10 hidden w-[14rem] justify-end xl:flex"

@@ -1267,7 +1267,7 @@ export function EventPreview({
         >
           {showDetachedTopEventOrnament && (
             <div
-              className="opfg-event-fixed-ornament--top-right"
+              className="opfg-event-fixed-ornament--top-left"
               aria-hidden="true"
             />
           )}
