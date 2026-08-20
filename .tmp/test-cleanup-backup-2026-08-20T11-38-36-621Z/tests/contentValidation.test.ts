@@ -1,0 +1,386 @@
+﻿import { describe, expect, it } from 'vitest';
+import { contentCatalog } from '../src/game/content/definitions';
+import { validateContent } from '../src/game/validation/validateContent';
+
+function cloneCatalog(): Record<string, any> {
+  return structuredClone(contentCatalog);
+}
+
+function messages(catalog: unknown): string[] {
+  return validateContent(catalog).map(({ path, message }) => `${path}: ${message}`);
+}
+
+function eventById(catalog: Record<string, any>, eventId: string): Record<string, any> {
+  const event = catalog.events.find((entry: Record<string, any>) => entry.id === eventId);
+  if (!event) throw new Error(`Missing event fixture "${eventId}".`);
+  return event;
+}
+
+describe('validateContent', () => {
+  it('validates D2.6 equipment Conditions and crew-role Dice actors', () => {
+    const catalog = cloneCatalog();
+    const key = catalog.races[0].nameKey;
+    const outcome = { id: 'outcome', textKey: key, effects: [] };
+    catalog.events.push({
+      id: 'd26_validator_fixture', kind: 'normal', phase: 'active', titleKey: key, textKey: key,
+      eligibility: { type: 'hasEquipped', itemId: 'missing_equipment' },
+      choices: [{ id: 'choice', textKey: key, visibleIf: { type: 'hasEquippedWeapon', damageType: 'laser', rangeType: 'remote' }, resolution: {
+      type: 'dice', statId: 'navigation', successThreshold: 10,
+      actor: { type: 'crewRole', roleId: 'missing_role', statId: 'calm' },
+      outcomes: { criticalFailure: outcome, failure: outcome, success: outcome, criticalSuccess: outcome },
+      }}],
+    });
+    const errors = messages(catalog);
+    expect(errors).toEqual(expect.arrayContaining([
+      expect.stringContaining('Unknown Equipment ItemId "missing_equipment"'),
+      expect.stringContaining('Invalid equipped weapon damage type'),
+      expect.stringContaining('Invalid equipped weapon range type'),
+      expect.stringContaining('Unknown CrewRoleId "missing_role"'),
+      expect.stringContaining('Invalid NpcStatId "calm"'),
+    ]));
+  });
+
+  it('validates active Log Pose and companion Condition metadata', () => {
+    const catalog = cloneCatalog();
+    const key = catalog.races[0].nameKey;
+    const outcome = { id: 'outcome', textKey: key, effects: [] };
+    catalog.events.push({
+      id: 'd26_special_slot_conditions', kind: 'normal', phase: 'active', titleKey: key, textKey: key,
+      eligibility: { type: 'activeLogPoseIs', logPoseType: 'eternal' },
+      choices: [{
+        id: 'choice', textKey: key, availableIf: { type: 'activeCompanionIs', npcId: 'mira' },
+        resolution: { type: 'deterministic', outcome },
+      }],
+    });
+
+    const errors = messages(catalog);
+    expect(errors).toEqual(expect.arrayContaining([
+      expect.stringContaining('Invalid Log Pose type'),
+      expect.stringContaining('Unknown companion-capable NpcId "mira"'),
+    ]));
+  });
+
+  it('validates D2.6 Item, companion, Market Hub and exact Ship contracts', () => {
+    const catalog = cloneCatalog();
+    catalog.items.push({
+      id: 'broken_item', nameKey: 'item.sealed_chart.name', category: 'item', stackLimit: 1, market: { basePriceBerries: -1, mode: 'dynamic' },
+      modifiers: { calm: 1 }, weapon: { damageType: 'laser', rangeType: 'remote' }, twoHanded: true, logPoseType: 'eternal',
+    });
+    catalog.npcs[0].companionModifiers = { navigation: 4 };
+    catalog.locations[0].hasMarketHub = true;
+    catalog.locations[0].shipMarket = 'none';
+    catalog.locations[0].marketItemIds = [];
+    catalog.ships.find((ship: Record<string, any>) => ship.id === 'dinghy').cargoSlots = 2;
+    const errors = messages(catalog);
+    expect(errors).toEqual(expect.arrayContaining([
+      expect.stringContaining('Item basePriceBerries must be a positive integer'),
+      expect.stringContaining('Invalid Item market mode'),
+      expect.stringContaining('Equipment-only fields are forbidden'),
+      expect.stringContaining('Invalid weapon damage type'),
+      expect.stringContaining('Log Pose identity'),
+      expect.stringContaining('Companion modifiers require companionCapable'),
+      expect.stringContaining('absolute total cannot exceed 3'),
+      expect.stringContaining('Market Hub requires an authored'),
+      expect.stringContaining('requires cargo 1 and price 5000'),
+    ]));
+  });
+
+  it('validates Devil Fruit registries and Powers primitives', () => {
+    const catalog = cloneCatalog();
+    catalog.devilFruits.push({ id: 'broken_fruit', nameKey: 'devilFruit.yuki_yuki.name', type: 'mystery', playableV1: true, itemId: 'missing_item', tags: ['unknown_tag'] });
+    const event = eventById(catalog, 'departure');
+    event.choices[0].availableIf = { type: 'devilFruitIs', fruitId: 'missing_fruit' };
+    event.choices[0].resolution.outcome.effects = [
+      { type: 'increaseDevilFruitAwakening', amount: -1 },
+      { type: 'raiseConquerorHakiTo', level: 6 },
+    ];
+    const errors = messages(catalog);
+    expect(errors).toEqual(expect.arrayContaining([
+      expect.stringContaining('Unknown ItemId "missing_item"'),
+      expect.stringContaining('Invalid Devil Fruit type'),
+      expect.stringContaining('Unknown Devil Fruit tag'),
+      expect.stringContaining('Unknown DevilFruitId "missing_fruit"'),
+      expect.stringContaining('Awakening increase must be a positive integer'),
+      expect.stringContaining('Conqueror Haki level must be an integer from 1 to 5'),
+    ]));
+  });
+  it('accepts the playable catalog', () => {
+    expect(validateContent(contentCatalog)).toEqual([]);
+    expect(contentCatalog.traits).toContainEqual({
+      id: 'audacious',
+      nameKey: 'trait.audacious.name',
+      descriptionKey: 'trait.audacious.description',
+      oppositeTraitId: 'cautious',
+    });
+  });
+
+  it('accepts lifetimeThreadSeed only as true on Normal Events', () => {
+    const valid = cloneCatalog();
+    eventById(valid, 'departure').lifetimeThreadSeed = true;
+    expect(validateContent(valid)).toEqual([]);
+
+    const invalidValue = cloneCatalog();
+    eventById(invalidValue, 'departure').lifetimeThreadSeed = false;
+    expect(messages(invalidValue)).toContainEqual(expect.stringContaining('lifetimeThreadSeed must be true'));
+
+    const invalidKind = cloneCatalog();
+    invalidKind.events.find((event: Record<string, any>) => event.kind !== 'normal').lifetimeThreadSeed = true;
+    expect(messages(invalidKind)).toContainEqual(expect.stringContaining('Invalid Event kind field combination'));
+  });
+
+  it('validates replay only on non-lifetime Normal Events', () => {
+    const valid = cloneCatalog();
+    eventById(valid, 'departure').replay = { cooldownMonths: 24, maxOccurrences: 3 };
+    expect(validateContent(valid)).toEqual([]);
+
+    const invalid = cloneCatalog();
+    const event = eventById(invalid, 'departure');
+    event.replay = { cooldownMonths: 0, maxOccurrences: 1 };
+    event.lifetimeThreadSeed = true;
+    const errors = messages(invalid);
+    expect(errors).toEqual(expect.arrayContaining([
+      expect.stringContaining('cooldownMonths must be an integer of at least 1'),
+      expect.stringContaining('maxOccurrences must be an integer of at least 2'),
+      expect.stringContaining('lifetimeThreadSeed Events cannot be replayable'),
+    ]));
+  });
+
+  it('validates Event cast NPC references', () => {
+    const valid = cloneCatalog();
+    eventById(valid, 'departure').cast = ['mira'];
+    expect(validateContent(valid)).toEqual([]);
+
+    const invalid = cloneCatalog();
+    eventById(invalid, 'departure').cast = ['missing_npc'];
+    expect(messages(invalid)).toContainEqual(expect.stringContaining('Unknown NpcId "missing_npc"'));
+  });
+
+  it('validates ShipDefinition references, Location market capability, and stack quantities', () => {
+    const catalog = cloneCatalog();
+    catalog.locations[0].shipMarket = 'yes';
+    eventById(catalog, 'wreck').choices[0].resolution.outcome.effects[0].quantity = 0;
+    eventById(catalog, 'year_one_end').choices[0].availableIf = { type: 'canAcquireShip', shipId: 'missing_ship' };
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('Invalid shipMarket'));
+    expect(errors).toContainEqual(expect.stringContaining('Item quantity must be a positive integer'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown ShipId "missing_ship"'));
+  });
+
+  it('rejects authored NPC Crew Roles and validates recruitment references plus leadership override shape', () => {
+    const catalog = cloneCatalog();
+    catalog.npcs[0].crewRoleId = 'missing_role';
+    eventById(catalog, 'mira_castaway').choices[0].availableIf.npcId = 'missing_npc';
+    eventById(catalog, 'mira_castaway').choices[0].resolution.outcome.effects[0].allowWithoutLeadership = 'yes';
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('NPC definitions cannot own Crew Roles'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown NpcId "missing_npc"'));
+    expect(errors).toContainEqual(expect.stringContaining('allowWithoutLeadership must be boolean'));
+  });
+
+  it('validates identity registries, NPC profile references, and text input', () => {
+    const catalog = cloneCatalog();
+    catalog.npcs[0].raceId = 'missing_race';
+    eventById(catalog, 'origin_race').choices[0].resolution.outcome.effects[0].raceId = 'missing_race';
+    eventById(catalog, 'origin_name').eligibility = { type: 'originSeaIs', seaId: 'missing_sea' };
+    eventById(catalog, 'origin_name').choices[0].input.target = 'unknown';
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('Unknown RaceId "missing_race"'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown SeaId "missing_sea"'));
+    expect(errors).toContainEqual(expect.stringContaining('Choice input must be text targeting playerName'));
+  });
+
+  it('rejects duplicate EventIds and ChoiceIds', () => {
+    const catalog = cloneCatalog();
+    const originName = eventById(catalog, 'origin_name');
+    catalog.events.push(structuredClone(originName));
+    originName.choices.push(structuredClone(originName.choices[0]));
+
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('Duplicate ID "origin_name"'));
+    expect(errors).toContainEqual(expect.stringContaining('Duplicate ID "confirm_name"'));
+  });
+
+  it('rejects unknown Event, NPC, Item, and Trait references recursively', () => {
+    const catalog = cloneCatalog();
+    eventById(catalog, 'origin_race').eligibility = {
+      type: 'all',
+      conditions: [
+        { type: 'hasChosen', eventId: 'missing_event', choiceId: 'missing_choice' },
+        {
+          type: 'any',
+          conditions: [
+            { type: 'hasItem', itemId: 'missing_item' },
+            { type: 'not', condition: { type: 'hasTrait', traitId: 'missing_trait' } },
+          ],
+        },
+        { type: 'npcStatusIs', npcId: 'missing_npc', status: 'known' },
+      ],
+    };
+
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('Unknown EventId "missing_event"'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown ItemId "missing_item"'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown TraitId "missing_trait"'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown NpcId "missing_npc"'));
+  });
+
+  it('validates hasPlayed and deterministic or dice hasOutcome references', () => {
+    const catalog = cloneCatalog();
+    eventById(catalog, 'origin_name').eligibility = {
+      type: 'all',
+      conditions: [
+        { type: 'hasPlayed', eventId: 'missing_event' },
+        { type: 'hasOutcome', eventId: 'departure', outcomeId: 'missing_outcome' },
+        { type: 'hasOutcome', eventId: 'black_squall', outcomeId: 'missing_dice_outcome' },
+      ],
+    };
+
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('Unknown EventId "missing_event"'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown OutcomeId "missing_outcome"'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown OutcomeId "missing_dice_outcome"'));
+  });
+
+  it('rejects scheduleEvent targeting an unknown event', () => {
+    const catalog = cloneCatalog();
+    eventById(catalog, 'origin_to_childhood').choices[0].resolution.outcome.effects[0] = {
+      type: 'scheduleEvent',
+      eventId: 'missing_event',
+      delayMonths: 1,
+    };
+
+    expect(messages(catalog)).toContainEqual(expect.stringContaining('Unknown Scheduled EventId "missing_event"'));
+  });
+
+  it('rejects addTrait and removeTrait targeting unknown traits', () => {
+    const catalog = cloneCatalog();
+    eventById(catalog, 'origin_name').choices[0].resolution.outcome.effects = [
+      { type: 'addTrait', traitId: 'missing_trait' },
+      { type: 'removeTrait', traitId: 'another_missing_trait' },
+    ];
+
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('Unknown TraitId "missing_trait"'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown TraitId "another_missing_trait"'));
+  });
+
+  it('rejects invalid opposite Trait references and asymmetric relationships', () => {
+    const missing = cloneCatalog();
+    missing.traits[0].oppositeTraitId = 'missing_trait';
+    expect(messages(missing)).toContainEqual(expect.stringContaining('Unknown TraitId "missing_trait"'));
+
+    const self = cloneCatalog();
+    self.traits[0].oppositeTraitId = 'audacious';
+    expect(messages(self)).toContainEqual(expect.stringContaining('cannot be its own opposite'));
+
+    const asymmetric = cloneCatalog();
+    asymmetric.traits.push({ id: 'cautious', name: 'Cautious', description: 'Careful.' });
+    asymmetric.traits[0].oppositeTraitId = 'cautious';
+    expect(messages(asymmetric)).toContainEqual(expect.stringContaining('must be symmetric'));
+  });
+
+  it('validates optional fixed NPC stats, NPC stat conditions, and NPC stat effects', () => {
+    const catalog = cloneCatalog();
+    catalog.npcs[0].nameKey = '';
+    catalog.npcs[0].initialStats = {
+      health: 51,
+      morale: 25,
+      strength: 25,
+      agility: 25,
+      observation: 25,
+      intelligence: 25,
+      navigation: 25,
+      charisma: 25,
+      luck: 25,
+    };
+    eventById(catalog, 'origin_name').eligibility = {
+      type: 'npcStatAtLeast', npcId: 'missing_npc', statId: 'calm', value: 51,
+    };
+    eventById(catalog, 'origin_name').choices[0].resolution.outcome.effects = [{
+      type: 'modifyNpcStat', npcId: 'missing_npc', statId: 'focus', amount: Number.POSITIVE_INFINITY,
+    }];
+
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('NPC nameKey must be a non-empty string'));
+    expect(errors).toContainEqual(expect.stringContaining('health must be a finite number from 0 to 50'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown NpcId "missing_npc"'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid NpcStatId "calm"'));
+    expect(errors).toContainEqual(expect.stringContaining('npcStatAtLeast value must be a finite number from 0 to 50'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid NpcStatId "focus"'));
+    expect(errors).toContainEqual(expect.stringContaining('modifyNpcStat amount must be finite'));
+  });
+
+  it('validates the vNext DiceResolution contract and rejects legacy fields', () => {
+    const catalog = cloneCatalog();
+    const choice = eventById(catalog, 'black_squall').choices[0];
+    choice.resolution.successThreshold = 20;
+    delete choice.resolution.outcomes.failure;
+    choice.resolution.check = { bands: [] };
+    choice.resolution.traitOverrides = [
+      { traitId: 'missing_trait', forceResult: 'success' },
+      { traitId: 'audacious', forceResult: 'criticalFailure' },
+      { traitId: 'audacious', forceResult: 'criticalFailure' },
+    ];
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('successThreshold must be an integer from 2 to 19'));
+    expect(errors).toContainEqual(expect.stringContaining('Legacy DiceCheck fields are not supported'));
+    expect(errors).toContainEqual(expect.stringContaining('Outcome must be an object'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown TraitId "missing_trait"'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid forced DiceResult "success"'));
+    expect(errors).toContainEqual(expect.stringContaining('Duplicate TraitResultOverride'));
+  });
+
+  it('rejects two DiceChoices using the same main stat in one Event', () => {
+    const catalog = cloneCatalog();
+    const reefs = eventById(catalog, 'reefs');
+    reefs.choices.find((choice: Record<string, any>) => choice.id === 'ride_breakers').resolution.statId = 'navigation';
+
+    expect(messages(catalog)).toContainEqual(
+      expect.stringContaining('Multiple DiceChoices in one Event cannot use StatId "navigation"'),
+    );
+  });
+
+  it('rejects unknown Condition and Effect types and invalid StatIds', () => {
+    const catalog = cloneCatalog();
+    eventById(catalog, 'origin_race').eligibility = { type: 'customScript' };
+    eventById(catalog, 'origin_to_childhood').choices[0].resolution.outcome.effects[0] = { type: 'customEffect' };
+    eventById(catalog, 'reefs').choices.find((choice: Record<string, any>) => choice.id === 'read_currents').availableIf.statId = 'legacy_stat';
+    eventById(catalog, 'black_squall').choices[0].resolution.statId = 'health';
+
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('Unknown Condition type "customScript"'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown Effect type "customEffect"'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid StatId "legacy_stat"'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid StatId "health"'));
+  });
+
+  it('rejects scheduling a normal event and accepts a scheduled target', () => {
+    const invalidCatalog = cloneCatalog();
+    eventById(invalidCatalog, 'departure').choices[0].resolution.outcome.effects[0] = {
+      type: 'scheduleEvent',
+      eventId: 'departure',
+      delayMonths: 1,
+    };
+
+    expect(messages(invalidCatalog)).toContainEqual(
+      expect.stringContaining('Unknown Scheduled EventId "departure"'),
+    );
+    expect(validateContent(contentCatalog)).toEqual([]);
+  });
+
+  it('rejects removed v1 fields and invalid v2 event variants', () => {
+    const catalog = cloneCatalog();
+    eventById(catalog, 'departure').eligibility = { type: 'monthAtLeast', value: 1 };
+    eventById(catalog, 'departure').choices[0].resolution.outcome.advanceMonths = 1;
+    eventById(catalog, 'departure').priority = 100;
+    eventById(catalog, 'mira_returns_favor').scheduledReach = 'teleport';
+    eventById(catalog, 'mira_returns_favor').fallbackEventId = 'departure';
+    const errors = messages(catalog);
+    expect(errors).toContainEqual(expect.stringContaining('Unknown Condition type "monthAtLeast"'));
+    expect(errors).toContainEqual(expect.stringContaining('Outcome.advanceMonths is not supported'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid Event kind field combination'));
+    expect(errors).toContainEqual(expect.stringContaining('Invalid scheduledReach'));
+    expect(errors).toContainEqual(expect.stringContaining('Unknown Scheduled EventId "departure"'));
+  });
+});
+

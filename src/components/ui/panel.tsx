@@ -4,13 +4,13 @@ import { cn } from '@/lib/utils';
 import './panel-skin.css';
 
 const panelVariants = cva(
-  'opfg-panel-skin rounded-[var(--radius-panel)] border bg-surface text-fg shadow-panel',
+  'opfg-panel-skin border text-fg',
   {
     variants: {
       variant: {
-        default: 'border-[var(--border-default)]',
-        strong: 'border-[var(--border-strong)] bg-surface-raised',
-        critical: 'border-[var(--border-critical)] bg-surface-strong',
+        default: '',
+        strong: '',
+        critical: '',
       },
       padding: {
         none: '',
