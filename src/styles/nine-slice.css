@@ -1,0 +1,67 @@
+/*
+ * OPFG gold nine-slice system.
+ *
+ * One source texture only: panel-skin-gold.webp.
+ * Opacity is controlled by CSS custom properties from tokens.css.
+ */
+
+.opfg-panel-skin__frame,
+:is(
+  .opfg-hud-home-button,
+  .opfg-mobile-side-tab,
+  .opfg-mobile-home-button,
+  .opfg-utility-square,
+  .opfg-language-controls__button,
+  .opfg-utility-bar,
+  .opfg-music-player,
+  .opfg-audio-mixer,
+  .opfg-language-controls__menu,
+  .opfg-landing__continue,
+  .opfg-landing__new-primary,
+  .opfg-landing__secondary-button
+)::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-image-source: url('../components/ui/assets/panel-skin-gold.webp');
+  border-image-slice:
+    var(--opfg-nine-slice-y, 58)
+    var(--opfg-nine-slice-x, 72)
+    fill;
+  border-image-width: var(--opfg-nine-slice-width, 10px);
+  border-image-outset: var(--opfg-nine-slice-outset, 1px);
+  border-image-repeat: stretch;
+  opacity: var(
+    --opfg-nine-slice-opacity,
+    var(--opfg-nine-slice-opacity-default, 0.65)
+  );
+  content: '';
+  pointer-events: none;
+  user-select: none;
+}
+
+:is(
+  .opfg-hud-home-button,
+  .opfg-mobile-side-tab,
+  .opfg-mobile-home-button,
+  .opfg-utility-square,
+  .opfg-language-controls__button,
+  .opfg-utility-bar,
+  .opfg-music-player,
+  .opfg-audio-mixer,
+  .opfg-language-controls__menu,
+  .opfg-landing__continue,
+  .opfg-landing__new-primary,
+  .opfg-landing__secondary-button
+) {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Mixer and language popover use the quieter global opacity token. */
+.opfg-audio-mixer,
+.opfg-language-controls__menu {
+  --opfg-nine-slice-opacity: var(--opfg-nine-slice-opacity-muted, 0.35);
+}

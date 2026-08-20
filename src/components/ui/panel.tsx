@@ -30,8 +30,13 @@ export interface PanelProps
   extends HTMLAttributes<HTMLElement>,
     VariantProps<typeof panelVariants> {}
 
-export function Panel({ className, variant, padding, ...props }: PanelProps) {
-  return <section className={cn(panelVariants({ variant, padding }), className)} {...props} />;
+export function Panel({ className, variant, padding, children, ...props }: PanelProps) {
+  return (
+    <section className={cn(panelVariants({ variant, padding }), className)} {...props}>
+      <span aria-hidden="true" className="opfg-panel-skin__frame" />
+      {children}
+    </section>
+  );
 }
 
 export function PanelHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
