@@ -55,6 +55,10 @@ const landingDictionaries: Record<LocaleId, LocalizationDictionary> = {
 
 const activeSystemDictionaries: Record<LocaleId, LocalizationDictionary> = {
   fr: {
+    'ui.crew.power.confirm.title': 'Utiliser ce pouvoir ?',
+    'ui.crew.power.confirm.body': 'Êtes-vous sûr de vouloir utiliser le pouvoir du {role} ?',
+    'ui.crew.power.confirm.yes': 'Oui',
+    'ui.crew.power.confirm.no': 'Non',
     'ui.departure.title': 'Prendre la mer ?',
     'ui.departure.body': 'Tu peux quitter cette île maintenant, ou rester encore ici.',
     'ui.departure.depart': 'Prendre la mer',
@@ -115,6 +119,10 @@ const activeSystemDictionaries: Record<LocaleId, LocalizationDictionary> = {
     'event.active_paradise_route_start.outcome.course_set.text': 'La route est fixée. La prochaine traversée partira de Twin Capes.',
   },
   en: {
+    'ui.crew.power.confirm.title': 'Use this power?',
+    'ui.crew.power.confirm.body': "Are you sure you want to use the {role}'s power?",
+    'ui.crew.power.confirm.yes': 'Yes',
+    'ui.crew.power.confirm.no': 'No',
     'ui.departure.title': 'Set sail?',
     'ui.departure.body': 'You can leave this island now, or stay here a while longer.',
     'ui.departure.depart': 'Set sail',
