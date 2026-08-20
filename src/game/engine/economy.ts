@@ -1,6 +1,6 @@
 import type { ContentCatalog, DiceResult, ItemDefinition } from '../content/schema';
 import type { GameState, InventoryState, ItemId, ItemStack, ShipId } from '../model/schema';
-import { addStack, availableCargoSlots, findShipDefinition } from './ship';
+import { addStack, availableCargoSlots, canAcquireShip, findShipDefinition } from './ship';
 import { statToDiceModifier } from './dice';
 import { effectivePlayerStat } from './stats';
 
@@ -97,7 +97,7 @@ export function shipSellPrice(state: GameState, catalog: ContentCatalog, shipId:
 export function canBuyShip(state: GameState, catalog: ContentCatalog, shipId: ShipId, negotiation?: DiceResult): boolean {
   const market = catalog.locations.find(({ id }) => id === state.locationId)?.shipMarket ?? 'none';
   const offered = market === 'full' || (market === 'small_craft' && ['dinghy', 'sloop'].includes(shipId));
-  return offered && state.isLeader && state.ship === null && state.pendingShip === null && state.berries >= shipBuyPrice(catalog, shipId, negotiation);
+  return offered && canAcquireShip(state, catalog, shipId) && state.isLeader && state.ship === null && state.pendingShip === null && state.berries >= shipBuyPrice(catalog, shipId, negotiation);
 }
 
 export function buyShip(state: GameState, catalog: ContentCatalog, shipId: ShipId, name: string, negotiation?: DiceResult): void {

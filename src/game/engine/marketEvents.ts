@@ -372,20 +372,14 @@ function shipConfirmation(
     : canSellShip(state, catalog);
 
   const normalCondition = operation === 'buy'
-    ? {
-        type: 'all' as const,
-        conditions: [
-          { type: 'canAcquireShip' as const, shipId },
-          { type: 'berriesAtLeast' as const, value: price },
-        ],
-      }
+    ? { type: 'canBuyShip' as const, shipId }
     : { type: 'canSellShip' as const };
 
   const negotiationCondition = operation === 'buy'
     ? {
         type: 'all' as const,
         conditions: [
-          { type: 'canAcquireShip' as const, shipId },
+          { type: 'canBuyShip' as const, shipId },
           {
             type: 'berriesAtLeast' as const,
             value: shipBuyPrice(catalog, shipId, 'criticalFailure'),

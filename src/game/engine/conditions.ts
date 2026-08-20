@@ -2,7 +2,7 @@ import type { ChoiceDefinition } from '../content/schema';
 import type { Condition } from '../content/schema';
 import type { GameState } from '../model/schema';
 import { availableCargoSlots, canAcquireShip, canRecruitNpc, countCurrentCrew, findShipDefinition } from './ship';
-import { canBuyItem, canSellItem, canSellShip as canSellShipAtMarket, inventoryFreeSlots, itemQuantity } from './economy';
+import { canBuyItem, canBuyShip, canSellItem, canSellShip as canSellShipAtMarket, inventoryFreeSlots, itemQuantity } from './economy';
 import { canConsumeDevilFruit, playerHakiSourceTotal } from './powers';
 import { isLocationWithin } from './locations';
 import { countFallbackStreak, currentSeaPorts, currentShipDestructionCause, findBestSwimmingRescuer, findHighestRelationshipFruitCrew, sameIslandPorts } from './maritime';
@@ -105,6 +105,8 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
       return state.ship !== null && catalog !== undefined && findShipDefinition(catalog, state.ship.shipId).crewCapacity >= condition.value;
     case 'shipCargoSpaceAtLeast':
       return state.ship !== null && catalog !== undefined && availableCargoSlots(state.ship, catalog, state.passengerNpcIds.length) >= condition.value;
+    case 'canBuyShip':
+      return catalog !== undefined && canBuyShip(state, catalog, condition.shipId);
     case 'canAcquireShip':
       return catalog !== undefined && canAcquireShip(state, catalog, condition.shipId);
     case 'canSellShip': {

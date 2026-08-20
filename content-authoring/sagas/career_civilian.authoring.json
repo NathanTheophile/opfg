@@ -119,16 +119,16 @@
         {
           "id": "trade",
           "text": {
-            "fr": "Prendre le problème de cargaison",
-            "en": "Take the cargo problem"
+            "fr": "Intercepter la mauvaise caisse dans le flux",
+            "en": "Intercept the wrong crate in the loading flow"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu reprends les comptes, fais signer chaque transfert et récupères une petite marge. Les chargeurs savent désormais quel nom chercher quand un accord menace de casser.",
-                "en": "You rebuild the accounts, get every transfer signed, and keep a small margin. The loaders now know whose name to look for when a deal is about to break."
+                "fr": "Tu te glisses entre les équipes de chargement, repères le mauvais transfert et bloques la caisse juste avant qu’elle ne change de ponton.",
+                "en": "You weave between loading crews, catch the wrong handoff, and stop the crate just before it changes piers."
               },
               "effects": [
                 {
@@ -138,6 +138,11 @@
                 {
                   "type": "queueImmediateEvent",
                   "eventId": "career_civilian_01_inherited_stake_i01"
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "agility",
+                  "amount": 1
                 }
               ]
             }
@@ -333,21 +338,26 @@
         {
           "id": "trade",
           "text": {
-            "fr": "Prendre la cargaison litigieuse",
-            "en": "Take the disputed cargo"
+            "fr": "Rattraper la caisse litigieuse avant l’embarquement",
+            "en": "Catch the disputed crate before it is loaded"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu retrouves la caisse qui a changé de main sans signature et fais corriger le registre avant le départ. Ta première marge vient d’un problème que personne ne voulait porter.",
-                "en": "You trace the crate that changed hands without a signature and correct the ledger before departure. Your first margin comes from a problem nobody wanted to own."
+                "fr": "Tu remontes la file de porteurs, passes entre deux chariots et interceptes la caisse avant la passerelle. Le changement de main sans signature est corrigé avant le départ.",
+                "en": "You move up the porter line, slip between two carts, and intercept the crate before the gangway. The unsigned handoff is corrected before departure."
               },
               "effects": [
                 {
                   "type": "modifyBerries",
                   "amount": 750
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "agility",
+                  "amount": 1
                 }
               ]
             }
@@ -603,7 +613,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "observation",
                   "amount": 1
                 }
               ]
@@ -627,7 +637,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "observation",
                   "amount": 1
                 }
               ]
@@ -885,11 +895,6 @@
                 },
                 "effects": [
                   {
-                    "type": "modifyStat",
-                    "statId": "navigation",
-                    "amount": 2
-                  },
-                  {
                     "type": "modifyReputation",
                     "amount": 3
                   },
@@ -905,21 +910,21 @@
         {
           "id": "craft",
           "text": {
-            "fr": "Fabriquer des balises flottantes",
-            "en": "Build floating markers"
+            "fr": "Assembler et mouiller les balises flottantes",
+            "en": "Assemble and set the floating markers"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu noues les flotteurs, règles leurs longueurs et les mets à l’eau sans emmêler les lignes. La chaîne reste lisible malgré la brume.",
+                "en": "You knot the floats, set their line lengths, and launch them without tangling the ropes. The marker chain stays readable through the fog."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "agility",
                   "amount": 1
                 }
               ]
@@ -929,21 +934,26 @@
         {
           "id": "community",
           "text": {
-            "fr": "Répartir les livraisons entre bateaux",
-            "en": "Split deliveries among boats"
+            "fr": "Relayer les livraisons de bateau en bateau",
+            "en": "Relay the deliveries from boat to boat"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "community",
               "text": {
-                "fr": "Tu mets les personnes concernées dans la décision. Le résultat est plus lent, mais il devient difficile à ignorer.",
-                "en": "You put the people affected inside the decision. The result is slower, but harder to ignore."
+                "fr": "Tu passes d’une embarcation à l’autre dans la brume, ajustes chaque transfert au roulis et gardes les colis hors de l’eau jusqu’à la dernière livraison.",
+                "en": "You move from boat to boat through the fog, time each handoff with the roll, and keep the packages out of the water through the final delivery."
               },
               "effects": [
                 {
                   "type": "modifyReputation",
                   "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "agility",
+                  "amount": 2
                 }
               ]
             }
@@ -1075,21 +1085,26 @@
         {
           "id": "trade",
           "text": {
-            "fr": "Négocier les pièces au comptoir",
-            "en": "Negotiate for parts"
+            "fr": "Récupérer les pièces avant la chute de pression",
+            "en": "Fetch the parts before pressure drops"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu fais passer le problème par les comptes et les engagements. L’accord tient, mais il crée une nouvelle attente autour de toi.",
-                "en": "You route the problem through accounts and commitments. The deal holds, but it creates a new expectation around you."
+                "fr": "Tu files d’un comptoir à l’autre, reviens avec le joint et les brides avant que la pompe ne perde toute pression, puis livres les pièces au chantier sans casser le rythme.",
+                "en": "You race from counter to counter, return with the gasket and clamps before the pump loses all pressure, then deliver the parts to the worksite without breaking pace."
               },
               "effects": [
                 {
                   "type": "modifyBerries",
                   "amount": 1000
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "agility",
+                  "amount": 2
                 }
               ]
             }
@@ -1112,7 +1127,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "observation",
                   "amount": 1
                 }
               ]
@@ -1189,11 +1204,6 @@
                 },
                 "effects": [
                   {
-                    "type": "modifyStat",
-                    "statId": "intelligence",
-                    "amount": 2
-                  },
-                  {
                     "type": "modifyReputation",
                     "amount": 3
                   }
@@ -1205,20 +1215,25 @@
         {
           "id": "community",
           "text": {
-            "fr": "Organiser des tours de citerne",
-            "en": "Organize water-cart shifts"
+            "fr": "Porter l’eau pendant les tours de citerne",
+            "en": "Carry water through the cistern rotation"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "community",
               "text": {
-                "fr": "Tu mets les personnes concernées dans la décision. Le résultat est plus lent, mais il devient difficile à ignorer.",
-                "en": "You put the people affected inside the decision. The result is slower, but harder to ignore."
+                "fr": "Tu prends les seaux pleins à chaque rotation et les portes jusqu’aux maisons les plus éloignées pendant que les voisins gardent la file ordonnée.",
+                "en": "You take the full buckets on each rotation and carry them to the farthest homes while the neighbors keep the line orderly."
               },
               "effects": [
                 {
                   "type": "modifyReputation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "strength",
                   "amount": 1
                 }
               ]
@@ -1283,21 +1298,26 @@
         {
           "id": "trade",
           "text": {
-            "fr": "Payer des bras pour déplacer les étals",
-            "en": "Pay hands to move the stalls"
+            "fr": "Payer des bras et porter les étals avec eux",
+            "en": "Pay for extra hands and haul the stalls with them"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu fais passer le problème par les comptes et les engagements. L’accord tient, mais il crée une nouvelle attente autour de toi.",
-                "en": "You route the problem through accounts and commitments. The deal holds, but it creates a new expectation around you."
+                "fr": "Tu engages deux manutentionnaires puis prends les charges les plus lourdes avec eux. Les étals quittent l’allée avant que les flammes ne coupent le dernier passage.",
+                "en": "You hire two porters and take the heaviest loads with them. The stalls leave the alley before the flames cut off the last passage."
               },
               "effects": [
                 {
                   "type": "modifyBerries",
                   "amount": 1000
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "strength",
+                  "amount": 1
                 }
               ]
             }
@@ -1320,7 +1340,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "agility",
                   "amount": 1
                 }
               ]
@@ -1344,7 +1364,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "strength",
                   "amount": 1
                 }
               ]
@@ -1500,21 +1520,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Chercher du travail hors du port",
-            "en": "Look for work beyond the port"
+            "fr": "Prendre une journée de manutention hors du port",
+            "en": "Take a hauling shift outside the port"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu trouves un dépôt encore ouvert, prends les charges les plus lourdes et les déplaces jusqu’à la fin du service. La semaine reste mauvaise, mais tu as gagné ta journée par l’effort.",
+                "en": "You find a depot still open, take the heaviest loads, and move them through the end of the shift. The week is still bad, but you earn the day through physical work."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "strength",
                   "amount": 1
                 }
               ]
@@ -1749,7 +1769,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "observation",
                   "amount": 1
                 }
               ]
@@ -1985,21 +2005,21 @@
         {
           "id": "craft",
           "text": {
-            "fr": "Construire une sonde de fortune",
-            "en": "Build an improvised depth gauge"
+            "fr": "Assembler et manier une sonde de fortune",
+            "en": "Build and handle an improvised sounding line"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu fixes le plomb, règles les repères de corde et prends les premières mesures sans laisser la ligne s’emmêler sous la coque.",
+                "en": "You fasten the weight, set the rope marks, and take the first soundings without letting the line tangle beneath the hull."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "agility",
                   "amount": 1
                 }
               ]
@@ -2251,20 +2271,25 @@
         {
           "id": "community",
           "text": {
-            "fr": "Poster des feux sur la côte",
-            "en": "Post signal fires along the coast"
+            "fr": "Installer les feux de relais avant la nuit",
+            "en": "Set the relay fires before nightfall"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "community",
               "text": {
-                "fr": "Tu mets les personnes concernées dans la décision. Le résultat est plus lent, mais il devient difficile à ignorer.",
-                "en": "You put the people affected inside the decision. The result is slower, but harder to ignore."
+                "fr": "Tu cours la côte avec les lanternes, grimpes les derniers talus et allumes chaque relais dans l’ordre avant que la lumière ne tombe.",
+                "en": "You run the coast with the lanterns, climb the last embankments, and light each relay in sequence before daylight fades."
               },
               "effects": [
                 {
                   "type": "modifyReputation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "agility",
                   "amount": 1
                 }
               ]
@@ -2438,21 +2463,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Déplacer la vente sur l’autre rive",
-            "en": "Move the sale across the bay"
+            "fr": "Porter la vente sur l’autre rive",
+            "en": "Carry the market to the other bank"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu charges paniers et tréteaux sur les bacs puis les décharges de l’autre côté avant le prochain passage des collecteurs. La vente reprend ailleurs sans transformer le déplacement en compétence de navigation.",
+                "en": "You load baskets and trestles onto the ferries and unload them on the other bank before the collectors make another round. The market resumes elsewhere without treating the move as navigation skill."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "strength",
                   "amount": 1
                 }
               ]
@@ -2462,21 +2487,21 @@
         {
           "id": "craft",
           "text": {
-            "fr": "Monter un comptoir provisoire",
-            "en": "Build a temporary counter"
+            "fr": "Monter le comptoir à la main",
+            "en": "Build the temporary counter by hand"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu portes les planches, tiens les montants et bloques le comptoir assez solidement pour que la vente reprenne avant le prochain contrôle.",
+                "en": "You carry the boards, hold the uprights, and brace the counter firmly enough for trade to resume before the next inspection."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "strength",
                   "amount": 1
                 }
               ]
@@ -2757,7 +2782,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "agility",
                   "amount": 1
                 }
               ]
@@ -2970,21 +2995,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Chercher un second fournisseur",
-            "en": "Find a second supplier"
+            "fr": "Inspecter les stocks d’un second fournisseur",
+            "en": "Inspect a second supplier’s stock"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu vérifies les sceaux, l’état des caisses et les heures réelles de livraison chez un second fournisseur avant de lui confier une part du marché.",
+                "en": "You check seals, crate condition, and actual delivery times at a second supplier before trusting them with part of the market."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "observation",
                   "amount": 1
                 }
               ]
@@ -3040,6 +3065,11 @@
               "effects": [
                 {
                   "type": "modifyReputation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
                   "amount": 1
                 }
               ]
@@ -3255,7 +3285,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "strength",
                   "amount": 1
                 },
                 {
@@ -3388,6 +3418,11 @@
                 {
                   "type": "modifyReputation",
                   "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
                 }
               ]
             }
@@ -3396,21 +3431,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Emporter la méthode ailleurs",
-            "en": "Take the method elsewhere"
+            "fr": "Refaire la méthode dans un autre atelier",
+            "en": "Reproduce the method in another workshop"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu prends tes notes ailleurs et refais toi-même la séquence devant un autre établi. Les gestes restent propres sans le matériel du patron, prouvant que la méthode ne dépend pas de son nom.",
+                "en": "You take your notes elsewhere and reproduce the sequence yourself at another bench. The motions stay clean without the patron’s equipment, proving the method does not depend on his name."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "agility",
                   "amount": 1
                 }
               ]
@@ -3575,21 +3610,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Trouver des logements ailleurs",
-            "en": "Find housing elsewhere"
+            "fr": "Inspecter les logements réellement libres",
+            "en": "Inspect the rooms that are actually available"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu visites les immeubles voisins, repères les portes condamnées de façade mais habitables par l’arrière et écartes les pièces déjà promises. Plusieurs familles obtiennent enfin des options vérifiables.",
+                "en": "You inspect nearby buildings, spot rooms that look sealed from the street but remain usable from the rear, and reject places already promised away. Several families finally get options they can verify."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "observation",
                   "amount": 1
                 }
               ]
@@ -3613,7 +3648,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "observation",
                   "amount": 1
                 },
                 {
@@ -3841,16 +3876,16 @@
         {
           "id": "trade",
           "text": {
-            "fr": "Accepter un contrat court",
-            "en": "Take a short contract"
+            "fr": "Prendre un contrat court de manutention",
+            "en": "Take a short hauling contract"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu fais passer le problème par les comptes et les engagements. L’accord tient, mais il crée une nouvelle attente autour de toi.",
-                "en": "You route the problem through accounts and commitments. The deal holds, but it creates a new expectation around you."
+                "fr": "Tu acceptes quelques jours de manutention et prends les caisses qui restent quand les autres équipes ralentissent. Ce n’est pas prestigieux, mais le travail paie la mauvaise saison.",
+                "en": "You take a few days of hauling work and carry the crates left when the other crews slow down. It is not prestigious, but the labor pays through the bad season."
               },
               "effects": [
                 {
@@ -3860,6 +3895,11 @@
                 {
                   "type": "modifyReputation",
                   "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "strength",
+                  "amount": 1
                 }
               ]
             }
@@ -3868,21 +3908,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Partir vers une île plus active",
-            "en": "Leave for a busier island"
+            "fr": "Accepter de recommencer ailleurs",
+            "en": "Accept starting over somewhere else"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu refuses de transformer une mauvaise saison en naufrage d’orgueil. Tu fermes proprement ce qui doit l’être, gardes l’essentiel et repars sans prétendre que le revers n’a pas compté.",
+                "en": "You refuse to turn a bad season into a matter of pride. You close what needs closing, keep the essentials, and leave without pretending the setback did not matter."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "morale",
                   "amount": 1
                 }
               ]
@@ -4149,7 +4189,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "observation",
                   "amount": 1
                 }
               ]
@@ -4178,6 +4218,11 @@
                 {
                   "type": "modifyBerries",
                   "amount": -500
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
                 }
               ]
             }
@@ -4263,16 +4308,16 @@
         {
           "id": "trade",
           "text": {
-            "fr": "Mettre en commun vivres et voiles",
-            "en": "Pool supplies and spare sails"
+            "fr": "Passer vivres et voiles entre les bateaux",
+            "en": "Pass food and sails between the boats"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu fais passer le problème par les comptes et les engagements. L’accord tient, mais il crée une nouvelle attente autour de toi.",
-                "en": "You route the problem through accounts and commitments. The deal holds, but it creates a new expectation around you."
+                "fr": "Tu coordonnes les rapprochements, sautes les petits écarts au bon moment et fais passer les sacs et les voiles sans qu’aucune embarcation ne perde son cap de repli.",
+                "en": "You coordinate the approaches, cross the small gaps at the right moment, and pass food and sails without any boat losing its retreat heading."
               },
               "effects": [
                 {
@@ -4282,6 +4327,11 @@
                 {
                   "type": "modifyReputation",
                   "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "agility",
+                  "amount": 2
                 }
               ]
             }
@@ -4369,11 +4419,6 @@
                 },
                 "effects": [
                   {
-                    "type": "modifyStat",
-                    "statId": "navigation",
-                    "amount": 2
-                  },
-                  {
                     "type": "modifyReputation",
                     "amount": 3
                   },
@@ -4389,21 +4434,21 @@
         {
           "id": "craft",
           "text": {
-            "fr": "Installer des lignes de remorquage",
-            "en": "Rig towing lines"
+            "fr": "Tendre les lignes de remorquage",
+            "en": "Set the tow lines under tension"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu tires les aussières jusqu’à reprendre le mou et les maintiens pendant que chaque équipage les fixe. Les bateaux gardent enfin une distance sûre dans la houle.",
+                "en": "You haul the tow lines until the slack is gone and hold them while each crew secures its end. The boats finally keep safe spacing in the swell."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "strength",
                   "amount": 1
                 }
               ]
@@ -4585,16 +4630,16 @@
         {
           "id": "trade",
           "text": {
-            "fr": "Racheter du matériel aux hôtels",
-            "en": "Buy spare equipment from hotels"
+            "fr": "Récupérer le matériel des hôtels avant l’afflux",
+            "en": "Collect hotel equipment before the rush"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu fais passer le problème par les comptes et les engagements. L’accord tient, mais il crée une nouvelle attente autour de toi.",
-                "en": "You route the problem through accounts and commitments. The deal holds, but it creates a new expectation around you."
+                "fr": "Tu fais le tour des cuisines et buanderies, récupères le matériel compatible et reviens avant que la file de patients ne dépasse la salle d’attente.",
+                "en": "You make the rounds through kitchens and laundries, collect compatible equipment, and return before the patient line spills past the waiting room."
               },
               "effects": [
                 {
@@ -4604,6 +4649,11 @@
                 {
                   "type": "modifyReputation",
                   "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "agility",
+                  "amount": 1
                 }
               ]
             }
@@ -4612,21 +4662,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Chercher une clinique voisine",
-            "en": "Find another clinic"
+            "fr": "Porter le matériel urgent à la clinique voisine",
+            "en": "Carry the urgent equipment to the nearby clinic"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu prends les instruments déjà triés et les portes à la clinique voisine avant que la file de patients ne double. Le relais ouvre assez de capacité pour éviter l’improvisation dangereuse.",
+                "en": "You take the sorted instruments and carry them to the nearby clinic before the patient line doubles. The relay opens enough capacity to avoid unsafe improvisation."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "agility",
                   "amount": 1
                 }
               ]
@@ -4715,11 +4765,6 @@
                 },
                 "effects": [
                   {
-                    "type": "modifyStat",
-                    "statId": "intelligence",
-                    "amount": 2
-                  },
-                  {
                     "type": "modifyReputation",
                     "amount": 3
                   },
@@ -4735,16 +4780,16 @@
         {
           "id": "community",
           "text": {
-            "fr": "Organiser des postes de soins séparés",
-            "en": "Organize separate care stations"
+            "fr": "Maintenir des postes de soins séparés malgré la pression",
+            "en": "Keep separate care stations running under pressure"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "community",
               "text": {
-                "fr": "Tu mets les personnes concernées dans la décision. Le résultat est plus lent, mais il devient difficile à ignorer.",
-                "en": "You put the people affected inside the decision. The result is slower, but harder to ignore."
+                "fr": "Tu gardes les équipes calmes, sépares les flux de patients et tiens l’organisation jusqu’à ce que le matériel redevienne sûr. Personne n’est laissé à improviser dans la panique.",
+                "en": "You keep the teams calm, separate the patient flows, and hold the organization together until the equipment is safe again. Nobody is left improvising in panic."
               },
               "effects": [
                 {
@@ -4754,6 +4799,11 @@
                 {
                   "type": "modifyBerries",
                   "amount": -500
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 2
                 }
               ]
             }
@@ -4907,16 +4957,16 @@
         {
           "id": "trade",
           "text": {
-            "fr": "Louer un second dépôt",
-            "en": "Rent a second storehouse"
+            "fr": "Ouvrir le second dépôt et y déplacer l’urgence",
+            "en": "Open the second depot and move the urgent stock"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu fais passer le problème par les comptes et les engagements. L’accord tient, mais il crée une nouvelle attente autour de toi.",
-                "en": "You route the problem through accounts and commitments. The deal holds, but it creates a new expectation around you."
+                "fr": "Tu fais ouvrir le second dépôt puis transportes d’abord les médicaments, couvertures sèches et registres indispensables avant que l’eau n’envahisse le passage bas.",
+                "en": "You get the second depot opened and move the medicine, dry blankets, and essential records first before water floods the lower passage."
               },
               "effects": [
                 {
@@ -4926,6 +4976,11 @@
                 {
                   "type": "modifyReputation",
                   "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "agility",
+                  "amount": 1
                 }
               ]
             }
@@ -4934,21 +4989,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Ouvrir un refuge sur les hauteurs",
-            "en": "Open a shelter uphill"
+            "fr": "Monter les réserves vers le refuge haut",
+            "en": "Carry supplies up to the high shelter"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu prends les caisses, couvertures et bidons les plus lourds et les montes jusqu’au refuge des hauteurs. Quand la pluie gagne le bas du quartier, l’essentiel est déjà hors d’eau.",
+                "en": "You take the heaviest crates, blankets, and cans and carry them up to the high shelter. By the time the rain reaches the lower district, the essentials are already above the water."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "strength",
                   "amount": 1
                 }
               ]
@@ -4958,21 +5013,21 @@
         {
           "id": "craft",
           "text": {
-            "fr": "Monter des plateformes sèches",
-            "en": "Build dry platforms"
+            "fr": "Lever des plateformes au-dessus de l’eau",
+            "en": "Raise platforms above the water"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu portes les madriers, soulèves les cadres et maintiens chaque plateforme pendant qu’on la cale. Les couchages gagnent enfin quelques dizaines de centimètres sur l’eau.",
+                "en": "You carry the planks, lift the frames, and hold each platform while it is wedged in place. The sleeping areas finally gain a few inches above the water."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "strength",
                   "amount": 1
                 }
               ]
@@ -5394,21 +5449,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Porter l’affaire sur un autre marché",
-            "en": "Take the case to another market"
+            "fr": "Contrôler les balances avant l’ouverture du marché",
+            "en": "Check the scales before the market opens"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu fais le tour des étals avant la cloche, poses la balance témoin, ajustes chaque contrôle sans interrompre le montage et termines avant l’arrivée des clients.",
+                "en": "You move through the stalls before the bell, set the reference weight, perform each check without stopping setup, and finish before customers arrive."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "agility",
                   "amount": 1
                 },
                 {
@@ -5426,21 +5481,21 @@
         {
           "id": "craft",
           "text": {
-            "fr": "Démonter le mécanisme truqué",
-            "en": "Strip the rigged mechanism"
+            "fr": "Démonter la tringlerie sans fausser les pièces",
+            "en": "Strip the linkage without bending the parts"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu retires axes et ressorts dans l’ordre, gardes la tension sous contrôle et exposes le réglage truqué sans abîmer les pièces qui serviront de preuve.",
+                "en": "You remove pins and springs in sequence, keep the tension controlled, and expose the rigged setting without damaging the parts needed as evidence."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "agility",
                   "amount": 1
                 }
               ]
@@ -5464,6 +5519,11 @@
               "effects": [
                 {
                   "type": "modifyReputation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
                   "amount": 1
                 }
               ]
@@ -5697,20 +5757,25 @@
         {
           "id": "community",
           "text": {
-            "fr": "Donner un droit de veto aux pêcheurs",
-            "en": "Give fishers veto power"
+            "fr": "Maintenir le veto des pêcheurs malgré les offres",
+            "en": "Keep the fishers’ veto despite the offers"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "community",
               "text": {
-                "fr": "Tu mets les personnes concernées dans la décision. Le résultat est plus lent, mais il devient difficile à ignorer.",
-                "en": "You put the people affected inside the decision. The result is slower, but harder to ignore."
+                "fr": "Tu inscris leur veto dans l’accord et refuses de l’effacer quand les acheteurs augmentent leur prix. Le passage garde une limite que l’argent ne suffit pas à déplacer.",
+                "en": "You write their veto into the agreement and refuse to remove it when buyers raise their price. The passage keeps a boundary money alone cannot move."
               },
               "effects": [
                 {
                   "type": "modifyReputation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
                   "amount": 1
                 }
               ]
@@ -5820,21 +5885,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Évacuer le quai par les barges",
-            "en": "Evacuate by barges"
+            "fr": "Maintenir les barges contre le quai",
+            "en": "Hold the barges against the quay"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu tires les amarres jusqu’à plaquer les barges contre le quai et gardes la passerelle stable pendant que les premiers groupes embarquent. La zone sous la grue se vide sans dérive.",
+                "en": "You haul the mooring lines until the barges sit tight against the quay and keep the gangway steady while the first groups board. The area under the crane clears without the boats drifting away."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "strength",
                   "amount": 1
                 },
                 {
@@ -5919,11 +5984,6 @@
                 },
                 "effects": [
                   {
-                    "type": "modifyStat",
-                    "statId": "intelligence",
-                    "amount": 2
-                  },
-                  {
                     "type": "modifyReputation",
                     "amount": 3
                   }
@@ -5935,21 +5995,26 @@
         {
           "id": "community",
           "text": {
-            "fr": "Faire reculer la foule d’abord",
-            "en": "Move the crowd back first"
+            "fr": "Dégager la foule avant que la charge ne reparte",
+            "en": "Clear the crowd before the load moves again"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "community",
               "text": {
-                "fr": "Tu mets les personnes concernées dans la décision. Le résultat est plus lent, mais il devient difficile à ignorer.",
-                "en": "You put the people affected inside the decision. The result is slower, but harder to ignore."
+                "fr": "Tu cours d’une barrière à l’autre, ouvres deux sorties et fais reculer les derniers curieux avant le prochain mouvement de la grue. Le quai respire enfin autour de la charge.",
+                "en": "You run from barrier to barrier, open two exits, and move the last onlookers back before the crane shifts again. The quay finally has clear space around the load."
               },
               "effects": [
                 {
                   "type": "modifyReputation",
                   "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "agility",
+                  "amount": 2
                 }
               ]
             }
@@ -6058,21 +6123,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Inviter les quartiers voisins",
-            "en": "Invite neighboring districts"
+            "fr": "Porter les invitations avant l’ouverture",
+            "en": "Deliver the invitations before the meeting starts"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu traverses les rues, remets les invitations aux bons relais et reviens avant l’ouverture de la séance. Les quartiers voisins arrivent assez tôt pour ne pas découvrir une décision déjà prise.",
+                "en": "You cross the streets, hand the invitations to the right relays, and return before the meeting opens. The neighboring districts arrive early enough not to find a decision already made."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "agility",
                   "amount": 1
                 },
                 {
@@ -6133,6 +6198,11 @@
                 {
                   "type": "queueImmediateEvent",
                   "eventId": "career_civilian_06_community_the_empty_seat_i01"
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
                 }
               ]
             }
@@ -6293,7 +6363,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "morale",
                   "amount": 1
                 },
                 {
@@ -6311,21 +6381,21 @@
         {
           "id": "craft",
           "text": {
-            "fr": "Apporter les preuves au rédacteur",
-            "en": "Bring evidence to the editor"
+            "fr": "Pointer chaque erreur avec sa preuve",
+            "en": "Match each error to its evidence"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu poses les exemplaires côte à côte, repères les noms inversés, les dates impossibles et les signatures qui contredisent l’article avant de les montrer au rédacteur.",
+                "en": "You lay the copies side by side, spot swapped names, impossible dates, and signatures that contradict the story before showing them to the editor."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "observation",
                   "amount": 1
                 }
               ]
@@ -6605,6 +6675,11 @@
                 {
                   "type": "modifyBerries",
                   "amount": -500
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
                 }
               ]
             }
@@ -7020,16 +7095,16 @@
         {
           "id": "trade",
           "text": {
-            "fr": "Faire libérer la cargaison coûteuse",
-            "en": "Order the costly cargo released"
+            "fr": "Forcer le largage de la cargaison avant la chute",
+            "en": "Force the cargo release before the crane falls"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu fais passer le problème par les comptes et les engagements. L’accord tient, mais il crée une nouvelle attente autour de toi.",
-                "en": "You route the problem through accounts and commitments. The deal holds, but it creates a new expectation around you."
+                "fr": "Tu tires le levier de secours à deux mains et maintiens la tringlerie jusqu’au décrochage. La cargaison tombe hors de la zone critique et la grue perd assez de charge pour ne pas écraser le quai.",
+                "en": "You haul the emergency lever with both hands and hold the linkage until it releases. The cargo drops clear of the danger zone and the crane sheds enough weight to avoid crushing the quay."
               },
               "effects": [
                 {
@@ -7039,6 +7114,11 @@
                 {
                   "type": "modifyReputation",
                   "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "strength",
+                  "amount": 2
                 }
               ]
             }
@@ -7061,7 +7141,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "agility",
                   "amount": 1
                 },
                 {
@@ -7158,11 +7238,6 @@
                 },
                 "effects": [
                   {
-                    "type": "modifyStat",
-                    "statId": "intelligence",
-                    "amount": 2
-                  },
-                  {
                     "type": "modifyReputation",
                     "amount": 3
                   },
@@ -7178,16 +7253,16 @@
         {
           "id": "community",
           "text": {
-            "fr": "Coordonner les ouvriers au sol",
-            "en": "Coordinate the workers below"
+            "fr": "Courir placer les cales signalées au sol",
+            "en": "Run the marked wedges into place"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "community",
               "text": {
-                "fr": "Tu mets les personnes concernées dans la décision. Le résultat est plus lent, mais il devient difficile à ignorer.",
-                "en": "You put the people affected inside the decision. The result is slower, but harder to ignore."
+                "fr": "Tu passes d’une équipe à l’autre, poses les cales aux points indiqués et te retires avant chaque nouveau mouvement du câble. Le sol cesse d’être une zone de collision.",
+                "en": "You move from crew to crew, place the wedges at the marked points, and clear out before each new cable movement. The ground stops being a collision zone."
               },
               "effects": [
                 {
@@ -7197,6 +7272,11 @@
                 {
                   "type": "modifyBerries",
                   "amount": -500
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "agility",
+                  "amount": 1
                 }
               ]
             }
@@ -7391,7 +7471,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "observation",
                   "amount": 1
                 },
                 {
@@ -7409,21 +7489,21 @@
         {
           "id": "craft",
           "text": {
-            "fr": "Poser une conduite provisoire",
-            "en": "Lay a temporary pipe"
+            "fr": "Raccorder la conduite provisoire sans fuite",
+            "en": "Fit the temporary pipe without leaks"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu alignes les sections, engages les joints et resserres chaque collier dans l’espace étroit. Le premier filet d’eau passe sans faire sauter le raccord.",
+                "en": "You align the sections, seat the seals, and tighten each clamp in the cramped space. The first flow passes without blowing the joint."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "agility",
                   "amount": 1
                 },
                 {
@@ -7567,16 +7647,16 @@
         {
           "id": "trade",
           "text": {
-            "fr": "Répartir les ressources disponibles",
-            "en": "Allocate the available resources"
+            "fr": "Distribuer les ressources sans bloquer les secours",
+            "en": "Distribute supplies without blocking responders"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu fais passer le problème par les comptes et les engagements. L’accord tient, mais il crée une nouvelle attente autour de toi.",
-                "en": "You route the problem through accounts and commitments. The deal holds, but it creates a new expectation around you."
+                "fr": "Tu fais circuler sacs, outils et eau entre trois points de crise sans encombrer l’accès principal, changeant d’itinéraire au rythme des équipes de secours.",
+                "en": "You shuttle sacks, tools, and water between three crisis points without blocking the main access, changing lanes as responder teams move."
               },
               "effects": [
                 {
@@ -7586,6 +7666,11 @@
                 {
                   "type": "modifyReputation",
                   "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "agility",
+                  "amount": 1
                 }
               ]
             }
@@ -7594,21 +7679,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Rétablir d’abord les accès",
-            "en": "Restore access first"
+            "fr": "Dégager d’abord l’accès principal",
+            "en": "Clear the main access first"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu pousses les chariots hors de l’axe, tires les caisses empilées et libères assez de largeur pour que secours et habitants puissent circuler de nouveau.",
+                "en": "You shove carts out of the line, drag stacked crates aside, and clear enough width for responders and residents to move again."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "strength",
                   "amount": 1
                 },
                 {
@@ -7626,21 +7711,21 @@
         {
           "id": "craft",
           "text": {
-            "fr": "Réparer le goulot principal",
-            "en": "Repair the main bottleneck"
+            "fr": "Dégager le mécanisme bloqué",
+            "en": "Free the jammed mechanism"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu tires la pièce faussée hors de son logement, maintiens le bâti pendant qu’on recale l’axe et rends au service son passage principal.",
+                "en": "You pull the warped part out of its housing, hold the frame while the shaft is reset, and restore the service’s main bottleneck."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "strength",
                   "amount": 1
                 },
                 {
@@ -7789,21 +7874,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Chercher une filière légale ailleurs",
-            "en": "Find a legal supply elsewhere"
+            "fr": "Faire la tournée des dépôts légaux avant fermeture",
+            "en": "Make the legal depot rounds before closing"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu passes de dépôt en dépôt avant la fermeture, récupères les bons échantillons et remets les reçus au comptoir avant que l’intermédiaire noir ne verrouille son offre.",
+                "en": "You move from depot to depot before closing, collect the right samples, and return the receipts to the counter before the black-market broker locks in the deal."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "agility",
                   "amount": 1
                 },
                 {
@@ -7860,6 +7945,11 @@
                 {
                   "type": "modifyReputation",
                   "amount": 2
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
                 }
               ]
             }
@@ -7982,7 +8072,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "morale",
                   "amount": 1
                 },
                 {
@@ -8000,21 +8090,21 @@
         {
           "id": "craft",
           "text": {
-            "fr": "Détacher une équipe avec du matériel",
-            "en": "Send a repair party with gear"
+            "fr": "Équiper et lancer l’équipe de secours",
+            "en": "Gear up and launch the rescue team"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu répartis les cordages, fais passer le matériel sans bloquer le pont et mets l’équipe à l’eau au bon moment entre deux vagues.",
+                "en": "You distribute the lines, move the gear without clogging the deck, and launch the rescue team at the right moment between two waves."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "agility",
                   "amount": 1
                 }
               ]
@@ -8120,16 +8210,16 @@
         {
           "id": "trade",
           "text": {
-            "fr": "Vendre seulement les pièces civiles",
-            "en": "Sell only civilian parts"
+            "fr": "Retirer les pièces d’armement avant la vente",
+            "en": "Strip the weapon fittings before the sale"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu fais passer le problème par les comptes et les engagements. L’accord tient, mais il crée une nouvelle attente autour de toi.",
-                "en": "You route the problem through accounts and commitments. The deal holds, but it creates a new expectation around you."
+                "fr": "Tu démontes les fixations qui permettraient le tir, gardes uniquement les pièces civiles et remontes l’ensemble sans fausser le mécanisme utile.",
+                "en": "You remove the fittings that would enable firing, keep only the civilian parts, and reassemble the unit without bending the useful mechanism."
               },
               "effects": [
                 {
@@ -8138,6 +8228,11 @@
                 },
                 {
                   "type": "modifyReputation",
+                  "amount": 1
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "agility",
                   "amount": 1
                 }
               ]
@@ -8161,7 +8256,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "morale",
                   "amount": 1
                 },
                 {
@@ -8218,6 +8313,11 @@
                 {
                   "type": "modifyReputation",
                   "amount": 2
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
                 }
               ]
             }
@@ -8340,7 +8440,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "agility",
                   "amount": 1
                 },
                 {
@@ -8372,7 +8472,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "observation",
                   "amount": 1
                 }
               ]
@@ -8401,6 +8501,11 @@
                 {
                   "type": "queueImmediateEvent",
                   "eventId": "career_civilian_08_community_the_punishment_list_i01"
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
                 }
               ]
             }
@@ -8561,7 +8666,7 @@
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "morale",
                   "amount": 1
                 },
                 {
@@ -8618,6 +8723,11 @@
                 {
                   "type": "modifyReputation",
                   "amount": 2
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
                 }
               ]
             }
@@ -8838,21 +8948,21 @@
         {
           "id": "craft",
           "text": {
-            "fr": "Standardiser les caisses de secours",
-            "en": "Standardize the relief crates"
+            "fr": "Monter les caisses de secours au même gabarit",
+            "en": "Build the relief crates to one standard"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu ajustes couvercles, cordages et prises au même gabarit jusqu’à ce que chaque caisse puisse être chargée sans nouvelle mesure.",
+                "en": "You fit lids, ropes, and handholds to the same template until every crate can be loaded without being measured again."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "agility",
                   "amount": 1
                 }
               ]
@@ -9367,21 +9477,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Tester la méthode ailleurs",
-            "en": "Test the method elsewhere"
+            "fr": "Reproduire la méthode dans un autre atelier",
+            "en": "Reproduce the method in another workshop"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu changes d’établi et refais la séquence avec d’autres outils, sans perdre l’ordre ni les gestes de sécurité. La méthode tient parce que l’exécution reste précise.",
+                "en": "You switch benches and repeat the sequence with different tools without losing the order or safety motions. The method holds because the execution stays precise."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "agility",
                   "amount": 1
                 },
                 {
@@ -9482,21 +9592,26 @@
         {
           "id": "community",
           "text": {
-            "fr": "Former publiquement les réparateurs",
-            "en": "Train the repairers publicly"
+            "fr": "Montrer les gestes sûrs devant les réparateurs",
+            "en": "Demonstrate the safe motions to the repairers"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "community",
               "text": {
-                "fr": "Tu mets les personnes concernées dans la décision. Le résultat est plus lent, mais il devient difficile à ignorer.",
-                "en": "You put the people affected inside the decision. The result is slower, but harder to ignore."
+                "fr": "Tu refais la procédure lentement une fois, puis à cadence réelle, en montrant où poser les mains et quand relâcher la tension. Les réparateurs copient enfin le bon geste.",
+                "en": "You perform the procedure once slowly, then at working speed, showing where to place the hands and when to release tension. The repairers finally copy the safe motion."
               },
               "effects": [
                 {
                   "type": "modifyReputation",
                   "amount": 2
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "agility",
+                  "amount": 1
                 }
               ]
             }
@@ -9605,21 +9720,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Créer un second marché sur le port",
-            "en": "Create a second market by the harbor"
+            "fr": "Monter physiquement le second marché",
+            "en": "Build the second market by hand"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu transportes les tréteaux, redresses les auvents et déplaces les caisses jusqu’à matérialiser une seconde zone de vente. Les deux quais cessent enfin de se battre pour le même rectangle.",
+                "en": "You carry the trestles, raise the awnings, and move the crates until a second selling area physically exists. The two docks finally stop fighting over the same patch of ground."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "strength",
                   "amount": 1
                 },
                 {
@@ -9637,21 +9752,21 @@
         {
           "id": "craft",
           "text": {
-            "fr": "Diviser physiquement la place",
-            "en": "Physically divide the square"
+            "fr": "Poser les barrières avant l’arrivée des deux cortèges",
+            "en": "Set the barriers before both processions arrive"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu déplies les barrières, tends les cordes et marques les angles sans laisser d’ouverture dangereuse. Les deux cortèges trouvent enfin des voies séparées.",
+                "en": "You unfold the barriers, stretch the ropes, and mark the corners without leaving a dangerous gap. The two processions finally have separate lanes."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "agility",
                   "amount": 1
                 }
               ]
@@ -9814,21 +9929,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Aider celui qui doit repartir",
-            "en": "Help the one who must leave"
+            "fr": "L’aider à partir avant la fermeture du quai",
+            "en": "Help them leave before the quay closes"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu resserres ses paquets, dégages un passage dans la file et l’accompagnes jusqu’à l’embarquement avant la fermeture des grilles. Son urgence est réellement traitée.",
+                "en": "You tighten their bundles, clear a path through the line, and escort them to boarding before the gates close. Their urgent deadline is actually met."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "agility",
                   "amount": 1
                 },
                 {
@@ -9870,21 +9985,26 @@
         {
           "id": "community",
           "text": {
-            "fr": "Traiter d’abord le conflit collectif",
-            "en": "Take the collective dispute first"
+            "fr": "Tenir le conflit collectif en priorité",
+            "en": "Hold the collective dispute as the priority"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "community",
               "text": {
-                "fr": "Tu mets les personnes concernées dans la décision. Le résultat est plus lent, mais il devient difficile à ignorer.",
-                "en": "You put the people affected inside the decision. The result is slower, but harder to ignore."
+                "fr": "Tu refuses de changer de dossier à chaque nouvelle demande et gardes le conflit collectif en tête jusqu’à ce qu’une règle commune soit posée. La file attend, mais ta décision ne vacille pas.",
+                "en": "You refuse to switch cases with every new request and keep the collective dispute first until a common rule is set. The line waits, but your decision does not waver."
               },
               "effects": [
                 {
                   "type": "modifyReputation",
                   "amount": 2
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "morale",
+                  "amount": 1
                 }
               ]
             }
@@ -10637,16 +10757,16 @@
         {
           "id": "trade",
           "text": {
-            "fr": "Acheter les pièces sans intermédiaire",
-            "en": "Buy parts without middlemen"
+            "fr": "Ramener toi-même les pièces lourdes au chantier",
+            "en": "Haul the heavy parts back to the worksite yourself"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu fais passer le problème par les comptes et les engagements. L’accord tient, mais il crée une nouvelle attente autour de toi.",
-                "en": "You route the problem through accounts and commitments. The deal holds, but it creates a new expectation around you."
+                "fr": "Tu récupères les pièces sans intermédiaire puis portes les plus lourdes jusqu’à la pompe, franchissant les rues encombrées avant que les réserves du quartier ne tombent à sec.",
+                "en": "You collect the parts without a middleman and carry the heaviest pieces back to the pump, crossing the clogged streets before the district reserves run dry."
               },
               "effects": [
                 {
@@ -10656,6 +10776,11 @@
                 {
                   "type": "modifyReputation",
                   "amount": 2
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "strength",
+                  "amount": 2
                 }
               ]
             }
@@ -10664,21 +10789,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Dériver l’eau depuis l’ancien canal",
-            "en": "Divert water from the old canal"
+            "fr": "Forcer l’ancienne vanne du canal",
+            "en": "Force open the old canal gate"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu dégages la boue autour de la vanne puis pousses jusqu’à ce que le mécanisme cède. L’eau reprend l’ancien canal et offre quelques heures de marge à la ville.",
+                "en": "You clear mud from the gate and push until the mechanism gives. Water returns to the old canal and buys the town a few hours of breathing room."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "strength",
                   "amount": 1
                 },
                 {
@@ -10778,11 +10903,6 @@
                   "en": "You turn the situation around cleanly. The result becomes an example others start citing."
                 },
                 "effects": [
-                  {
-                    "type": "modifyStat",
-                    "statId": "intelligence",
-                    "amount": 2
-                  },
                   {
                     "type": "modifyReputation",
                     "amount": 3
@@ -10964,16 +11084,16 @@
         {
           "id": "trade",
           "text": {
-            "fr": "Ouvrir un registre public des ressources",
-            "en": "Open a public resource ledger"
+            "fr": "Faire l’inventaire des dépôts avant la tombée du jour",
+            "en": "Inventory the depots before nightfall"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "trade",
               "text": {
-                "fr": "Tu fais passer le problème par les comptes et les engagements. L’accord tient, mais il crée une nouvelle attente autour de toi.",
-                "en": "You route the problem through accounts and commitments. The deal holds, but it creates a new expectation around you."
+                "fr": "Tu parcours les dépôts, marques les piles déjà comptées et remets les chiffres au registre public avant que les équipes ne déplacent de nouveau les stocks.",
+                "en": "You move through the depots, mark the stacks already counted, and return the figures to the public ledger before crews shift the stock again."
               },
               "effects": [
                 {
@@ -10983,6 +11103,11 @@
                 {
                   "type": "modifyReputation",
                   "amount": 2
+                },
+                {
+                  "type": "modifyStat",
+                  "statId": "agility",
+                  "amount": 1
                 }
               ]
             }
@@ -10991,21 +11116,21 @@
         {
           "id": "horizon",
           "text": {
-            "fr": "Rétablir les voies vers l’extérieur",
-            "en": "Restore routes outward"
+            "fr": "Dégager les voies vers l’extérieur",
+            "en": "Clear the roads out of town"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "horizon",
               "text": {
-                "fr": "Tu privilégies le mouvement et l’information. La voie s’ouvre, au prix d’un peu plus d’incertitude pour la suite.",
-                "en": "You favor movement and information. A path opens, at the cost of more uncertainty afterward."
+                "fr": "Tu fais sauter les barrages de fortune, tires les charrettes abandonnées hors des rues et rouvres deux sorties assez larges pour les convois civils.",
+                "en": "You break down makeshift blockades, drag abandoned carts out of the streets, and reopen two exits wide enough for civilian convoys."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "navigation",
+                  "statId": "strength",
                   "amount": 1
                 },
                 {
@@ -11027,21 +11152,21 @@
         {
           "id": "craft",
           "text": {
-            "fr": "Réparer les services essentiels",
-            "en": "Repair essential services"
+            "fr": "Remettre les équipements essentiels en place",
+            "en": "Put the essential equipment back in place"
           },
           "resolution": {
             "type": "deterministic",
             "outcome": {
               "id": "craft",
               "text": {
-                "fr": "Tu t’attaques au mécanisme concret. La solution est imparfaite mais assez solide pour changer la situation.",
-                "en": "You attack the concrete mechanism. The fix is imperfect but solid enough to change the situation."
+                "fr": "Tu redresses les pompes déplacées, tires les pièces hors des réserves et maintiens les bâtis pendant les réparations. Plusieurs services rouvrent avant la nuit.",
+                "en": "You right displaced pumps, haul parts out of storage, and hold frames steady during repairs. Several essential services reopen before nightfall."
               },
               "effects": [
                 {
                   "type": "modifyStat",
-                  "statId": "intelligence",
+                  "statId": "strength",
                   "amount": 1
                 },
                 {

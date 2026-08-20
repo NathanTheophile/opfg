@@ -169,6 +169,7 @@ export type Condition =
   | { type: 'shipCrewCapacityAtLeast'; value: number }
   | { type: 'shipCargoSpaceAtLeast'; value: number }
   | { type: 'canAcquireShip'; shipId: ShipId }
+  | { type: 'canBuyShip'; shipId: ShipId }
   | { type: 'canSellShip' }
   | { type: 'npcStatusIs'; npcId: NpcId; status: NpcStatus }
   | { type: 'npcRelationshipAtLeast'; npcId: NpcId; value: number }

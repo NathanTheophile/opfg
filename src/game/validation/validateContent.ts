@@ -94,6 +94,7 @@ const CONDITION_TYPES = new Set([
   'shipCrewCapacityAtLeast',
   'shipCargoSpaceAtLeast',
   'canAcquireShip',
+  'canBuyShip',
   'canSellShip',
   'npcStatusIs',
   'npcRelationshipAtLeast',
@@ -742,7 +743,7 @@ function validateCondition(
     if (value.damageType !== undefined && !['cutting', 'blunt', 'explosive'].includes(String(value.damageType))) errors.push({ path: `${path}.damageType`, message: 'Invalid equipped weapon damage type.' });
     if (value.rangeType !== undefined && !['melee', 'ranged'].includes(String(value.rangeType))) errors.push({ path: `${path}.rangeType`, message: 'Invalid equipped weapon range type.' });
   }
-  if (type === 'shipIs' || type === 'canAcquireShip') validateReference(value.shipId, references.shipIds, 'ShipId', path, errors);
+  if (type === 'shipIs' || type === 'canAcquireShip' || type === 'canBuyShip') validateReference(value.shipId, references.shipIds, 'ShipId', path, errors);
   if (type === 'hasCrewRole') validateReference(value.roleId, references.crewRoleIds, 'CrewRoleId', path, errors);
   if (type === 'canRecruitNpc') validateReference(value.npcId, references.npcIds, 'NpcId', path, errors);
   if (type === 'locationIs' || type === 'locationWithin') validateReference(value.locationId, references.locationIds, 'LocationId', path, errors);
