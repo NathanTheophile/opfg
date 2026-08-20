@@ -56,6 +56,12 @@ const clampInteger = (
   max: number,
 ) => Math.max(min, Math.min(max, Math.round(value)));
 
+const formatAgeMonths = (ageMonths: number) => {
+  const years = Math.floor(ageMonths / 12);
+  const months = ageMonths % 12;
+  return `${years} ans ${months} mois`;
+};
+
 function mutate(
   action: (state: GameState, catalog: ContentCatalog) => void,
 ): boolean {
@@ -428,6 +434,42 @@ export function GameplayDebugPanel() {
                 onChange={(value) => setAttribute(statId, value)}
               />
             ))}
+          </DebugSection>
+
+          <DebugSection title="Age" defaultOpen={false}>
+            <div className="opfg-gameplay-debug__age-readout">
+              <strong>{formatAgeMonths(state.ageMonths)}</strong>
+              <span>{state.ageMonths} mois</span>
+            </div>
+            <input
+              className="opfg-gameplay-debug__age-slider"
+              type="range"
+              min={0}
+              max={1200}
+              step={1}
+              value={state.ageMonths}
+              onChange={(event) =>
+                mutate((next) => {
+                  next.ageMonths = clampInteger(Number(event.target.value), 0, 1200);
+                })
+              }
+              aria-label="Debug age in months"
+            />
+            <label className="opfg-gameplay-debug__wide-number">
+              <span>ageMonths</span>
+              <input
+                type="number"
+                min={0}
+                max={1200}
+                step={1}
+                value={state.ageMonths}
+                onChange={(event) =>
+                  mutate((next) => {
+                    next.ageMonths = clampInteger(Number(event.target.value), 0, 1200);
+                  })
+                }
+              />
+            </label>
           </DebugSection>
 
           <DebugSection title="Career & Economy">
