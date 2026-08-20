@@ -1,12 +1,20 @@
 .opfg-event-panel {
+  --opfg-event-ornament-top: -5px;
+  --opfg-event-ornament-right: -7px;
+  --opfg-event-ornament-bottom: -8px;
+  --opfg-event-ornament-left: -5px;
+  --opfg-event-ornament-top-width: clamp(40px, 3.2vw, 48px);
+  --opfg-event-ornament-bottom-width: clamp(42px, 3.3vw, 50px);
+
   position: relative;
   overflow: visible !important;
 }
 
-/*
- * Keep the panel content visually clipped to its rounded frame while allowing
- * the decorative corners themselves to sit outside that frame.
- */
+.opfg-event-panel__header,
+.opfg-event-panel__choices {
+  background: transparent !important;
+}
+
 .opfg-event-panel__header {
   border-radius: var(--radius-panel) var(--radius-panel) 0 0;
 }
@@ -33,63 +41,49 @@
   filter: drop-shadow(0 3px 6px rgb(0 0 0 / 0.34));
 }
 
-.opfg-event-panel > * {
-  position: relative;
-  z-index: 1;
-}
-
 .opfg-event-panel::before {
-  top: -10px;
-  right: -10px;
-  width: clamp(40px, 3.2vw, 48px);
+  top: var(--opfg-event-ornament-top);
+  right: var(--opfg-event-ornament-right);
+  width: var(--opfg-event-ornament-top-width);
   aspect-ratio: 256 / 282;
   background-image: url('./assets/panel-corner-rope-top.png');
   transform: scaleX(-1);
 }
 
 .opfg-event-panel::after {
-  bottom: -10px;
-  left: -10px;
-  width: clamp(42px, 3.3vw, 50px);
+  bottom: var(--opfg-event-ornament-bottom);
+  left: var(--opfg-event-ornament-left);
+  width: var(--opfg-event-ornament-bottom-width);
   aspect-ratio: 256 / 266;
   background-image: url('./assets/panel-corner-rope-bottom.png');
 }
 
-@media (max-width: 768px) {
-  .opfg-event-panel::before {
-    top: -8px;
-    right: -8px;
-    width: 40px;
-  }
-
-  .opfg-event-panel::after {
-    bottom: -8px;
-    left: -8px;
-    width: 42px;
-  }
+.opfg-event-panel > * {
+  position: relative;
+  z-index: 1;
 }
 
-/* OPFG_PARCHMENT_NINE_SLICE_EVENT_BODY */
+/* Parchment narrative surface. */
 .opfg-event-panel__body {
   position: relative;
   isolation: isolate;
   overflow: hidden;
   box-sizing: border-box;
   margin-inline: 0.72rem;
+  padding: 0.42rem 0.78rem 0.36rem;
   background: transparent !important;
-  background-image: none !important;
   box-shadow: none !important;
 }
 
 .opfg-event-panel__body::before {
   position: absolute;
   z-index: 0;
-  inset: 0;
+  inset: -1px;
   border: 1px solid transparent;
   border-image-source: url('./assets/parchment-text-frame.webp');
   border-image-slice: 44 72 44 72 fill;
   border-image-width: 12px 16px;
-  border-image-outset: 0;
+  border-image-outset: 1px;
   border-image-repeat: stretch;
   content: '';
   pointer-events: none;
@@ -98,122 +92,31 @@
 .opfg-event-panel__body > * {
   position: relative;
   z-index: 1;
+  background: transparent !important;
 }
 
 .opfg-event-panel__body-copy {
   color: #24170f;
 }
 
+@media (max-width: 768px) {
+  .opfg-event-panel {
+    --opfg-event-ornament-top: -4px;
+    --opfg-event-ornament-right: -1px;
+    --opfg-event-ornament-bottom: -7px;
+    --opfg-event-ornament-left: -5px;
+    --opfg-event-ornament-top-width: 40px;
+    --opfg-event-ornament-bottom-width: 42px;
+  }
+}
+
 @media (max-width: 640px) {
   .opfg-event-panel__body {
     margin-inline: 0.5rem;
+    padding-inline: 0.68rem;
   }
 
   .opfg-event-panel__body::before {
     border-image-width: 10px 13px;
   }
-}
-/* /OPFG_PARCHMENT_NINE_SLICE_EVENT_BODY */
-
-/* OPFG_UI_CORRECTIVE_V3_EVENT_ORNAMENTS_START */
-.opfg-event-panel::before {
-  right: -5px !important;
-}
-
-.opfg-event-panel::after {
-  left: -5px !important;
-}
-
-.opfg-event-panel__body::before {
-  inset: -1px !important;
-  border-image-outset: 1px !important;
-  background-color: #e6cd9a;
-}
-
-@media (max-width: 768px) {
-  .opfg-event-panel::before {
-    right: -4px !important;
-  }
-
-  .opfg-event-panel::after {
-    left: -4px !important;
-  }
-}
-/* OPFG_UI_CORRECTIVE_V3_EVENT_ORNAMENTS_END */
-
-/* UI_CORRECTIVE_V4_EVENT_PANEL */
-.opfg-event-panel,
-.opfg-event-panel__header,
-.opfg-event-panel__body,
-.opfg-event-panel__choices {
-  background: transparent !important;
-}
-
-.opfg-event-panel__body,
-.opfg-outcome-panel__body {
-  padding-inline: 0.72rem !important;
-  overflow: hidden !important;
-}
-
-.opfg-event-panel__body::before,
-.opfg-outcome-panel__body::before {
-  inset: -1px !important;
-}
-
-.opfg-event-panel::before {
-  top: -8px !important;
-  right: -5px !important;
-}
-
-.opfg-event-panel::after {
-  left: -7px !important;
-  bottom: -9px !important;
-}
-
-.opfg-event-panel__meta,
-.opfg-event-panel__location,
-.opfg-event-panel__header-meta {
-  padding-top: 0.18rem !important;
-  padding-inline-start: 0.1rem !important;
-}
-
-/* UI_CORRECTIVE_V5_EVENT_PANEL */
-/* tweak points for ornaments:
-   top-right ornament  => .opfg-event-panel::before { top / right / width }
-   bottom-left ornament => .opfg-event-panel::after { bottom / left / width }
-*/
-.opfg-event-panel,
-.opfg-event-panel__header,
-.opfg-event-panel__body,
-.opfg-event-panel__choices,
-.opfg-event-panel__body-copy {
-  background: transparent !important;
-  background-color: transparent !important;
-}
-
-.opfg-event-panel__body {
-  padding-top: 0.42rem !important;
-  padding-bottom: 0.36rem !important;
-  padding-inline: 0.78rem !important;
-}
-
-.opfg-event-panel__body::before {
-  inset: -1px !important;
-  opacity: 1 !important;
-}
-
-.opfg-event-panel__body > * {
-  background: transparent !important;
-}
-
-.opfg-event-panel::before {
-  top: -8px !important;
-  right: -2px !important;
-  width: clamp(40px, 3.2vw, 48px) !important;
-}
-
-.opfg-event-panel::after {
-  bottom: -9px !important;
-  left: -7px !important;
-  width: clamp(42px, 3.3vw, 50px) !important;
 }

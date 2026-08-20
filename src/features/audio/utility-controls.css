@@ -1,36 +1,108 @@
 .opfg-audio-controls {
   position: fixed;
-  right: 1.25rem;
+  right: max(1.25rem, var(--safe-area-right));
   bottom: 1.25rem;
   z-index: 100;
   display: flex;
   width: 14.4rem;
   flex-direction: column;
-  align-items: stretch;
+  align-items: flex-end;
   gap: 0.5rem;
   user-select: none;
+}
+
+.opfg-language-controls {
+  position: fixed;
+  right: max(1.25rem, var(--safe-area-right));
+  bottom: 10.55rem;
+  z-index: 100;
+  width: 2.65rem;
+  user-select: none;
+}
+
+.opfg-utility-square,
+.opfg-language-controls__button {
+  display: grid;
+  width: 2.65rem !important;
+  min-width: 2.65rem;
+  height: 2.65rem !important;
+  min-height: 2.65rem !important;
+  place-items: center;
+  border: 1px solid transparent;
+  border-image-source: url('../../components/ui/assets/panel-skin-gold-65.webp');
+  border-image-slice: 58 72 fill;
+  border-image-width: 8px;
+  border-image-outset: 1px;
+  border-image-repeat: stretch;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #f1dbad;
+  cursor: pointer;
+  transition:
+    color 120ms ease,
+    filter 120ms ease;
+}
+
+.opfg-utility-square:hover,
+.opfg-language-controls__button:hover {
+  background: transparent;
+  color: #f8e2ad;
+  filter: brightness(1.08) drop-shadow(0 5px 9px rgb(0 0 0 / 0.3));
+}
+
+.opfg-language-controls__button {
+  position: relative;
+  overflow: hidden;
+}
+
+.opfg-language-controls__button > img {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  display: block !important;
+  width: 1.55rem !important;
+  height: 1.05rem !important;
+  margin: 0 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.opfg-language-controls__label {
+  display: none;
+}
+
+.opfg-audio-controls > .opfg-utility-square {
+  margin-left: auto;
+}
+
+.opfg-utility-bar,
+.opfg-music-player {
+  width: 100%;
+  border: 1px solid transparent;
+  border-image-source: url('../../components/ui/assets/panel-skin-gold-65.webp');
+  border-image-slice: 58 72 fill;
+  border-image-width: 10px;
+  border-image-outset: 1px;
+  border-image-repeat: stretch;
+  background: transparent;
+  box-shadow: none;
+  color: rgb(254 243 199 / 0.9);
 }
 
 .opfg-utility-bar {
   display: flex;
   min-height: 2.5rem;
-  width: 100%;
   align-items: center;
   justify-content: space-between;
-
-
   padding: 0.45rem 0.7rem;
-
-
-  color: rgb(254 243 199 / 0.9);
-
-  transition:
-    border-color 120ms ease,
-    background-color 120ms ease;
+  transition: filter 120ms ease;
 }
 
 .opfg-utility-bar:hover {
-
+  background: transparent;
+  filter: brightness(1.06);
 }
 
 .opfg-utility-bar__label {
@@ -42,30 +114,36 @@
   font-weight: 700;
 }
 
-.opfg-audio-mixer {
+.opfg-audio-mixer,
+.opfg-language-controls__menu {
   position: absolute;
   right: calc(100% + 0.5rem);
   bottom: 0;
+  border: 1px solid transparent;
+  border-image-source: url('../../components/ui/assets/panel-skin-gold-35.webp');
+  border-image-slice: 58 72 fill;
+  border-image-width: 12px;
+  border-image-outset: 1px;
+  border-image-repeat: stretch;
+  background: transparent !important;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.opfg-audio-mixer {
   width: 18rem;
-  border: 1px solid rgb(253 230 138 / 0.15);
-  border-radius: 0.65rem;
   padding: 1rem;
-  background: rgb(12 10 9 / 0.96);
-  box-shadow: 0 18px 48px rgb(0 0 0 / 0.46);
-  backdrop-filter: blur(12px);
+}
+
+.opfg-language-controls__menu {
+  width: 12rem;
 }
 
 .opfg-music-player {
   display: grid;
   gap: 0.42rem;
-  width: 100%;
-
-
   padding: 0.58rem 0.7rem 0.62rem;
-
-
-  color: rgb(254 243 199 / 0.9);
-
 }
 
 .opfg-music-player__title-row {
@@ -90,28 +168,22 @@
 }
 
 .opfg-music-title > span.is-scrolling {
-  animation:
-    opfg-track-title-scroll
-    6.5s
-    ease-in-out
-    0.8s
-    infinite
-    alternate;
+  animation: opfg-track-title-scroll 6.5s ease-in-out 0.8s infinite alternate;
 }
 
 .opfg-music-player__controls {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.58rem;
+  gap: 0.42rem;
 }
 
 .opfg-music-player__control {
   display: grid;
-  width: 1.85rem;
-  height: 1.85rem;
+  width: 1.5rem;
+  height: 1.5rem;
   place-items: center;
-  border-radius: 0.38rem;
+  border-radius: 0.32rem;
   color: rgb(254 243 199 / 0.72);
   transition:
     background-color 120ms ease,
@@ -119,20 +191,20 @@
 }
 
 .opfg-music-player__control:hover {
-  background: rgb(255 255 255 / 0.06);
-  color: rgb(254 243 199 / 1);
+  background: transparent;
+  color: rgb(254 243 199);
+  filter: brightness(1.08);
 }
 
 .opfg-music-player__control.is-primary {
+  width: 1.65rem;
+  height: 1.65rem;
   border: 1px solid rgb(253 230 138 / 0.16);
 }
 
 .opfg-music-player__progress {
   display: grid;
-  grid-template-columns:
-    2rem
-    minmax(0, 1fr)
-    2rem;
+  grid-template-columns: 2rem minmax(0, 1fr) 2rem;
   align-items: center;
   gap: 0.42rem;
   color: rgb(254 243 199 / 0.52);
@@ -140,156 +212,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.opfg-language-controls {
-  position: fixed;
-  right: 1.25rem;
-  bottom: 10.6rem;
-  z-index: 100;
-  width: 14.4rem;
-  user-select: none;
-}
-
-.opfg-language-controls__button {
-  display: flex;
-  min-height: 2.5rem;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-
-
-  padding: 0.45rem 0.7rem;
-
-
-  color: rgb(254 243 199 / 0.9);
-
-}
-
-.opfg-language-controls__label {
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-
-.opfg-language-controls__menu {
-  position: absolute;
-  right: calc(100% + 0.5rem);
-  bottom: 0;
-  width: 12rem;
-}
-
-@keyframes opfg-track-title-scroll {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform:
-      translateX(
-        calc(
-          -1 *
-          var(--opfg-track-scroll-distance)
-        )
-      );
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .opfg-music-title > span.is-scrolling {
-    animation: none;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
-@media (max-width: 48rem) {
-  .opfg-audio-controls,
-  .opfg-language-controls {
-    right: 0.75rem;
-  }
-}
-
-
-/* D1.7.1 square utility controls + compact player */
-
-.opfg-audio-controls {
-  width: 14.4rem;
-  align-items: flex-end;
-}
-
-/* Mixer trigger returns to the old square-panel language. */
-.opfg-utility-square {
-  display: grid;
-  width: 2.65rem;
-  height: 2.65rem;
-  place-items: center;
-
-
-
-
-  color: rgb(254 243 199 / 0.9);
-
-  transition:
-    border-color 120ms ease,
-    background-color 120ms ease;
-}
-
-.opfg-utility-square:hover {
-
-}
-
-.opfg-language-controls {
-  width: 2.65rem !important;
-}
-
-.opfg-language-controls__button {
-  display: grid !important;
-  width: 2.65rem !important;
-  height: 2.65rem !important;
-  min-height: 2.65rem !important;
-  place-items: center !important;
-  padding: 0 !important;
-}
-
-.opfg-language-controls__label {
-  display: none !important;
-}
-
-/* Keep language -> mixer -> player vertically stacked on the same edge. */
-.opfg-language-controls {
-  bottom: 10.55rem;
-}
-
-.opfg-audio-controls {
-  bottom: 1.25rem;
-}
-
-.opfg-audio-controls > .opfg-utility-square {
-  margin-left: auto;
-  margin-bottom: 0;
-}
-
-.opfg-music-player-toggle,
-.opfg-music-player-popover {
-  display: none;
-}
-
-/* Player buttons are deliberately small and secondary to the title/seekbar. */
-.opfg-music-player__controls {
-  gap: 0.42rem;
-}
-
-.opfg-music-player__control {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 0.32rem;
-}
-
-.opfg-music-player__control.is-primary {
-  width: 1.65rem;
-  height: 1.65rem;
-}
-
-/* Spotify-like seek: filled track, no visible knob. */
 .opfg-music-player__seek {
   width: 100%;
   min-width: 0;
@@ -300,18 +222,13 @@
   cursor: pointer;
   border-radius: 999px;
   outline: none;
-  background:
-    linear-gradient(
-      to right,
-      rgb(245 194 66 / 0.96)
-        0%,
-      rgb(245 194 66 / 0.96)
-        var(--opfg-seek-progress, 0%),
-      rgb(255 255 255 / 0.2)
-        var(--opfg-seek-progress, 0%),
-      rgb(255 255 255 / 0.2)
-        100%
-    );
+  background: linear-gradient(
+    to right,
+    rgb(245 194 66 / 0.96) 0%,
+    rgb(245 194 66 / 0.96) var(--opfg-seek-progress, 0%),
+    rgb(255 255 255 / 0.2) var(--opfg-seek-progress, 0%),
+    rgb(255 255 255 / 0.2) 100%
+  );
 }
 
 .opfg-music-player__seek::-webkit-slider-runnable-track {
@@ -355,71 +272,27 @@
   opacity: 0.42;
 }
 
-/* D1.8 flag centering + audio first-interaction polish ------------------ */
-
-.opfg-language-controls__button {
-  display: grid !important;
-  place-items: center !important;
+.opfg-music-player-toggle,
+.opfg-music-player-popover {
+  display: none;
 }
 
-.opfg-language-controls__button > img {
-  grid-area: 1 / 1;
-  display: block;
-  margin: 0 !important;
-  justify-self: center;
-  align-self: center;
-}
+@keyframes opfg-track-title-scroll {
+  from {
+    transform: translateX(0);
+  }
 
-/* OPFG FLAG HARD CENTER START */
-
-/*
- * The SVG itself was ending up at the left edge despite grid alignment.
- * Absolute centering makes the visual position independent from Tailwind,
- * intrinsic SVG sizing and button layout.
- */
-.opfg-language-controls__button {
-  position: relative !important;
-  overflow: hidden;
-}
-
-.opfg-language-controls__button > img {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  display: block !important;
-  width: 1.55rem !important;
-  height: 1.05rem !important;
-  margin: 0 !important;
-  justify-self: auto !important;
-  align-self: auto !important;
-  object-fit: cover !important;
-  object-position: center !important;
-  transform:
-    translate(-50%, -50%) !important;
-}
-
-/* Keep both fixed utility columns inside safe-area bounds. */
-.opfg-language-controls,
-.opfg-audio-controls {
-  right:
-    max(
-      1.25rem,
-      var(--safe-area-right)
-    ) !important;
+  to {
+    transform: translateX(calc(-1 * var(--opfg-track-scroll-distance)));
+  }
 }
 
 @media (max-width: 48rem) {
   .opfg-language-controls,
   .opfg-audio-controls {
-    right:
-      max(
-        0.75rem,
-        var(--safe-area-right)
-      ) !important;
+    right: max(0.75rem, var(--safe-area-right));
   }
 }
-
-/* OPFG FLAG HARD CENTER END */
 
 @media (orientation: portrait) {
   :root {
@@ -435,26 +308,20 @@
 
   .opfg-language-controls,
   .opfg-audio-controls {
-    right: auto !important;
-    left:
-      max(
-        0.85rem,
-        var(--safe-area-left)
-      ) !important;
+    right: auto;
+    left: max(0.85rem, var(--safe-area-left));
   }
 
   .opfg-language-controls {
     bottom: calc(
       var(--opfg-mobile-utility-bottom)
-      + var(--opfg-mobile-utility-size)
-      + var(--opfg-mobile-utility-gap)
-      + var(--opfg-mobile-utility-size)
-      + var(--opfg-mobile-utility-gap)
-    ) !important;
+      + var(--opfg-mobile-utility-size) * 2
+      + var(--opfg-mobile-utility-gap) * 2
+    );
   }
 
   .opfg-audio-controls {
-    bottom: var(--opfg-mobile-utility-bottom) !important;
+    bottom: var(--opfg-mobile-utility-bottom);
     width: 2.65rem;
     align-items: stretch;
     gap: var(--opfg-mobile-utility-gap);
@@ -491,80 +358,11 @@
   }
 }
 
-/* OPFG_UI_CORRECTIVE_GOLD_CONTROLS_START */
-.opfg-utility-square,
-.opfg-language-controls__button {
-  border: 1px solid transparent !important;
-  border-radius: 0 !important;
-  border-image-source: url('../../components/ui/assets/panel-skin-gold-75.webp') !important;
-  border-image-slice: 58 72 fill !important;
-  border-image-width: 8px !important;
-  border-image-outset: 0 !important;
-  border-image-repeat: stretch !important;
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-  box-shadow: none !important;
-  color: #f1dbad !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+@media (prefers-reduced-motion: reduce) {
+  .opfg-music-title > span.is-scrolling {
+    animation: none;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
-
-.opfg-utility-square:hover,
-.opfg-language-controls__button:hover {
-  background: transparent !important;
-  color: #f8e2ad !important;
-  filter: brightness(1.08) drop-shadow(0 5px 9px rgb(0 0 0 / 0.3));
-}
-
-.opfg-music-player,
-.opfg-utility-bar {
-  border: 1px solid transparent !important;
-  border-radius: 0 !important;
-  border-image-source: url('../../components/ui/assets/panel-skin-gold-75.webp') !important;
-  border-image-slice: 58 72 fill !important;
-  border-image-width: 10px !important;
-  border-image-outset: 0 !important;
-  border-image-repeat: stretch !important;
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-/* OPFG_UI_CORRECTIVE_GOLD_CONTROLS_END */
-
-/* OPFG_UI_CORRECTIVE_V3_UTILITY_START */
-.opfg-audio-mixer,
-.opfg-language-controls__menu {
-  border: 1px solid transparent !important;
-  border-radius: 0 !important;
-  border-image-source: url('../../components/ui/assets/panel-skin-gold-50.webp') !important;
-  border-image-slice: 58 72 fill !important;
-  border-image-width: 12px !important;
-  border-image-outset: 1px !important;
-  border-image-repeat: stretch !important;
-  background: rgb(20 10 6 / 0.62) !important;
-  background-image: none !important;
-  box-shadow: none !important;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-}
-
-.opfg-utility-square,
-.opfg-language-controls__button,
-.opfg-music-player,
-.opfg-utility-bar {
-  border-image-source: url('../../components/ui/assets/panel-skin-gold-75.webp') !important;
-  border-image-outset: 1px !important;
-}
-
-.opfg-utility-square:hover,
-.opfg-language-controls__button:hover,
-.opfg-utility-bar:hover,
-.opfg-music-player__control:hover {
-  background-color: transparent !important;
-  background-image: none !important;
-}
-/* OPFG_UI_CORRECTIVE_V3_UTILITY_END */

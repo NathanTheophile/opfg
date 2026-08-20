@@ -6,7 +6,7 @@
   --opfg-context-tooltip-accent: var(--gold);
 
   position: fixed;
-  z-index: 300;
+  z-index: 10000;
   width: max-content;
   max-width: min(20rem, calc(100vw - 1.25rem));
   pointer-events: none;
@@ -38,12 +38,12 @@
 }
 
 .opfg-context-tooltip::before {
-  content: '';
   position: absolute;
   width: 0.38rem;
   height: 0.38rem;
   border: inherit;
   background: var(--opfg-ink-900, #24160f);
+  content: '';
   transform: rotate(45deg);
 }
 
@@ -104,14 +104,57 @@
   line-height: 1.45;
 }
 
-/*
- * Disable the old one-word pseudo tooltips wherever a rich contextual tooltip
- * is now installed. This avoids "Force" appearing behind "Force + description".
- */
+/* Rich tooltips replace the legacy one-word pseudo tooltips. */
 .opfg-player-stat.has-rich-tooltip::after,
 .opfg-crew-stat.has-rich-tooltip::after,
 .opfg-crew-member__role.has-rich-tooltip::after {
   display: none !important;
+}
+
+/* General HUD tooltips are deliberately opaque for readability. */
+.opfg-context-tooltip[data-accented='false'] {
+  width: min(16.5rem, calc(100vw - 1.25rem));
+  max-width: min(16.5rem, calc(100vw - 1.25rem));
+  border: 1px solid var(--border-default) !important;
+  background: #17100c !important;
+  box-shadow:
+    0 14px 38px rgb(0 0 0 / 0.52),
+    inset 0 1px 0 rgb(255 255 255 / 0.04);
+  backdrop-filter: none;
+}
+
+.opfg-context-tooltip[data-accented='false']::before {
+  display: block;
+  border-color: var(--border-default) !important;
+  background: #17100c !important;
+}
+
+.opfg-context-tooltip[data-accented='false'][data-placement='right']::before {
+  border-top: 0 !important;
+  border-right: 0 !important;
+}
+
+.opfg-context-tooltip[data-accented='false'][data-placement='left']::before {
+  border-bottom: 0 !important;
+  border-left: 0 !important;
+}
+
+.opfg-context-tooltip[data-accented='false'][data-placement='bottom']::before {
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+}
+
+.opfg-context-tooltip[data-accented='false'][data-placement='top']::before {
+  border-top: 0 !important;
+  border-left: 0 !important;
+}
+
+.opfg-context-tooltip[data-accented='false'] .opfg-context-tooltip__title {
+  color: #f0dfc0;
+}
+
+.opfg-context-tooltip[data-accented='false'] .opfg-context-tooltip__detail {
+  color: rgb(231 216 194 / 0.72);
 }
 
 @keyframes opfg-context-tooltip-in {
@@ -130,82 +173,4 @@
   .opfg-context-tooltip {
     animation-duration: 1ms;
   }
-}
-
-
-/* D1.7 default HUD tooltip repair
- *
- * Stat tooltips keep their coloured treatment.
- * General HUD tooltips use a fully opaque dedicated surface.
- */
-.opfg-context-tooltip {
-  z-index: 10000;
-}
-
-.opfg-context-tooltip[data-accented="false"] {
-  width: min(16.5rem, calc(100vw - 1.25rem));
-  max-width: min(16.5rem, calc(100vw - 1.25rem));
-  border-color: rgb(225 190 130 / 0.34);
-  background: #17100c !important;
-  box-shadow:
-    0 14px 38px rgb(0 0 0 / 0.58),
-    inset 0 1px 0 rgb(255 255 255 / 0.045);
-  backdrop-filter: none;
-}
-
-.opfg-context-tooltip[data-accented="false"]::before {
-  display: none;
-}
-
-.opfg-context-tooltip[data-accented="false"]
-  .opfg-context-tooltip__title {
-  color: #f0dfc0;
-}
-
-.opfg-context-tooltip[data-accented="false"]
-  .opfg-context-tooltip__detail {
-  color: rgb(231 216 194 / 0.72);
-}
-
-
-/* D1.7.1 general tooltip pointer + panel outline */
-
-.opfg-context-tooltip[data-accented="false"] {
-  border:
-    1px solid
-    var(--border-default) !important;
-  background:
-    #17100c !important;
-  box-shadow:
-    0 14px 38px rgb(0 0 0 / 0.52),
-    inset 0 1px 0 rgb(255 255 255 / 0.04);
-}
-
-/* Restore the same pointer language as stat tooltips. */
-.opfg-context-tooltip[data-accented="false"]::before {
-  display: block !important;
-  background: #17100c !important;
-  border-color:
-    var(--border-default) !important;
-}
-
-/* The placement rules already remove the two unwanted diamond borders. */
-.opfg-context-tooltip[data-accented="false"][data-placement="right"]::before {
-  border-top: 0 !important;
-  border-right: 0 !important;
-}
-
-.opfg-context-tooltip[data-accented="false"][data-placement="left"]::before {
-  border-bottom: 0 !important;
-  border-left: 0 !important;
-}
-
-.opfg-context-tooltip[data-accented="false"][data-placement="bottom"]::before {
-  border-right: 0 !important;
-  border-bottom: 0 !important;
-}
-
-.opfg-context-tooltip[data-accented="false"][data-placement="top"]::before {
-  border-top: 0 !important;
-  border-left: 0 !important;
 }
