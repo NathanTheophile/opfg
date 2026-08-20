@@ -21,8 +21,37 @@ npm run dev
 
 ## Tests
 
+Fast developer loop:
+
 ```bash
 npm test
+```
+
+The default suite intentionally excludes expensive whole-catalog, simulation and Saga-authoring checks.
+
+Content/integration checks:
+
+```bash
+npm run test:content
+npm run test:simulation
+```
+
+Slow authoring synchronization check:
+
+```bash
+npm run test:authoring
+```
+
+Full automated test pass:
+
+```bash
+npm run test:full
+```
+
+Release verification:
+
+```bash
+npm run verify:release
 ```
 
 ## Content validation
