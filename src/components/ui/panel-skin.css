@@ -1,0 +1,31 @@
+/*
+ * Gold panel skin.
+ *
+ * Uses the assembled top panel from the provided 9-slice sheet as a CSS
+ * border-image source. The center is intentionally not filled, so each OPFG
+ * panel keeps its existing surface/background and readability.
+ */
+:root {
+  --opfg-panel-skin-image: url('./assets/panel-skin-gold.webp');
+  --opfg-panel-skin-slice-y: 58;
+  --opfg-panel-skin-slice-x: 72;
+  --opfg-panel-skin-width: 14px;
+}
+
+.opfg-panel-skin {
+  border-color: transparent !important;
+  border-image-source: var(--opfg-panel-skin-image);
+  border-image-slice:
+    var(--opfg-panel-skin-slice-y)
+    var(--opfg-panel-skin-slice-x);
+  border-image-width: var(--opfg-panel-skin-width);
+  border-image-outset: 0;
+  border-image-repeat: stretch;
+  background-clip: padding-box;
+}
+
+@media (max-width: 40rem) {
+  :root {
+    --opfg-panel-skin-width: 11px;
+  }
+}

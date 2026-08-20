@@ -1,9 +1,10 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
+import './panel-skin.css';
 
 const panelVariants = cva(
-  'rounded-[var(--radius-panel)] border bg-surface text-fg shadow-panel',
+  'opfg-panel-skin rounded-[var(--radius-panel)] border bg-surface text-fg shadow-panel',
   {
     variants: {
       variant: {
