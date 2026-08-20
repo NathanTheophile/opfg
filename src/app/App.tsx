@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { contentCatalog } from '../game/content/definitions';
 import { clearGameState, loadGameState } from '../game/engine/save';
+import { archiveCompletedRun } from '../game/engine/completedRuns';
 import { assertValidContent } from '../game/validation/validateContent';
 import { EventPreview } from '../features/event-ui/EventPreview';
 import { LandingPage } from '../features/landing/LandingPage';
@@ -11,6 +12,14 @@ type AppView = 'landing' | 'continue' | 'new';
 
 export function App() {
   const [view, setView] = useState<AppView>('landing');
+
+  useEffect(() => {
+    if (view !== 'landing') return;
+    const completedSave = loadGameState(window.localStorage);
+    if (completedSave?.careerStatus === 'ended') {
+      archiveCompletedRun(window.localStorage, completedSave);
+    }
+  }, [view]);
 
   if (view !== 'landing') {
     return (
