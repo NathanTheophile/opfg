@@ -33,7 +33,7 @@ import type {
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 17;
+export const CONTENT_SCHEMA_VERSION = 18;
 
 export const V1_CAREER_HORIZON_MONTHS = 420;
 
@@ -353,7 +353,8 @@ export type CriticalTrigger =
   | { type: 'shipMissingAtSea' }
   | { type: 'shipReplacementPending' }
   | { type: 'careerAgeAtLeast'; value: number }
-  | { type: 'fallbackStreakAtLeast'; value: number };
+  | { type: 'fallbackStreakAtLeast'; value: number }
+  | { type: 'reverseMountainRiskAtLeast'; value: 2 | 4 | 6 };
 export type EventDefinition =
   | (EventBase & { kind: 'system' })
   | (EventBase & { kind: 'normal'; lifetimeThreadSeed?: true; majorTrack?: MajorTrackEventRef; replay?: { cooldownMonths: number; maxOccurrences?: number } })

@@ -15,6 +15,13 @@ import {
   materializeMarketEvent,
 } from './marketEvents';
 import { requiresCrewManagement } from './crew';
+import {
+  findEligibleReverseMountainRoot,
+  findReverseMountainCriticalEvent,
+  hasReverseMountainNavigatorOverride,
+  materializeReverseMountainSystemEvent,
+  REVERSE_MOUNTAIN_ROOT_IDS,
+} from './reverseMountain';
 
 export const FALLBACK_EVENT_IDS = ['dead_end_on_land', 'dead_end_at_sea'] as const;
 
@@ -138,6 +145,11 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
 
   if (requiresCrewManagement(state)) return { ...state, currentEventId: null };
 
+  if (hasReverseMountainNavigatorOverride(state)) {
+    const reverseMountainOverride = findEligibleReverseMountainRoot(state, catalog);
+    if (reverseMountainOverride) return selectEvent(state, catalog, reverseMountainOverride);
+  }
+
   if (state.locationId === 'twin_capes' && state.travelState === 'on_land' && activeParadiseRouteId(state) === undefined) {
     const routeStarts = catalog.events.filter((event): event is NormalDefinition =>
       event.kind === 'normal'
@@ -189,6 +201,9 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     }
   }
 
+  const reverseMountainRoot = findEligibleReverseMountainRoot(state, catalog);
+  if (reverseMountainRoot) return selectEvent(state, catalog, reverseMountainRoot);
+
   const earlyWindfallRoots = eligibleEarlyWindfallRootEvents(state, catalog);
   if (earlyWindfallRoots.length > 0) {
     return selectUniformNormal(state, catalog, state.scheduledEvents, earlyWindfallRoots);
@@ -228,6 +243,7 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
       && event.majorTrack === undefined
       && !FALLBACK_EVENT_IDS.includes(event.id as typeof FALLBACK_EVENT_IDS[number])
       && !isParadiseRouteStartEventId(event.id)
+      && !REVERSE_MOUNTAIN_ROOT_IDS.has(event.id)
       && isNormalOccurrenceEligible(event, state)
       && isEligible(event, state, catalog),
   );
@@ -371,6 +387,8 @@ export function findCriticalEvent(state: GameState, events: readonly EventDefini
   if (state.pendingShip !== null) return critical.find(({ trigger }) => trigger.type === 'shipReplacementPending');
   const fallback = critical.find(({ trigger }) => trigger.type === 'fallbackStreakAtLeast' && countFallbackStreak(state, events) >= trigger.value);
   if (fallback) return fallback;
+  const reverseMountainCritical = findReverseMountainCriticalEvent(state, events);
+  if (reverseMountainCritical) return reverseMountainCritical;
   return critical.find(({ trigger }) => trigger.type === 'careerAgeAtLeast' && state.careerPhase === 'active' && state.ageMonths >= trigger.value);
 }
 
@@ -421,5 +439,6 @@ export function findCurrentEvent(state: GameState, catalog: ContentCatalog): Eve
   if (state.currentEventId === null) return undefined;
   return catalog.events.find(({ id }) => id === state.currentEventId)
     ?? materializeMarketEvent(state, catalog, state.currentEventId)
-    ?? materializeNavigationEvent(state, catalog, state.currentEventId);
+    ?? materializeNavigationEvent(state, catalog, state.currentEventId)
+    ?? materializeReverseMountainSystemEvent(state.currentEventId);
 }

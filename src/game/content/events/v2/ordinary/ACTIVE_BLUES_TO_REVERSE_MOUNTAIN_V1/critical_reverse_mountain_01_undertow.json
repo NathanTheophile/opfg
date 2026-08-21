@@ -1,0 +1,191 @@
+{
+  "id": "critical_reverse_mountain_01_undertow",
+  "kind": "critical",
+  "titleKey": "event.critical_reverse_mountain_01_undertow.title",
+  "textKey": "event.critical_reverse_mountain_01_undertow.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "hasFlag",
+        "flagId": "reverse_mountain_attempt_active"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "hasFlag",
+          "flagId": "reverse_mountain_critical_01_resolved"
+        }
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "reprendre_la_barre",
+      "textKey": "event.critical_reverse_mountain_01_undertow.choice.reprendre_la_barre.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.critical_reverse_mountain_01_undertow.choice.reprendre_la_barre.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -6
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_01_resolved"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.critical_reverse_mountain_01_undertow.choice.reprendre_la_barre.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_01_resolved"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.critical_reverse_mountain_01_undertow.choice.reprendre_la_barre.outcome.success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_01_resolved"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.critical_reverse_mountain_01_undertow.choice.reprendre_la_barre.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_01_resolved"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "liberer_le_greement",
+      "textKey": "event.critical_reverse_mountain_01_undertow.choice.liberer_le_greement.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.critical_reverse_mountain_01_undertow.choice.liberer_le_greement.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -6
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_01_resolved"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.critical_reverse_mountain_01_undertow.choice.liberer_le_greement.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_01_resolved"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.critical_reverse_mountain_01_undertow.choice.liberer_le_greement.outcome.success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_01_resolved"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.critical_reverse_mountain_01_undertow.choice.liberer_le_greement.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_01_resolved"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "encaisser_en_protegeant",
+      "textKey": "event.critical_reverse_mountain_01_undertow.choice.encaisser_en_protegeant.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.critical_reverse_mountain_01_undertow.choice.encaisser_en_protegeant.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -2
+            },
+            {
+              "type": "setFlag",
+              "flagId": "reverse_mountain_critical_01_resolved"
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    }
+  ],
+  "trigger": {
+    "type": "reverseMountainRiskAtLeast",
+    "value": 2
+  }
+}

@@ -1,5 +1,6 @@
 import type { ContentCatalog } from '../content/schema';
 import type { CrewRoleId, GameState, NpcId } from '../model/schema';
+import { processFirstNavigatorAssignment } from './reverseMountain';
 
 export type CrewRoleAssignments = Partial<Record<CrewRoleId, NpcId>>;
 
@@ -55,6 +56,7 @@ export function assignCrewRoleToRecruit(
   }
 
   state.npcs[npcId] = { ...npc, crewRoleId: roleId };
+  if (roleId === 'navigator') processFirstNavigatorAssignment(state, catalog);
 }
 
 export function completeAnnualCrewReassignment(
@@ -84,6 +86,7 @@ export function completeAnnualCrewReassignment(
     state.npcs[npcId] = { ...state.npcs[npcId], crewRoleId: roleByNpcId.get(npcId) ?? null };
   }
   state.crewReassignmentPending = false;
+  if (crewRoleHolderId(state, 'navigator') !== undefined) processFirstNavigatorAssignment(state, catalog);
 }
 
 export function annualCrewIncome(state: GameState, catalog: ContentCatalog): number {
