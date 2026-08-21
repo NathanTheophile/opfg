@@ -13,6 +13,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import {
+  NineSliceFrame,
   Badge,
   Button,
   Panel,
@@ -26,6 +27,7 @@ import type {
   OutcomeEffectViewModel,
   OutcomeViewModel,
 } from './types';
+import parchmentTextFrame from './assets/parchment-text-frame.webp';
 import './outcome-panel.css';
 
 const STAT_IMPACT_EVENT = 'opfg:stat-impact';
@@ -391,6 +393,10 @@ export function OutcomePanel({
       className="opfg-outcome-panel opfg-outcome-panel--inline w-full overflow-hidden shadow-overlay"
     >
       <PanelBody className="opfg-outcome-panel__body px-4 py-3 md:px-5 md:py-3">
+        <NineSliceFrame
+          className="opfg-parchment-nine-slice"
+          texture={parchmentTextFrame}
+        />
         <p className="max-w-[68ch] text-[0.98rem] leading-7 text-fg-secondary md:text-base md:leading-7">
           {outcome.body}
         </p>

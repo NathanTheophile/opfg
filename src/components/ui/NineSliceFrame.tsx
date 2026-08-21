@@ -14,6 +14,7 @@ const SLICES = [
 
 export interface NineSliceFrameProps {
   className?: string;
+  texture?: string;
 }
 
 /**
@@ -23,7 +24,10 @@ export interface NineSliceFrameProps {
  * Chromium never has to rasterize two independently stretched regions edge
  * to edge. All nine regions use the same source texture.
  */
-export function NineSliceFrame({ className }: NineSliceFrameProps) {
+export function NineSliceFrame({
+  className,
+  texture = goldPanelTexture,
+}: NineSliceFrameProps) {
   const rootClassName = className
     ? `opfg-nine-slice ${className}`
     : 'opfg-nine-slice';
@@ -39,7 +43,7 @@ export function NineSliceFrame({ className }: NineSliceFrameProps) {
           <img
             alt=""
             draggable={false}
-            src={goldPanelTexture}
+            src={texture}
           />
         </span>
       ))}

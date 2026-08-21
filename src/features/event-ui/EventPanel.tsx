@@ -9,6 +9,7 @@ import {
   MapPin,
 } from 'lucide-react';
 import {
+  NineSliceFrame,
   Panel,
   PanelBody,
   PanelHeader,
@@ -19,6 +20,7 @@ import type {
   EventChoiceViewModel,
   EventViewModel,
 } from './types';
+import parchmentTextFrame from './assets/parchment-text-frame.webp';
 import './event-panel-ornaments.css';
 
 export type EventPanelMode =
@@ -261,6 +263,10 @@ export function EventPanel({
           <div className="h-px bg-[var(--border-subtle)]" />
 
           <PanelBody className="opfg-event-panel__body px-5 md:px-6">
+            <NineSliceFrame
+              className="opfg-parchment-nine-slice"
+              texture={parchmentTextFrame}
+            />
             <p className="opfg-event-panel__body-copy">
               {displayEvent.body}
             </p>
