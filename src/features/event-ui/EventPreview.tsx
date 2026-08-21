@@ -47,6 +47,7 @@ import {
 import { LanguageControls } from '@/features/settings/LanguageControls';
 import { notifyUiLocaleChanged } from '@/features/settings/localeSync';
 import { AchievementToast } from '@/features/achievements/AchievementToast';
+import { FinalRunScreen } from '@/features/run-history/FinalRunScreen';
 import { PlayerStatsRail } from './PlayerStatsRail';
 import {
   getCalendarLabel,
@@ -1124,6 +1125,37 @@ export function EventPreview({
 
   const state = session.gameState;
   const achievementToastId = session.newlyUnlockedAchievements[0];
+
+  if (
+    state.careerStatus === 'ended'
+    && !showOutcome
+    && pendingDice === null
+  ) {
+    return (
+      <main className="opfg-game-screen min-h-dvh w-full overflow-x-hidden overflow-y-auto pl-[max(var(--layout-gutter),var(--safe-area-left))] pr-[max(var(--layout-gutter),var(--safe-area-right))] pt-[max(var(--layout-gutter),var(--safe-area-top))] pb-[max(var(--layout-gutter),var(--safe-area-bottom))]">
+        <FinalRunScreen
+          state={state}
+          catalog={catalog}
+          locale={locale}
+          onHome={onHome}
+        />
+
+        <LanguageControls
+          locale={locale}
+          onLocaleChange={changeLocale}
+        />
+
+        {achievementToastId && (
+          <AchievementToast
+            key={achievementToastId}
+            achievementId={achievementToastId}
+            locale={locale}
+            onDismiss={() => session.dismissAchievementUnlock(achievementToastId)}
+          />
+        )}
+      </main>
+    );
+  }
 
   const displayState =
     pendingDice &&

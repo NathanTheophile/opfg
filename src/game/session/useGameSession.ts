@@ -3,6 +3,7 @@ import type { ContentCatalog } from '../content/schema';
 import { syncAchievements } from '../achievements/metaProgression';
 import type { AchievementId } from '../achievements/model';
 import { loadMetaProgression, saveMetaProgression } from '../achievements/storage';
+import { archiveCompletedRun } from '../engine/completedRuns';
 import { clearGameState, loadGameState, saveGameState, type StorageLike } from '../engine/save';
 import { findCurrentEvent, selectNextEvent } from '../engine/events';
 import {
@@ -64,8 +65,11 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
   useEffect(() => {
     if (initialAchievementSyncHandledRef.current || session.gameState === null) return;
     initialAchievementSyncHandledRef.current = true;
+    if (session.gameState.careerStatus === 'ended') {
+      archiveCompletedRun(storage, session.gameState);
+    }
     syncMetaProgression(session.gameState);
-  }, [session.gameState, syncMetaProgression]);
+  }, [session.gameState, storage, syncMetaProgression]);
 
   const currentEvent = useMemo(
     () =>
@@ -89,6 +93,9 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
     const next = chooseInSession(session, catalog, choiceId, input);
     if (next.gameState) {
       saveGameState(storage, next.gameState);
+      if (next.gameState.careerStatus === 'ended') {
+        archiveCompletedRun(storage, next.gameState);
+      }
       syncMetaProgression(next.gameState);
     }
     setSession(next);
@@ -130,6 +137,9 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
     const next = createSessionState(normalized);
     if (next.gameState) {
       saveGameState(storage, next.gameState);
+      if (next.gameState.careerStatus === 'ended') {
+        archiveCompletedRun(storage, next.gameState);
+      }
       syncMetaProgression(next.gameState);
     }
     setSession(next);
