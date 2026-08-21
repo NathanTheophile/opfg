@@ -93,7 +93,7 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
         <div className="opfg-crew-member__header">
           <button type="button" className="opfg-crew-member__toggle" onClick={() => setExpandedId((current) => current === npcId ? null : npcId)} aria-expanded={expanded}>
             <ContextTooltip
-              className="opfg-crew-member__role"
+              className="opfg-crew-member__role has-rich-tooltip"
               title={roleLabel}
               detail={translate(getUiTooltipKey('crewRole'))}
               side="left"
@@ -125,7 +125,7 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
             const label = statLabel(statId);
             return <ContextTooltip
               key={statId}
-              className="opfg-crew-stat"
+              className="opfg-crew-stat has-rich-tooltip"
               title={label}
               detail={translate(getStatTooltipKey(statId))}
               meta={translate('ui.stats.valueMeta', { value: effectiveNpcStat(state, catalog, npcId, statId) })}

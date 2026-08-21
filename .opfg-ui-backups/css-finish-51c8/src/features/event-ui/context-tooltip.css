@@ -8,7 +8,7 @@
   position: fixed;
   z-index: 10000;
   width: max-content;
-  max-width: min(var(--ui-tooltip-max-width), calc(100vw - 1.25rem));
+  max-width: min(20rem, calc(100vw - 1.25rem));
   pointer-events: none;
   border: 1px solid
     color-mix(
@@ -16,8 +16,8 @@
       var(--opfg-context-tooltip-accent) 26%,
       var(--border-default)
     );
-  border-radius: var(--ui-tooltip-radius);
-  padding: var(--ui-tooltip-py) var(--ui-tooltip-px);
+  border-radius: 0.72rem;
+  padding: 0.68rem 0.78rem 0.72rem;
   background:
     linear-gradient(
       115deg,
@@ -81,7 +81,7 @@
 
 .opfg-context-tooltip__title {
   color: var(--opfg-context-tooltip-accent);
-  font-size: var(--ui-tooltip-title-size);
+  font-size: 0.78rem;
   font-weight: 850;
   line-height: 1.15;
 }
@@ -89,7 +89,7 @@
 .opfg-context-tooltip__meta {
   margin-top: 0.24rem;
   color: var(--text-secondary);
-  font-size: var(--ui-tooltip-meta-size);
+  font-size: 0.68rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   line-height: 1.25;
@@ -99,17 +99,24 @@
   display: block;
   margin-top: 0.42rem;
   color: var(--text-muted);
-  font-size: var(--ui-tooltip-detail-size);
+  font-size: 0.7rem;
   font-weight: 450;
-  line-height: var(--ui-tooltip-detail-leading);
+  line-height: 1.45;
+}
+
+/* Rich tooltips replace the legacy one-word pseudo tooltips. */
+.opfg-player-stat.has-rich-tooltip::after,
+.opfg-crew-stat.has-rich-tooltip::after,
+.opfg-crew-member__role.has-rich-tooltip::after {
+  display: none !important;
 }
 
 /* General HUD tooltips are deliberately opaque for readability. */
 .opfg-context-tooltip[data-accented='false'] {
   width: min(16.5rem, calc(100vw - 1.25rem));
   max-width: min(16.5rem, calc(100vw - 1.25rem));
-  border: 1px solid var(--border-default);
-  background: var(--surface-tooltip);
+  border: 1px solid var(--border-default) !important;
+  background: var(--surface-tooltip) !important;
   box-shadow:
     0 14px 38px rgb(0 0 0 / 0.52),
     inset 0 1px 0 rgb(255 255 255 / 0.04);
@@ -118,28 +125,28 @@
 
 .opfg-context-tooltip[data-accented='false']::before {
   display: block;
-  border-color: var(--border-default);
-  background: var(--surface-tooltip);
+  border-color: var(--border-default) !important;
+  background: var(--surface-tooltip) !important;
 }
 
 .opfg-context-tooltip[data-accented='false'][data-placement='right']::before {
-  border-top: 0;
-  border-right: 0;
+  border-top: 0 !important;
+  border-right: 0 !important;
 }
 
 .opfg-context-tooltip[data-accented='false'][data-placement='left']::before {
-  border-bottom: 0;
-  border-left: 0;
+  border-bottom: 0 !important;
+  border-left: 0 !important;
 }
 
 .opfg-context-tooltip[data-accented='false'][data-placement='bottom']::before {
-  border-right: 0;
-  border-bottom: 0;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
 }
 
 .opfg-context-tooltip[data-accented='false'][data-placement='top']::before {
-  border-top: 0;
-  border-left: 0;
+  border-top: 0 !important;
+  border-left: 0 !important;
 }
 
 .opfg-context-tooltip[data-accented='false'] .opfg-context-tooltip__title {

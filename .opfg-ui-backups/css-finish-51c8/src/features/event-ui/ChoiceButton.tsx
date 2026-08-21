@@ -51,7 +51,7 @@ export function ChoiceButton({
       variant="glass"
       disabled={choice.disabled}
       onClick={() => onSelect(choice)}
-      className="opfg-choice-button"
+      className="opfg-choice-button group h-auto min-h-14 w-full justify-between gap-4 whitespace-normal px-4 py-3 text-left font-medium leading-snug md:px-5"
     >
       <span className="min-w-0 flex-1">
         <span className="block text-fg">

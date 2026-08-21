@@ -390,14 +390,14 @@ export function OutcomePanel({
     <Panel
       variant="strong"
       padding="none"
-      className="opfg-outcome-panel opfg-outcome-panel--inline"
+      className="opfg-outcome-panel opfg-outcome-panel--inline w-full overflow-hidden shadow-overlay"
     >
       <PanelBody className="opfg-outcome-panel__body opfg-parchment-surface">
         <NineSliceFrame
           className="opfg-parchment-nine-slice"
           texture={parchmentTextFrame}
         />
-        <p className="opfg-outcome-panel__copy">
+        <p className="max-w-[68ch] text-[0.98rem] leading-7 text-fg-secondary md:text-base md:leading-7">
           {outcome.body}
         </p>
 
@@ -485,7 +485,7 @@ export function OutcomePanel({
         )}
       </PanelBody>
 
-      <PanelFooter className="opfg-outcome-panel__footer">
+      <PanelFooter className="opfg-outcome-panel__footer mt-0 border-t border-[var(--border-subtle)] bg-black/[0.06] px-3 py-2 md:px-4">
         <Button
           variant="glass"
           onClick={onContinue}

@@ -2,32 +2,34 @@
   display: grid;
   width: 100%;
   max-width: calc(
-    var(--ui-hud-side-width, 15.5rem) +
-    var(--ui-hud-side-width, 15.5rem) +
-    var(--ui-hud-center-width, 32rem) +
-    var(--ui-hud-group-gap, 0.75rem) +
-    var(--ui-hud-group-gap, 0.75rem)
+    var(--ui-hud-side-width) +
+    var(--ui-hud-side-width) +
+    var(--ui-hud-center-width) +
+    var(--ui-hud-group-gap) +
+    var(--ui-hud-group-gap)
   );
   grid-template-columns:
-    var(--ui-hud-side-width, 15.5rem)
-    minmax(0, var(--ui-hud-center-width, 32rem))
-    var(--ui-hud-side-width, 15.5rem);
-  gap: var(--ui-hud-group-gap, 0.75rem);
+    var(--ui-hud-side-width)
+    minmax(0, var(--ui-hud-center-width))
+    var(--ui-hud-side-width);
+  gap: var(--ui-hud-group-gap);
   margin-inline: auto;
-  align-items: end;
+  align-items: stretch;
   justify-content: center;
 }
 
 .opfg-hud-panel {
-min-width: 0;
-  min-height: 0;
+  min-width: 0;
+  min-height: var(--ui-hud-panel-min-height);
   overflow: visible;
   background: transparent;
   box-shadow: none;
 }
 
 .opfg-hud-panel__body {
-  padding: var(--opfg-hud-panel-body-padding);
+  padding:
+    var(--ui-hud-panel-py)
+    var(--ui-hud-panel-px);
 }
 
 .opfg-hud-panel--identity .opfg-hud-panel__body {
@@ -37,7 +39,10 @@ min-width: 0;
 .opfg-hud-panel--inventory,
 .opfg-hud-panel--ship {
   display: grid;
-  grid-template-rows: auto 1fr;
+  height: 100%;
+  min-height: var(--ui-hud-panel-min-height);
+  grid-template-rows: auto minmax(0, 1fr);
+  background: transparent;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -46,27 +51,27 @@ min-width: 0;
 
 .opfg-hud-slots {
   display: grid;
-  gap: var(--ui-hud-slot-gap, 0.3rem);
+  gap: var(--ui-hud-slot-gap);
 }
 
 .opfg-hud-slot-wrap {
   display: block;
-  width: var(--ui-hud-slot-size, 1.95rem);
-  height: var(--ui-hud-slot-size, 1.95rem);
+  width: var(--ui-hud-slot-size);
+  height: var(--ui-hud-slot-size);
 }
 
 .opfg-hud-slot {
   position: relative;
   display: grid;
-  width: var(--ui-hud-slot-size, 1.95rem);
-  min-width: var(--ui-hud-slot-size, 1.95rem);
-  height: var(--ui-hud-slot-size, 1.95rem);
+  width: var(--ui-hud-slot-size);
+  min-width: var(--ui-hud-slot-size);
+  height: var(--ui-hud-slot-size);
   aspect-ratio: 1;
   place-items: center;
   overflow: hidden;
   border: 1.5px solid
     color-mix(in srgb, var(--accent-gold) 48%, var(--border-strong));
-  border-radius: var(--ui-hud-slot-radius, 0.38rem);
+  border-radius: var(--ui-hud-slot-radius);
   background:
     linear-gradient(
       145deg,
@@ -148,8 +153,11 @@ min-width: 0;
 .opfg-hud-inventory-stack {
   display: grid;
   width: 100%;
-  align-self: end;
-  gap: 0.42rem;
+  min-height: 0;
+  height: 100%;
+  grid-template-rows: auto minmax(0, 1fr);
+  align-self: stretch;
+  gap: 0.22rem;
 }
 
 .opfg-hud-home-button {
@@ -167,16 +175,12 @@ min-width: 0;
   filter: brightness(var(--ui-hover-brightness));
 }
 
-
-
 .opfg-hud-inventory__header > span:not(.opfg-hud-inventory__icon) {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-
 
 .opfg-hud-inventory {
   display: grid;
@@ -186,13 +190,11 @@ min-width: 0;
   gap: 0.58rem;
 }
 
-
-
 .opfg-hud-inventory__slots {
   grid-template-columns:
     repeat(
       2,
-      var(--ui-hud-slot-size, 1.95rem)
+      var(--ui-hud-slot-size)
     );
 }
 
@@ -223,7 +225,7 @@ min-width: 0;
 }
 
 .opfg-hud-slot[data-selected="true"] {
-  outline: 2px solid var(--color-gold, #d9ad54);
+  outline: 2px solid var(--accent-gold);
   outline-offset: 2px;
 }
 
@@ -240,6 +242,9 @@ min-width: 0;
 .opfg-hud-panel--identity {
   position: relative;
   z-index: 2;
+  height: 100%;
+  align-self: stretch;
+  overflow: hidden;
 }
 
 .opfg-hud-identity {
@@ -286,7 +291,7 @@ min-width: 0;
     "Times New Roman",
     serif;
   font-size:
-    var(--ui-hud-name-size, 1.2rem);
+    var(--ui-hud-name-size);
   font-style: normal;
   font-weight: 720;
   letter-spacing: 0.045em;
@@ -329,14 +334,14 @@ min-width: 0;
   margin-top: 0.18rem;
   color: var(--text-muted);
   font-size:
-    var(--ui-hud-title-size, 0.66rem);
+    var(--ui-hud-title-size);
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
 .opfg-hud-identity__separator {
-height: 1px;
+  height: 1px;
   margin: 0.3rem 0;
   background: linear-gradient(
     90deg,
@@ -353,7 +358,7 @@ height: 1px;
     minmax(0, 1fr)
     minmax(0, 1fr);
   gap:
-    var(--ui-hud-info-column-gap, 1rem);
+    var(--ui-hud-info-column-gap);
 }
 
 .opfg-hud-identity__column {
@@ -361,7 +366,7 @@ height: 1px;
   grid-template-rows:
     repeat(3, 1.25rem);
   gap:
-    var(--ui-hud-info-row-gap, 0.18rem);
+    var(--ui-hud-info-row-gap);
   min-width: 0;
 }
 
@@ -380,7 +385,7 @@ height: 1px;
   gap: 0.42rem;
   color: var(--text-primary);
   font-size:
-    var(--ui-hud-info-size, 0.72rem);
+    var(--ui-hud-info-size);
 }
 
 .opfg-hud-info-row > svg {
@@ -423,15 +428,15 @@ height: 1px;
   display: inline-flex;
   align-items: center;
   gap:
-    var(--ui-hud-month-pip-gap, 0.28rem);
+    var(--ui-hud-month-pip-gap);
 }
 
 .opfg-hud-month-progress__pip {
   display: block;
   width:
-    var(--ui-hud-month-pip-width, 2rem);
+    var(--ui-hud-month-pip-width);
   height:
-    var(--ui-hud-month-pip-height, 0.42rem);
+    var(--ui-hud-month-pip-height);
   border:
     1px solid
     color-mix(
@@ -440,7 +445,7 @@ height: 1px;
       transparent
     );
   border-radius:
-    var(--ui-hud-month-pip-radius, 999px);
+    var(--ui-hud-month-pip-radius);
   background: transparent;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.035);
@@ -476,14 +481,15 @@ height: 1px;
   align-self: end;
 }
 
-
-
-
+.opfg-hud-ship__icon {
+  width: var(--ui-hud-ship-icon-size);
+  height: var(--ui-hud-ship-icon-size);
+}
 
 .opfg-hud-ship__copy {
   display: grid;
   min-width: 0;
-  gap: 0.1rem;
+  gap: 0.1rem;
 }
 
 .opfg-hud-ship__name {
@@ -510,7 +516,7 @@ height: 1px;
 }
 
 .opfg-hud-ship__resistance {
-  --opfg-ship-resistance-color: var(--opfg-stat-morale, #4fa58b);
+  --opfg-ship-resistance-color: var(--stat-morale);
 
   display: inline-flex;
   justify-self: end;
@@ -561,12 +567,12 @@ height: 1px;
   grid-template-columns:
     repeat(
       4,
-      var(--ui-hud-slot-size, 1.95rem)
+      var(--ui-hud-slot-size)
     );
   grid-template-rows:
     repeat(
       2,
-      var(--ui-hud-slot-size, 1.95rem)
+      var(--ui-hud-slot-size)
     );
   justify-content: start;
 }
@@ -574,8 +580,8 @@ height: 1px;
 .opfg-hud-special-slots {
   display: grid;
   flex: 0 0 auto;
-  grid-template-columns: var(--ui-hud-slot-size, 1.95rem);
-  grid-template-rows: repeat(2, var(--ui-hud-slot-size, 1.95rem));
+  grid-template-columns: var(--ui-hud-slot-size);
+  grid-template-rows: repeat(2, var(--ui-hud-slot-size));
   align-content: center;
   justify-content: end;
   gap: 0.32rem;
@@ -622,7 +628,7 @@ height: 1px;
     max-width:
       min(
         100%,
-        var(--ui-hud-center-width, 32rem)
+        var(--ui-hud-center-width)
       );
     grid-template-columns:
       minmax(0, 1fr);
@@ -652,7 +658,7 @@ height: 1px;
   .opfg-hud-identity__nameplate strong {
     font-size:
       min(
-        var(--ui-hud-name-size, 1.2rem),
+        var(--ui-hud-name-size),
         1.04rem
       );
   }
@@ -665,7 +671,7 @@ height: 1px;
     gap: 0.32rem;
     font-size:
       min(
-        var(--ui-hud-info-size, 0.72rem),
+        var(--ui-hud-info-size),
         0.67rem
       );
   }
@@ -673,47 +679,16 @@ height: 1px;
   .opfg-hud-month-progress__pip {
     width:
       min(
-        var(--ui-hud-month-pip-width, 2rem),
+        var(--ui-hud-month-pip-width),
         1.55rem
       );
   }
 }
 
-/* Consolidated HUD responsive behavior. */
-.opfg-top-world-hud {
-  align-items: stretch;
-}
-
-.opfg-hud-panel--identity,
-.opfg-hud-panel--ship,
-.opfg-hud-inventory-stack {
-  height: 100%;
-}
-
-.opfg-hud-inventory-stack {
-  min-height: 0;
-  align-self: stretch;
-  grid-template-rows: auto minmax(0, 1fr);
-  gap: 0.22rem;
-}
-
-.opfg-hud-panel--inventory,
-.opfg-hud-panel--ship {
-  height: 100%;
-  min-height: 0;
-  grid-template-rows: auto minmax(0, 1fr);
-  background: transparent;
-}
-
-.opfg-hud-panel--identity {
-  align-self: stretch;
-  overflow: hidden;
-}
-
 .opfg-hud-panel--inventory .opfg-hud-panel__body,
 .opfg-hud-panel--ship .opfg-hud-panel__body {
   min-height: 0;
-  padding: var(--opfg-hud-panel-body-padding-tight) !important;
+  padding: var(--opfg-hud-panel-body-padding-tight);
   padding-top: 0;
 }
 
@@ -732,7 +707,7 @@ height: 1px;
 .opfg-hud-slot {
   padding: 0;
   border: 1px solid var(--border-strong);
-  border-radius: calc(var(--radius-panel) * 0.5);
+  border-radius: var(--ui-hud-slot-radius);
   line-height: 1;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.04),
@@ -794,7 +769,7 @@ height: 1px;
   }
 
   .opfg-top-world-hud {
-    max-width: min(100%, var(--ui-hud-center-width, 32rem)) !important;
+    max-width: min(100%, var(--ui-hud-center-width)) !important;
     grid-template-columns: minmax(0, 1fr) !important;
   }
 
@@ -811,14 +786,14 @@ height: 1px;
 @media (orientation: landscape) {
   .opfg-top-world-hud {
     max-width: calc(
-      var(--ui-hud-side-width, 15.5rem) * 2
-      + var(--ui-hud-center-width, 32rem)
-      + var(--ui-hud-group-gap, 0.75rem) * 2
+      var(--ui-hud-side-width) * 2
+      + var(--ui-hud-center-width)
+      + var(--ui-hud-group-gap) * 2
     ) !important;
     grid-template-columns:
-      var(--ui-hud-side-width, 15.5rem)
-      minmax(0, var(--ui-hud-center-width, 32rem))
-      var(--ui-hud-side-width, 15.5rem) !important;
+      var(--ui-hud-side-width)
+      minmax(0, var(--ui-hud-center-width))
+      var(--ui-hud-side-width) !important;
   }
 
   .opfg-top-world-hud > .opfg-hud-inventory-stack,

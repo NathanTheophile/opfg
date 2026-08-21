@@ -103,7 +103,7 @@ export function PlayerStatsRail({ state, previousState, statLabel, traitLabel, t
               : translate('ui.stats.valueRollMeta', { value, modifier: signed(modifier) });
 
             return (
-              <div key={id} className="opfg-player-stat" data-stat={id}>
+              <div key={id} className="opfg-player-stat has-rich-tooltip" data-stat={id} data-tooltip={label}>
                 <span className="opfg-player-stat__watermark" aria-hidden="true">
                   <StatGlyph Icon={Icon} watermark />
                 </span>

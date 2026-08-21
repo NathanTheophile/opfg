@@ -5,7 +5,7 @@ import './panel-skin.css';
 import { NineSliceFrame } from './NineSliceFrame';
 
 const panelVariants = cva(
-  'opfg-panel-skin text-fg',
+  'opfg-panel-skin border text-fg',
   {
     variants: {
       variant: {
