@@ -38,14 +38,17 @@ describe('eventCatalog', () => {
       'ch_v2_combat_risk_01_younger_lt_s01_show_me',
     ]));
 
-    expect(eventCatalog.filter(({ kind }) => kind === 'critical').map(({ id }) => id)).toEqual([
-      'critical_career_horizon',
-      'critical_mira_death',
-      'critical_player_death',
-      'critical_ship_destroyed',
-      'critical_ship_missing_at_sea',
-      'critical_ship_replacement',
-    ]);
+  expect(eventCatalog.filter(({ kind }) => kind === 'critical').map(({ id }) => id)).toEqual([
+    'critical_career_horizon',
+    'critical_mira_death',
+    'critical_player_death',
+    'critical_reverse_mountain_01_undertow',
+    'critical_reverse_mountain_02_breaking_point',
+    'critical_reverse_mountain_03_last_chance',
+    'critical_ship_destroyed',
+    'critical_ship_missing_at_sea',
+    'critical_ship_replacement',
+  ]);
     expect(validateContent(contentCatalog)).toEqual([]);
   });
 

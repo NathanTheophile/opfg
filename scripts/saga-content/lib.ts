@@ -491,7 +491,14 @@ function runScenario(
     setScenarioNpcStatus(state, npcId, status);
   }
 
-  const selected = selectNextEvent(state, catalog).currentEventId;
+  const sagaEventIds = new Set(source.events.map(({ id }) => id));
+  const scenarioCatalog = {
+    ...catalog,
+    events: catalog.events.filter(({ id }) => sagaEventIds.has(id)),
+    majorNarrativeTracks: catalog.majorNarrativeTracks.filter(({ id }) => id === source.trackId),
+  };
+
+  const selected = selectNextEvent(state, scenarioCatalog).currentEventId;
   if (selected !== expectedEventId) {
     throw new Error(
       `Scenario "${source.sagaId}/${scenario.id}" expected "${expectedEventId}" but selected "${String(selected)}".`,

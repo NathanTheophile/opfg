@@ -3,6 +3,11 @@ import type { GameState } from '../src/game/model/schema';
 import type { SimulationObserver } from '../src/game/simulation/observation';
 import { simulateObservedRun } from '../src/game/simulation/simulateObservedRun';
 import {
+  progressionSimulationPolicy,
+  randomSimulationPolicy,
+  type SimulationPolicy,
+} from '../src/game/simulation/simulationPolicy';
+import {
   average,
   inc,
   loadValidatedCatalog,
@@ -13,7 +18,13 @@ import {
   writeJson,
 } from './simulation-specialized/shared';
 
-const args = parseSpecializedArgs(process.argv.slice(2), 'reports/sim-health.json');
+type HealthPolicyId = 'random' | 'progression';
+
+const { policyId, remainingArgs } = parseHealthPolicyArgs(process.argv.slice(2));
+const args = parseSpecializedArgs(remainingArgs, 'reports/sim-health.json');
+const policy: SimulationPolicy = policyId === 'progression'
+  ? progressionSimulationPolicy
+  : randomSimulationPolicy;
 const catalog = loadValidatedCatalog();
 const startedAt = performance.now();
 
@@ -298,6 +309,7 @@ for (let runIndex = 0; runIndex < args.runs; runIndex += 1) {
     catalog,
     maxResolvedEvents: args.maxEvents,
     observer,
+    policy,
   });
 
   if (sawDamage) runsWithAnyDamage += 1;
@@ -325,8 +337,8 @@ for (let runIndex = 0; runIndex < args.runs; runIndex += 1) {
 }
 
 const report = {
-  telemetryVersion: '1.0',
-  config: args,
+  telemetryVersion: '1.1',
+  config: { ...args, policy: policy.id },
   elapsedMs: performance.now() - startedAt,
 
   summary: {
@@ -411,7 +423,8 @@ const report = {
   errors: topEntries(errors, 30),
 };
 
-console.log('OPFG Specialized Simulation — PLAYER HEALTH / MORTALITY v1.0');
+console.log('OPFG Specialized Simulation — PLAYER HEALTH / MORTALITY v1.1');
+console.log(`Policy: ${policy.id}`);
 console.log(`Runs: ${args.runs}`);
 console.log(`Deaths: ${deaths} (${pct(deaths, args.runs).toFixed(2)}%)`);
 console.log(`Any HP loss: ${runsWithAnyDamage} (${pct(runsWithAnyDamage, args.runs).toFixed(2)}%)`);
@@ -459,6 +472,29 @@ for (const row of topEntries(deathResolutionSources, 15)) {
 }
 
 writeJson(args.jsonPath, report);
+
+function parseHealthPolicyArgs(values: string[]): {
+  policyId: HealthPolicyId;
+  remainingArgs: string[];
+} {
+  let policyId: HealthPolicyId = 'random';
+  const remainingArgs: string[] = [];
+
+  for (let index = 0; index < values.length; index += 1) {
+    if (values[index] !== '--policy') {
+      remainingArgs.push(values[index]);
+      continue;
+    }
+
+    const value = values[++index];
+    if (value !== 'random' && value !== 'progression') {
+      throw new Error('--policy for simulate-health must be "random" or "progression".');
+    }
+    policyId = value;
+  }
+
+  return { policyId, remainingArgs };
+}
 
 function getContext(map: Map<string, ContextStat>, key: string): ContextStat {
   let row = map.get(key);
