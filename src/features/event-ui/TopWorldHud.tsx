@@ -11,6 +11,7 @@ import type {
 import type { LocaleId, Translator } from '@/game/localization';
 import type { StorageSlot } from '@/game/engine/inventory';
 import { ContextTooltip } from './ContextTooltip';
+import { PlayerNameOrnament } from './PlayerNameOrnament';
 import { getUiTooltipKey } from './context-tooltip-copy';
 import './hud-panel-header.css';
 import './top-world-hud.css';
@@ -271,23 +272,20 @@ export function IdentityEnvironmentHudPanel({
   calendarAgeMonths,
 }: TopWorldHudProps) {
   const affiliationTitle = getAffiliationTitle(state, catalog, translate);
+  const careerTitle = state.player.career.titleId
+    ? catalog.careerTitles.find(({ id }) => id === state.player.career.titleId)
+    : undefined;
+  const playerTitle = careerTitle ? translate(careerTitle.nameKey) : affiliationTitle;
 
   return (
     <Panel variant="strong" padding="none" className="opfg-hud-panel opfg-hud-panel--identity">
       <div className="opfg-hud-panel__body opfg-hud-identity">
-        <div className="opfg-hud-identity__upper">
-          {state.player.profile.name && (
-            <div className="opfg-hud-identity__nameplate">
-              <span aria-hidden="true" />
-              <strong>{state.player.profile.name}</strong>
-              <span aria-hidden="true" />
-            </div>
-          )}
-        </div>
-        <div className="opfg-hud-identity__separator" />
-        <div className="opfg-hud-identity__lower">
-          <div className="opfg-hud-identity__title">{affiliationTitle}</div>
-        </div>
+        <PlayerNameOrnament
+          name={state.player.profile.name}
+          title={playerTitle}
+          affiliationId={state.player.career.affiliationId}
+          reputation={state.player.career.reputation}
+        />
       </div>
     </Panel>
   );
