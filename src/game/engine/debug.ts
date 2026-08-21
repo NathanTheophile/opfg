@@ -2,6 +2,7 @@ import type { ContentCatalog } from '../content/schema';
 import type { CrewRoleId, GameState, LocationId, NpcId } from '../model/schema';
 import { assignCrewRoleToRecruit, vacantCrewRoleIds } from './crew';
 import { applyEffects } from './effects';
+import { ensureNpcMaterialized } from './npcNames';
 import { findLocation, movePlayerToLocation } from './locations';
 import { canRecruitNpc } from './ship';
 
@@ -34,6 +35,8 @@ export function debugRecruitCrewMember(
   if (!canRecruitNpc(state, catalog, npcId, true)) {
     throw new Error(`NPC "${npcId}" cannot be recruited with the current crew capacity.`);
   }
+
+  ensureNpcMaterialized(state, catalog, npcId);
 
   const recruitedState = applyEffects(
     state,
