@@ -413,7 +413,9 @@ export function ShipHudPanel({ state, catalog, translate, selectedStorageSlot, o
                 aria-label={activeCompanionLabel ?? translate('ui.companion.empty')}
                 {...interactionProps({ type: 'companion' }, selectedStorageSlot, onStorageSlot)}
               >
-                <UserRound className="size-4" aria-hidden="true" />
+                {activeCompanion
+                  ? <ItemSlotIcon itemId={activeCompanion.itemId} fallback={<UserRound className="size-4" aria-hidden="true" />} />
+                  : <UserRound className="size-4" aria-hidden="true" />}
               </button>
             </ContextTooltip>
           </div>
