@@ -43,8 +43,8 @@ import {
 } from './uiTunerConfig';
 import './ui-tuner.css';
 
-const STORAGE_VALUES = 'opfg.uiTuner.values.v1';
-const STORAGE_PRESETS = 'opfg.uiTuner.presets.v1';
+const STORAGE_VALUES = 'opfg.uiTuner.values.v2';
+const STORAGE_PRESETS = 'opfg.uiTuner.presets.v2';
 const STORAGE_UI = 'opfg.uiTuner.ui.v1';
 
 type PresetSlot = 'A' | 'B' | 'C' | 'D';
@@ -169,7 +169,7 @@ function jsonExport(
 ): string {
   return JSON.stringify(
     {
-      version: 1,
+      version: 2,
       exportedAt: new Date().toISOString(),
       values,
     },
