@@ -4,6 +4,7 @@ export * from './divider';
 export * from './drawer';
 export * from './icon-button';
 export * from './modal';
+export * from './NineSliceFrame';
 export * from './panel';
 export * from './scrollable-panel';
 export * from './surface';

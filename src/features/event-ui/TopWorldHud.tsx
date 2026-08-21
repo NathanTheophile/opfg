@@ -1,16 +1,5 @@
-import {
-  Anchor,
-  Backpack,
-  Coins,
-  House,
-  LockKeyhole,
-  Navigation,
-  Package,
-  ShieldCheck,
-  Shirt,
-  UserRound,
-} from 'lucide-react';
-import { Panel } from '@/components/ui';
+import { Anchor, Backpack, Coins, House, LockKeyhole, Navigation, Package, ShieldCheck, Shirt, UserRound, } from 'lucide-react';
+import { Panel, NineSliceFrame } from '@/components/ui';
 import type {
   ContentCatalog,
   LocationDefinition,
@@ -186,9 +175,10 @@ export function InventoryHudPanel({
 
   return (
     <div className="opfg-hud-inventory-stack">
-      <button type="button" className="opfg-hud-home-button opfg-hud-section-title" onClick={onHome} disabled={!onHome} aria-label={translate('ui.action.home')}>
+      <button type="button" className="opfg-hud-home-button opfg-hud-section-header" onClick={onHome} disabled={!onHome} aria-label={translate('ui.action.home')}>
+        <NineSliceFrame />
         <House className="size-4" aria-hidden="true" />
-        <span>{translate('ui.action.home')}</span>
+        <span className="opfg-hud-section-title">{translate('ui.action.home')}</span>
       </button>
 
       <Panel
@@ -199,7 +189,7 @@ export function InventoryHudPanel({
       >
         <div className="opfg-hud-section-header opfg-hud-inventory__header">
           <ContextTooltip
-            className="opfg-hud-inventory__icon"
+            className="opfg-hud-inventory__icon opfg-hud-header-icon-slot"
             title={translate('ui.inventory')}
             detail={translate('ui.inventory.description')}
             meta={`${inventoryStacks.length}/${inventoryCapacity}`}
@@ -326,7 +316,7 @@ export function ShipHudPanel({ state, catalog, translate, selectedStorageSlot, o
     <Panel variant="strong" padding="none" className="opfg-hud-panel opfg-hud-panel--ship">
       <div className="opfg-hud-section-header opfg-hud-ship__header">
         <ContextTooltip
-          className="opfg-hud-ship__icon"
+          className="opfg-hud-ship__icon opfg-hud-header-icon-slot"
           title={translate('ui.ship')}
           detail={translate(getUiTooltipKey('ship'))}
           side="bottom"

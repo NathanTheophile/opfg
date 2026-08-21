@@ -103,18 +103,9 @@
   min-height: 6.4rem;
   place-items: center;
   gap: 0.65rem;
-  border: 1px solid rgb(253 230 138 / 0.55);
-  border-radius: 0.8rem;
+
   padding: 1.15rem 1.5rem;
-  background:
-    linear-gradient(
-      180deg,
-      rgb(245 194 66 / 0.98),
-      rgb(217 157 31 / 0.96)
-    );
-  box-shadow:
-    0 16px 46px rgb(0 0 0 / 0.38),
-    inset 0 1px rgb(255 255 255 / 0.28);
+
   color: rgb(41 31 18);
   transition:
     transform 140ms ease,
@@ -124,10 +115,7 @@
 
 .opfg-landing__continue:hover {
   transform: translateY(-2px);
-  filter: brightness(1.04);
-  box-shadow:
-    0 20px 55px rgb(0 0 0 / 0.46),
-    inset 0 1px rgb(255 255 255 / 0.32);
+
 }
 
 .opfg-landing__continue:active {
@@ -176,10 +164,10 @@
 }
 
 .opfg-landing__secondary-button {
+  --opfg-nine-slice-width: 10px;
   min-width: 0;
   min-height: 3.25rem;
-  background: rgb(12 10 9 / 0.6);
-  backdrop-filter: blur(8px);
+
 }
 
 .opfg-landing__community {
@@ -354,7 +342,7 @@
   }
 }
 
-/* OPFG LANDING VIEWPORT FIT START */
+/* Responsive landing composition. */
 .opfg-landing {
   --opfg-landing-scale: 1;
 
@@ -385,17 +373,13 @@
 .opfg-landing__logo {
   display: block !important;
   visibility: visible !important;
+  width: auto !important;
+  max-width: min(64vw, 24rem) !important;
+  height: clamp(11rem, 25vh, 17rem) !important;
+  margin: 0.25rem auto 0.7rem !important;
+  object-fit: contain;
   opacity: 1 !important;
-  width: clamp(7rem, 17vh, 10.5rem);
-  max-width: 42vw;
-  height: auto;
-  margin:
-    clamp(0.2rem, 0.7vh, 0.4rem)
-    auto
-    clamp(0.45rem, 1.1vh, 0.8rem);
-  filter: drop-shadow(0 12px 26px rgb(0 0 0 / 0.4));
-  pointer-events: none;
-  user-select: none;
+  filter: drop-shadow(0 12px 28px rgb(0 0 0 / 0.46));
 }
 
 .opfg-landing__title {
@@ -407,11 +391,59 @@
   font-size: clamp(0.82rem, 1.7vh, 1.02rem);
 }
 
+.opfg-landing__continue,
+.opfg-landing__new-primary,
+.opfg-landing__secondary-button {
+  border: 1px solid transparent !important;
+  border-radius: 0 !important;
+
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.opfg-landing__continue,
+.opfg-landing__new-primary {
+  --opfg-nine-slice-width: 13px;
+  color: var(--text-gold-emphasis) !important;
+  text-shadow: 0 2px 10px rgb(0 0 0 / 0.72);
+  filter: drop-shadow(0 12px 24px rgb(0 0 0 / 0.34));
+}
+
 .opfg-landing__continue {
   min-height: clamp(5rem, 11vh, 6.2rem);
 }
 
-/* Portrait ratio => mobile composition. */
+.opfg-landing__secondary-button {
+  min-width: 0;
+  min-height: 3.25rem;
+  border-image-width: 10px !important;
+  color: var(--text-gold-soft) !important;
+}
+
+.opfg-landing__secondary-button::after {
+  display: none !important;
+}
+
+.opfg-landing__continue:hover,
+.opfg-landing__new-primary:hover,
+.opfg-landing__secondary-button:hover:not(:disabled) {
+  background: transparent !important;
+  filter: brightness(var(--ui-hover-brightness)) drop-shadow(0 9px 16px rgb(0 0 0 / 0.3));
+}
+
+.opfg-landing__continue-title {
+  color: var(--text-gold-emphasis-strong);
+  font-size: 1.12rem;
+  letter-spacing: 0.12em;
+}
+
+.opfg-landing__save-details {
+  color: var(--text-gold-soft);
+  opacity: 0.9;
+}
+
 @media (orientation: portrait) {
   .opfg-landing {
     padding:
@@ -437,9 +469,9 @@
   }
 
   .opfg-landing__logo {
-    width: clamp(6.25rem, 27vw, 8.75rem);
-    max-width: 34vw;
-    margin-bottom: clamp(0.3rem, 0.8vh, 0.55rem);
+    max-width: 58vw !important;
+    height: clamp(8.5rem, 19vh, 12rem) !important;
+    margin-bottom: 0.35rem !important;
   }
 
   .opfg-landing__title {
@@ -453,15 +485,13 @@
     line-height: 1.4;
   }
 
-  .opfg-landing__primary {
+  .opfg-landing__primary,
+  .opfg-landing__secondary {
     width: min(100%, 26rem);
-    gap: 0.45rem;
   }
 
-  .opfg-landing__new-primary {
-    min-height: 3.4rem;
-    padding-inline: 1.4rem;
-    font-size: 0.9rem;
+  .opfg-landing__primary {
+    gap: 0.45rem;
   }
 
   .opfg-landing__continue {
@@ -470,12 +500,7 @@
     padding: 0.75rem 0.9rem;
   }
 
-  .opfg-landing__continue-title {
-    font-size: 0.92rem;
-  }
-
   .opfg-landing__secondary {
-    width: min(100%, 26rem);
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.4rem;
   }
@@ -486,22 +511,8 @@
     padding-inline: 0.35rem;
     font-size: 0.64rem;
   }
-
-  .opfg-landing__save-details {
-    display: grid;
-    gap: 0.12rem;
-  }
-
-  .opfg-landing__save-details > span[aria-hidden='true'] {
-    display: none;
-  }
-
-  .opfg-landing__new-secondary {
-    font-size: 0.67rem;
-  }
 }
 
-/* Landscape ratio => classic composition. */
 @media (orientation: landscape) {
   .opfg-landing__content {
     width: min(100%, 46rem);
@@ -511,14 +522,3 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
-
-@media (orientation: landscape) and (max-height: 42rem) {
-  .opfg-landing__kicker {
-    font-size: 0.62rem;
-  }
-
-  .opfg-landing__secondary-button {
-    min-height: 2.75rem;
-  }
-}
-/* OPFG LANDING VIEWPORT FIT END */

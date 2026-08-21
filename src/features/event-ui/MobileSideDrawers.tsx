@@ -14,6 +14,7 @@ import {
 import type { Translator } from '@/game/localization';
 import './hud-panel-header.css';
 import './mobile-side-drawers.css';
+import { NineSliceFrame } from '@/components/ui';
 
 type DrawerId = 'stats' | 'inventory' | 'crew' | 'ship';
 
@@ -94,6 +95,7 @@ export function MobileSideDrawers({
         aria-label={translate('ui.action.home')}
         title={translate('ui.action.home')}
       >
+        <NineSliceFrame />
         <House className="size-4" aria-hidden="true" />
         <span>{translate('ui.action.home')}</span>
       </button>
@@ -120,6 +122,7 @@ export function MobileSideDrawers({
             title={label}
             onClick={() => setOpenDrawer((currentId) => currentId === id ? null : id)}
           >
+            <NineSliceFrame />
             <Icon className="size-4" />
           </button>
         ))}

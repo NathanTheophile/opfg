@@ -21,6 +21,7 @@ export interface ContextTooltipProps {
   children: ReactNode;
   focusable?: boolean;
   ariaLabel?: string;
+  dataStat?: string;
 }
 
 interface TooltipPosition {
@@ -42,6 +43,7 @@ export function ContextTooltip({
   children,
   focusable = false,
   ariaLabel,
+  dataStat,
 }: ContextTooltipProps) {
   const id = useId();
   const triggerRef = useRef<HTMLSpanElement | null>(null);
@@ -124,7 +126,7 @@ export function ContextTooltip({
   }, [open, side]);
 
   const style = {
-    '--opfg-context-tooltip-accent': accent ?? 'var(--gold)',
+    '--opfg-context-tooltip-accent': accent ?? 'var(--accent-gold)',
   } as CSSProperties;
 
   return (
@@ -134,6 +136,7 @@ export function ContextTooltip({
         className={`opfg-context-tooltip__trigger${className ? ` ${className}` : ''}`}
         tabIndex={focusable ? 0 : undefined}
         aria-label={ariaLabel}
+        data-stat={dataStat}
         aria-describedby={open ? id : undefined}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}

@@ -1,922 +1,106 @@
-/* Event preview layout and responsive behavior. */
-
+/* Event flow layout, typography and responsive behavior. */
 .opfg-adventure-stack {
   display: grid;
-  gap: var(--ui-adventure-stack-gap, 0.75rem);
+  gap: var(--ui-adventure-stack-gap);
+  background: transparent;
 }
 
-.opfg-event-panel[data-mode="resolved"] {
-  box-shadow: var(--shadow-panel);
+.opfg-game-adventure-region {
+  margin-top: var(--ui-hud-adventure-gap) !important;
 }
-
-.opfg-event-panel[data-mode="resolved"]
-  .opfg-event-panel__choice {
-  opacity: 0.42;
-  transition:
-    opacity var(--motion-fast) var(--ease-standard),
-    filter var(--motion-fast) var(--ease-standard);
-}
-
-.opfg-event-panel[data-mode="resolved"]
-  .opfg-event-panel__choice[data-selected="true"] {
-  opacity: 1;
-}
-
-.opfg-event-panel[data-mode="resolved"]
-  .opfg-event-panel__choice[data-selected="true"]
-  .opfg-choice-button {
-  border-color:
-    color-mix(
-      in srgb,
-      var(--gold) 58%,
-      var(--border-default)
-    );
-  box-shadow:
-    inset 0 0 0 1px
-      color-mix(in srgb, var(--gold) 16%, transparent),
-    var(--shadow-control);
-}
-
-.opfg-event-panel[data-mode="collapsed"] {
-  max-width: min(100%, 46rem);
-  margin-inline: auto;
-}
-
-.opfg-event-panel[data-mode="collapsed"]
-  .opfg-event-panel__header {
-  padding-block:
-    max(
-      0.5rem,
-      calc(var(--ui-event-header-pt, 1rem) * 0.7)
-    );
-}
-
-@media (max-width: 79.999rem) {
-  .opfg-adventure-stack {
-    gap: 0.6rem;
-  }
-}
-
-@media (max-width: 40rem) {
-  .opfg-event-panel[data-mode="resolved"]
-    .opfg-event-panel__choice:not(
-      [data-selected="true"]
-    ) {
-    display: none;
-  }
-}
-
-/* ------------------------------------------------------------------ */
-/* D1.1 playtest readability pass                                     */
-/* ------------------------------------------------------------------ */
 
 .opfg-adventure-scroll {
-  max-height: calc(100dvh - 16.75rem);
+  max-height: calc(100dvh - 14.5rem);
+  overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 0 0.15rem 1.25rem;
+  padding: 0 var(--ui-adventure-inline-padding) 0.65rem;
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.opfg-overflow-panel { display: grid; gap: .75rem; }
-
 .opfg-adventure-scroll::-webkit-scrollbar {
+  display: none;
   width: 0;
   height: 0;
-  display: none;
+}
+
+.opfg-overflow-panel {
+  display: grid;
+  gap: 0.75rem;
 }
 
 .opfg-adventure-size-shell {
-  overflow: hidden;
+  overflow: visible;
+  background: transparent;
+  transform: none !important;
 }
 
-.opfg-event-panel__header {
-  padding-top: 0.72rem !important;
-  padding-bottom: 0.62rem !important;
-}
-
-.opfg-event-panel__header > p {
-  font-size: 0.62rem !important;
-  letter-spacing: 0.15em !important;
-}
-
-.opfg-event-panel__title {
-  font-size: 1.16rem !important;
-  line-height: 1.15 !important;
-}
-
-.opfg-event-panel__body {
-  position: relative;
-  padding-top: 1.15rem !important;
-  padding-bottom: 1.25rem !important;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--gold) 5%, transparent), transparent 62%);
-}
-
-.opfg-event-panel__body-copy {
-  position: relative;
-  max-width: 62ch !important;
-  padding-left: 1rem;
-  color: color-mix(in srgb, var(--text-primary) 92%, var(--gold)) !important;
-  font-size: 1.04rem !important;
-  font-weight: 520;
-  line-height: 1.68 !important;
-  text-wrap: pretty;
-}
-
-.opfg-event-panel__body-copy::before {
-  content: "";
-  position: absolute;
-  top: 0.16rem;
-  bottom: 0.16rem;
-  left: 0;
-  width: 2px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--gold) 62%, transparent);
-  box-shadow: 0 0 12px color-mix(in srgb, var(--gold) 18%, transparent);
-}
-
-.opfg-event-panel__choice-list {
-  gap: 0.55rem !important;
-}
-
-.opfg-outcome-panel--inline {
-  border-color: color-mix(in srgb, var(--gold) 24%, var(--border-default));
-}
-
-.opfg-outcome-panel--inline .opfg-outcome-panel__body {
-  padding-top: 1.15rem !important;
-  padding-bottom: 1.15rem !important;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--gold) 4%, transparent), transparent 58%);
-}
-
-.opfg-outcome-panel--inline .opfg-outcome-panel__body > p {
-  color: var(--text-primary);
-  font-size: 1rem;
-  line-height: 1.65;
-}
-
-.opfg-hud-reputation strong {
-  color: var(--text-primary);
-  font-variant-numeric: tabular-nums;
-}
-
-@media (max-width: 79.999rem) {
-  .opfg-adventure-scroll {
-    max-height: none;
-    overflow: visible;
-    padding-inline: 0;
-  }
-}
-
-@media (max-width: 40rem) {
-  .opfg-event-panel__body-copy {
-    padding-left: 0.78rem;
-    font-size: 0.98rem !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .opfg-adventure-size-shell {
-    transition: none !important;
-  }
-}
-
-
-/* D1.2 persistent-panel compact readability pass */
-
-/* Keep the actual panel mounted. Only its contents fade. */
 .opfg-event-panel {
-  transition:
-    height 180ms cubic-bezier(0.16, 1, 0.3, 1),
-    min-height 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  --opfg-event-location-icon-slot-width: calc(0.64rem - 1px);
+  --opfg-event-location-icon-size: calc(0.64rem - 1px);
+  --opfg-event-location-icon-transform: translateX(2px) translateY(-2px) scale(0.9);
+  min-width: 0;
+  max-width: 100%;
+  font-size: 0.9rem;
+  box-shadow: none;
+  transition: none;
 }
 
 .opfg-event-panel__header,
 .opfg-event-panel__body,
 .opfg-event-panel__choices {
+  min-width: 0;
+  max-width: 100%;
   transition:
     opacity 105ms ease,
     filter 105ms ease;
 }
 
-.opfg-event-panel[data-content-visible="false"] .opfg-event-panel__header,
-.opfg-event-panel[data-content-visible="false"] .opfg-event-panel__body,
-.opfg-event-panel[data-content-visible="false"] .opfg-event-panel__choices {
+.opfg-event-panel__body {
+  padding-block:
+    var(--ui-event-body-pt)
+    var(--ui-event-body-pb);
+}
+
+.opfg-event-panel[data-content-visible='false'] :is(
+  .opfg-event-panel__header,
+  .opfg-event-panel__body,
+  .opfg-event-panel__choices
+) {
   opacity: 0;
   filter: blur(1px);
   pointer-events: none;
 }
 
-.opfg-event-panel[data-content-visible="true"] .opfg-event-panel__header,
-.opfg-event-panel[data-content-visible="true"] .opfg-event-panel__body,
-.opfg-event-panel[data-content-visible="true"] .opfg-event-panel__choices {
+.opfg-event-panel[data-content-visible='true'] :is(
+  .opfg-event-panel__header,
+  .opfg-event-panel__body,
+  .opfg-event-panel__choices
+) {
   opacity: 1;
   filter: none;
 }
 
-/* More vertical room for the central story viewport. */
-.opfg-adventure-scroll {
-  max-height: calc(100dvh - 14.5rem);
-  padding-bottom: 0.65rem;
-}
-
-/* Compact typography across the story flow. */
-.opfg-event-panel {
-  font-size: 0.9rem;
-}
-
-.opfg-event-panel__header {
-  padding-top: 0.48rem !important;
-  padding-bottom: 0.42rem !important;
-}
-
-.opfg-event-panel__header > p {
-  margin-bottom: 0.08rem;
-  font-size: 0.54rem !important;
-  letter-spacing: 0.13em !important;
-}
-
-.opfg-event-panel__title {
-  font-size: 1.02rem !important;
-  line-height: 1.08 !important;
-}
-
-/* Deliberate high-contrast narrative surface: parchment + near-black copy. */
-.opfg-event-panel__body {
-  padding-top: 0.78rem !important;
-  padding-bottom: 0.82rem !important;
-  background:
-    linear-gradient(
-      90deg,
-      rgb(240 218 177 / 0.92),
-      rgb(224 194 146 / 0.82) 62%,
-      rgb(201 162 111 / 0.72)
-    ) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.32),
-    inset 0 -1px 0 rgb(69 39 19 / 0.22);
-}
-
-.opfg-event-panel__body-copy {
-  max-width: 66ch !important;
-  padding-left: 0.72rem;
-  color: #21150d !important;
-  font-size: 0.92rem !important;
-  font-weight: 650;
-  line-height: 1.48 !important;
-  text-shadow: 0 1px 0 rgb(255 255 255 / 0.18);
-}
-
-.opfg-event-panel__body-copy::before {
-  top: 0.08rem;
-  bottom: 0.08rem;
-  width: 2px;
-  background: rgb(82 46 21 / 0.58);
-  box-shadow: none;
-}
-
-.opfg-event-panel__choices {
-  padding: 0.5rem 0.62rem 0.58rem !important;
-}
-
-.opfg-event-panel__choice-list {
-  gap: 0.4rem !important;
-}
-
-.opfg-choice-button {
-  min-height: 2.45rem !important;
-  padding: 0.48rem 0.78rem !important;
-  font-size: 0.84rem !important;
-  line-height: 1.22 !important;
-}
-
-.opfg-choice-button .opfg-choice-stat-effects {
-  margin-top: 0.22rem;
-}
-
-.opfg-choice-button [class*="Badge"],
-.opfg-choice-button .badge {
-  font-size: 0.66rem !important;
-}
-
-/* Resolved Event is intentionally denser so the consequence reads as an
-   extension of the same card rather than a second full-screen section. */
-.opfg-event-panel[data-mode="resolved"] .opfg-event-panel__header {
-  padding-top: 0.38rem !important;
-  padding-bottom: 0.34rem !important;
-}
-
-.opfg-event-panel[data-mode="resolved"] .opfg-event-panel__body {
-  padding-top: 0.55rem !important;
-  padding-bottom: 0.58rem !important;
-}
-
-.opfg-event-panel[data-mode="resolved"] .opfg-event-panel__choices {
-  padding-top: 0.38rem !important;
-  padding-bottom: 0.4rem !important;
-}
-
-.opfg-event-panel[data-mode="resolved"] .opfg-event-panel__choice:not([data-selected="true"]) {
-  display: none;
-}
-
-.opfg-event-panel[data-mode="resolved"] .opfg-choice-button {
-  min-height: 2.15rem !important;
-  padding-block: 0.36rem !important;
-  opacity: 0.78;
-}
-
-/* Consequence = compact continuation, not another full Event panel. */
-.opfg-outcome-panel--inline {
-  margin-top: -0.18rem;
-  border-top-left-radius: calc(var(--radius-panel) * 0.72);
-  border-top-right-radius: calc(var(--radius-panel) * 0.72);
-}
-
-.opfg-outcome-panel--inline .opfg-outcome-panel__body {
-  padding: 0.68rem 0.9rem !important;
-  background:
-    linear-gradient(
-      90deg,
-      rgb(0 0 0 / 0.08),
-      transparent 72%
-    ) !important;
-}
-
-.opfg-outcome-panel--inline .opfg-outcome-panel__body > p {
-  max-width: 72ch;
-  font-size: 0.82rem !important;
-  font-weight: 560;
-  line-height: 1.4 !important;
-}
-
-.opfg-outcome-panel--inline .opfg-outcome-feedback-row {
-  gap: 0.32rem;
-  margin-top: 0.45rem;
-}
-
-.opfg-outcome-panel--inline .opfg-outcome-stat-effect,
-.opfg-outcome-panel--inline .opfg-outcome-dice-result {
-  min-height: 1.65rem;
-  padding-top: 0.28rem;
-  padding-bottom: 0.28rem;
-  font-size: 0.66rem;
-}
-
-.opfg-outcome-panel--inline .opfg-outcome-stat-effect__label {
-  font-size: 0.66rem;
-}
-
-.opfg-outcome-panel--inline .opfg-outcome-panel__footer {
-  min-height: 0;
-  padding: 0.42rem 0.62rem !important;
-}
-
-.opfg-outcome-continue {
-  min-height: 2rem !important;
-  padding: 0.32rem 0.72rem !important;
-  font-size: 0.76rem !important;
-}
-
-.opfg-adventure-stack {
-  gap: 0.42rem !important;
-}
-
-@media (max-width: 40rem) {
-  .opfg-event-panel__body-copy {
-    font-size: 0.88rem !important;
-    line-height: 1.43 !important;
-  }
-
-  .opfg-choice-button {
-    font-size: 0.8rem !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .opfg-event-panel,
-  .opfg-event-panel__header,
-  .opfg-event-panel__body,
-  .opfg-event-panel__choices {
-    transition-duration: 1ms !important;
-  }
-}
-
-
-/* D1.4 outcome-only choice collapse
- *
- * Event -> Outcome keeps header/body perfectly still.
- * Only unselected Choices leave; the selected button keeps its exact
- * interactive dimensions. Outcome mounts afterwards.
- */
-.opfg-event-panel[data-mode="resolved"]
-  .opfg-event-panel__header {
-  padding-top: 0.48rem !important;
-  padding-bottom: 0.42rem !important;
-}
-
-.opfg-event-panel[data-mode="resolved"]
-  .opfg-event-panel__body {
-  padding-top: 0.78rem !important;
-  padding-bottom: 0.82rem !important;
-}
-
-.opfg-event-panel[data-mode="resolved"]
-  .opfg-event-panel__choices {
-  padding: 0.5rem 0.62rem 0.58rem !important;
-}
-
-.opfg-event-panel[data-mode="resolved"]
-  .opfg-choice-button {
-  min-height: 2.45rem !important;
-  padding: 0.48rem 0.78rem !important;
-  opacity: 1;
-}
-
-/* Older D1.2 used display:none here, which would kill AnimatePresence
- * before its fade/collapse exit animation can run.
- */
-.opfg-event-panel[data-mode="resolved"]
-  .opfg-event-panel__choice:not(
-    [data-selected="true"]
-  ) {
-  display: flex !important;
-}
-
-/* The event itself stays visually anchored while the consequence appears. */
-.opfg-outcome-panel--inline {
-  transform-origin: top center;
-}
-
-
-/* D1.5 instant panel resize */
-
-/*
- * Height changes between Event presentations are intentionally immediate.
- * The copy still fades out/in, but the container itself must never FLIP,
- * scale, spring, overshoot or interpolate through an artificial height.
- */
-.opfg-event-panel {
-  transition:
-    none !important;
-}
-
-.opfg-adventure-size-shell {
-  transform:
-    none !important;
-}
-
-/*
- * Preserve the intended copy fade. These are opacity/filter transitions,
- * not size transitions.
- */
-.opfg-event-panel__header,
-.opfg-event-panel__body,
-.opfg-event-panel__choices {
-  transition:
-    opacity 105ms ease,
-    filter 105ms ease !important;
-}
-
-/* D1.6 panel edge polish -------------------------------------------------- */
-
-/*
- * The central scroll viewport used to leave almost no horizontal breathing
- * room around full-width Panels. Their shadows were therefore clipped by the
- * square scroll viewport and showed up as dark rectangular corner artefacts.
- */
-.opfg-adventure-scroll {
-  padding-left: 0.7rem !important;
-  padding-right: 0.7rem !important;
-}
-
-.opfg-adventure-size-shell,
-.opfg-adventure-stack {
-  background: transparent !important;
-}
-
-.opfg-adventure-size-shell {
-  overflow: visible !important;
-}
-
-/*
- * Avoid the double/overlay shadow band where Event and Outcome meet.
- * Both remain raised, but use the normal rounded Panel shadow.
- */
-.opfg-event-panel,
-.opfg-outcome-panel--inline {
-  box-shadow: var(--shadow-panel) !important;
-}
-
-/* Consequence should sit naturally below the Event instead of overlapping it. */
-.opfg-outcome-panel--inline {
-  margin-top: 0 !important;
-}
-
-/*
- * Choice hover/focus effects need a little space on every side.
- * This is padding around the whole button group, not only horizontal padding.
- */
-.opfg-event-panel__choices,
-.opfg-event-panel[data-mode="resolved"]
-  .opfg-event-panel__choices {
-  padding:
-    0.7rem
-    0.82rem
-    0.74rem !important;
-}
-
-@media (max-width: 40rem) {
-  .opfg-adventure-scroll {
-    padding-left: 0.35rem !important;
-    padding-right: 0.35rem !important;
-  }
-
-  .opfg-event-panel__choices,
-  .opfg-event-panel[data-mode="resolved"]
-    .opfg-event-panel__choices {
-    padding:
-      0.58rem
-      0.65rem
-      0.62rem !important;
-  }
-}
-
-/* D1.6.1 central panel cleanup */
-
-/*
- * Restore the compact pre-D1.6 breathing room.
- * The larger padding exposed more of the Panel shadow while the scroll
- * viewport still clipped that shadow on square boundaries.
- */
-.opfg-adventure-scroll {
-  padding-left: 0.15rem !important;
-  padding-right: 0.15rem !important;
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-}
-
-.opfg-adventure-size-shell,
-.opfg-adventure-stack {
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-}
-
-/*
- * The dark rectangular "panel behind the panel" was the Event / Outcome
- * shadow being clipped by the rectangular scroll viewport.
- * The actual Panel border remains; only this exterior shadow is removed.
- */
-.opfg-event-panel,
-.opfg-outcome-panel,
-.opfg-outcome-panel--inline {
-  box-shadow: none !important;
-}
-
-/*
- * Restore the compact Choice-area padding from D1.2.
- * Extra padding did not solve the hover clipping because the cause is the
- * glass button's horizontal scale animation.
- */
-.opfg-event-panel__choices,
-.opfg-event-panel[data-mode="resolved"]
-  .opfg-event-panel__choices {
-  padding:
-    0.5rem
-    0.62rem
-    0.58rem !important;
-}
-
-/*
- * Event Choice buttons are full-width. The shared glass hover animation grows
- * to scaleX(1.017), which necessarily extends outside the Choice row and gets
- * clipped by the collapse wrapper. Keep all hover material changes, but do
- * not geometrically widen Event Choice buttons.
- */
-.opfg-choice-button.opfg-button-glass:hover:not(:disabled) {
-  animation: none !important;
-  transform: none !important;
-  translate: 0 0 !important;
-}
-
-/* Avoid the same one-frame horizontal protrusion on click. */
-.opfg-choice-button.opfg-button-glass:active:not(:disabled) {
-  animation: none !important;
-  transform: none !important;
-  translate: 0 0 !important;
-}
-
-@media (max-width: 40rem) {
-  .opfg-event-panel__choices,
-  .opfg-event-panel[data-mode="resolved"]
-    .opfg-event-panel__choices {
-    padding:
-      0.5rem
-      0.62rem
-      0.58rem !important;
-  }
-}
-
-
-
-/* D1.7 final event micro-polish */
-
-/* Leave a few real pixels below the selected Choice after collapse. */
-.opfg-event-panel[data-mode="resolved"]
-  .opfg-event-panel__choices {
-  padding-bottom: 0.72rem !important;
-}
-
-.opfg-event-panel[data-mode="resolved"]
-  .opfg-event-panel__choice[data-selected="true"] {
-  overflow: visible !important;
-}
-
-/* Continue is a flow action: keep the pointer centred between Outcomes. */
-.opfg-outcome-panel__footer {
-  justify-content: center !important;
-}
-
-.opfg-outcome-continue {
+.opfg-event-panel[data-mode='collapsed'] {
+  max-width: min(100%, 46rem);
   margin-inline: auto;
 }
 
-/* D1.8 narrative opening polish ----------------------------------------- */
-
-/* Consequence prose uses the same visual language as Event prose:
- * world/situation = light parchment, player action = dark interactive button.
- */
-.opfg-outcome-panel--inline .opfg-outcome-panel__body {
-  background:
-    linear-gradient(
-      90deg,
-      rgb(240 218 177 / 0.92),
-      rgb(224 194 146 / 0.82) 62%,
-      rgb(201 162 111 / 0.72)
-    ) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.32),
-    inset 0 -1px 0 rgb(69 39 19 / 0.22);
+.opfg-event-panel__header {
+  margin-bottom: 0;
+  padding:
+    var(--ui-event-header-pt)
+    var(--ui-event-header-px)
+    var(--ui-event-header-pb);
 }
 
-.opfg-outcome-panel--inline .opfg-outcome-panel__body > p {
-  color: #21150d !important;
-  font-weight: 650 !important;
-  text-shadow: 0 1px 0 rgb(255 255 255 / 0.18);
-}
-
-/* D1.8.1 narrative person labels */
-.opfg-narrative-person__name {
-  color: var(--gold);
-  font-weight: 850;
-}
-
-.opfg-narrative-person__relation {
-  color: rgb(91 62 41 / 0.7);
-  font-size: 0.84em;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-/* STAB_PATCH_UI_UX_01 event/responsive pass */
-.opfg-event-panel,
-.opfg-event-panel__header,
-.opfg-event-panel__body,
-.opfg-event-panel__choices,
-.opfg-event-panel__choice,
-.opfg-adventure-scroll,
-.opfg-adventure-size-shell {
-  min-width: 0;
-  max-width: 100%;
-}
-
-.opfg-event-panel__location-flag {
-  position: relative;
-  left: 0 !important;
-  display: block;
-  width: fit-content;
-  max-width: 100%;
-  margin-inline: 0 !important;
-  padding-inline: 0 !important;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  transform: none !important;
-  translate: none !important;
-}
-
-.opfg-event-panel__meta-row {
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.9rem;
-  margin-bottom: 0.16rem;
-  color: var(--gold);
-  font-size: 0.68rem;
-  font-weight: 780;
-  letter-spacing: 0.1em;
-  line-height: 1.2;
-  text-transform: uppercase;
-}
-
-.opfg-event-panel__meta-location,
-.opfg-event-panel__meta-time,
-.opfg-event-panel__meta-time > span {
-  display: inline-flex;
-  min-width: 0;
-  align-items: center;
-  gap: 0.34rem;
-}
-
-.opfg-event-panel__meta-location {
-  flex: 1 1 auto;
-}
-
-.opfg-event-panel__meta-location > span {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.opfg-event-panel__meta-time {
-  flex: 0 0 auto;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-end;
-  color: color-mix(in srgb, var(--text-primary) 82%, var(--gold));
-  letter-spacing: 0.04em;
-  text-transform: none;
-}
-
-.opfg-event-panel__meta-row svg {
-  flex: 0 0 auto;
-}
-
-.opfg-event-panel__input {
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-}
-
-.opfg-choice-button {
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.opfg-choice-button :is(span, strong, p) {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-@media (max-width: 48rem) {
-  .opfg-event-panel__header {
-    padding-inline: 1rem !important;
-  }
-
-  .opfg-event-panel__body {
-    padding-inline: 1rem !important;
-  }
-
-  .opfg-event-panel__body-copy {
-    max-width: none !important;
-  }
-
-  .opfg-event-panel__choices,
-  .opfg-event-panel[data-mode="resolved"] .opfg-event-panel__choices {
-    padding-inline: 0.72rem !important;
-  }
-
-  .opfg-event-panel__meta-row {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.22rem;
-  }
-
-  .opfg-event-panel__meta-time {
-    width: 100%;
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
-}
-
-@media (max-width: 24.5rem) {
-  .opfg-event-panel__header,
-  .opfg-event-panel__body {
-    padding-inline: 0.82rem !important;
-  }
-
-  .opfg-event-panel__location-flag {
-    width: 100%;
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
-
-  .opfg-event-panel__body-copy {
-    padding-left: 0.58rem;
-    font-size: 0.86rem !important;
-  }
-
-  .opfg-event-panel__input {
-    font-size: 1rem;
-    padding-inline: 0.8rem !important;
-  }
-
-  .opfg-choice-button {
-    min-height: 2.65rem !important;
-    padding-inline: 0.68rem !important;
-  }
-}
-
-@media (max-width: 22.5rem) {
-  .opfg-event-panel__header,
-  .opfg-event-panel__body {
-    padding-inline: 0.7rem !important;
-  }
-
-  .opfg-event-panel__choices,
-  .opfg-event-panel[data-mode="resolved"] .opfg-event-panel__choices {
-    padding-inline: 0.48rem !important;
-  }
-}
-
-/* OPFG RESPONSIVE GAMEPLAY SCALE START */
-
-.opfg-game-screen {
-  width: 100%;
-  height: 100dvh;
-  min-height: 0 !important;
-  overflow: hidden !important;
-}
-
-.opfg-game-scale-content {
-  --opfg-game-ui-scale: 1;
-
-  position: relative;
-  transform:
-    scale(var(--opfg-game-ui-scale));
-  transform-origin: top center;
-  will-change: transform;
-}
-
-/*
- * Do not solve short viewports by clipping/scrolling the narrative.
- * The complete gameplay composition is what gets resized.
- */
-.opfg-game-screen
-  .opfg-adventure-scroll {
-  max-height: none !important;
-  overflow: visible !important;
-}
-
-/*
- * Side rails are selected by aspect orientation.
- */
-.opfg-game-side-rail {
-  display: none !important;
-}
-
-@media (orientation: landscape) {
-  .opfg-game-side-rail--stats {
-    display: flex !important;
-  }
-
-  .opfg-game-side-rail--crew {
-    display: block !important;
-  }
-}
-
-@media (orientation: portrait) {
-  .opfg-game-side-rail {
-    display: none !important;
-  }
-
-  .opfg-game-scale-content {
-    max-width: 32rem !important;
-  }
-
-  .opfg-game-adventure-region {
-    max-width: 32rem !important;
-  }
-}
-
-/* OPFG RESPONSIVE GAMEPLAY SCALE END */
-
-/* UI_POLISH_20260818_EVENT_HEADER
- * Equivalent of HBox(Header) -> VBox(Location + title) + VBox(Age + date).
- */
 .opfg-event-panel__header-layout {
   display: grid;
   width: 100%;
   min-width: 0;
   grid-template-columns: minmax(0, 1fr) max-content;
-  align-items: start;
+  align-items: stretch;
   gap: 0.9rem;
 }
 
@@ -928,13 +112,16 @@
 }
 
 .opfg-event-panel__meta-location {
-  display: block;
+  display: inline-flex;
   width: fit-content;
   max-width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 0.28rem;
   overflow: hidden;
   color: var(--ui-panel-heading-color);
   font-family: var(--font-ui);
-  font-size: var(--ui-panel-heading-size);
+  font-size: 0.55rem;
   font-weight: var(--ui-panel-heading-weight);
   letter-spacing: var(--ui-panel-heading-tracking);
   line-height: 1.2;
@@ -943,24 +130,36 @@
   white-space: nowrap;
 }
 
+.opfg-event-panel__meta-location > svg {
+  transform: var(--opfg-event-location-icon-transform);
+  transform-origin: center;
+}
+
+.opfg-event-panel__meta-location > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.opfg-event-panel__meta-location > svg {
+  width: var(--opfg-event-location-icon-size) !important;
+  min-width: var(--opfg-event-location-icon-slot-width) !important;
+  height: var(--opfg-event-location-icon-size) !important;
+  flex: 0 0 auto;
+}
+
 .opfg-event-panel__meta-time {
   display: grid;
-  width: auto;
-  flex: none;
-  align-items: initial;
-  justify-content: initial;
+  align-self: stretch;
+  align-content: center;
   justify-items: end;
   gap: 0.3rem;
-  color: color-mix(
-    in srgb,
-    var(--text-primary) 82%,
-    var(--ui-panel-heading-color)
-  );
-  font-size: 0.62rem;
+  color: color-mix(in srgb, var(--text-primary) 82%, var(--ui-panel-heading-color));
+  font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.025em;
   line-height: 1.2;
-  text-transform: none;
 }
 
 .opfg-event-panel__meta-time > span {
@@ -977,203 +176,297 @@
   opacity: 0.82;
 }
 
-@media (max-width: 40rem) {
-  .opfg-event-panel__header-layout {
-    gap: 0.62rem;
-  }
-
-  .opfg-event-panel__meta-time {
-    font-size: 0.58rem;
-  }
+.opfg-event-panel__title {
+  padding-left: 0.9rem;
+  font-size: var(--ui-event-title-size);
+  line-height: 1.08;
 }
 
-@media (max-width: 24.5rem) {
-  .opfg-event-panel__header-layout {
-    gap: 0.45rem;
-  }
-
-  .opfg-event-panel__meta-location {
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
+.opfg-event-panel__body-copy {
+  position: relative;
+  max-width: 66ch;
+  padding-left: 0.72rem;
+  font-size: var(--ui-event-body-size);
+  font-weight: 650;
+  line-height: var(--ui-event-body-leading);
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.18);
+  text-wrap: pretty;
 }
 
-/* UI_POLISH_20260818_FIX2_EVENT_HEADER */
-.opfg-event-panel__header-layout {
-  align-items: stretch;
+.opfg-event-panel__body-copy::before {
+  position: absolute;
+  top: 0.08rem;
+  bottom: 0.08rem;
+  left: 0;
+  width: 2px;
+  border-radius: 999px;
+  background: rgb(82 46 21 / 0.58);
+  content: '';
 }
 
-/* Location and time metadata deliberately share the exact same type size. */
-.opfg-event-panel__meta-location,
-.opfg-event-panel__meta-time {
-  font-size: 0.62rem;
+.opfg-event-panel__choices {
+  border-top: 1px solid var(--border-subtle);
+  padding:
+    var(--ui-event-choice-area-py)
+    var(--ui-event-choice-area-px)
+    0.58rem;
+  background: transparent;
 }
 
-/* Equivalent of an expanded VBox: the two time rows occupy the whole right
- * header column and are centered vertically against Location + Event title. */
-.opfg-event-panel__meta-time {
-  align-self: stretch;
-  align-content: center;
+.opfg-event-panel[data-mode='resolved'] .opfg-event-panel__choices {
+  padding-bottom: 0.72rem;
 }
 
-@media (max-width: 40rem) {
-  .opfg-event-panel__meta-location,
-  .opfg-event-panel__meta-time {
-    font-size: 0.58rem;
-  }
+.opfg-event-panel__choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-choice-gap);
 }
 
-/* UI_POLISH_20260818_FIX3_EVENT_HEADER */
-.opfg-event-panel__meta-location,
-.opfg-event-panel__meta-time {
-  font-size: 0.56rem !important;
-}
-
-.opfg-event-panel__meta-location {
-  gap: 0.28rem;
-}
-
-.opfg-event-panel__meta-location svg {
-  flex: 0 0 auto;
-}
-
-@media (max-width: 40rem) {
-  .opfg-event-panel__meta-location,
-  .opfg-event-panel__meta-time {
-    font-size: 0.52rem !important;
-  }
-}
-
-/* UI_POLISH_20260818_FIX4_EVENT_AND_SCROLL */
-.opfg-event-panel__meta-location {
-  display: inline-flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 0.28rem !important;
-  width: fit-content;
-  max-width: 100%;
-}
-
-.opfg-event-panel__meta-location > span {
-  display: block;
+.opfg-choice-button {
+  width: 100%;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  max-width: 100%;
+  min-height: var(--ui-choice-min-height);
+  height: auto;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: var(--ui-choice-radius);
+  padding: var(--ui-choice-py) var(--ui-choice-px);
+  font-size: var(--ui-choice-text-size);
+  font-weight: 500;
+  line-height: 1.22;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.opfg-choice-button :is(span, strong, p) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.opfg-choice-button .opfg-choice-stat-effects {
+  margin-top: 0.22rem;
+}
+
+.opfg-choice-button.opfg-button-glass:hover:not(:disabled),
+.opfg-choice-button.opfg-button-glass:active:not(:disabled) {
+  animation: none;
+  transform: none;
+  translate: 0 0;
+}
+
+.opfg-event-panel[data-mode='resolved'] .opfg-event-panel__choice {
+  opacity: 0.42;
+  transition:
+    opacity var(--motion-fast) var(--ease-standard),
+    filter var(--motion-fast) var(--ease-standard);
+}
+
+.opfg-event-panel[data-mode='resolved'] .opfg-event-panel__choice[data-selected='true'] {
+  overflow: visible;
+  opacity: 1;
+}
+
+.opfg-event-panel[data-mode='resolved'] .opfg-event-panel__choice:not([data-selected='true']) {
+  display: flex;
+}
+
+.opfg-event-panel[data-mode='resolved'] .opfg-choice-button {
+  opacity: 1;
+}
+
+.opfg-narrative-person__name {
+  color: var(--accent-gold);
+  font-weight: 850;
+}
+
+.opfg-narrative-person__relation {
+  color: rgb(91 62 41 / 0.7);
+  font-size: 0.84em;
+  font-weight: 700;
   white-space: nowrap;
 }
 
-.opfg-event-panel__meta-location > svg {
+.opfg-event-panel__location-flag,
+.opfg-event-panel__input {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.opfg-event-panel__divider {
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.opfg-event-panel__choice {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.opfg-event-panel__input {
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgb(0 0 0 / 20%);
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.opfg-event-panel__location-flag {
+  position: relative;
+  left: 0;
   display: block;
-  flex: 0 0 auto;
-  align-self: center;
+  width: fit-content;
+  margin-inline: 0;
+  padding-inline: 0;
+  overflow: hidden;
+  color: var(--accent-gold);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: none;
+  translate: none;
 }
 
-/* Slightly larger than fix3, while keeping location + time on one scale. */
-.opfg-event-panel__meta-location,
-.opfg-event-panel__meta-time {
-  font-size: 0.60rem !important;
+/* Whole gameplay composition scaling. */
+.opfg-game-screen {
+  width: 100%;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden !important;
 }
 
-.opfg-event-panel__meta-time > span {
-  line-height: 1.2;
+.opfg-game-scale-content {
+  --opfg-game-ui-scale: 1;
+
+  position: relative;
+  transform: scale(var(--opfg-game-ui-scale));
+  transform-origin: top center;
+  will-change: transform;
 }
 
-/* The complete page/HUD does not scroll for exceptional tall Events.
- * Only the central narrative block does, with no visible scrollbar. */
-.opfg-game-screen .opfg-adventure-scroll {
-  max-height: calc(100dvh - 14.5rem) !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  overscroll-behavior: contain;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.opfg-game-screen .opfg-adventure-scroll::-webkit-scrollbar {
-  width: 0 !important;
-  height: 0 !important;
+.opfg-game-side-rail {
   display: none !important;
 }
 
-@media (max-width: 40rem) {
-  .opfg-event-panel__meta-location,
-  .opfg-event-panel__meta-time {
-    font-size: 0.58rem !important;
+.opfg-game-side-rail--stats {
+  right: calc(100% + var(--ui-adventure-rail-gap)) !important;
+}
+
+.opfg-game-side-rail--crew {
+  left: calc(100% + var(--ui-adventure-rail-gap)) !important;
+}
+
+@media (orientation: landscape) {
+  .opfg-game-side-rail--stats {
+    display: flex !important;
+  }
+
+  .opfg-game-side-rail--crew {
+    display: block !important;
+  }
+
+  .opfg-game-screen .opfg-adventure-scroll {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
   }
 }
 
-/* UI_POLISH_20260818_FIX5_EVENT_SCROLL */
-/* Half the previous 0.85rem MapPin size. */
-.opfg-event-panel__meta-location > svg {
-  width: 0.425rem !important;
-  height: 0.425rem !important;
-  min-width: 0.425rem !important;
-}
-
 @media (orientation: portrait) {
-  /* Extra scroll breathing room as a fallback if browser chrome changes
-   * between visualViewport measurements. The JS cap already stops above tabs. */
+  .opfg-game-side-rail {
+    display: none !important;
+  }
+
+  .opfg-game-scale-content,
+  .opfg-game-adventure-region {
+    max-width: 32rem;
+  }
+
   .opfg-game-screen .opfg-adventure-scroll {
     scroll-padding-bottom: 0.75rem;
     padding-bottom: 0.75rem !important;
   }
 }
 
-/* UI_POLISH_20260818_FIX6_EVENT_META */
-/* 1.5x the tiny MapPin from fix5. */
-.opfg-event-panel__meta-location > svg {
-  width: 0.6rem !important;
-  height: 0.6rem !important;
-  min-width: 0.64rem !important;
-}
-
-/* Age/date get a small readability bump without enlarging the location. */
-.opfg-event-panel__meta-time {
-  font-size: 0.6rem !important;
-}
-
-@media (max-width: 40rem) {
-  .opfg-event-panel__meta-time {
-    font-size: 0.63rem !important;
+@media (max-width: 79.999rem) {
+  .opfg-adventure-scroll {
+    max-height: none;
   }
 }
 
-@media (orientation: landscape) {
-  .opfg-game-screen .opfg-adventure-scroll {
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    overscroll-behavior: contain;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .opfg-game-screen .opfg-adventure-scroll::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-  }
-}
-
-/* UI_POLISH_20260818_FIX7_EVENT_HEADER_INSETS */
-.opfg-event-panel__header {
-  padding-left: 0.62rem !important;
-  padding-right: 0.62rem !important;
-}
-
-/* Location stays aligned to the real header edge. Only the Event title is
- * indented slightly for hierarchy/readability. */
-.opfg-event-panel__title {
-  padding-left: .9rem;
-}
-
-@media (max-width: 40rem) {
+@media (max-width: 48rem) {
   .opfg-event-panel__header {
-    padding-left: 0.56rem !important;
-    padding-right: 0.56rem !important;
+    padding-inline: 0.56rem;
   }
 
   .opfg-event-panel__title {
     padding-left: 0.18rem;
+  }
+
+  .opfg-event-panel__body-copy {
+    max-width: none;
+    font-size: 0.88rem;
+    line-height: 1.43;
+  }
+
+  .opfg-event-panel__choices,
+  .opfg-event-panel[data-mode='resolved'] .opfg-event-panel__choices {
+    padding-inline: 0.72rem;
+  }
+
+  .opfg-event-panel__header-layout {
+    gap: 0.62rem;
+  }
+
+  .opfg-event-panel__meta-location,
+  .opfg-event-panel__meta-time {
+    font-size: 0.58rem;
+  }
+}
+
+@media (max-width: 40rem) {
+  .opfg-event-panel[data-mode='resolved'] .opfg-event-panel__choice:not([data-selected='true']) {
+    display: none;
+  }
+}
+
+@media (max-width: 24.5rem) {
+  .opfg-event-panel__header {
+    padding-inline: 0.82rem;
+  }
+
+  .opfg-event-panel__meta-location {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .opfg-event-panel__body-copy {
+    padding-left: 0.58rem;
+    font-size: 0.86rem;
+  }
+
+  .opfg-event-panel__input {
+    padding-inline: 0.8rem;
+    font-size: 1rem;
+  }
+
+  .opfg-choice-button {
+    min-height: 2.65rem;
+    padding-inline: 0.68rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-event-panel__header,
+  .opfg-event-panel__body,
+  .opfg-event-panel__choices {
+    transition-duration: 1ms;
   }
 }

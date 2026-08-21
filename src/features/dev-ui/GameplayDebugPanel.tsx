@@ -1,6 +1,7 @@
 import {
   Bug,
   ChevronDown,
+  MapPin,
   PackagePlus,
   Search,
   UserPlus,
@@ -15,9 +16,10 @@ import type {
   ContentCatalog,
   StatId,
 } from '@/game/content/schema';
+import { vacantCrewRoleIds } from '@/game/engine/crew';
+import { debugRecruitCrewMember, debugTeleportToLocation } from '@/game/engine/debug';
 import { getPlayerMaxHealth } from '@/game/engine/health';
 import { tryAutoPlaceReward } from '@/game/engine/inventory';
-import { ensureNpcMaterialized } from '@/game/engine/npcNames';
 import { canRecruitNpc } from '@/game/engine/ship';
 import {
   GAMEPLAY_DEBUG_STATE_EVENT,
@@ -53,6 +55,12 @@ const clampInteger = (
   min: number,
   max: number,
 ) => Math.max(min, Math.min(max, Math.round(value)));
+
+const formatAgeMonths = (ageMonths: number) => {
+  const years = Math.floor(ageMonths / 12);
+  const months = ageMonths % 12;
+  return `${years} ans ${months} mois`;
+};
 
 function mutate(
   action: (state: GameState, catalog: ContentCatalog) => void,
@@ -174,7 +182,11 @@ export function GameplayDebugPanel() {
   const [selectedItemId, setSelectedItemId] = useState('');
   const [itemQuantity, setItemQuantity] = useState(1);
   const [traitSearch, setTraitSearch] = useState('');
+  const [crewSearch, setCrewSearch] = useState('');
   const [selectedCrewNpcId, setSelectedCrewNpcId] = useState('');
+  const [selectedCrewRoleId, setSelectedCrewRoleId] = useState('');
+  const [locationSearch, setLocationSearch] = useState('');
+  const [selectedLocationId, setSelectedLocationId] = useState('');
 
   useEffect(() => {
     const refresh = () =>
@@ -217,11 +229,30 @@ export function GameplayDebugPanel() {
     return catalog.traits.filter(({ id }) => !query || id.toLowerCase().includes(query));
   }, [catalog, traitSearch]);
 
-  const crewDefinitions = useMemo(() =>
-    catalog?.npcs
-      .filter(({ crewRoleId }) => crewRoleId !== null)
-      .sort((left, right) => left.id.localeCompare(right.id)) ?? [],
-  [catalog]);
+  const crewDefinitions = useMemo(() => {
+    if (!catalog || !state) return [];
+    const query = crewSearch.trim().toLowerCase();
+    return catalog.npcs
+      .filter(({ id }) => state.npcs[id]?.status !== 'crew' && state.npcs[id]?.status !== 'dead')
+      .filter(({ id }) => !query || id.toLowerCase().includes(query))
+      .sort((left, right) => left.id.localeCompare(right.id));
+  }, [catalog, state, crewSearch]);
+
+  const crewRoles = useMemo(
+    () => [...(catalog?.crewRoles ?? [])].sort((left, right) => left.id.localeCompare(right.id)),
+    [catalog],
+  );
+
+  const filteredLocations = useMemo(() => {
+    if (!catalog) return [];
+    const query = locationSearch.trim().toLowerCase();
+    return catalog.locations
+      .filter(({ id, seaId, nameKey }) => !query
+        || id.toLowerCase().includes(query)
+        || seaId.toLowerCase().includes(query)
+        || nameKey.toLowerCase().includes(query))
+      .sort((left, right) => left.id.localeCompare(right.id));
+  }, [catalog, locationSearch]);
 
   useEffect(() => {
     if (!catalog) return;
@@ -234,14 +265,29 @@ export function GameplayDebugPanel() {
     if (!stillAvailable) setSelectedCrewNpcId(crewDefinitions[0]?.id ?? '');
   }, [crewDefinitions, selectedCrewNpcId]);
 
+  useEffect(() => {
+    if (!state || !catalog) return;
+    const vacantRoles = vacantCrewRoleIds(state, catalog);
+    if (!vacantRoles.includes(selectedCrewRoleId)) {
+      setSelectedCrewRoleId(vacantRoles[0] ?? '');
+    }
+  }, [state, catalog, selectedCrewRoleId]);
+
+  useEffect(() => {
+    const stillVisible = filteredLocations.some(({ id }) => id === selectedLocationId);
+    if (!stillVisible) setSelectedLocationId(filteredLocations[0]?.id ?? '');
+  }, [filteredLocations, selectedLocationId]);
+
   const selectedItem = catalog?.items.find(({ id }) => id === selectedItemId) ?? null;
   const selectedCrewDefinition = crewDefinitions.find(({ id }) => id === selectedCrewNpcId) ?? null;
-  const selectedCrewState = state?.npcs[selectedCrewNpcId];
+  const vacantRoleIds = state && catalog ? vacantCrewRoleIds(state, catalog) : [];
   const canAddSelectedCrewmate = Boolean(
-    state && catalog && selectedCrewDefinition
-      && selectedCrewState?.status !== 'crew'
+    state && catalog && selectedCrewDefinition && selectedCrewRoleId
+      && !state.crewReassignmentPending
+      && vacantRoleIds.includes(selectedCrewRoleId)
       && canRecruitNpc(state, catalog, selectedCrewDefinition.id, true),
   );
+  const selectedLocation = filteredLocations.find(({ id }) => id === selectedLocationId) ?? null;
   const maxItemQuantity = selectedItem?.stackLimit ?? 1;
   const healthMax = state && catalog && state.player.profile.raceId
     ? getPlayerMaxHealth(state, catalog)
@@ -299,13 +345,21 @@ export function GameplayDebugPanel() {
     });
 
   const recruitCrewmate = () => {
-    if (!selectedCrewDefinition) return;
+    if (!selectedCrewDefinition || !selectedCrewRoleId) return;
 
     mutate((next, nextCatalog) => {
-      if (!canRecruitNpc(next, nextCatalog, selectedCrewDefinition.id, true)) return;
-      const npc = ensureNpcMaterialized(next, nextCatalog, selectedCrewDefinition.id);
-      npc.status = 'crew';
+      debugRecruitCrewMember(
+        next,
+        nextCatalog,
+        selectedCrewDefinition.id,
+        selectedCrewRoleId,
+      );
     });
+  };
+
+  const teleportToLocation = () => {
+    if (!selectedLocation) return;
+    mutate((next, nextCatalog) => debugTeleportToLocation(next, nextCatalog, selectedLocation.id));
   };
 
   const giveItem = () => {
@@ -382,6 +436,42 @@ export function GameplayDebugPanel() {
             ))}
           </DebugSection>
 
+          <DebugSection title="Age" defaultOpen={false}>
+            <div className="opfg-gameplay-debug__age-readout">
+              <strong>{formatAgeMonths(state.ageMonths)}</strong>
+              <span>{state.ageMonths} mois</span>
+            </div>
+            <input
+              className="opfg-gameplay-debug__age-slider"
+              type="range"
+              min={0}
+              max={1200}
+              step={1}
+              value={state.ageMonths}
+              onChange={(event) =>
+                mutate((next) => {
+                  next.ageMonths = clampInteger(Number(event.target.value), 0, 1200);
+                })
+              }
+              aria-label="Debug age in months"
+            />
+            <label className="opfg-gameplay-debug__wide-number">
+              <span>ageMonths</span>
+              <input
+                type="number"
+                min={0}
+                max={1200}
+                step={1}
+                value={state.ageMonths}
+                onChange={(event) =>
+                  mutate((next) => {
+                    next.ageMonths = clampInteger(Number(event.target.value), 0, 1200);
+                  })
+                }
+              />
+            </label>
+          </DebugSection>
+
           <DebugSection title="Career & Economy">
             <NumberControl
               label="reputation"
@@ -424,14 +514,40 @@ export function GameplayDebugPanel() {
           </DebugSection>
 
           <DebugSection title="Crew" defaultOpen={false}>
+            <label className="opfg-gameplay-debug__search">
+              <Search size={14} />
+              <input
+                value={crewSearch}
+                onChange={(event) => setCrewSearch(event.target.value)}
+                placeholder="Filter NPC ID…"
+              />
+            </label>
             <div className="opfg-gameplay-debug__crew-row">
+              <select
+                value={selectedCrewRoleId}
+                onChange={(event) => setSelectedCrewRoleId(event.target.value)}
+                aria-label="Crew Role"
+              >
+                {crewRoles.map((role) => {
+                  const metadata = [
+                    role.annualPower ? `power:${role.annualPower}` : null,
+                    role.passive ? `passive:${role.passive.type}` : null,
+                  ].filter(Boolean).join(' · ');
+                  const occupied = !vacantRoleIds.includes(role.id);
+                  return (
+                    <option key={role.id} value={role.id} disabled={occupied}>
+                      {role.id}{metadata ? ` · ${metadata}` : ''}
+                    </option>
+                  );
+                })}
+              </select>
               <select
                 value={selectedCrewNpcId}
                 onChange={(event) => setSelectedCrewNpcId(event.target.value)}
                 aria-label="Crew NPC definition"
               >
-                {crewDefinitions.map(({ id, crewRoleId }) => (
-                  <option key={id} value={id}>{id} · {crewRoleId}</option>
+                {crewDefinitions.map(({ id }) => (
+                  <option key={id} value={id}>{id}</option>
                 ))}
               </select>
               <button
@@ -446,12 +562,48 @@ export function GameplayDebugPanel() {
             <div className="opfg-gameplay-debug__owned">
               Active crew: {Object.entries(state.npcs)
                 .filter(([, npc]) => npc.status === 'crew')
-                .map(([npcId]) => npcId)
+                .map(([npcId, npc]) => `${npcId} [${npc.crewRoleId ?? 'unassigned'}]`)
                 .join(' · ') || 'none'}
             </div>
-            {crewDefinitions.length === 0 && (
-              <p className="opfg-gameplay-debug__warning">No role-bearing NPC definition is available in the current catalog.</p>
+            {state.crewReassignmentPending && (
+              <p className="opfg-gameplay-debug__warning">
+                Resolve the annual Crew Role reassignment before adding a debug crewmate.
+              </p>
             )}
+            {crewDefinitions.length === 0 && (
+              <p className="opfg-gameplay-debug__warning">
+                No recruitable NPC is available in the current catalog/state.
+              </p>
+            )}
+          </DebugSection>
+
+          <DebugSection title="Location" defaultOpen={false}>
+            <label className="opfg-gameplay-debug__search">
+              <Search size={14} />
+              <input
+                value={locationSearch}
+                onChange={(event) => setLocationSearch(event.target.value)}
+                placeholder="Filter Location ID / sea…"
+              />
+            </label>
+            <div className="opfg-gameplay-debug__action-row">
+              <select
+                value={selectedLocationId}
+                onChange={(event) => setSelectedLocationId(event.target.value)}
+                aria-label="Location V1"
+              >
+                {filteredLocations.map(({ id, seaId }) => (
+                  <option key={id} value={id}>{id} · {seaId}</option>
+                ))}
+              </select>
+              <button type="button" onClick={teleportToLocation} disabled={!selectedLocation}>
+                <MapPin size={14} />
+                Teleport
+              </button>
+            </div>
+            <div className="opfg-gameplay-debug__owned">
+              Current: {state.locationId} · {state.travelState}
+            </div>
           </DebugSection>
 
           <DebugSection title="Give Item">

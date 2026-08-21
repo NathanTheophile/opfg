@@ -1,6 +1,6 @@
-import { Brain, ChevronRight, Clover, Compass, Dumbbell, Eye, Heart, Gauge, MessageCircle, Smile, UsersRound, type LucideIcon } from 'lucide-react';
+import { Brain, ChevronRight, Clover, Compass, Dumbbell, Eye, Gauge, Hammer, Heart, MessageCircle, ShieldCheck, Smile, UserPlus, UsersRound, type LucideIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Modal, ModalContent, ModalDescription, ModalFooter, ModalHeader, ModalTitle, Panel } from '@/components/ui';
+import { Modal, ModalContent, ModalDescription, ModalFooter, ModalHeader, ModalTitle, NineSliceFrame, Panel } from '@/components/ui';
 import type { ContentCatalog } from '@/game/content/schema';
 import type { Translator } from '@/game/localization';
 import type { GameState, NpcStatId } from '@/game/model/schema';
@@ -14,8 +14,19 @@ import { maxCrewSize } from '@/game/engine/ship';
 import type { CrewRoleId, LocationId } from '@/game/model/schema';
 import { firstMateTargetRoleIds } from './crewManagementView';
 
-const NPC_STAT_IDS: NpcStatId[] = ['health', 'morale', 'strength', 'agility', 'observation', 'intelligence', 'navigation', 'charisma', 'luck'];
+// Compact crew cards deliberately expose eight stats so the expanded view is a strict 4 × 2 grid.
+// Luck stays in runtime/NPC data; it is simply not duplicated in this compact rail.
+const NPC_STAT_IDS: NpcStatId[] = ['health', 'morale', 'strength', 'agility', 'observation', 'intelligence', 'navigation', 'charisma'];
 const ICONS: Record<NpcStatId, LucideIcon> = { health: Heart, morale: Smile, strength: Dumbbell, agility: Gauge, observation: Eye, intelligence: Brain, navigation: Compass, charisma: MessageCircle, luck: Clover };
+
+function crewPowerIcon(power: string): LucideIcon {
+  if (power === 'medic') return Heart;
+  if (power === 'navigator') return Compass;
+  if (power === 'shipwright') return Hammer;
+  if (power === 'recruiter') return UserPlus;
+  if (power === 'first_mate') return ShieldCheck;
+  return UsersRound;
+}
 
 export interface CrewRailProps {
   state: GameState;
@@ -61,6 +72,7 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
       aria-label={translate('ui.crew.capacityAria', { count: crew.length, capacity })}
     >
       <ContextTooltip
+        className="opfg-hud-header-icon-slot"
         title={translate('ui.crew')}
         detail={translate(getUiTooltipKey('crew'))}
         meta={`${crew.length} / ${capacity}`}
@@ -88,55 +100,61 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
         && (role.annualPower !== 'shipwright' || state.ship !== null)
         && (role.annualPower !== 'navigator' || navigatorDestinations(state, catalog).length > 0);
 
-      return <Panel key={npcId} variant="strong" padding="none" className={`opfg-crew-member-panel ${expanded ? 'is-expanded' : ''}`}>
-        <div className="opfg-crew-member__header">
-          <button type="button" className="opfg-crew-member__toggle" onClick={() => setExpandedId((current) => current === npcId ? null : npcId)} aria-expanded={expanded}>
-            <ContextTooltip
-              className="opfg-crew-member__role has-rich-tooltip"
-              title={roleLabel}
-              detail={translate(getUiTooltipKey('crewRole'))}
-              side="left"
-            >
-              <UsersRound className="size-[1.05rem]" aria-hidden="true" />
-            </ContextTooltip>
+      const PowerIcon = role?.annualPower
+        ? crewPowerIcon(role.annualPower)
+        : null;
 
-            <strong className="opfg-crew-member__name">{npc.displayName ?? (definition ? translate(definition.nameKey) : translate('ui.crew.member'))}</strong>
-            <ChevronRight className="opfg-crew-member__chevron size-4" aria-hidden="true" />
-          </button>
+      return <div key={npcId} className={`opfg-crew-member-row${role?.annualPower ? ' has-power' : ''}`}>
+        <Panel variant="strong" padding="none" className={`opfg-crew-member-panel ${expanded ? 'is-expanded' : ''}`}>
+          <div className="opfg-crew-member__header">
+            <button type="button" className="opfg-crew-member__toggle" onClick={() => setExpandedId((current) => current === npcId ? null : npcId)} aria-expanded={expanded}>
+              <strong className="opfg-crew-member__name">{npc.displayName ?? (definition ? translate(definition.nameKey) : translate('ui.crew.member'))}</strong>
+              <ChevronRight className="opfg-crew-member__chevron size-4" aria-hidden="true" />
+            </button>
+          </div>
 
-          {role?.annualPower && (
+          <div className="opfg-crew-member__stats" aria-hidden={!expanded}>
+            {NPC_STAT_IDS.map((statId) => {
+              const Icon = ICONS[statId];
+              const label = statLabel(statId);
+              return <ContextTooltip
+                key={statId}
+                className="opfg-crew-stat"
+                title={label}
+                detail={translate(getStatTooltipKey(statId))}
+                meta={translate('ui.stats.valueMeta', { value: effectiveNpcStat(state, catalog, npcId, statId) })}
+                accent={STAT_TOOLTIP_COLORS[statId]}
+                side="left"
+                dataStat={statId}
+              >
+                <Icon className="size-3" aria-hidden="true" />
+                <b>{effectiveNpcStat(state, catalog, npcId, statId)}</b>
+              </ContextTooltip>;
+            })}
+          </div>
+        </Panel>
+
+        {role?.annualPower && PowerIcon && (
+          <ContextTooltip
+            className="opfg-crew-member__power-tooltip"
+            title={translate(`ui.crew.power.${role.annualPower}.action`)}
+            detail={translate(`ui.crew.power.${role.annualPower}.tooltip`)}
+            side="left"
+            ariaLabel={translate(`ui.crew.power.${role.annualPower}.action`)}
+          >
             <button
               type="button"
-              className="opfg-crew-action opfg-crew-member__power"
+              className="opfg-crew-member__power opfg-panel-skin"
               disabled={!onUseRolePower || !rolePowerAvailable}
-              title={translate(`ui.crew.power.${role.annualPower}.tooltip`)}
               onClick={() => setPendingRolePowerId(role.id)}
               aria-label={translate(`ui.crew.power.${role.annualPower}.action`)}
             >
-              {translate(`ui.crew.power.${role.annualPower}.action`)}
+              <NineSliceFrame className="opfg-panel-skin__frame" />
+              <PowerIcon className="size-4" aria-hidden="true" />
             </button>
-          )}
-        </div>
-
-        <div className="opfg-crew-member__stats" aria-hidden={!expanded}>
-          {NPC_STAT_IDS.map((statId) => {
-            const Icon = ICONS[statId];
-            const label = statLabel(statId);
-            return <ContextTooltip
-              key={statId}
-              className="opfg-crew-stat has-rich-tooltip"
-              title={label}
-              detail={translate(getStatTooltipKey(statId))}
-              meta={translate('ui.stats.valueMeta', { value: effectiveNpcStat(state, catalog, npcId, statId) })}
-              accent={STAT_TOOLTIP_COLORS[statId]}
-              side="left"
-            >
-              <Icon className="size-3" aria-hidden="true" />
-              <b>{effectiveNpcStat(state, catalog, npcId, statId)}</b>
-            </ContextTooltip>;
-          })}
-        </div>
-      </Panel>;
+          </ContextTooltip>
+        )}
+      </div>;
     })}
     {navigatorRoleId && (
       <Panel variant="strong" padding="none" className="opfg-crew-destinations" aria-label={translate('ui.crew.power.navigator.destination')}>

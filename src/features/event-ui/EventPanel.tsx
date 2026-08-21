@@ -9,6 +9,7 @@ import {
   MapPin,
 } from 'lucide-react';
 import {
+  NineSliceFrame,
   Panel,
   PanelBody,
   PanelHeader,
@@ -19,6 +20,7 @@ import type {
   EventChoiceViewModel,
   EventViewModel,
 } from './types';
+import parchmentTextFrame from './assets/parchment-text-frame.webp';
 import './event-panel-ornaments.css';
 
 export type EventPanelMode =
@@ -210,13 +212,13 @@ export function EventPanel({
     <Panel
       variant="strong"
       padding="none"
-      className="opfg-event-panel w-full overflow-hidden shadow-overlay"
+      className="opfg-event-panel w-full"
       data-mode={displayMode}
       data-content-visible={
         contentVisible ? 'true' : 'false'
       }
     >
-      <PanelHeader className="opfg-event-panel__header mb-0 bg-gradient-to-b from-black/[0.38] to-black/[0.24] px-5 md:px-6">
+      <PanelHeader className="opfg-event-panel__header">
         {meta ? (
           <div className="opfg-event-panel__header-layout">
             <div className="opfg-event-panel__header-copy">
@@ -244,7 +246,7 @@ export function EventPanel({
         ) : (
           <>
             {displayEvent.eyebrow && (
-              <p className="opfg-event-panel__location-flag text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-gold">
+              <p className="opfg-event-panel__location-flag">
                 {displayEvent.eyebrow}
               </p>
             )}
@@ -258,16 +260,20 @@ export function EventPanel({
 
       {!collapsed && (
         <>
-          <div className="h-px bg-[var(--border-subtle)]" />
+          <div className="opfg-event-panel__divider" />
 
-          <PanelBody className="opfg-event-panel__body px-5 md:px-6">
+          <PanelBody className="opfg-event-panel__body opfg-parchment-surface">
+            <NineSliceFrame
+              className="opfg-parchment-nine-slice"
+              texture={parchmentTextFrame}
+            />
             <p className="opfg-event-panel__body-copy">
               {displayEvent.body}
             </p>
           </PanelBody>
 
-          <div className="opfg-event-panel__choices border-t border-[var(--border-subtle)] bg-black/[0.08] px-3 py-3 md:px-4 md:py-4">
-            <div className="opfg-event-panel__choice-list flex flex-col gap-2.5">
+          <div className="opfg-event-panel__choices">
+            <div className="opfg-event-panel__choice-list">
               {error && !resolved && (
                 <p
                   role="alert"
@@ -327,7 +333,7 @@ export function EventPanel({
                             ],
                           },
                         }}
-                        className="opfg-event-panel__choice flex flex-col gap-2 overflow-hidden"
+                        className="opfg-event-panel__choice"
                         data-selected={
                           selected
                             ? 'true'
@@ -347,7 +353,7 @@ export function EventPanel({
                         {choice.textInput &&
                           !resolved && (
                             <input
-                              className="opfg-event-panel__input rounded-lg border border-[var(--border-subtle)] bg-black/20 px-4 py-3 text-fg"
+                              className="opfg-event-panel__input"
                               value={
                                 inputs[
                                   choice.id

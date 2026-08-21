@@ -78,7 +78,8 @@
 }
 
 .opfg-ui-tuner button,
-.opfg-ui-tuner input {
+.opfg-ui-tuner input,
+.opfg-ui-tuner select {
   font: inherit;
 }
 
@@ -157,6 +158,9 @@
 }
 
 .opfg-ui-tuner__toolbar {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: center;
   padding: 8px 10px 0;
 }
 
@@ -168,6 +172,35 @@
   padding: 0 8px;
   font-size: 9px;
   font-weight: 700;
+}
+
+.opfg-ui-tuner__preset-picker {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+  color: var(--tuner-muted);
+  font-size: 8.5px;
+  font-weight: 700;
+}
+
+.opfg-ui-tuner__preset-picker select {
+  min-width: 0;
+  height: 28px;
+  border: 1px solid var(--tuner-border);
+  border-radius: 7px;
+  outline: 0;
+  padding: 0 7px;
+  background: rgb(0 0 0 / 24%);
+  color: var(--tuner-text);
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.opfg-ui-tuner__preset-picker select:hover,
+.opfg-ui-tuner__preset-picker select:focus {
+  border-color: var(--tuner-border-strong);
 }
 
 .opfg-ui-tuner__quick-presets {
@@ -441,6 +474,78 @@
   border-top: 1px solid var(--tuner-border);
   padding: 8px 10px 9px;
   background: rgb(0 0 0 / 16%);
+}
+
+.opfg-ui-tuner__advanced {
+  min-width: 0;
+}
+
+.opfg-ui-tuner__advanced > summary {
+  display: flex;
+  min-height: 30px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--tuner-border);
+  border-radius: 7px;
+  background: var(--tuner-bg-soft);
+  color: var(--tuner-muted);
+  font-size: 9px;
+  font-weight: 750;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.opfg-ui-tuner__advanced > summary::-webkit-details-marker {
+  display: none;
+}
+
+.opfg-ui-tuner__advanced[open] > summary {
+  border-color: var(--tuner-border-strong);
+  color: var(--tuner-text);
+}
+
+.opfg-ui-tuner__advanced-content {
+  display: grid;
+  gap: 9px;
+  padding-top: 9px;
+}
+
+.opfg-ui-tuner__advanced-block {
+  display: grid;
+  gap: 5px;
+}
+
+.opfg-ui-tuner__advanced-block > strong {
+  color: var(--tuner-muted);
+  font-size: 8px;
+  font-weight: 750;
+}
+
+.opfg-ui-tuner__advanced-actions {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 5px;
+}
+
+.opfg-ui-tuner__advanced-actions button {
+  display: inline-flex;
+  min-height: 27px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 8.5px;
+  font-weight: 750;
+}
+
+.opfg-ui-tuner__advanced .opfg-ui-tuner__preset-slots,
+.opfg-ui-tuner__advanced .opfg-ui-tuner__debug {
+  padding: 0;
+}
+
+.opfg-ui-tuner__advanced .opfg-ui-tuner__export-row {
+  flex-wrap: wrap;
 }
 
 .opfg-ui-tuner__export-row button {

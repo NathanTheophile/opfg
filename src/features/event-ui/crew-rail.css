@@ -1,64 +1,55 @@
 .opfg-crew-rail {
-  width: 10rem;
+  width: var(--ui-crew-width);
   display: grid;
   justify-items: start;
-  gap: 0.42rem;
+  gap: var(--ui-crew-gap);
   overflow: visible;
 }
 
-
 .opfg-crew-header {
+  width: var(--ui-crew-width);
+}
+
+.opfg-crew-member-row {
   display: grid;
-  width: 10rem;
-  min-height: 2.65rem;
-  grid-template-columns: 1.6rem minmax(0, 1fr) auto;
-  align-items: center;
-  column-gap: 0.45rem;
-  padding: 0.42rem 0.62rem;
+  width: max-content;
+  grid-template-columns: auto;
+  align-items: start;
+  gap: 0.3rem;
 }
 
-.opfg-crew-header__icon {
-  color: var(--opfg-stat-color, var(--gold));
-}
-
-.opfg-crew-header strong {
-  color: var(--text-primary);
-  font-size: 0.72rem;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
+.opfg-crew-member-row.has-power {
+  grid-template-columns: auto auto;
 }
 
 .opfg-crew-member-panel {
-  width: 10rem;
+  width: var(--ui-crew-width);
   overflow: visible;
-  box-shadow: var(--shadow-control);
-  transition:
-    width 220ms var(--ease-standard),
-    box-shadow 180ms var(--ease-standard);
+  background: transparent;
+  box-shadow: none;
+  transition: width 220ms var(--ease-standard);
 }
 
 .opfg-crew-member-panel.is-expanded {
-  width: 18rem;
+  width: var(--ui-crew-expanded-width);
 }
 
 .opfg-crew-member__header {
-  display: grid;
+  display: block;
   width: 100%;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
   border-radius: inherit;
 }
 
 .opfg-crew-member__toggle {
   display: grid;
   width: 100%;
-  grid-template-columns: 1.6rem minmax(0, 1fr) 1.2rem;
-  min-height: 2.65rem;
+  grid-template-columns: minmax(0, 1fr) 1.2rem;
+  min-height: var(--ui-crew-row-height);
   align-items: center;
   column-gap: 0.45rem;
   border: 0;
   border-radius: inherit;
-  padding: 0.42rem 0.62rem;
+  padding: 0.42rem var(--ui-crew-row-px);
   background: transparent;
   color: var(--text-primary);
   text-align: left;
@@ -71,32 +62,64 @@
 }
 
 .opfg-crew-member__toggle:hover {
-  background: var(--surface-hover);
+  background: transparent;
+  filter: brightness(var(--ui-hover-brightness));
 }
 
 .opfg-crew-member__role {
   position: relative;
   display: grid;
   place-items: center;
-  color: var(--gold);
+  color: var(--accent-gold);
 }
 
 .opfg-crew-member__name {
   min-width: 0;
   overflow: hidden;
-  font-size: 0.8rem;
+  font-size: var(--ui-crew-name-size);
   font-weight: 720;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+.opfg-crew-member__power-tooltip {
+  display: block;
+  width: var(--ui-crew-row-height);
+  height: var(--ui-crew-row-height);
+  align-self: start;
+}
+
 .opfg-crew-member__power {
-  max-width: 6rem;
-  margin-right: 0.5rem;
-  overflow: hidden;
-  font-size: 0.64rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  --opfg-nine-slice-width: 11px;
+
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  place-items: center;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--accent-gold);
+  cursor: pointer;
+  transition:
+    filter var(--motion-fast) var(--ease-standard),
+    opacity var(--motion-fast) var(--ease-standard);
+}
+
+.opfg-crew-member__power > svg {
+  position: relative;
+  z-index: 1;
+}
+
+.opfg-crew-member__power:hover:not(:disabled) {
+  filter: brightness(var(--ui-hover-brightness));
+}
+
+.opfg-crew-member__power:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .opfg-crew-member__chevron {
@@ -109,41 +132,14 @@
 
 .opfg-crew-member-panel.is-expanded .opfg-crew-member__chevron {
   transform: rotate(90deg);
-  color: var(--gold);
-}
-
-/* Role tooltip */
-.opfg-crew-member__role::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  z-index: 40;
-  right: calc(100% + 0.65rem);
-  top: 50%;
-  pointer-events: none;
-  opacity: 0;
-  transform: translate(0.25rem, -50%);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-control);
-  padding: 0.35rem 0.5rem;
-  background: var(--surface-strong);
-  box-shadow: var(--shadow-control);
-  color: var(--text-primary);
-  font-size: 0.7rem;
-  font-weight: 650;
-  white-space: nowrap;
-  transition:
-    opacity 120ms var(--ease-standard),
-    transform 120ms var(--ease-standard);
-}
-
-.opfg-crew-member__role:hover::after {
-  opacity: 1;
-  transform: translate(0, -50%);
+  color: var(--accent-gold);
 }
 
 .opfg-crew-member__stats {
   display: grid;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--ui-crew-stat-column-gap);
+  row-gap: var(--ui-crew-stat-row-gap);
   max-height: 0;
   overflow: hidden;
   border-top: 0 solid var(--border-subtle);
@@ -162,54 +158,41 @@
 .opfg-crew-destinations,
 .opfg-companion-selector {
   display: grid;
-  gap: .35rem;
-  padding: .5rem;
+  gap: 0.35rem;
+  padding: 0.5rem;
 }
 
 .opfg-companion-selector {
-  width: 10rem;
-  font-size: .72rem;
+  width: var(--ui-crew-width);
+  font-size: 0.72rem;
 }
 
 .opfg-crew-action {
-  border: 1px solid color-mix(in srgb, var(--color-gold, #d9ad54) 45%, transparent);
-  border-radius: .35rem;
-  padding: .35rem .5rem;
-  font-size: .72rem;
+  border: 1px solid color-mix(in srgb, var(--accent-gold) 45%, transparent);
+  border-radius: 0.35rem;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.72rem;
   color: inherit;
 }
 
-.opfg-crew-action:disabled { opacity: .45; cursor: not-allowed; }
+.opfg-crew-action:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
 
 .opfg-crew-power-confirm {
-  background: color-mix(in srgb, var(--color-gold, #d9ad54) 16%, transparent);
-  border-color: color-mix(in srgb, var(--color-gold, #d9ad54) 70%, transparent);
+  background: color-mix(in srgb, var(--accent-gold) 16%, transparent);
+  border-color: color-mix(in srgb, var(--accent-gold) 70%, transparent);
   font-weight: 700;
 }
 
 .opfg-crew-member-panel.is-expanded .opfg-crew-member__stats {
-  max-height: 3.2rem;
+  max-height: 5.4rem;
   overflow: visible;
   border-top-width: 1px;
-  padding: 0.42rem 0.42rem 0.5rem;
+  padding: 0.3rem 0.42rem 0.5rem;
   opacity: 1;
   transform: translateY(0);
-}
-
-
-/* Shared OPFG stat palette */
-.opfg-crew-stat[data-stat="health"] { --opfg-stat-color: #C94F4A; }
-.opfg-crew-stat[data-stat="morale"] { --opfg-stat-color: #4FA58B; }
-.opfg-crew-stat[data-stat="strength"] { --opfg-stat-color: #D8783F; }
-.opfg-crew-stat[data-stat="agility"] { --opfg-stat-color: #8AAA4D; }
-.opfg-crew-stat[data-stat="observation"] { --opfg-stat-color: #54A9B7; }
-.opfg-crew-stat[data-stat="intelligence"] { --opfg-stat-color: #806EB0; }
-.opfg-crew-stat[data-stat="navigation"] { --opfg-stat-color: #397FA8; }
-.opfg-crew-stat[data-stat="charisma"] { --opfg-stat-color: #BD6687; }
-.opfg-crew-stat[data-stat="luck"] { --opfg-stat-color: #D1A33C; }
-
-.opfg-crew-stat {
-  color: var(--opfg-stat-color, var(--gold));
 }
 
 .opfg-crew-stat {
@@ -218,62 +201,30 @@
   min-width: 0;
   justify-items: center;
   gap: 0.1rem;
-  color: var(--gold);
+  color: var(--opfg-stat-color, var(--accent-gold));
 }
 
-
 .opfg-crew-stat svg {
-  color: var(--opfg-stat-color, var(--gold));
+  color: var(--opfg-stat-color, var(--accent-gold));
   stroke: currentColor;
 }
 
 .opfg-crew-stat b {
   color: var(--text-muted);
-  font-size: 0.54rem;
+  font-size: var(--ui-crew-stat-number-size);
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
 
 /* Health keeps its dedicated readable numeric treatment. */
 .opfg-crew-stat[data-stat="health"] b {
-  color: #C94F4A;
-}
-
-/* Stat tooltips */
-.opfg-crew-stat::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  z-index: 50;
-  left: 50%;
-  bottom: calc(100% + 0.5rem);
-  pointer-events: none;
-  opacity: 0;
-  transform: translate(-50%, 0.2rem);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-control);
-  padding: 0.32rem 0.46rem;
-  background: var(--surface-strong);
-  box-shadow: var(--shadow-control);
-  color: var(--text-primary);
-  font-size: 0.66rem;
-  font-weight: 650;
-  white-space: nowrap;
-  transition:
-    opacity 110ms var(--ease-standard),
-    transform 110ms var(--ease-standard);
-}
-
-.opfg-crew-stat:hover::after {
-  opacity: 1;
-  transform: translate(-50%, 0);
+  color: var(--opfg-stat-color);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .opfg-crew-member-panel,
   .opfg-crew-member__chevron,
-  .opfg-crew-member__role::after,
-  .opfg-crew-member__stats,
-  .opfg-crew-stat::after {
+  .opfg-crew-member__stats {
     transition: none;
   }
 }

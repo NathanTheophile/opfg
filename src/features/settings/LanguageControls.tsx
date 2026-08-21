@@ -7,6 +7,7 @@ import {
 import frFlag from './flags/fr.svg';
 import enFlag from './flags/en.svg';
 import '../audio/utility-controls.css';
+import { NineSliceFrame } from '@/components/ui';
 
 interface LanguageControlsProps {
   locale: LocaleId;
@@ -80,6 +81,7 @@ export function LanguageControls({
         aria-expanded={open}
         onClick={() => setOpen((currentOpen) => !currentOpen)}
       >
+        <NineSliceFrame />
         <img
           src={current.flag}
           alt=""
@@ -89,6 +91,7 @@ export function LanguageControls({
 
       {open && (
         <div className="opfg-language-controls__menu overflow-hidden rounded-lg border border-amber-200/15 bg-stone-950/95 p-2 shadow-2xl backdrop-blur-md">
+          <NineSliceFrame />
           <div className="px-2 pb-2 pt-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-amber-100/55">
             {translate('ui.language.settings')}
           </div>

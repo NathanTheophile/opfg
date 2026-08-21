@@ -1,18 +1,7 @@
+import { History as HistoryIcon, Play, RotateCcw, ShoppingBag, Trophy, X, } from 'lucide-react';
 import {
-  History as HistoryIcon,
-  Play,
-  RotateCcw,
-  ShoppingBag,
-  Trophy,
-  X,
-} from 'lucide-react';
-import {
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import { Button, Panel } from '@/components/ui';
+  useLayoutEffect, useMemo, useRef, useState, } from 'react';
+import { Button, Panel, NineSliceFrame } from '@/components/ui';
 import { loadMetaProgression } from '@/game/achievements/storage';
 import type { ContentCatalog } from '@/game/content/schema';
 import type { StorageLike } from '@/game/engine/save';
@@ -27,7 +16,7 @@ import {
 import type { GameState } from '@/game/model/schema';
 import { LanguageControls } from '@/features/settings/LanguageControls';
 import { notifyUiLocaleChanged } from '@/features/settings/localeSync';
-import logoMark from './assets/opfg-logo-mark.png';
+import logoMark from './assets/opfg-logo-vertical.png';
 import './landing-page.css';
 
 type LandingSection =
@@ -108,12 +97,18 @@ function formatAge(
   const years = Math.floor(ageMonths / 12);
   const months = ageMonths % 12;
 
-  return months === 0
+  const localized = months === 0
     ? translate('ui.landing.ageYears', { years })
     : translate('ui.landing.ageYearsMonths', {
         years,
         months,
       });
+
+  // Some current landing locale strings still use legacy single-brace tokens.
+  // Keep age derived from GameState.ageMonths and normalize only presentation.
+  return localized
+    .replaceAll('{years}', String(years))
+    .replaceAll('{months}', String(months));
 }
 
 export function LandingPage({
@@ -286,7 +281,7 @@ export function LandingPage({
             draggable={false}
             className="opfg-landing__logo"
           />
-          <h1 className="opfg-landing__title">
+          <h1 className="opfg-landing__title sr-only">
             {translate('ui.landing.title')}
           </h1>
           <p className="opfg-landing__tagline">
@@ -302,6 +297,7 @@ export function LandingPage({
                 className="opfg-landing__continue"
                 onClick={onContinue}
               >
+                <NineSliceFrame />
                 <span className="opfg-landing__continue-title">
                   <Play
                     className="size-5"
@@ -338,6 +334,7 @@ export function LandingPage({
               className="opfg-landing__new-primary"
               onClick={requestNewGame}
             >
+              <NineSliceFrame />
               <Play
                 className="size-5"
                 aria-hidden="true"
@@ -361,6 +358,7 @@ export function LandingPage({
                 className="opfg-landing__secondary-button"
                 onClick={() => setActiveSection(id)}
               >
+                <NineSliceFrame />
                 <Icon
                   className="size-4"
                   aria-hidden="true"

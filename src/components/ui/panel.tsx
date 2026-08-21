@@ -1,15 +1,17 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
+import './panel-skin.css';
+import { NineSliceFrame } from './NineSliceFrame';
 
 const panelVariants = cva(
-  'rounded-[var(--radius-panel)] border bg-surface text-fg shadow-panel',
+  'opfg-panel-skin text-fg',
   {
     variants: {
       variant: {
-        default: 'border-[var(--border-default)]',
-        strong: 'border-[var(--border-strong)] bg-surface-raised',
-        critical: 'border-[var(--border-critical)] bg-surface-strong',
+        default: '',
+        strong: '',
+        critical: '',
       },
       padding: {
         none: '',
@@ -29,8 +31,13 @@ export interface PanelProps
   extends HTMLAttributes<HTMLElement>,
     VariantProps<typeof panelVariants> {}
 
-export function Panel({ className, variant, padding, ...props }: PanelProps) {
-  return <section className={cn(panelVariants({ variant, padding }), className)} {...props} />;
+export function Panel({ className, variant, padding, children, ...props }: PanelProps) {
+  return (
+    <section className={cn(panelVariants({ variant, padding }), className)} {...props}>
+      <NineSliceFrame className="opfg-panel-skin__frame" />
+      {children}
+    </section>
+  );
 }
 
 export function PanelHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {

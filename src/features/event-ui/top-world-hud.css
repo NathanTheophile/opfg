@@ -2,34 +2,28 @@
   display: grid;
   width: 100%;
   max-width: calc(
-    var(--ui-hud-side-width, 15.5rem) +
-    var(--ui-hud-side-width, 15.5rem) +
-    var(--ui-hud-center-width, 32rem) +
-    var(--ui-hud-group-gap, 0.75rem) +
-    var(--ui-hud-group-gap, 0.75rem)
+    var(--ui-hud-side-width) +
+    var(--ui-hud-side-width) +
+    var(--ui-hud-center-width) +
+    var(--ui-hud-group-gap) +
+    var(--ui-hud-group-gap)
   );
   grid-template-columns:
-    var(--ui-hud-side-width, 15.5rem)
-    minmax(0, var(--ui-hud-center-width, 32rem))
-    var(--ui-hud-side-width, 15.5rem);
-  gap: var(--ui-hud-group-gap, 0.75rem);
+    var(--ui-hud-side-width)
+    minmax(0, var(--ui-hud-center-width))
+    var(--ui-hud-side-width);
+  gap: var(--ui-hud-group-gap);
   margin-inline: auto;
-  align-items: end;
+  align-items: stretch;
   justify-content: center;
 }
 
 .opfg-hud-panel {
   min-width: 0;
-  min-height:
-    var(--ui-hud-panel-min-height, 8rem);
+  min-height: var(--ui-hud-panel-min-height);
   overflow: visible;
-  box-shadow: var(--shadow-overlay);
-}
-
-.opfg-hud-panel__body {
-  padding:
-    var(--ui-hud-panel-py, 0.72rem)
-    var(--ui-hud-panel-px, 0.85rem);
+  background: transparent;
+  box-shadow: none;
 }
 
 .opfg-hud-panel--identity .opfg-hud-panel__body {
@@ -39,7 +33,10 @@
 .opfg-hud-panel--inventory,
 .opfg-hud-panel--ship {
   display: grid;
-  grid-template-rows: auto 1fr;
+  height: 100%;
+  min-height: var(--ui-hud-panel-min-height);
+  grid-template-rows: auto minmax(0, 1fr);
+  background: transparent;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -48,27 +45,27 @@
 
 .opfg-hud-slots {
   display: grid;
-  gap: var(--ui-hud-slot-gap, 0.3rem);
+  gap: var(--ui-hud-slot-gap);
 }
 
 .opfg-hud-slot-wrap {
   display: block;
-  width: var(--ui-hud-slot-size, 1.95rem);
-  height: var(--ui-hud-slot-size, 1.95rem);
+  width: var(--ui-hud-slot-size);
+  height: var(--ui-hud-slot-size);
 }
 
 .opfg-hud-slot {
   position: relative;
   display: grid;
-  width: var(--ui-hud-slot-size, 1.95rem);
-  min-width: var(--ui-hud-slot-size, 1.95rem);
-  height: var(--ui-hud-slot-size, 1.95rem);
+  width: var(--ui-hud-slot-size);
+  min-width: var(--ui-hud-slot-size);
+  height: var(--ui-hud-slot-size);
   aspect-ratio: 1;
   place-items: center;
   overflow: hidden;
   border: 1.5px solid
-    color-mix(in srgb, var(--gold) 48%, var(--border-strong));
-  border-radius: var(--ui-hud-slot-radius, 0.38rem);
+    color-mix(in srgb, var(--accent-gold) 48%, var(--border-strong));
+  border-radius: var(--ui-hud-slot-radius);
   background:
     linear-gradient(
       145deg,
@@ -76,7 +73,7 @@
       transparent 48%
     ),
     color-mix(in srgb, var(--surface-raised) 82%, black);
-  color: var(--gold);
+  color: var(--accent-gold);
   box-shadow:
     inset 0 0 0 1px rgb(255 255 255 / 0.055),
     inset 0 1px 0 rgb(255 255 255 / 0.06),
@@ -84,7 +81,7 @@
 }
 
 .opfg-hud-slot.is-empty {
-  border-color: color-mix(in srgb, var(--gold) 42%, var(--border-strong));
+  border-color: color-mix(in srgb, var(--accent-gold) 42%, var(--border-strong));
   background:
     radial-gradient(circle at 50% 45%, rgb(245 194 66 / 0.055), transparent 58%),
     color-mix(in srgb, var(--surface-raised) 74%, black);
@@ -96,7 +93,7 @@
   width: 0.23rem;
   height: 0.23rem;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--gold) 48%, var(--border-strong));
+  background: color-mix(in srgb, var(--accent-gold) 48%, var(--border-strong));
 }
 
 .opfg-hud-slot.is-locked {
@@ -111,7 +108,7 @@
   border-color:
     color-mix(
       in srgb,
-      var(--gold) 62%,
+      var(--accent-gold) 62%,
       var(--border-strong)
     );
   background:
@@ -119,7 +116,7 @@
       circle at 45% 45%,
       color-mix(
         in srgb,
-        var(--gold) 18%,
+        var(--accent-gold) 18%,
         transparent
       ),
       transparent 72%
@@ -150,46 +147,25 @@
 .opfg-hud-inventory-stack {
   display: grid;
   width: 100%;
-  align-self: end;
-  gap: 0.42rem;
+  min-height: 0;
+  height: 100%;
+  grid-template-rows: auto minmax(0, 1fr);
+  align-self: stretch;
+  gap: 0.22rem;
 }
 
 .opfg-hud-home-button {
-  display: flex;
+  --opfg-nine-slice-width: 9px;
+
   width: 100%;
-  min-height: 2.15rem;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-control);
-  padding: 0.42rem 0.7rem;
-  background:
-    linear-gradient(rgb(0 0 0 / 28%), rgb(0 0 0 / 28%)),
-    var(--surface-raised);
-  box-shadow: var(--shadow-control);
-  color: var(--gold);
-  font-size: 0.67rem;
-  font-weight: 850;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
+  border: 1px solid transparent;
+  text-align: left;
   cursor: pointer;
-  transition:
-    background-color var(--motion-fast) var(--ease-standard),
-    border-color var(--motion-fast) var(--ease-standard);
+  transition: filter var(--motion-fast) var(--ease-standard);
 }
 
 .opfg-hud-home-button:hover {
-  border-color: var(--border-accent);
-  background: var(--surface-hover);
-}
-
-.opfg-hud-inventory__header {
-  display: grid;
-  grid-template-columns: 1.65rem minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.42rem 0.62rem;
+  filter: brightness(var(--ui-hover-brightness));
 }
 
 .opfg-hud-inventory__header > span:not(.opfg-hud-inventory__icon) {
@@ -197,13 +173,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.opfg-hud-inventory__header > strong {
-  color: var(--text-primary);
-  font-size: 0.72rem;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
 }
 
 .opfg-hud-inventory {
@@ -214,19 +183,11 @@
   gap: 0.58rem;
 }
 
-.opfg-hud-inventory__icon {
-  display: grid;
-  width: var(--ui-hud-slot-size, 1.95rem);
-  height: var(--ui-hud-slot-size, 1.95rem);
-  place-items: center;
-  color: var(--gold);
-}
-
 .opfg-hud-inventory__slots {
   grid-template-columns:
     repeat(
       2,
-      var(--ui-hud-slot-size, 1.95rem)
+      var(--ui-hud-slot-size)
     );
 }
 
@@ -236,7 +197,7 @@
   align-items: baseline;
   justify-self: end;
   gap: 0.3rem;
-  color: var(--gold);
+  color: var(--accent-gold);
 }
 
 .opfg-hud-inventory__money svg {
@@ -253,11 +214,11 @@
 
 .opfg-hud-equipment {
   display: flex;
-  gap: .35rem;
+  gap: 0.35rem;
 }
 
 .opfg-hud-slot[data-selected="true"] {
-  outline: 2px solid var(--color-gold, #d9ad54);
+  outline: 2px solid var(--accent-gold);
   outline-offset: 2px;
 }
 
@@ -274,6 +235,9 @@
 .opfg-hud-panel--identity {
   position: relative;
   z-index: 2;
+  height: 100%;
+  align-self: stretch;
+  overflow: hidden;
 }
 
 .opfg-hud-identity {
@@ -290,7 +254,7 @@
     minmax(1.4rem, 1fr);
   align-items: center;
   gap: 0.62rem;
-  color: var(--gold);
+  color: var(--accent-gold);
 }
 
 .opfg-hud-identity__nameplate > span {
@@ -301,7 +265,7 @@
       transparent,
       color-mix(
         in srgb,
-        var(--gold) 68%,
+        var(--accent-gold) 68%,
         transparent
       )
     );
@@ -314,13 +278,13 @@
 .opfg-hud-identity__nameplate strong {
   position: relative;
   max-width: 100%;
-  color: var(--gold);
+  color: var(--accent-gold);
   font-family:
     Georgia,
     "Times New Roman",
     serif;
   font-size:
-    var(--ui-hud-name-size, 1.2rem);
+    var(--ui-hud-name-size);
   font-style: normal;
   font-weight: 720;
   letter-spacing: 0.045em;
@@ -330,7 +294,7 @@
     0 0 18px
       color-mix(
         in srgb,
-        var(--gold) 15%,
+        var(--accent-gold) 15%,
         transparent
       );
   text-transform: uppercase;
@@ -344,7 +308,7 @@
   color:
     color-mix(
       in srgb,
-      var(--gold) 58%,
+      var(--accent-gold) 58%,
       transparent
     );
   font-size: 0.38rem;
@@ -363,7 +327,7 @@
   margin-top: 0.18rem;
   color: var(--text-muted);
   font-size:
-    var(--ui-hud-title-size, 0.66rem);
+    var(--ui-hud-title-size);
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -371,15 +335,14 @@
 
 .opfg-hud-identity__separator {
   height: 1px;
-  margin: 0.54rem 0;
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      var(--border-default) 12%,
-      var(--border-default) 88%,
-      transparent
-    );
+  margin: 0.3rem 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--border-default) 12%,
+    var(--border-default) 88%,
+    transparent
+  );
 }
 
 .opfg-hud-identity__grid {
@@ -388,7 +351,7 @@
     minmax(0, 1fr)
     minmax(0, 1fr);
   gap:
-    var(--ui-hud-info-column-gap, 1rem);
+    var(--ui-hud-info-column-gap);
 }
 
 .opfg-hud-identity__column {
@@ -396,7 +359,7 @@
   grid-template-rows:
     repeat(3, 1.25rem);
   gap:
-    var(--ui-hud-info-row-gap, 0.18rem);
+    var(--ui-hud-info-row-gap);
   min-width: 0;
 }
 
@@ -415,12 +378,12 @@
   gap: 0.42rem;
   color: var(--text-primary);
   font-size:
-    var(--ui-hud-info-size, 0.72rem);
+    var(--ui-hud-info-size);
 }
 
 .opfg-hud-info-row > svg {
   flex: 0 0 auto;
-  color: var(--gold);
+  color: var(--accent-gold);
 }
 
 .opfg-hud-info-row strong {
@@ -444,7 +407,7 @@
   color:
     color-mix(
       in srgb,
-      var(--gold) 55%,
+      var(--accent-gold) 55%,
       var(--text-muted)
     );
 }
@@ -458,15 +421,15 @@
   display: inline-flex;
   align-items: center;
   gap:
-    var(--ui-hud-month-pip-gap, 0.28rem);
+    var(--ui-hud-month-pip-gap);
 }
 
 .opfg-hud-month-progress__pip {
   display: block;
   width:
-    var(--ui-hud-month-pip-width, 2rem);
+    var(--ui-hud-month-pip-width);
   height:
-    var(--ui-hud-month-pip-height, 0.42rem);
+    var(--ui-hud-month-pip-height);
   border:
     1px solid
     color-mix(
@@ -475,7 +438,7 @@
       transparent
     );
   border-radius:
-    var(--ui-hud-month-pip-radius, 999px);
+    var(--ui-hud-month-pip-radius);
   background: transparent;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.035);
@@ -511,27 +474,10 @@
   align-self: end;
 }
 
-.opfg-hud-ship__header {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.58rem;
-  padding: 0.42rem 0.62rem;
-}
-
-.opfg-hud-ship__icon {
-  display: grid;
-  width: var(--ui-hud-ship-icon-size, 2.2rem);
-  height: var(--ui-hud-ship-icon-size, 2.2rem);
-  place-items: center;
-  color: var(--gold);
-}
-
 .opfg-hud-ship__copy {
   display: grid;
   min-width: 0;
   gap: 0.1rem;
-  text-transform: none;
 }
 
 .opfg-hud-ship__name {
@@ -558,9 +504,10 @@
 }
 
 .opfg-hud-ship__resistance {
-  --opfg-ship-resistance-color: var(--opfg-stat-morale, #4fa58b);
+  --opfg-ship-resistance-color: var(--stat-morale);
 
   display: inline-flex;
+  justify-self: end;
   align-items: center;
   gap: 0.18rem;
   color: var(--opfg-ship-resistance-color);
@@ -608,12 +555,12 @@
   grid-template-columns:
     repeat(
       4,
-      var(--ui-hud-slot-size, 1.95rem)
+      var(--ui-hud-slot-size)
     );
   grid-template-rows:
     repeat(
       2,
-      var(--ui-hud-slot-size, 1.95rem)
+      var(--ui-hud-slot-size)
     );
   justify-content: start;
 }
@@ -621,8 +568,8 @@
 .opfg-hud-special-slots {
   display: grid;
   flex: 0 0 auto;
-  grid-template-columns: var(--ui-hud-slot-size, 1.95rem);
-  grid-template-rows: repeat(2, var(--ui-hud-slot-size, 1.95rem));
+  grid-template-columns: var(--ui-hud-slot-size);
+  grid-template-rows: repeat(2, var(--ui-hud-slot-size));
   align-content: center;
   justify-content: end;
   gap: 0.32rem;
@@ -653,7 +600,7 @@
 }
 
 .opfg-hud-companion-picker > button {
-  border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-gold) 45%, transparent);
   border-radius: 0.35rem;
   padding: 0.35rem 0.5rem;
   color: inherit;
@@ -669,7 +616,7 @@
     max-width:
       min(
         100%,
-        var(--ui-hud-center-width, 32rem)
+        var(--ui-hud-center-width)
       );
     grid-template-columns:
       minmax(0, 1fr);
@@ -699,7 +646,7 @@
   .opfg-hud-identity__nameplate strong {
     font-size:
       min(
-        var(--ui-hud-name-size, 1.2rem),
+        var(--ui-hud-name-size),
         1.04rem
       );
   }
@@ -712,7 +659,7 @@
     gap: 0.32rem;
     font-size:
       min(
-        var(--ui-hud-info-size, 0.72rem),
+        var(--ui-hud-info-size),
         0.67rem
       );
   }
@@ -720,283 +667,42 @@
   .opfg-hud-month-progress__pip {
     width:
       min(
-        var(--ui-hud-month-pip-width, 2rem),
+        var(--ui-hud-month-pip-width),
         1.55rem
       );
   }
 }
 
-/* D1.6 HUD panel edge + height polish ------------------------------------ */
-
-/*
- * Identity defines the visual top-HUD height. Side groups stretch to the same
- * grid row instead of independently choosing a taller intrinsic height.
- */
-.opfg-top-world-hud {
-  align-items: stretch !important;
-}
-
-.opfg-hud-panel--identity,
-.opfg-hud-panel--ship,
-.opfg-hud-inventory-stack {
-  height: 100%;
-}
-
-/*
- * ContextTooltip content is portalled to document.body, so clipping these
- * Panels is safe and fixes the square header backgrounds leaking through the
- * rounded top corners.
- */
-.opfg-hud-panel--inventory,
-.opfg-hud-panel--ship {
-  overflow: hidden !important;
-  background-clip: padding-box;
-}
-
-.opfg-hud-panel--inventory
-  > .opfg-hud-section-header,
-.opfg-hud-panel--ship
-  > .opfg-hud-section-header {
-  border-top-left-radius:
-    calc(var(--radius-panel) - 1px);
-  border-top-right-radius:
-    calc(var(--radius-panel) - 1px);
-  overflow: hidden;
-}
-
-/*
- * Left group: Home + Inventory must fit inside the Identity panel height.
- * Remove the old 8rem minimum from Inventory and compact only this panel.
- */
-.opfg-hud-inventory-stack {
-  min-height: 0;
-  align-self: stretch !important;
-  grid-template-rows:
-    auto
-    minmax(0, 1fr);
-  gap: 0.3rem !important;
-}
-
-.opfg-hud-home-button {
-  min-height: 1.82rem !important;
-  padding: 0.28rem 0.6rem !important;
-  font-size: 0.63rem !important;
-}
-
-.opfg-hud-panel--inventory {
-  min-height: 0 !important;
-  height: 100%;
-  grid-template-rows:
-    auto
-    minmax(0, 1fr);
-}
-
-.opfg-hud-panel--inventory
-  .opfg-hud-section-header {
-  min-height: 2.18rem !important;
-}
-
-.opfg-hud-inventory__header {
-  padding:
-    0.28rem
-    0.55rem !important;
-}
-
-.opfg-hud-panel--inventory
-  .opfg-hud-panel__body {
+.opfg-hud-panel--inventory .opfg-hud-panel__body,
+.opfg-hud-panel--ship .opfg-hud-panel__body {
   min-height: 0;
   padding:
-    0.42rem
-    0.62rem !important;
+    var(--ui-hud-storage-body-padding-top)
+    var(--ui-hud-storage-body-padding-x)
+    var(--ui-hud-storage-body-padding-bottom);
 }
 
-/* Right panel stretches to the same row instead of anchoring itself lower. */
-.opfg-hud-panel--ship {
-  align-self: stretch !important;
+.opfg-hud-panel--identity .opfg-hud-panel__body {
+  padding:
+    var(--ui-hud-identity-padding-y)
+    var(--ui-hud-identity-padding-x);
 }
 
-/* Keep the central panel as the stable visual reference for the row. */
-.opfg-hud-panel--identity {
-  align-self: stretch;
-  overflow: hidden;
-}
-
-/* STAB_PATCH_UI_UX_01 responsive HUD */
-.opfg-hud-cargo,
-.opfg-hud-cargo-group,
-.opfg-hud-special-slots {
+.opfg-hud-inventory__money {
   min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  white-space: nowrap;
 }
 
-@media (max-width: 48rem) {
-  .opfg-hud-panel--identity,
-  .opfg-hud-panel--inventory,
-  .opfg-hud-panel--ship {
-    max-width: 100%;
-  }
-
-  .opfg-hud-identity__nameplate strong,
-  .opfg-hud-info-row strong,
-  .opfg-hud-ship__name,
-  .opfg-hud-ship__type {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
-@media (max-width: 24.5rem) {
-  .opfg-hud-panel--ship {
-    --ui-hud-slot-size: 1.8rem;
-  }
-
-  .opfg-hud-ship {
-    gap: 0.38rem;
-  }
-
-  .opfg-hud-cargo-group {
-    gap: 0.28rem;
-  }
-
-  .opfg-hud-special-slots {
-    gap: 0.24rem;
-  }
-}
-
-@media (max-width: 22.5rem) {
-  .opfg-hud-panel--ship {
-    --ui-hud-slot-size: 1.7rem;
-  }
-}
-
-/* OPFG ORIENTATION HUD MODE START */
-
-@media (orientation: portrait) {
-  .opfg-hud-panel--inventory,
-  .opfg-hud-panel--ship {
-    width: min(21rem, calc(100vw - 1.5rem)) !important;
-    height: auto;
-  }
-
-  .opfg-hud-panel--inventory {
-    margin-left: auto;
-  }
-
-  .opfg-hud-panel--ship {
-    margin-left: auto;
-  }
-
-  .opfg-hud-panel--inventory,
-  .opfg-hud-panel--ship,
-  .opfg-hud-inventory-stack {
-    --ui-hud-slot-size: 2.35rem;
-    --ui-hud-slot-gap: 0.42rem;
-  }
-
-  .opfg-hud-inventory-stack {
-    width: min(21rem, calc(100vw - 1.5rem));
-  }
-
-  .opfg-hud-inventory {
-    grid-template-columns: auto auto minmax(0, 1fr);
-  }
-
-  .opfg-hud-storage-layout {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-
-  .opfg-hud-cargo {
-    grid-template-columns:
-      repeat(4, var(--ui-hud-slot-size, 2.35rem));
-    grid-template-rows:
-      repeat(2, var(--ui-hud-slot-size, 2.35rem));
-  }
-
-  .opfg-hud-special-slots {
-    grid-template-columns: var(--ui-hud-slot-size, 2.35rem);
-    grid-template-rows: repeat(2, var(--ui-hud-slot-size, 2.35rem));
-  }
-
-  .opfg-top-world-hud {
-    max-width:
-      min(
-        100%,
-        var(--ui-hud-center-width, 32rem)
-      ) !important;
-
-    grid-template-columns:
-      minmax(0, 1fr) !important;
-  }
-
-  .opfg-top-world-hud
-    > .opfg-hud-inventory-stack,
-  .opfg-top-world-hud
-    > .opfg-hud-panel--ship {
-    display: none !important;
-  }
-
-  .opfg-hud-panel--identity {
-    min-height: auto !important;
-  }
-}
-
-@media (orientation: landscape) {
-  .opfg-top-world-hud {
-    max-width:
-      calc(
-        var(--ui-hud-side-width, 15.5rem)
-        + var(--ui-hud-side-width, 15.5rem)
-        + var(--ui-hud-center-width, 32rem)
-        + var(--ui-hud-group-gap, 0.75rem)
-        + var(--ui-hud-group-gap, 0.75rem)
-      ) !important;
-
-    grid-template-columns:
-      var(--ui-hud-side-width, 15.5rem)
-      minmax(
-        0,
-        var(--ui-hud-center-width, 32rem)
-      )
-      var(--ui-hud-side-width, 15.5rem)
-      !important;
-  }
-
-  .opfg-top-world-hud
-    > .opfg-hud-inventory-stack {
-    display: grid !important;
-  }
-
-  .opfg-top-world-hud
-    > .opfg-hud-panel--ship {
-    display: grid !important;
-  }
-}
-
-/* OPFG ORIENTATION HUD MODE END */
-
-/* UI_POLISH_20260818_HUD
- * Slots reuse the strong Panel contour language; headings share the old
- * Event-kicker typography/color token.
- */
 .opfg-hud-slot {
   padding: 0;
   border: 1px solid var(--border-strong);
-  border-radius: calc(var(--radius-panel) * 0.5);
-  background:
-    linear-gradient(
-      145deg,
-      rgb(255 255 255 / 0.045),
-      transparent 52%
-    ),
-    var(--surface-raised);
+  border-radius: var(--ui-hud-slot-radius);
   line-height: 1;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.04),
     var(--shadow-control);
-}
-
-.opfg-hud-slot:is(.is-empty, .is-filled, .is-locked) {
-  border-color: var(--border-strong);
 }
 
 .opfg-hud-slot > svg {
@@ -1011,27 +717,6 @@
   display: none;
 }
 
-.opfg-hud-home-button {
-  color: var(--ui-panel-heading-color);
-  font-family: var(--font-ui);
-  font-size: var(--ui-panel-heading-size) !important;
-  font-weight: var(--ui-panel-heading-weight);
-  letter-spacing: var(--ui-panel-heading-tracking);
-}
-
-.opfg-hud-ship__title-row {
-  display: flex;
-  min-width: 0;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.45rem;
-}
-
-.opfg-hud-ship__title-row .opfg-hud-ship__type {
-  flex: 0 1 auto;
-}
-
-/* UI_POLISH_20260818_FIX2_IDENTITY_AND_HEADERS */
 .opfg-hud-identity {
   grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
   align-content: stretch;
@@ -1054,167 +739,72 @@
   align-self: center;
 }
 
-/* One shared icon column and one shared icon -> title gap for Inventory,
- * Ship and Crew headers. */
-.opfg-hud-inventory__header,
-.opfg-hud-ship__header,
-.opfg-crew-header {
-  grid-template-columns: 1.65rem minmax(0, 1fr) auto !important;
-  column-gap: 0.45rem !important;
-}
+@media (orientation: portrait) {
+  .opfg-hud-panel--inventory,
+  .opfg-hud-panel--ship,
+  .opfg-hud-inventory-stack {
+    width: min(21rem, calc(100vw - 1.5rem)) !important;
+  }
 
-.opfg-hud-inventory__icon,
-.opfg-hud-ship__icon,
-.opfg-crew-header > :first-child {
-  display: grid;
-  width: 1.65rem !important;
-  min-width: 1.65rem;
-  height: 1.65rem !important;
-  place-items: center;
-  margin: 0;
-}
+  .opfg-hud-panel--inventory,
+  .opfg-hud-panel--ship {
+    height: auto;
+    margin-left: auto;
+  }
 
-/* UI_POLISH_20260818_FIX4_HUD_HEADERS_AND_MONEY */
-/* Inventory / Ship / Crew now share the exact same header box model. */
-.opfg-hud-inventory__header,
-.opfg-hud-ship__header,
-.opfg-crew-header {
-  min-height: 2.55rem !important;
-  grid-template-columns: 1.65rem minmax(0, 1fr) auto !important;
-  align-items: center !important;
-  column-gap: 0.45rem !important;
-  padding: 0.42rem 0.72rem !important;
-}
+  .opfg-hud-panel--inventory,
+  .opfg-hud-panel--ship,
+  .opfg-hud-inventory-stack {
+    --ui-hud-slot-size: 2.35rem;
+    --ui-hud-slot-gap: 0.42rem;
+  }
 
-.opfg-hud-inventory__header > strong,
-.opfg-crew-header > strong,
-.opfg-hud-ship__resistance {
-  justify-self: end;
-  margin-right: 0 !important;
-}
+  .opfg-top-world-hud {
+    max-width: min(100%, var(--ui-hud-center-width)) !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
 
-.opfg-hud-ship__copy {
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  gap: 0;
-}
+  .opfg-top-world-hud > .opfg-hud-inventory-stack,
+  .opfg-top-world-hud > .opfg-hud-panel--ship {
+    display: none !important;
+  }
 
-.opfg-hud-inventory__money {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.opfg-hud-inventory__money strong {
-  order: 1;
-}
-
-.opfg-hud-inventory__money svg {
-  order: 2;
-  align-self: center;
-}
-
-/* UI_POLISH_20260818_FIX6_HUD_SPACING */
-/* One literal box model for all three section headers. Increasing the shared
- * horizontal inset also fixes Inventory's count visually touching the edge. */
-.opfg-hud-inventory__header,
-.opfg-hud-ship__header,
-.opfg-crew-header {
-  box-sizing: border-box !important;
-  min-height: 2.55rem !important;
-  padding-top: 0.42rem !important;
-  padding-right: 0.90rem !important;
-  padding-bottom: 0.42rem !important;
-  padding-left: 0.90rem !important;
-  column-gap: 0.45rem !important;
-}
-
-.opfg-hud-inventory__header > strong,
-.opfg-crew-header > strong,
-.opfg-hud-ship__resistance {
-  justify-self: end !important;
-  margin: 0 !important;
-}
-
-/* The money widget lives in the Inventory body, not the header, so give its
- * right edge the same explicit breathing room instead of relying on the old
- * compact body padding. */
-.opfg-hud-panel--inventory .opfg-hud-panel__body {
-  padding-right: 0.82rem !important;
-}
-
-.opfg-hud-inventory__money {
-  max-width: 100%;
-  margin-right: 0.10rem;
-}
-
-/* UI_POLISH_20260818_FIX7_INVENTORY_LANDSCAPE */
-/* Restore the actual shared header inset used by Ship/Crew. Previous fixes
- * progressively pushed Inventory to 0.90rem while the reference headers are
- * authored at 0.62rem. Keep one literal value here, late in the cascade. */
-.opfg-hud-inventory__header,
-.opfg-hud-ship__header,
-.opfg-crew-header {
-  box-sizing: border-box !important;
-  padding: 0.42rem 0.62rem !important;
-}
-
-.opfg-hud-inventory__header > strong,
-.opfg-crew-header > strong,
-.opfg-hud-ship__resistance {
-  justify-self: end !important;
-  margin: 0 !important;
-}
-
-/* Inventory body gets the same left/right inset as its header. */
-.opfg-hud-panel--inventory .opfg-hud-panel__body {
-  box-sizing: border-box !important;
-  padding-left: 0.62rem !important;
-  padding-right: 0.62rem !important;
-}
-
-.opfg-hud-inventory__money {
-  min-width: 0 !important;
-  max-width: 100%;
-  margin: 0 !important;
+  .opfg-hud-panel--identity {
+    min-height: auto !important;
+  }
 }
 
 @media (orientation: landscape) {
-  /* Critical fix: do not reserve an artificial 5rem minimum for money.
-   * That min-content width was what pushed Inventory contents into the right
-   * border only in the narrower landscape HUD. */
+  .opfg-top-world-hud {
+    max-width: calc(
+      var(--ui-hud-side-width) * 2
+      + var(--ui-hud-center-width)
+      + var(--ui-hud-group-gap) * 2
+    ) !important;
+    grid-template-columns:
+      var(--ui-hud-side-width)
+      minmax(0, var(--ui-hud-center-width))
+      var(--ui-hud-side-width) !important;
+  }
+
+  .opfg-top-world-hud > .opfg-hud-inventory-stack,
+  .opfg-top-world-hud > .opfg-hud-panel--ship {
+    display: grid !important;
+  }
+
   .opfg-hud-inventory {
     width: 100%;
     min-width: 0;
     grid-template-columns: auto auto minmax(0, 1fr) !important;
-    gap: 0.48rem !important;
-  }
-
-  .opfg-hud-inventory__slots,
-  .opfg-hud-equipment {
-    min-width: 0;
+    gap: 0.48rem;
   }
 
   .opfg-hud-inventory__money {
-    min-width: 0 !important;
-    justify-self: end !important;
-    white-space: nowrap;
+    justify-self: end;
   }
 }
 
-@media (orientation: portrait) {
-  /* Keep the same visual inset when the exact same panels are moved into
-   * mobile drawers. */
-  .opfg-hud-inventory__header,
-  .opfg-hud-ship__header,
-  .opfg-crew-header {
-    padding-left: 0.62rem !important;
-    padding-right: 0.62rem !important;
-  }
-
-  .opfg-hud-panel--inventory .opfg-hud-panel__body {
-    padding-left: 0.62rem !important;
-    padding-right: 0.62rem !important;
-  }
+/* OPFG HOME HEADER ICON ALIGNMENT */
+.opfg-hud-home-button > svg {
+  justify-self: center;
 }

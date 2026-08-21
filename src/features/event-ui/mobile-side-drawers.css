@@ -29,40 +29,79 @@
     backdrop-filter: blur(10px);
   }
 
-  .opfg-mobile-side-tab {
+  .opfg-mobile-side-tab,
+  .opfg-mobile-home-button {
+  --opfg-nine-slice-width: 9px;
     display: grid;
+    place-items: center;
+    border: 1px solid transparent;
+
+    background: transparent;
+    box-shadow: none;
+    color: var(--text-muted);
+  }
+
+  .opfg-mobile-side-tab {
     width: 100%;
     min-width: 0;
     height: 3.15rem;
-    place-items: center;
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius-control);
-    background:
-      linear-gradient(145deg, rgb(255 255 255 / 0.05), transparent 52%),
-      var(--surface-strong);
-    color: var(--text-muted);
-    box-shadow: var(--shadow-control);
     cursor: pointer;
     transition:
       color var(--motion-fast) var(--ease-standard),
-      border-color var(--motion-fast) var(--ease-standard),
-      background-color var(--motion-fast) var(--ease-standard);
+      filter var(--motion-fast) var(--ease-standard);
   }
 
   .opfg-mobile-side-tab:hover,
-  .opfg-mobile-side-tab[data-active="true"] {
-    border-color: var(--border-accent);
-    color: var(--gold);
-    background: var(--surface-hover);
+  .opfg-mobile-side-tab[data-active='true'],
+  .opfg-mobile-home-button:hover {
+    background: transparent;
+    color: var(--accent-gold);
+    filter: brightness(1.08);
+  }
+
+  .opfg-mobile-home-button {
+    position: fixed;
+    z-index: 100;
+    right: max(0.75rem, var(--safe-area-right));
+    bottom: calc(
+      max(0px, var(--safe-area-bottom))
+      + var(--opfg-mobile-bottom-bar-height, 4.75rem)
+      + 0.75rem
+    );
+    width: 3.15rem !important;
+    min-width: 3.15rem;
+    height: 3.15rem;
+    min-height: 3.15rem !important;
+    padding: 0 !important;
+  }
+
+  .opfg-mobile-home-button span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 
   .opfg-mobile-side-drawer {
     position: fixed;
     z-index: 140;
     right: max(0.75rem, var(--safe-area-right));
-    bottom: calc(max(0px, var(--safe-area-bottom)) + var(--opfg-mobile-bottom-bar-height, 4.75rem) + 0.75rem);
+    bottom: calc(
+      max(0px, var(--safe-area-bottom))
+      + var(--opfg-mobile-bottom-bar-height, 4.75rem)
+      + 0.75rem
+    );
     left: max(0.75rem, var(--safe-area-left));
-    width: min(var(--ui-mobile-drawer-width, 21rem), calc(100vw - max(0.75rem, var(--safe-area-left)) - max(0.75rem, var(--safe-area-right))));
+    width: min(
+      var(--ui-mobile-drawer-width, 21rem),
+      calc(
+        100vw
+        - max(0.75rem, var(--safe-area-left))
+        - max(0.75rem, var(--safe-area-right))
+      )
+    );
     max-height: calc(
       100dvh
       - max(0.75rem, var(--safe-area-top))
@@ -72,50 +111,34 @@
     );
     overflow: auto;
     overscroll-behavior: contain;
-    animation:
-      opfg-mobile-panel-in
-      var(--motion-normal)
-      var(--ease-emphasized);
+    animation: opfg-mobile-panel-in var(--motion-normal) var(--ease-emphasized);
   }
 
-  .opfg-mobile-side-drawer
-    .opfg-hud-home-button {
-    position: fixed;
-    right: max(0.75rem, var(--safe-area-right));
-    bottom: calc(max(0px, var(--safe-area-bottom)) + var(--opfg-mobile-bottom-bar-height, 4.75rem) + 0.75rem);
-    z-index: 142;
-    width: 3.15rem !important;
-    min-width: 3.15rem;
-    height: 3.15rem;
-    min-height: 3.15rem !important;
-    padding: 0 !important;
+  .opfg-mobile-side-drawer:is([data-drawer='inventory'], [data-drawer='ship']) {
+    top: auto;
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    animation-name: opfg-mobile-panel-horizontal-in;
   }
 
-  .opfg-mobile-side-drawer
-    .opfg-hud-home-button span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
+  .opfg-mobile-side-drawer .opfg-hud-home-button {
+    display: none !important;
   }
 
-  .opfg-mobile-side-drawer
-    :is(
-      .opfg-player-stats-module,
-      .opfg-player-stats-rail,
-      .opfg-crew-rail,
-      .opfg-crew-header,
-      .opfg-crew-member-panel,
-      .opfg-hud-panel
-    ) {
+  .opfg-mobile-side-drawer :is(
+    .opfg-player-stats-module,
+    .opfg-player-stats-rail,
+    .opfg-crew-rail,
+    .opfg-crew-header,
+    .opfg-crew-member-panel,
+    .opfg-hud-panel
+  ) {
     width: auto;
     max-width: 100%;
   }
 
-  .opfg-mobile-side-drawer
-    :is(.opfg-hud-panel, .opfg-player-stats-module) {
+  .opfg-mobile-side-drawer :is(.opfg-hud-panel, .opfg-player-stats-module) {
     min-height: auto;
   }
 }
@@ -138,105 +161,6 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .opfg-mobile-side-drawer {
-    animation-duration: 1ms;
-  }
-}
-
-/* UI_POLISH_20260818_MOBILE_HOME */
-@media (orientation: portrait) {
-  .opfg-mobile-home-button {
-    position: fixed;
-    right: max(0.75rem, var(--safe-area-right));
-    bottom: calc(
-      max(0px, var(--safe-area-bottom))
-      + var(--opfg-mobile-bottom-bar-height, 4.75rem)
-      + 0.75rem
-    );
-    z-index: 142;
-    width: 3.15rem !important;
-    min-width: 3.15rem;
-    height: 3.15rem;
-    min-height: 3.15rem !important;
-    padding: 0 !important;
-  }
-
-  .opfg-mobile-home-button span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-  }
-
-  /* Inventory owns the desktop Home button; mobile uses the persistent one. */
-  .opfg-mobile-side-drawer .opfg-hud-home-button {
-    display: none !important;
-  }
-}
-
-/* UI_POLISH_20260818_FIX2_MOBILE_DRAWERS */
-@media (orientation: portrait) {
-  /* Same utility layer as language/audio settings; drawers stay above it. */
-  .opfg-mobile-home-button {
-    z-index: 100;
-  }
-
-  /* Inventory and Ship are modal-like utility panels: center them in the
-   * usable viewport above the persistent bottom navigation. */
-  .opfg-mobile-side-drawer:is(
-    [data-drawer="inventory"],
-    [data-drawer="ship"]
-  ) {
-    top: calc(50% - 2.375rem);
-    bottom: auto;
-    transform: translateY(-50%);
-    animation-name: opfg-mobile-panel-center-in;
-  }
-}
-
-@keyframes opfg-mobile-panel-center-in {
-  from {
-    opacity: 0;
-    transform: translateY(calc(-50% + 0.55rem));
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(-50%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .opfg-mobile-side-drawer:is(
-    [data-drawer="inventory"],
-    [data-drawer="ship"]
-  ) {
-    animation-duration: 1ms;
-  }
-}
-
-/* UI_POLISH_20260818_FIX3_MOBILE_DRAWERS */
-@media (orientation: portrait) {
-  .opfg-mobile-side-drawer:is(
-    [data-drawer="inventory"],
-    [data-drawer="ship"]
-  ) {
-    top: auto !important;
-    right: auto !important;
-    bottom: calc(
-      max(0px, var(--safe-area-bottom))
-      + var(--opfg-mobile-bottom-bar-height, 4.75rem)
-      + 0.75rem
-    ) !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    animation-name: opfg-mobile-panel-horizontal-in !important;
-  }
-}
-
 @keyframes opfg-mobile-panel-horizontal-in {
   from {
     opacity: 0;
@@ -250,10 +174,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .opfg-mobile-side-drawer:is(
-    [data-drawer="inventory"],
-    [data-drawer="ship"]
-  ) {
+  .opfg-mobile-side-drawer {
     animation-duration: 1ms;
   }
 }

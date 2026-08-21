@@ -13,6 +13,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import {
+  NineSliceFrame,
   Badge,
   Button,
   Panel,
@@ -26,6 +27,7 @@ import type {
   OutcomeEffectViewModel,
   OutcomeViewModel,
 } from './types';
+import parchmentTextFrame from './assets/parchment-text-frame.webp';
 import './outcome-panel.css';
 
 const STAT_IMPACT_EVENT = 'opfg:stat-impact';
@@ -388,10 +390,14 @@ export function OutcomePanel({
     <Panel
       variant="strong"
       padding="none"
-      className="opfg-outcome-panel opfg-outcome-panel--inline w-full overflow-hidden shadow-overlay"
+      className="opfg-outcome-panel opfg-outcome-panel--inline"
     >
-      <PanelBody className="opfg-outcome-panel__body px-4 py-3 md:px-5 md:py-3">
-        <p className="max-w-[68ch] text-[0.98rem] leading-7 text-fg-secondary md:text-base md:leading-7">
+      <PanelBody className="opfg-outcome-panel__body opfg-parchment-surface">
+        <NineSliceFrame
+          className="opfg-parchment-nine-slice"
+          texture={parchmentTextFrame}
+        />
+        <p className="opfg-outcome-panel__copy">
           {outcome.body}
         </p>
 
@@ -479,7 +485,7 @@ export function OutcomePanel({
         )}
       </PanelBody>
 
-      <PanelFooter className="opfg-outcome-panel__footer mt-0 border-t border-[var(--border-subtle)] bg-black/[0.06] px-3 py-2 md:px-4">
+      <PanelFooter className="opfg-outcome-panel__footer">
         <Button
           variant="glass"
           onClick={onContinue}

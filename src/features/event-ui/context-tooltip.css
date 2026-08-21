@@ -3,12 +3,12 @@
 }
 
 .opfg-context-tooltip {
-  --opfg-context-tooltip-accent: var(--gold);
+  --opfg-context-tooltip-accent: var(--accent-gold);
 
   position: fixed;
-  z-index: 300;
+  z-index: 10000;
   width: max-content;
-  max-width: min(20rem, calc(100vw - 1.25rem));
+  max-width: min(var(--ui-tooltip-max-width), calc(100vw - 1.25rem));
   pointer-events: none;
   border: 1px solid
     color-mix(
@@ -16,8 +16,8 @@
       var(--opfg-context-tooltip-accent) 26%,
       var(--border-default)
     );
-  border-radius: 0.72rem;
-  padding: 0.68rem 0.78rem 0.72rem;
+  border-radius: var(--ui-tooltip-radius);
+  padding: var(--ui-tooltip-py) var(--ui-tooltip-px);
   background:
     linear-gradient(
       115deg,
@@ -33,17 +33,19 @@
     0 12px 32px rgb(0 0 0 / 0.42),
     inset 0 1px 0 rgb(255 255 255 / 0.035);
   color: var(--text-primary);
+  transform: scale(var(--opfg-game-ui-scale, 1));
+  transform-origin: top left;
   animation: opfg-context-tooltip-in 120ms
     cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .opfg-context-tooltip::before {
-  content: '';
   position: absolute;
   width: 0.38rem;
   height: 0.38rem;
   border: inherit;
   background: var(--opfg-ink-900, #24160f);
+  content: '';
   transform: rotate(45deg);
 }
 
@@ -81,7 +83,7 @@
 
 .opfg-context-tooltip__title {
   color: var(--opfg-context-tooltip-accent);
-  font-size: 0.78rem;
+  font-size: var(--ui-tooltip-title-size);
   font-weight: 850;
   line-height: 1.15;
 }
@@ -89,7 +91,7 @@
 .opfg-context-tooltip__meta {
   margin-top: 0.24rem;
   color: var(--text-secondary);
-  font-size: 0.68rem;
+  font-size: var(--ui-tooltip-meta-size);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   line-height: 1.25;
@@ -99,30 +101,64 @@
   display: block;
   margin-top: 0.42rem;
   color: var(--text-muted);
-  font-size: 0.7rem;
+  font-size: var(--ui-tooltip-detail-size);
   font-weight: 450;
-  line-height: 1.45;
+  line-height: var(--ui-tooltip-detail-leading);
 }
 
-/*
- * Disable the old one-word pseudo tooltips wherever a rich contextual tooltip
- * is now installed. This avoids "Force" appearing behind "Force + description".
- */
-.opfg-player-stat.has-rich-tooltip::after,
-.opfg-crew-stat.has-rich-tooltip::after,
-.opfg-crew-member__role.has-rich-tooltip::after {
-  display: none !important;
+/* General HUD tooltips are deliberately opaque for readability. */
+.opfg-context-tooltip[data-accented='false'] {
+  width: min(16.5rem, calc(100vw - 1.25rem));
+  max-width: min(16.5rem, calc(100vw - 1.25rem));
+  border: 1px solid var(--border-default);
+  background: var(--surface-tooltip);
+  box-shadow:
+    0 14px 38px rgb(0 0 0 / 0.52),
+    inset 0 1px 0 rgb(255 255 255 / 0.04);
+  backdrop-filter: none;
+}
+
+.opfg-context-tooltip[data-accented='false']::before {
+  display: block;
+  border-color: var(--border-default);
+  background: var(--surface-tooltip);
+}
+
+.opfg-context-tooltip[data-accented='false'][data-placement='right']::before {
+  border-top: 0;
+  border-right: 0;
+}
+
+.opfg-context-tooltip[data-accented='false'][data-placement='left']::before {
+  border-bottom: 0;
+  border-left: 0;
+}
+
+.opfg-context-tooltip[data-accented='false'][data-placement='bottom']::before {
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.opfg-context-tooltip[data-accented='false'][data-placement='top']::before {
+  border-top: 0;
+  border-left: 0;
+}
+
+.opfg-context-tooltip[data-accented='false'] .opfg-context-tooltip__title {
+  color: var(--text-tooltip-title);
+}
+
+.opfg-context-tooltip[data-accented='false'] .opfg-context-tooltip__detail {
+  color: var(--text-tooltip-detail);
 }
 
 @keyframes opfg-context-tooltip-in {
   from {
     opacity: 0;
-    transform: translateY(0.18rem) scale(0.97);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 
@@ -130,82 +166,4 @@
   .opfg-context-tooltip {
     animation-duration: 1ms;
   }
-}
-
-
-/* D1.7 default HUD tooltip repair
- *
- * Stat tooltips keep their coloured treatment.
- * General HUD tooltips use a fully opaque dedicated surface.
- */
-.opfg-context-tooltip {
-  z-index: 10000;
-}
-
-.opfg-context-tooltip[data-accented="false"] {
-  width: min(16.5rem, calc(100vw - 1.25rem));
-  max-width: min(16.5rem, calc(100vw - 1.25rem));
-  border-color: rgb(225 190 130 / 0.34);
-  background: #17100c !important;
-  box-shadow:
-    0 14px 38px rgb(0 0 0 / 0.58),
-    inset 0 1px 0 rgb(255 255 255 / 0.045);
-  backdrop-filter: none;
-}
-
-.opfg-context-tooltip[data-accented="false"]::before {
-  display: none;
-}
-
-.opfg-context-tooltip[data-accented="false"]
-  .opfg-context-tooltip__title {
-  color: #f0dfc0;
-}
-
-.opfg-context-tooltip[data-accented="false"]
-  .opfg-context-tooltip__detail {
-  color: rgb(231 216 194 / 0.72);
-}
-
-
-/* D1.7.1 general tooltip pointer + panel outline */
-
-.opfg-context-tooltip[data-accented="false"] {
-  border:
-    1px solid
-    var(--border-default) !important;
-  background:
-    #17100c !important;
-  box-shadow:
-    0 14px 38px rgb(0 0 0 / 0.52),
-    inset 0 1px 0 rgb(255 255 255 / 0.04);
-}
-
-/* Restore the same pointer language as stat tooltips. */
-.opfg-context-tooltip[data-accented="false"]::before {
-  display: block !important;
-  background: #17100c !important;
-  border-color:
-    var(--border-default) !important;
-}
-
-/* The placement rules already remove the two unwanted diamond borders. */
-.opfg-context-tooltip[data-accented="false"][data-placement="right"]::before {
-  border-top: 0 !important;
-  border-right: 0 !important;
-}
-
-.opfg-context-tooltip[data-accented="false"][data-placement="left"]::before {
-  border-bottom: 0 !important;
-  border-left: 0 !important;
-}
-
-.opfg-context-tooltip[data-accented="false"][data-placement="bottom"]::before {
-  border-right: 0 !important;
-  border-bottom: 0 !important;
-}
-
-.opfg-context-tooltip[data-accented="false"][data-placement="top"]::before {
-  border-top: 0 !important;
-  border-left: 0 !important;
 }

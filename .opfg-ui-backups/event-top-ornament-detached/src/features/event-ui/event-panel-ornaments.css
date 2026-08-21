@@ -1,0 +1,122 @@
+.opfg-event-panel {
+  --opfg-event-ornament-top: -5px;
+  --opfg-event-ornament-right: -7px;
+  --opfg-event-ornament-bottom: -8px;
+  --opfg-event-ornament-left: -5px;
+  --opfg-event-ornament-top-width: clamp(40px, 3.2vw, 48px);
+  --opfg-event-ornament-bottom-width: clamp(42px, 3.3vw, 50px);
+
+  position: relative;
+  overflow: visible !important;
+}
+
+.opfg-event-panel__header,
+.opfg-event-panel__choices {
+  background: transparent !important;
+}
+
+.opfg-event-panel__header {
+  border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+}
+
+.opfg-event-panel__choices {
+  border-radius: 0 0 var(--radius-panel) var(--radius-panel);
+}
+
+.opfg-event-panel[data-mode='collapsed'] .opfg-event-panel__header {
+  border-radius: var(--radius-panel);
+}
+
+.opfg-event-panel::before,
+.opfg-event-panel::after {
+  position: absolute;
+  z-index: 10;
+  content: '';
+  pointer-events: none;
+  user-select: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.92;
+  filter: drop-shadow(0 3px 6px rgb(0 0 0 / 0.34));
+}
+
+.opfg-event-panel::before {
+  top: var(--opfg-event-ornament-top);
+  right: var(--opfg-event-ornament-right);
+  width: var(--opfg-event-ornament-top-width);
+  aspect-ratio: 256 / 282;
+  background-image: url('./assets/panel-corner-rope-top.png');
+  transform: scaleX(-1);
+}
+
+.opfg-event-panel::after {
+  bottom: var(--opfg-event-ornament-bottom);
+  left: var(--opfg-event-ornament-left);
+  width: var(--opfg-event-ornament-bottom-width);
+  aspect-ratio: 256 / 266;
+  background-image: url('./assets/panel-corner-rope-bottom.png');
+}
+
+.opfg-event-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Parchment narrative surface. */
+.opfg-event-panel__body {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin-inline: 0.72rem;
+  padding: 0.42rem 0.78rem 0.36rem;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.opfg-event-panel__body::before {
+  position: absolute;
+  z-index: 0;
+  inset: -1px;
+  border: 1px solid transparent;
+  border-image-source: url('./assets/parchment-text-frame.webp');
+  border-image-slice: 44 72 44 72 fill;
+  border-image-width: 12px 16px;
+  border-image-outset: 1px;
+  border-image-repeat: stretch;
+  content: '';
+  pointer-events: none;
+}
+
+.opfg-event-panel__body > * {
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+}
+
+.opfg-event-panel__body-copy {
+  color: #24170f;
+}
+
+@media (max-width: 768px) {
+  .opfg-event-panel {
+    --opfg-event-ornament-top: -4px;
+    --opfg-event-ornament-right: -1px;
+    --opfg-event-ornament-bottom: -7px;
+    --opfg-event-ornament-left: -5px;
+    --opfg-event-ornament-top-width: 40px;
+    --opfg-event-ornament-bottom-width: 42px;
+  }
+}
+
+@media (max-width: 640px) {
+  .opfg-event-panel__body {
+    margin-inline: 0.5rem;
+    padding-inline: 0.68rem;
+  }
+
+  .opfg-event-panel__body::before {
+    border-image-width: 10px 13px;
+  }
+}
