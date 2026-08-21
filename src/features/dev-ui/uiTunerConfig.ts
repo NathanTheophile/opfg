@@ -204,6 +204,29 @@ export const UI_TUNER_DEFINITIONS: UITunerDefinition[] = [
   range('crewRowPx', 'Membre — padding X', 'crew', '--ui-crew-row-px', 10, 0, 28, 0.5, 'px'),
   range('crewNameSize', 'Nom membre', 'crew', '--ui-crew-name-size', 12.8, 9, 20, 0.1, 'px'),
   range('crewStatNumberSize', 'Valeur stat membre', 'crew', '--ui-crew-stat-number-size', 8.6, 6, 16, 0.1, 'px'),
+range(
+  'crewStatColumnGap',
+  'Stats membre — gap horizontal',
+  'crew',
+  '--ui-crew-stat-column-gap',
+  0.2,
+  0,
+  2,
+  0.01,
+  'rem',
+),
+
+range(
+  'crewStatRowGap',
+  'Stats membre — gap vertical',
+  'crew',
+  '--ui-crew-stat-row-gap',
+  0.28,
+  0,
+  2,
+  0.01,
+  'rem',
+),
 
   // Outcome feedback and stat-impact animation.
   range('outcomeBodyMarginTop', 'Parchemin Outcome — espace avant', 'outcome', '--ui-outcome-body-margin-top', 1, 0, 2, 0.01, 'rem'),
