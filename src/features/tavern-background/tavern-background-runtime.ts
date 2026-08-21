@@ -1,25 +1,104 @@
 export function mountTavernBackground(app: HTMLDivElement): () => void {
-  const ART_WIDTH = 1536;
-  const ART_HEIGHT = 1024;
-  const ART_ASPECT = ART_WIDTH / ART_HEIGHT;
-  const PIXELS_PER_WORLD_UNIT = ART_HEIGHT / 2; // 512, matches the former Three.js plate.
-
   const PARALLAX_X_WORLD = 0.016;
   const PARALLAX_Y_WORLD = 0.011;
   const IDLE_DRIFT_X_WORLD = 0.0045;
   const IDLE_DRIFT_Y_WORLD = 0.0032;
+  const COVER_OVERSCAN = 1.026;
 
-  // Flame is drawn directly at final resolution instead of scaling a pre-rendered sprite.
-  // Anchor sits on the wick: the animated body grows upward from here.
-  const FLAME_U = 0.781; // aligned to the baked concept flame (~1200 px on 1536 px art)
-  const FLAME_BASE_V = 0.186;
+  interface CoinGlintPoint {
+    u: number;
+    v: number;
+    baseScale: number;
+  }
+
+  interface CoinGlint extends CoinGlintPoint {
+    active: boolean;
+    startedAt: number;
+    duration: number;
+    baseRotation: number;
+  }
+
+  interface SceneConfig {
+    id: 'landscape' | 'portrait';
+    artWidth: number;
+    artHeight: number;
+    artSrc: string;
+    lightningSrc: string;
+    flameU: number;
+    flameBaseV: number;
+    ambientWarmU: number;
+    ambientWarmV: number;
+    tableGlowU: number;
+    tableGlowV: number;
+    lanternGlowU: number;
+    lanternGlowV: number;
+    coinGlints: CoinGlintPoint[];
+  }
+
+  const SCENES: Record<SceneConfig['id'], SceneConfig> = {
+    landscape: {
+      id: 'landscape',
+      artWidth: 1536,
+      artHeight: 1024,
+      artSrc: '/art/tavern/tavern-concept.png',
+      lightningSrc: '/art/tavern/lightning-highlights.png',
+      flameU: 0.781,
+      flameBaseV: 0.186,
+      ambientWarmU: 0.665,
+      ambientWarmV: 0.365,
+      tableGlowU: 0.700,
+      tableGlowV: 0.310,
+      lanternGlowU: 0.787,
+      lanternGlowV: 0.215,
+      coinGlints: [
+        { u: 0.267, v: 0.149, baseScale: 0.082 },
+        { u: 0.297, v: 0.305, baseScale: 0.075 },
+        { u: 0.146, v: 0.473, baseScale: 0.088 },
+        { u: 0.189, v: 0.494, baseScale: 0.090 },
+        { u: 0.183, v: 0.738, baseScale: 0.082 },
+        { u: 0.807, v: 0.347, baseScale: 0.073 },
+        { u: 0.823, v: 0.569, baseScale: 0.092 },
+        { u: 0.875, v: 0.606, baseScale: 0.092 },
+      ],
+    },
+    portrait: {
+      id: 'portrait',
+      artWidth: 941,
+      artHeight: 1672,
+      artSrc: '/art/tavern/tavern-concept-portrait.png',
+      lightningSrc: '/art/tavern/lightning-highlights-portrait.png',
+      flameU: 0.741,
+      flameBaseV: 0.095,
+      ambientWarmU: 0.595,
+      ambientWarmV: 0.355,
+      tableGlowU: 0.602,
+      tableGlowV: 0.342,
+      lanternGlowU: 0.748,
+      lanternGlowV: 0.132,
+      coinGlints: [
+        { u: 0.087, v: 0.396, baseScale: 0.082 },
+        { u: 0.117, v: 0.495, baseScale: 0.090 },
+        { u: 0.289, v: 0.036, baseScale: 0.070 },
+        { u: 0.854, v: 0.214, baseScale: 0.074 },
+        { u: 0.854, v: 0.255, baseScale: 0.082 },
+        { u: 0.819, v: 0.730, baseScale: 0.084 },
+        { u: 0.879, v: 0.731, baseScale: 0.086 },
+        { u: 0.192, v: 0.878, baseScale: 0.076 },
+      ],
+    },
+  };
+
+  function getPreferredSceneId(): SceneConfig['id'] {
+    return innerHeight > innerWidth ? 'portrait' : 'landscape';
+  }
+
+  let currentScene = SCENES[getPreferredSceneId()];
 
   const scenePlate = document.createElement('div');
   scenePlate.className = 'tavern-scene-plate';
 
   const conceptArt = document.createElement('img');
   conceptArt.className = 'tavern-concept-art';
-  conceptArt.src = '/art/tavern/tavern-concept.png';
   conceptArt.alt = '';
   conceptArt.draggable = false;
 
@@ -40,14 +119,11 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
   const lanternGlow = createRadialLayer('tavern-lantern-glow');
   const flameGlow = createRadialLayer('tavern-flame-glow');
 
-  // Occasional cool lightning entering from an implied window on the left.
-  // The broad layer lights the room softly; the canvas below adds only selected hard-facing highlights.
   const lightningWash = document.createElement('div');
   lightningWash.className = 'tavern-scene-layer tavern-lightning-wash';
 
   const lightningHighlights = document.createElement('img');
   lightningHighlights.className = 'tavern-lightning-highlights';
-  lightningHighlights.src = '/art/tavern/lightning-highlights.png';
   lightningHighlights.alt = '';
   lightningHighlights.draggable = false;
 
@@ -56,8 +132,6 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
 
   const fxCanvas = document.createElement('canvas');
   fxCanvas.className = 'tavern-fx-canvas';
-  fxCanvas.width = ART_WIDTH;
-  fxCanvas.height = ART_HEIGHT;
   const ctx = fxCanvas.getContext('2d', { alpha: true }) as CanvasRenderingContext2D;
   if (!ctx) throw new Error('Could not create 2D context.');
 
@@ -92,7 +166,7 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
   }
 
   function worldScaleToArtPixels(worldScale: number): number {
-    return worldScale * PIXELS_PER_WORLD_UNIT;
+    return worldScale * (currentScene.artHeight / 2);
   }
 
   function setRadialLayer(
@@ -160,129 +234,12 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
     return canvas;
   }
 
-  function drawAnimatedFlame(
-    t: number,
-    intensity: number,
-    flicker: number,
-    gust: number,
-    stretch: number,
-    widthFactor: number,
-    lean: number,
-  ): void {
-    const baseX = FLAME_U * ART_WIDTH;
-    const baseY = FLAME_BASE_V * ART_HEIGHT;
-
-    // Final polish: slightly smaller and raised so the flame sits cleanly on the wick.
-    const bodyHeight = 38 * stretch;
-    const bodyHalfWidth = 10.2 * widthFactor; // wide enough to mask the baked flame underneath
-    const tipLean = lean * 115 + gust * 34;
-    const sway = Math.sin(t * 7.9 + 0.4) * 1.8 + flicker * 1.4;
-
-    ctx.save();
-    ctx.globalCompositeOperation = 'screen';
-
-    // Soft orange aura behind the silhouette.
-    const auraRadius = bodyHeight * 1.10;
-    const aura = ctx.createRadialGradient(baseX, baseY - bodyHeight * 0.44, 0, baseX, baseY - bodyHeight * 0.44, auraRadius);
-    aura.addColorStop(0, `rgba(255,224,150,${0.075 + intensity * 0.045})`);
-    aura.addColorStop(0.28, `rgba(255,170,70,${0.045 + intensity * 0.032})`);
-    aura.addColorStop(0.62, `rgba(255,118,28,${0.018 + intensity * 0.016})`);
-    aura.addColorStop(1, 'rgba(255,95,15,0)');
-    ctx.fillStyle = aura;
-    ctx.fillRect(baseX - auraRadius, baseY - bodyHeight - auraRadius * 0.45, auraRadius * 2, auraRadius * 1.85);
-
-    // Main flame body, drawn at final canvas resolution to keep it bright and smooth.
-    const tipX = baseX + tipLean + sway;
-    const tipY = baseY - bodyHeight;
-    const bodyGradient = ctx.createLinearGradient(baseX, tipY, baseX, baseY);
-    bodyGradient.addColorStop(0, 'rgba(255,255,215,0.98)');
-    bodyGradient.addColorStop(0.32, 'rgba(255,224,104,0.99)');
-    bodyGradient.addColorStop(0.68, 'rgba(255,142,35,0.95)');
-    bodyGradient.addColorStop(1, 'rgba(255,78,12,0.20)');
-
-    ctx.globalAlpha = clamp(0.56 + intensity * 0.14, 0.62, 0.78);
-    ctx.shadowColor = 'rgba(255,130,28,0.95)';
-    ctx.shadowBlur = 15 + intensity * 7;
-    ctx.fillStyle = bodyGradient;
-    ctx.beginPath();
-    ctx.moveTo(baseX, baseY);
-    ctx.bezierCurveTo(
-      baseX + bodyHalfWidth * 0.82, baseY - bodyHeight * 0.16,
-      baseX + bodyHalfWidth * 1.05 + tipLean * 0.22, baseY - bodyHeight * 0.57,
-      tipX, tipY,
-    );
-    ctx.bezierCurveTo(
-      baseX - bodyHalfWidth * 0.52 + tipLean * 0.12, baseY - bodyHeight * 0.53,
-      baseX - bodyHalfWidth * 0.92, baseY - bodyHeight * 0.17,
-      baseX, baseY,
-    );
-    ctx.closePath();
-    ctx.fill();
-
-    // White/yellow inner core. It moves independently enough to avoid a rigid cutout look.
-    const coreHeight = bodyHeight * (0.58 + Math.sin(t * 9.2) * 0.025);
-    const coreHalfWidth = bodyHalfWidth * 0.39;
-    const coreTipX = baseX + tipLean * 0.46 - Math.sin(t * 8.7) * 1.2;
-    const coreTipY = baseY - coreHeight;
-    const coreGradient = ctx.createLinearGradient(baseX, coreTipY, baseX, baseY);
-    coreGradient.addColorStop(0, 'rgba(255,255,246,0.99)');
-    coreGradient.addColorStop(0.55, 'rgba(255,246,169,0.99)');
-    coreGradient.addColorStop(1, 'rgba(255,178,49,0.12)');
-
-    ctx.globalAlpha = clamp(0.64 + intensity * 0.12, 0.70, 0.84);
-    ctx.shadowColor = 'rgba(255,241,170,0.78)';
-    ctx.shadowBlur = 8 + intensity * 4;
-    ctx.fillStyle = coreGradient;
-    ctx.beginPath();
-    ctx.moveTo(baseX, baseY - 1);
-    ctx.bezierCurveTo(
-      baseX + coreHalfWidth, baseY - coreHeight * 0.18,
-      baseX + coreHalfWidth * 0.72 + tipLean * 0.14, baseY - coreHeight * 0.58,
-      coreTipX, coreTipY,
-    );
-    ctx.bezierCurveTo(
-      baseX - coreHalfWidth * 0.50, baseY - coreHeight * 0.55,
-      baseX - coreHalfWidth, baseY - coreHeight * 0.18,
-      baseX, baseY - 1,
-    );
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.restore();
-  }
-
-  const glintTexture = createGlintTexture();
-
-  interface CoinGlint {
-    u: number;
-    v: number;
-    baseScale: number;
-    active: boolean;
-    startedAt: number;
-    duration: number;
-    baseRotation: number;
-  }
-
-  const coinGlints: CoinGlint[] = [
-    { u: 0.267, v: 0.149, baseScale: 0.082, active: false, startedAt: 0, duration: 0.5, baseRotation: 0 },
-    { u: 0.297, v: 0.305, baseScale: 0.075, active: false, startedAt: 0, duration: 0.5, baseRotation: 0 },
-    { u: 0.146, v: 0.473, baseScale: 0.088, active: false, startedAt: 0, duration: 0.5, baseRotation: 0 },
-    { u: 0.189, v: 0.494, baseScale: 0.090, active: false, startedAt: 0, duration: 0.5, baseRotation: 0 },
-    { u: 0.183, v: 0.738, baseScale: 0.082, active: false, startedAt: 0, duration: 0.5, baseRotation: 0 },
-    { u: 0.807, v: 0.347, baseScale: 0.073, active: false, startedAt: 0, duration: 0.5, baseRotation: 0 },
-    { u: 0.823, v: 0.569, baseScale: 0.092, active: false, startedAt: 0, duration: 0.5, baseRotation: 0 },
-    { u: 0.875, v: 0.606, baseScale: 0.092, active: false, startedAt: 0, duration: 0.5, baseRotation: 0 },
-  ];
-
   function createDustMoteTexture(size = 64): HTMLCanvasElement {
     const canvas = createCanvas(size);
     const c = canvas.getContext('2d');
     if (!c) throw new Error('Could not create dust context.');
 
     const center = size * 0.5;
-
-    // Tiny optical mote: bright pin core with a broad, extremely soft falloff.
-    // No cross/star rays: those read as a UI sparkle rather than suspended dust.
     const glow = c.createRadialGradient(center, center, 0, center, center, center);
     glow.addColorStop(0.00, 'rgba(255,252,236,0.95)');
     glow.addColorStop(0.07, 'rgba(255,244,214,0.78)');
@@ -296,6 +253,7 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
     return canvas;
   }
 
+  const glintTexture = createGlintTexture();
   const dustMoteTexture = createDustMoteTexture();
 
   interface DustParticle {
@@ -317,36 +275,48 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
     lifetime: number;
   }
 
+  let coinGlints: CoinGlint[] = [];
+  const dust: DustParticle[] = [];
+
+  function buildCoinGlints(points: CoinGlintPoint[]): CoinGlint[] {
+    return points.map((point) => ({
+      ...point,
+      active: false,
+      startedAt: 0,
+      duration: 0.5,
+      baseRotation: 0,
+    }));
+  }
+
   function createDustParticle(initial = true): DustParticle {
-    // Long enough that every mote has time to visibly wander instead of merely blinking in place.
     const lifetime = randFloat(24, 42);
     const heading = randFloat(0, Math.PI * 2);
-    const speed = randFloat(5.2, 10.0); // art px / second: still slow, but now visibly wandering across tens/hundreds of pixels.
+    const speed = randFloat(5.2, 10.0);
 
     return {
-      x: randFloat(0.008, 0.992) * ART_WIDTH,
-      y: randFloat(0.008, 0.992) * ART_HEIGHT,
+      x: randFloat(0.008, 0.992) * currentScene.artWidth,
+      y: randFloat(0.008, 0.992) * currentScene.artHeight,
       vx: Math.cos(heading) * speed,
       vy: Math.sin(heading) * speed,
       speed,
       heading,
-      // Very low-frequency steering gives the feeling of suspended dust wandering in air currents.
       turnAmplitude: randFloat(0.30, 0.82),
       turnFrequency: randFloat(0.060, 0.145),
       bobAmplitude: randFloat(0.8, 3.0),
       bobFrequency: randFloat(0.07, 0.16),
       alpha: randFloat(0.10, 0.34),
-      // Most are tiny; a few slightly larger blurred motes add depth without becoming bokeh blobs.
       size: Math.random() < 0.16 ? randFloat(4.2, 6.2) : randFloat(2.0, 4.0),
       phase: randFloat(0, Math.PI * 2),
       shimmerFrequency: randFloat(0.075, 0.19),
-      // Spread the initial population across their lifetimes so there is no startup burst.
       bornAt: initial ? -randFloat(0, lifetime) : 0,
       lifetime,
     };
   }
 
-  const dust: DustParticle[] = Array.from({ length: 118 }, () => createDustParticle(true));
+  function resetDust(): void {
+    dust.length = 0;
+    for (let i = 0; i < 118; i += 1) dust.push(createDustParticle(true));
+  }
 
   function respawnDust(particle: DustParticle, t: number): void {
     const replacement = createDustParticle(false);
@@ -354,30 +324,46 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
     particle.bornAt = t + randFloat(0.15, 1.8);
   }
 
+  function applyScene(scene: SceneConfig): void {
+    currentScene = scene;
+    conceptArt.src = scene.artSrc;
+    lightningHighlights.src = scene.lightningSrc;
+    fxCanvas.width = scene.artWidth;
+    fxCanvas.height = scene.artHeight;
+    coinGlints = buildCoinGlints(scene.coinGlints);
+    resetDust();
+  }
+
+  applyScene(currentScene);
+
   const pointer = { x: 0, y: 0 };
   const pointerTarget = { x: 0, y: 0 };
 
-  const handlePointerMove = (event: PointerEvent): void => {
-    pointerTarget.x = event.clientX / window.innerWidth * 2 - 1;
-    pointerTarget.y = -(event.clientY / window.innerHeight * 2 - 1);
-  };
+  const eventController = new AbortController();
+  const eventSignal = eventController.signal;
 
-  const handlePointerLeave = (): void => {
+  window.addEventListener('pointermove', (event) => {
+    pointerTarget.x = event.clientX / innerWidth * 2 - 1;
+    pointerTarget.y = -(event.clientY / innerHeight * 2 - 1);
+  }, { signal: eventSignal });
+  window.addEventListener('pointerleave', () => {
     pointerTarget.x = 0;
     pointerTarget.y = 0;
-  };
+  }, { signal: eventSignal });
 
   function resize(): void {
-    const coverScale = Math.max(window.innerWidth / ART_WIDTH, window.innerHeight / ART_HEIGHT) * 1.026;
-    scenePlate.style.setProperty('--plate-width', `${ART_WIDTH * coverScale}px`);
-    scenePlate.style.setProperty('--plate-height', `${ART_HEIGHT * coverScale}px`);
+    const preferredScene = SCENES[getPreferredSceneId()];
+    if (preferredScene.id !== currentScene.id) applyScene(preferredScene);
+
+    const coverScale = Math.max(innerWidth / currentScene.artWidth, innerHeight / currentScene.artHeight) * COVER_OVERSCAN;
+    scenePlate.style.setProperty('--plate-width', `${currentScene.artWidth * coverScale}px`);
+    scenePlate.style.setProperty('--plate-height', `${currentScene.artHeight * coverScale}px`);
   }
-
-  window.addEventListener('pointermove', handlePointerMove, { passive: true });
-  window.addEventListener('pointerleave', handlePointerLeave);
-  window.addEventListener('resize', resize, { passive: true });
   resize();
+  window.addEventListener('resize', resize, { signal: eventSignal });
 
+  let animationFrameId = 0;
+  let disposed = false;
   let lastTime = performance.now() / 1000;
   let elapsed = 0;
 
@@ -405,13 +391,11 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
   let shadowStrength = 0.44;
   let shadowX = 0;
   let shadowDrift = 0;
-  // First pass happens quickly so the effect is easy to validate.
   let nextShadowAt = randFloat(2.5, 5.0);
 
   let lightningActive = false;
   let lightningStartedAt = 0;
   let lightningDuration = 1.18;
-  // First strike is reasonably quick for validation; later ones stay occasional.
   let nextLightningAt = randFloat(5.5, 9.0);
 
   let nextGlintAt = randFloat(0.8, 2.0);
@@ -458,8 +442,6 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
   }
 
   function lightningEnvelope(age: number): number {
-    // First strike stays short and crisp. The second has a fast attack followed by a
-    // much longer retinal-style fade so the room keeps a brief luminous after-image.
     const first = smoothPulse(age, 0.00, 0.105) * 0.78;
 
     const secondStart = 0.145;
@@ -478,6 +460,94 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
     return clamp(Math.max(first, second), 0, 1);
   }
 
+  function drawAnimatedFlame(
+    t: number,
+    intensity: number,
+    flicker: number,
+    gust: number,
+    stretch: number,
+    widthFactor: number,
+    lean: number,
+  ): void {
+    const baseX = currentScene.flameU * currentScene.artWidth;
+    const baseY = currentScene.flameBaseV * currentScene.artHeight;
+    const flameHeightScale = currentScene.id === 'portrait' ? 1.04 : 1;
+
+    const bodyHeight = 38 * stretch * flameHeightScale;
+    const bodyHalfWidth = 10.2 * widthFactor * (currentScene.id === 'portrait' ? 0.98 : 1);
+    const tipLean = lean * 115 + gust * 34;
+    const sway = Math.sin(t * 7.9 + 0.4) * 1.8 + flicker * 1.4;
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+
+    const auraRadius = bodyHeight * 1.10;
+    const aura = ctx.createRadialGradient(baseX, baseY - bodyHeight * 0.44, 0, baseX, baseY - bodyHeight * 0.44, auraRadius);
+    aura.addColorStop(0, `rgba(255,224,150,${0.075 + intensity * 0.045})`);
+    aura.addColorStop(0.28, `rgba(255,170,70,${0.045 + intensity * 0.032})`);
+    aura.addColorStop(0.62, `rgba(255,118,28,${0.018 + intensity * 0.016})`);
+    aura.addColorStop(1, 'rgba(255,95,15,0)');
+    ctx.fillStyle = aura;
+    ctx.fillRect(baseX - auraRadius, baseY - bodyHeight - auraRadius * 0.45, auraRadius * 2, auraRadius * 1.85);
+
+    const tipX = baseX + tipLean + sway;
+    const tipY = baseY - bodyHeight;
+    const bodyGradient = ctx.createLinearGradient(baseX, tipY, baseX, baseY);
+    bodyGradient.addColorStop(0, 'rgba(255,255,215,0.98)');
+    bodyGradient.addColorStop(0.32, 'rgba(255,224,104,0.99)');
+    bodyGradient.addColorStop(0.68, 'rgba(255,142,35,0.95)');
+    bodyGradient.addColorStop(1, 'rgba(255,78,12,0.20)');
+
+    ctx.globalAlpha = clamp(0.56 + intensity * 0.14, 0.62, 0.78);
+    ctx.shadowColor = 'rgba(255,130,28,0.95)';
+    ctx.shadowBlur = 15 + intensity * 7;
+    ctx.fillStyle = bodyGradient;
+    ctx.beginPath();
+    ctx.moveTo(baseX, baseY);
+    ctx.bezierCurveTo(
+      baseX + bodyHalfWidth * 0.82, baseY - bodyHeight * 0.16,
+      baseX + bodyHalfWidth * 1.05 + tipLean * 0.22, baseY - bodyHeight * 0.57,
+      tipX, tipY,
+    );
+    ctx.bezierCurveTo(
+      baseX - bodyHalfWidth * 0.52 + tipLean * 0.12, baseY - bodyHeight * 0.53,
+      baseX - bodyHalfWidth * 0.92, baseY - bodyHeight * 0.17,
+      baseX, baseY,
+    );
+    ctx.closePath();
+    ctx.fill();
+
+    const coreHeight = bodyHeight * (0.58 + Math.sin(t * 9.2) * 0.025);
+    const coreHalfWidth = bodyHalfWidth * 0.39;
+    const coreTipX = baseX + tipLean * 0.46 - Math.sin(t * 8.7) * 1.2;
+    const coreTipY = baseY - coreHeight;
+    const coreGradient = ctx.createLinearGradient(baseX, coreTipY, baseX, baseY);
+    coreGradient.addColorStop(0, 'rgba(255,255,246,0.99)');
+    coreGradient.addColorStop(0.55, 'rgba(255,246,169,0.99)');
+    coreGradient.addColorStop(1, 'rgba(255,178,49,0.12)');
+
+    ctx.globalAlpha = clamp(0.64 + intensity * 0.12, 0.70, 0.84);
+    ctx.shadowColor = 'rgba(255,241,170,0.78)';
+    ctx.shadowBlur = 8 + intensity * 4;
+    ctx.fillStyle = coreGradient;
+    ctx.beginPath();
+    ctx.moveTo(baseX, baseY - 1);
+    ctx.bezierCurveTo(
+      baseX + coreHalfWidth, baseY - coreHeight * 0.18,
+      baseX + coreHalfWidth * 0.72 + tipLean * 0.14, baseY - coreHeight * 0.58,
+      coreTipX, coreTipY,
+    );
+    ctx.bezierCurveTo(
+      baseX - coreHalfWidth * 0.50, baseY - coreHeight * 0.55,
+      baseX - coreHalfWidth, baseY - coreHeight * 0.18,
+      baseX, baseY - 1,
+    );
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.restore();
+  }
+
   function drawEffects(
     t: number,
     deltaForDust: number,
@@ -488,12 +558,10 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
     flameWidth: number,
     flameLean: number,
   ): void {
-    ctx.clearRect(0, 0, ART_WIDTH, ART_HEIGHT);
+    ctx.clearRect(0, 0, currentScene.artWidth, currentScene.artHeight);
 
-    // Flame is drawn as vector paths directly into the final-resolution canvas.
     drawAnimatedFlame(t, intensity, flicker, gust, flameStretch, flameWidth, flameLean);
 
-    // Coin sparkles.
     for (const glint of coinGlints) {
       if (!glint.active) continue;
 
@@ -511,8 +579,8 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
 
       drawSprite(
         glintTexture,
-        glint.u * ART_WIDTH,
-        glint.v * ART_HEIGHT,
+        glint.u * currentScene.artWidth,
+        glint.v * currentScene.artHeight,
         size,
         size,
         glint.baseRotation + phase * 0.42,
@@ -521,8 +589,6 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
       );
     }
 
-    // Suspended dust flares that actually wander through the room. They keep a slow forward
-    // motion while a low-frequency steering field gently bends their path over many seconds.
     ctx.save();
     ctx.globalCompositeOperation = 'screen';
     for (const particle of dust) {
@@ -533,7 +599,6 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
         continue;
       }
 
-      // Smooth wandering: heading evolves continuously rather than snapping to random targets.
       const turn = Math.sin(t * particle.turnFrequency + particle.phase) * particle.turnAmplitude;
       const secondaryTurn = Math.sin(t * particle.turnFrequency * 0.43 + particle.phase * 1.73) * particle.turnAmplitude * 0.36;
       particle.heading += (turn + secondaryTurn) * deltaForDust * 0.46;
@@ -547,51 +612,38 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
       particle.x += particle.vx * deltaForDust;
       particle.y += particle.vy * deltaForDust;
 
-      // Tiny perpendicular bob keeps the motion organic without looking like a sine-wave screensaver.
       const normalX = -particle.vy / Math.max(particle.speed, 0.001);
       const normalY = particle.vx / Math.max(particle.speed, 0.001);
       const bob = Math.sin(t * particle.bobFrequency + particle.phase * 0.71) * particle.bobAmplitude;
       const renderX = particle.x + normalX * bob;
       const renderY = particle.y + normalY * bob;
 
-      // Wrap around just outside the artwork so motes can keep wandering instead of popping at edges.
       const margin = 24;
-      if (particle.x < -margin) particle.x = ART_WIDTH + margin;
-      else if (particle.x > ART_WIDTH + margin) particle.x = -margin;
-      if (particle.y < -margin) particle.y = ART_HEIGHT + margin;
-      else if (particle.y > ART_HEIGHT + margin) particle.y = -margin;
+      if (particle.x < -margin) particle.x = currentScene.artWidth + margin;
+      else if (particle.x > currentScene.artWidth + margin) particle.x = -margin;
+      if (particle.y < -margin) particle.y = currentScene.artHeight + margin;
+      else if (particle.y > currentScene.artHeight + margin) particle.y = -margin;
 
       const fadeIn = clamp(age / 1.6, 0, 1);
       const fadeOut = clamp((particle.lifetime - age) / 2.6, 0, 1);
       const lifetimeEnvelope = Math.min(fadeIn, fadeOut);
-      // Barely perceptible shimmer: these should feel like light catching dust, not blinking particles.
       const shimmer = 0.92 + Math.sin(t * particle.shimmerFrequency + particle.phase) * 0.08;
 
-      const lanternInfluenceX = (renderX / ART_WIDTH - 0.79) / 0.48;
-      const lanternInfluenceY = (renderY / ART_HEIGHT - 0.22) / 0.55;
+      const dustLanternU = currentScene.id === 'landscape' ? 0.79 : currentScene.lanternGlowU;
+      const dustLanternV = currentScene.id === 'landscape' ? 0.22 : currentScene.lanternGlowV;
+      const lanternInfluenceX = (renderX / currentScene.artWidth - dustLanternU) / 0.48;
+      const lanternInfluenceY = (renderY / currentScene.artHeight - dustLanternV) / 0.55;
       const lanternInfluence = Math.exp(-(lanternInfluenceX * lanternInfluenceX + lanternInfluenceY * lanternInfluenceY));
       const alpha = particle.alpha * lifetimeEnvelope * shimmer * (0.92 + lanternInfluence * 0.30);
 
-      // Texture contains its own large soft falloff, so this diameter stays visually tiny.
       const renderSize = particle.size * 4.4;
-      drawSprite(
-        dustMoteTexture,
-        renderX,
-        renderY,
-        renderSize,
-        renderSize,
-        0,
-        alpha,
-        'screen',
-      );
+      drawSprite(dustMoteTexture, renderX, renderY, renderSize, renderSize, 0, alpha, 'screen');
     }
     ctx.restore();
 
     void flicker;
     void gust;
   }
-
-  let animationFrameId = 0;
 
   function animate(nowMs: number): void {
     const now = nowMs / 1000;
@@ -608,7 +660,7 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
     const idleYWorld = Math.sin(t * 0.11 + 1.6) * IDLE_DRIFT_Y_WORLD;
     const parallaxXWorld = -pointer.x * PARALLAX_X_WORLD + idleXWorld;
     const parallaxYWorld = -pointer.y * PARALLAX_Y_WORLD + idleYWorld;
-    const viewportPixelsPerWorld = window.innerHeight * 0.5;
+    const viewportPixelsPerWorld = innerHeight * 0.5;
     scenePlate.style.setProperty('--parallax-x', `${parallaxXWorld * viewportPixelsPerWorld}px`);
     scenePlate.style.setProperty('--parallax-y', `${-parallaxYWorld * viewportPixelsPerWorld}px`);
 
@@ -622,11 +674,7 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
       ambientDriftTarget = randFloat(-1, 1);
       nextAmbientDriftAt = t + randFloat(0.22, 0.52);
     }
-    ambientDriftValue = lerp(
-      ambientDriftValue,
-      ambientDriftTarget,
-      1 - Math.exp(-delta * 4.2),
-    );
+    ambientDriftValue = lerp(ambientDriftValue, ambientDriftTarget, 1 - Math.exp(-delta * 4.2));
 
     if (t >= nextGustAt) {
       gustStartedAt = t;
@@ -642,11 +690,7 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
 
     const micro = Math.sin(t * 12.7) * 0.042 + Math.sin(t * 7.1 + 0.7) * 0.030;
     const flameBreath = Math.sin(t * 1.55 + 1.2) * 0.065;
-    const intensity = clamp(
-      1 + flickerValue * 0.17 + micro + flameBreath + gust * 1.45,
-      0.56,
-      1.47,
-    );
+    const intensity = clamp(1 + flickerValue * 0.17 + micro + flameBreath + gust * 1.45, 0.56, 1.47);
 
     if (t >= nextRoomNoiseAt) {
       roomNoiseTarget = randFloat(-1, 1);
@@ -656,11 +700,7 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
 
     const slowPhase = t * 0.36 + Math.sin(t * 0.095) * 0.95;
     const slowPulse = Math.sin(slowPhase);
-    const roomTarget = clamp(
-      0.98 + slowPulse * 0.27 + roomNoiseValue * 0.075 + ambientDriftValue * 0.035,
-      0.63,
-      1.34,
-    );
+    const roomTarget = clamp(0.98 + slowPulse * 0.27 + roomNoiseValue * 0.075 + ambientDriftValue * 0.035, 0.63, 1.34);
     ambientIntensity = lerp(ambientIntensity, roomTarget, 1 - Math.exp(-delta * 1.15));
 
     const roomLow = clamp((1.0 - ambientIntensity) / 0.37, 0, 1);
@@ -669,10 +709,8 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
     roomWarm.style.opacity = `${0.010 + roomHigh * 0.078}`;
 
     const ambientWarmOpacity = 0.075 + ambientIntensity * 0.105;
-    const ambientWarmU = 0.665 + (
-      Math.sin(t * 0.47) * 0.012 + roomNoiseValue * 0.010
-    ) / 3;
-    const ambientWarmV = 0.365 - Math.sin(t * 0.39 + 1.4) * 0.009 / 2;
+    const ambientWarmU = currentScene.ambientWarmU + (Math.sin(t * 0.47) * 0.012 + roomNoiseValue * 0.010) / 3;
+    const ambientWarmV = currentScene.ambientWarmV - Math.sin(t * 0.39 + 1.4) * 0.009 / 2;
     setRadialLayer(
       ambientWarm,
       ambientWarmU,
@@ -684,28 +722,21 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
 
     setRadialLayer(
       tableGlow,
-      0.700,
-      0.310,
+      currentScene.tableGlowU,
+      currentScene.tableGlowV,
       1.34 + ambientIntensity * 0.19,
       0.62 + ambientIntensity * 0.105,
       0.070 + ambientIntensity * 0.105,
     );
 
     const localLight = clamp(ambientIntensity * 0.62 + intensity * 0.48, 0.55, 1.52);
-    const lanternU = 0.787 + Math.sin(t * 4.1) * 0.0036 / 3;
-    const lanternV = 0.215 - Math.sin(t * 5.6 + 0.4) * 0.0030 / 2;
-    const lanternScale = 1.02 + localLight * 0.19;
-    setRadialLayer(
-      lanternGlow,
-      lanternU,
-      lanternV,
-      lanternScale,
-      lanternScale,
-      0.075 + localLight * 0.205,
-    );
+    const lanternU = currentScene.lanternGlowU + Math.sin(t * 4.1) * 0.0036 / 3;
+    const lanternV = currentScene.lanternGlowV - Math.sin(t * 5.6 + 0.4) * 0.0030 / 2;
+    const lanternScale = currentScene.id === 'portrait' ? 1.10 + localLight * 0.20 : 1.02 + localLight * 0.19;
+    setRadialLayer(lanternGlow, lanternU, lanternV, lanternScale, lanternScale, 0.075 + localLight * 0.205);
 
-    const flameGlowU = FLAME_U + Math.sin(t * 7.4) * 0.0050 / 3;
-    const flameGlowV = FLAME_BASE_V - Math.sin(t * 8.8 + 1.1) * 0.0040 / 2;
+    const flameGlowU = currentScene.flameU + Math.sin(t * 7.4) * 0.0050 / 3;
+    const flameGlowV = currentScene.flameBaseV - Math.sin(t * 8.8 + 1.1) * 0.0040 / 2;
     setRadialLayer(
       flameGlow,
       flameGlowU,
@@ -716,26 +747,16 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
     );
 
     const flameLean = Math.sin(t * 5.8) * 0.045 + flickerValue * 0.065 + gust * 0.23;
-    const flameStretch = clamp(
-      0.82 + intensity * 0.28 + Math.sin(t * 9.1 + 0.3) * 0.065,
-      0.78,
-      1.32,
-    );
-    const flameWidth = clamp(
-      1.05 - (flameStretch - 1) * 0.34 + Math.sin(t * 7.7) * 0.045,
-      0.82,
-      1.18,
-    );
+    const flameStretch = clamp(0.82 + intensity * 0.28 + Math.sin(t * 9.1 + 0.3) * 0.065, 0.78, 1.32);
+    const flameWidth = clamp(1.05 - (flameStretch - 1) * 0.34 + Math.sin(t * 7.7) * 0.045, 0.82, 1.18);
 
     if (!shadowActive && t >= nextShadowAt) {
       shadowActive = true;
       shadowStartedAt = t;
       shadowDuration = randFloat(4.2, 6.8);
       shadowSide = Math.random() < 0.5 ? -1 : 1;
-      // Roughly twice V11's opacity, while the radial falloff keeps the silhouette soft.
       shadowStrength = randFloat(0.40, 0.56);
       shadowX = shadowSide < 0 ? randFloat(-0.02, 0.035) : randFloat(0.715, 0.77);
-      // Base offset plus a walking sway applied during the descent.
       shadowDrift = randFloat(-0.018, 0.018);
       nextShadowAt = t + randFloat(11, 26);
     }
@@ -745,17 +766,12 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
         shadowActive = false;
         passingShadow.style.opacity = '0';
       } else {
-        // A large, rounded silhouette travels vertically from above the frame to below it.
         const envelope = Math.pow(Math.sin(phase * Math.PI), 0.72);
         const eased = phase * phase * (3 - 2 * phase);
         const top = lerp(-58, 108, eased);
-        // 2-3 gentle side-to-side steps over the descent, strongest around the middle and
-        // naturally damped as the silhouette enters/leaves the frame.
         const walkCycles = shadowDuration < 5.3 ? 2.0 : 2.75;
         const walkEnvelope = Math.pow(Math.sin(phase * Math.PI), 0.62);
-        const walkSway = Math.sin(phase * Math.PI * 2 * walkCycles + shadowSide * 0.55)
-          * 0.022
-          * walkEnvelope;
+        const walkSway = Math.sin(phase * Math.PI * 2 * walkCycles + shadowSide * 0.55) * 0.022 * walkEnvelope;
         const x = (shadowX + shadowDrift * Math.sin(phase * Math.PI) + walkSway) * 100;
         passingShadow.style.left = `${x}%`;
         passingShadow.style.top = `${top}%`;
@@ -779,8 +795,6 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
         lightningHighlights.style.opacity = '0';
       } else {
         const lightningStrength = lightningEnvelope(age);
-        // Broad cool fill stays restrained; the art-space highlight mask reaches full strength
-        // only at the peak of the strike and remains pixel-perfect with the concept art.
         lightningWash.style.opacity = `${lightningStrength * 0.54}`;
         lightningHighlights.style.opacity = `${lightningStrength}`;
       }
@@ -789,19 +803,18 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
     if (t >= nextGlintAt) triggerRandomGlint(t);
 
     drawEffects(t, delta, intensity, flickerValue, gust, flameStretch, flameWidth, flameLean);
-    animationFrameId = requestAnimationFrame(animate);
+    if (!disposed) animationFrameId = requestAnimationFrame(animate);
   }
 
   animationFrameId = requestAnimationFrame((now) => {
     lastTime = now / 1000;
-    animationFrameId = requestAnimationFrame(animate);
+    if (!disposed) animationFrameId = requestAnimationFrame(animate);
   });
 
   return () => {
+    disposed = true;
     cancelAnimationFrame(animationFrameId);
-    window.removeEventListener('pointermove', handlePointerMove);
-    window.removeEventListener('pointerleave', handlePointerLeave);
-    window.removeEventListener('resize', resize);
+    eventController.abort();
     app.replaceChildren();
   };
 }
