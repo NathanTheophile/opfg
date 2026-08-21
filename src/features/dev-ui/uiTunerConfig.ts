@@ -149,7 +149,9 @@ export const UI_TUNER_DEFINITIONS: UITunerDefinition[] = [
   range('hudHeaderPaddingBottom', 'Headers HUD — padding bas', 'hud', '--ui-hud-header-padding-bottom', 0.1, 0, 1.5, 0.01, 'rem'),
   range('hudHeaderPaddingLeft', 'Headers HUD — padding gauche', 'hud', '--ui-hud-header-padding-left', 0.52, 0, 2, 0.01, 'rem'),
   range('hudNameSize', 'Nom joueur', 'hud', '--ui-hud-name-size', 20, 12, 32, 0.5, 'px'),
+  range('hudNameTranslateY', 'Nom joueur — translate Y', 'hud', '--ui-hud-name-translate-y', 0, -24, 24, 0.25, 'px'),
   range('hudTitleSize', 'Titre / affiliation', 'hud', '--ui-hud-title-size', 10.5, 7, 18, 0.1, 'px'),
+  range('hudTitleTranslateY', 'Titre / affiliation — translate Y', 'hud', '--ui-hud-title-translate-y', 0, -24, 24, 0.25, 'px'),
   range('hudSlotSize', 'Taille slots', 'hud', '--ui-hud-slot-size', 31, 22, 48, 0.5, 'px'),
   range('hudSlotGap', 'Gap slots', 'hud', '--ui-hud-slot-gap', 5, 0, 15, 0.5, 'px'),
   range('hudSlotRadius', 'Radius slots', 'hud', '--ui-hud-slot-radius', 6, 0, 16, 0.5, 'px'),
@@ -158,8 +160,8 @@ export const UI_TUNER_DEFINITIONS: UITunerDefinition[] = [
   range('hudStorageBodyPaddingX', 'Inventaire / Bateau — padding X', 'hud', '--ui-hud-storage-body-padding-x', 0.62, 0, 2, 0.01, 'rem'),
   range('hudStorageBodyPaddingBottom', 'Inventaire / Bateau — padding bas', 'hud', '--ui-hud-storage-body-padding-bottom', 0.34, 0, 1.5, 0.01, 'rem'),
   range('hudAdventureGap', 'HUD haut ↔ Aventure — gap vertical', 'hud', '--ui-hud-adventure-gap', 0.5, 0, 4, 0.05, 'rem'),
-  range('adventureRailGap', 'Event ↔ Stats / Crew — gap horizontal', 'hud', '--ui-adventure-rail-gap', 0.1, 0, 4, 0.05, 'rem'),
   range('adventureInlinePadding', 'Aventure — padding latéral', 'hud', '--ui-adventure-inline-padding', 1.15, 0, 3, 0.05, 'rem'),
+  range('adventureRailGap', 'Gap Event ↔ Stats / Crew', 'event', '--ui-adventure-rail-gap', 0.1, 0, 4, 0.05, 'rem', 'Écart horizontal entre le panel Event et les rails Stats/Crew en paysage.'),
   range('adventureStackGap', 'Event ↔ Outcome — gap vertical', 'event', '--ui-adventure-stack-gap', 8, 0, 30, 1, 'px'),
 
   // Event / choices. Body horizontal geometry now comes from shared parchment tokens.
