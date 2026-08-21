@@ -28,6 +28,27 @@ const NEW_WORLD_ROUTE_START_EVENT_ID_SET = new Set<string>(NEW_WORLD_ROUTE_START
 const SABAODY_RED_LINE_PASSAGE_EVENT_ID = 'active_sabaody_red_line_passage';
 const FISH_MAN_ISLAND_LOCATION_ID = 'fish_man_island';
 
+export const EARLY_WINDFALL_ROOT_IDS = {
+  civilian: [
+    'active_early_windfall_civilian_market_hundred_hands',
+    'active_early_windfall_civilian_impossible_contract',
+  ],
+  pirate: [
+    'active_early_windfall_pirate_changing_hands',
+    'active_early_windfall_pirate_three_chests_night',
+  ],
+  marine: [
+    'active_early_windfall_marine_impossible_seizure',
+    'active_early_windfall_marine_false_uniform_convoy',
+  ],
+  revolutionary: [
+    'active_early_windfall_revolutionary_invisible_fund',
+    'active_early_windfall_revolutionary_tyrant_auction',
+  ],
+} as const;
+
+const EARLY_WINDFALL_ROOT_ID_SET = new Set<string>(Object.values(EARLY_WINDFALL_ROOT_IDS).flat());
+
 export const HAKI_DUE_ROOT_IDS = {
   observation: [
     'active_haki_observation_l1_one_second_early',
@@ -81,6 +102,17 @@ function eligibleDueHakiRootEvents(state: GameState, catalog: ContentCatalog): N
     .filter((event): event is NormalDefinition =>
       event.kind === 'normal'
       && HAKI_DUE_ROOT_ID_SET.has(event.id)
+      && isNormalOccurrenceEligible(event, state)
+      && isEligible(event, state, catalog),
+    )
+    .sort((left, right) => left.id.localeCompare(right.id));
+}
+
+function eligibleEarlyWindfallRootEvents(state: GameState, catalog: ContentCatalog): NormalDefinition[] {
+  return catalog.events
+    .filter((event): event is NormalDefinition =>
+      event.kind === 'normal'
+      && EARLY_WINDFALL_ROOT_ID_SET.has(event.id)
       && isNormalOccurrenceEligible(event, state)
       && isEligible(event, state, catalog),
     )
@@ -155,6 +187,11 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     if (newWorldRouteStarts.length > 0) {
       return selectUniformNormal(state, catalog, state.scheduledEvents, newWorldRouteStarts);
     }
+  }
+
+  const earlyWindfallRoots = eligibleEarlyWindfallRootEvents(state, catalog);
+  if (earlyWindfallRoots.length > 0) {
+    return selectUniformNormal(state, catalog, state.scheduledEvents, earlyWindfallRoots);
   }
 
   const departure = createDepartureSystemEvent(state, catalog);
