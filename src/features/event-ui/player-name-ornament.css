@@ -1,0 +1,128 @@
+/*
+ * Runtime textures are 1024x1024. Their authored text-safe area is 480x96:
+ * x 272..752 => left 26.5625%, width 46.875%
+ * y 464..560 => top 45.3125%, height 9.375%
+ */
+.opfg-name-ornament {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  min-height: clamp(4rem, 6vw, 4.75rem);
+  place-items: center;
+  pointer-events: none;
+}
+
+.opfg-name-ornament__canvas {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: min(36rem, 116%, calc(100vw - 1.5rem));
+  max-width: none;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  animation: opfg-name-ornament-enter 180ms var(--ease-emphasized) both;
+}
+
+.opfg-name-ornament__texture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.opfg-name-ornament__text-zone {
+  position: absolute;
+  top: 45.3125%;
+  left: 26.5625%;
+  display: grid;
+  width: 46.875%;
+  height: 9.375%;
+  min-width: 0;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-content: center;
+  align-items: center;
+  justify-items: center;
+  gap: 0.06rem;
+  padding: 0.1rem 0.45rem;
+  overflow: hidden;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.opfg-name-ornament__name,
+.opfg-name-ornament__title {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.opfg-name-ornament__name {
+  align-self: end;
+  color: var(--text-primary);
+  font-family: var(--font-display-family);
+  font-size: clamp(0.82rem, 1.55vw, 1.08rem);
+  font-weight: var(--font-display-weight, 700);
+  letter-spacing: 0.045em;
+  line-height: 1;
+  text-shadow:
+    0 1px 1px rgb(0 0 0 / 0.72),
+    0 2px 5px rgb(0 0 0 / 0.58);
+  text-transform: uppercase;
+}
+
+.opfg-name-ornament__title {
+  align-self: start;
+  color: color-mix(in srgb, var(--text-muted) 72%, var(--accent-gold));
+  font-family: var(--font-ui);
+  font-size: clamp(0.5rem, 0.82vw, 0.62rem);
+  font-weight: var(--font-ui-weight-semibold, 600);
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.62);
+  text-transform: uppercase;
+}
+
+@keyframes opfg-name-ornament-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 40rem) {
+  .opfg-name-ornament {
+    min-height: 3.75rem;
+  }
+
+  .opfg-name-ornament__canvas {
+    width: min(31rem, 116%, calc(100vw - 1rem));
+  }
+
+  .opfg-name-ornament__text-zone {
+    padding-inline: 0.28rem;
+  }
+
+  .opfg-name-ornament__name {
+    font-size: clamp(0.7rem, 3.4vw, 0.92rem);
+  }
+
+  .opfg-name-ornament__title {
+    font-size: clamp(0.44rem, 2vw, 0.56rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-name-ornament__canvas {
+    animation: none;
+  }
+}
