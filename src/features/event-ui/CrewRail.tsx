@@ -1,6 +1,6 @@
 import { Brain, ChevronRight, Clover, Compass, Dumbbell, Eye, Heart, Gauge, MessageCircle, Smile, UsersRound, type LucideIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Panel } from '@/components/ui';
+import { Modal, ModalContent, ModalDescription, ModalFooter, ModalHeader, ModalTitle, Panel } from '@/components/ui';
 import type { ContentCatalog } from '@/game/content/schema';
 import type { Translator } from '@/game/localization';
 import type { GameState, NpcStatId } from '@/game/model/schema';
@@ -29,6 +29,7 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [navigatorRoleId, setNavigatorRoleId] = useState<CrewRoleId | null>(null);
   const [firstMateRoleId, setFirstMateRoleId] = useState<CrewRoleId | null>(null);
+  const [pendingRolePowerId, setPendingRolePowerId] = useState<CrewRoleId | null>(null);
   const crew = Object.entries(state.npcs).filter(([, npc]) => npc.status === 'crew');
   const capacity = maxCrewSize(state, catalog);
   const firstMateTargets = firstMateTargetRoleIds(state, catalog);
@@ -38,6 +39,19 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
       setFirstMateRoleId(null);
     }
   }, [firstMateRoleId, firstMateTargets.length]);
+
+  const pendingRole = pendingRolePowerId
+    ? catalog.crewRoles.find(({ id }) => id === pendingRolePowerId)
+    : undefined;
+
+  const confirmRolePower = () => {
+    if (!pendingRolePowerId || !pendingRole?.annualPower) return;
+    const roleId = pendingRolePowerId;
+    setPendingRolePowerId(null);
+    if (pendingRole.annualPower === 'navigator') setNavigatorRoleId(roleId);
+    else if (pendingRole.annualPower === 'first_mate') setFirstMateRoleId(roleId);
+    else onUseRolePower?.(roleId);
+  };
 
   return <div className="opfg-crew-rail" aria-label={translate('ui.crew')}>
     <Panel
@@ -76,19 +90,34 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
         && (role.annualPower !== 'navigator' || navigatorDestinations(state, catalog).length > 0);
 
       return <Panel key={npcId} variant="strong" padding="none" className={`opfg-crew-member-panel ${expanded ? 'is-expanded' : ''}`}>
-        <button type="button" className="opfg-crew-member__toggle" onClick={() => setExpandedId((current) => current === npcId ? null : npcId)} aria-expanded={expanded}>
-          <ContextTooltip
-            className="opfg-crew-member__role has-rich-tooltip"
-            title={roleLabel}
-            detail={translate(getUiTooltipKey('crewRole'))}
-            side="left"
-          >
-            <UsersRound className="size-[1.05rem]" aria-hidden="true" />
-          </ContextTooltip>
+        <div className="opfg-crew-member__header">
+          <button type="button" className="opfg-crew-member__toggle" onClick={() => setExpandedId((current) => current === npcId ? null : npcId)} aria-expanded={expanded}>
+            <ContextTooltip
+              className="opfg-crew-member__role has-rich-tooltip"
+              title={roleLabel}
+              detail={translate(getUiTooltipKey('crewRole'))}
+              side="left"
+            >
+              <UsersRound className="size-[1.05rem]" aria-hidden="true" />
+            </ContextTooltip>
 
-          <strong className="opfg-crew-member__name">{npc.displayName ?? (definition ? translate(definition.nameKey) : translate('ui.crew.member'))}</strong>
-          <ChevronRight className="opfg-crew-member__chevron size-4" aria-hidden="true" />
-        </button>
+            <strong className="opfg-crew-member__name">{npc.displayName ?? (definition ? translate(definition.nameKey) : translate('ui.crew.member'))}</strong>
+            <ChevronRight className="opfg-crew-member__chevron size-4" aria-hidden="true" />
+          </button>
+
+          {role?.annualPower && (
+            <button
+              type="button"
+              className="opfg-crew-action opfg-crew-member__power"
+              disabled={!onUseRolePower || !rolePowerAvailable}
+              title={translate(`ui.crew.power.${role.annualPower}.tooltip`)}
+              onClick={() => setPendingRolePowerId(role.id)}
+              aria-label={translate(`ui.crew.power.${role.annualPower}.action`)}
+            >
+              {translate(`ui.crew.power.${role.annualPower}.action`)}
+            </button>
+          )}
+        </div>
 
         <div className="opfg-crew-member__stats" aria-hidden={!expanded}>
           {NPC_STAT_IDS.map((statId) => {
@@ -107,23 +136,6 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
               <b>{effectiveNpcStat(state, catalog, npcId, statId)}</b>
             </ContextTooltip>;
           })}
-          <div className="opfg-crew-member__actions">
-            {role?.annualPower && (
-              <button
-                type="button"
-                className="opfg-crew-action"
-                disabled={!onUseRolePower || !rolePowerAvailable}
-                title={translate(`ui.crew.power.${role.annualPower}.tooltip`)}
-                onClick={() => {
-                  if (role.annualPower === 'navigator') setNavigatorRoleId(role.id);
-                  else if (role.annualPower === 'first_mate') setFirstMateRoleId(role.id);
-                  else onUseRolePower?.(role.id);
-                }}
-              >
-                {translate(`ui.crew.power.${role.annualPower}.action`)}
-              </button>
-            )}
-          </div>
         </div>
       </Panel>;
     })}
@@ -161,6 +173,28 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
         })}
         <button type="button" className="opfg-crew-action" onClick={() => setFirstMateRoleId(null)}>{translate('ui.action.cancel')}</button>
       </Panel>
+    )}
+    {pendingRole && (
+      <Modal open={pendingRolePowerId !== null} onOpenChange={(open) => !open && setPendingRolePowerId(null)}>
+        <ModalContent className="w-[min(calc(100vw_-_2rem),24rem)]">
+          <ModalHeader>
+            <ModalTitle>{translate('ui.crew.power.confirm.title')}</ModalTitle>
+            <ModalDescription>
+              {translate('ui.crew.power.confirm.body', {
+                role: translate(pendingRole.nameKey).toLocaleLowerCase(),
+              })}
+            </ModalDescription>
+          </ModalHeader>
+          <ModalFooter>
+            <button type="button" className="opfg-crew-action" onClick={() => setPendingRolePowerId(null)}>
+              {translate('ui.crew.power.confirm.no')}
+            </button>
+            <button type="button" className="opfg-crew-action opfg-crew-power-confirm" onClick={confirmRolePower}>
+              {translate('ui.crew.power.confirm.yes')}
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     )}
   </div>;
 }

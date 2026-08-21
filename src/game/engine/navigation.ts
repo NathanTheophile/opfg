@@ -1,7 +1,7 @@
 import type { ChoiceDefinition, ContentCatalog, EventDefinition } from '../content/schema';
 import type { GameState, LocationId } from '../model/schema';
 import { findDockableAccess } from './locations';
-import { ordinaryDepartureHasDestination } from './maritime';
+import { ordinaryDepartureHasDestination, paradiseNextDestinationId } from './maritime';
 
 export const DEPARTURE_SYSTEM_EVENT_ID = 'system_navigation:departure';
 
@@ -49,7 +49,10 @@ export function createDepartureSystemEvent(
     || state.travelState !== 'on_land'
     || !state.isLeader
     || state.ship === null
-    || findDockableAccess(catalog, state.locationId) === undefined
+    || (
+      findDockableAccess(catalog, state.locationId) === undefined
+      && paradiseNextDestinationId(state, catalog) === undefined
+    )
     || !ordinaryDepartureHasDestination(state, catalog)
   ) return null;
 
