@@ -48,6 +48,7 @@ export function recruitAssignmentView(
   state: GameState,
   catalog: ContentCatalog,
 ): RecruitAssignmentView | null {
+  if (state.careerPhase !== 'active') return null;
   const recruit = crewMemberOptions(state, catalog).find(
     ({ crewRoleId }) => crewRoleId === null,
   );
@@ -64,7 +65,7 @@ export function annualReassignmentView(
   state: GameState,
   catalog: ContentCatalog,
 ): AnnualReassignmentView | null {
-  if (!state.crewReassignmentPending) return null;
+  if (state.careerPhase !== 'active' || !state.crewReassignmentPending) return null;
   return {
     crew: crewMemberOptions(state, catalog),
     roles: catalog.crewRoles,
