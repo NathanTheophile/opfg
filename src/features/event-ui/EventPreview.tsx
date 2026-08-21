@@ -59,6 +59,11 @@ import {
 import { CrewRail } from './CrewRail';
 import { EventPanel } from './EventPanel';
 import { OutcomePanel } from './OutcomePanel';
+import { AgeTransitionOverlay } from './AgeTransitionOverlay';
+import {
+  getChildhoodAgeTransition,
+  type AgeTransition,
+} from './age-transition';
 import { NavigationPanel } from './NavigationPanel';
 import { CrewManagementPanel } from './CrewManagementPanel';
 import { MobileSideDrawers } from './MobileSideDrawers';
@@ -310,6 +315,9 @@ export function EventPreview({
 
   const [showOutcome, setShowOutcome] =
     useState(false);
+
+  const [ageTransition, setAgeTransition] =
+    useState<AgeTransition | null>(null);
 
   const [
     outcomeRevealed,
@@ -1060,13 +1068,29 @@ export function EventPreview({
       }, RESULT_HOLD_MS);
   };
 
-  const continueFromOutcome = () => {
+  const dismissOutcomePresentation = () => {
     adventureScrollRef.current?.scrollTo({ top: 0, behavior: 'auto' });
     setOutcomeRevealed(false);
     setShowOutcome(false);
     setPendingDice(null);
     clearResolvedEventUi();
     session.continueAfterResolution();
+  };
+
+  const continueFromOutcome = () => {
+    if (ageTransition !== null) return;
+
+    const transition = getChildhoodAgeTransition(
+      session.previousState,
+      session.gameState,
+    );
+
+    if (transition) {
+      setAgeTransition(transition);
+      return;
+    }
+
+    dismissOutcomePresentation();
   };
 
   const handleStorageSlot = (slot: StorageSlot) => {
@@ -1476,6 +1500,17 @@ export function EventPreview({
           achievementId={achievementToastId}
           locale={locale}
           onDismiss={() => session.dismissAchievementUnlock(achievementToastId)}
+        />
+      )}
+
+      {ageTransition && (
+        <AgeTransitionOverlay
+          transition={ageTransition}
+          unitLabel={translate('ui.unit.years')}
+          onCovered={dismissOutcomePresentation}
+          onComplete={() =>
+            setAgeTransition(null)
+          }
         />
       )}
 
