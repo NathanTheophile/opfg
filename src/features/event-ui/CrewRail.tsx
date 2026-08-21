@@ -47,6 +47,7 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
       aria-label={translate('ui.crew.capacityAria', { count: crew.length, capacity })}
     >
       <ContextTooltip
+        className="opfg-hud-header-icon-slot"
         title={translate('ui.crew')}
         detail={translate(getUiTooltipKey('crew'))}
         meta={`${crew.length} / ${capacity}`}

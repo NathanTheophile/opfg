@@ -358,3 +358,20 @@
     text-overflow: ellipsis;
   }
 }
+
+/* OPFG GAMEPLAY UTILITY SCALE
+ * These fixed controls live outside .opfg-game-scale-content but use the same
+ * scale value that EventPreview mirrors onto :root.
+ */
+.opfg-game-screen .opfg-language-controls,
+.opfg-game-screen ~ .opfg-audio-controls {
+  zoom: var(--opfg-game-ui-scale, 1);
+}
+
+@supports not (zoom: 1) {
+  .opfg-game-screen .opfg-language-controls,
+  .opfg-game-screen ~ .opfg-audio-controls {
+    transform: scale(var(--opfg-game-ui-scale, 1));
+    transform-origin: right bottom;
+  }
+}
