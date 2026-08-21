@@ -69,7 +69,7 @@ describe('GameSession', () => {
 
   it('runs navigation through the departure System Event without creating history', () => {
     const state = createInitialGameState(5);
-    state.ship = { shipId: 'sloop', name: 'Test Sloop', health: 30, cargo: [] };
+    state.ship = { shipId: 'dinghy', name: 'Test Dinghy', health: 18, cargo: [] };
     state.careerPhase = 'active';
     state.ageMonths = 187;
     state.locationId = 'foosha_village';

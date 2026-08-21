@@ -17,6 +17,7 @@ import {
 
 function stateInBlue(seaId: keyof typeof REVERSE_MOUNTAIN_ROOT_BY_SEA, shipId: 'dinghy' | 'sloop' = 'sloop') {
   const state = createInitialGameState(1234);
+  state.player.profile.raceId = 'human';
   state.careerPhase = 'active';
   state.ageMonths = 180;
   state.travelState = 'on_land';

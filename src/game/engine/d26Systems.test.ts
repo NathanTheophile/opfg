@@ -149,6 +149,8 @@ describe('D2.6 systems hardening', () => {
 
   it('locks Navigator geography to Blue + Reverse Mountain, none in Paradise, global from New World', () => {
     const state = createInitialGameState();
+    state.careerPhase = 'active';
+    state.ageMonths = 180;
     state.npcs.mira = { ...createDefaultNpcState(), status: 'crew', crewRoleId: 'navigator' };
     state.ship = { shipId: 'sloop', name: 'Test', health: 30, cargo: [] };
 

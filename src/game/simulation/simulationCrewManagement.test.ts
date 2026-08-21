@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { ContentCatalog } from '../content/schema';
 import type { CrewRoleId, GameState } from '../model/schema';
+import { createInitialGameState } from '../model/initialState';
 import { resolveRequiredSimulationCrewManagement } from './simulationCrewManagement';
 import type { SimulationPolicy } from './simulationPolicy';
 
@@ -24,12 +25,12 @@ const firstRolePolicy: SimulationPolicy = {
 
 function baseState(overrides: Partial<GameState>): GameState {
   return {
+    ...createInitialGameState(),
+    careerPhase: 'active',
     ageMonths: 192,
-    crewReassignmentPending: false,
-    crewRoleVacatedYear: {},
     npcs: {},
     ...overrides,
-  } as unknown as GameState;
+  };
 }
 
 describe('resolveRequiredSimulationCrewManagement', () => {
