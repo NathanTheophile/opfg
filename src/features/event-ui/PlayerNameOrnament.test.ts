@@ -24,12 +24,12 @@ describe('PlayerNameOrnament', () => {
   });
 
   it.each([
-    ['civilian', 0, '/art/ornaments/civil1.png'],
-    ['marine', 1, '/art/ornaments/marine2.png'],
-    ['pirate', 2, '/art/ornaments/pirate3.png'],
-    ['revolutionary', 3, '/art/ornaments/revo4.png'],
-    ['bounty_hunter', 4, '/art/ornaments/civil5.png'],
-  ] as const)('maps %s level %s to %s', (affiliationId, level, expectedSrc) => {
-    expect(getPlayerNameOrnamentSrc(affiliationId, level)).toBe(expectedSrc);
+    ['civilian', 0, 'civil1.png'],
+    ['marine', 1, 'marine2.png'],
+    ['pirate', 2, 'pirate3.png'],
+    ['revolutionary', 3, 'revo4.png'],
+    ['bounty_hunter', 4, 'civil5.png'],
+  ] as const)('maps %s level %s to %s', (affiliationId, level, expectedFile) => {
+    expect(getPlayerNameOrnamentSrc(affiliationId, level)).toContain(expectedFile);
   });
 });

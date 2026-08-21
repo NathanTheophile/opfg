@@ -5,7 +5,7 @@ import type { ContentCatalog, LocationDefinition } from '@/game/content/schema';
 import type { GameState, ItemId, ItemStack } from '@/game/model/schema';
 import type { LocaleId, Translator } from '@/game/localization';
 import type { StorageSlot } from '@/game/engine/inventory';
-import { getItemIconUrl } from '@/ui/itemIcons';
+import { getItemIconUrl } from '@/assets/icons/itemIcons';
 import { ContextTooltip } from './ContextTooltip';
 import { PlayerNameOrnament } from './PlayerNameOrnament';
 import { getUiTooltipKey } from './context-tooltip-copy';

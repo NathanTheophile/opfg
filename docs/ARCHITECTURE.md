@@ -47,3 +47,11 @@ The validator checks structural combinations, references, localization, schedule
 `src/game/simulation/` is a headless driver over the public Engine APIs. It owns no gameplay rules. Automatic Choices use a deterministic PRNG stream separate from `GameState.rngState`, preserving gameplay rolls when simulation policy changes. Runs stop on career end, dead end, safety limit, or captured simulation error; batches aggregate progression, coverage, Dice, mortality, Traits, Items, pending Scheduled occurrences, and reproducible problem seeds.
 
 Node CLIs read the same Event JSON filesystem and pass it through the same catalogue builder and registry factory as Vite. `validate-content` combines the authoritative validator with warning-only production diagnostics; `simulate` performs dynamic reachability sampling. See `SIMULATION.md`.
+
+## Asset organization
+
+Visual assets known at build time live under `src/assets/` and are imported through Vite. Shared branding, backgrounds, icons, ornaments, and panel textures must not be placed in feature/component-local `assets/` folders.
+
+Runtime URL assets remain under `public/assets/`: audio in `public/assets/audio/` and fonts in `public/assets/fonts/`. `src/components/ui/` contains reusable UI components and their local code/styles; `src/features/` contains feature-specific code and styles.
+
+Do not create a new feature/component asset folder for a global or shared visual asset; use `src/assets/`.
