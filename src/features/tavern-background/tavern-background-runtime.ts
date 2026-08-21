@@ -1,3 +1,8 @@
+import lightningLandscape from '@/assets/backgrounds/tavern/lightning-highlights.png';
+import lightningPortrait from '@/assets/backgrounds/tavern/lightning-highlights-portrait.png';
+import tavernLandscape from '@/assets/backgrounds/tavern/tavern-concept.png';
+import tavernPortrait from '@/assets/backgrounds/tavern/tavern-concept-portrait.png';
+
 export function mountTavernBackground(app: HTMLDivElement): () => void {
   const PARALLAX_X_WORLD = 0.016;
   const PARALLAX_Y_WORLD = 0.011;
@@ -40,8 +45,8 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
       id: 'landscape',
       artWidth: 1536,
       artHeight: 1024,
-      artSrc: '/art/tavern/tavern-concept.png',
-      lightningSrc: '/art/tavern/lightning-highlights.png',
+      artSrc: tavernLandscape,
+      lightningSrc: lightningLandscape,
       flameU: 0.781,
       flameBaseV: 0.186,
       ambientWarmU: 0.665,
@@ -65,8 +70,8 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
       id: 'portrait',
       artWidth: 941,
       artHeight: 1672,
-      artSrc: '/art/tavern/tavern-concept-portrait.png',
-      lightningSrc: '/art/tavern/lightning-highlights-portrait.png',
+      artSrc: tavernPortrait,
+      lightningSrc: lightningPortrait,
       flameU: 0.741,
       flameBaseV: 0.095,
       ambientWarmU: 0.595,

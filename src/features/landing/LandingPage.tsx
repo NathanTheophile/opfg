@@ -18,7 +18,7 @@ import type { GameState } from '@/game/model/schema';
 import { LanguageControls } from '@/features/settings/LanguageControls';
 import { notifyUiLocaleChanged } from '@/features/settings/localeSync';
 import { RunHistoryPanel } from '@/features/run-history/RunHistoryPanel';
-import logoMark from './assets/opfg-logo-vertical.png';
+import logoMark from '@/assets/branding/opfg-logo-vertical.png';
 import './landing-page.css';
 
 type LandingSection =

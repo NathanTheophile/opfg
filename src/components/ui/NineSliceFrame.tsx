@@ -1,4 +1,4 @@
-import goldPanelTexture from './assets/panel-skin-gold.webp';
+import goldPanelTexture from '@/assets/ui/panels/panel-skin-gold.webp';
 
 const SLICES = [
   'tl',
