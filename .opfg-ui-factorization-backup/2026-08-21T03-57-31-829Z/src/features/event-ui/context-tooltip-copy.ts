@@ -10,15 +10,15 @@ export type ContextStatId =
   | 'luck';
 
 export const STAT_TOOLTIP_COLORS: Record<ContextStatId, string> = {
-  health: 'var(--stat-health)',
-  morale: 'var(--stat-morale)',
-  strength: 'var(--stat-strength)',
-  agility: 'var(--stat-agility)',
-  observation: 'var(--stat-observation)',
-  intelligence: 'var(--stat-intelligence)',
-  navigation: 'var(--stat-navigation)',
-  charisma: 'var(--stat-charisma)',
-  luck: 'var(--stat-luck)',
+  health: '#C94F4A',
+  morale: '#4FA58B',
+  strength: '#D8783F',
+  agility: '#8AAA4D',
+  observation: '#54A9B7',
+  intelligence: '#806EB0',
+  navigation: '#397FA8',
+  charisma: '#BD6687',
+  luck: '#D1A33C',
 };
 
 const STAT_TOOLTIP_KEYS: Record<ContextStatId, string> = {

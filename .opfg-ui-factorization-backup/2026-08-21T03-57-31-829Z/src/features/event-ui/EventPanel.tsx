@@ -262,7 +262,7 @@ export function EventPanel({
         <>
           <div className="h-px bg-[var(--border-subtle)]" />
 
-          <PanelBody className="opfg-event-panel__body opfg-parchment-surface">
+          <PanelBody className="opfg-event-panel__body px-5 md:px-6">
             <NineSliceFrame
               className="opfg-parchment-nine-slice"
               texture={parchmentTextFrame}

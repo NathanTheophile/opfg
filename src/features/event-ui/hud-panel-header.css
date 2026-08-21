@@ -1,12 +1,12 @@
-:root {
-  /* Shared geometry for Home / Inventory / Ship / Crew headers. */
-  --opfg-hud-header-padding: 0.3rem 0.78rem 0.12rem 0.52rem;
-  --opfg-hud-header-icon-column: 1.65rem;
-  --opfg-hud-header-column-gap: 0.45rem;
-}
-
 .opfg-hud-section-header {
-  min-height: 2.3rem;
+  display: grid;
+  width: 100%;
+  min-height: var(--opfg-hud-header-min-height);
+  grid-template-columns:
+    var(--opfg-hud-header-icon-column) minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--opfg-hud-header-column-gap);
+  padding: var(--opfg-hud-header-padding);
   background: transparent;
   box-shadow: none;
   color: var(--ui-panel-heading-color);
@@ -18,20 +18,29 @@
 }
 
 .opfg-hud-section-title {
-  color: var(--ui-panel-heading-color);
-  font-family: var(--font-ui);
-  font-size: var(--ui-panel-heading-size);
-  font-weight: var(--ui-panel-heading-weight);
-  letter-spacing: var(--ui-panel-heading-tracking);
+  min-width: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
   line-height: 1.1;
-  text-transform: uppercase;
+  text-transform: inherit;
 }
 
-/* OPFG SHARED HUD HEADER ICON SLOT */
+.opfg-hud-section-header > strong {
+  justify-self: end;
+  color: var(--ui-panel-heading-counter-color);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
 .opfg-hud-header-icon-slot {
   display: grid;
   width: var(--opfg-hud-header-icon-column);
   height: var(--opfg-hud-header-icon-column);
   place-items: center;
   justify-self: center;
+  color: var(--ui-panel-heading-icon-color);
 }

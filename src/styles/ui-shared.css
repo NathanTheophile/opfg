@@ -1,0 +1,100 @@
+/* Shared UI structural authorities. Component files keep exceptions only. */
+
+/* One stat palette for Player / Crew / Choice / Outcome. */
+:where(
+  .opfg-player-stat,
+  .opfg-crew-stat,
+  .opfg-choice-stat-effect,
+  .opfg-outcome-stat-effect
+)[data-stat='health'] { --opfg-stat-color: var(--stat-health); }
+:where(
+  .opfg-player-stat,
+  .opfg-crew-stat,
+  .opfg-choice-stat-effect,
+  .opfg-outcome-stat-effect
+)[data-stat='morale'] { --opfg-stat-color: var(--stat-morale); }
+:where(
+  .opfg-player-stat,
+  .opfg-crew-stat,
+  .opfg-choice-stat-effect,
+  .opfg-outcome-stat-effect
+)[data-stat='strength'] { --opfg-stat-color: var(--stat-strength); }
+:where(
+  .opfg-player-stat,
+  .opfg-crew-stat,
+  .opfg-choice-stat-effect,
+  .opfg-outcome-stat-effect
+)[data-stat='agility'] { --opfg-stat-color: var(--stat-agility); }
+:where(
+  .opfg-player-stat,
+  .opfg-crew-stat,
+  .opfg-choice-stat-effect,
+  .opfg-outcome-stat-effect
+)[data-stat='observation'] { --opfg-stat-color: var(--stat-observation); }
+:where(
+  .opfg-player-stat,
+  .opfg-crew-stat,
+  .opfg-choice-stat-effect,
+  .opfg-outcome-stat-effect
+)[data-stat='intelligence'] { --opfg-stat-color: var(--stat-intelligence); }
+:where(
+  .opfg-player-stat,
+  .opfg-crew-stat,
+  .opfg-choice-stat-effect,
+  .opfg-outcome-stat-effect
+)[data-stat='navigation'] { --opfg-stat-color: var(--stat-navigation); }
+:where(
+  .opfg-player-stat,
+  .opfg-crew-stat,
+  .opfg-choice-stat-effect,
+  .opfg-outcome-stat-effect
+)[data-stat='charisma'] { --opfg-stat-color: var(--stat-charisma); }
+:where(
+  .opfg-player-stat,
+  .opfg-crew-stat,
+  .opfg-choice-stat-effect,
+  .opfg-outcome-stat-effect
+)[data-stat='luck'] { --opfg-stat-color: var(--stat-luck); }
+
+:where(.opfg-choice-stat-effect, .opfg-outcome-stat-effect):is(
+  [data-stat='awakening'],
+  [data-stat='unknown']
+) {
+  --opfg-stat-color: var(--accent-gold);
+}
+
+/* Shared parchment host. Vertical spacing remains component-specific. */
+.opfg-parchment-surface {
+  --opfg-parchment-nine-slice-width-x: 16px;
+  --opfg-parchment-nine-slice-width-y: 12px;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin-inline: var(--ui-parchment-margin-inline);
+  padding-inline: var(--ui-parchment-padding-inline);
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--text-parchment);
+}
+
+.opfg-parchment-surface > :not(.opfg-nine-slice) {
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+}
+
+.opfg-parchment-surface > p {
+  color: var(--text-parchment) !important;
+}
+
+@media (max-width: 640px) {
+  .opfg-parchment-surface {
+    --opfg-parchment-nine-slice-width-x: 13px;
+    --opfg-parchment-nine-slice-width-y: 10px;
+
+    margin-inline: var(--ui-parchment-mobile-margin-inline);
+    padding-inline: var(--ui-parchment-mobile-padding-inline);
+  }
+}

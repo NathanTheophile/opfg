@@ -124,7 +124,7 @@ export function ContextTooltip({
   }, [open, side]);
 
   const style = {
-    '--opfg-context-tooltip-accent': accent ?? 'var(--accent-gold)',
+    '--opfg-context-tooltip-accent': accent ?? 'var(--gold)',
   } as CSSProperties;
 
   return (

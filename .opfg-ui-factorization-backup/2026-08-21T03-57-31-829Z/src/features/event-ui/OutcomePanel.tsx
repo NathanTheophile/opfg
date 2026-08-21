@@ -392,7 +392,7 @@ export function OutcomePanel({
       padding="none"
       className="opfg-outcome-panel opfg-outcome-panel--inline w-full overflow-hidden shadow-overlay"
     >
-      <PanelBody className="opfg-outcome-panel__body opfg-parchment-surface">
+      <PanelBody className="opfg-outcome-panel__body px-4 py-3 md:px-5 md:py-3">
         <NineSliceFrame
           className="opfg-parchment-nine-slice"
           texture={parchmentTextFrame}

@@ -7,12 +7,26 @@
 }
 
 .opfg-crew-header {
+display: grid;
   width: 10rem;
+  min-height: 2.3rem;
+  grid-template-columns: var(--opfg-hud-header-icon-column) minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--opfg-hud-header-column-gap);
+  padding: var(--opfg-hud-header-padding);
+  background: transparent;
 }
 
+.opfg-crew-header__icon {
+  color: var(--ui-panel-heading-color);
+}
 
-
-
+.opfg-crew-header strong {
+  color: var(--text-primary);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
 
 .opfg-crew-member-panel {
 width: 10rem;
@@ -57,14 +71,14 @@ width: 10rem;
 
 .opfg-crew-member__toggle:hover {
 background: transparent;
-  filter: brightness(var(--ui-hover-brightness));
+  filter: brightness(1.08);
 }
 
 .opfg-crew-member__role {
   position: relative;
   display: grid;
   place-items: center;
-  color: var(--accent-gold);
+  color: var(--gold);
 }
 
 .opfg-crew-member__name {
@@ -95,7 +109,7 @@ background: transparent;
 
 .opfg-crew-member-panel.is-expanded .opfg-crew-member__chevron {
   transform: rotate(90deg);
-  color: var(--accent-gold);
+  color: var(--gold);
 }
 
 /* Role tooltip */
@@ -182,17 +196,28 @@ max-height: 3.2rem;
   transform: translateY(0);
 }
 
+/* Shared OPFG stat palette */
+.opfg-crew-stat[data-stat="health"] { --opfg-stat-color: #C94F4A; }
+.opfg-crew-stat[data-stat="morale"] { --opfg-stat-color: #4FA58B; }
+.opfg-crew-stat[data-stat="strength"] { --opfg-stat-color: #D8783F; }
+.opfg-crew-stat[data-stat="agility"] { --opfg-stat-color: #8AAA4D; }
+.opfg-crew-stat[data-stat="observation"] { --opfg-stat-color: #54A9B7; }
+.opfg-crew-stat[data-stat="intelligence"] { --opfg-stat-color: #806EB0; }
+.opfg-crew-stat[data-stat="navigation"] { --opfg-stat-color: #397FA8; }
+.opfg-crew-stat[data-stat="charisma"] { --opfg-stat-color: #BD6687; }
+.opfg-crew-stat[data-stat="luck"] { --opfg-stat-color: #D1A33C; }
+
 .opfg-crew-stat {
 position: relative;
   display: grid;
   min-width: 0;
   justify-items: center;
   gap: 0.1rem;
-  color: var(--opfg-stat-color, var(--accent-gold));
+  color: var(--opfg-stat-color, var(--gold));
 }
 
 .opfg-crew-stat svg {
-  color: var(--opfg-stat-color, var(--accent-gold));
+  color: var(--opfg-stat-color, var(--gold));
   stroke: currentColor;
 }
 
@@ -205,7 +230,7 @@ position: relative;
 
 /* Health keeps its dedicated readable numeric treatment. */
 .opfg-crew-stat[data-stat="health"] b {
-  color: var(--opfg-stat-color);
+  color: #C94F4A;
 }
 
 /* Stat tooltips */

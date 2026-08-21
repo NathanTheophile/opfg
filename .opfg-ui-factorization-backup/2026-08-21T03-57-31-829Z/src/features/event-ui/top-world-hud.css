@@ -27,7 +27,7 @@ min-width: 0;
 }
 
 .opfg-hud-panel__body {
-  padding: var(--opfg-hud-panel-body-padding);
+padding: 0.2rem 0.62rem 0.38rem;
 }
 
 .opfg-hud-panel--identity .opfg-hud-panel__body {
@@ -65,7 +65,7 @@ min-width: 0;
   place-items: center;
   overflow: hidden;
   border: 1.5px solid
-    color-mix(in srgb, var(--accent-gold) 48%, var(--border-strong));
+    color-mix(in srgb, var(--gold) 48%, var(--border-strong));
   border-radius: var(--ui-hud-slot-radius, 0.38rem);
   background:
     linear-gradient(
@@ -74,7 +74,7 @@ min-width: 0;
       transparent 48%
     ),
     color-mix(in srgb, var(--surface-raised) 82%, black);
-  color: var(--accent-gold);
+  color: var(--gold);
   box-shadow:
     inset 0 0 0 1px rgb(255 255 255 / 0.055),
     inset 0 1px 0 rgb(255 255 255 / 0.06),
@@ -82,7 +82,7 @@ min-width: 0;
 }
 
 .opfg-hud-slot.is-empty {
-  border-color: color-mix(in srgb, var(--accent-gold) 42%, var(--border-strong));
+  border-color: color-mix(in srgb, var(--gold) 42%, var(--border-strong));
   background:
     radial-gradient(circle at 50% 45%, rgb(245 194 66 / 0.055), transparent 58%),
     color-mix(in srgb, var(--surface-raised) 74%, black);
@@ -94,7 +94,7 @@ min-width: 0;
   width: 0.23rem;
   height: 0.23rem;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--accent-gold) 48%, var(--border-strong));
+  background: color-mix(in srgb, var(--gold) 48%, var(--border-strong));
 }
 
 .opfg-hud-slot.is-locked {
@@ -109,7 +109,7 @@ min-width: 0;
   border-color:
     color-mix(
       in srgb,
-      var(--accent-gold) 62%,
+      var(--gold) 62%,
       var(--border-strong)
     );
   background:
@@ -117,7 +117,7 @@ min-width: 0;
       circle at 45% 45%,
       color-mix(
         in srgb,
-        var(--accent-gold) 18%,
+        var(--gold) 18%,
         transparent
       ),
       transparent 72%
@@ -153,21 +153,43 @@ min-width: 0;
 }
 
 .opfg-hud-home-button {
+  column-gap: var(--opfg-hud-header-column-gap);
+  grid-template-columns: var(--opfg-hud-header-icon-column) minmax(0, 1fr) auto;
   --opfg-nine-slice-width: 9px;
-
+  display: grid;
   width: 100%;
   min-height: 1.82rem;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.45rem;
   border: 1px solid transparent;
+  padding: var(--opfg-hud-header-padding);
+  background: transparent;
+  box-shadow: none;
+  color: var(--ui-panel-heading-color);
+  font-family: var(--font-ui);
+  font-size: var(--ui-panel-heading-size);
+  font-weight: var(--ui-panel-heading-weight);
+  letter-spacing: var(--ui-panel-heading-tracking);
   text-align: left;
+  text-transform: uppercase;
   cursor: pointer;
   transition: filter var(--motion-fast) var(--ease-standard);
 }
 
 .opfg-hud-home-button:hover {
-  filter: brightness(var(--ui-hover-brightness));
+background: transparent;
+  filter: brightness(1.08);
 }
 
-
+.opfg-hud-inventory__header {
+display: grid;
+  min-height: 2.3rem;
+  grid-template-columns: var(--opfg-hud-header-icon-column) minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--opfg-hud-header-column-gap);
+  padding: var(--opfg-hud-header-padding);
+}
 
 .opfg-hud-inventory__header > span:not(.opfg-hud-inventory__icon) {
   min-width: 0;
@@ -176,7 +198,12 @@ min-width: 0;
   white-space: nowrap;
 }
 
-
+.opfg-hud-inventory__header > strong {
+  color: var(--text-primary);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
 
 .opfg-hud-inventory {
   display: grid;
@@ -186,7 +213,14 @@ min-width: 0;
   gap: 0.58rem;
 }
 
-
+.opfg-hud-inventory__icon {
+  justify-self: center;
+  display: grid;
+  width: var(--opfg-hud-header-icon-column);
+  height: var(--opfg-hud-header-icon-column);
+  place-items: center;
+  color: var(--ui-panel-heading-color);
+}
 
 .opfg-hud-inventory__slots {
   grid-template-columns:
@@ -202,7 +236,7 @@ min-width: 0;
   align-items: baseline;
   justify-self: end;
   gap: 0.3rem;
-  color: var(--accent-gold);
+  color: var(--gold);
 }
 
 .opfg-hud-inventory__money svg {
@@ -256,7 +290,7 @@ min-width: 0;
     minmax(1.4rem, 1fr);
   align-items: center;
   gap: 0.62rem;
-  color: var(--accent-gold);
+  color: var(--gold);
 }
 
 .opfg-hud-identity__nameplate > span {
@@ -267,7 +301,7 @@ min-width: 0;
       transparent,
       color-mix(
         in srgb,
-        var(--accent-gold) 68%,
+        var(--gold) 68%,
         transparent
       )
     );
@@ -280,7 +314,7 @@ min-width: 0;
 .opfg-hud-identity__nameplate strong {
   position: relative;
   max-width: 100%;
-  color: var(--accent-gold);
+  color: var(--gold);
   font-family:
     Georgia,
     "Times New Roman",
@@ -296,7 +330,7 @@ min-width: 0;
     0 0 18px
       color-mix(
         in srgb,
-        var(--accent-gold) 15%,
+        var(--gold) 15%,
         transparent
       );
   text-transform: uppercase;
@@ -310,7 +344,7 @@ min-width: 0;
   color:
     color-mix(
       in srgb,
-      var(--accent-gold) 58%,
+      var(--gold) 58%,
       transparent
     );
   font-size: 0.38rem;
@@ -385,7 +419,7 @@ height: 1px;
 
 .opfg-hud-info-row > svg {
   flex: 0 0 auto;
-  color: var(--accent-gold);
+  color: var(--gold);
 }
 
 .opfg-hud-info-row strong {
@@ -409,7 +443,7 @@ height: 1px;
   color:
     color-mix(
       in srgb,
-      var(--accent-gold) 55%,
+      var(--gold) 55%,
       var(--text-muted)
     );
 }
@@ -476,9 +510,23 @@ height: 1px;
   align-self: end;
 }
 
+.opfg-hud-ship__header {
+display: grid;
+  min-height: 2.3rem;
+  grid-template-columns: var(--opfg-hud-header-icon-column) minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--opfg-hud-header-column-gap);
+  padding: var(--opfg-hud-header-padding);
+}
 
-
-
+.opfg-hud-ship__icon {
+  justify-self: center;
+  display: grid;
+  width: var(--opfg-hud-header-icon-column);
+  height: var(--opfg-hud-header-icon-column);
+  place-items: center;
+  color: var(--ui-panel-heading-color);
+}
 
 .opfg-hud-ship__copy {
   display: grid;
@@ -514,7 +562,6 @@ height: 1px;
   --opfg-ship-resistance-color: var(--opfg-stat-morale, #4fa58b);
 
   display: inline-flex;
-  justify-self: end;
   align-items: center;
   gap: 0.18rem;
   color: var(--opfg-ship-resistance-color);
@@ -607,7 +654,7 @@ height: 1px;
 }
 
 .opfg-hud-companion-picker > button {
-  border: 1px solid color-mix(in srgb, var(--accent-gold) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
   border-radius: 0.35rem;
   padding: 0.35rem 0.5rem;
   color: inherit;
@@ -714,13 +761,29 @@ height: 1px;
 .opfg-hud-panel--inventory .opfg-hud-panel__body,
 .opfg-hud-panel--ship .opfg-hud-panel__body {
   min-height: 0;
-  padding: var(--opfg-hud-panel-body-padding-tight) !important;
+  padding: 0.02rem 0.62rem 0.34rem !important;
   padding-top: 0;
 }
 
 .opfg-hud-panel--identity .opfg-hud-panel__body {
   padding-top: 0.32rem;
   padding-bottom: 0.32rem;
+}
+
+.opfg-hud-inventory__header,
+.opfg-hud-ship__header,
+.opfg-crew-header {
+  box-sizing: border-box;
+  grid-template-columns: var(--opfg-hud-header-icon-column) minmax(0, 1fr) auto !important;
+  align-items: center;
+  column-gap: var(--opfg-hud-header-column-gap);
+}
+
+.opfg-hud-inventory__header > strong,
+.opfg-crew-header > strong,
+.opfg-hud-ship__resistance {
+  justify-self: end;
+  margin: 0;
 }
 
 .opfg-hud-inventory__money {

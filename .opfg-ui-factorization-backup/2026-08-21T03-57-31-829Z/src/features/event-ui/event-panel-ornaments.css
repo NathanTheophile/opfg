@@ -85,9 +85,28 @@
   z-index: 1;
 }
 
-/* Event-specific parchment spacing. Shared surface lives in ui-shared.css. */
+/* Parchment narrative surface. */
 .opfg-event-panel__body {
-  padding-block: 0.42rem 0.36rem;
+  --opfg-parchment-nine-slice-width-x: 16px;
+  --opfg-parchment-nine-slice-width-y: 12px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin-inline: 0.72rem;
+  padding: 0.42rem 0.78rem 0.36rem;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.opfg-event-panel__body > :not(.opfg-nine-slice) {
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+}
+
+.opfg-event-panel__body-copy {
+  color: #24170f;
 }
 
 @media (max-width: 768px) {
@@ -103,3 +122,15 @@
     --opfg-event-ornament-bottom-width: 48px;
   }
 }
+
+@media (max-width: 640px) {
+  .opfg-event-panel__body {
+    --opfg-parchment-mobile-widths: 1;
+    --opfg-parchment-nine-slice-width-x: 13px;
+    --opfg-parchment-nine-slice-width-y: 10px;
+
+    margin-inline: 0.5rem;
+    padding-inline: 0.68rem;
+  }
+
+  }

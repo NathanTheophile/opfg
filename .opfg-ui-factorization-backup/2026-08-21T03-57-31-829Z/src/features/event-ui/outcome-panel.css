@@ -1,5 +1,5 @@
 .opfg-outcome-stat-effect {
-  --opfg-stat-color: var(--accent-gold);
+  --opfg-stat-color: var(--gold);
 
   position: relative;
   isolation: isolate;
@@ -27,6 +27,46 @@
   transition:
     opacity 140ms var(--ease-standard),
     filter 140ms var(--ease-standard);
+}
+
+.opfg-outcome-stat-effect[data-stat="health"] {
+  --opfg-stat-color: #c94f4a;
+}
+
+.opfg-outcome-stat-effect[data-stat="morale"] {
+  --opfg-stat-color: #4fa58b;
+}
+
+.opfg-outcome-stat-effect[data-stat="strength"] {
+  --opfg-stat-color: #d8783f;
+}
+
+.opfg-outcome-stat-effect[data-stat="agility"] {
+  --opfg-stat-color: #8aaa4d;
+}
+
+.opfg-outcome-stat-effect[data-stat="observation"] {
+  --opfg-stat-color: #54a9b7;
+}
+
+.opfg-outcome-stat-effect[data-stat="intelligence"] {
+  --opfg-stat-color: #806eb0;
+}
+
+.opfg-outcome-stat-effect[data-stat="navigation"] {
+  --opfg-stat-color: #397fa8;
+}
+
+.opfg-outcome-stat-effect[data-stat="charisma"] {
+  --opfg-stat-color: #bd6687;
+}
+
+.opfg-outcome-stat-effect[data-stat="luck"] {
+  --opfg-stat-color: #d1a33c;
+}
+
+.opfg-outcome-stat-effect[data-stat="awakening"] {
+  --opfg-stat-color: var(--gold);
 }
 
 .opfg-outcome-stat-effect__watermark {
@@ -69,11 +109,11 @@
 }
 
 .opfg-outcome-stat-effect[data-tone="positive"] .opfg-outcome-stat-effect__label {
-  color: var(--feedback-positive);
+  color: oklch(0.79 0.14 145);
 }
 
 .opfg-outcome-stat-effect[data-tone="negative"] .opfg-outcome-stat-effect__label {
-  color: var(--feedback-negative);
+  color: oklch(0.72 0.17 29);
 }
 
 .opfg-outcome-stat-effect.is-transferring {
@@ -342,7 +382,7 @@
 .opfg-outcome-dice-result[data-tone="success"] {
   border-color: color-mix(
     in srgb,
-    var(--feedback-positive) 44%,
+    oklch(0.79 0.14 145) 44%,
     var(--border-subtle)
   );
   background:
@@ -356,13 +396,13 @@
       var(--surface-strong) 94%,
       transparent
     );
-  color: var(--feedback-positive);
+  color: oklch(0.79 0.14 145);
 }
 
 .opfg-outcome-dice-result[data-tone="failure"] {
   border-color: color-mix(
     in srgb,
-    var(--feedback-negative) 48%,
+    oklch(0.72 0.17 29) 48%,
     var(--border-subtle)
   );
   background:
@@ -376,11 +416,11 @@
       var(--surface-strong) 94%,
       transparent
     );
-  color: var(--feedback-negative);
+  color: oklch(0.72 0.17 29);
 }
 
 .opfg-outcome-dice-result[data-tone="neutral"] {
-  color: var(--accent-gold);
+  color: var(--gold);
 }
 
 .opfg-outcome-dice-result[data-critical="true"] {
@@ -401,7 +441,7 @@
 
 .opfg-outcome-stat-effect[data-zero="true"]
   .opfg-outcome-stat-effect__label {
-  color: var(--feedback-negative);
+  color: oklch(0.72 0.17 29);
 }
 
 /* Compact inline consequence presentation. */
@@ -426,19 +466,43 @@
 }
 
 .opfg-outcome-panel__body {
-  margin-top: 0.38rem;
-  padding-block: 0.52rem 0.34rem;
+  --opfg-parchment-nine-slice-width-x: 16px;
+  --opfg-parchment-nine-slice-width-y: 12px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin: 0.38rem 0.72rem 0;
+  padding: 0.52rem 0.78rem 0.34rem;
+  box-shadow: none !important;
 }
 
-
+.opfg-outcome-panel__body > :not(.opfg-nine-slice) {
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+}
 
 .opfg-outcome-panel__body > :first-child {
   margin-top: 0;
 }
 
-
+.opfg-outcome-panel__body > p {
+  color: #24170f;
+}
 
 .opfg-outcome-panel__footer {
   min-height: 0;
   padding: 0.12rem 0.62rem 0.54rem !important;
 }
+
+@media (max-width: 640px) {
+  .opfg-outcome-panel__body {
+    --opfg-parchment-mobile-widths: 1;
+    --opfg-parchment-nine-slice-width-x: 13px;
+    --opfg-parchment-nine-slice-width-y: 10px;
+
+    margin-inline: 0.5rem;
+  }
+
+  }
