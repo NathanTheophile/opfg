@@ -773,26 +773,7 @@ export function UITuner() {
           title="Undo — Ctrl+Z"
         >
           <Undo2 className="size-3.5" />
-        </button>
-
-        <button
-          type="button"
-          onClick={redo}
-          title="Redo — Ctrl+Shift+Z"
-        >
-          <History className="size-3.5" />
-        </button>
-
-        <button
-          type="button"
-          onPointerDown={previewDefaults}
-          onPointerUp={restoreCurrentPreview}
-          onPointerCancel={restoreCurrentPreview}
-          onPointerLeave={restoreCurrentPreview}
-          title="Maintenir pour comparer aux valeurs par défaut"
-        >
-          <Eye className="size-3.5" />
-          Compare
+          Annuler
         </button>
 
         <button
@@ -803,56 +784,38 @@ export function UITuner() {
           <RotateCcw className="size-3.5" />
           Reset
         </button>
-      </div>
 
-      <div className="opfg-ui-tuner__quick-presets">
-        {UI_TUNER_QUICK_PRESETS.map((preset) => (
-          <button
-            key={preset.id}
-            type="button"
-            onClick={() =>
-              patchValues(
-                preset.values,
-                preset.label,
-              )
-            }
-          >
-            {preset.label}
-          </button>
-        ))}
-      </div>
+        <label className="opfg-ui-tuner__preset-picker">
+          <span>Preset</span>
+          <select
+            defaultValue=""
+            onChange={(event) => {
+              const preset =
+                UI_TUNER_QUICK_PRESETS.find(
+                  ({ id }) =>
+                    id === event.target.value,
+                );
 
-      <div className="opfg-ui-tuner__preset-slots">
-        {(Object.keys(EMPTY_PRESETS) as PresetSlot[]).map(
-          (slot) => (
-            <div
-              key={slot}
-              className={
-                presets[slot]
-                  ? 'is-saved'
-                  : undefined
+              if (preset) {
+                patchValues(
+                  preset.values,
+                  preset.label,
+                );
               }
-            >
-              <button
-                type="button"
-                className="opfg-ui-tuner__preset-load"
-                onClick={() => loadPreset(slot)}
-                title={`Charger ${slot}`}
-              >
-                {slot}
-              </button>
 
-              <button
-                type="button"
-                className="opfg-ui-tuner__preset-save"
-                onClick={() => savePreset(slot)}
-                title={`Sauvegarder dans ${slot}`}
-              >
-                <Save className="size-3" />
-              </button>
-            </div>
-          ),
-        )}
+              event.currentTarget.value = '';
+            }}
+          >
+            <option value="" disabled>
+              Choisir…
+            </option>
+            {UI_TUNER_QUICK_PRESETS.map((preset) => (
+              <option key={preset.id} value={preset.id}>
+                {preset.label}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
 
       <label className="opfg-ui-tuner__search">
@@ -874,41 +837,6 @@ export function UITuner() {
           </button>
         )}
       </label>
-
-      <div className="opfg-ui-tuner__debug">
-        <button
-          type="button"
-          className={debugLayout ? 'is-active' : undefined}
-          onClick={() =>
-            setDebugLayout((current) => !current)
-          }
-        >
-          <LayoutGrid className="size-3.5" />
-          Layout
-        </button>
-
-        <button
-          type="button"
-          className={debugHitboxes ? 'is-active' : undefined}
-          onClick={() =>
-            setDebugHitboxes((current) => !current)
-          }
-        >
-          <EyeOff className="size-3.5" />
-          Hitboxes
-        </button>
-
-        <button
-          type="button"
-          className={freezeMotion ? 'is-active' : undefined}
-          onClick={() =>
-            setFreezeMotion((current) => !current)
-          }
-        >
-          <Snowflake className="size-3.5" />
-          Freeze
-        </button>
-      </div>
 
       <div className="opfg-ui-tuner__scroll">
         {UI_TUNER_SECTIONS.map((section) => {
@@ -1147,105 +1075,213 @@ export function UITuner() {
       </div>
 
       <footer className="opfg-ui-tuner__footer">
-        <div className="opfg-ui-tuner__export-row">
-          <button
-            type="button"
-            onClick={copyCss}
-          >
-            <Copy className="size-3.5" />
-            CSS
-          </button>
+        <details className="opfg-ui-tuner__advanced">
+          <summary>
+            <SlidersHorizontal className="size-3.5" />
+            Avancé
+          </summary>
 
-          <button
-            type="button"
-            onClick={copyJson}
-          >
-            <Clipboard className="size-3.5" />
-            JSON
-          </button>
+          <div className="opfg-ui-tuner__advanced-content">
+            <div className="opfg-ui-tuner__advanced-actions">
+              <button
+                type="button"
+                onClick={redo}
+                title="Redo — Ctrl+Shift+Z"
+              >
+                <History className="size-3.5" />
+                Rétablir
+              </button>
 
-          <button
-            type="button"
-            onClick={() =>
-              downloadText(
-                'opfg-ui-tuning.json',
-                jsonExport(values),
-                'application/json',
-              )
-            }
-          >
-            <Download className="size-3.5" />
-          </button>
+              <button
+                type="button"
+                onPointerDown={previewDefaults}
+                onPointerUp={restoreCurrentPreview}
+                onPointerCancel={restoreCurrentPreview}
+                onPointerLeave={restoreCurrentPreview}
+                title="Maintenir pour comparer aux valeurs par défaut"
+              >
+                <Eye className="size-3.5" />
+                Comparer aux defaults
+              </button>
+            </div>
 
-          <button
-            type="button"
-            onClick={() =>
-              importRef.current?.click()
-            }
-          >
-            <Import className="size-3.5" />
-          </button>
+            <div className="opfg-ui-tuner__advanced-block">
+              <strong>Presets sauvegardés</strong>
+              <div className="opfg-ui-tuner__preset-slots">
+                {(Object.keys(EMPTY_PRESETS) as PresetSlot[]).map(
+                  (slot) => (
+                    <div
+                      key={slot}
+                      className={
+                        presets[slot]
+                          ? 'is-saved'
+                          : undefined
+                      }
+                    >
+                      <button
+                        type="button"
+                        className="opfg-ui-tuner__preset-load"
+                        onClick={() => loadPreset(slot)}
+                        title={`Charger ${slot}`}
+                      >
+                        {slot}
+                      </button>
 
-          <input
-            ref={importRef}
-            type="file"
-            accept="application/json,.json"
-            hidden
-            onChange={(event) => {
-              void importJsonFile(
-                event.target.files?.[0],
-              );
-              event.currentTarget.value = '';
-            }}
-          />
-        </div>
-
-        <div className="opfg-ui-tuner__panel-options">
-          <label>
-            Width
-            <input
-              type="range"
-              min="320"
-              max="560"
-              step="10"
-              value={ui.width}
-              onChange={(event) =>
-                setUi((current) => ({
-                  ...current,
-                  width: Number(event.target.value),
-                }))
-              }
-            />
-          </label>
-
-          <label>
-            Alpha
-            <input
-              type="range"
-              min="0.55"
-              max="1"
-              step="0.01"
-              value={ui.opacity}
-              onChange={(event) =>
-                setUi((current) => ({
-                  ...current,
-                  opacity: Number(
-                    event.target.value,
+                      <button
+                        type="button"
+                        className="opfg-ui-tuner__preset-save"
+                        onClick={() => savePreset(slot)}
+                        title={`Sauvegarder dans ${slot}`}
+                      >
+                        <Save className="size-3" />
+                      </button>
+                    </div>
                   ),
-                }))
-              }
-            />
-          </label>
-        </div>
+                )}
+              </div>
+            </div>
 
-        <button
-          type="button"
-          className="opfg-ui-tuner__clear"
-          onClick={clearRuntimeOverrides}
-        >
-          <FileJson className="size-3.5" />
-          Nettoyer les overrides
-        </button>
+            <div className="opfg-ui-tuner__advanced-block">
+              <strong>Debug visuel</strong>
+              <div className="opfg-ui-tuner__debug">
+                <button
+                  type="button"
+                  className={debugLayout ? 'is-active' : undefined}
+                  onClick={() =>
+                    setDebugLayout((current) => !current)
+                  }
+                >
+                  <LayoutGrid className="size-3.5" />
+                  Layout
+                </button>
+
+                <button
+                  type="button"
+                  className={debugHitboxes ? 'is-active' : undefined}
+                  onClick={() =>
+                    setDebugHitboxes((current) => !current)
+                  }
+                >
+                  <EyeOff className="size-3.5" />
+                  Hitboxes
+                </button>
+
+                <button
+                  type="button"
+                  className={freezeMotion ? 'is-active' : undefined}
+                  onClick={() =>
+                    setFreezeMotion((current) => !current)
+                  }
+                >
+                  <Snowflake className="size-3.5" />
+                  Freeze
+                </button>
+              </div>
+            </div>
+
+            <div className="opfg-ui-tuner__advanced-block">
+              <strong>Import / Export technique</strong>
+              <div className="opfg-ui-tuner__export-row">
+                <button type="button" onClick={copyCss}>
+                  <Copy className="size-3.5" />
+                  Copier CSS
+                </button>
+
+                <button type="button" onClick={copyJson}>
+                  <Clipboard className="size-3.5" />
+                  Copier JSON
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    downloadText(
+                      'opfg-ui-tuning.json',
+                      jsonExport(values),
+                      'application/json',
+                    )
+                  }
+                >
+                  <Download className="size-3.5" />
+                  Télécharger
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    importRef.current?.click()
+                  }
+                >
+                  <Import className="size-3.5" />
+                  Importer
+                </button>
+
+                <input
+                  ref={importRef}
+                  type="file"
+                  accept="application/json,.json"
+                  hidden
+                  onChange={(event) => {
+                    void importJsonFile(
+                      event.target.files?.[0],
+                    );
+                    event.currentTarget.value = '';
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="opfg-ui-tuner__advanced-block">
+              <strong>Panneau du tuner</strong>
+              <div className="opfg-ui-tuner__panel-options">
+                <label>
+                  Width
+                  <input
+                    type="range"
+                    min="320"
+                    max="560"
+                    step="10"
+                    value={ui.width}
+                    onChange={(event) =>
+                      setUi((current) => ({
+                        ...current,
+                        width: Number(event.target.value),
+                      }))
+                    }
+                  />
+                </label>
+
+                <label>
+                  Alpha
+                  <input
+                    type="range"
+                    min="0.55"
+                    max="1"
+                    step="0.01"
+                    value={ui.opacity}
+                    onChange={(event) =>
+                      setUi((current) => ({
+                        ...current,
+                        opacity: Number(
+                          event.target.value,
+                        ),
+                      }))
+                    }
+                  />
+                </label>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className="opfg-ui-tuner__clear"
+              onClick={clearRuntimeOverrides}
+            >
+              <FileJson className="size-3.5" />
+              Nettoyer les overrides runtime
+            </button>
+          </div>
+        </details>
 
         <div className="opfg-ui-tuner__shortcut">
           Ctrl+Shift+U · Undo Ctrl+Z
