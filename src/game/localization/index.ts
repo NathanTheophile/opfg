@@ -1,5 +1,7 @@
 import fr from './locales/fr.json';
 import en from './locales/en.json';
+import runHistoryFr from './locales/run-history.fr.json';
+import runHistoryEn from './locales/run-history.en.json';
 import { interpolate, extractPlaceholders, type InterpolationParams } from './interpolate';
 import type { LocalizationKey } from './keys';
 export const SOURCE_LOCALE = 'fr' as const;
@@ -27,7 +29,7 @@ const landingDictionaries: Record<LocaleId, LocalizationDictionary> = {
     'ui.landing.close': 'Fermer',
     'ui.landing.cancel': 'Annuler',
     'ui.landing.resetTitle': 'Commencer une nouvelle partie ?',
-    'ui.landing.resetBody': "La partie active sera supprimée. L'historique des anciennes parties n'est pas encore branché dans cette ébauche.",
+    'ui.landing.resetBody': "La partie active sera supprimée. Les runs déjà terminées resteront disponibles dans l'Historique.",
     'ui.landing.resetConfirm': 'Supprimer et recommencer',
   },
   en: {
@@ -48,7 +50,7 @@ const landingDictionaries: Record<LocaleId, LocalizationDictionary> = {
     'ui.landing.close': 'Close',
     'ui.landing.cancel': 'Cancel',
     'ui.landing.resetTitle': 'Start a new game?',
-    'ui.landing.resetBody': 'The active game will be deleted. Previous-run history is not connected in this first draft yet.',
+    'ui.landing.resetBody': 'The active game will be deleted. Completed runs will remain available in History.',
     'ui.landing.resetConfirm': 'Delete and restart',
   },
 };
@@ -185,8 +187,8 @@ const activeSystemDictionaries: Record<LocaleId, LocalizationDictionary> = {
 };
 
 export const dictionaries: Record<LocaleId, LocalizationDictionary> = {
-  fr: { ...fr, ...landingDictionaries.fr, ...activeSystemDictionaries.fr },
-  en: { ...en, ...landingDictionaries.en, ...activeSystemDictionaries.en },
+  fr: { ...fr, ...landingDictionaries.fr, ...activeSystemDictionaries.fr, ...runHistoryFr },
+  en: { ...en, ...landingDictionaries.en, ...activeSystemDictionaries.en, ...runHistoryEn },
 };
 export const LOCALE_STORAGE_KEY = 'jam-op-fan-game.locale';
 export interface LocaleStorage { getItem(key: string): string | null; setItem(key: string, value: string): void }
