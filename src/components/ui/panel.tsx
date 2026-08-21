@@ -2,6 +2,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import type { HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 import './panel-skin.css';
+import { NineSliceFrame } from './NineSliceFrame';
 
 const panelVariants = cva(
   'opfg-panel-skin border text-fg',
@@ -33,7 +34,7 @@ export interface PanelProps
 export function Panel({ className, variant, padding, children, ...props }: PanelProps) {
   return (
     <section className={cn(panelVariants({ variant, padding }), className)} {...props}>
-      <span aria-hidden="true" className="opfg-panel-skin__frame" />
+      <NineSliceFrame className="opfg-panel-skin__frame" />
       {children}
     </section>
   );

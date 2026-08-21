@@ -1,18 +1,7 @@
+import { History as HistoryIcon, Play, RotateCcw, ShoppingBag, Trophy, X, } from 'lucide-react';
 import {
-  History as HistoryIcon,
-  Play,
-  RotateCcw,
-  ShoppingBag,
-  Trophy,
-  X,
-} from 'lucide-react';
-import {
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import { Button, Panel } from '@/components/ui';
+  useLayoutEffect, useMemo, useRef, useState, } from 'react';
+import { Button, Panel, NineSliceFrame } from '@/components/ui';
 import { loadMetaProgression } from '@/game/achievements/storage';
 import type { ContentCatalog } from '@/game/content/schema';
 import type { StorageLike } from '@/game/engine/save';
@@ -308,6 +297,7 @@ export function LandingPage({
                 className="opfg-landing__continue"
                 onClick={onContinue}
               >
+                <NineSliceFrame />
                 <span className="opfg-landing__continue-title">
                   <Play
                     className="size-5"
@@ -344,6 +334,7 @@ export function LandingPage({
               className="opfg-landing__new-primary"
               onClick={requestNewGame}
             >
+              <NineSliceFrame />
               <Play
                 className="size-5"
                 aria-hidden="true"
@@ -367,6 +358,7 @@ export function LandingPage({
                 className="opfg-landing__secondary-button"
                 onClick={() => setActiveSection(id)}
               >
+                <NineSliceFrame />
                 <Icon
                   className="size-4"
                   aria-hidden="true"

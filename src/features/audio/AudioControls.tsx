@@ -20,6 +20,7 @@ import { t } from '@/game/localization';
 import { useObservedUiLocale } from '@/features/settings/localeSync';
 import { useAudio } from './AudioProvider';
 import './utility-controls.css';
+import { NineSliceFrame } from '@/components/ui';
 
 type MixerRowProps = {
   icon: ReactNode;
@@ -175,6 +176,7 @@ function MusicPlayer({
 
   return (
     <div className="opfg-music-player">
+      <NineSliceFrame />
       <div className="opfg-music-player__title-row">
         <Music2
           size={14}
@@ -291,6 +293,7 @@ export function AudioControls() {
           setOpen((current) => !current)
         }
       >
+        <NineSliceFrame />
         <SlidersHorizontal
           size={17}
           aria-hidden="true"
@@ -299,6 +302,7 @@ export function AudioControls() {
 
       {open && (
         <div className="opfg-audio-mixer">
+          <NineSliceFrame />
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm font-semibold tracking-wide text-amber-100">
               <SlidersHorizontal size={15} />
@@ -353,6 +357,7 @@ export function AudioControls() {
           setPlayerOpen((current) => !current)
         }
       >
+        <NineSliceFrame />
         <Music2 size={17} aria-hidden="true" />
       </button>
 

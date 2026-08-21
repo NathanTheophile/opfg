@@ -1,16 +1,5 @@
-import {
-  Anchor,
-  Backpack,
-  Coins,
-  House,
-  LockKeyhole,
-  Navigation,
-  Package,
-  ShieldCheck,
-  Shirt,
-  UserRound,
-} from 'lucide-react';
-import { Panel } from '@/components/ui';
+import { Anchor, Backpack, Coins, House, LockKeyhole, Navigation, Package, ShieldCheck, Shirt, UserRound, } from 'lucide-react';
+import { Panel, NineSliceFrame } from '@/components/ui';
 import type {
   ContentCatalog,
   LocationDefinition,
@@ -187,6 +176,7 @@ export function InventoryHudPanel({
   return (
     <div className="opfg-hud-inventory-stack">
       <button type="button" className="opfg-hud-home-button opfg-hud-section-title" onClick={onHome} disabled={!onHome} aria-label={translate('ui.action.home')}>
+        <NineSliceFrame />
         <House className="size-4" aria-hidden="true" />
         <span>{translate('ui.action.home')}</span>
       </button>

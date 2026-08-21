@@ -1,104 +1,235 @@
 /*
- * OPFG gold nine-slice system.
+ * OPFG explicit nine-slice renderer.
  *
- * One source texture only: panel-skin-gold.webp.
- * Opacity is controlled by CSS custom properties from tokens.css.
+ * Source texture: 1156 x 290 px
+ * Source cuts: X = 72 / 1084, Y = 58 / 232
+ *
+ * No border-image is used here. Each region owns an explicit crop of the same
+ * image and overlaps its neighbour, avoiding Chromium border-image seams under
+ * fractional responsive scaling / device-pixel ratios.
  */
 
-.opfg-panel-skin__frame,
-:is(
-  .opfg-hud-home-button,
-  .opfg-mobile-side-tab,
-  .opfg-mobile-home-button,
-  .opfg-utility-square,
-  .opfg-language-controls__button,
-  .opfg-utility-bar,
-  .opfg-music-player,
-  .opfg-audio-mixer,
-  .opfg-language-controls__menu,
-  .opfg-landing__continue,
-  .opfg-landing__new-primary,
-  .opfg-landing__secondary-button
-)::before {
+.opfg-nine-slice {
+  --opfg-nine-slice-edge: var(--opfg-nine-slice-width, 10px);
+  --opfg-nine-slice-seam-overlap: var(--opfg-nine-slice-overlap, 2px);
+
   position: absolute;
   z-index: -1;
   inset: 0;
-  box-sizing: border-box;
-  border: 1px solid transparent;
-  border-image-source: url('../components/ui/assets/panel-skin-gold.webp');
-  border-image-slice:
-    var(--opfg-nine-slice-y, 58)
-    var(--opfg-nine-slice-x, 72)
-    fill;
-  border-image-width: var(--opfg-nine-slice-width, 10px);
-  border-image-outset: var(--opfg-nine-slice-outset, 1px);
-  border-image-repeat: stretch;
+  display: block;
+  isolation: isolate;
   opacity: var(
     --opfg-nine-slice-opacity,
-    var(--opfg-nine-slice-opacity-default, 0.65)
+    var(--opfg-nine-slice-opacity-default, 1)
   );
-  content: '';
   pointer-events: none;
   user-select: none;
 }
 
-/*
- * Every host needs its own stacking context, but popovers keep their
- * positioning mode from utility-controls.css. In particular, mixer and
- * language menu MUST remain position:absolute.
- */
-:is(
-  .opfg-hud-home-button,
-  .opfg-mobile-side-tab,
-  .opfg-mobile-home-button,
-  .opfg-utility-square,
-  .opfg-language-controls__button,
-  .opfg-utility-bar,
-  .opfg-music-player,
-  .opfg-audio-mixer,
-  .opfg-language-controls__menu,
-  .opfg-landing__continue,
-  .opfg-landing__new-primary,
-  .opfg-landing__secondary-button
-) {
-  isolation: isolate;
+.opfg-nine-slice__slice {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  pointer-events: none;
 }
 
+.opfg-nine-slice__slice > img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  max-height: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Corners stay above edges; edges stay above center in overlap zones. */
+.opfg-nine-slice__slice[data-slice='tl'],
+.opfg-nine-slice__slice[data-slice='tr'],
+.opfg-nine-slice__slice[data-slice='bl'],
+.opfg-nine-slice__slice[data-slice='br'] {
+  z-index: 3;
+  width: var(--opfg-nine-slice-edge);
+  height: var(--opfg-nine-slice-edge);
+}
+
+.opfg-nine-slice__slice[data-slice='t'],
+.opfg-nine-slice__slice[data-slice='b'],
+.opfg-nine-slice__slice[data-slice='l'],
+.opfg-nine-slice__slice[data-slice='r'] {
+  z-index: 2;
+}
+
+.opfg-nine-slice__slice[data-slice='c'] {
+  z-index: 1;
+}
+
+.opfg-nine-slice__slice[data-slice='tl'] {
+  top: 0;
+  left: 0;
+}
+
+.opfg-nine-slice__slice[data-slice='tr'] {
+  top: 0;
+  right: 0;
+}
+
+.opfg-nine-slice__slice[data-slice='bl'] {
+  bottom: 0;
+  left: 0;
+}
+
+.opfg-nine-slice__slice[data-slice='br'] {
+  right: 0;
+  bottom: 0;
+}
+
+.opfg-nine-slice__slice[data-slice='t'],
+.opfg-nine-slice__slice[data-slice='b'] {
+  right: calc(
+    var(--opfg-nine-slice-edge)
+    - var(--opfg-nine-slice-seam-overlap)
+  );
+  left: calc(
+    var(--opfg-nine-slice-edge)
+    - var(--opfg-nine-slice-seam-overlap)
+  );
+  height: var(--opfg-nine-slice-edge);
+}
+
+.opfg-nine-slice__slice[data-slice='t'] {
+  top: 0;
+}
+
+.opfg-nine-slice__slice[data-slice='b'] {
+  bottom: 0;
+}
+
+.opfg-nine-slice__slice[data-slice='l'],
+.opfg-nine-slice__slice[data-slice='r'] {
+  top: calc(
+    var(--opfg-nine-slice-edge)
+    - var(--opfg-nine-slice-seam-overlap)
+  );
+  bottom: calc(
+    var(--opfg-nine-slice-edge)
+    - var(--opfg-nine-slice-seam-overlap)
+  );
+  width: var(--opfg-nine-slice-edge);
+}
+
+.opfg-nine-slice__slice[data-slice='l'] {
+  left: 0;
+}
+
+.opfg-nine-slice__slice[data-slice='r'] {
+  right: 0;
+}
+
+.opfg-nine-slice__slice[data-slice='c'] {
+  inset: calc(
+    var(--opfg-nine-slice-edge)
+    - var(--opfg-nine-slice-seam-overlap)
+  );
+}
+
+/*
+ * Crop math derived from the source dimensions above.
+ * Corners: 1156/72 = 1605.555556%, 290/58 = 500%.
+ * Horizontal center: 1156/1012 = 114.229249%, X offset = -72/1012.
+ * Vertical center: 290/174 = 166.666667%, Y offset = -58/174.
+ */
+.opfg-nine-slice__slice[data-slice='tl'] > img,
+.opfg-nine-slice__slice[data-slice='tr'] > img,
+.opfg-nine-slice__slice[data-slice='bl'] > img,
+.opfg-nine-slice__slice[data-slice='br'] > img {
+  width: 1605.555556%;
+  height: 500%;
+}
+
+.opfg-nine-slice__slice[data-slice='tl'] > img {
+  top: 0;
+  left: 0;
+}
+
+.opfg-nine-slice__slice[data-slice='tr'] > img {
+  top: 0;
+  left: -1505.555556%;
+}
+
+.opfg-nine-slice__slice[data-slice='bl'] > img {
+  top: -400%;
+  left: 0;
+}
+
+.opfg-nine-slice__slice[data-slice='br'] > img {
+  top: -400%;
+  left: -1505.555556%;
+}
+
+.opfg-nine-slice__slice[data-slice='t'] > img,
+.opfg-nine-slice__slice[data-slice='b'] > img {
+  left: -7.114625%;
+  width: 114.229249%;
+  height: 500%;
+}
+
+.opfg-nine-slice__slice[data-slice='t'] > img {
+  top: 0;
+}
+
+.opfg-nine-slice__slice[data-slice='b'] > img {
+  top: -400%;
+}
+
+.opfg-nine-slice__slice[data-slice='l'] > img,
+.opfg-nine-slice__slice[data-slice='r'] > img {
+  top: -33.333333%;
+  width: 1605.555556%;
+  height: 166.666667%;
+}
+
+.opfg-nine-slice__slice[data-slice='l'] > img {
+  left: 0;
+}
+
+.opfg-nine-slice__slice[data-slice='r'] > img {
+  left: -1505.555556%;
+}
+
+.opfg-nine-slice__slice[data-slice='c'] > img {
+  top: -33.333333%;
+  left: -7.114625%;
+  width: 114.229249%;
+  height: 166.666667%;
+}
+
+/* Hosts that are not overlays need to anchor their absolute frame. */
 :is(
   .opfg-hud-home-button,
   .opfg-mobile-side-tab,
   .opfg-mobile-home-button,
   .opfg-utility-square,
   .opfg-language-controls__button,
-  .opfg-utility-bar,
   .opfg-music-player,
   .opfg-landing__continue,
   .opfg-landing__new-primary,
   .opfg-landing__secondary-button
 ) {
   position: relative;
+  isolation: isolate;
 }
 
-/* Keep the utility popovers out of document flow. */
+/* These two must keep position:absolute from utility-controls.css. */
 .opfg-audio-mixer,
 .opfg-language-controls__menu {
-  position: absolute;
+  isolation: isolate;
+  --opfg-nine-slice-opacity: var(--opfg-nine-slice-opacity-muted, 0.5);
 }
 
-/* Replace the browser-white focus rectangle with the project focus color. */
-.opfg-utility-square:focus,
-.opfg-language-controls__button:focus {
-  outline: none;
-}
-
-.opfg-utility-square:focus-visible,
+.opfg-language-controls__button:focus,
 .opfg-language-controls__button:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 2px;
-}
-
-/* Mixer and language popover use the quieter global opacity token. */
-.opfg-audio-mixer,
-.opfg-language-controls__menu {
-  --opfg-nine-slice-opacity: var(--opfg-nine-slice-opacity-muted, 0.35);
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgb(245 194 66 / 0.32),
+    0 0 12px rgb(245 194 66 / 0.18);
 }
