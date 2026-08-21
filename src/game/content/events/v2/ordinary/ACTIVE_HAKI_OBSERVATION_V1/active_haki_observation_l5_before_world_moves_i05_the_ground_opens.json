@@ -1,0 +1,124 @@
+{
+  "id": "active_haki_observation_l5_before_world_moves_i05_the_ground_opens",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l5_before_world_moves_i05_the_ground_opens.title",
+  "textKey": "event.active_haki_observation_l5_before_world_moves_i05_the_ground_opens.text",
+  "choices": [
+    {
+      "id": "redirect_many",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i05_the_ground_opens.choice.redirect_many.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "edge_collapse",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i05_the_ground_opens.choice.redirect_many.outcome.edge_collapse.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -12
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i06_slope_starts_to_move"
+              }
+            ]
+          },
+          "failure": {
+            "id": "last_second_grabs",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i05_the_ground_opens.choice.redirect_many.outcome.last_second_grabs.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i06_slope_starts_to_move"
+              }
+            ]
+          },
+          "success": {
+            "id": "paths_bent",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i05_the_ground_opens.choice.redirect_many.outcome.paths_bent.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i06_slope_starts_to_move"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crowd_turns_as_one",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i05_the_ground_opens.choice.redirect_many.outcome.crowd_turns_as_one.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i06_slope_starts_to_move"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "mark_crack",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i05_the_ground_opens.choice.mark_crack.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crack_marked",
+          "textKey": "event.active_haki_observation_l5_before_world_moves_i05_the_ground_opens.choice.mark_crack.outcome.crack_marked.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l5_before_world_moves_i06_slope_starts_to_move"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "read_trajectories",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i05_the_ground_opens.choice.read_trajectories.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paths_read",
+          "textKey": "event.active_haki_observation_l5_before_world_moves_i05_the_ground_opens.choice.read_trajectories.outcome.paths_read.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l5_before_world_moves_i06_slope_starts_to_move"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 4
+      }
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "id": "active_haki_armament_l4_harder_than_you",
+  "kind": "normal",
+  "titleKey": "event.active_haki_armament_l4_harder_than_you.title",
+  "textKey": "event.active_haki_armament_l4_harder_than_you.text",
+  "choices": [
+    {
+      "id": "meet_maul",
+      "textKey": "event.active_haki_armament_l4_harder_than_you.choice.meet_maul.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_haki_armament_l4_harder_than_you.choice.meet_maul.text.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -9
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l4_harder_than_you_i01_iron_boarder"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_haki_armament_l4_harder_than_you.choice.meet_maul.text.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l4_harder_than_you_i01_iron_boarder"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_haki_armament_l4_harder_than_you.choice.meet_maul.text.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l4_harder_than_you_i01_iron_boarder"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_haki_armament_l4_harder_than_you.choice.meet_maul.text.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l4_harder_than_you_i01_iron_boarder"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "give_ground",
+      "textKey": "event.active_haki_armament_l4_harder_than_you.choice.give_ground.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "result",
+          "textKey": "event.active_haki_armament_l4_harder_than_you.choice.give_ground.text.outcome.result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_armament_l4_harder_than_you_i01_iron_boarder"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "warn_crew",
+      "textKey": "event.active_haki_armament_l4_harder_than_you.choice.warn_crew.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "result",
+          "textKey": "event.active_haki_armament_l4_harder_than_you.choice.warn_crew.text.outcome.result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_armament_l4_harder_than_you_i01_iron_boarder"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "hakiSourceTotalAtLeast",
+        "hakiType": "armament",
+        "value": 90
+      },
+      {
+        "type": "hakiAtLeast",
+        "hakiType": "armament",
+        "level": 3
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "hakiAtLeast",
+          "hakiType": "armament",
+          "level": 4
+        }
+      }
+    ]
+  }
+}

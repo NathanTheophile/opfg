@@ -1,0 +1,115 @@
+{
+  "id": "active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief.title",
+  "textKey": "event.active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief.text",
+  "choices": [
+    {
+      "id": "beat_to_satchel",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief.choice.beat_to_satchel.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "collision",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief.choice.beat_to_satchel.outcome.collision.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself"
+              }
+            ]
+          },
+          "failure": {
+            "id": "grapple",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief.choice.beat_to_satchel.outcome.grapple.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself"
+              }
+            ]
+          },
+          "success": {
+            "id": "hand_on_bag",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief.choice.beat_to_satchel.outcome.hand_on_bag.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "intercepted_path",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief.choice.beat_to_satchel.outcome.intercepted_path.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "kick_bag_away",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief.choice.kick_bag_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bag_removed",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief.choice.kick_bag_away.outcome.bag_removed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_move_begin",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief.choice.let_move_begin.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "intent_confirmed",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief.choice.let_move_begin.outcome.intent_confirmed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    }
+  ]
+}

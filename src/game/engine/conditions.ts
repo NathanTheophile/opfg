@@ -175,7 +175,7 @@ export function evaluateCondition(condition: Condition, state: GameState, catalo
     case 'devilFruitIsAwakened': return state.player.powers.devilFruitId !== null && state.player.powers.devilFruitAwakening >= 10;
     case 'hakiAtLeast': return state.player.powers.haki[condition.hakiType] >= condition.level;
     case 'hakiIsAwakened': return state.player.powers.haki[condition.hakiType] > 0;
-    case 'hakiSourceTotalAtLeast': return playerHakiSourceTotal(state, condition.hakiType) >= condition.value;
+    case 'hakiSourceTotalAtLeast': return playerHakiSourceTotal(state, condition.hakiType, catalog) >= condition.value;
     case 'npcHasDevilFruit': return state.npcs[condition.npcId]?.powers.devilFruitId !== null && state.npcs[condition.npcId]?.powers.devilFruitId !== undefined;
     case 'npcDevilFruitIs': return state.npcs[condition.npcId]?.powers.devilFruitId === condition.fruitId;
     case 'npcDevilFruitTypeIs': return catalog?.devilFruits.find(({ id }) => id === state.npcs[condition.npcId]?.powers.devilFruitId)?.type === condition.fruitType;

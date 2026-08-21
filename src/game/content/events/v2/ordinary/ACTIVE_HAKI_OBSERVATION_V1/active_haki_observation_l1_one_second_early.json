@@ -1,0 +1,152 @@
+{
+  "id": "active_haki_observation_l1_one_second_early",
+  "kind": "normal",
+  "titleKey": "event.active_haki_observation_l1_one_second_early.title",
+  "textKey": "event.active_haki_observation_l1_one_second_early.text",
+  "choices": [
+    {
+      "id": "snatch_child",
+      "textKey": "event.active_haki_observation_l1_one_second_early.choice.snatch_child.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "too_slow",
+            "textKey": "event.active_haki_observation_l1_one_second_early.choice.snatch_child.outcome.too_slow.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i01_the_rope_breaks"
+              }
+            ]
+          },
+          "failure": {
+            "id": "bruised_rescue",
+            "textKey": "event.active_haki_observation_l1_one_second_early.choice.snatch_child.outcome.bruised_rescue.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i01_the_rope_breaks"
+              }
+            ]
+          },
+          "success": {
+            "id": "clean_rescue",
+            "textKey": "event.active_haki_observation_l1_one_second_early.choice.snatch_child.outcome.clean_rescue.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i01_the_rope_breaks"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "impossible_timing",
+            "textKey": "event.active_haki_observation_l1_one_second_early.choice.snatch_child.outcome.impossible_timing.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i01_the_rope_breaks"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "shout_warning",
+      "textKey": "event.active_haki_observation_l1_one_second_early.choice.shout_warning.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "warning_heard",
+          "textKey": "event.active_haki_observation_l1_one_second_early.choice.shout_warning.outcome.warning_heard.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l1_one_second_early_i01_the_rope_breaks"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "trust_feeling",
+      "textKey": "event.active_haki_observation_l1_one_second_early.choice.trust_feeling.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trust_without_proof",
+          "textKey": "event.active_haki_observation_l1_one_second_early.choice.trust_feeling.outcome.trust_without_proof.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l1_one_second_early_i01_the_rope_breaks"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hakiSourceTotalAtLeast",
+        "hakiType": "observation",
+        "value": 75
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "hakiIsAwakened",
+          "hakiType": "observation"
+        }
+      }
+    ]
+  }
+}

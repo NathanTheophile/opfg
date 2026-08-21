@@ -33,7 +33,7 @@ import type {
 } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
-export const CONTENT_SCHEMA_VERSION = 16;
+export const CONTENT_SCHEMA_VERSION = 17;
 
 export const V1_CAREER_HORIZON_MONTHS = 420;
 
@@ -260,6 +260,7 @@ export type Effect =
   | { type: 'consumeDevilFruit'; fruitId: DevilFruitId }
   | { type: 'increaseDevilFruitAwakening'; amount: number }
   | { type: 'awakenHaki'; hakiType: HakiType }
+  | { type: 'raiseHakiTo'; hakiType: Exclude<HakiType, 'conqueror'>; level: number }
   | { type: 'raiseConquerorHakiTo'; level: number }
   | { type: 'setNpcDevilFruit'; npcId: NpcId; fruitId: DevilFruitId }
   | { type: 'increaseNpcDevilFruitAwakening'; npcId: NpcId; amount: number }

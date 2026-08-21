@@ -1,0 +1,124 @@
+{
+  "id": "active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet.title",
+  "textKey": "event.active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet.text",
+  "choices": [
+    {
+      "id": "reach_still_presence",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet.choice.reach_still_presence.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "trampled_path",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet.choice.reach_still_presence.outcome.trampled_path.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -10
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap"
+              }
+            ]
+          },
+          "failure": {
+            "id": "shielded",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet.choice.reach_still_presence.outcome.shielded.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap"
+              }
+            ]
+          },
+          "success": {
+            "id": "lifted_clear",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet.choice.reach_still_presence.outcome.lifted_clear.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "path_opens_before_you",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet.choice.reach_still_presence.outcome.path_opens_before_you.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "make_human_wall",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet.choice.make_human_wall.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lane_formed",
+          "textKey": "event.active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet.choice.make_human_wall.outcome.lane_formed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_exact_gap",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet.choice.call_exact_gap.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "gap_avoided",
+          "textKey": "event.active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet.choice.call_exact_gap.outcome.gap_avoided.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 4
+      }
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 import type { ContentCatalog } from '../content/schema';
 import type { GameState, HakiType, PowerState } from '../model/schema';
+import { effectivePlayerStat } from './stats';
 
 export const HAKI_TYPES = ['observation', 'armament', 'conqueror'] as const satisfies readonly HakiType[];
 
@@ -12,17 +13,25 @@ export function hakiLevelAllowedByTotal(total: number): number {
   return Math.min(5, 1 + Math.floor((total - 75) / 5));
 }
 
-export function playerHakiSourceTotal(state: GameState, type: Exclude<HakiType, 'conqueror'>): number {
+export function playerHakiSourceTotal(
+  state: GameState,
+  type: Exclude<HakiType, 'conqueror'>,
+  catalog?: ContentCatalog,
+): number {
+  const value = (statId: 'observation' | 'intelligence' | 'strength' | 'agility'): number =>
+    catalog === undefined ? state.player.stats[statId] : effectivePlayerStat(state, catalog, statId);
+
   return type === 'observation'
-    ? state.player.stats.observation + state.player.stats.intelligence
-    : state.player.stats.strength + state.player.stats.agility;
+    ? value('observation') + value('intelligence')
+    : value('strength') + value('agility');
 }
 
-export function synchronizePlayerHaki(state: GameState): void {
-  for (const type of ['observation', 'armament'] as const) {
-    const current = state.player.powers.haki[type];
-    if (current > 0) state.player.powers.haki[type] = Math.max(current, hakiLevelAllowedByTotal(playerHakiSourceTotal(state, type)));
-  }
+/**
+ * @deprecated Observation/Armament levels are authored mastery progression.
+ * Source totals gate due roots but never auto-promote an earned Haki level.
+ */
+export function synchronizePlayerHaki(_state: GameState): void {
+  // Kept as a compatibility no-op for existing call sites.
 }
 
 export function canConsumeDevilFruit(state: GameState, catalog: ContentCatalog, fruitId: string): boolean {

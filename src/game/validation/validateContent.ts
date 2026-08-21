@@ -156,7 +156,7 @@ const EFFECT_TYPES = new Set([
   'recoverTravel',
   'moveToSameIslandPort','recoverToLandInCurrentSea','recoverToOtherRegion','beginMaritimeEmergency','resolveMaritimeEmergencyLandfall',
   'endCareer',
-  'consumeDevilFruit','increaseDevilFruitAwakening','awakenHaki','raiseConquerorHakiTo','setNpcDevilFruit','increaseNpcDevilFruitAwakening','raiseNpcHakiTo',
+  'consumeDevilFruit','increaseDevilFruitAwakening','awakenHaki','raiseHakiTo','raiseConquerorHakiTo','setNpcDevilFruit','increaseNpcDevilFruitAwakening','raiseNpcHakiTo',
   'setCareerAffiliation','modifyReputation','setBounty','modifyBounty','setCareerRank','setCareerTitle','clearCareerTitle','endCareerWithEnding',
 ]);
 
@@ -1003,6 +1003,7 @@ function validateEffect(
   if (type === 'setNpcDevilFruit' || type === 'increaseNpcDevilFruitAwakening' || type === 'raiseNpcHakiTo') validateReference(effect.npcId, references.npcIds, 'NpcId', path, errors);
   if (type === 'increaseDevilFruitAwakening' || type === 'increaseNpcDevilFruitAwakening') { if (!Number.isInteger(effect.amount) || (effect.amount as number) <= 0) errors.push({ path, message: 'Awakening increase must be a positive integer.' }); }
   if (type === 'awakenHaki' && !HAKI_TYPES.has(String(effect.hakiType))) errors.push({ path, message: 'Unknown Haki type.' });
+  if (type === 'raiseHakiTo' && (!['observation', 'armament'].includes(String(effect.hakiType)) || !isIntegerInRange(effect.level, 1, 5))) errors.push({ path, message: 'Observation/Armament Haki requires a valid type and level from 1 to 5.' });
   if (type === 'raiseConquerorHakiTo' && !isIntegerInRange(effect.level, 1, 5)) errors.push({ path, message: 'Conqueror Haki level must be an integer from 1 to 5.' });
   if (type === 'raiseNpcHakiTo' && (!HAKI_TYPES.has(String(effect.hakiType)) || !isIntegerInRange(effect.level, 1, 5))) errors.push({ path, message: 'NPC Haki requires a valid type and level from 1 to 5.' });
   if (type === 'setCareerAffiliation') validateReference(effect.affiliationId, references.careerAffiliationIds, 'CareerAffiliationId', path, errors);

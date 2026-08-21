@@ -1,0 +1,119 @@
+{
+  "id": "active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam.title",
+  "textKey": "event.active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam.text",
+  "choices": [
+    {
+      "id": "lift_with_help",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam.choice.lift_with_help.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bad_lift",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam.choice.lift_with_help.outcome.bad_lift.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -7
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i06_echo_or_exit"
+              }
+            ]
+          },
+          "failure": {
+            "id": "slow_lift",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam.choice.lift_with_help.outcome.slow_lift.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i06_echo_or_exit"
+              }
+            ]
+          },
+          "success": {
+            "id": "coordinated_lift",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam.choice.lift_with_help.outcome.coordinated_lift.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i06_echo_or_exit"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "before_crack",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam.choice.lift_with_help.outcome.before_crack.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i06_echo_or_exit"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "make_lever",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam.choice.make_lever.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lever_works",
+          "textKey": "event.active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam.choice.make_lever.outcome.lever_works.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l3_world_without_eyes_i06_echo_or_exit"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "direct_two_presences",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam.choice.direct_two_presences.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "helpers_placed",
+          "textKey": "event.active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam.choice.direct_two_presences.outcome.helpers_placed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l3_world_without_eyes_i06_echo_or_exit"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 2
+      }
+    }
+  ]
+}
