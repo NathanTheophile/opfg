@@ -1,62 +1,62 @@
 import { describe, expect, it } from 'vitest';
-import { getChildhoodAgeTransition } from './age-transition';
+import { getAgeTransition } from './age-transition';
 
 const state = (
   ageMonths: number,
   careerPhase: 'origins' | 'childhood' | 'active',
 ) => ({ ageMonths, careerPhase });
 
-describe('getChildhoodAgeTransition', () => {
+describe('getAgeTransition', () => {
   it('detects a whole-year childhood birthday', () => {
     expect(
-      getChildhoodAgeTransition(
+      getAgeTransition(
         state(96, 'childhood'),
         state(108, 'childhood'),
       ),
     ).toEqual({ fromAge: 8, toAge: 9 });
   });
 
-  it('does not trigger on the first six-month slot from age 9 onward', () => {
+  it('does not trigger on the first six-month childhood slot', () => {
     expect(
-      getChildhoodAgeTransition(
+      getAgeTransition(
         state(108, 'childhood'),
         state(114, 'childhood'),
       ),
     ).toBeNull();
   });
 
-  it('triggers when the second six-month slot crosses the birthday', () => {
+  it('includes the childhood-to-active birthday at age 15', () => {
     expect(
-      getChildhoodAgeTransition(
-        state(114, 'childhood'),
-        state(120, 'childhood'),
-      ),
-    ).toEqual({ fromAge: 9, toAge: 10 });
-  });
-
-  it('includes the childhood-to-active transition at age 15', () => {
-    expect(
-      getChildhoodAgeTransition(
+      getAgeTransition(
         state(174, 'childhood'),
         state(180, 'active'),
       ),
     ).toEqual({ fromAge: 14, toAge: 15 });
   });
 
-  it('does not trigger when entering childhood from origins', () => {
+  it('detects Active birthdays', () => {
     expect(
-      getChildhoodAgeTransition(
-        state(0, 'origins'),
-        state(12, 'childhood'),
+      getAgeTransition(
+        state(191, 'active'),
+        state(192, 'active'),
+      ),
+    ).toEqual({ fromAge: 15, toAge: 16 });
+  });
+
+  it('does not trigger during ordinary Active monthly progression', () => {
+    expect(
+      getAgeTransition(
+        state(190, 'active'),
+        state(191, 'active'),
       ),
     ).toBeNull();
   });
 
-  it('does not trigger for active monthly progression', () => {
+  it('does not trigger when entering childhood from Origins', () => {
     expect(
-      getChildhoodAgeTransition(
-        state(180, 'active'),
-        state(181, 'active'),
+      getAgeTransition(
+        state(0, 'origins'),
+        state(12, 'childhood'),
       ),
     ).toBeNull();
   });

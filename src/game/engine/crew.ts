@@ -32,6 +32,7 @@ export function vacantCrewRoleIds(state: GameState, catalog: ContentCatalog): Cr
 }
 
 export function requiresCrewManagement(state: GameState): boolean {
+  if (state.careerPhase !== 'active') return false;
   return state.crewReassignmentPending
     || Object.values(state.npcs).some(({ status, crewRoleId }) => status === 'crew' && crewRoleId === null);
 }

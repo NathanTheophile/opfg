@@ -10,12 +10,12 @@ type AgeTransitionState = Pick<
   'ageMonths' | 'careerPhase'
 >;
 
-export function getChildhoodAgeTransition(
+export function getAgeTransition(
   before: AgeTransitionState | null,
   after: AgeTransitionState | null,
 ): AgeTransition | null {
   if (!before || !after) return null;
-  if (before.careerPhase !== 'childhood') return null;
+  if (before.careerPhase === 'origins') return null;
 
   const fromAge = Math.floor(before.ageMonths / 12);
   const toAge = Math.floor(after.ageMonths / 12);

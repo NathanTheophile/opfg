@@ -38,6 +38,10 @@ import { useGameSession } from '@/game/session/useGameSession';
 import { moveItem, resolveOverflow, type StorageSlot } from '@/game/engine/inventory';
 import { useCrewRolePower } from '@/game/engine/crewPowers';
 import { requiresCrewManagement } from '@/game/engine/crew';
+import {
+  getActiveYearEndSummary,
+  type YearEndSummary,
+} from '@/game/engine/yearEndSummary';
 import { npcInterpolationParams } from '@/game/engine/npcNames';
 import { originNarrativeInterpolationParams } from '@/game/engine/originNarrative';
 import {
@@ -59,9 +63,10 @@ import {
 import { CrewRail } from './CrewRail';
 import { EventPanel } from './EventPanel';
 import { OutcomePanel } from './OutcomePanel';
+import { YearEndSummaryPanel } from './YearEndSummaryPanel';
 import { AgeTransitionOverlay } from './AgeTransitionOverlay';
 import {
-  getChildhoodAgeTransition,
+  getAgeTransition,
   type AgeTransition,
 } from './age-transition';
 import { NavigationPanel } from './NavigationPanel';
@@ -318,6 +323,11 @@ export function EventPreview({
 
   const [ageTransition, setAgeTransition] =
     useState<AgeTransition | null>(null);
+
+  const [yearEndSummary, setYearEndSummary] =
+    useState<YearEndSummary | null>(null);
+  const pendingYearEndSummaryRef =
+    useRef<YearEndSummary | null>(null);
 
   const [
     outcomeRevealed,
@@ -1077,20 +1087,41 @@ export function EventPreview({
     session.continueAfterResolution();
   };
 
-  const continueFromOutcome = () => {
-    if (ageTransition !== null) return;
+  const revealPostOutcomePresentation = (summary: YearEndSummary | null) => {
+    dismissOutcomePresentation();
+    if (summary) setYearEndSummary(summary);
+  };
 
-    const transition = getChildhoodAgeTransition(
+  const coverAgeTransition = () => {
+    const summary = pendingYearEndSummaryRef.current;
+    pendingYearEndSummaryRef.current = null;
+    revealPostOutcomePresentation(summary);
+  };
+
+  const continueFromOutcome = () => {
+    if (ageTransition !== null || yearEndSummary !== null) return;
+
+    const transition = getAgeTransition(
       session.previousState,
       session.gameState,
     );
+    const summary = getActiveYearEndSummary(
+      session.previousState,
+      session.gameState,
+      catalog,
+    );
 
     if (transition) {
+      pendingYearEndSummaryRef.current = summary;
       setAgeTransition(transition);
       return;
     }
 
-    dismissOutcomePresentation();
+    revealPostOutcomePresentation(summary);
+  };
+
+  const continueFromYearEnd = () => {
+    setYearEndSummary(null);
   };
 
   const handleStorageSlot = (slot: StorageSlot) => {
@@ -1154,6 +1185,8 @@ export function EventPreview({
     state.careerStatus === 'ended'
     && !showOutcome
     && pendingDice === null
+    && ageTransition === null
+    && yearEndSummary === null
   ) {
     return (
       <main className="opfg-game-screen min-h-dvh w-full overflow-x-hidden overflow-y-auto pl-[max(var(--layout-gutter),var(--safe-area-left))] pr-[max(var(--layout-gutter),var(--safe-area-right))] pt-[max(var(--layout-gutter),var(--safe-area-top))] pb-[max(var(--layout-gutter),var(--safe-area-bottom))]">
@@ -1293,8 +1326,9 @@ export function EventPreview({
 
   const showDetachedTopEventOrnament =
     !state.pendingOverflow &&
-    !requiresCrewManagement(state) &&
+    (!requiresCrewManagement(state) || yearEndSummary !== null) &&
     Boolean(
+      yearEndSummary !== null ||
       (showOutcome &&
         outcomeView !== null &&
         resolvedEventView !== null) ||
@@ -1367,12 +1401,24 @@ export function EventPreview({
                       })}
                       {!state.pendingOverflow.mandatory && <Button onClick={() => session.applySystemAction((next) => resolveOverflow(next, catalog, { type: 'abandonIncoming' }))}>{translate('ui.overflow.abandon')}</Button>}
                     </Panel>
-                  ) : requiresCrewManagement(state) ? (
+                  ) : requiresCrewManagement(state)
+                    && !showOutcome
+                    && pendingDice === null
+                    && yearEndSummary === null ? (
                     <CrewManagementPanel
                       state={state}
                       catalog={catalog}
                       translate={translate}
                       onSystemAction={session.applySystemAction}
+                    />
+                  ) : yearEndSummary ? (
+                    <YearEndSummaryPanel
+                      summary={yearEndSummary}
+                      state={state}
+                      catalog={catalog}
+                      translate={translate}
+                      statLabel={(id) => translate(STAT_KEYS[id])}
+                      onContinue={continueFromYearEnd}
                     />
                   ) : showOutcome && outcomeView ? (
                     <>
@@ -1507,7 +1553,7 @@ export function EventPreview({
         <AgeTransitionOverlay
           transition={ageTransition}
           unitLabel={translate('ui.unit.years')}
-          onCovered={dismissOutcomePresentation}
+          onCovered={coverAgeTransition}
           onComplete={() =>
             setAgeTransition(null)
           }

@@ -2,6 +2,8 @@ import fr from './locales/fr.json';
 import en from './locales/en.json';
 import runHistoryFr from './locales/run-history.fr.json';
 import runHistoryEn from './locales/run-history.en.json';
+import yearEndFr from './locales/year-end.fr.json';
+import yearEndEn from './locales/year-end.en.json';
 import { interpolate, extractPlaceholders, type InterpolationParams } from './interpolate';
 import type { LocalizationKey } from './keys';
 export const SOURCE_LOCALE = 'fr' as const;
@@ -187,8 +189,8 @@ const activeSystemDictionaries: Record<LocaleId, LocalizationDictionary> = {
 };
 
 export const dictionaries: Record<LocaleId, LocalizationDictionary> = {
-  fr: { ...fr, ...landingDictionaries.fr, ...activeSystemDictionaries.fr, ...runHistoryFr },
-  en: { ...en, ...landingDictionaries.en, ...activeSystemDictionaries.en, ...runHistoryEn },
+  fr: { ...fr, ...landingDictionaries.fr, ...activeSystemDictionaries.fr, ...runHistoryFr, ...yearEndFr },
+  en: { ...en, ...landingDictionaries.en, ...activeSystemDictionaries.en, ...runHistoryEn, ...yearEndEn },
 };
 export const LOCALE_STORAGE_KEY = 'jam-op-fan-game.locale';
 export interface LocaleStorage { getItem(key: string): string | null; setItem(key: string, value: string): void }

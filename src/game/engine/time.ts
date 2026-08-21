@@ -51,13 +51,18 @@ function advanceAge(state: GameState, ageMonths: number, catalog: ContentCatalog
     .filter((age) => age >= 5 && age <= 14)
     .reduce((sum) => sum + (CHILDHOOD_INCOME[state.player.profile.socialClassId ?? ''] ?? 0), 0);
   const crewIncome = birthdays * annualCrewIncome(state, catalog);
-  const annualCrewPanel = birthdays > 0 && currentCrewIds(state).length > 0;
+  const activeBirthday = birthdays > 0 && state.careerPhase === 'active';
+  const annualCrewPanel = activeBirthday && currentCrewIds(state).length > 0;
 
   const advanced = {
     ...state,
     player: { ...state.player, stats: { ...state.player.stats } },
     ageMonths,
-    crewReassignmentPending: state.crewReassignmentPending || annualCrewPanel,
+    crewReassignmentPending:
+      state.careerPhase === 'active'
+        ? state.crewReassignmentPending || annualCrewPanel
+        : false,
+    crewRoleLastUsedYear: activeBirthday ? {} : state.crewRoleLastUsedYear,
     npcs: Object.fromEntries(Object.entries(state.npcs).map(([id, npc]) => [id, npc.status !== 'crew' || birthdays === 0 ? npc : {
       ...npc,
       stats: Object.fromEntries(Object.entries(npc.stats).map(([statId, value]) => [statId, Math.min(50, value + birthdays)])) as unknown as typeof npc.stats,
