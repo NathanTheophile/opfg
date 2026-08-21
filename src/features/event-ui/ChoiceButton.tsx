@@ -52,6 +52,7 @@ export function ChoiceButton({
       disabled={choice.disabled}
       onClick={() => onSelect(choice)}
       className="opfg-choice-button"
+      data-has-dice={choice.dice ? 'true' : undefined}
     >
       <span className="min-w-0 flex-1">
         <span className="block text-fg">
@@ -112,7 +113,7 @@ export function ChoiceButton({
       {choice.dice && (
         <Badge
           variant="gold"
-          className="shrink-0 gap-1.5"
+          className="opfg-choice-dice-badge shrink-0 gap-1.5"
         >
           <Dices
             className="size-3.5"

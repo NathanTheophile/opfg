@@ -10,6 +10,18 @@
   width: var(--ui-crew-width);
 }
 
+.opfg-crew-member-row {
+  display: grid;
+  width: max-content;
+  grid-template-columns: auto;
+  align-items: start;
+  gap: 0.3rem;
+}
+
+.opfg-crew-member-row.has-power {
+  grid-template-columns: auto auto;
+}
+
 .opfg-crew-member-panel {
   width: var(--ui-crew-width);
   overflow: visible;
@@ -23,17 +35,15 @@
 }
 
 .opfg-crew-member__header {
-  display: grid;
+  display: block;
   width: 100%;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
   border-radius: inherit;
 }
 
 .opfg-crew-member__toggle {
   display: grid;
   width: 100%;
-  grid-template-columns: 1.6rem minmax(0, 1fr) 1.2rem;
+  grid-template-columns: minmax(0, 1fr) 1.2rem;
   min-height: var(--ui-crew-row-height);
   align-items: center;
   column-gap: 0.45rem;
@@ -72,13 +82,44 @@
   white-space: nowrap;
 }
 
+.opfg-crew-member__power-tooltip {
+  display: block;
+  width: var(--ui-crew-row-height);
+  height: var(--ui-crew-row-height);
+  align-self: start;
+}
+
 .opfg-crew-member__power {
-  max-width: 6rem;
-  margin-right: 0.5rem;
-  overflow: hidden;
-  font-size: 0.64rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  --opfg-nine-slice-width: 11px;
+
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  place-items: center;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--accent-gold);
+  cursor: pointer;
+  transition:
+    filter var(--motion-fast) var(--ease-standard),
+    opacity var(--motion-fast) var(--ease-standard);
+}
+
+.opfg-crew-member__power > svg {
+  position: relative;
+  z-index: 1;
+}
+
+.opfg-crew-member__power:hover:not(:disabled) {
+  filter: brightness(var(--ui-hover-brightness));
+}
+
+.opfg-crew-member__power:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .opfg-crew-member__chevron {
@@ -96,7 +137,9 @@
 
 .opfg-crew-member__stats {
   display: grid;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 0.2rem;
+  row-gap: 0.28rem;
   max-height: 0;
   overflow: hidden;
   border-top: 0 solid var(--border-subtle);
@@ -144,10 +187,10 @@
 }
 
 .opfg-crew-member-panel.is-expanded .opfg-crew-member__stats {
-  max-height: 3.2rem;
+  max-height: 5.4rem;
   overflow: visible;
   border-top-width: 1px;
-  padding: 0.22rem 0.42rem 0.5rem;
+  padding: 0.3rem 0.42rem 0.5rem;
   opacity: 1;
   transform: translateY(0);
 }
