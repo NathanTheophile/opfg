@@ -7,6 +7,7 @@ export type UITunerSectionId =
   | 'crew'
   | 'outcome'
   | 'tooltips'
+  | 'utility'
   | 'glass'
   | 'palette';
 
@@ -53,6 +54,7 @@ export const UI_TUNER_SECTIONS: Array<{
   { id: 'crew', label: 'Crew' },
   { id: 'outcome', label: 'Outcomes' },
   { id: 'tooltips', label: 'Tooltips' },
+  { id: 'utility', label: 'Réglages / Audio' },
   { id: 'glass', label: 'Boutons glass' },
   { id: 'palette', label: 'Palette stats' },
 ];
@@ -147,7 +149,9 @@ export const UI_TUNER_DEFINITIONS: UITunerDefinition[] = [
   range('hudHeaderPaddingBottom', 'Headers HUD — padding bas', 'hud', '--ui-hud-header-padding-bottom', 0.1, 0, 1.5, 0.01, 'rem'),
   range('hudHeaderPaddingLeft', 'Headers HUD — padding gauche', 'hud', '--ui-hud-header-padding-left', 0.52, 0, 2, 0.01, 'rem'),
   range('hudNameSize', 'Nom joueur', 'hud', '--ui-hud-name-size', 20, 12, 32, 0.5, 'px'),
+  range('hudNameTranslateY', 'Nom joueur — translate Y', 'hud', '--ui-hud-name-translate-y', 0, -24, 24, 0.25, 'px'),
   range('hudTitleSize', 'Titre / affiliation', 'hud', '--ui-hud-title-size', 10.5, 7, 18, 0.1, 'px'),
+  range('hudTitleTranslateY', 'Titre / affiliation — translate Y', 'hud', '--ui-hud-title-translate-y', 0, -24, 24, 0.25, 'px'),
   range('hudSlotSize', 'Taille slots', 'hud', '--ui-hud-slot-size', 31, 22, 48, 0.5, 'px'),
   range('hudSlotGap', 'Gap slots', 'hud', '--ui-hud-slot-gap', 5, 0, 15, 0.5, 'px'),
   range('hudSlotRadius', 'Radius slots', 'hud', '--ui-hud-slot-radius', 6, 0, 16, 0.5, 'px'),
@@ -156,8 +160,8 @@ export const UI_TUNER_DEFINITIONS: UITunerDefinition[] = [
   range('hudStorageBodyPaddingX', 'Inventaire / Bateau — padding X', 'hud', '--ui-hud-storage-body-padding-x', 0.62, 0, 2, 0.01, 'rem'),
   range('hudStorageBodyPaddingBottom', 'Inventaire / Bateau — padding bas', 'hud', '--ui-hud-storage-body-padding-bottom', 0.34, 0, 1.5, 0.01, 'rem'),
   range('hudAdventureGap', 'HUD haut ↔ Aventure — gap vertical', 'hud', '--ui-hud-adventure-gap', 0.5, 0, 4, 0.05, 'rem'),
-  range('adventureRailGap', 'Event ↔ Stats / Crew — gap horizontal', 'hud', '--ui-adventure-rail-gap', 0.1, 0, 4, 0.05, 'rem'),
   range('adventureInlinePadding', 'Aventure — padding latéral', 'hud', '--ui-adventure-inline-padding', 1.15, 0, 3, 0.05, 'rem'),
+  range('adventureRailGap', 'Gap Event ↔ Stats / Crew', 'event', '--ui-adventure-rail-gap', 0.1, 0, 4, 0.05, 'rem', 'Écart horizontal entre le panel Event et les rails Stats/Crew en paysage.'),
   range('adventureStackGap', 'Event ↔ Outcome — gap vertical', 'event', '--ui-adventure-stack-gap', 8, 0, 30, 1, 'px'),
 
   // Event / choices. Body horizontal geometry now comes from shared parchment tokens.
@@ -177,7 +181,11 @@ export const UI_TUNER_DEFINITIONS: UITunerDefinition[] = [
   range('choicePy', 'Choice Y', 'event', '--ui-choice-py', 8, 2, 28, 0.1, 'px'),
   range('choiceRadius', 'Radius Choice', 'event', '--ui-choice-radius', 8, 0, 28, 0.5, 'px'),
   range('choiceTextSize', 'Texte Choice', 'event', '--ui-choice-text-size', 12, 9, 22, 0.1, 'px'),
-  range('choiceDiceMinHeight', 'Choice avec jet — hauteur min', 'event', '--ui-choice-dice-min-height', 32, 30, 92, 0.5, 'px'),
+  range('choiceDicePaddingX', 'Jet — padding X', 'event', '--ui-choice-dice-padding-x', 0.625, 0, 2, 0.025, 'rem'),
+  range('choiceDicePaddingY', 'Jet — padding Y', 'event', '--ui-choice-dice-padding-y', 0, 0, 1, 0.025, 'rem'),
+  range('choiceDiceGap', 'Jet — gap icône / texte', 'event', '--ui-choice-dice-gap', 0.375, 0, 1.5, 0.025, 'rem'),
+  range('choiceDiceIconSize', 'Jet — taille icône', 'event', '--ui-choice-dice-icon-size', 0.875, 0.5, 1.5, 0.025, 'rem'),
+  range('choiceDiceTextSize', 'Jet — taille texte', 'event', '--ui-choice-dice-text-size', 0.75, 0.5, 1.25, 0.025, 'rem'),
 
   // Player stats rail.
   range('statsCompactWidth', 'Rail fermé', 'stats', '--ui-stats-compact-width', 84, 58, 130, 1, 'px'),
@@ -198,7 +206,7 @@ export const UI_TUNER_DEFINITIONS: UITunerDefinition[] = [
 
   // Crew rail.
   range('crewWidth', 'Crew fermé', 'crew', '--ui-crew-width', 160, 110, 240, 1, 'px'),
-  range('crewExpandedWidth', 'Crew ouvert', 'crew', '--ui-crew-expanded-width', 288, 190, 420, 1, 'px'),
+  range('crewExpandedWidth', 'Crew ouvert', 'crew', '--ui-crew-expanded-width', 288, 80, 420, 1, 'px'),
   range('crewGap', 'Gap membres', 'crew', '--ui-crew-gap', 6.7, 0, 20, 0.1, 'px'),
   range('crewRowHeight', 'Hauteur membre', 'crew', '--ui-crew-row-height', 42.4, 30, 72, 0.2, 'px'),
   range('crewRowPx', 'Membre — padding X', 'crew', '--ui-crew-row-px', 10, 0, 28, 0.5, 'px'),
@@ -253,6 +261,19 @@ range(
   range('tooltipMetaSize', 'Métadonnées', 'tooltips', '--ui-tooltip-meta-size', 10.9, 7, 18, 0.1, 'px'),
   range('tooltipDetailSize', 'Description', 'tooltips', '--ui-tooltip-detail-size', 11.2, 8, 18, 0.1, 'px'),
   range('tooltipDetailLeading', 'Description — interligne', 'tooltips', '--ui-tooltip-detail-leading', 16, 10, 28, 0.5, 'px'),
+
+  // Utility / audio controls.
+  range('utilityControlSize', 'Boutons utilitaires — taille', 'utility', '--ui-utility-control-size', 2.65, 1.5, 5, 0.05, 'rem'),
+  range('utilityIconSize', 'Boutons utilitaires — icône', 'utility', '--ui-utility-icon-size', 17, 8, 32, 0.5, 'px'),
+  range('musicPlayerWidth', 'Player musique — largeur', 'utility', '--ui-music-player-width', 14.4, 8, 24, 0.1, 'rem'),
+  range('musicPlayerPaddingX', 'Player musique — padding X', 'utility', '--ui-music-player-padding-x', 0.7, 0, 2, 0.02, 'rem'),
+  range('musicPlayerPaddingTop', 'Player musique — padding haut', 'utility', '--ui-music-player-padding-top', 0.58, 0, 2, 0.02, 'rem'),
+  range('musicPlayerPaddingBottom', 'Player musique — padding bas', 'utility', '--ui-music-player-padding-bottom', 0.62, 0, 2, 0.02, 'rem'),
+  range('musicPlayerGap', 'Player musique — gap interne', 'utility', '--ui-music-player-gap', 0.42, 0, 1.5, 0.02, 'rem'),
+  range('musicControlSize', 'Boutons musique — taille', 'utility', '--ui-music-control-size', 1.5, 1, 3, 0.05, 'rem'),
+  range('musicPrimaryControlSize', 'Bouton Play / Pause — taille', 'utility', '--ui-music-primary-control-size', 1.65, 1, 3.5, 0.05, 'rem'),
+  range('musicControlIconSize', 'Boutons musique — icône', 'utility', '--ui-music-control-icon-size', 15, 8, 28, 0.5, 'px'),
+  range('musicPrimaryControlIconSize', 'Play / Pause — icône', 'utility', '--ui-music-primary-control-icon-size', 16, 8, 32, 0.5, 'px'),
 
   // Shared glass material.
   range('glassBlur', 'Blur', 'glass', '--ui-glass-blur', 5, 0, 20, 0.5, 'px'),
