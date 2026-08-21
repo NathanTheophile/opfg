@@ -101,7 +101,7 @@ const color = (
 
 export const UI_TUNER_DEFINITIONS: UITunerDefinition[] = [
   // Foundation: mirrors the centralized tunable bridge in ui-system.css.
-  range('layoutGutter', 'Gouttière globale', 'foundation', '--ui-layout-gutter', 24, 8, 48, 1, 'px'),
+  range('layoutGutter', 'Gouttière globale', 'foundation', '--ui-layout-gutter', 16, 8, 48, 1, 'px'),
   range('panelRadius', 'Radius panels', 'foundation', '--ui-panel-radius', 16, 0, 32, 1, 'px'),
   range('controlRadius', 'Radius contrôles', 'foundation', '--ui-control-radius', 12, 0, 24, 1, 'px'),
   range('surfaceSoftAlpha', 'Opacité surface soft', 'foundation', '--ui-surface-soft-alpha', 48, 0, 100, 1, '%'),
@@ -127,21 +127,21 @@ export const UI_TUNER_DEFINITIONS: UITunerDefinition[] = [
   range('parchmentPaddingInline', 'Parchemin — padding X', 'shared', '--ui-parchment-padding-inline', 0.78, 0, 2, 0.01, 'rem'),
   range('parchmentMobileMarginInline', 'Parchemin mobile — marge X', 'shared', '--ui-parchment-mobile-margin-inline', 0.5, 0, 1.5, 0.01, 'rem'),
   range('parchmentMobilePaddingInline', 'Parchemin mobile — padding X', 'shared', '--ui-parchment-mobile-padding-inline', 0.68, 0, 1.5, 0.01, 'rem'),
-  range('nineSliceOpacityDefault', 'Nine-slice — opacité', 'shared', '--opfg-nine-slice-opacity-default', 1, 0, 1, 0.01, ''),
-  range('nineSliceOpacityMuted', 'Nine-slice muted — opacité', 'shared', '--opfg-nine-slice-opacity-muted', 0.5, 0, 1, 0.01, ''),
+  range('nineSliceOpacityDefault', 'Nine-slice — opacité', 'shared', '--opfg-nine-slice-opacity-default', 0.9, 0, 1, 0.01, ''),
+  range('nineSliceOpacityMuted', 'Nine-slice muted — opacité', 'shared', '--opfg-nine-slice-opacity-muted', 0.65, 0, 1, 0.01, ''),
   range('nineSliceOverlap', 'Nine-slice — overlap anti-seam', 'shared', '--opfg-nine-slice-overlap', 2, 0, 5, 0.25, 'px'),
   range('hoverBrightness', 'Hover — luminosité commune', 'shared', '--ui-hover-brightness', 1.08, 0.8, 1.35, 0.01, ''),
 
   // HUD. Header geometry is shared by Inventory / Ship / Crew headers.
-  range('hudGroupGap', 'Gap du trio', 'hud', '--ui-hud-group-gap', 12, 0, 36, 1, 'px'),
-  range('hudSideWidth', 'Largeur Inventaire / Bateau', 'hud', '--ui-hud-side-width', 248, 180, 360, 2, 'px'),
-  range('hudCenterWidth', 'Largeur panel central', 'hud', '--ui-hud-center-width', 512, 360, 700, 2, 'px'),
-  range('hudPanelMinHeight', 'Hauteur panneaux', 'hud', '--ui-hud-panel-min-height', 128, 96, 190, 1, 'px'),
+  range('hudGroupGap', 'Gap du trio', 'hud', '--ui-hud-group-gap', 7, 0, 36, 1, 'px'),
+  range('hudSideWidth', 'Largeur Inventaire / Bateau', 'hud', '--ui-hud-side-width', 256, 180, 360, 2, 'px'),
+  range('hudCenterWidth', 'Largeur panel central', 'hud', '--ui-hud-center-width', 480, 360, 700, 2, 'px'),
+  range('hudPanelMinHeight', 'Hauteur panneaux', 'hud', '--ui-hud-panel-min-height', 96, 96, 190, 1, 'px'),
   range('hudIdentityPx', 'Identité — padding X', 'hud', '--ui-hud-panel-px', 14, 5, 30, 1, 'px', 'Le padding vertical historique est désormais surchargé par les autorités de composition et n’est plus exposé.'),
-  range('hudHeaderMinHeight', 'Header partagé — hauteur min', 'hud', '--opfg-hud-header-min-height', 2.3, 1.5, 4, 0.05, 'rem'),
-  range('hudHeaderIconColumn', 'Header partagé — colonne icône', 'hud', '--opfg-hud-header-icon-column', 1.65, 1, 3, 0.05, 'rem'),
-  range('hudHeaderColumnGap', 'Header partagé — gap', 'hud', '--opfg-hud-header-column-gap', 0.45, 0, 1.25, 0.05, 'rem'),
-  range('hudNameSize', 'Nom joueur', 'hud', '--ui-hud-name-size', 19, 12, 32, 0.5, 'px'),
+  range('hudHeaderMinHeight', 'Header partagé — hauteur min', 'hud', '--opfg-hud-header-min-height', 3, 1.5, 4, 0.05, 'rem'),
+  range('hudHeaderIconColumn', 'Header partagé — colonne icône', 'hud', '--opfg-hud-header-icon-column', 2.05, 1, 3, 0.05, 'rem'),
+  range('hudHeaderColumnGap', 'Header partagé — gap', 'hud', '--opfg-hud-header-column-gap', 0.35, 0, 1.25, 0.05, 'rem'),
+  range('hudNameSize', 'Nom joueur', 'hud', '--ui-hud-name-size', 20, 12, 32, 0.5, 'px'),
   range('hudTitleSize', 'Titre / affiliation', 'hud', '--ui-hud-title-size', 10.5, 7, 18, 0.1, 'px'),
   range('hudInfoSize', 'Infos centrales', 'hud', '--ui-hud-info-size', 11.5, 8, 18, 0.1, 'px'),
   range('hudInfoColumnGap', 'Gap colonnes centrales', 'hud', '--ui-hud-info-column-gap', 16, 4, 42, 1, 'px'),
@@ -155,7 +155,7 @@ export const UI_TUNER_DEFINITIONS: UITunerDefinition[] = [
   range('hudMonthPipRadius', 'Radius jauges mensuelles', 'hud', '--ui-hud-month-pip-radius', 999, 0, 999, 1, 'px'),
   range('hudShipIconSize', 'Icône bateau', 'hud', '--ui-hud-ship-icon-size', 35, 24, 58, 1, 'px'),
   range('mobileDrawerWidth', 'Largeur tiroirs mobile', 'hud', '--ui-mobile-drawer-width', 336, 240, 480, 4, 'px'),
-  range('adventureStackGap', 'Gap Event / Conséquence', 'hud', '--ui-adventure-stack-gap', 12, 0, 30, 1, 'px'),
+  range('adventureStackGap', 'Gap Event / Conséquence', 'hud', '--ui-adventure-stack-gap', 8, 0, 30, 1, 'px'),
 
   // Event / choices. Body horizontal geometry now comes from shared parchment tokens.
   range('eventHeaderPx', 'Header X', 'event', '--ui-event-header-px', 10, 4, 48, 1, 'px'),
@@ -166,12 +166,12 @@ export const UI_TUNER_DEFINITIONS: UITunerDefinition[] = [
   range('eventBodyLeading', 'Interligne Event', 'event', '--ui-event-body-leading', 21.8, 14, 38, 0.1, 'px'),
   range('eventChoiceAreaPx', 'Zone Choices — X', 'event', '--ui-event-choice-area-px', 10, 0, 40, 0.5, 'px'),
   range('eventChoiceAreaPy', 'Zone Choices — Y', 'event', '--ui-event-choice-area-py', 8, 0, 30, 0.5, 'px'),
-  range('choiceMinHeight', 'Hauteur Choice', 'event', '--ui-choice-min-height', 39.2, 30, 92, 0.2, 'px'),
-  range('choiceGap', 'Gap Choices', 'event', '--ui-choice-gap', 6.4, 0, 28, 0.2, 'px'),
+  range('choiceMinHeight', 'Hauteur Choice', 'event', '--ui-choice-min-height', 32, 30, 92, 0.2, 'px'),
+  range('choiceGap', 'Gap Choices', 'event', '--ui-choice-gap', 5, 0, 28, 0.2, 'px'),
   range('choicePx', 'Choice X', 'event', '--ui-choice-px', 12.5, 4, 40, 0.5, 'px'),
-  range('choicePy', 'Choice Y', 'event', '--ui-choice-py', 7.7, 2, 28, 0.1, 'px'),
-  range('choiceRadius', 'Radius Choice', 'event', '--ui-choice-radius', 12, 0, 28, 0.5, 'px'),
-  range('choiceTextSize', 'Texte Choice', 'event', '--ui-choice-text-size', 13.4, 9, 22, 0.1, 'px'),
+  range('choicePy', 'Choice Y', 'event', '--ui-choice-py', 8, 2, 28, 0.1, 'px'),
+  range('choiceRadius', 'Radius Choice', 'event', '--ui-choice-radius', 8, 0, 28, 0.5, 'px'),
+  range('choiceTextSize', 'Texte Choice', 'event', '--ui-choice-text-size', 12, 9, 22, 0.1, 'px'),
 
   // Player stats rail.
   range('statsCompactWidth', 'Rail fermé', 'stats', '--ui-stats-compact-width', 84, 58, 130, 1, 'px'),
