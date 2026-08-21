@@ -2,6 +2,11 @@ import type { ItemId } from '@/game/model/schema';
 
 import civilianTrustLedger from '@/assets/item-icons/civilian_trust_ledger.png';
 import civilianWorkshopToolkit from '@/assets/item-icons/civilian_workshop_toolkit.png';
+import civilianWorkshopCat from '@/assets/item-icons/civilian_workshop_cat.png';
+import marineCourtyardHound from '@/assets/item-icons/marine_courtyard_hound.png';
+import pirateSafeHarborGull from '@/assets/item-icons/pirate_safe_harbor_gull.png';
+import revolutionaryCourierFerret from '@/assets/item-icons/revolutionary_courier_ferret.png';
+import royalPalaceHound from '@/assets/item-icons/royal_palace_hound.png';
 import familyMarineFieldCompass from '@/assets/item-icons/family_marine_field_compass.png';
 import familyMarineInsignia from '@/assets/item-icons/family_marine_insignia.png';
 import familyMarineSealedReport from '@/assets/item-icons/family_marine_sealed_report.png';
@@ -23,6 +28,11 @@ import timber from '@/assets/item-icons/timber.png';
 import tripleLogPose from '@/assets/item-icons/triple_log_pose.png';
 
 const ITEM_ICON_URLS: Readonly<Partial<Record<ItemId, string>>> = {
+  civilian_workshop_cat: civilianWorkshopCat,
+  marine_courtyard_hound: marineCourtyardHound,
+  pirate_safe_harbor_gull: pirateSafeHarborGull,
+  revolutionary_courier_ferret: revolutionaryCourierFerret,
+  royal_palace_hound: royalPalaceHound,
   civilian_trust_ledger: civilianTrustLedger,
   civilian_workshop_toolkit: civilianWorkshopToolkit,
   family_marine_field_compass: familyMarineFieldCompass,
