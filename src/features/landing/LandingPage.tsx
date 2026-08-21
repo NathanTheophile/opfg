@@ -4,6 +4,7 @@ import {
 import { Button, Panel, NineSliceFrame } from '@/components/ui';
 import { loadMetaProgression } from '@/game/achievements/storage';
 import type { ContentCatalog } from '@/game/content/schema';
+import { loadCompletedRuns } from '@/game/engine/completedRuns';
 import type { StorageLike } from '@/game/engine/save';
 import { AchievementsPanel } from '@/features/achievements/AchievementsPanel';
 import {
@@ -16,6 +17,7 @@ import {
 import type { GameState } from '@/game/model/schema';
 import { LanguageControls } from '@/features/settings/LanguageControls';
 import { notifyUiLocaleChanged } from '@/features/settings/localeSync';
+import { RunHistoryPanel } from '@/features/run-history/RunHistoryPanel';
 import logoMark from './assets/opfg-logo-vertical.png';
 import './landing-page.css';
 
@@ -425,7 +427,13 @@ export function LandingPage({
 
           <Panel
             variant="strong"
-            className={`opfg-landing__modal${activeSection === 'achievements' ? ' opfg-landing__modal--achievements' : ''}`}
+            className={`opfg-landing__modal${
+              activeSection === 'achievements'
+                ? ' opfg-landing__modal--achievements'
+                : activeSection === 'history'
+                  ? ' opfg-landing__modal--history'
+                  : ''
+            }`}
             role="dialog"
             aria-modal="true"
             aria-label={activeSectionLabel}
@@ -443,6 +451,12 @@ export function LandingPage({
             {activeSection === 'achievements' ? (
               <AchievementsPanel
                 metaProgression={loadMetaProgression(storage)}
+                locale={locale}
+              />
+            ) : activeSection === 'history' ? (
+              <RunHistoryPanel
+                runs={loadCompletedRuns(storage)}
+                catalog={catalog}
                 locale={locale}
               />
             ) : (
