@@ -1,0 +1,116 @@
+{
+  "id": "active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real.title",
+  "textKey": "event.active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real.text",
+  "choices": [
+    {
+      "id": "rank_threats",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real.choice.rank_threats.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "wrong_priority",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real.choice.rank_threats.outcome.wrong_priority.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -9
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy"
+              }
+            ]
+          },
+          "failure": {
+            "id": "one_hit",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real.choice.rank_threats.outcome.one_hit.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy"
+              }
+            ]
+          },
+          "success": {
+            "id": "two_real",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real.choice.rank_threats.outcome.two_real.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "priority_clear",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real.choice.rank_threats.outcome.priority_clear.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "protect_space",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real.choice.protect_space.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "space_defended",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real.choice.protect_space.outcome.space_defended.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "read_commitment_depth",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real.choice.read_commitment_depth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "commitment_ranked",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real.choice.read_commitment_depth.outcome.commitment_ranked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 3
+      }
+    }
+  ]
+}

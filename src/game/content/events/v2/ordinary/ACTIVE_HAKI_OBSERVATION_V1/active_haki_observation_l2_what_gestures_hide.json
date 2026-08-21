@@ -1,0 +1,154 @@
+{
+  "id": "active_haki_observation_l2_what_gestures_hide",
+  "kind": "normal",
+  "titleKey": "event.active_haki_observation_l2_what_gestures_hide.title",
+  "textKey": "event.active_haki_observation_l2_what_gestures_hide.text",
+  "choices": [
+    {
+      "id": "intercept_strike",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide.choice.intercept_strike.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "caught_by_elbow",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide.choice.intercept_strike.outcome.caught_by_elbow.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade"
+              }
+            ]
+          },
+          "failure": {
+            "id": "glancing_hit",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide.choice.intercept_strike.outcome.glancing_hit.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade"
+              }
+            ]
+          },
+          "success": {
+            "id": "wrist_stopped",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide.choice.intercept_strike.outcome.wrist_stopped.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "stopped_before_tension",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide.choice.intercept_strike.outcome.stopped_before_tension.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "step_between",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide.choice.step_between.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "space_broken",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide.choice.step_between.outcome.space_broken.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "watch_intent",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide.choice.watch_intent.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "intent_followed",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide.choice.watch_intent.outcome.intent_followed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hakiSourceTotalAtLeast",
+        "hakiType": "observation",
+        "value": 80
+      },
+      {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "hakiAtLeast",
+          "hakiType": "observation",
+          "level": 2
+        }
+      }
+    ]
+  }
+}

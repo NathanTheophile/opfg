@@ -1,0 +1,139 @@
+{
+  "id": "active_haki_armament_l1_the_unbreakable_thing",
+  "kind": "normal",
+  "titleKey": "event.active_haki_armament_l1_the_unbreakable_thing.title",
+  "textKey": "event.active_haki_armament_l1_the_unbreakable_thing.text",
+  "choices": [
+    {
+      "id": "meet_the_charge",
+      "textKey": "event.active_haki_armament_l1_the_unbreakable_thing.choice.meet_the_charge.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_haki_armament_l1_the_unbreakable_thing.choice.meet_the_charge.text.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l1_the_unbreakable_thing_i01_shell_answer"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_haki_armament_l1_the_unbreakable_thing.choice.meet_the_charge.text.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l1_the_unbreakable_thing_i01_shell_answer"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_haki_armament_l1_the_unbreakable_thing.choice.meet_the_charge.text.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l1_the_unbreakable_thing_i01_shell_answer"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_haki_armament_l1_the_unbreakable_thing.choice.meet_the_charge.text.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l1_the_unbreakable_thing_i01_shell_answer"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "drag_the_cart",
+      "textKey": "event.active_haki_armament_l1_the_unbreakable_thing.choice.drag_the_cart.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "result",
+          "textKey": "event.active_haki_armament_l1_the_unbreakable_thing.choice.drag_the_cart.text.outcome.result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_armament_l1_the_unbreakable_thing_i01_shell_answer"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "draw_it_off",
+      "textKey": "event.active_haki_armament_l1_the_unbreakable_thing.choice.draw_it_off.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "result",
+          "textKey": "event.active_haki_armament_l1_the_unbreakable_thing.choice.draw_it_off.text.outcome.result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_armament_l1_the_unbreakable_thing_i01_shell_answer"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hakiSourceTotalAtLeast",
+        "hakiType": "armament",
+        "value": 75
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "hakiIsAwakened",
+          "hakiType": "armament"
+        }
+      }
+    ]
+  }
+}

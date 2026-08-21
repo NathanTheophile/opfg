@@ -358,9 +358,23 @@ function applyEffect(state: GameState, catalog: ContentCatalog, effect: Effect, 
       return;
     case 'awakenHaki':
       if (state.player.powers.haki[effect.hakiType] !== 0) throw new Error(`${effect.hakiType} Haki is already awakened.`);
-      if (effect.hakiType !== 'conqueror' && playerHakiSourceTotal(state, effect.hakiType) < 75) throw new Error(`${effect.hakiType} Haki requires a source total of 75.`);
+      if (effect.hakiType !== 'conqueror' && playerHakiSourceTotal(state, effect.hakiType, catalog) < 75) throw new Error(`${effect.hakiType} Haki requires a source total of 75.`);
       state.player.powers.haki[effect.hakiType] = 1;
       return;
+    case 'raiseHakiTo': {
+      const current = state.player.powers.haki[effect.hakiType];
+      if (
+        !Number.isInteger(effect.level)
+        || effect.level < 1
+        || effect.level > 5
+        || effect.level < current
+        || effect.level > current + 1
+      ) {
+        throw new Error('Observation/Armament Haki must progress sequentially and monotonically within 1..5.');
+      }
+      state.player.powers.haki[effect.hakiType] = effect.level;
+      return;
+    }
     case 'raiseConquerorHakiTo':
       if (!Number.isInteger(effect.level) || effect.level < 1 || effect.level > 5 || effect.level < state.player.powers.haki.conqueror) throw new Error('Conqueror Haki level must increase monotonically within 1..5.');
       state.player.powers.haki.conqueror = effect.level;

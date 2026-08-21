@@ -28,6 +28,28 @@ const NEW_WORLD_ROUTE_START_EVENT_ID_SET = new Set<string>(NEW_WORLD_ROUTE_START
 const SABAODY_RED_LINE_PASSAGE_EVENT_ID = 'active_sabaody_red_line_passage';
 const FISH_MAN_ISLAND_LOCATION_ID = 'fish_man_island';
 
+export const HAKI_DUE_ROOT_IDS = {
+  observation: [
+    'active_haki_observation_l1_one_second_early',
+    'active_haki_observation_l2_what_gestures_hide',
+    'active_haki_observation_l3_world_without_eyes',
+    'active_haki_observation_l4_silence_that_lies',
+    'active_haki_observation_l5_before_world_moves',
+  ],
+  armament: [
+    'active_haki_armament_l1_the_unbreakable_thing',
+    'active_haki_armament_l2_skin_against_steel',
+    'active_haki_armament_l3_what_must_yield',
+    'active_haki_armament_l4_harder_than_you',
+    'active_haki_armament_l5_impossible_blow',
+  ],
+} as const;
+
+const HAKI_DUE_ROOT_ID_SET = new Set<string>([
+  ...HAKI_DUE_ROOT_IDS.observation,
+  ...HAKI_DUE_ROOT_IDS.armament,
+]);
+
 interface DueMajorSelection {
   candidates: NormalDefinition[];
   overdue: boolean;
@@ -52,6 +74,17 @@ function eligibleCrewRecruitmentEvents(state: GameState, catalog: ContentCatalog
 
 export function hasEligibleCrewRecruitmentEvent(state: GameState, catalog: ContentCatalog): boolean {
   return eligibleCrewRecruitmentEvents(state, catalog).length > 0;
+}
+
+function eligibleDueHakiRootEvents(state: GameState, catalog: ContentCatalog): NormalDefinition[] {
+  return catalog.events
+    .filter((event): event is NormalDefinition =>
+      event.kind === 'normal'
+      && HAKI_DUE_ROOT_ID_SET.has(event.id)
+      && isNormalOccurrenceEligible(event, state)
+      && isEligible(event, state, catalog),
+    )
+    .sort((left, right) => left.id.localeCompare(right.id));
 }
 
 export function selectNextEvent(state: GameState, catalog: ContentCatalog): GameState {
@@ -134,6 +167,11 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
   if (scheduled.event) return selectEvent({ ...state, scheduledEvents: scheduled.entries }, catalog, scheduled.event);
 
   if (major) return selectUniformNormal(state, catalog, scheduled.entries, major.candidates);
+
+  const dueHakiRoots = eligibleDueHakiRootEvents(state, catalog);
+  if (dueHakiRoots.length > 0) {
+    return selectUniformNormal(state, catalog, scheduled.entries, dueHakiRoots);
+  }
 
   if (state.pendingCrewRecruitment) {
     const recruitmentCandidates = eligibleCrewRecruitmentEvents(state, catalog);

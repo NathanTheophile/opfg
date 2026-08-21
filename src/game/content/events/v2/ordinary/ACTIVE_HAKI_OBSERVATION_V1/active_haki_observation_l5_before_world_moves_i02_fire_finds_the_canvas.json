@@ -1,0 +1,124 @@
+{
+  "id": "active_haki_observation_l5_before_world_moves_i02_fire_finds_the_canvas",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l5_before_world_moves_i02_fire_finds_the_canvas.title",
+  "textKey": "event.active_haki_observation_l5_before_world_moves_i02_fire_finds_the_canvas.text",
+  "choices": [
+    {
+      "id": "split_three_groups",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i02_fire_finds_the_canvas.choice.split_three_groups.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "stampede",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i02_fire_finds_the_canvas.choice.split_three_groups.outcome.stampede.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -10
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet"
+              }
+            ]
+          },
+          "failure": {
+            "id": "two_routes",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i02_fire_finds_the_canvas.choice.split_three_groups.outcome.two_routes.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet"
+              }
+            ]
+          },
+          "success": {
+            "id": "flows_separated",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i02_fire_finds_the_canvas.choice.split_three_groups.outcome.flows_separated.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crowd_turns_before_fire",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i02_fire_finds_the_canvas.choice.split_three_groups.outcome.crowd_turns_before_fire.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "tear_firebreak",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i02_fire_finds_the_canvas.choice.tear_firebreak.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "firebreak",
+          "textKey": "event.active_haki_observation_l5_before_world_moves_i02_fire_finds_the_canvas.choice.tear_firebreak.outcome.firebreak.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "read_panic_front",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i02_fire_finds_the_canvas.choice.read_panic_front.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "panic_read",
+          "textKey": "event.active_haki_observation_l5_before_world_moves_i02_fire_finds_the_canvas.choice.read_panic_front.outcome.panic_read.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l5_before_world_moves_i03_panic_has_many_feet"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 4
+      }
+    }
+  ]
+}

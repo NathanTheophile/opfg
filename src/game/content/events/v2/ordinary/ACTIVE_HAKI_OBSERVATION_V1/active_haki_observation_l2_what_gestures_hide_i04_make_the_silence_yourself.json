@@ -1,0 +1,123 @@
+{
+  "id": "active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself.title",
+  "textKey": "event.active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself.text",
+  "choices": [
+    {
+      "id": "center_breath",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself.choice.center_breath.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "panic_echo",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself.choice.center_breath.outcome.panic_echo.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i05_bait_in_plain_sight"
+              }
+            ]
+          },
+          "failure": {
+            "id": "unstable_focus",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself.choice.center_breath.outcome.unstable_focus.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i05_bait_in_plain_sight"
+              }
+            ]
+          },
+          "success": {
+            "id": "chosen_state",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself.choice.center_breath.outcome.chosen_state.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i05_bait_in_plain_sight"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "clear_field",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself.choice.center_breath.outcome.clear_field.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i05_bait_in_plain_sight"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "close_eyes_briefly",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself.choice.close_eyes_briefly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "brief_darkness",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself.choice.close_eyes_briefly.outcome.brief_darkness.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l2_what_gestures_hide_i05_bait_in_plain_sight"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "slow_heartbeat",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself.choice.slow_heartbeat.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "patient_focus",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide_i04_make_the_silence_yourself.choice.slow_heartbeat.outcome.patient_focus.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l2_what_gestures_hide_i05_bait_in_plain_sight"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    }
+  ]
+}

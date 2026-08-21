@@ -1,0 +1,112 @@
+{
+  "id": "active_haki_observation_l3_world_without_eyes_i04_count_the_presences",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l3_world_without_eyes_i04_count_the_presences.title",
+  "textKey": "event.active_haki_observation_l3_world_without_eyes_i04_count_the_presences.text",
+  "choices": [
+    {
+      "id": "pinpoint_fifth",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i04_count_the_presences.choice.pinpoint_fifth.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "false_body",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i04_count_the_presences.choice.pinpoint_fifth.outcome.false_body.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam"
+              }
+            ]
+          },
+          "failure": {
+            "id": "faint_trace",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i04_count_the_presences.choice.pinpoint_fifth.outcome.faint_trace.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam"
+              }
+            ]
+          },
+          "success": {
+            "id": "fifth_found",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i04_count_the_presences.choice.pinpoint_fifth.outcome.fifth_found.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "all_five_mapped",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i04_count_the_presences.choice.pinpoint_fifth.outcome.all_five_mapped.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "count_aloud",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i04_count_the_presences.choice.count_aloud.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "voices_counted",
+          "textKey": "event.active_haki_observation_l3_world_without_eyes_i04_count_the_presences.choice.count_aloud.outcome.voices_counted.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "follow_weak_presence",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i04_count_the_presences.choice.follow_weak_presence.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "weak_signal_followed",
+          "textKey": "event.active_haki_observation_l3_world_without_eyes_i04_count_the_presences.choice.follow_weak_presence.outcome.weak_signal_followed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l3_world_without_eyes_i05_breath_under_the_beam"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 2
+      }
+    }
+  ]
+}

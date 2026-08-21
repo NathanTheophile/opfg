@@ -1,0 +1,107 @@
+{
+  "id": "active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation.title",
+  "textKey": "event.active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation.text",
+  "choices": [
+    {
+      "id": "question_accuser",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation.choice.question_accuser.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "wrong_pressure",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation.choice.question_accuser.outcome.wrong_pressure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief"
+              }
+            ]
+          },
+          "failure": {
+            "id": "partial_tell",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation.choice.question_accuser.outcome.partial_tell.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief"
+              }
+            ]
+          },
+          "success": {
+            "id": "door_tell",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation.choice.question_accuser.outcome.door_tell.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "intent_exposed",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation.choice.question_accuser.outcome.intent_exposed.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "protect_accused",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation.choice.protect_accused.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fear_eases",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation.choice.protect_accused.outcome.fear_eases.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "watch_door",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation.choice.watch_door.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "door_pattern",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation.choice.watch_door.outcome.door_pattern.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l2_what_gestures_hide_i03_the_quiet_thief"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    }
+  ]
+}

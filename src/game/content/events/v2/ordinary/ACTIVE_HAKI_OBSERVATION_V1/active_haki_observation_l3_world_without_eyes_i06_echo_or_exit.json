@@ -1,0 +1,117 @@
+{
+  "id": "active_haki_observation_l3_world_without_eyes_i06_echo_or_exit",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l3_world_without_eyes_i06_echo_or_exit.title",
+  "textKey": "event.active_haki_observation_l3_world_without_eyes_i06_echo_or_exit.text",
+  "choices": [
+    {
+      "id": "read_moving_presences",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i06_echo_or_exit.choice.read_moving_presences.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "crowded_wrong_side",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i06_echo_or_exit.choice.read_moving_presences.outcome.crowded_wrong_side.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing"
+              }
+            ]
+          },
+          "failure": {
+            "id": "uncertain_exit",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i06_echo_or_exit.choice.read_moving_presences.outcome.uncertain_exit.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing"
+              }
+            ]
+          },
+          "success": {
+            "id": "safe_stream",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i06_echo_or_exit.choice.read_moving_presences.outcome.safe_stream.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "whole_route",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i06_echo_or_exit.choice.read_moving_presences.outcome.whole_route.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "test_air",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i06_echo_or_exit.choice.test_air.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "air_tested",
+          "textKey": "event.active_haki_observation_l3_world_without_eyes_i06_echo_or_exit.choice.test_air.outcome.air_tested.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "choose_by_presence",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i06_echo_or_exit.choice.choose_by_presence.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "presence_route",
+          "textKey": "event.active_haki_observation_l3_world_without_eyes_i06_echo_or_exit.choice.choose_by_presence.outcome.presence_route.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 2
+      }
+    }
+  ]
+}

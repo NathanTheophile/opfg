@@ -1,0 +1,111 @@
+{
+  "id": "active_haki_observation_l4_silence_that_lies_i04_intent_cut_short",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l4_silence_that_lies_i04_intent_cut_short.title",
+  "textKey": "event.active_haki_observation_l4_silence_that_lies_i04_intent_cut_short.text",
+  "choices": [
+    {
+      "id": "duck_projectile",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i04_intent_cut_short.choice.duck_projectile.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "projectile_strikes",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i04_intent_cut_short.choice.duck_projectile.outcome.projectile_strikes.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -8
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon"
+              }
+            ]
+          },
+          "failure": {
+            "id": "grazed",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i04_intent_cut_short.choice.duck_projectile.outcome.grazed.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon"
+              }
+            ]
+          },
+          "success": {
+            "id": "cancel_read",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i04_intent_cut_short.choice.duck_projectile.outcome.cancel_read.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "absence_warns",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i04_intent_cut_short.choice.duck_projectile.outcome.absence_warns.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "move_off_line",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i04_intent_cut_short.choice.move_off_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "line_abandoned",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i04_intent_cut_short.choice.move_off_line.outcome.line_abandoned.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "watch_other_bodies",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i04_intent_cut_short.choice.watch_other_bodies.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "field_switch",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i04_intent_cut_short.choice.watch_other_bodies.outcome.field_switch.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 3
+      }
+    }
+  ]
+}

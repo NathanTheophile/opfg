@@ -1,0 +1,122 @@
+{
+  "id": "active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon.title",
+  "textKey": "event.active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon.text",
+  "choices": [
+    {
+      "id": "hold_uncertainty",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon.choice.hold_uncertainty.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "move_first",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon.choice.hold_uncertainty.outcome.move_first.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -7
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real"
+              }
+            ]
+          },
+          "failure": {
+            "id": "nerves_show",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon.choice.hold_uncertainty.outcome.nerves_show.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real"
+              }
+            ]
+          },
+          "success": {
+            "id": "stillness_held",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon.choice.hold_uncertainty.outcome.stillness_held.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "silence_has_shape",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon.choice.hold_uncertainty.outcome.silence_has_shape.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "change_environment",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon.choice.change_environment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stillness_broken",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon.choice.change_environment.outcome.stillness_broken.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_safe_assumption",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon.choice.refuse_safe_assumption.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "unknown_not_safe",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i05_stillness_is_a_weapon.choice.refuse_safe_assumption.outcome.unknown_not_safe.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i06_three_threats_two_real"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 3
+      }
+    }
+  ]
+}

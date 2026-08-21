@@ -1,0 +1,115 @@
+{
+  "id": "active_haki_observation_l1_one_second_early_i03_beam_before_crack",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l1_one_second_early_i03_beam_before_crack.title",
+  "textKey": "event.active_haki_observation_l1_one_second_early_i03_beam_before_crack.text",
+  "choices": [
+    {
+      "id": "lift_man",
+      "textKey": "event.active_haki_observation_l1_one_second_early_i03_beam_before_crack.choice.lift_man.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "beam_hits_both",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i03_beam_before_crack.choice.lift_man.outcome.beam_hits_both.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -7
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i04_question_without_answer"
+              }
+            ]
+          },
+          "failure": {
+            "id": "shoulder_hit",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i03_beam_before_crack.choice.lift_man.outcome.shoulder_hit.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i04_question_without_answer"
+              }
+            ]
+          },
+          "success": {
+            "id": "dragged_clear",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i03_beam_before_crack.choice.lift_man.outcome.dragged_clear.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i04_question_without_answer"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "no_contact",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i03_beam_before_crack.choice.lift_man.outcome.no_contact.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i04_question_without_answer"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "brace_beam",
+      "textKey": "event.active_haki_observation_l1_one_second_early_i03_beam_before_crack.choice.brace_beam.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "beam_braced",
+          "textKey": "event.active_haki_observation_l1_one_second_early_i03_beam_before_crack.choice.brace_beam.outcome.beam_braced.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l1_one_second_early_i04_question_without_answer"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "warn_man",
+      "textKey": "event.active_haki_observation_l1_one_second_early_i03_beam_before_crack.choice.warn_man.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rolled_clear",
+          "textKey": "event.active_haki_observation_l1_one_second_early_i03_beam_before_crack.choice.warn_man.outcome.rolled_clear.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l1_one_second_early_i04_question_without_answer"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

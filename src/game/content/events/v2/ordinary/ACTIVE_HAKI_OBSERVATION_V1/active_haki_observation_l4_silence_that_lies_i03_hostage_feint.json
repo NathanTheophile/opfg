@@ -1,0 +1,113 @@
+{
+  "id": "active_haki_observation_l4_silence_that_lies_i03_hostage_feint",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l4_silence_that_lies_i03_hostage_feint.title",
+  "textKey": "event.active_haki_observation_l4_silence_that_lies_i03_hostage_feint.text",
+  "choices": [
+    {
+      "id": "talk_without_biting",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i03_hostage_feint.choice.talk_without_biting.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "provoked_cut",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i03_hostage_feint.choice.talk_without_biting.outcome.provoked_cut.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i04_intent_cut_short"
+              }
+            ]
+          },
+          "failure": {
+            "id": "stalemate",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i03_hostage_feint.choice.talk_without_biting.outcome.stalemate.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i04_intent_cut_short"
+              }
+            ]
+          },
+          "success": {
+            "id": "mask_slips",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i03_hostage_feint.choice.talk_without_biting.outcome.mask_slips.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i04_intent_cut_short"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "intent_shift_caught",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i03_hostage_feint.choice.talk_without_biting.outcome.intent_shift_caught.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i04_intent_cut_short"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "drop_weapon",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i03_hostage_feint.choice.drop_weapon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "script_broken",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i03_hostage_feint.choice.drop_weapon.outcome.script_broken.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i04_intent_cut_short"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "read_target_not_threat",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i03_hostage_feint.choice.read_target_not_threat.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "threat_reframed",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i03_hostage_feint.choice.read_target_not_threat.outcome.threat_reframed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i04_intent_cut_short"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 3
+      }
+    }
+  ]
+}

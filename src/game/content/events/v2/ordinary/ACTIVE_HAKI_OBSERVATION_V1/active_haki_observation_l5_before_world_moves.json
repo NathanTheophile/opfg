@@ -1,0 +1,158 @@
+{
+  "id": "active_haki_observation_l5_before_world_moves",
+  "kind": "normal",
+  "titleKey": "event.active_haki_observation_l5_before_world_moves.title",
+  "textKey": "event.active_haki_observation_l5_before_world_moves.text",
+  "choices": [
+    {
+      "id": "call_first_cascade",
+      "textKey": "event.active_haki_observation_l5_before_world_moves.choice.call_first_cascade.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "voice_lost",
+            "textKey": "event.active_haki_observation_l5_before_world_moves.choice.call_first_cascade.outcome.voice_lost.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -8
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i01_first_fall"
+              }
+            ]
+          },
+          "failure": {
+            "id": "few_move",
+            "textKey": "event.active_haki_observation_l5_before_world_moves.choice.call_first_cascade.outcome.few_move.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i01_first_fall"
+              }
+            ]
+          },
+          "success": {
+            "id": "crowd_moves_early",
+            "textKey": "event.active_haki_observation_l5_before_world_moves.choice.call_first_cascade.outcome.crowd_moves_early.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i01_first_fall"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "orders_precede_crisis",
+            "textKey": "event.active_haki_observation_l5_before_world_moves.choice.call_first_cascade.outcome.orders_precede_crisis.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i01_first_fall"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "choose_center",
+      "textKey": "event.active_haki_observation_l5_before_world_moves.choice.choose_center.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "center_taken",
+          "textKey": "event.active_haki_observation_l5_before_world_moves.choice.choose_center.outcome.center_taken.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l5_before_world_moves_i01_first_fall"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "open_field",
+      "textKey": "event.active_haki_observation_l5_before_world_moves.choice.open_field.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "field_opened",
+          "textKey": "event.active_haki_observation_l5_before_world_moves.choice.open_field.outcome.field_opened.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l5_before_world_moves_i01_first_fall"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 4
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hakiSourceTotalAtLeast",
+        "hakiType": "observation",
+        "value": 95
+      },
+      {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 4
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "hakiAtLeast",
+          "hakiType": "observation",
+          "level": 5
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "id": "active_haki_observation_l5_before_world_moves_i07_one_breath_ahead",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l5_before_world_moves_i07_one_breath_ahead.title",
+  "textKey": "event.active_haki_observation_l5_before_world_moves_i07_one_breath_ahead.text",
+  "choices": [
+    {
+      "id": "prioritize_cascade",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i07_one_breath_ahead.choice.prioritize_cascade.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "wrong_order",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i07_one_breath_ahead.choice.prioritize_cascade.outcome.wrong_order.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -13
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i08_before_everything_happens"
+              }
+            ]
+          },
+          "failure": {
+            "id": "costly_priority",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i07_one_breath_ahead.choice.prioritize_cascade.outcome.costly_priority.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i08_before_everything_happens"
+              }
+            ]
+          },
+          "success": {
+            "id": "right_sequence",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i07_one_breath_ahead.choice.prioritize_cascade.outcome.right_sequence.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i08_before_everything_happens"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "whole_sequence",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i07_one_breath_ahead.choice.prioritize_cascade.outcome.whole_sequence.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i08_before_everything_happens"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "protect_bottleneck",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i07_one_breath_ahead.choice.protect_bottleneck.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bottleneck_held",
+          "textKey": "event.active_haki_observation_l5_before_world_moves_i07_one_breath_ahead.choice.protect_bottleneck.outcome.bottleneck_held.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -3
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l5_before_world_moves_i08_before_everything_happens"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "act_before_confirmation",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i07_one_breath_ahead.choice.act_before_confirmation.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "one_breath_ahead",
+          "textKey": "event.active_haki_observation_l5_before_world_moves_i07_one_breath_ahead.choice.act_before_confirmation.outcome.one_breath_ahead.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l5_before_world_moves_i08_before_everything_happens"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 4
+      }
+    }
+  ]
+}

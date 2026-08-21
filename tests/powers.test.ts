@@ -45,7 +45,7 @@ describe('Powers V1', () => {
   it.each([
     ['observation', 'observation', 'intelligence'],
     ['armament', 'strength', 'agility'],
-  ] as const)('%s Haki requires 75, then acquires higher tiers without decreasing', (hakiType, first, second) => {
+  ] as const)('%s Haki requires 75 to awaken, then source Stats alone never auto-promote or regress it', (hakiType, first, second) => {
     let state = createInitialGameState();
     state.player.stats[first] = 49; state.player.stats[second] = 25;
     expect(() => apply(state, [{ type: 'awakenHaki', hakiType }])).toThrow('requires a source total of 75');
@@ -53,19 +53,19 @@ describe('Powers V1', () => {
     state = apply(state, [{ type: 'awakenHaki', hakiType }]);
     expect(state.player.powers.haki[hakiType]).toBe(1);
     state = apply(state, [{ type: 'modifyStat', statId: second, amount: 20 }]);
-    expect(state.player.powers.haki[hakiType]).toBe(5);
+    expect(state.player.powers.haki[hakiType]).toBe(1);
     state = apply(state, [{ type: 'modifyStat', statId: second, amount: -20 }]);
-    expect(state.player.powers.haki[hakiType]).toBe(5);
+    expect(state.player.powers.haki[hakiType]).toBe(1);
   });
 
-  it.each([80, 85, 90, 95])('maps Haki source total %i to the existing progression contract', (total) => {
+  it.each([80, 85, 90, 95])('keeps Observation Haki at its authored level when source total reaches %i', (total) => {
     let state = createInitialGameState();
     state.player.stats.observation = 50;
     state.player.stats.intelligence = 25;
     state = apply(state, [{ type: 'awakenHaki', hakiType: 'observation' }]);
     state.player.stats.intelligence = total - 50;
     state = apply(state, []);
-    expect(state.player.powers.haki.observation).toBe(1 + (total - 75) / 5);
+    expect(state.player.powers.haki.observation).toBe(1);
   });
 
   it('never awakens from stats alone and keeps Conqueror progression event-driven', () => {

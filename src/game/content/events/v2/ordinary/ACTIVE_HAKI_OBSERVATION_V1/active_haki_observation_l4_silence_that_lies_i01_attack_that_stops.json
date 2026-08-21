@@ -1,0 +1,116 @@
+{
+  "id": "active_haki_observation_l4_silence_that_lies_i01_attack_that_stops",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l4_silence_that_lies_i01_attack_that_stops.title",
+  "textKey": "event.active_haki_observation_l4_silence_that_lies_i01_attack_that_stops.text",
+  "choices": [
+    {
+      "id": "hold_center",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i01_attack_that_stops.choice.hold_center.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "flinched_open",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i01_attack_that_stops.choice.hold_center.outcome.flinched_open.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i02_trap_without_intent"
+              }
+            ]
+          },
+          "failure": {
+            "id": "guard_shaken",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i01_attack_that_stops.choice.hold_center.outcome.guard_shaken.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i02_trap_without_intent"
+              }
+            ]
+          },
+          "success": {
+            "id": "center_held",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i01_attack_that_stops.choice.hold_center.outcome.center_held.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i02_trap_without_intent"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "feints_go_quiet",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i01_attack_that_stops.choice.hold_center.outcome.feints_go_quiet.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i02_trap_without_intent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "force_close_range",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i01_attack_that_stops.choice.force_close_range.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "spacing_broken",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i01_attack_that_stops.choice.force_close_range.outcome.spacing_broken.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i02_trap_without_intent"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "watch_commitment",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i01_attack_that_stops.choice.watch_commitment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "commitment_read",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i01_attack_that_stops.choice.watch_commitment.outcome.commitment_read.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i02_trap_without_intent"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 3
+      }
+    }
+  ]
+}

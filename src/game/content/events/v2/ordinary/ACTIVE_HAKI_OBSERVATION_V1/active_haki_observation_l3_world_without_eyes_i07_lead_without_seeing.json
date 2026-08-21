@@ -1,0 +1,129 @@
+{
+  "id": "active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing.title",
+  "textKey": "event.active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing.text",
+  "choices": [
+    {
+      "id": "lead_chain",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing.choice.lead_chain.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "chain_breaks",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing.choice.lead_chain.outcome.chain_breaks.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -7
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i08_last_step_in_darkness"
+              }
+            ]
+          },
+          "failure": {
+            "id": "ragged_exit",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing.choice.lead_chain.outcome.ragged_exit.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i08_last_step_in_darkness"
+              }
+            ]
+          },
+          "success": {
+            "id": "guided_out",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing.choice.lead_chain.outcome.guided_out.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i08_last_step_in_darkness"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "no_sight_needed",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing.choice.lead_chain.outcome.no_sight_needed.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i08_last_step_in_darkness"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "give_roles",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing.choice.give_roles.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "roles_hold",
+          "textKey": "event.active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing.choice.give_roles.outcome.roles_hold.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l3_world_without_eyes_i08_last_step_in_darkness"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "eyes_closed_last_walk",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing.choice.eyes_closed_last_walk.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "deliberate_blindness",
+          "textKey": "event.active_haki_observation_l3_world_without_eyes_i07_lead_without_seeing.choice.eyes_closed_last_walk.outcome.deliberate_blindness.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l3_world_without_eyes_i08_last_step_in_darkness"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 2
+      }
+    }
+  ]
+}

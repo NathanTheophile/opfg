@@ -1,0 +1,123 @@
+{
+  "id": "active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap.title",
+  "textKey": "event.active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap.text",
+  "choices": [
+    {
+      "id": "isolate_hostiles",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap.choice.isolate_hostiles.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "wrong_body",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap.choice.isolate_hostiles.outcome.wrong_body.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -11
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i05_the_ground_opens"
+              }
+            ]
+          },
+          "failure": {
+            "id": "two_of_three",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap.choice.isolate_hostiles.outcome.two_of_three.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i05_the_ground_opens"
+              }
+            ]
+          },
+          "success": {
+            "id": "all_three",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap.choice.isolate_hostiles.outcome.all_three.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i05_the_ground_opens"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hostility_before_motion",
+            "textKey": "event.active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap.choice.isolate_hostiles.outcome.hostility_before_motion.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l5_before_world_moves_i05_the_ground_opens"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "guard_escape_lane",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap.choice.guard_escape_lane.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lane_held",
+          "textKey": "event.active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap.choice.guard_escape_lane.outcome.lane_held.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l5_before_world_moves_i05_the_ground_opens"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "break_their_timing",
+      "textKey": "event.active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap.choice.break_their_timing.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "timing_broken",
+          "textKey": "event.active_haki_observation_l5_before_world_moves_i04_raiders_in_the_gap.choice.break_their_timing.outcome.timing_broken.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l5_before_world_moves_i05_the_ground_opens"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 4
+      }
+    }
+  ]
+}
