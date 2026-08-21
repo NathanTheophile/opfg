@@ -646,9 +646,10 @@ function validateEvent(
     }
   }
   if (event.kind === 'critical') {
-    if (!isRecord(event.trigger) || !['playerHealthDepleted', 'npcHealthDepleted', 'shipDestroyed', 'shipMissingAtSea', 'shipReplacementPending', 'fallbackStreakAtLeast', 'careerAgeAtLeast'].includes(String(event.trigger.type))) errors.push({ path: `${path}.trigger`, message: 'Invalid Critical trigger.' });
+    if (!isRecord(event.trigger) || !['playerHealthDepleted', 'npcHealthDepleted', 'shipDestroyed', 'shipMissingAtSea', 'shipReplacementPending', 'fallbackStreakAtLeast', 'careerAgeAtLeast', 'reverseMountainRiskAtLeast'].includes(String(event.trigger.type))) errors.push({ path: `${path}.trigger`, message: 'Invalid Critical trigger.' });
     else if (event.trigger.type === 'npcHealthDepleted') validateReference(event.trigger.npcId, references.npcIds, 'NpcId', `${path}.trigger`, errors);
     else if (event.trigger.type === 'fallbackStreakAtLeast' && (!Number.isInteger(event.trigger.value) || (event.trigger.value as number) < 1)) errors.push({ path: `${path}.trigger`, message: 'fallbackStreakAtLeast trigger requires a positive integer.' });
+    else if (event.trigger.type === 'reverseMountainRiskAtLeast' && ![2, 4, 6].includes(Number(event.trigger.value))) errors.push({ path: `${path}.trigger`, message: 'reverseMountainRiskAtLeast trigger requires exactly 2, 4, or 6.' });
     else if (event.trigger.type === 'careerAgeAtLeast' && (!Number.isInteger(event.trigger.value) || (event.trigger.value as number) < 1)) errors.push({ path: `${path}.trigger`, message: 'careerAgeAtLeast trigger requires a positive integer.' });
   }
   if (event.eligibility !== undefined) {

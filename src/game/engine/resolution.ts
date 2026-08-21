@@ -11,6 +11,14 @@ import { isMarketSystemEventId, marketReturnEvent } from './marketEvents';
 import { applyNavigationSystemResolution, isNavigationSystemEventId } from './navigation';
 import { resolveOrdinaryBlueArrivalAfterMonthlyRoot } from './maritime';
 import { consumePhaseSlot, finalizePendingSlot } from './time';
+import {
+  clearReverseMountainImmediateQueue,
+  clearReverseMountainTemporaryFlags,
+  findReverseMountainCriticalEvent,
+  hasReverseMountainAttemptActive,
+  hasReverseMountainNavigatorOverride,
+  isReverseMountainRootId,
+} from './reverseMountain';
 
 const MAX_IMMEDIATE_EVENTS_PER_CHAIN = 1000;
 
@@ -63,6 +71,9 @@ function finalizeOutcome(
   outcome: Outcome,
   dice?: DiceRollResult,
 ): ChoiceResolutionResult {
+  const freeReverseMountainRoot = event.kind === 'normal'
+    && isReverseMountainRootId(event.id)
+    && hasReverseMountainNavigatorOverride(state);
   const afterEffects = applyEffects(state, catalog, outcome.effects, {
     sourceEventId: event.id,
     sourceChoiceId: choiceId,
@@ -81,6 +92,10 @@ function finalizeOutcome(
     ],
     scheduledEvents: consumeScheduledEntry(afterSystemResolution, catalog, event, state.ageMonths),
   };
+
+  const reverseMountainHardTermination = hasReverseMountainAttemptActive(resolvedState)
+    && (resolvedState.player.stats.health <= 0 || resolvedState.ship === null || resolvedState.ship.health <= 0);
+  if (reverseMountainHardTermination) resolvedState = clearReverseMountainTemporaryFlags(resolvedState);
 
   if (state.ship === null && resolvedState.ship !== null) {
     resolvedState = { ...resolvedState, navigationDecisionAgeMonths: null };
@@ -122,12 +137,22 @@ function finalizeOutcome(
     if (immediateEventsResolvedInChain > MAX_IMMEDIATE_EVENTS_PER_CHAIN) throw new Error(`Immediate Event chain exceeded runtime guard (${MAX_IMMEDIATE_EVENTS_PER_CHAIN}).`);
     resolvedState = { ...resolvedState, immediateEventQueue: resolvedState.immediateEventQueue.slice(1), immediateEventsResolvedInChain };
   } else if (event.kind === 'normal' || event.kind === 'scheduled') {
-    if (resolvedState.immediateEventQueue.length > 0) {
+    if (freeReverseMountainRoot) {
+      resolvedState = { ...resolvedState, pendingSlotPhase: null, immediateEventsResolvedInChain: 0 };
+    } else if (resolvedState.immediateEventQueue.length > 0) {
       resolvedState = { ...resolvedState, pendingSlotPhase: state.careerPhase, immediateEventsResolvedInChain: 0 };
     } else {
       resolvedState = consumePhaseSlot(resolvedState, state.careerPhase, catalog);
       completedMonthlyRoot = true;
     }
+  }
+
+  if (reverseMountainHardTermination) resolvedState = clearReverseMountainImmediateQueue(resolvedState);
+
+  if (hasReverseMountainAttemptActive(resolvedState)
+    && resolvedState.immediateEventQueue.length === 0
+    && findReverseMountainCriticalEvent(resolvedState, catalog.events) === undefined) {
+    resolvedState = clearReverseMountainTemporaryFlags(resolvedState);
   }
 
   if (resolvedState.pendingSlotPhase !== null && resolvedState.immediateEventQueue.length === 0 && findCriticalEvent(resolvedState, catalog.events) === undefined) {

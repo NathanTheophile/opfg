@@ -1,0 +1,199 @@
+{
+  "id": "critical_reverse_mountain_03_last_chance",
+  "kind": "critical",
+  "titleKey": "event.critical_reverse_mountain_03_last_chance.title",
+  "textKey": "event.critical_reverse_mountain_03_last_chance.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "hasFlag",
+        "flagId": "reverse_mountain_attempt_active"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "hasFlag",
+        "flagId": "reverse_mountain_critical_01_resolved"
+      },
+      {
+        "type": "hasFlag",
+        "flagId": "reverse_mountain_critical_02_resolved"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "hasFlag",
+          "flagId": "reverse_mountain_critical_03_resolved"
+        }
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "retrouver_une_ligne",
+      "textKey": "event.critical_reverse_mountain_03_last_chance.choice.retrouver_une_ligne.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.critical_reverse_mountain_03_last_chance.choice.retrouver_une_ligne.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -12
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_03_resolved"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.critical_reverse_mountain_03_last_chance.choice.retrouver_une_ligne.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -8
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_03_resolved"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.critical_reverse_mountain_03_last_chance.choice.retrouver_une_ligne.outcome.success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_03_resolved"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.critical_reverse_mountain_03_last_chance.choice.retrouver_une_ligne.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_03_resolved"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "tenir_quand_tout_cede",
+      "textKey": "event.critical_reverse_mountain_03_last_chance.choice.tenir_quand_tout_cede.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.critical_reverse_mountain_03_last_chance.choice.tenir_quand_tout_cede.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -12
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_03_resolved"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.critical_reverse_mountain_03_last_chance.choice.tenir_quand_tout_cede.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -8
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_03_resolved"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.critical_reverse_mountain_03_last_chance.choice.tenir_quand_tout_cede.outcome.success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_03_resolved"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.critical_reverse_mountain_03_last_chance.choice.tenir_quand_tout_cede.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_03_resolved"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "couper_ce_qui_tire",
+      "textKey": "event.critical_reverse_mountain_03_last_chance.choice.couper_ce_qui_tire.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.critical_reverse_mountain_03_last_chance.choice.couper_ce_qui_tire.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -9
+            },
+            {
+              "type": "setFlag",
+              "flagId": "reverse_mountain_critical_03_resolved"
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    }
+  ],
+  "trigger": {
+    "type": "reverseMountainRiskAtLeast",
+    "value": 6
+  }
+}

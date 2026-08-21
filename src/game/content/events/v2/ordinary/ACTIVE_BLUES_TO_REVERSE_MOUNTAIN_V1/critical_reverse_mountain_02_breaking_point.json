@@ -1,0 +1,195 @@
+{
+  "id": "critical_reverse_mountain_02_breaking_point",
+  "kind": "critical",
+  "titleKey": "event.critical_reverse_mountain_02_breaking_point.title",
+  "textKey": "event.critical_reverse_mountain_02_breaking_point.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "hasFlag",
+        "flagId": "reverse_mountain_attempt_active"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "hasFlag",
+        "flagId": "reverse_mountain_critical_01_resolved"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "hasFlag",
+          "flagId": "reverse_mountain_critical_02_resolved"
+        }
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "tenir_le_gouvernail",
+      "textKey": "event.critical_reverse_mountain_02_breaking_point.choice.tenir_le_gouvernail.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.critical_reverse_mountain_02_breaking_point.choice.tenir_le_gouvernail.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -9
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_02_resolved"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.critical_reverse_mountain_02_breaking_point.choice.tenir_le_gouvernail.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_02_resolved"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.critical_reverse_mountain_02_breaking_point.choice.tenir_le_gouvernail.outcome.success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_02_resolved"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.critical_reverse_mountain_02_breaking_point.choice.tenir_le_gouvernail.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_02_resolved"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "isoler_la_casse",
+      "textKey": "event.critical_reverse_mountain_02_breaking_point.choice.isoler_la_casse.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.critical_reverse_mountain_02_breaking_point.choice.isoler_la_casse.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -9
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_02_resolved"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.critical_reverse_mountain_02_breaking_point.choice.isoler_la_casse.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_02_resolved"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.critical_reverse_mountain_02_breaking_point.choice.isoler_la_casse.outcome.success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_02_resolved"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.critical_reverse_mountain_02_breaking_point.choice.isoler_la_casse.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_critical_02_resolved"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "sacrifier_une_section",
+      "textKey": "event.critical_reverse_mountain_02_breaking_point.choice.sacrifier_une_section.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.critical_reverse_mountain_02_breaking_point.choice.sacrifier_une_section.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -5
+            },
+            {
+              "type": "setFlag",
+              "flagId": "reverse_mountain_critical_02_resolved"
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    }
+  ],
+  "trigger": {
+    "type": "reverseMountainRiskAtLeast",
+    "value": 4
+  }
+}

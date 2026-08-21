@@ -1,0 +1,193 @@
+{
+  "id": "active_reverse_mountain_approach_north_blue_i02_rigging_strain",
+  "kind": "immediate",
+  "titleKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.title",
+  "textKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "hasFlag",
+        "flagId": "reverse_mountain_attempt_active"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "repartir_la_tension",
+      "textKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.choice.repartir_la_tension.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.choice.repartir_la_tension.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_risk_02"
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_approach_north_blue_i03_hostile_window"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.choice.repartir_la_tension.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_risk_02"
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_approach_north_blue_i03_hostile_window"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.choice.repartir_la_tension.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_approach_north_blue_i03_hostile_window"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.choice.repartir_la_tension.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_approach_north_blue_i03_hostile_window"
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "shipIs",
+              "shipId": "dinghy"
+            },
+            "value": -3,
+            "displayLabelKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.modifier.dinghy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "tenir_le_greement",
+      "textKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.choice.tenir_le_greement.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.choice.tenir_le_greement.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_risk_02"
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_approach_north_blue_i03_hostile_window"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.choice.tenir_le_greement.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "setFlag",
+                "flagId": "reverse_mountain_risk_02"
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_approach_north_blue_i03_hostile_window"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.choice.tenir_le_greement.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_approach_north_blue_i03_hostile_window"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.choice.tenir_le_greement.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_approach_north_blue_i03_hostile_window"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "abattre_une_voile",
+      "textKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.choice.abattre_une_voile.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_reverse_mountain_approach_north_blue_i02_rigging_strain.choice.abattre_une_voile.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_reverse_mountain_approach_north_blue_i03_hostile_window"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import { crewRoleHolderId } from './crew';
 import { hasEligibleCrewRecruitmentEvent } from './events';
 import { modifyPlayerHealth } from './health';
 import { getNavigatorDestinationIds, movePlayerToLocation } from './locations';
+import { canStartNavigatorReverseMountainAttempt, startNavigatorReverseMountainAttempt } from './reverseMountain';
 
 const MEDIC_HEAL = 12;
 const SHIPWRIGHT_REPAIR = 10;
@@ -65,7 +66,8 @@ export function useCrewRolePower(
     if (!destinationId || !navigatorDestinations(state, catalog).some(({ id }) => id === destinationId)) {
       throw new Error('Navigator power requires a valid destination.');
     }
-    movePlayerToLocation(state, destinationId, 'on_land');
+    if (destinationId === 'reverse_mountain') startNavigatorReverseMountainAttempt(state, catalog);
+    else movePlayerToLocation(state, destinationId, 'on_land');
   } else if (power === 'recruiter') {
     state.pendingCrewRecruitment = true;
   } else if (power === 'first_mate') {
@@ -92,5 +94,6 @@ export function useCrewRolePower(
 
 export function navigatorDestinations(state: GameState, catalog: ContentCatalog) {
   const destinationIds = new Set(getNavigatorDestinationIds(state.locationId, catalog));
+  if (!canStartNavigatorReverseMountainAttempt(state, catalog)) destinationIds.delete('reverse_mountain');
   return catalog.locations.filter(({ id }) => destinationIds.has(id));
 }
