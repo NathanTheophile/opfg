@@ -152,16 +152,26 @@ function removeRuntimeOverrides(): void {
 function cssExport(
   values: UITunerValues,
 ): string {
-  const lines = UI_TUNER_DEFINITIONS.map((definition) => {
-    const value = values[definition.id];
+  const lines = UI_TUNER_DEFINITIONS
+    .filter(
+      (definition) =>
+        values[definition.id] !== definition.defaultValue,
+    )
+    .map((definition) => {
+      const value = values[definition.id];
 
-    return `  ${definition.variable}: ${serializeValue(
-      definition,
-      value,
-    )};`;
-  });
+      return `  ${definition.variable}: ${serializeValue(
+        definition,
+        value,
+      )};`;
+    });
 
-  return `:root {\n${lines.join('\n')}\n}\n`;
+  const body =
+    lines.length > 0
+      ? lines.join('\n')
+      : '  /* Aucun override par rapport aux defaults. */';
+
+  return `:root {\n${body}\n}\n`;
 }
 
 function jsonExport(
@@ -615,7 +625,7 @@ export function UITuner() {
     await navigator.clipboard.writeText(
       cssExport(values),
     );
-    showNotice('CSS copié');
+    showNotice('Modifications CSS copiées');
   };
 
   const copyJson = async () => {
