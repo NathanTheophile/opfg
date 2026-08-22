@@ -362,6 +362,10 @@ export function EventPreview({
 
 
 
+  const coarsePointer =
+    typeof window !== 'undefined'
+    && window.matchMedia('(pointer: coarse)').matches;
+
   const translate: Translator = (key, params) =>
     t(key, locale, {
       playerName: session.gameState?.player.profile.name ?? '',
@@ -923,7 +927,7 @@ export function EventPreview({
         () => {
           setOutcomeRevealed(true);
         },
-        reducedMotion ? 1 : 310,
+        reducedMotion || coarsePointer ? 1 : 310,
       );
 
     return () =>
@@ -1465,10 +1469,12 @@ export function EventPreview({
                         {outcomeRevealed && (
                           <motion.div
                             key="outcome"
-                            initial={{
-                              opacity: 0,
-                              y: -4,
-                            }}
+                            initial={coarsePointer
+                              ? false
+                              : {
+                                  opacity: 0,
+                                  y: -4,
+                                }}
                             animate={{
                               opacity: 1,
                               y: 0,
@@ -1476,15 +1482,17 @@ export function EventPreview({
                             exit={{
                               opacity: 0,
                             }}
-                            transition={{
-                              duration: 0.16,
-                              ease: [
-                                0.16,
-                                1,
-                                0.3,
-                                1,
-                              ],
-                            }}
+                            transition={coarsePointer
+                              ? { duration: 0 }
+                              : {
+                                  duration: 0.16,
+                                  ease: [
+                                    0.16,
+                                    1,
+                                    0.3,
+                                    1,
+                                  ],
+                                }}
                           >
                             <OutcomePanel
                               outcome={outcomeView}

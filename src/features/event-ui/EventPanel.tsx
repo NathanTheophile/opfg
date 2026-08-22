@@ -93,6 +93,9 @@ export function EventPanel({
     useState(true);
   const transitionTimerRef =
     useRef<number[]>([]);
+  const coarsePointer =
+    typeof window !== 'undefined'
+    && window.matchMedia('(pointer: coarse)').matches;
 
   useEffect(() => {
     const sameNarrative =
@@ -129,6 +132,20 @@ export function EventPanel({
         selectedChoiceId;
 
     if (!presentationChanged) {
+      return undefined;
+    }
+
+    if (coarsePointer) {
+      transitionTimerRef.current.forEach((timer) =>
+        window.clearTimeout(timer),
+      );
+      transitionTimerRef.current = [];
+
+      setDisplayEvent(event);
+      setDisplayMode(mode);
+      setDisplaySelectedChoiceId(selectedChoiceId);
+      setInputs({});
+      setContentVisible(true);
       return undefined;
     }
 
@@ -324,43 +341,47 @@ export function EventPanel({
                     return (
                       <motion.div
                         key={choice.id}
-                        layout="position"
+                        layout={coarsePointer ? false : 'position'}
                         initial={false}
                         animate={{
                           opacity: 1,
                           height: 'auto',
                         }}
-                        exit={{
-                          opacity: 0,
-                          height: 0,
-                          transition: {
-                            opacity: {
-                              duration: 0.1,
-                              ease: 'easeOut',
-                            },
-                            height: {
-                              duration: 0.17,
-                              delay: 0.09,
-                              ease: [
-                                0.16,
-                                1,
-                                0.3,
-                                1,
-                              ],
-                            },
-                          },
-                        }}
-                        transition={{
-                          layout: {
-                            duration: 0.17,
-                            ease: [
-                              0.16,
-                              1,
-                              0.3,
-                              1,
-                            ],
-                          },
-                        }}
+                        exit={coarsePointer
+                          ? undefined
+                          : {
+                              opacity: 0,
+                              height: 0,
+                              transition: {
+                                opacity: {
+                                  duration: 0.1,
+                                  ease: 'easeOut',
+                                },
+                                height: {
+                                  duration: 0.17,
+                                  delay: 0.09,
+                                  ease: [
+                                    0.16,
+                                    1,
+                                    0.3,
+                                    1,
+                                  ],
+                                },
+                              },
+                            }}
+                        transition={coarsePointer
+                          ? { duration: 0 }
+                          : {
+                              layout: {
+                                duration: 0.17,
+                                ease: [
+                                  0.16,
+                                  1,
+                                  0.3,
+                                  1,
+                                ],
+                              },
+                            }}
                         className="opfg-event-panel__choice"
                         data-selected={
                           selected
