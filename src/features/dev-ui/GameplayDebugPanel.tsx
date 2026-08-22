@@ -219,7 +219,7 @@ export function GameplayDebugPanel() {
   const state = snapshot?.gameState ?? null;
   const catalog = snapshot?.catalog ?? null;
   useEffect(() => {
-    if (state) setPlayerNameDraft(state.player.profile.name);
+    if (state) setPlayerNameDraft(state.player.profile.name ?? '');
   }, [state?.player.profile.name]);
 
 
