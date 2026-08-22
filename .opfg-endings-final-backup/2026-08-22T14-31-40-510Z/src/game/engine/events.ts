@@ -16,7 +16,6 @@ import {
   materializeMarketEvent,
 } from './marketEvents';
 import { requiresCrewManagement } from './crew';
-import { CAREER_ENDING_CANDIDATES, CAREER_ENDING_ROOT_IDS } from '../content/careerEndings';
 import {
   findEligibleReverseMountainRoot,
   findReverseMountainCriticalEvent,
@@ -186,8 +185,8 @@ function eligibleEarlyWindfallRootEvents(state: GameState, catalog: ContentCatal
 export function selectNextEvent(state: GameState, catalog: ContentCatalog): GameState {
   if (state.careerStatus !== 'active') return { ...state, currentEventId: null };
 
-  const hardCritical = findHardCriticalEvent(state, catalog.events);
-  if (hardCritical) return selectEvent(state, catalog, hardCritical);
+  const critical = findCriticalEvent(state, catalog.events);
+  if (critical) return selectEvent(state, catalog, critical);
 
   if (state.immediateEventQueue.length > 0) {
     const immediateId = state.immediateEventQueue[0];
@@ -199,12 +198,6 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     }
     return selectEvent(state, catalog, immediate);
   }
-
-  const careerEndingRoot = findCareerHorizonEndingRoot(state, catalog);
-  if (careerEndingRoot) return selectEvent(state, catalog, careerEndingRoot);
-
-  const careerHorizonCritical = findCareerHorizonCriticalEvent(state, catalog.events);
-  if (careerHorizonCritical) return selectEvent(state, catalog, careerHorizonCritical);
 
   if (requiresCrewManagement(state)) return { ...state, currentEventId: null };
 
@@ -314,7 +307,6 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
       && !isParadiseRouteStartEventId(event.id)
       && !REVERSE_MOUNTAIN_ROOT_IDS.has(event.id)
       && !EARLY_CREW_FALLBACK_EVENT_IDS.has(event.id)
-      && !CAREER_ENDING_ROOT_IDS.has(event.id)
       && isNormalOccurrenceEligible(event, state)
       && isEligible(event, state, catalog),
   );
@@ -446,7 +438,7 @@ export function hasStartedLifetimeThread(state: GameState, catalog: ContentCatal
   return state.history.some(({ eventId }) => seedIds.has(eventId));
 }
 
-function findHardCriticalEvent(state: GameState, events: readonly EventDefinition[]): EventDefinition | undefined {
+export function findCriticalEvent(state: GameState, events: readonly EventDefinition[]): EventDefinition | undefined {
   const critical = events.filter((event) => event.kind === 'critical');
   if (state.player.stats.health <= 0) return critical.find(({ trigger }) => trigger.type === 'playerHealthDepleted');
   const deadNpcId = Object.entries(state.npcs)
@@ -460,32 +452,7 @@ function findHardCriticalEvent(state: GameState, events: readonly EventDefinitio
   if (fallback) return fallback;
   const reverseMountainCritical = findReverseMountainCriticalEvent(state, events);
   if (reverseMountainCritical) return reverseMountainCritical;
-  return undefined;
-}
-
-function findCareerHorizonCriticalEvent(state: GameState, events: readonly EventDefinition[]): EventDefinition | undefined {
-  return events
-    .filter((event) => event.kind === 'critical')
-    .find(({ trigger }) => trigger.type === 'careerAgeAtLeast' && state.careerPhase === 'active' && state.ageMonths >= trigger.value);
-}
-
-export function findCriticalEvent(state: GameState, events: readonly EventDefinition[]): EventDefinition | undefined {
-  return findHardCriticalEvent(state, events) ?? findCareerHorizonCriticalEvent(state, events);
-}
-
-export function findCareerHorizonEndingRoot(state: GameState, catalog: ContentCatalog): NormalDefinition | undefined {
-  if (state.careerStatus !== 'active' || state.careerPhase !== 'active') return undefined;
-
-  return CAREER_ENDING_CANDIDATES
-    .map(({ eventId, priority }) => {
-      const event = catalog.events.find(
-        (candidate): candidate is NormalDefinition => candidate.id === eventId && candidate.kind === 'normal',
-      );
-      if (!event || !isNormalOccurrenceEligible(event, state) || !isEligible(event, state, catalog)) return undefined;
-      return { event, priority };
-    })
-    .filter((entry): entry is { event: NormalDefinition; priority: number } => entry !== undefined)
-    .sort((left, right) => right.priority - left.priority || left.event.id.localeCompare(right.event.id))[0]?.event;
+  return critical.find(({ trigger }) => trigger.type === 'careerAgeAtLeast' && state.careerPhase === 'active' && state.ageMonths >= trigger.value);
 }
 
 export function isNormalOccurrenceEligible(event: NormalDefinition, state: GameState): boolean {

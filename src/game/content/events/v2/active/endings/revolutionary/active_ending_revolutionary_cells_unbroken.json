@@ -1,0 +1,90 @@
+{
+  "id": "active_ending_revolutionary_cells_unbroken",
+  "kind": "normal",
+  "titleKey": "event.active_ending_revolutionary_cells_unbroken.title",
+  "textKey": "event.active_ending_revolutionary_cells_unbroken.text",
+  "choices": [
+    {
+      "id": "civilians_first",
+      "textKey": "event.active_ending_revolutionary_cells_unbroken.choice.civilians_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "civilians_first",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_revolutionary_cells_unbroken_i01"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.active_ending_revolutionary_cells_unbroken.choice.civilians_first.outcome.civilians_first.text"
+        }
+      }
+    },
+    {
+      "id": "move_in_waves",
+      "textKey": "event.active_ending_revolutionary_cells_unbroken.choice.move_in_waves.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "move_in_waves",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_revolutionary_cells_unbroken_i01"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyBounty",
+              "amount": 500
+            }
+          ],
+          "textKey": "event.active_ending_revolutionary_cells_unbroken.choice.move_in_waves.outcome.move_in_waves.text"
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 420
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "career_revolutionary_08_evacuation_corridor"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_revolutionary_06_too_few_boats"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_revolutionary_05_prisoner_convoy"
+          }
+        ]
+      }
+    ]
+  }
+}

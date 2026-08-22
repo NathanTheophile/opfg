@@ -1,0 +1,111 @@
+{
+  "id": "active_ending_marine_people_over_rank",
+  "kind": "normal",
+  "titleKey": "event.active_ending_marine_people_over_rank.title",
+  "textKey": "event.active_ending_marine_people_over_rank.text",
+  "choices": [
+    {
+      "id": "leave_stage",
+      "textKey": "event.active_ending_marine_people_over_rank.choice.leave_stage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_stage",
+          "textKey": "event.active_ending_marine_people_over_rank.choice.leave_stage.outcome.leave_stage.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_marine_people_over_rank_i01"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "turn_ceremony",
+      "textKey": "event.active_ending_marine_people_over_rank.choice.turn_ceremony.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "turn_ceremony",
+          "textKey": "event.active_ending_marine_people_over_rank.choice.turn_ceremony.outcome.turn_ceremony.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_marine_people_over_rank_i01"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send_order",
+      "textKey": "event.active_ending_marine_people_over_rank.choice.send_order.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "send_order",
+          "textKey": "event.active_ending_marine_people_over_rank.choice.send_order.outcome.send_order.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_marine_people_over_rank_i01"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 420
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 45
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerRankAtLeast",
+          "rankId": "marine_admiral"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "bountyAtLeast",
+          "value": 1
+        }
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_10_human_scale"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_10_moving_justice"
+          }
+        ]
+      }
+    ]
+  }
+}

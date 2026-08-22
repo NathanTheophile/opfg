@@ -1,0 +1,90 @@
+{
+  "id": "active_ending_revolutionary_truce_won",
+  "kind": "normal",
+  "titleKey": "event.active_ending_revolutionary_truce_won.title",
+  "textKey": "event.active_ending_revolutionary_truce_won.text",
+  "choices": [
+    {
+      "id": "accept_with_witnesses",
+      "textKey": "event.active_ending_revolutionary_truce_won.choice.accept_with_witnesses.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_with_witnesses",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_revolutionary_truce_won_i01"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.active_ending_revolutionary_truce_won.choice.accept_with_witnesses.outcome.accept_with_witnesses.text"
+        }
+      }
+    },
+    {
+      "id": "send_terms_without_banner",
+      "textKey": "event.active_ending_revolutionary_truce_won.choice.send_terms_without_banner.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "send_terms_without_banner",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_revolutionary_truce_won_i01"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyBounty",
+              "amount": -500
+            }
+          ],
+          "textKey": "event.active_ending_revolutionary_truce_won.choice.send_terms_without_banner.outcome.send_terms_without_banner.text"
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 420
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "career_revolutionary_09_ceasefire_offer"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_revolutionary_07_town_council"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_revolutionary_10_mutual_defense"
+          }
+        ]
+      }
+    ]
+  }
+}

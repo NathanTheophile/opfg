@@ -1,0 +1,116 @@
+{
+  "id": "active_ending_revolutionary_truce_won_i02",
+  "kind": "immediate",
+  "titleKey": "event.active_ending_revolutionary_truce_won_i02.title",
+  "textKey": "event.active_ending_revolutionary_truce_won_i02.text",
+  "choices": [
+    {
+      "id": "hold_the_table",
+      "textKey": "event.active_ending_revolutionary_truce_won_i02.choice.hold_the_table.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hold_criticalFailure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_truce_won_i03"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1500
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_truce_won_i02.choice.hold_the_table.outcome.hold_criticalFailure.text"
+          },
+          "failure": {
+            "id": "hold_failure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_truce_won_i03"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 750
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_truce_won_i02.choice.hold_the_table.outcome.hold_failure.text"
+          },
+          "success": {
+            "id": "hold_success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_truce_won_i03"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_truce_won_i02.choice.hold_the_table.outcome.hold_success.text"
+          },
+          "criticalSuccess": {
+            "id": "hold_criticalSuccess",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_truce_won_i03"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_truce_won_i02.choice.hold_the_table.outcome.hold_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "trace_the_sabotage",
+      "textKey": "event.active_ending_revolutionary_truce_won_i02.choice.trace_the_sabotage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trace_the_sabotage",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_revolutionary_truce_won_i03"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyBounty",
+              "amount": 500
+            }
+          ],
+          "textKey": "event.active_ending_revolutionary_truce_won_i02.choice.trace_the_sabotage.outcome.trace_the_sabotage.text"
+        }
+      }
+    }
+  ]
+}
