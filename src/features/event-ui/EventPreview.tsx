@@ -116,7 +116,7 @@ const RESULT_KEYS: Record<DiceResult, string> = {
   criticalSuccess: 'dice.criticalSuccess',
 };
 
-const RESULT_HOLD_MS = 650;
+const RESULT_HOLD_MS = 2650;
 
 interface PendingDice {
   status: DiceTableStageStatus;
@@ -1311,6 +1311,8 @@ export function EventPreview({
     location: `${locationLabel}${parentLocationLabel ? ` (${parentLocationLabel})` : ''}${sea ? ` - ${translate(sea.nameKey)}` : ''}`,
     age: `${Math.floor(calendarAgeMonths / 12)} ${translate('ui.unit.years')}`,
     date: getCalendarLabel(calendarAgeMonths, translate),
+    locationDetail: translate('ui.tooltip.world'),
+    timeDetail: translate('ui.tooltip.time'),
   };
 
   const hudProps = {

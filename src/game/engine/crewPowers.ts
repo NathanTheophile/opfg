@@ -12,10 +12,12 @@ export const SHIPWRIGHT_REPAIR = 10;
 export const currentYearIndex = (state: GameState) => Math.floor(state.ageMonths / 12);
 
 export function canUseCrewRolePower(state: GameState, catalog: ContentCatalog, roleId: CrewRoleId): boolean {
-  if (state.ship === null) return false;
-
   const role = catalog.crewRoles.find(({ id }) => id === roleId);
   if (role?.annualPower === undefined) return false;
+  if (
+    (role.annualPower === 'navigator' || role.annualPower === 'shipwright')
+    && state.ship === null
+  ) return false;
 
   const holderId = crewRoleHolderId(state, roleId);
   if (holderId === undefined || state.npcs[holderId].stats.health <= 0) return false;
@@ -46,7 +48,6 @@ export function useCrewRolePower(
   parameterId?: string,
 ): void {
   if (!canUseCrewRolePower(state, catalog, roleId)) throw new Error(`Crew role "${roleId}" power is unavailable.`);
-  if (state.ship === null) throw new Error('Crew Role powers require a ship.');
   const power = catalog.crewRoles.find(({ id }) => id === roleId)?.annualPower;
 
   if (power === 'medic') {
@@ -59,7 +60,8 @@ export function useCrewRolePower(
       };
     }
   } else if (power === 'shipwright') {
-    const maximum = catalog.ships.find(({ id }) => id === state.ship?.shipId)?.maxHealth ?? state.ship.health;
+    if (state.ship === null) throw new Error('Shipwright power requires a ship.');
+    const maximum = catalog.ships.find(({ id }) => id === state.ship.shipId)?.maxHealth ?? state.ship.health;
     state.ship.health = Math.min(maximum, state.ship.health + SHIPWRIGHT_REPAIR);
   } else if (power === 'navigator') {
     const destinationId = parameterId as LocationId | undefined;
