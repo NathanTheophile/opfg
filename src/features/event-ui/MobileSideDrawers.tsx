@@ -89,7 +89,7 @@ export function MobileSideDrawers({
     <div className="opfg-mobile-side-ui">
       <button
         type="button"
-        className="opfg-hud-home-button opfg-mobile-home-button"
+        className="opfg-mobile-home-button opfg-utility-square"
         onClick={onHome}
         disabled={!onHome}
         aria-label={translate('ui.action.home')}

@@ -138,8 +138,27 @@ export function EventPanel({
     transitionTimerRef.current = [];
 
     /*
-     * Full Event -> Event transition:
-     * old copy fades -> hidden swap -> resize -> new copy fades in.
+     * Portrait mobile must not blank/reveal the whole Event panel on every
+     * Event change. On a phone this reads as a page reload, especially while
+     * browser chrome/visualViewport is also settling after a tap.
+     */
+    if (
+      window.matchMedia(
+        '(orientation: portrait)',
+      ).matches
+    ) {
+      setDisplayEvent(event);
+      setDisplayMode(mode);
+      setDisplaySelectedChoiceId(
+        selectedChoiceId,
+      );
+      setInputs({});
+      setContentVisible(true);
+      return undefined;
+    }
+
+    /*
+     * Desktop/landscape keeps the authored Event -> Event cross-fade.
      */
     setContentVisible(false);
 
