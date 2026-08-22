@@ -60,9 +60,10 @@ export function useCrewRolePower(
       };
     }
   } else if (power === 'shipwright') {
-    if (state.ship === null) throw new Error('Shipwright power requires a ship.');
-    const maximum = catalog.ships.find(({ id }) => id === state.ship.shipId)?.maxHealth ?? state.ship.health;
-    state.ship.health = Math.min(maximum, state.ship.health + SHIPWRIGHT_REPAIR);
+    const ship = state.ship;
+    if (ship === null) throw new Error('Shipwright power requires a ship.');
+    const maximum = catalog.ships.find(({ id }) => id === ship.shipId)?.maxHealth ?? ship.health;
+    ship.health = Math.min(maximum, ship.health + SHIPWRIGHT_REPAIR);
   } else if (power === 'navigator') {
     const destinationId = parameterId as LocationId | undefined;
     if (!destinationId || !navigatorDestinations(state, catalog).some(({ id }) => id === destinationId)) {

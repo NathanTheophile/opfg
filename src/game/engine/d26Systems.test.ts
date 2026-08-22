@@ -60,6 +60,7 @@ describe('D2.6 systems hardening', () => {
       status: 'crew',
       crewRoleId: 'medic',
     };
+    state.player.profile.raceId = 'human';
     state.player.stats.health = 10;
 
     expect(state.ship).toBeNull();
