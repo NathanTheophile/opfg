@@ -1,0 +1,110 @@
+{
+  "id": "active_ending_marine_people_over_rank_i02",
+  "kind": "immediate",
+  "titleKey": "event.active_ending_marine_people_over_rank_i02.title",
+  "textKey": "event.active_ending_marine_people_over_rank_i02.text",
+  "choices": [
+    {
+      "id": "steady_crowd",
+      "textKey": "event.active_ending_marine_people_over_rank_i02.choice.steady_crowd.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "voice_criticalFailure",
+            "textKey": "event.active_ending_marine_people_over_rank_i02.choice.steady_crowd.outcome.voice_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_marine_people_over_rank_i03"
+              }
+            ]
+          },
+          "failure": {
+            "id": "voice_failure",
+            "textKey": "event.active_ending_marine_people_over_rank_i02.choice.steady_crowd.outcome.voice_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_marine_people_over_rank_i03"
+              }
+            ]
+          },
+          "success": {
+            "id": "voice_success",
+            "textKey": "event.active_ending_marine_people_over_rank_i02.choice.steady_crowd.outcome.voice_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_marine_people_over_rank_i03"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "voice_criticalSuccess",
+            "textKey": "event.active_ending_marine_people_over_rank_i02.choice.steady_crowd.outcome.voice_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_marine_people_over_rank_i03"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "break_barriers",
+      "textKey": "event.active_ending_marine_people_over_rank_i02.choice.break_barriers.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "break_barriers",
+          "textKey": "event.active_ending_marine_people_over_rank_i02.choice.break_barriers.outcome.break_barriers.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_marine_people_over_rank_i03"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "give_up_citation",
+      "textKey": "event.active_ending_marine_people_over_rank_i02.choice.give_up_citation.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "give_up_citation",
+          "textKey": "event.active_ending_marine_people_over_rank_i02.choice.give_up_citation.outcome.give_up_citation.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_marine_people_over_rank_i03"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

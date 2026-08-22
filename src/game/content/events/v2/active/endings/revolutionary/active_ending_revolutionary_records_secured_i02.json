@@ -1,0 +1,116 @@
+{
+  "id": "active_ending_revolutionary_records_secured_i02",
+  "kind": "immediate",
+  "titleKey": "event.active_ending_revolutionary_records_secured_i02.title",
+  "textKey": "event.active_ending_revolutionary_records_secured_i02.text",
+  "choices": [
+    {
+      "id": "recover_missing_bundle",
+      "textKey": "event.active_ending_revolutionary_records_secured_i02.choice.recover_missing_bundle.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "recover_criticalFailure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_records_secured_i03"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1500
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_records_secured_i02.choice.recover_missing_bundle.outcome.recover_criticalFailure.text"
+          },
+          "failure": {
+            "id": "recover_failure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_records_secured_i03"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 500
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_records_secured_i02.choice.recover_missing_bundle.outcome.recover_failure.text"
+          },
+          "success": {
+            "id": "recover_success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_records_secured_i03"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_records_secured_i02.choice.recover_missing_bundle.outcome.recover_success.text"
+          },
+          "criticalSuccess": {
+            "id": "recover_criticalSuccess",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_records_secured_i03"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_records_secured_i02.choice.recover_missing_bundle.outcome.recover_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "poison_the_copy",
+      "textKey": "event.active_ending_revolutionary_records_secured_i02.choice.poison_the_copy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "poison_the_copy",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_revolutionary_records_secured_i03"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyBounty",
+              "amount": 500
+            }
+          ],
+          "textKey": "event.active_ending_revolutionary_records_secured_i02.choice.poison_the_copy.outcome.poison_the_copy.text"
+        }
+      }
+    }
+  ]
+}

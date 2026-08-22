@@ -1,0 +1,140 @@
+{
+  "id": "active_ending_revolutionary_network_preserved",
+  "kind": "normal",
+  "titleKey": "event.active_ending_revolutionary_network_preserved.title",
+  "textKey": "event.active_ending_revolutionary_network_preserved.text",
+  "choices": [
+    {
+      "id": "split_the_keys",
+      "textKey": "event.active_ending_revolutionary_network_preserved.choice.split_the_keys.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "split_criticalFailure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_network_preserved_i01"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 2000
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_network_preserved.choice.split_the_keys.outcome.split_criticalFailure.text"
+          },
+          "failure": {
+            "id": "split_failure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_network_preserved_i01"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1000
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_network_preserved.choice.split_the_keys.outcome.split_failure.text"
+          },
+          "success": {
+            "id": "split_success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_network_preserved_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_network_preserved.choice.split_the_keys.outcome.split_success.text"
+          },
+          "criticalSuccess": {
+            "id": "split_criticalSuccess",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_network_preserved_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_network_preserved.choice.split_the_keys.outcome.split_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_one_relay",
+      "textKey": "event.active_ending_revolutionary_network_preserved.choice.hold_one_relay.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hold_one_relay",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_revolutionary_network_preserved_i01"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyBounty",
+              "amount": 500
+            }
+          ],
+          "textKey": "event.active_ending_revolutionary_network_preserved.choice.hold_one_relay.outcome.hold_one_relay.text"
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 420
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "revolutionary_regional_commander"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 70
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "career_revolutionary_10_decentralized_lattice"
+      }
+    ]
+  }
+}
