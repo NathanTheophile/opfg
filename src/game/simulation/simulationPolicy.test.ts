@@ -102,6 +102,32 @@ describe('progressionSimulationPolicy', () => {
       .toBe('market:explore');
   });
 
+  it('waits for a Sloop before age 20 instead of spending early funds on a Dinghy', () => {
+    const earlyPoor = state({ ageMonths: 200, berries: 5_000 });
+    expect(choose('system_market:port', ['market:ship:buy:dinghy', 'market:ship:buy:sloop', 'market:explore'], earlyPoor))
+      .toBe('market:explore');
+
+    const earlyFunded = state({ ageMonths: 200, berries: 30_000 });
+    expect(choose('system_market:port', ['market:ship:buy:dinghy', 'market:ship:buy:sloop', 'market:explore'], earlyFunded))
+      .toBe('market:ship:buy:sloop');
+  });
+
+  it('prioritizes Medic then Navigator for the first two Progression crew roles', () => {
+    const first = progressionSimulationPolicy.chooseCrewRole?.(
+      ['navigator', 'medic', 'cook'],
+      123456,
+      undefined,
+    );
+    expect(first?.roleId).toBe('medic');
+
+    const second = progressionSimulationPolicy.chooseCrewRole?.(
+      ['navigator', 'cook'],
+      123456,
+      undefined,
+    );
+    expect(second?.roleId).toBe('navigator');
+  });
+
   it('uses the Sloop when Dinghy capacity is too small and Sloop is affordable', () => {
     const twoCrew = state({
       berries: 25_000,

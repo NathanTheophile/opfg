@@ -1,9 +1,13 @@
 import type { ContentCatalog } from '../../../src/game/content/schema';
+import { crewRoleHolderId } from '../../../src/game/engine/crew';
 import { canUseCrewRolePower } from '../../../src/game/engine/crewPowers';
+import { canBuyShip } from '../../../src/game/engine/economy';
 import { activeParadiseRouteId } from '../../../src/game/engine/maritime';
 import {
   REVERSE_MOUNTAIN_NAVIGATOR_OVERRIDE_FLAG,
   REVERSE_MOUNTAIN_ROOT_IDS,
+  canStartNavigatorReverseMountainAttempt,
+  findEligibleReverseMountainRoot,
 } from '../../../src/game/engine/reverseMountain';
 import type { GameState } from '../../../src/game/model/schema';
 import type { SimulationObserver } from '../../../src/game/simulation/observation';
@@ -74,12 +78,17 @@ export function collectV2Run(
 
   let everHadShip = false;
   let firstShipAgeMonths: number | null = null;
+  let firstSloopAgeMonths: number | null = null;
+  let firstSloopPurchaseOpportunityAgeMonths: number | null = null;
+  let sloopPurchaseOpportunitiesBefore20 = 0;
   let shipAcquisitions = 0;
   let shipLosses = 0;
   let everAtSeaWithoutShip = false;
 
   let maxCrewSize = 0;
   let crewRecruitments = 0;
+  const crewRecruitmentAges: number[] = [];
+  let recruitmentEventsBefore20 = 0;
   let crewDepartures = 0;
 
   let reverseMountainAttempted = false;
@@ -91,6 +100,11 @@ export function collectV2Run(
   let fishManIslandReached = false;
   let newWorldReached = false;
   let reverseMountainAttemptWithNavigator = false;
+  let everBlueWithShip = false;
+  let everBlueWithNonDinghy = false;
+  let everBlueWithNavigatorAndShip = false;
+  let everReverseMountainOrdinaryEligible = false;
+  let everReverseMountainNavigatorEligible = false;
 
   let fallbackEvents = 0;
   let fallbackStreak = 0;
@@ -137,9 +151,27 @@ export function collectV2Run(
     if (state.ship !== null) {
       everHadShip = true;
       firstShipAgeMonths ??= state.ageMonths;
+      if (state.ship.shipId === 'sloop') firstSloopAgeMonths ??= state.ageMonths;
       shipIdsSeen.add(state.ship.shipId);
     } else if (state.travelState === 'at_sea') {
       everAtSeaWithoutShip = true;
+    }
+
+    const isBlue = ['east_blue', 'west_blue', 'north_blue', 'south_blue'].includes(seaId);
+    if (isBlue && state.ship !== null) {
+      everBlueWithShip = true;
+      if (state.ship.shipId !== 'dinghy') everBlueWithNonDinghy = true;
+      if (crewRoleHolderId(state, 'navigator') !== undefined) everBlueWithNavigatorAndShip = true;
+    }
+    try {
+      if (findEligibleReverseMountainRoot(state, catalog) !== undefined) {
+        everReverseMountainOrdinaryEligible = true;
+      }
+      if (canStartNavigatorReverseMountainAttempt(state, catalog)) {
+        everReverseMountainNavigatorEligible = true;
+      }
+    } catch {
+      // Diagnostic probes must never invalidate the simulated run.
     }
 
     const crewEntries = Object.entries(state.npcs).filter(([, npc]) => npc.status === 'crew');
@@ -196,7 +228,9 @@ export function collectV2Run(
 
     const beforeCrew = new Set(Object.entries(before.npcs).filter(([, npc]) => npc.status === 'crew').map(([id]) => id));
     const afterCrew = new Set(Object.entries(after.npcs).filter(([, npc]) => npc.status === 'crew').map(([id]) => id));
-    crewRecruitments += [...afterCrew].filter((id) => !beforeCrew.has(id)).length;
+    const recruitedIds = [...afterCrew].filter((id) => !beforeCrew.has(id));
+    crewRecruitments += recruitedIds.length;
+    for (const _npcId of recruitedIds) crewRecruitmentAges.push(after.ageMonths);
     crewDepartures += [...beforeCrew].filter((id) => !afterCrew.has(id)).length;
   };
 
@@ -223,6 +257,13 @@ export function collectV2Run(
       const after = entry.afterState;
       observeTransition(before, after);
       inc(eventCounts, entry.event.id);
+      if (entry.event.id.startsWith('active_recruitment_') && before.ageMonths < 240) {
+        recruitmentEventsBefore20 += 1;
+      }
+      if (entry.event.id === 'system_market:arrival' && canBuyShip(before, catalog, 'sloop')) {
+        firstSloopPurchaseOpportunityAgeMonths ??= before.ageMonths;
+        if (before.ageMonths < 240) sloopPurchaseOpportunitiesBefore20 += 1;
+      }
 
       if (REVERSE_MOUNTAIN_ROOT_IDS.has(entry.event.id)) {
         reverseMountainAttempted = true;
@@ -338,6 +379,9 @@ export function collectV2Run(
 
     everHadShip,
     firstShipAgeMonths,
+    firstSloopAgeMonths,
+    firstSloopPurchaseOpportunityAgeMonths,
+    sloopPurchaseOpportunitiesBefore20,
     shipAcquisitions,
     shipLosses,
     shipIdsSeen: [...shipIdsSeen].sort(),
@@ -349,6 +393,8 @@ export function collectV2Run(
     crewIdsEver: [...crewIdsEver].sort(),
     crewRolesEver: [...crewRolesEver].sort(),
     crewRecruitments,
+    crewRecruitmentAges: [...crewRecruitmentAges].sort((a, b) => a - b),
+    recruitmentEventsBefore20,
     crewDepartures,
     crewPowerUses,
     crewPowerEffectiveHealing: medicHealing,
@@ -370,6 +416,11 @@ export function collectV2Run(
     fishManIslandReached,
     newWorldReached,
     reverseMountainAttemptWithNavigator,
+    everBlueWithShip,
+    everBlueWithNonDinghy,
+    everBlueWithNavigatorAndShip,
+    everReverseMountainOrdinaryEligible,
+    everReverseMountainNavigatorEligible,
 
     finalTraits: [...result.finalState.player.traits].sort(),
     traitsEver: [...traitsEver].sort(),

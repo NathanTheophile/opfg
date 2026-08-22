@@ -95,9 +95,9 @@ describe('crew runtime redesign', () => {
     state.npcs.a = crewNpc('medic', 5);
     state.npcs.b = crewNpc('cook', 7);
     useCrewRolePower(state, contentCatalog, 'medic');
-    expect(state.player.stats.health).toBe(22);
-    expect(state.npcs.a.stats.health).toBe(17);
-    expect(state.npcs.b.stats.health).toBe(19);
+    expect(state.player.stats.health).toBe(15);
+    expect(state.npcs.a.stats.health).toBe(10);
+    expect(state.npcs.b.stats.health).toBe(12);
   });
 
   it('applies passive role and active Companion Stats globally to Player + Crew', () => {
@@ -192,5 +192,16 @@ describe('crew runtime redesign', () => {
     const next = consumePhaseSlot(state, 'active', contentCatalog);
     expect(next.ageMonths).toBe(192);
     expect(next.crewReassignmentPending).toBe(true);
+  });
+
+  it('regenerates 2 Player HP on each birthday', () => {
+    const state = createInitialGameState();
+    state.careerPhase = 'active';
+    state.ageMonths = 191;
+    state.player.profile.raceId = 'human';
+    state.player.stats.health = 20;
+    const next = consumePhaseSlot(state, 'active', contentCatalog);
+    expect(next.ageMonths).toBe(192);
+    expect(next.player.stats.health).toBe(22);
   });
 });

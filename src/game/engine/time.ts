@@ -5,6 +5,7 @@ import { deriveFamilyActiveCareerHandoff } from '../content/familySagaConfig';
 import { annualCrewIncome, currentCrewIds } from './crew';
 
 const CHILDHOOD_INCOME: Record<string, number> = { poor: 500, modest: 750, wealthy: 1500 };
+export const ANNUAL_PLAYER_HEALTH_REGEN = 2;
 
 export function consumePhaseSlot(state: GameState, phaseBeforeResolution: GameState['careerPhase'], catalog: ContentCatalog): GameState {
   if (phaseBeforeResolution === 'origins') {
@@ -70,7 +71,7 @@ function advanceAge(state: GameState, ageMonths: number, catalog: ContentCatalog
     berries: state.berries + income + crewIncome,
   };
   if (birthdays > 0 && advanced.player.profile.raceId !== null && advanced.player.stats.health > 0) {
-    modifyPlayerHealth(advanced, catalog, birthdays);
+    modifyPlayerHealth(advanced, catalog, birthdays * ANNUAL_PLAYER_HEALTH_REGEN);
   }
   return advanced;
 }

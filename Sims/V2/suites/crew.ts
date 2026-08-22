@@ -40,6 +40,13 @@ export const crewSuite: SuiteDefinition = {
         recruitmentsPerRun: stats(samples.map(({ crewRecruitments }) => crewRecruitments)),
         departuresPerRun: stats(samples.map(({ crewDepartures }) => crewDepartures)),
         uniqueCrewNpcCountPerRun: stats(samples.map(({ crewIdsEver }) => crewIdsEver.length)),
+        recruitmentEventsBefore20: samples.reduce((sum, sample) => sum + sample.recruitmentEventsBefore20, 0),
+        actualRecruitmentsBefore20: samples.reduce((sum, sample) => sum + sample.crewRecruitmentAges.filter((age) => age < 240).length, 0),
+        runsWithAtLeastOneRecruitBy17: samples.filter((sample) => sample.crewRecruitmentAges.filter((age) => age < 216).length >= 1).length,
+        runsWithAtLeastTwoRecruitsBy17: samples.filter((sample) => sample.crewRecruitmentAges.filter((age) => age < 216).length >= 2).length,
+        runsWithAtLeastTwoRecruitsBefore20: samples.filter((sample) => sample.crewRecruitmentAges.filter((age) => age < 240).length >= 2).length,
+        firstRecruitAgeMonths: stats(samples.flatMap((sample) => sample.crewRecruitmentAges[0] === undefined ? [] : [sample.crewRecruitmentAges[0]])),
+        secondRecruitAgeMonths: stats(samples.flatMap((sample) => sample.crewRecruitmentAges[1] === undefined ? [] : [sample.crewRecruitmentAges[1]])),
       },
       roleCoverage: Object.entries(roleRuns)
         .map(([roleId, runs]) => ({ roleId, runs, runPct: pct(runs, samples.length) }))

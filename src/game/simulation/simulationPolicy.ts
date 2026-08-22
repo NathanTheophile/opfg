@@ -96,6 +96,38 @@ function chooseRandomCrewRole(
   };
 }
 
+function chooseProgressionCrewRole(
+  roleIds: readonly CrewRoleId[],
+  rngState: number,
+): SimulationCrewRoleChoice {
+  // Progression models a player who secures the two release-critical utility
+  // roles first. Runtime role assignment has no stat requirement.
+  for (const roleId of ['medic', 'navigator'] as const) {
+    if (roleIds.includes(roleId)) return { roleId, nextRngState: rngState };
+  }
+  return chooseRandomCrewRole(roleIds, rngState);
+}
+
+function choiceAdvancesRecruitment(choice: ChoiceDefinition): boolean {
+  const outcomes = choice.resolution.type === 'deterministic'
+    ? [choice.resolution.outcome]
+    : Object.values(choice.resolution.outcomes);
+  return outcomes.some((outcome) => outcome.effects.some((effect) =>
+    (effect.type === 'setNpcStatus' && effect.status === 'crew')
+    || (effect.type === 'queueImmediateEvent' && effect.eventId.startsWith('active_recruitment_')),
+  ));
+}
+
+function chooseProgressionRecruitmentAction(
+  choices: readonly ChoiceDefinition[],
+  rngState: number,
+  context: SimulationDecisionContext,
+): SimulationChoice | undefined {
+  if (!context.event.id.startsWith('active_recruitment_')) return undefined;
+  const productive = choices.filter(choiceAdvancesRecruitment);
+  return productive.length > 0 ? chooseRandomChoice(productive, rngState) : undefined;
+}
+
 function chooseProgressionCrewPower(
   roleIds: readonly CrewRoleId[],
   rngState: number,
@@ -222,6 +254,21 @@ function cheapestNormallyPurchasableShip(
     ?.id;
 }
 
+function progressionTargetShip(
+  state: GameState,
+  catalog: ContentCatalog,
+): ShipId | undefined {
+  if (state.ship !== null) return undefined;
+
+  // Before 20, do not burn the early-career windfall on a Dinghy. A Sloop is
+  // the first meaningful Progression target and is valid at small-craft ports.
+  if (canNormallyBuyShip(state, catalog, 'sloop')) return 'sloop';
+  if (state.ageMonths < 240) return undefined;
+
+  // After 20, degrade gracefully if a run genuinely never afforded a Sloop.
+  return cheapestNormallyPurchasableShip(state, catalog);
+}
+
 function chooseProgressionMarketAction(
   choices: readonly ChoiceDefinition[],
   rngState: number,
@@ -230,7 +277,7 @@ function chooseProgressionMarketAction(
   const { event, state, catalog } = context;
   if (!event.id.startsWith('system_market:')) return undefined;
 
-  const targetShipId = cheapestNormallyPurchasableShip(state, catalog);
+  const targetShipId = progressionTargetShip(state, catalog);
 
   if (event.id === 'system_market:arrival') {
     if (targetShipId) {
@@ -317,6 +364,9 @@ export const progressionSimulationPolicy: SimulationPolicy = {
       if (depart) return depart;
     }
 
+    const recruitment = chooseProgressionRecruitmentAction(choices, rngState, context);
+    if (recruitment) return recruitment;
+
     const market = chooseProgressionMarketAction(choices, rngState, context);
     if (market) return market;
 
@@ -324,7 +374,9 @@ export const progressionSimulationPolicy: SimulationPolicy = {
     return chooseRandomChoice(choices, rngState);
   },
   chooseNavigation: randomSimulationPolicy.chooseNavigation,
-  chooseCrewRole: randomSimulationPolicy.chooseCrewRole,
+  chooseCrewRole(roleIds, rngState) {
+    return chooseProgressionCrewRole(roleIds, rngState);
+  },
   chooseCrewPower(roleIds, rngState, context) {
     return chooseProgressionCrewPower(roleIds, rngState, context);
   },
