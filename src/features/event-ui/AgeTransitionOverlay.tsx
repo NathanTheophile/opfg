@@ -20,8 +20,16 @@ export function AgeTransitionOverlay({
   onComplete,
 }: AgeTransitionOverlayProps) {
   const reducedMotion = useReducedMotion();
+  const coarsePointer =
+    typeof window !== 'undefined'
+    && window.matchMedia('(pointer: coarse)').matches;
   const durationMs = reducedMotion ? 650 : 2200;
-  const coverMs = reducedMotion ? 90 : 260;
+  const coverMs =
+    reducedMotion
+      ? 90
+      : coarsePointer
+        ? 760
+        : 260;
   const onCoveredRef = useRef(onCovered);
   const onCompleteRef = useRef(onComplete);
 
@@ -53,7 +61,9 @@ export function AgeTransitionOverlay({
         duration: durationMs / 1000,
         times: reducedMotion
           ? [0, 0.14, 0.76, 1]
-          : [0, 0.12, 0.78, 1],
+          : coarsePointer
+            ? [0, 0.36, 0.80, 1]
+            : [0, 0.12, 0.78, 1],
         ease: 'linear',
       }}
       role="status"

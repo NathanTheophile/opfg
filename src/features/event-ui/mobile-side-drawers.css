@@ -98,7 +98,7 @@
     pointer-events: auto;
   }
 
-  .opfg-mobile-home-button span {
+  .opfg-mobile-home-button__label {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -213,5 +213,30 @@
 
   .opfg-mobile-side-drawer {
     animation: none !important;
+  }
+}
+
+/* OPFG MOBILE UI: framed Home below parchment */
+@media (pointer: coarse) and (orientation: portrait) {
+  .opfg-mobile-home-button {
+    --opfg-nine-slice-width: 8px;
+    --opfg-nine-slice-opacity: var(--opfg-nine-slice-opacity-default, 0.9);
+    z-index: 100;
+  }
+
+  .opfg-mobile-side-drawer {
+    z-index: 140;
+  }
+}
+
+/* OPFG MOBILE HOME: NineSlice descendants must stay visible */
+@media (pointer: coarse) and (orientation: portrait) {
+  .opfg-mobile-home-button > .opfg-nine-slice {
+    z-index: 0;
+  }
+
+  .opfg-mobile-home-button > svg {
+    position: relative;
+    z-index: 1;
   }
 }

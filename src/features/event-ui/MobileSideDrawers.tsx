@@ -97,7 +97,9 @@ export function MobileSideDrawers({
       >
         <NineSliceFrame />
         <House className="size-4" aria-hidden="true" />
-        <span>{translate('ui.action.home')}</span>
+        <span className="opfg-mobile-home-button__label">
+          {translate('ui.action.home')}
+        </span>
       </button>
 
       {current && (

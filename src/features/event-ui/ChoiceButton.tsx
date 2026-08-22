@@ -45,6 +45,9 @@ export function ChoiceButton({
   const probability = choice.dice
     ? `${Math.round(choice.dice.successProbability * 100)} %`
     : null;
+  const DiceStatIcon = choice.dice
+    ? STAT_ICONS[choice.dice.statId]
+    : null;
 
   return (
     <Button
@@ -109,16 +112,24 @@ export function ChoiceButton({
         )}
       </span>
 
-      {choice.dice && (
+      {choice.dice && DiceStatIcon && (
         <Badge
-          variant="gold"
+          variant="default"
           className="opfg-choice-dice-badge shrink-0"
+          data-stat={choice.dice.statId}
+          aria-label={`${choice.dice.statLabel}, ${probability}`}
         >
           <Dices
-            className="shrink-0"
+            className="opfg-choice-dice-badge__dice"
             aria-hidden="true"
           />
-          {choice.dice.statLabel} · {probability}
+          <DiceStatIcon
+            className="opfg-choice-dice-badge__stat"
+            aria-hidden="true"
+          />
+          <strong className="opfg-choice-dice-badge__probability">
+            {probability}
+          </strong>
         </Badge>
       )}
     </Button>

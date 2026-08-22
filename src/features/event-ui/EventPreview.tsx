@@ -822,6 +822,7 @@ export function EventPreview({
                   : undefined,
                 dice: preview?.available
                   ? {
+                      statId: preview.statId,
                       statLabel:
                         translate(
                           STAT_KEYS[

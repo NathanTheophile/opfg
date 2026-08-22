@@ -110,7 +110,6 @@ export class D20Scene {
   private onComplete?: () => void;
   private animation?: RollAnimation;
   private rafId = 0;
-  private lastMobileFrameAt = 0;
   private disposed = false;
 
   public constructor({ canvas, onComplete, onContextLost }: D20SceneOptions) {
@@ -120,15 +119,16 @@ export class D20Scene {
     this.mobilePerformanceMode =
       window.matchMedia('(pointer: coarse)').matches;
 
+    /* OPFG MOBILE D20 QUALITY: uncapped RAF + 1.5 DPR + AA */
     this.renderer = new THREE.WebGLRenderer({
       canvas,
       alpha: true,
-      antialias: !this.mobilePerformanceMode,
+      antialias: true,
       powerPreference: 'high-performance',
     });
     this.renderer.setPixelRatio(
       this.mobilePerformanceMode
-        ? 1
+        ? Math.min(window.devicePixelRatio || 1, 1.5)
         : Math.min(window.devicePixelRatio || 1, 2),
     );
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -173,7 +173,6 @@ export class D20Scene {
     this.cancelAnimation();
     this.resetLabelColors();
     this.revealLight.intensity = 0;
-    this.lastMobileFrameAt = 0;
 
     const physics = this.buildPhysicsPlan(rng);
     const animation: RollAnimation = {
@@ -227,18 +226,6 @@ export class D20Scene {
     if (!animation || this.disposed) return;
 
     const p = THREE.MathUtils.clamp((now - animation.startedAt) / animation.durationMs, 0, 1);
-
-    if (this.mobilePerformanceMode && p < 1) {
-      const mobileFrameInterval = 1000 / 30;
-      if (
-        this.lastMobileFrameAt !== 0
-        && now - this.lastMobileFrameAt < mobileFrameInterval
-      ) {
-        this.rafId = requestAnimationFrame(this.tick);
-        return;
-      }
-      this.lastMobileFrameAt = now;
-    }
 
     this.updatePose(animation, p);
     this.updateReveal(animation, p);
@@ -794,6 +781,12 @@ export class D20Scene {
       ], 2));
 
       const texture = createNumberTexture(value);
+      if (this.mobilePerformanceMode) {
+        texture.anisotropy = Math.min(
+          8,
+          this.renderer.capabilities.getMaxAnisotropy(),
+        );
+      }
       this.textures.push(texture);
 
       // The gold, brushed texture and engraved inner shadow are already baked

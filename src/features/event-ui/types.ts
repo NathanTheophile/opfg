@@ -4,6 +4,7 @@ import type { DiceResult, StatId } from '@/game/content/schema';
 export type PlayerDisplayStatId = 'health' | StatId;
 
 export interface DiceChoicePreview {
+  statId: StatId;
   statLabel: string;
   successProbability: number;
   modifierTotal?: number;
