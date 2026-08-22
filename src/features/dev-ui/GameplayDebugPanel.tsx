@@ -32,6 +32,7 @@ import type {
   TraitId,
 } from '@/game/model/schema';
 import './gameplay-debug.css';
+import { PLAYER_NAME_MAX_LENGTH } from '@/game/model/playerName';
 
 const ATTRIBUTE_IDS: StatId[] = [
   'morale',
@@ -176,6 +177,7 @@ function ownedItemQuantities(state: GameState) {
 }
 
 export function GameplayDebugPanel() {
+  const [playerNameDraft, setPlayerNameDraft] = useState('');
   const [visible, setVisible] = useState(false);
   const [snapshot, setSnapshot] = useState<GameplayDebugSnapshot | null>(null);
   const [itemSearch, setItemSearch] = useState('');
@@ -216,6 +218,11 @@ export function GameplayDebugPanel() {
 
   const state = snapshot?.gameState ?? null;
   const catalog = snapshot?.catalog ?? null;
+  useEffect(() => {
+    if (state) setPlayerNameDraft(state.player.profile.name);
+  }, [state?.player.profile.name]);
+
+
 
   const filteredItems = useMemo(() => {
     if (!catalog) return [];
@@ -292,6 +299,16 @@ export function GameplayDebugPanel() {
   const healthMax = state && catalog && state.player.profile.raceId
     ? getPlayerMaxHealth(state, catalog)
     : Math.max(60, state?.player.stats.health ?? 0);
+  const applyPlayerName = () => {
+    const name = playerNameDraft.trim().slice(0, PLAYER_NAME_MAX_LENGTH);
+    if (!name || name === state?.player.profile.name) return;
+
+    mutate((next) => {
+      next.player.profile.name = name;
+    });
+  };
+
+
 
   const setAttribute = (statId: StatId, value: number) =>
     mutate((next) => {
@@ -416,6 +433,34 @@ export function GameplayDebugPanel() {
         </div>
       ) : (
         <div className="opfg-gameplay-debug__scroll">
+          <DebugSection title="Player Identity">
+            <div className="opfg-gameplay-debug__action-row">
+              <input
+                type="text"
+                maxLength={PLAYER_NAME_MAX_LENGTH}
+                value={playerNameDraft}
+                onChange={(event) => setPlayerNameDraft(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') applyPlayerName();
+                }}
+                aria-label="Player name"
+              />
+              <button
+                type="button"
+                onClick={applyPlayerName}
+                disabled={
+                  !playerNameDraft.trim()
+                  || playerNameDraft.trim() === state.player.profile.name
+                }
+              >
+                Apply name
+              </button>
+            </div>
+            <div className="opfg-gameplay-debug__owned">
+              Current: {state.player.profile.name} · max {PLAYER_NAME_MAX_LENGTH} chars
+            </div>
+          </DebugSection>
+
           <DebugSection title="Player Stats">
             <NumberControl
               label={`health / ${healthMax}`}
