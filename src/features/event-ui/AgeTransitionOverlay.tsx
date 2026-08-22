@@ -23,12 +23,18 @@ export function AgeTransitionOverlay({
   const coarsePointer =
     typeof window !== 'undefined'
     && window.matchMedia('(pointer: coarse)').matches;
-  const durationMs = reducedMotion ? 650 : 2200;
-  const coverMs =
-    reducedMotion
+  const reduceAgeMotion = reducedMotion && !coarsePointer;
+    const durationMs =
+    reduceAgeMotion
+      ? 650
+      : coarsePointer
+        ? 4400
+        : 2200;
+    const coverMs =
+    reduceAgeMotion
       ? 90
       : coarsePointer
-        ? 760
+        ? 1520
         : 260;
   const onCoveredRef = useRef(onCovered);
   const onCompleteRef = useRef(onComplete);
@@ -59,7 +65,7 @@ export function AgeTransitionOverlay({
       animate={{ opacity: [0, 1, 1, 0] }}
       transition={{
         duration: durationMs / 1000,
-        times: reducedMotion
+        times: reduceAgeMotion
           ? [0, 0.14, 0.76, 1]
           : coarsePointer
             ? [0, 0.36, 0.80, 1]
@@ -74,7 +80,7 @@ export function AgeTransitionOverlay({
         aria-hidden="true"
       >
         <div className="opfg-age-transition__numbers">
-          {reducedMotion ? (
+          {reduceAgeMotion ? (
             <span className="opfg-age-transition__number">
               {transition.toAge}
             </span>
@@ -99,8 +105,8 @@ export function AgeTransitionOverlay({
                   ],
                 }}
                 transition={{
-                  delay: 0.26,
-                  duration: 0.72,
+                  delay: coarsePointer ? 0.52 : 0.26,
+                  duration: coarsePointer ? 1.44 : 0.72,
                   times: [0, 0.52, 1],
                   ease: [0.4, 0, 1, 1],
                 }}
@@ -127,8 +133,8 @@ export function AgeTransitionOverlay({
                   ],
                 }}
                 transition={{
-                  delay: 0.92,
-                  duration: 0.52,
+                  delay: coarsePointer ? 1.84 : 0.92,
+                  duration: coarsePointer ? 1.04 : 0.52,
                   times: [0, 0.7, 1],
                   ease: [0.16, 1, 0.3, 1],
                 }}
