@@ -19,11 +19,11 @@ describe('Ship System V1', () => {
   it('acquires a first named ship at max or authored damaged health and modifies HP within definition bounds', () => {
     const withoutShip = { ...createInitialGameState(), locationId: 'loguetown', ship: null };
     const acquired = applyEffects(withoutShip, contentCatalog, [{ type: 'acquireShip', shipId: 'merchant_ship', name: 'Golden Gull' }], context);
-    expect(acquired.ship).toMatchObject({ shipId: 'merchant_ship', name: 'Golden Gull', health: 42, cargo: [] });
+    expect(acquired.ship).toMatchObject({ shipId: 'merchant_ship', name: 'Golden Gull', health: 126, cargo: [] });
 
     const damaged = applyEffects(withoutShip, contentCatalog, [{ type: 'acquireShip', shipId: 'sloop', name: 'Old Gull', health: 12 }], context);
     expect(damaged.ship?.health).toBe(12);
-    expect(applyEffects(damaged, contentCatalog, [{ type: 'modifyShipHealth', amount: 100 }], context).ship?.health).toBe(30);
+    expect(applyEffects(damaged, contentCatalog, [{ type: 'modifyShipHealth', amount: 100 }], context).ship?.health).toBe(90);
     expect(applyEffects(damaged, contentCatalog, [{ type: 'modifyShipHealth', amount: -20 }], context).ship?.health).toBe(0);
   });
 
@@ -110,9 +110,9 @@ describe('Ship System V1', () => {
 
   it('reports invalid simulation state for HP, slots, quantities, and ShipId', () => {
     const state = withShip();
-    state.ship!.health = 31;
+    state.ship!.health = 91;
     expect(() => assertValidSimulationState(state, contentCatalog)).toThrow(/health/);
-    state.ship!.health = 30;
+    state.ship!.health = 90;
     state.ship!.cargo = [{ itemId: 'sealed_chart', quantity: 0, provenance: [] }];
     expect(() => assertValidSimulationState(state, contentCatalog)).toThrow(/invalid stacks/);
     state.ship!.cargo = [];

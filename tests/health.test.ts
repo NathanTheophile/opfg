@@ -19,7 +19,7 @@ describe('Player Health', () => {
     expect(state.player.stats.health).toBe(0);
 
     modifyPlayerHealth(state, contentCatalog, 100);
-    expect(state.player.stats.health).toBe(40);
+    expect(state.player.stats.health).toBe(35);
   });
 
   it('requires a defined, known Race', () => {

@@ -194,7 +194,7 @@ describe('crew runtime redesign', () => {
     expect(next.crewReassignmentPending).toBe(true);
   });
 
-  it('regenerates 2 Player HP on each birthday', () => {
+  it('does not regenerate Player HP on birthdays', () => {
     const state = createInitialGameState();
     state.careerPhase = 'active';
     state.ageMonths = 191;
@@ -202,6 +202,6 @@ describe('crew runtime redesign', () => {
     state.player.stats.health = 20;
     const next = consumePhaseSlot(state, 'active', contentCatalog);
     expect(next.ageMonths).toBe(192);
-    expect(next.player.stats.health).toBe(22);
+    expect(next.player.stats.health).toBe(20);
   });
 });

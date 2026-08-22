@@ -9,12 +9,12 @@ import { createInitialGameState } from '../src/game/model/initialState';
 const context = { sourceEventId: 'origin_fixture', sourceChoiceId: 'choice' };
 const attributes: StatId[] = ['morale', 'strength', 'agility', 'observation', 'intelligence', 'navigation', 'charisma', 'luck'];
 const expectedRaces: Record<string, { health: number; modifiers: Partial<Record<StatId, number>> }> = {
-  human: { health: 40, modifiers: { observation: 1, intelligence: 1, charisma: 1, luck: 1, morale: -2 } },
-  fishman: { health: 50, modifiers: { strength: 4, agility: 1, observation: 2, intelligence: -2, navigation: 3, charisma: -3, luck: -2, morale: -3 } },
-  mink: { health: 40, modifiers: { strength: -1, agility: 4, observation: 4, intelligence: -2, navigation: -3, charisma: 1, luck: -2, morale: -1 } },
+  human: { health: 35, modifiers: { observation: 1, intelligence: 1, charisma: 1, luck: 1, morale: -2 } },
+  fishman: { health: 45, modifiers: { strength: 4, agility: 1, observation: 2, intelligence: -2, navigation: 3, charisma: -3, luck: -2, morale: -3 } },
+  mink: { health: 35, modifiers: { strength: -1, agility: 4, observation: 4, intelligence: -2, navigation: -3, charisma: 1, luck: -2, morale: -1 } },
   giant: { health: 60, modifiers: { strength: 6, agility: -6, observation: -2, intelligence: -2, navigation: -4, charisma: -1, luck: -2, morale: 5 } },
-  longarm: { health: 45, modifiers: { strength: 2, agility: 4, observation: 3, intelligence: 1, navigation: -3, charisma: -2, luck: -2, morale: -3 } },
-  buccaneer: { health: 55, modifiers: { strength: 4, agility: -3, observation: 1, intelligence: -1, navigation: -2, charisma: -1, luck: -2, morale: 4 } },
+  longarm: { health: 40, modifiers: { strength: 2, agility: 4, observation: 3, intelligence: 1, navigation: -3, charisma: -2, luck: -2, morale: -3 } },
+  buccaneer: { health: 50, modifiers: { strength: 4, agility: -3, observation: 1, intelligence: -1, navigation: -2, charisma: -1, luck: -2, morale: 4 } },
 };
 
 function apply(effect: Effect) {
@@ -89,7 +89,7 @@ describe('Origins V1 rules', () => {
   it('clamps player health to Race maximum and preserves the existing death Critical', () => {
     const human = apply({ type: 'setRace', raceId: 'human' });
     const healed = applyEffects(human, contentCatalog, [{ type: 'modifyHealth', amount: 50 }], context);
-    expect(healed.player.stats.health).toBe(40);
+    expect(healed.player.stats.health).toBe(35);
     const depleted = applyEffects(healed, contentCatalog, [{ type: 'modifyHealth', amount: -100 }], context);
     expect(selectNextEvent(depleted, contentCatalog).currentEventId).toBe('critical_player_death');
   });
