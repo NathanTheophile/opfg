@@ -5,7 +5,7 @@ import { deriveFamilyActiveCareerHandoff } from '../content/familySagaConfig';
 import { annualCrewIncome, currentCrewIds } from './crew';
 
 const CHILDHOOD_INCOME: Record<string, number> = { poor: 500, modest: 750, wealthy: 1500 };
-export const ANNUAL_PLAYER_HEALTH_REGEN = 2;
+export const ANNUAL_PLAYER_HEALTH_REGEN = 0;
 
 export function consumePhaseSlot(state: GameState, phaseBeforeResolution: GameState['careerPhase'], catalog: ContentCatalog): GameState {
   if (phaseBeforeResolution === 'origins') {
