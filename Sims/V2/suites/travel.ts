@@ -18,6 +18,20 @@ export const travelSuite: SuiteDefinition = {
     const attemptedWithoutNavigator = attempted.filter(({ reverseMountainAttemptWithNavigator }) => !reverseMountainAttemptWithNavigator);
     const navigatorRuns = samples.filter(({ crewRolesEver }) => crewRolesEver.includes('navigator'));
     const sabaodyAfterThriller = samples.filter((sample) => sample.thrillerBarkReached && sample.sabaodyReached);
+    const nonAttempted = samples.filter(({ reverseMountainAttempted }) => !reverseMountainAttempted);
+    const nonAttemptReasons: Record<string, number> = {};
+    for (const sample of nonAttempted) {
+      const reason = !sample.everBlueWithShip
+        ? 'never_had_ship_in_blues'
+        : sample.everReverseMountainNavigatorEligible
+          ? 'navigator_eligible_but_no_attempt'
+          : sample.everReverseMountainOrdinaryEligible
+            ? 'ordinary_eligible_but_no_attempt'
+            : !sample.everBlueWithNonDinghy && !sample.everBlueWithNavigatorAndShip
+              ? 'dinghy_without_navigator_window'
+              : 'no_eligible_reverse_mountain_window';
+      nonAttemptReasons[reason] = (nonAttemptReasons[reason] ?? 0) + 1;
+    }
 
     return {
       worldFunnel: {
@@ -39,6 +53,15 @@ export const travelSuite: SuiteDefinition = {
         paradiseToSabaodyPct: pct(sabaody.length, paradise.length),
         sabaodyToFishManIslandPct: pct(fishMan.length, sabaody.length),
         fishManIslandToNewWorldPct: pct(newWorld.length, fishMan.length),
+      },
+      attemptDiagnostics: {
+        nonAttemptedRuns: nonAttempted.length,
+        primaryReasons: nonAttemptReasons,
+        runsEverBlueWithShip: samples.filter(({ everBlueWithShip }) => everBlueWithShip).length,
+        runsEverBlueWithNonDinghy: samples.filter(({ everBlueWithNonDinghy }) => everBlueWithNonDinghy).length,
+        runsEverBlueWithNavigatorAndShip: samples.filter(({ everBlueWithNavigatorAndShip }) => everBlueWithNavigatorAndShip).length,
+        runsEverOrdinaryEligible: samples.filter(({ everReverseMountainOrdinaryEligible }) => everReverseMountainOrdinaryEligible).length,
+        runsEverNavigatorEligible: samples.filter(({ everReverseMountainNavigatorEligible }) => everReverseMountainNavigatorEligible).length,
       },
       navigator: {
         runsEverWithNavigator: navigatorRuns.length,

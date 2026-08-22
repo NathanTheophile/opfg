@@ -60,6 +60,7 @@ type ChannelState = {
 };
 
 const STORAGE_KEY = 'opfg.audio.v1';
+const MUSIC_PLAYBACK_STORAGE_KEY = 'opfg.audio.musicPlayback.v1';
 const DEFAULT_FADE_SECONDS = 1.5;
 const MUSIC_FADE_SECONDS = 0.6;
 const DEFAULT_SETTINGS: AudioSettings = {
@@ -90,6 +91,24 @@ function loadSettings(): AudioSettings {
     };
   } catch {
     return DEFAULT_SETTINGS;
+  }
+}
+
+function loadMusicPlaybackPreference(): boolean {
+  if (typeof window === 'undefined') return true;
+  try {
+    return window.localStorage.getItem(MUSIC_PLAYBACK_STORAGE_KEY) !== 'paused';
+  } catch {
+    return true;
+  }
+}
+
+function saveMusicPlaybackPreference(playing: boolean): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(MUSIC_PLAYBACK_STORAGE_KEY, playing ? 'playing' : 'paused');
+  } catch {
+    // Audio still works when storage is unavailable.
   }
 }
 
@@ -221,6 +240,7 @@ export function AudioProvider({
           }
         }
 
+        if (channel === 'music') saveMusicPlaybackPreference(true);
         fadeChannel(channel, state.activeIndex, fadeSeconds);
         if (channel === 'music') syncMusicState(state.activeIndex);
         return true;
@@ -243,6 +263,7 @@ export function AudioProvider({
         return false;
       }
 
+      if (channel === 'music') saveMusicPlaybackPreference(true);
       state.activeIndex = nextIndex;
       state.src = src;
       fadeChannel(channel, nextIndex, fadeSeconds);
@@ -376,6 +397,7 @@ export function AudioProvider({
       } catch {
         return;
       }
+      saveMusicPlaybackPreference(true);
       setEnvelope(active, 1);
       applyVolume(active, 'music');
     } else {
@@ -390,6 +412,7 @@ export function AudioProvider({
           setEnvelope(player, 1);
           applyVolume(player, 'music');
           player.pause();
+          saveMusicPlaybackPreference(false);
         } else {
           resetPlayer(player);
         }
@@ -425,7 +448,7 @@ export function AudioProvider({
   // attempt autoplay immediately, then retry on the first user gesture
   // when browser autoplay policy blocks audible media.
   useEffect(() => {
-    if (musicPlaylist.length === 0) {
+    if (musicPlaylist.length === 0 || !loadMusicPlaybackPreference()) {
       return undefined;
     }
 

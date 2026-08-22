@@ -63,15 +63,18 @@
     position: fixed;
     z-index: 100;
     right: max(0.75rem, var(--safe-area-right));
-    bottom: calc(
-      max(0px, var(--safe-area-bottom))
-      + var(--opfg-mobile-bottom-bar-height, 4.75rem)
-      + 0.75rem
+    bottom: var(
+      --opfg-mobile-utility-bottom,
+      calc(
+        max(0px, var(--safe-area-bottom))
+        + var(--opfg-mobile-bottom-bar-height, 4.75rem)
+        + 0.55rem
+      )
     );
-    width: 3.15rem !important;
-    min-width: 3.15rem;
-    height: 3.15rem;
-    min-height: 3.15rem !important;
+    width: var(--ui-utility-control-size, 3.15rem) !important;
+    min-width: var(--ui-utility-control-size, 3.15rem);
+    height: var(--ui-utility-control-size, 3.15rem);
+    min-height: var(--ui-utility-control-size, 3.15rem) !important;
     padding: 0 !important;
   }
 
@@ -94,13 +97,10 @@
       + 0.75rem
     );
     left: max(0.75rem, var(--safe-area-left));
-    width: min(
-      var(--ui-mobile-drawer-width, 21rem),
-      calc(
-        100vw
-        - max(0.75rem, var(--safe-area-left))
-        - max(0.75rem, var(--safe-area-right))
-      )
+    width: calc(
+      100vw
+      - max(0.75rem, var(--safe-area-left))
+      - max(0.75rem, var(--safe-area-right))
     );
     max-height: calc(
       100dvh
@@ -176,5 +176,89 @@
 @media (prefers-reduced-motion: reduce) {
   .opfg-mobile-side-drawer {
     animation-duration: 1ms;
+  }
+}
+
+/* OPFG UI FIX: true 2x portrait drawers */
+@media (orientation: portrait) {
+  .opfg-mobile-home-button {
+    z-index: 10000;
+    right: max(0.85rem, var(--safe-area-right, 0px));
+    bottom: calc(
+      max(0px, var(--safe-area-bottom, 0px))
+      + var(--opfg-mobile-bottom-bar-height, 4.75rem)
+      + var(--opfg-mobile-utility-gap, 0.55rem)
+      + (
+        var(--opfg-mobile-utility-size, 2.65rem)
+        + var(--opfg-mobile-utility-gap, 0.55rem)
+      ) * 2
+    );
+    display: grid !important;
+    width: var(--opfg-mobile-utility-size, 2.65rem) !important;
+    min-width: var(--opfg-mobile-utility-size, 2.65rem) !important;
+    height: var(--opfg-mobile-utility-size, 2.65rem) !important;
+    min-height: var(--opfg-mobile-utility-size, 2.65rem) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto;
+  }
+
+  .opfg-mobile-side-drawer {
+    top: auto;
+    right: auto;
+    bottom: calc(
+      max(0px, var(--safe-area-bottom))
+      + var(--opfg-mobile-bottom-bar-height, 4.75rem)
+      + 0.75rem
+    );
+    left: max(0.75rem, var(--safe-area-left));
+    width: min(
+      var(--ui-mobile-drawer-width, 21rem),
+      calc(50vw - 1rem)
+    );
+    max-width: none;
+    max-height: 42dvh;
+    overflow: auto;
+    transform: scale(2);
+    transform-origin: bottom left;
+    animation-name: opfg-mobile-panel-2x-in;
+  }
+
+  .opfg-mobile-side-drawer:is(
+    [data-drawer='inventory'],
+    [data-drawer='crew']
+  ) {
+    top: auto;
+    right: auto;
+    left: max(0.75rem, var(--safe-area-left));
+    transform: scale(2);
+    transform-origin: bottom left;
+    animation-name: opfg-mobile-panel-2x-in;
+  }
+
+  .opfg-mobile-side-drawer[data-drawer='ship'] {
+    top: auto;
+    right: max(0.75rem, var(--safe-area-right));
+    left: auto;
+    transform: scale(2);
+    transform-origin: bottom right;
+    animation-name: opfg-mobile-panel-2x-in;
+  }
+
+  .opfg-mobile-side-drawer > * {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@keyframes opfg-mobile-panel-2x-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.28rem) scale(1.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(2);
   }
 }

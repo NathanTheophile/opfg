@@ -92,6 +92,24 @@ function getItemLabel(
   return definition ? translate(definition.nameKey) : stack.itemId;
 }
 
+function getItemTooltipDetail(
+  itemId: ItemId,
+  catalog: ContentCatalog,
+  translate: (key: string) => string,
+): string {
+  const definition = catalog.items.find(({ id }) => id === itemId);
+  const modifiers = Object.entries(definition?.modifiers ?? {})
+    .filter(([, amount]) => Number(amount) !== 0)
+    .map(([statId, amount]) => {
+      const value = Number(amount);
+      return `${value > 0 ? '+' : ''}${value} ${translate(`stat.${statId}`)}`;
+    });
+
+  return modifiers.length > 0
+    ? modifiers.join(' · ')
+    : translate('ui.inventory.personalItem.description');
+}
+
 export function getLocationPath(
   state: GameState,
   catalog: ContentCatalog,
@@ -217,7 +235,7 @@ export function InventoryHudPanel({
                   key={`inventory-${stack.itemId}-${index}`}
                   className="opfg-hud-slot-wrap"
                   title={label}
-                  detail={translate('ui.inventory.personalItem.description')}
+                  detail={getItemTooltipDetail(stack.itemId, catalog, translate)}
                   meta={`×${stack.quantity}`}
                   side="bottom"
                   focusable
@@ -234,12 +252,39 @@ export function InventoryHudPanel({
           <div className="opfg-hud-equipment" aria-label={translate('ui.equipment')}>
             {state.player.equipment.map((stack, index) => {
               const slot = { type: 'equipment' as const, index: index as 0 | 1 };
+              if (!stack) {
+                return (
+                  <button
+                    key={`equipment-${index}`}
+                    type="button"
+                    className="opfg-hud-slot is-empty"
+                    aria-label={translate('ui.equipment.empty')}
+                    {...interactionProps(slot, selectedStorageSlot, onStorageSlot)}
+                  >
+                    <Shirt className="size-4" aria-hidden="true" />
+                  </button>
+                );
+              }
+
+              const label = getItemLabel(stack, catalog, translate);
               return (
-                <button key={`equipment-${index}`} type="button" className={`opfg-hud-slot ${stack ? 'is-filled' : 'is-empty'}`} aria-label={stack ? getItemLabel(stack, catalog, translate) : translate('ui.equipment.empty')} {...interactionProps(slot, selectedStorageSlot, onStorageSlot)}>
-                  {stack
-                    ? <ItemSlotIcon itemId={stack.itemId} fallback={<Shirt className="size-4" aria-hidden="true" />} />
-                    : <Shirt className="size-4" aria-hidden="true" />}
-                </button>
+                <ContextTooltip
+                  key={`equipment-${index}`}
+                  className="opfg-hud-slot-wrap"
+                  title={label}
+                  detail={getItemTooltipDetail(stack.itemId, catalog, translate)}
+                  side="bottom"
+                  focusable
+                >
+                  <button
+                    type="button"
+                    className="opfg-hud-slot is-filled"
+                    aria-label={label}
+                    {...interactionProps(slot, selectedStorageSlot, onStorageSlot)}
+                  >
+                    <ItemSlotIcon itemId={stack.itemId} fallback={<Shirt className="size-4" aria-hidden="true" />} />
+                  </button>
+                </ContextTooltip>
               );
             })}
           </div>
@@ -361,7 +406,9 @@ export function ShipHudPanel({ state, catalog, translate, selectedStorageSlot, o
                     key={occupant.key}
                     className="opfg-hud-slot-wrap"
                     title={occupant.label}
-                    detail={translate(occupant.kind === 'passenger' ? 'ui.cargo.passenger.description' : 'ui.cargo.item.description')}
+                    detail={occupant.kind === 'passenger'
+                      ? translate('ui.cargo.passenger.description')
+                      : getItemTooltipDetail(occupant.itemId, catalog, translate)}
                     meta={occupant.kind === 'item' ? `×${occupant.quantity}` : translate('ui.cargo.passenger')}
                     side="bottom"
                     focusable
@@ -382,7 +429,9 @@ export function ShipHudPanel({ state, catalog, translate, selectedStorageSlot, o
             <ContextTooltip
               className="opfg-hud-slot-wrap"
               title={translate('ui.logPose.title')}
-              detail={state.player.logPose ? getItemLabel(state.player.logPose, catalog, translate) : translate('ui.logPose.empty')}
+              detail={state.player.logPose
+                ? `${getItemLabel(state.player.logPose, catalog, translate)} · ${getItemTooltipDetail(state.player.logPose.itemId, catalog, translate)}`
+                : translate('ui.logPose.empty')}
               side="bottom"
               focusable
             >

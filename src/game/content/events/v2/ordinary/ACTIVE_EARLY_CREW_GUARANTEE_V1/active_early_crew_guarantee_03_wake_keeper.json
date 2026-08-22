@@ -1,0 +1,149 @@
+{
+  "id": "active_early_crew_guarantee_03_wake_keeper",
+  "kind": "normal",
+  "titleKey": "event.active_early_crew_guarantee_03_wake_keeper.title",
+  "textKey": "event.active_early_crew_guarantee_03_wake_keeper.text",
+  "choices": [
+    {
+      "id": "offer_a_berth",
+      "textKey": "event.active_early_crew_guarantee_03_wake_keeper.choice.offer_a_berth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "offer_a_berth_outcome",
+          "textKey": "event.active_early_crew_guarantee_03_wake_keeper.choice.offer_a_berth.outcome.offer_a_berth_outcome.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "crew",
+              "allowWithoutLeadership": true
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_wake_keeper",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "not_now",
+      "textKey": "event.active_early_crew_guarantee_03_wake_keeper.choice.not_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "not_now_outcome",
+          "textKey": "event.active_early_crew_guarantee_03_wake_keeper.choice.not_now.outcome.not_now_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "cast": [
+    "active_recruit_wake_keeper"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "ageAtLeastMonths",
+                "value": 180
+              },
+              {
+                "type": "ageAtMostMonths",
+                "value": 191
+              },
+              {
+                "type": "not",
+                "condition": {
+                  "type": "crewSizeAtLeast",
+                  "value": 1
+                }
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "ageAtLeastMonths",
+                "value": 192
+              },
+              {
+                "type": "ageAtMostMonths",
+                "value": 203
+              },
+              {
+                "type": "not",
+                "condition": {
+                  "type": "crewSizeAtLeast",
+                  "value": 2
+                }
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "ageAtLeastMonths",
+                "value": 204
+              },
+              {
+                "type": "ageAtMostMonths",
+                "value": 215
+              },
+              {
+                "type": "not",
+                "condition": {
+                  "type": "crewSizeAtLeast",
+                  "value": 3
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "crew"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

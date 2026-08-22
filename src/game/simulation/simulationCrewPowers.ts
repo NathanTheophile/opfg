@@ -30,8 +30,7 @@ export function resolveOptionalSimulationCrewPower(
   const availableRoleIds = catalog.crewRoles
     .filter(({ id, annualPower }) =>
       annualPower !== undefined
-      && canUseCrewRolePower(state, catalog, id)
-      && (id !== 'navigator' || state.currentEventId === null),
+      && canUseCrewRolePower(state, catalog, id),
     )
     .map(({ id }) => id);
 
@@ -50,6 +49,19 @@ export function resolveOptionalSimulationCrewPower(
   }
 
   const nextState = cloneForCrewPower(state);
+
+  // Navigator changes the player's location (or replaces the flow with a
+  // Reverse Mountain root). The simulator normally carries a pre-selected
+  // next Event in currentEventId, because resolveChoice() immediately calls
+  // selectNextEvent(). That Event is only provisional here: keeping it after
+  // a Navigator move can leave a dynamic System Event such as
+  // "system_market:arrival" bound to the old location and impossible to
+  // materialize. Clear it before applying Navigator so the caller can select
+  // a fresh Event for the new state.
+  if (selection.roleId === 'navigator' && nextState.currentEventId !== null) {
+    nextState.currentEventId = null;
+  }
+
   useCrewRolePower(nextState, catalog, selection.roleId, selection.parameterId);
 
   return {

@@ -33,12 +33,12 @@ export function createContentCatalog(events: EventDefinition[]): ContentCatalog 
   return {
     schemaVersion: CONTENT_SCHEMA_VERSION,
     races: [
-      { id: 'human', nameKey: raceNameKey('human'), playableV1: true, initialHealth: 35, attributeModifiers: { observation: 1, intelligence: 1, charisma: 1, luck: 1, morale: -2 } },
-      { id: 'fishman', nameKey: raceNameKey('fishman'), playableV1: true, initialHealth: 45, attributeModifiers: { strength: 4, agility: 1, observation: 2, intelligence: -2, navigation: 3, charisma: -3, luck: -2, morale: -3 } },
-      { id: 'mink', nameKey: raceNameKey('mink'), playableV1: true, initialHealth: 35, attributeModifiers: { strength: -1, agility: 4, observation: 4, intelligence: -2, navigation: -3, charisma: 1, luck: -2, morale: -1 } },
+      { id: 'human', nameKey: raceNameKey('human'), playableV1: true, initialHealth: 40, attributeModifiers: { observation: 1, intelligence: 1, charisma: 1, luck: 1, morale: -2 } },
+      { id: 'fishman', nameKey: raceNameKey('fishman'), playableV1: true, initialHealth: 50, attributeModifiers: { strength: 4, agility: 1, observation: 2, intelligence: -2, navigation: 3, charisma: -3, luck: -2, morale: -3 } },
+      { id: 'mink', nameKey: raceNameKey('mink'), playableV1: true, initialHealth: 40, attributeModifiers: { strength: -1, agility: 4, observation: 4, intelligence: -2, navigation: -3, charisma: 1, luck: -2, morale: -1 } },
       { id: 'giant', nameKey: raceNameKey('giant'), playableV1: true, initialHealth: 60, attributeModifiers: { strength: 6, agility: -6, observation: -2, intelligence: -2, navigation: -4, charisma: -1, luck: -2, morale: 5 } },
-      { id: 'longarm', nameKey: raceNameKey('longarm'), playableV1: false, initialHealth: 40, attributeModifiers: { strength: 2, agility: 4, observation: 3, intelligence: 1, navigation: -3, charisma: -2, luck: -2, morale: -3 } },
-      { id: 'buccaneer', nameKey: raceNameKey('buccaneer'), playableV1: false, initialHealth: 50, attributeModifiers: { strength: 4, agility: -3, observation: 1, intelligence: -1, navigation: -2, charisma: -1, luck: -2, morale: 4 } },
+      { id: 'longarm', nameKey: raceNameKey('longarm'), playableV1: false, initialHealth: 45, attributeModifiers: { strength: 2, agility: 4, observation: 3, intelligence: 1, navigation: -3, charisma: -2, luck: -2, morale: -3 } },
+      { id: 'buccaneer', nameKey: raceNameKey('buccaneer'), playableV1: false, initialHealth: 55, attributeModifiers: { strength: 4, agility: -3, observation: 1, intelligence: -1, navigation: -2, charisma: -1, luck: -2, morale: 4 } },
     ],
     seas: ['east_blue', 'west_blue', 'north_blue', 'south_blue', 'grand_line_paradise', 'new_world', 'sky', 'underwater', 'calm_belt', 'red_line'].map((id) => ({ id, nameKey: seaNameKey(id) })),
     affiliations: ['civilian', 'marine', 'pirate', 'revolutionary', 'bandit', 'prisoner', 'slave', 'celestial_dragon', 'royal_family'].map((id) => ({ id, nameKey: affiliationNameKey(id), playableV1: ['civilian', 'marine', 'pirate', 'revolutionary'].includes(id), singleParentSex: SINGLE_PARENT_SEX_BY_AFFILIATION[id] ?? null })),

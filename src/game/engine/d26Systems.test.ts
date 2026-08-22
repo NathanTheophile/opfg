@@ -53,6 +53,26 @@ describe('D2.6 systems hardening', () => {
     expect(canUseCrewRolePower(state, contentCatalog, 'navigator')).toBe(false);
   });
 
+  it('allows non-ship crew powers and refreshes their annual cooldown next year', () => {
+    const state = createInitialGameState();
+    state.npcs.mira = {
+      ...createDefaultNpcState(),
+      status: 'crew',
+      crewRoleId: 'medic',
+    };
+    state.player.profile.raceId = 'human';
+    state.player.stats.health = 10;
+
+    expect(state.ship).toBeNull();
+    expect(canUseCrewRolePower(state, contentCatalog, 'medic')).toBe(true);
+
+    useCrewRolePower(state, contentCatalog, 'medic');
+
+    expect(canUseCrewRolePower(state, contentCatalog, 'medic')).toBe(false);
+    state.ageMonths += 12;
+    expect(canUseCrewRolePower(state, contentCatalog, 'medic')).toBe(true);
+  });
+
   it('never destroys an overflowing reward and resolves it after a discard', () => {
     const state = createInitialGameState();
     state.player.inventory.stacks = ['sealed_chart', 'mira_letter_of_passage'].map((itemId) => ({ itemId, quantity: 1, provenance: [{ locationId: null, quantity: 1 }] }));

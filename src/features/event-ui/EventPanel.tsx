@@ -16,6 +16,7 @@ import {
   PanelTitle,
 } from '@/components/ui';
 import { ChoiceButton } from './ChoiceButton';
+import { ContextTooltip } from './ContextTooltip';
 import type {
   EventChoiceViewModel,
   EventViewModel,
@@ -34,6 +35,8 @@ export interface EventPanelProps {
     location: string;
     age: string;
     date: string;
+    locationDetail?: string;
+    timeDetail?: string;
   };
   onChoice: (
     choice: EventChoiceViewModel,
@@ -222,10 +225,16 @@ export function EventPanel({
         {meta ? (
           <div className="opfg-event-panel__header-layout">
             <div className="opfg-event-panel__header-copy">
-              <span className="opfg-event-panel__meta-location">
+              <ContextTooltip
+                className="opfg-event-panel__meta-location"
+                title={meta.location}
+                detail={meta.locationDetail ?? meta.location}
+                side="bottom"
+                focusable
+              >
                 <MapPin className="size-[0.85rem]" aria-hidden="true" />
                 <span>{meta.location}</span>
-              </span>
+              </ContextTooltip>
 
               <PanelTitle className="opfg-event-panel__title">
                 {displayEvent.title}
@@ -233,14 +242,14 @@ export function EventPanel({
             </div>
 
             <span className="opfg-event-panel__meta-time">
-              <span>
+              <ContextTooltip title={meta.age} detail={meta.timeDetail ?? meta.age} side="bottom" focusable>
                 {meta.age}
                 <Clock3 className="size-3" aria-hidden="true" />
-              </span>
-              <span>
+              </ContextTooltip>
+              <ContextTooltip title={meta.date} detail={meta.timeDetail ?? meta.date} side="bottom" focusable>
                 {meta.date}
                 <CalendarDays className="size-3" aria-hidden="true" />
-              </span>
+              </ContextTooltip>
             </span>
           </div>
         ) : (

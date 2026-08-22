@@ -81,6 +81,9 @@ export interface V2RunSample {
 
   everHadShip: boolean;
   firstShipAgeMonths: number | null;
+  firstSloopAgeMonths: number | null;
+  firstSloopPurchaseOpportunityAgeMonths: number | null;
+  sloopPurchaseOpportunitiesBefore20: number;
   shipAcquisitions: number;
   shipLosses: number;
   shipIdsSeen: string[];
@@ -92,6 +95,8 @@ export interface V2RunSample {
   crewIdsEver: string[];
   crewRolesEver: CrewRoleId[];
   crewRecruitments: number;
+  crewRecruitmentAges: number[];
+  recruitmentEventsBefore20: number;
   crewDepartures: number;
   crewPowerUses: Record<string, number>;
   crewPowerEffectiveHealing: number;
@@ -113,6 +118,11 @@ export interface V2RunSample {
   fishManIslandReached: boolean;
   newWorldReached: boolean;
   reverseMountainAttemptWithNavigator: boolean;
+  everBlueWithShip: boolean;
+  everBlueWithNonDinghy: boolean;
+  everBlueWithNavigatorAndShip: boolean;
+  everReverseMountainOrdinaryEligible: boolean;
+  everReverseMountainNavigatorEligible: boolean;
 
   finalTraits: string[];
   traitsEver: string[];

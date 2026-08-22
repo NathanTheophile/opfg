@@ -2,12 +2,13 @@ import type { ContentCatalog, EventDefinition, MajorNarrativeTrackDefinition } f
 type ScheduledDefinition = Extract<EventDefinition, { kind: 'scheduled' }>;
 type NormalDefinition = Extract<EventDefinition, { kind: 'normal' }>;
 import type { GameState, ScheduledEvent } from '../model/schema';
-import { evaluateCondition } from './conditions';
+import { evaluateCondition, getChoiceState } from './conditions';
 import { nextRandom } from './rng';
 import { materializeEventCast } from './npcNames';
 import { createDepartureSystemEvent, materializeNavigationEvent } from './navigation';
 import { finalizePendingSlot } from './time';
 import { findDockableAccess, isLocationWithin } from './locations';
+import { canRecruitNpc, countCurrentCrew } from './ship';
 import { activeParadiseRouteId, countFallbackStreak, isParadiseRouteStartEventId } from './maritime';
 import {
   createArrivalMarketEvent,
@@ -56,6 +57,14 @@ export const EARLY_WINDFALL_ROOT_IDS = {
 
 const EARLY_WINDFALL_ROOT_ID_SET = new Set<string>(Object.values(EARLY_WINDFALL_ROOT_IDS).flat());
 
+
+const EARLY_CREW_FALLBACK_NPC_BY_EVENT_ID = new Map<string, string>([
+  ['active_early_crew_guarantee_01_notice_carver', 'active_recruit_notice_carver'],
+  ['active_early_crew_guarantee_02_lot_runner', 'active_recruit_lot_runner'],
+  ['active_early_crew_guarantee_03_wake_keeper', 'active_recruit_wake_keeper'],
+  ['active_early_crew_guarantee_04_knot_runner', 'active_recruit_knot_runner'],
+]);
+const EARLY_CREW_FALLBACK_EVENT_IDS = new Set(EARLY_CREW_FALLBACK_NPC_BY_EVENT_ID.keys());
 export const HAKI_DUE_ROOT_IDS = {
   observation: [
     'active_haki_observation_l1_one_second_early',
@@ -83,13 +92,30 @@ interface DueMajorSelection {
   overdue: boolean;
 }
 
+function isCrewRecruitmentChoice(choice: NormalDefinition['choices'][number]): boolean {
+  const outcomes = choice.resolution.type === 'deterministic'
+    ? [choice.resolution.outcome]
+    : Object.values(choice.resolution.outcomes);
+
+  return outcomes.some((outcome) =>
+    outcome.effects.some((effect) => effect.type === 'setNpcStatus' && effect.status === 'crew')
+  );
+}
+
 export function isCrewRecruitmentEvent(event: EventDefinition): event is NormalDefinition {
   if (event.kind !== 'normal' || event.majorTrack !== undefined || event.lifetimeThreadSeed === true) return false;
+  return event.choices.some((choice) => isCrewRecruitmentChoice(choice));
+}
+
+function hasAvailableCrewRecruitmentChoice(
+  event: NormalDefinition,
+  state: GameState,
+  catalog: ContentCatalog,
+): boolean {
   return event.choices.some((choice) => {
-    const outcomes = choice.resolution.type === 'deterministic'
-      ? [choice.resolution.outcome]
-      : Object.values(choice.resolution.outcomes);
-    return outcomes.some((outcome) => outcome.effects.some((effect) => effect.type === 'setNpcStatus' && effect.status === 'crew'));
+    if (!isCrewRecruitmentChoice(choice)) return false;
+    const choiceState = getChoiceState(choice, state, catalog);
+    return choiceState.visible && choiceState.available;
   });
 }
 
@@ -97,11 +123,41 @@ function eligibleCrewRecruitmentEvents(state: GameState, catalog: ContentCatalog
   return catalog.events
     .filter((event): event is NormalDefinition => isCrewRecruitmentEvent(event))
     .filter((event) => isNormalOccurrenceEligible(event, state) && isEligible(event, state, catalog))
+    .filter((event) => hasAvailableCrewRecruitmentChoice(event, state, catalog))
+    .filter((event) => {
+      const fallbackNpcId = EARLY_CREW_FALLBACK_NPC_BY_EVENT_ID.get(event.id);
+      if (fallbackNpcId === undefined) return true;
+
+      const target = earlyCrewTarget(state);
+      return target !== undefined
+        && countCurrentCrew(state) < target
+        && canRecruitNpc(state, catalog, fallbackNpcId, true);
+    })
     .sort((left, right) => left.id.localeCompare(right.id));
 }
 
 export function hasEligibleCrewRecruitmentEvent(state: GameState, catalog: ContentCatalog): boolean {
   return eligibleCrewRecruitmentEvents(state, catalog).length > 0;
+}
+
+function earlyCrewTarget(state: GameState): number | undefined {
+  if (state.careerPhase !== 'active') return undefined;
+  const ageYears = Math.floor(state.ageMonths / 12);
+  if (ageYears === 15) return 1;
+  if (ageYears === 16) return 2;
+  if (ageYears === 17) return 3;
+  return undefined;
+}
+
+function eligibleEarlyCrewGuaranteeEvents(state: GameState, catalog: ContentCatalog): NormalDefinition[] {
+  const target = earlyCrewTarget(state);
+  if (target === undefined || countCurrentCrew(state) >= target) return [];
+
+  const eligible = eligibleCrewRecruitmentEvents(state, catalog);
+  const authored = eligible.filter(({ id }) => !EARLY_CREW_FALLBACK_EVENT_IDS.has(id));
+  if (authored.length > 0) return authored;
+
+  return eligible.filter(({ id }) => EARLY_CREW_FALLBACK_EVENT_IDS.has(id));
 }
 
 function eligibleDueHakiRootEvents(state: GameState, catalog: ContentCatalog): NormalDefinition[] {
@@ -144,6 +200,7 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
   }
 
   if (requiresCrewManagement(state)) return { ...state, currentEventId: null };
+
 
   if (hasReverseMountainNavigatorOverride(state)) {
     const reverseMountainOverride = findEligibleReverseMountainRoot(state, catalog);
@@ -238,12 +295,18 @@ export function selectNextEvent(state: GameState, catalog: ContentCatalog): Game
     state = { ...state, pendingCrewRecruitment: false, crewRoleLastUsedYear };
   }
 
+  const earlyCrewRecruitment = eligibleEarlyCrewGuaranteeEvents(state, catalog);
+  if (earlyCrewRecruitment.length > 0) {
+    return selectUniformNormal(state, catalog, state.scheduledEvents, earlyCrewRecruitment);
+  }
+
   const candidates = catalog.events.filter((event): event is NormalDefinition =>
     event.kind === 'normal'
       && event.majorTrack === undefined
       && !FALLBACK_EVENT_IDS.includes(event.id as typeof FALLBACK_EVENT_IDS[number])
       && !isParadiseRouteStartEventId(event.id)
       && !REVERSE_MOUNTAIN_ROOT_IDS.has(event.id)
+      && !EARLY_CREW_FALLBACK_EVENT_IDS.has(event.id)
       && isNormalOccurrenceEligible(event, state)
       && isEligible(event, state, catalog),
   );

@@ -129,7 +129,7 @@ describe('ship market arrival and annual income', () => {
     expect(state).toMatchObject({
       ageMonths: 12,
       berries: 0,
-      player: { stats: { health: 21 } },
+      player: { stats: { health: 22 } },
     });
 
     while (state.careerPhase === 'childhood') {
@@ -141,7 +141,7 @@ describe('ship market arrival and annual income', () => {
       berries: 5000,
       careerPhase: 'active',
       shipMarketArrivalPending: false,
-      player: { stats: { health: 35 } },
+      player: { stats: { health: 40 } },
     });
 
     state.ageMonths = 191;
@@ -152,7 +152,7 @@ describe('ship market arrival and annual income', () => {
       ageMonths: 192,
       berries: 5000,
       slotInMonth: 0,
-      player: { stats: { health: 31 } },
+      player: { stats: { health: 32 } },
     });
   });
 });
