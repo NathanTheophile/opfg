@@ -1,6 +1,6 @@
 import type { ChoiceDefinition, ContentCatalog, EventDefinition, Outcome } from '../content/schema';
 import type { DiceRollResult } from '../engine/dice';
-import type { GameState } from '../model/schema';
+import type { CrewRoleId, GameState } from '../model/schema';
 import type { MonthlyNavigationChoice } from '../engine/navigation';
 import type { SimulationTerminationReason } from './types';
 
@@ -20,6 +20,13 @@ export interface ObservedNavigationResolution {
   choice: MonthlyNavigationChoice;
 }
 
+export interface ObservedCrewPowerUse {
+  beforeState: GameState;
+  afterState: GameState;
+  roleId: CrewRoleId;
+  parameterId?: string;
+}
+
 export interface ObservedTermination {
   state: GameState;
   reason: SimulationTerminationReason;
@@ -29,6 +36,7 @@ export interface ObservedTermination {
 export interface SimulationObserver {
   onInitialState?(state: GameState, catalog: ContentCatalog): void;
   onNavigationResolved?(entry: ObservedNavigationResolution, catalog: ContentCatalog): void;
+  onCrewPowerUsed?(entry: ObservedCrewPowerUse, catalog: ContentCatalog): void;
   onEventResolved?(entry: ObservedEventResolution, catalog: ContentCatalog): void;
   onTermination?(entry: ObservedTermination, catalog: ContentCatalog): void;
 }

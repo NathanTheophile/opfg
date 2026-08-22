@@ -7,6 +7,7 @@ import { createInitialGameState } from '../model/initialState';
 import type { GameState } from '../model/schema';
 import { derivePolicySeed, randomSimulationPolicy, type SimulationPolicy } from './simulationPolicy';
 import { resolveRequiredSimulationCrewManagement } from './simulationCrewManagement';
+import { resolveOptionalSimulationCrewPower } from './simulationCrewPowers';
 import { applyMonthlyNavigationChoice, getMonthlyNavigationOptions, needsMonthlyNavigationDecision } from '../engine/navigation';
 import type { DeadEndSnapshot, ResolvedSimulationEvent, SimulationRunResult, SimulationTerminationReason } from './types';
 import { assertValidSimulationState } from './stateDiagnostics';
@@ -60,6 +61,25 @@ export function simulateRun(options: SimulateRunOptions): SimulationRunResult {
         error = caught instanceof Error ? caught.message : String(caught);
         break;
       }
+    }
+    try {
+      const power = resolveOptionalSimulationCrewPower(
+        state,
+        options.catalog,
+        policy,
+        policyRngState,
+      );
+      policyRngState = power.nextRngState;
+      if (power.used) {
+        state = power.state.currentEventId === null
+          ? selectNextEvent(power.state, options.catalog)
+          : power.state;
+        continue;
+      }
+    } catch (caught) {
+      terminationReason = 'simulationError';
+      error = caught instanceof Error ? caught.message : String(caught);
+      break;
     }
     if (state.currentEventId === null && needsMonthlyNavigationDecision(state)) {
       try {

@@ -1,5 +1,7 @@
 import { performance } from 'node:perf_hooks';
 import type { SimulationObserver } from '../src/game/simulation/observation';
+import { crewRoleHolderId } from '../src/game/engine/crew';
+import { canUseCrewRolePower } from '../src/game/engine/crewPowers';
 import { hakiLevelAllowedByTotal, playerHakiSourceTotal } from '../src/game/engine/powers';
 import type { GameState } from '../src/game/model/schema';
 import { simulateObservedRun } from '../src/game/simulation/simulateObservedRun';
@@ -87,6 +89,7 @@ const traitGainByEvent: Record<string, number> = {};
 const crewRecruitByNpc: Record<string, number> = {};
 const crewRecruitByEvent: Record<string, number> = {};
 const crewDepartureByEvent: Record<string, number> = {};
+const crewPowerUsesByRole: Record<string, number> = {};
 
 let runsEverSpending = 0;
 let runsEverEarning = 0;
@@ -94,6 +97,17 @@ let runsEverBounty = 0;
 let runsChangingCareer = 0;
 let runsWithFruit = 0;
 let runsWithCrew = 0;
+let runsEverWithNavigator = 0;
+let runsEverWithMedic = 0;
+let runsUsingMedicPower = 0;
+let medicPowerUses = 0;
+let medicEffectiveHealing = 0;
+let medicAvailableYears = 0;
+let medicUsedYears = 0;
+let medicAvailableButUnusedYears = 0;
+let deathsWithMedic = 0;
+let deathsWithoutMedic = 0;
+let deathsUsingMedicPower = 0;
 let runsWith2TraitsAtActive = 0;
 
 for (let index = 0; index < args.runs; index += 1) {
@@ -114,6 +128,19 @@ for (let index = 0; index < args.runs; index += 1) {
   let maxArmamentSource = Number.NEGATIVE_INFINITY;
   let firstObservationReady: number | null = null;
   let firstArmamentReady: number | null = null;
+  let sawNavigatorRole = false;
+  let sawMedicRole = false;
+  let sawMedicPowerUse = false;
+  const medicAvailableYearSet = new Set<number>();
+  const medicUsedYearSet = new Set<number>();
+
+  const captureCrewContext = (state: GameState) => {
+    if (crewRoleHolderId(state, 'navigator') !== undefined) sawNavigatorRole = true;
+    if (crewRoleHolderId(state, 'medic') !== undefined) sawMedicRole = true;
+    if (canUseCrewRolePower(state, catalog, 'medic')) {
+      medicAvailableYearSet.add(Math.floor(state.ageMonths / 12));
+    }
+  };
 
   const captureHakiReadiness = (state: GameState) => {
     const observationTotal = playerHakiSourceTotal(state, 'observation');
@@ -127,11 +154,32 @@ for (let index = 0; index < args.runs; index += 1) {
   const observer: SimulationObserver = {
     onInitialState(state) {
       maxCrew = crewSize(state);
+      captureCrewContext(state);
       captureHakiReadiness(state);
+    },
+    onNavigationResolved(entry) {
+      captureCrewContext(entry.beforeState);
+      captureCrewContext(entry.afterState);
+    },
+    onCrewPowerUsed(entry) {
+      captureCrewContext(entry.beforeState);
+      inc(crewPowerUsesByRole, entry.roleId);
+      if (entry.roleId === 'medic') {
+        sawMedicPowerUse = true;
+        medicPowerUses += 1;
+        medicUsedYearSet.add(Math.floor(entry.beforeState.ageMonths / 12));
+        medicEffectiveHealing += Math.max(
+          0,
+          entry.afterState.player.stats.health - entry.beforeState.player.stats.health,
+        );
+      }
+      captureCrewContext(entry.afterState);
     },
     onEventResolved(entry) {
       const before = entry.beforeState;
       const after = entry.afterState;
+      captureCrewContext(before);
+      captureCrewContext(after);
       captureHakiReadiness(after);
 
       const berryDelta = after.berries - before.berries;
@@ -221,6 +269,7 @@ for (let index = 0; index < args.runs; index += 1) {
       }
     },
     onTermination({ state, reason, error }) {
+      captureCrewContext(state);
       captureHakiReadiness(state);
       if (reason === 'deadEnd') {
         inc(deadEndByAgeBucket, ageBucket(state.ageMonths));
@@ -289,6 +338,18 @@ for (let index = 0; index < args.runs; index += 1) {
   if (firstCareerChange !== null) runsChangingCareer += 1;
   if (result.finalState.player.powers.devilFruitId !== null) runsWithFruit += 1;
   if (maxCrew > 0) runsWithCrew += 1;
+  if (sawNavigatorRole) runsEverWithNavigator += 1;
+  if (sawMedicRole) runsEverWithMedic += 1;
+  if (sawMedicPowerUse) runsUsingMedicPower += 1;
+  medicAvailableYears += medicAvailableYearSet.size;
+  medicUsedYears += medicUsedYearSet.size;
+  medicAvailableButUnusedYears += [...medicAvailableYearSet]
+    .filter((year) => !medicUsedYearSet.has(year)).length;
+  if (result.playerDeath) {
+    if (sawMedicRole) deathsWithMedic += 1;
+    else deathsWithoutMedic += 1;
+    if (sawMedicPowerUse) deathsUsingMedicPower += 1;
+  }
 
   if (firstIncome !== null) firstIncomeAge.push(firstIncome);
   if (firstSpend !== null) firstSpendAge.push(firstSpend);
@@ -348,6 +409,34 @@ const report = {
       firstCrewAge: q(firstCrewAge),
       avgMaxCrewSize: average(maxCrewPerRun),
       maxCrewSizeObserved: Math.max(...maxCrewPerRun),
+      runsEverWithNavigator,
+      runsEverWithNavigatorPct: pct(runsEverWithNavigator, args.runs),
+      runsEverWithMedic,
+      runsEverWithMedicPct: pct(runsEverWithMedic, args.runs),
+      runsUsingMedicPower,
+      runsUsingMedicPowerPct: pct(runsUsingMedicPower, args.runs),
+      crewPowerUsesByRole: topEntries(crewPowerUsesByRole, 20),
+      medicPowerUses,
+      medicEffectiveHealing,
+      averageMedicEffectiveHealingPerUse: medicPowerUses === 0 ? 0 : medicEffectiveHealing / medicPowerUses,
+      medicAvailableYears,
+      medicUsedYears,
+      medicAvailableButUnusedYears,
+      mortalityWithMedic: {
+        runs: runsEverWithMedic,
+        deaths: deathsWithMedic,
+        deathPct: pct(deathsWithMedic, runsEverWithMedic),
+      },
+      mortalityWithoutMedic: {
+        runs: args.runs - runsEverWithMedic,
+        deaths: deathsWithoutMedic,
+        deathPct: pct(deathsWithoutMedic, args.runs - runsEverWithMedic),
+      },
+      mortalityUsingMedicPower: {
+        runs: runsUsingMedicPower,
+        deaths: deathsUsingMedicPower,
+        deathPct: pct(deathsUsingMedicPower, runsUsingMedicPower),
+      },
     },
   },
   finalPlayerStatsRaw: Object.fromEntries(
@@ -430,6 +519,8 @@ console.log(`Haki-ready final: Observation ${runsFinalObservationReady}/${args.r
 console.log(`Haki-ready ever:  Observation ${runsEverObservationReady}/${args.runs} | Armament ${runsEverArmamentReady}/${args.runs}`);
 console.log(`Avg Traits at Active/end: ${average(traitsAtActive).toFixed(2)} / ${average(traitsAtEnd).toFixed(2)}`);
 console.log(`Crew runs: ${runsWithCrew} (${pct(runsWithCrew, args.runs).toFixed(1)}%) | Avg max crew: ${average(maxCrewPerRun).toFixed(2)}`);
+console.log(`Navigator ever: ${runsEverWithNavigator}/${args.runs} | Medic ever: ${runsEverWithMedic}/${args.runs} | Medic used: ${runsUsingMedicPower}/${args.runs}`);
+console.log(`Medic uses: ${medicPowerUses} | Effective healing: ${medicEffectiveHealing} HP`);
 writeJson(args.jsonPath, report);
 
 function crewSize(state: { npcs: Record<string, { status: string }> }): number {

@@ -23,6 +23,9 @@ const deterministicChoice = (id: string): ChoiceDefinition => ({
 const choices = (...ids: string[]) => ids.map(deterministicChoice);
 
 const catalog = {
+  races: [
+    { id: 'human', initialHealth: 35 },
+  ],
   ships: [
     { id: 'dinghy', nameKey: 'ship.dinghy.name', maxHealth: 18, crewCapacity: 1, cargoSlots: 1, priceBerries: 5_000 },
     { id: 'sloop', nameKey: 'ship.sloop.name', maxHealth: 30, crewCapacity: 3, cargoSlots: 2, priceBerries: 25_000 },
@@ -44,6 +47,7 @@ const catalog = {
 
 function state(overrides: Partial<GameState> = {}): GameState {
   return {
+    ageMonths: 240,
     ship: null,
     pendingShip: null,
     isLeader: true,
@@ -51,6 +55,11 @@ function state(overrides: Partial<GameState> = {}): GameState {
     locationId: 'test_port',
     passengerNpcIds: [],
     npcs: {},
+    crewRoleLastUsedYear: {},
+    player: {
+      profile: { raceId: 'human' },
+      stats: { health: 35 },
+    } as unknown as GameState['player'],
     ...overrides,
   } as unknown as GameState;
 }
@@ -142,6 +151,33 @@ describe('progressionSimulationPolicy', () => {
   it('always departs when the departure System Event offers departure', () => {
     expect(choose('system_navigation:departure', ['navigation:stay', 'navigation:depart']))
       .toBe('navigation:depart');
+  });
+
+  it('uses the Medic annual power when the player is meaningfully wounded', () => {
+    const wounded = state({
+      player: {
+        profile: { raceId: 'human' },
+        stats: { health: 20 },
+      } as unknown as GameState['player'],
+    });
+
+    const selection = progressionSimulationPolicy.chooseCrewPower?.(
+      ['medic'],
+      123456,
+      { state: wounded, catalog },
+    );
+
+    expect(selection?.roleId).toBe('medic');
+  });
+
+  it('does not waste the Medic annual power at full health', () => {
+    const selection = progressionSimulationPolicy.chooseCrewPower?.(
+      ['medic'],
+      123456,
+      { state: state(), catalog },
+    );
+
+    expect(selection).toBeUndefined();
   });
 
   it('keeps ordinary narrative choices on the same seeded-random policy', () => {

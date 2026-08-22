@@ -208,6 +208,19 @@ for (let index = 0; index < args.runs; index += 1) {
         inc(transitionSources, `navigation:${entry.choice}`);
       }
     },
+    onCrewPowerUsed(entry) {
+      recordState(entry.beforeState);
+      recordState(entry.afterState);
+      if (entry.beforeState.locationId !== entry.afterState.locationId) {
+        inc(locationVisits, entry.afterState.locationId);
+        transitions += 1;
+        inc(transitionSources, `crew_power:${entry.roleId}`);
+      }
+      if (entry.beforeState.travelState !== entry.afterState.travelState) {
+        transitions += 1;
+        inc(transitionSources, `crew_power:${entry.roleId}:travel`);
+      }
+    },
     onEventResolved(entry) {
       const before = entry.beforeState;
       const after = entry.afterState;

@@ -1,4 +1,6 @@
 import { performance } from 'node:perf_hooks';
+import { crewRoleHolderId } from '../src/game/engine/crew';
+import { canUseCrewRolePower } from '../src/game/engine/crewPowers';
 import type { GameState } from '../src/game/model/schema';
 import type { SimulationObserver } from '../src/game/simulation/observation';
 import { simulateObservedRun } from '../src/game/simulation/simulateObservedRun';
@@ -73,6 +75,7 @@ const deathResolutionSources: CounterMap = {};
 const damageByEventKind: CounterMap = {};
 const damageByResolution: CounterMap = {};
 const errors: CounterMap = {};
+const crewPowerUses: CounterMap = {};
 
 const finalAges: number[] = [];
 const deathAges: number[] = [];
@@ -104,6 +107,16 @@ let totalDamageEvents = 0;
 let totalHealingEvents = 0;
 let totalLethalHits = 0;
 let deathWithoutObservedLethalHit = 0;
+let totalMedicEffectiveHealing = 0;
+let runsEverWithNavigator = 0;
+let runsEverWithMedic = 0;
+let runsUsingMedicPower = 0;
+let deathsWithMedic = 0;
+let deathsWithoutMedic = 0;
+let deathsUsingMedicPower = 0;
+let medicAvailableYears = 0;
+let medicUsedYears = 0;
+let medicAvailableButUnusedYears = 0;
 
 for (let runIndex = 0; runIndex < args.runs; runIndex += 1) {
   const seed = (args.seed + runIndex) >>> 0;
@@ -122,6 +135,19 @@ for (let runIndex = 0; runIndex < args.runs; runIndex += 1) {
   let firstBelow50: number | null = null;
   let firstBelow25: number | null = null;
   let firstZeroOrLess: number | null = null;
+  let sawNavigatorRole = false;
+  let sawMedicRole = false;
+  let sawMedicPowerUse = false;
+  const medicAvailableYearSet = new Set<number>();
+  const medicUsedYearSet = new Set<number>();
+
+  function captureCrewContext(state: GameState) {
+    if (crewRoleHolderId(state, 'navigator') !== undefined) sawNavigatorRole = true;
+    if (crewRoleHolderId(state, 'medic') !== undefined) sawMedicRole = true;
+    if (canUseCrewRolePower(state, catalog, 'medic')) {
+      medicAvailableYearSet.add(Math.floor(state.ageMonths / 12));
+    }
+  }
 
   function ensureBaseline(state: GameState) {
     if (baselineHealth !== null || state.player.profile.raceId === null) return;
@@ -133,6 +159,7 @@ for (let runIndex = 0; runIndex < args.runs; runIndex += 1) {
   }
 
   function recordThresholds(state: GameState) {
+    captureCrewContext(state);
     ensureBaseline(state);
     if (baselineHealth === null) return;
 
@@ -166,6 +193,39 @@ for (let runIndex = 0; runIndex < args.runs; runIndex += 1) {
     onNavigationResolved(entry) {
       ensureBaseline(entry.afterState);
       recordThresholds(entry.afterState);
+    },
+
+    onCrewPowerUsed(entry) {
+      const before = entry.beforeState;
+      const after = entry.afterState;
+      recordThresholds(before);
+      inc(crewPowerUses, entry.roleId);
+
+      if (entry.roleId === 'medic') {
+        sawMedicPowerUse = true;
+        medicUsedYearSet.add(Math.floor(before.ageMonths / 12));
+        const healthDelta = after.player.stats.health - before.player.stats.health;
+        if (healthDelta > 0) {
+          sawHealing = true;
+          runHealing += healthDelta;
+          totalHealing += healthDelta;
+          totalHealingEvents += 1;
+          totalMedicEffectiveHealing += healthDelta;
+
+          const contexts = [
+            getContext(byAgeYear, String(Math.floor(before.ageMonths / 12))),
+            getContext(byAgeBand, ageBand(before.ageMonths)),
+            getContext(byCareer, before.player.career.affiliationId),
+            getContext(byTravelState, before.travelState),
+          ];
+          for (const context of contexts) {
+            context.healingEvents += 1;
+            context.totalHealing += healthDelta;
+          }
+        }
+      }
+
+      recordThresholds(after);
     },
 
     onEventResolved(entry) {
@@ -319,6 +379,19 @@ for (let runIndex = 0; runIndex < args.runs; runIndex += 1) {
   if (firstBelow25 !== null) runsBelow25 += 1;
   if (firstZeroOrLess !== null) runsAtZeroOrLess += 1;
 
+  if (sawNavigatorRole) runsEverWithNavigator += 1;
+  if (sawMedicRole) runsEverWithMedic += 1;
+  if (sawMedicPowerUse) runsUsingMedicPower += 1;
+  medicAvailableYears += medicAvailableYearSet.size;
+  medicUsedYears += medicUsedYearSet.size;
+  medicAvailableButUnusedYears += [...medicAvailableYearSet]
+    .filter((year) => !medicUsedYearSet.has(year)).length;
+  if (deathRecorded) {
+    if (sawMedicRole) deathsWithMedic += 1;
+    else deathsWithoutMedic += 1;
+    if (sawMedicPowerUse) deathsUsingMedicPower += 1;
+  }
+
   damagePerRun.push(runDamage);
   healingPerRun.push(runHealing);
   damageEventCountPerRun.push(runDamageEvents);
@@ -337,7 +410,7 @@ for (let runIndex = 0; runIndex < args.runs; runIndex += 1) {
 }
 
 const report = {
-  telemetryVersion: '1.1',
+  telemetryVersion: '1.2',
   config: { ...args, policy: policy.id },
   elapsedMs: performance.now() - startedAt,
 
@@ -419,11 +492,44 @@ const report = {
     }))
     .sort((a, b) => b.runs - a.runs || a.raceId.localeCompare(b.raceId)),
 
+  crew: {
+    runsEverWithNavigator,
+    runsEverWithNavigatorPct: pct(runsEverWithNavigator, args.runs),
+    runsEverWithMedic,
+    runsEverWithMedicPct: pct(runsEverWithMedic, args.runs),
+    runsUsingMedicPower,
+    runsUsingMedicPowerPct: pct(runsUsingMedicPower, args.runs),
+    crewPowerUses: topEntries(crewPowerUses, 20),
+    medicPowerUses: crewPowerUses.medic ?? 0,
+    medicEffectiveHealing: totalMedicEffectiveHealing,
+    averageMedicEffectiveHealingPerUse: (crewPowerUses.medic ?? 0) === 0
+      ? 0
+      : totalMedicEffectiveHealing / (crewPowerUses.medic ?? 0),
+    medicAvailableYears,
+    medicUsedYears,
+    medicAvailableButUnusedYears,
+    mortalityWithMedic: {
+      runs: runsEverWithMedic,
+      deaths: deathsWithMedic,
+      deathPct: pct(deathsWithMedic, runsEverWithMedic),
+    },
+    mortalityWithoutMedic: {
+      runs: args.runs - runsEverWithMedic,
+      deaths: deathsWithoutMedic,
+      deathPct: pct(deathsWithoutMedic, args.runs - runsEverWithMedic),
+    },
+    mortalityUsingMedicPower: {
+      runs: runsUsingMedicPower,
+      deaths: deathsUsingMedicPower,
+      deathPct: pct(deathsUsingMedicPower, runsUsingMedicPower),
+    },
+  },
+
   terminationReasons,
   errors: topEntries(errors, 30),
 };
 
-console.log('OPFG Specialized Simulation — PLAYER HEALTH / MORTALITY v1.1');
+console.log('OPFG Specialized Simulation — PLAYER HEALTH / MORTALITY v1.2');
 console.log(`Policy: ${policy.id}`);
 console.log(`Runs: ${args.runs}`);
 console.log(`Deaths: ${deaths} (${pct(deaths, args.runs).toFixed(2)}%)`);
@@ -449,6 +555,9 @@ console.log(
   `Minimum HP/run avg/p10/min: `
   + `${average(minimumHealthPerRun).toFixed(2)} / ${quantile(minimumHealthPerRun, 0.10)} / ${safeMin(minimumHealthPerRun)}`,
 );
+
+console.log(`Crew: Navigator ever ${runsEverWithNavigator}/${args.runs} | Medic ever ${runsEverWithMedic}/${args.runs} | Medic used ${runsUsingMedicPower}/${args.runs}`);
+console.log(`Medic healing: ${totalMedicEffectiveHealing} HP across ${crewPowerUses.medic ?? 0} uses`);
 
 console.log('');
 console.log('Top damage Events:');

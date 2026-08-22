@@ -6,8 +6,8 @@ import { modifyPlayerHealth } from './health';
 import { getNavigatorDestinationIds, movePlayerToLocation } from './locations';
 import { canStartNavigatorReverseMountainAttempt, startNavigatorReverseMountainAttempt } from './reverseMountain';
 
-const MEDIC_HEAL = 12;
-const SHIPWRIGHT_REPAIR = 10;
+export const MEDIC_HEAL = 12;
+export const SHIPWRIGHT_REPAIR = 10;
 
 export const currentYearIndex = (state: GameState) => Math.floor(state.ageMonths / 12);
 

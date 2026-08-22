@@ -1,4 +1,6 @@
 import type { ChoiceDefinition, ContentCatalog, EventDefinition } from '../content/schema';
+import { crewRoleHolderId } from '../engine/crew';
+import { MEDIC_HEAL, SHIPWRIGHT_REPAIR, navigatorDestinations } from '../engine/crewPowers';
 import { canBuyShip, shipBuyPrice } from '../engine/economy';
 import {
   DEPARTURE_SYSTEM_EVENT_ID,
@@ -32,6 +34,17 @@ export interface SimulationCrewRoleChoice {
   nextRngState: number;
 }
 
+export interface SimulationCrewPowerContext {
+  state: GameState;
+  catalog: ContentCatalog;
+}
+
+export interface SimulationCrewPowerChoice {
+  roleId: CrewRoleId;
+  parameterId?: string;
+  nextRngState: number;
+}
+
 export interface SimulationPolicy {
   readonly id: string;
   choose(
@@ -48,6 +61,11 @@ export interface SimulationPolicy {
     rngState: number,
     context?: SimulationCrewRoleContext,
   ): SimulationCrewRoleChoice;
+  chooseCrewPower?(
+    roleIds: readonly CrewRoleId[],
+    rngState: number,
+    context: SimulationCrewPowerContext,
+  ): SimulationCrewPowerChoice | undefined;
 }
 
 function chooseRandomChoice(
@@ -76,6 +94,88 @@ function chooseRandomCrewRole(
     roleId: roleIds[Math.floor(random.value * roleIds.length)],
     nextRngState: random.nextState,
   };
+}
+
+function chooseProgressionCrewPower(
+  roleIds: readonly CrewRoleId[],
+  rngState: number,
+  context: SimulationCrewPowerContext,
+): SimulationCrewPowerChoice | undefined {
+  const { state, catalog } = context;
+  const currentYear = Math.floor(state.ageMonths / 12);
+  const nearYearEnd = state.ageMonths % 12 >= 10;
+  const race = catalog.races.find(({ id }) => id === state.player.profile.raceId);
+  const maximumHealth = race?.initialHealth ?? state.player.stats.health;
+  const missingHealth = Math.max(0, maximumHealth - state.player.stats.health);
+
+  if (
+    roleIds.includes('medic')
+    && missingHealth > 0
+    && (
+      missingHealth >= MEDIC_HEAL
+      || nearYearEnd
+      || state.player.stats.health <= maximumHealth * 0.5
+    )
+  ) {
+    return { roleId: 'medic', nextRngState: rngState };
+  }
+
+  const navigatorOptions = roleIds.includes('navigator')
+    ? navigatorDestinations(state, catalog)
+    : [];
+  const reverseMountain = navigatorOptions.find(({ id }) => id === 'reverse_mountain');
+  if (reverseMountain) {
+    return { roleId: 'navigator', parameterId: reverseMountain.id, nextRngState: rngState };
+  }
+
+  if (roleIds.includes('shipwright') && state.ship !== null) {
+    const maximumShipHealth = catalog.ships.find(({ id }) => id === state.ship?.shipId)?.maxHealth
+      ?? state.ship.health;
+    const missingShipHealth = Math.max(0, maximumShipHealth - state.ship.health);
+    if (missingShipHealth >= SHIPWRIGHT_REPAIR || (nearYearEnd && missingShipHealth > 0)) {
+      return { roleId: 'shipwright', nextRngState: rngState };
+    }
+  }
+
+  if (roleIds.includes('recruiter')) {
+    return { roleId: 'recruiter', nextRngState: rngState };
+  }
+
+  if (navigatorOptions.length > 0) {
+    const currentSeaId = catalog.locations.find(({ id }) => id === state.locationId)?.seaId;
+    const forwardSafeOptions = navigatorOptions.filter(({ id, seaId }) =>
+      id !== 'reverse_mountain' && seaId === currentSeaId,
+    );
+    if (forwardSafeOptions.length > 0) {
+      const random = nextRandom(rngState);
+      return {
+        roleId: 'navigator',
+        parameterId: forwardSafeOptions[Math.floor(random.value * forwardSafeOptions.length)].id,
+        nextRngState: random.nextState,
+      };
+    }
+  }
+
+  if (roleIds.includes('first_mate')) {
+    const targets: CrewRoleId[] = ['medic', 'shipwright', 'recruiter', 'navigator'];
+    for (const targetRoleId of targets) {
+      if (state.crewRoleLastUsedYear[targetRoleId] !== currentYear) continue;
+      const holderId = crewRoleHolderId(state, targetRoleId);
+      if (holderId === undefined || state.npcs[holderId].stats.health <= 0) continue;
+      if (targetRoleId === 'medic' && missingHealth <= 0) continue;
+      if (targetRoleId === 'shipwright') {
+        if (state.ship === null) continue;
+        const maximumShipHealth = catalog.ships.find(({ id }) => id === state.ship?.shipId)?.maxHealth
+          ?? state.ship.health;
+        if (state.ship.health >= maximumShipHealth) continue;
+      }
+      if (targetRoleId === 'recruiter' && state.pendingCrewRecruitment) continue;
+      if (targetRoleId === 'navigator' && navigatorDestinations(state, catalog).length === 0) continue;
+      return { roleId: 'first_mate', parameterId: targetRoleId, nextRngState: rngState };
+    }
+  }
+
+  return undefined;
 }
 
 function choiceById(
@@ -225,6 +325,9 @@ export const progressionSimulationPolicy: SimulationPolicy = {
   },
   chooseNavigation: randomSimulationPolicy.chooseNavigation,
   chooseCrewRole: randomSimulationPolicy.chooseCrewRole,
+  chooseCrewPower(roleIds, rngState, context) {
+    return chooseProgressionCrewPower(roleIds, rngState, context);
+  },
 };
 
 export function derivePolicySeed(gameplaySeed: number): number {
