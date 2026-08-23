@@ -71,13 +71,15 @@ export function DiceTableStage({
         </div>
 
         <div className="opfg-dice-table-stage__field">
-          <D20Roll
-            result={result}
-            rollKey={rollKey}
-            rolling={status === 'rolling'}
-            onComplete={onComplete}
-            translate={translate}
-          />
+          {visible && (
+            <D20Roll
+              result={result}
+              rollKey={rollKey}
+              rolling={status === 'rolling'}
+              onComplete={onComplete}
+              translate={translate}
+            />
+          )}
 
           {status === 'armed' && (
             <button

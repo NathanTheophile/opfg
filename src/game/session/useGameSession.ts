@@ -31,6 +31,18 @@ function generateSeed(): number {
   return fallbackSeed;
 }
 
+function sameArrayValues<T>(
+  left: readonly T[],
+  right: readonly T[],
+): boolean {
+  return (
+    left.length === right.length
+    && left.every(
+      (value, index) => value === right[index],
+    )
+  );
+}
+
 export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
   const [session, setSession] = useState(() =>
     createSessionState(loadGameState(storage), catalog),
@@ -50,9 +62,33 @@ export function useGameSession(catalog: ContentCatalog, storage: StorageLike) {
       Date.now(),
     );
 
-    metaProgressionRef.current = result.state;
-    setMetaProgression(result.state);
-    saveMetaProgression(storage, result.state);
+        const previousMeta =
+      metaProgressionRef.current;
+
+    const metaChanged =
+      result.state.unlocks !== previousMeta.unlocks
+      || !sameArrayValues(
+        result.state.completedChildhoodRaceIds,
+        previousMeta.completedChildhoodRaceIds,
+      )
+      || !sameArrayValues(
+        result.state.discoveredFamilyUniqueItemIds,
+        previousMeta.discoveredFamilyUniqueItemIds,
+      )
+      || !sameArrayValues(
+        result.state.consumedDevilFruitTypes,
+        previousMeta.consumedDevilFruitTypes,
+      )
+      || !sameArrayValues(
+        result.state.startedOriginSeaIds,
+        previousMeta.startedOriginSeaIds,
+      );
+
+    if (metaChanged) {
+      metaProgressionRef.current = result.state;
+      setMetaProgression(result.state);
+      saveMetaProgression(storage, result.state);
+    }
 
     if (result.newlyUnlocked.length > 0) {
       setNewlyUnlockedAchievements((current) => [

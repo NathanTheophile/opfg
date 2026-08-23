@@ -366,24 +366,37 @@ export function EventPreview({
     typeof window !== 'undefined'
     && window.matchMedia('(pointer: coarse)').matches;
 
+    const narrativeInterpolationParams =
+    useMemo(
+      () => ({
+        playerName:
+          session.gameState?.player.profile.name ?? '',
+        ...originNarrativeInterpolationParams(
+          session.gameState,
+          catalog,
+          (originKey, originParams) =>
+            t(
+              originKey,
+              locale,
+              originParams,
+            ),
+        ),
+        ...npcInterpolationParams(
+          session.gameState,
+          catalog,
+          (nameKey) => t(nameKey, locale),
+        ),
+      }),
+      [
+        catalog,
+        locale,
+        session.gameState,
+      ],
+    );
+
   const translate: Translator = (key, params) =>
     t(key, locale, {
-      playerName: session.gameState?.player.profile.name ?? '',
-      ...originNarrativeInterpolationParams(
-        session.gameState,
-        catalog,
-        (originKey, originParams) =>
-          t(
-            originKey,
-            locale,
-            originParams,
-          ),
-      ),
-      ...npcInterpolationParams(
-        session.gameState,
-        catalog,
-        (nameKey) => t(nameKey, locale),
-      ),
+      ...narrativeInterpolationParams,
       ...params,
     });
 
