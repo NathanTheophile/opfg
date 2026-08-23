@@ -12,6 +12,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { Translator } from '@/game/localization';
+import type { StorageSlot } from '@/game/engine/inventory';
 import './hud-panel-header.css';
 import './mobile-side-drawers.css';
 import { NineSliceFrame } from '@/components/ui';
@@ -32,6 +33,10 @@ export interface MobileSideDrawersProps {
   ship: ReactNode;
   translate: Translator;
   onHome?: () => void;
+  onStorageDrawerDrop?: (
+    drawer: 'inventory' | 'ship',
+    source: StorageSlot,
+  ) => void;
 }
 
 export function MobileSideDrawers({
@@ -41,6 +46,7 @@ export function MobileSideDrawers({
   ship,
   translate,
   onHome,
+  onStorageDrawerDrop,
 }: MobileSideDrawersProps) {
   const [openDrawer, setOpenDrawer] = useState<DrawerId | null>(null);
   const drawerRef = useRef<HTMLElement | null>(null);
@@ -55,6 +61,85 @@ export function MobileSideDrawers({
 
   const current = drawers.find(({ id }) => id === openDrawer) ?? null;
 
+    /* OPFG MOBILE DRAWER PORTAL + DRAG FIX */
+  /* OPFG MOBILE POLISH V4.4 */
+  useEffect(() => {
+    const followTouchStorageDrag = (
+      event: Event,
+    ) => {
+      const detail = (
+        event as CustomEvent<{
+          phase?: string;
+          clientX?: number;
+          clientY?: number;
+          source?: StorageSlot;
+        }>
+      ).detail;
+
+      if (
+        typeof detail?.clientX !== 'number'
+        || typeof detail.clientY !== 'number'
+      ) {
+        return;
+      }
+
+      const target =
+        document.elementFromPoint(
+          detail.clientX,
+          detail.clientY,
+        );
+
+      const tab =
+        target?.closest<HTMLElement>(
+          '[data-opfg-drawer-tab="true"]',
+        );
+
+      const drawerId =
+        tab?.dataset.drawerId as
+          | DrawerId
+          | undefined;
+
+      if (
+        detail.phase === 'move'
+        && (
+          drawerId === 'inventory'
+          || drawerId === 'ship'
+        )
+      ) {
+        setOpenDrawer(drawerId);
+        return;
+      }
+
+      if (
+        detail.phase === 'end'
+        && detail.source
+        && (
+          drawerId === 'inventory'
+          || drawerId === 'ship'
+        )
+      ) {
+        setOpenDrawer(drawerId);
+
+        onStorageDrawerDrop?.(
+          drawerId,
+          detail.source,
+        );
+      }
+    };
+
+    window.addEventListener(
+      'opfg-storage-touch-drag',
+      followTouchStorageDrag,
+    );
+
+    return () => {
+      window.removeEventListener(
+        'opfg-storage-touch-drag',
+        followTouchStorageDrag,
+      );
+    };
+  }, [onStorageDrawerDrop]);
+
   useEffect(() => {
     if (!openDrawer) return;
 
@@ -64,7 +149,10 @@ export function MobileSideDrawers({
 
       if (
         drawerRef.current?.contains(target) ||
-        tabsRef.current?.contains(target)
+        tabsRef.current?.contains(target) ||
+        document.querySelector(
+          '[data-opfg-keep-mobile-drawer-open="true"]',
+        )
       ) {
         return;
       }
@@ -119,6 +207,8 @@ export function MobileSideDrawers({
             key={id}
             type="button"
             className="opfg-mobile-side-tab"
+            data-opfg-drawer-tab="true"
+            data-drawer-id={id}
             data-active={openDrawer === id ? 'true' : 'false'}
             aria-label={label}
             title={label}

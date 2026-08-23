@@ -193,7 +193,10 @@ export function CrewRail({ state, catalog, translate, statLabel, onUseRolePower 
     )}
     {pendingRole && (
       <Modal open={pendingRolePowerId !== null} onOpenChange={(open) => !open && setPendingRolePowerId(null)}>
-        <ModalContent className="w-[min(calc(100vw_-_2rem),24rem)]">
+        <ModalContent
+          className="w-[min(calc(100vw_-_2rem),24rem)]"
+          data-opfg-keep-mobile-drawer-open="true"
+        >
           <ModalHeader>
             <ModalTitle>{translate('ui.crew.power.confirm.title')}</ModalTitle>
             <ModalDescription>

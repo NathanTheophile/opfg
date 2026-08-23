@@ -1,4 +1,18 @@
-import { History as HistoryIcon, Play, RotateCcw, ShoppingBag, Trophy, X, } from 'lucide-react';
+import {
+  BookOpen,
+  Coffee,
+  Compass,
+  Gamepad2,
+  History as HistoryIcon,
+  Music2,
+  Newspaper,
+  Play,
+  RotateCcw,
+  ShoppingBag,
+  Sparkles,
+  Trophy,
+  X,
+} from 'lucide-react';
 import {
   useLayoutEffect, useMemo, useRef, useState, } from 'react';
 import { Button, Panel, NineSliceFrame } from '@/components/ui';
@@ -76,12 +90,14 @@ const COMMUNITY_LINKS = [
   {
     id: 'tiktok',
     label: 'TikTok',
-    href: import.meta.env.VITE_SOCIAL_TIKTOK_URL,
+    href: import.meta.env.VITE_SOCIAL_TIKTOK_URL ||
+      'https://www.tiktok.com/@onepiecedestinies',
   },
   {
     id: 'instagram',
     label: 'Instagram',
-    href: import.meta.env.VITE_SOCIAL_INSTAGRAM_URL,
+    href: import.meta.env.VITE_SOCIAL_INSTAGRAM_URL ||
+      'https://www.instagram.com/onepiecedestinies/',
   },
   {
     id: 'discord',
@@ -90,7 +106,171 @@ const COMMUNITY_LINKS = [
   },
 ] as const;
 
-const KOFI_URL = import.meta.env.VITE_KOFI_URL;
+const KOFI_URL =
+  import.meta.env.VITE_KOFI_URL ||
+  'https://ko-fi.com/opdestinies';
+
+/* OPFG LANDING V2 PROPOSAL */
+const LANDING_SHOWCASE_COPY = {
+  fr: {
+    proofPoints: [
+      'Choix persistants',
+      'Vies rejouables',
+      'Destinées multiples',
+    ],
+    resumeEyebrow: 'Reprendre votre destinée',
+    newEyebrow: 'Écrire une nouvelle destinée',
+    gazetteTitle: 'La Gazette des Destinées',
+    gazetteSubtitle: 'Devlog & prochaines escales',
+    news: [
+      {
+        eyebrow: 'DEVLOG',
+        title: 'Derniers préparatifs',
+        body:
+          'Polish mobile, performances et dernière passe de QA avant la V1.',
+        tone: 'gold',
+      },
+      {
+        eyebrow: 'À VENIR',
+        title: 'Plus de destinées',
+        body:
+          'Nouvelles routes, davantage d’événements Active et de nouvelles fins.',
+        tone: 'sea',
+      },
+      {
+        eyebrow: 'ROADMAP',
+        title: 'Fruits & pouvoirs',
+        body:
+          'Fruits du Démon et nouvelles progressions de puissance après la V1.',
+        tone: 'red',
+      },
+    ],
+  },
+  en: {
+    proofPoints: [
+      'Persistent choices',
+      'Replayable lives',
+      'Multiple destinies',
+    ],
+    resumeEyebrow: 'Continue your destiny',
+    newEyebrow: 'Write a new destiny',
+    gazetteTitle: 'The Destinies Gazette',
+    gazetteSubtitle: 'Devlog & next stops',
+    news: [
+      {
+        eyebrow: 'DEVLOG',
+        title: 'Final preparations',
+        body:
+          'Mobile polish, performance work and the final QA pass before V1.',
+        tone: 'gold',
+      },
+      {
+        eyebrow: 'COMING NEXT',
+        title: 'More destinies',
+        body:
+          'New routes, more Active events and additional endings.',
+        tone: 'sea',
+      },
+      {
+        eyebrow: 'ROADMAP',
+        title: 'Fruits & powers',
+        body:
+          'Devil Fruits and new power progression after V1.',
+        tone: 'red',
+      },
+    ],
+  },
+} as const;
+
+const LANDING_NEWS_ICONS = [
+  BookOpen,
+  Compass,
+  Sparkles,
+] as const;
+
+function YoutubeBrandIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+      className="opfg-landing__brand-svg"
+    >
+      <path
+        fill="currentColor"
+        d="M22 7.1a2.9 2.9 0 0 0-2-2C18.2 4.6 12 4.6 12 4.6s-6.2 0-8 .5a2.9 2.9 0 0 0-2 2A30 30 0 0 0 1.5 12 30 30 0 0 0 2 16.9a2.9 2.9 0 0 0 2 2c1.8.5 8 .5 8 .5s6.2 0 8-.5a2.9 2.9 0 0 0 2-2 30 30 0 0 0 .5-4.9 30 30 0 0 0-.5-4.9ZM9.9 15.2V8.8l5.4 3.2-5.4 3.2Z"
+      />
+    </svg>
+  );
+}
+
+function InstagramBrandIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+      className="opfg-landing__brand-svg"
+    >
+      <rect
+        x="3.2"
+        y="3.2"
+        width="17.6"
+        height="17.6"
+        rx="5.2"
+        ry="5.2"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.9"
+      />
+      <circle
+        cx="12"
+        cy="12"
+        r="4.1"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.9"
+      />
+      <circle
+        cx="17.5"
+        cy="6.7"
+        r="1.15"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function LandingSocialIcon({
+  id,
+}: {
+  id: (typeof COMMUNITY_LINKS)[number]['id'];
+}) {
+  if (id === 'youtube') {
+    return <YoutubeBrandIcon />;
+  }
+
+  if (id === 'instagram') {
+    return <InstagramBrandIcon />;
+  }
+
+  if (id === 'tiktok') {
+    return <Music2 aria-hidden="true" />;
+  }
+
+  if (id === 'discord') {
+    return <Gamepad2 aria-hidden="true" />;
+  }
+
+  return (
+    <span
+      className="opfg-landing__x-mark"
+      aria-hidden="true"
+    >
+      X
+    </span>
+  );
+}
 
 function formatAge(
   ageMonths: number,
@@ -113,6 +293,7 @@ function formatAge(
     .replaceAll('{months}', String(months));
 }
 
+/* OPFG MOBILE FIXES V4.5 */
 export function LandingPage({
   catalog,
   storage,
@@ -133,68 +314,82 @@ export function LandingPage({
   const [confirmReset, setConfirmReset] =
     useState(false);
 
-  // OPFG landing viewport fit
   const landingRef = useRef<HTMLElement | null>(null);
-  const contentRef = useRef<HTMLElement | null>(null);
 
+  // OPFG landing viewport scale
   useLayoutEffect(() => {
     const landing = landingRef.current;
-    const content = contentRef.current;
-    if (!landing || !content) return undefined;
+    if (!landing) return undefined;
 
     let frame = 0;
-
-    const px = (value: string) =>
-      Number.parseFloat(value) || 0;
 
     const fit = () => {
       window.cancelAnimationFrame(frame);
 
       frame = window.requestAnimationFrame(() => {
-        landing.style.setProperty('--opfg-landing-scale', '1');
+        const viewport = window.visualViewport;
+        const width =
+          viewport?.width
+          ?? document.documentElement.clientWidth
+          ?? window.innerWidth;
+        const height =
+          viewport?.height
+          ?? document.documentElement.clientHeight
+          ?? window.innerHeight;
 
-        const style = window.getComputedStyle(landing);
-        const availableHeight = Math.max(
-          1,
-          landing.clientHeight
-            - px(style.paddingTop)
-            - px(style.paddingBottom),
-        );
-        const availableWidth = Math.max(
-          1,
-          landing.clientWidth
-            - px(style.paddingLeft)
-            - px(style.paddingRight),
+        const portrait = height > width;
+
+        /*
+         * Scale from a stable design reference instead of shrinking the whole
+         * landing until every child happens to fit.
+         *
+         * Desktop reference: 1600 x 900
+         * Mobile reference:   390 x 844
+         */
+        /* OPFG LANDING V4.1 SCALE PARITY */
+
+        const referenceWidth = portrait ? 390 : 1280;
+        const referenceHeight = portrait ? 844 : 720;
+
+        const rawScale = Math.min(
+          width / referenceWidth,
+          height / referenceHeight,
         );
 
-        const naturalHeight = Math.max(1, content.scrollHeight);
-        const naturalWidth = Math.max(1, content.scrollWidth);
+        const minScale = portrait ? 0.72 : 0.76;
+        const maxScale = portrait ? 1.12 : 4;
 
         const scale = Math.min(
-          1,
-          availableHeight / naturalHeight,
-          availableWidth / naturalWidth,
+          maxScale,
+          Math.max(minScale, rawScale),
         );
+
+        const scaleValue = scale.toFixed(4);
 
         landing.style.setProperty(
           '--opfg-landing-scale',
-          scale.toFixed(4),
+          scaleValue,
+        );
+        document.documentElement.style.setProperty(
+          '--opfg-landing-scale',
+          scaleValue,
         );
       });
     };
 
-    const observer = new ResizeObserver(fit);
-    observer.observe(content);
-
     window.addEventListener('resize', fit);
+    window.addEventListener('orientationchange', fit);
     window.visualViewport?.addEventListener('resize', fit);
     fit();
 
     return () => {
       window.cancelAnimationFrame(frame);
-      observer.disconnect();
       window.removeEventListener('resize', fit);
+      window.removeEventListener('orientationchange', fit);
       window.visualViewport?.removeEventListener('resize', fit);
+      document.documentElement.style.removeProperty(
+        '--opfg-landing-scale',
+      );
     };
   }, []);
 
@@ -257,6 +452,10 @@ export function LandingPage({
             'ui.landing.history',
         )
       : '';
+  const showcaseCopy =
+    locale === 'fr'
+      ? LANDING_SHOWCASE_COPY.fr
+      : LANDING_SHOWCASE_COPY.en;
 
   return (
     <main
@@ -268,108 +467,165 @@ export function LandingPage({
         aria-hidden="true"
       />
 
-      <section
-        ref={contentRef}
-        className="opfg-landing__content"
-      >
-        <header className="opfg-landing__brand">
-          <span className="opfg-landing__kicker">
-            {translate('ui.landing.kicker')}
-          </span>
-          <img
-            src={logoMark}
-            alt=""
-            aria-hidden="true"
-            draggable={false}
-            className="opfg-landing__logo"
-          />
-          <h1 className="opfg-landing__title sr-only">
-            {translate('ui.landing.title')}
-          </h1>
-          <p className="opfg-landing__tagline">
-            {translate('ui.landing.tagline')}
-          </p>
-        </header>
+      <section className="opfg-landing__content">
+        <aside
+          className="opfg-landing__news-column"
+          aria-labelledby="landing-gazette-title"
+        >
+          <header className="opfg-landing__gazette-heading">
+            <span
+              className="opfg-landing__gazette-icon"
+              aria-hidden="true"
+            >
+              <Newspaper className="size-5" />
+            </span>
 
-        <div className="opfg-landing__primary">
-          {saveDetails ? (
-            <>
-              <button
-                type="button"
-                className="opfg-landing__continue"
-                onClick={onContinue}
-              >
-                <NineSliceFrame />
-                <span className="opfg-landing__continue-title">
+            <span>
+              <strong id="landing-gazette-title">
+                {showcaseCopy.gazetteTitle}
+              </strong>
+              <small>{showcaseCopy.gazetteSubtitle}</small>
+            </span>
+          </header>
+
+          <div className="opfg-landing__news-scroll">
+            {showcaseCopy.news.map((item, index) => {
+              const NewsIcon = LANDING_NEWS_ICONS[index];
+
+              return (
+                <article
+                  key={item.title}
+                  className="opfg-landing__news-card"
+                  data-tone={item.tone}
+                >
+                  <span
+                    className="opfg-landing__news-card-icon"
+                    aria-hidden="true"
+                  >
+                    <NewsIcon className="size-4" />
+                  </span>
+
+                  <span className="opfg-landing__news-card-copy">
+                    <small>{item.eyebrow}</small>
+                    <strong>{item.title}</strong>
+                    <span>{item.body}</span>
+                  </span>
+                </article>
+              );
+            })}
+          </div>
+        </aside>
+
+        <section className="opfg-landing__hero-column">
+          <header className="opfg-landing__brand">
+            <div
+              className="opfg-landing__logo-stage"
+              aria-hidden="true"
+            >
+              <span className="opfg-landing__logo-halo" />
+              <img
+                src={logoMark}
+                alt=""
+                draggable={false}
+                className="opfg-landing__logo"
+              />
+            </div>
+
+            <h1 className="opfg-landing__title sr-only">
+              {translate('ui.landing.title')}
+            </h1>
+          </header>
+
+          <div className="opfg-landing__menu-column">
+            <span className="opfg-landing__menu-eyebrow">
+              {saveDetails
+                ? showcaseCopy.resumeEyebrow
+                : showcaseCopy.newEyebrow}
+            </span>
+
+            <div className="opfg-landing__primary">
+              {saveDetails ? (
+                <>
+                  <button
+                    type="button"
+                    className="opfg-landing__continue"
+                    onClick={onContinue}
+                  >
+                    <NineSliceFrame />
+
+                    <span className="opfg-landing__continue-title">
+                      <Play
+                        className="size-5"
+                        aria-hidden="true"
+                      />
+                      {translate('ui.landing.continue')}
+                    </span>
+
+                    <span className="opfg-landing__save-details">
+                      <strong>{saveDetails.name}</strong>
+                      <span aria-hidden="true">·</span>
+                      <span>{saveDetails.affiliation}</span>
+                      <span aria-hidden="true">·</span>
+                      <span>{saveDetails.age}</span>
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className="opfg-landing__new-secondary"
+                    onClick={requestNewGame}
+                  >
+                    <NineSliceFrame />
+                    <RotateCcw
+                      className="size-4"
+                      aria-hidden="true"
+                    />
+                    {translate('ui.landing.newGame')}
+                  </button>
+                </>
+              ) : (
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="opfg-landing__new-primary"
+                  onClick={requestNewGame}
+                >
+                  <NineSliceFrame />
                   <Play
                     className="size-5"
                     aria-hidden="true"
                   />
-                  {translate('ui.landing.continue')}
-                </span>
+                  {translate('ui.landing.newGame')}
+                </Button>
+              )}
+            </div>
 
-                <span className="opfg-landing__save-details">
-                  <strong>{saveDetails.name}</strong>
-                  <span aria-hidden="true">·</span>
-                  <span>{saveDetails.affiliation}</span>
-                  <span aria-hidden="true">·</span>
-                  <span>{saveDetails.age}</span>
-                </span>
-              </button>
-
-              <button
-                type="button"
-                className="opfg-landing__new-secondary"
-                onClick={requestNewGame}
-              >
-                <RotateCcw
-                  className="size-3.5"
-                  aria-hidden="true"
-                />
-                {translate('ui.landing.newGame')}
-              </button>
-            </>
-          ) : (
-            <Button
-              variant="primary"
-              size="lg"
-              className="opfg-landing__new-primary"
-              onClick={requestNewGame}
+            <nav
+              className="opfg-landing__secondary"
+              aria-label={translate(
+                'ui.landing.secondaryNavigation',
+              )}
             >
-              <NineSliceFrame />
-              <Play
-                className="size-5"
-                aria-hidden="true"
-              />
-              {translate('ui.landing.newGame')}
-            </Button>
-          )}
-        </div>
-
-        <nav
-          className="opfg-landing__secondary"
-          aria-label={translate(
-            'ui.landing.secondaryNavigation',
-          )}
-        >
-          {SECONDARY_ACTIONS.map(
-            ({ id, labelKey, Icon }) => (
-              <Button
-                key={id}
-                variant="glass"
-                className="opfg-landing__secondary-button"
-                onClick={() => setActiveSection(id)}
-              >
-                <NineSliceFrame />
-                <Icon
-                  className="size-4"
-                  aria-hidden="true"
-                />
-                {translate(labelKey)}
-              </Button>
-            ),
-          )}
-        </nav>
+              {SECONDARY_ACTIONS.map(
+                ({ id, labelKey, Icon }) => (
+                  <Button
+                    key={id}
+                    variant="glass"
+                    className="opfg-landing__secondary-button"
+                    onClick={() => setActiveSection(id)}
+                  >
+                    <NineSliceFrame />
+                    <Icon
+                      className="size-4"
+                      aria-hidden="true"
+                    />
+                    {translate(labelKey)}
+                  </Button>
+                ),
+              )}
+            </nav>
+          </div>
+        </section>
 
         <div className="opfg-landing__community">
           <div className="opfg-landing__socials">
@@ -381,8 +637,17 @@ export function LandingPage({
                   href={href}
                   target="_blank"
                   rel="noreferrer"
+                  aria-label={label}
+                  title={label}
+                  data-social={id}
                 >
-                  {label}
+                  <NineSliceFrame />
+                  <LandingSocialIcon id={id} />
+                  {id === 'x-fr' && (
+                    <span className="opfg-landing__social-badge">
+                      FR
+                    </span>
+                  )}
                 </a>
               ) : null,
             )}
@@ -394,19 +659,113 @@ export function LandingPage({
               href={KOFI_URL}
               target="_blank"
               rel="noreferrer"
+              aria-label="Ko-fi"
+              title="Ko-fi"
             >
-              Ko-fi
+              <NineSliceFrame />
+              <Coffee aria-hidden="true" />
             </a>
           ) : (
             <span
               className="opfg-landing__community-link opfg-landing__community-link--kofi opfg-landing__community-link--disabled"
               aria-disabled="true"
             >
-              Ko-fi
+              <NineSliceFrame />
+              <Coffee aria-hidden="true" />
             </span>
           )}
         </div>
       </section>
+
+      <aside
+        className="opfg-landing__mobile-news-dock"
+        aria-labelledby="landing-mobile-gazette-title"
+      >
+        <header className="opfg-landing__gazette-heading">
+          <span
+            className="opfg-landing__gazette-icon"
+            aria-hidden="true"
+          >
+            <Newspaper className="size-5" />
+          </span>
+
+          <span>
+            <strong id="landing-mobile-gazette-title">
+              {showcaseCopy.gazetteTitle}
+            </strong>
+            <small>{showcaseCopy.gazetteSubtitle}</small>
+          </span>
+        </header>
+
+        <div className="opfg-landing__news-scroll">
+          {showcaseCopy.news.map((item, index) => {
+            const NewsIcon = LANDING_NEWS_ICONS[index];
+
+            return (
+              <article
+                key={item.title}
+                className="opfg-landing__news-card"
+                data-tone={item.tone}
+              >
+                <span
+                  className="opfg-landing__news-card-icon"
+                  aria-hidden="true"
+                >
+                  <NewsIcon className="size-4" />
+                </span>
+
+                <span className="opfg-landing__news-card-copy">
+                  <small>{item.eyebrow}</small>
+                  <strong>{item.title}</strong>
+                  <span>{item.body}</span>
+                </span>
+              </article>
+            );
+          })}
+        </div>
+      </aside>
+
+      <div
+        className="opfg-landing__mobile-social-rail"
+        aria-label="Social"
+      >
+        {COMMUNITY_LINKS.map(({ id, label, href }) =>
+          href ? (
+            <a
+              key={id}
+              className="opfg-landing__mobile-social-link"
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={label}
+              title={label}
+              data-social={id}
+            >
+              <NineSliceFrame />
+              <LandingSocialIcon id={id} />
+              {id === 'x-fr' && (
+                <span className="opfg-landing__social-badge">
+                  FR
+                </span>
+              )}
+            </a>
+          ) : null,
+        )}
+
+        {KOFI_URL ? (
+          <a
+            className="opfg-landing__mobile-social-link opfg-landing__mobile-social-link--kofi"
+            href={KOFI_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Ko-fi"
+            title="Ko-fi"
+          >
+            <NineSliceFrame />
+            <Coffee aria-hidden="true" />
+          </a>
+        ) : null}
+      </div>
 
       <LanguageControls
         locale={locale}

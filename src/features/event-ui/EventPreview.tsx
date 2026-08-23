@@ -1179,6 +1179,450 @@ export function EventPreview({
     setSelectedStorageSlot(null);
   };
 
+  /* OPFG MOBILE POLISH V4.4 */
+  const handleStorageDrawerDrop = (
+    drawer: 'inventory' | 'ship',
+    source: StorageSlot,
+  ) => {
+    session.applySystemAction((next) => {
+      let destination: StorageSlot | null = null;
+
+      if (drawer === 'ship') {
+        if (!next.ship || source.type === 'cargo') {
+          return;
+        }
+
+        const shipDefinition =
+          catalog.ships.find(
+            ({ id }) => id === next.ship?.shipId,
+          );
+
+        const capacity =
+          shipDefinition?.cargoSlots ?? 0;
+
+        if (
+          next.ship.cargo.length
+          >= capacity
+        ) {
+          return;
+        }
+
+        destination = {
+          type: 'cargo',
+          index: next.ship.cargo.length,
+        };
+      } else {
+        if (
+          source.type === 'pocket'
+          || next.player.inventory.stacks.length >= 2
+        ) {
+          return;
+        }
+
+        destination = {
+          type: 'pocket',
+          index:
+            next.player.inventory.stacks.length as
+              | 0
+              | 1,
+        };
+      }
+
+      moveItem(
+        next,
+        catalog,
+        source,
+        destination,
+      );
+    });
+
+    selectedStorageSlotRef.current = null;
+    setSelectedStorageSlot(null);
+  };
+
+    /* OPFG MOBILE FIXES V4.5 */
+  /* OPFG MOBILE FEEDBACK V4.6 */
+  useEffect(() => {
+    type ActiveTouchDrag = {
+      identifier: number;
+      source: StorageSlot;
+      sourceElement: HTMLElement;
+      startX: number;
+      startY: number;
+      dragging: boolean;
+    };
+
+    let active: ActiveTouchDrag | null = null;
+    let dragGhost: HTMLElement | null = null;
+
+    const parseSlot = (
+      value: string | undefined,
+    ): StorageSlot | null => {
+      if (!value) return null;
+
+      try {
+        return JSON.parse(value) as StorageSlot;
+      } catch {
+        return null;
+      }
+    };
+
+    const findTouch = (
+      touches: TouchList,
+      identifier: number,
+    ): Touch | null => {
+      for (
+        let index = 0;
+        index < touches.length;
+        index += 1
+      ) {
+        const touch = touches.item(index);
+
+        if (touch?.identifier === identifier) {
+          return touch;
+        }
+      }
+
+      return null;
+    };
+
+    const removeDragGhost = () => {
+      dragGhost?.remove();
+      dragGhost = null;
+    };
+
+    const createDragGhost = (
+      sourceElement: HTMLElement,
+      clientX: number,
+      clientY: number,
+    ) => {
+      removeDragGhost();
+
+      const rect =
+        sourceElement.getBoundingClientRect();
+
+      const clone =
+        sourceElement.cloneNode(true) as HTMLElement;
+
+      clone.removeAttribute('id');
+      clone.removeAttribute('draggable');
+      clone.removeAttribute('data-selected');
+      clone.removeAttribute('data-opfg-storage-slot');
+      clone.setAttribute('aria-hidden', 'true');
+      clone.classList.add(
+        'opfg-touch-drag-ghost',
+      );
+
+      clone.style.width =
+        String(Math.max(36, rect.width)) + 'px';
+      clone.style.height =
+        String(Math.max(36, rect.height)) + 'px';
+      clone.style.left = String(clientX) + 'px';
+      clone.style.top = String(clientY) + 'px';
+
+      document.body.appendChild(clone);
+      dragGhost = clone;
+    };
+
+    const moveDragGhost = (
+      clientX: number,
+      clientY: number,
+    ) => {
+      if (!dragGhost) return;
+
+      dragGhost.style.left = String(clientX) + 'px';
+      dragGhost.style.top = String(clientY) + 'px';
+    };
+
+    const drawerAtPoint = (
+      clientX: number,
+      clientY: number,
+    ): 'inventory' | 'ship' | null => {
+      const target =
+        document.elementFromPoint(
+          clientX,
+          clientY,
+        );
+
+      const tab =
+        target?.closest<HTMLElement>(
+          '[data-opfg-drawer-tab="true"]',
+        );
+
+      const drawerId = tab?.dataset.drawerId;
+
+      return drawerId === 'inventory'
+        || drawerId === 'ship'
+        ? drawerId
+        : null;
+    };
+
+    const slotAtPoint = (
+      clientX: number,
+      clientY: number,
+    ): StorageSlot | null => {
+      const target =
+        document.elementFromPoint(
+          clientX,
+          clientY,
+        );
+
+      const slotElement =
+        target?.closest<HTMLElement>(
+          '[data-opfg-storage-slot]',
+        );
+
+      return parseSlot(
+        slotElement?.dataset.opfgStorageSlot,
+      );
+    };
+
+    const dispatchDrawerHover = (
+      clientX: number,
+      clientY: number,
+      source: StorageSlot,
+    ) => {
+      window.dispatchEvent(
+        new CustomEvent(
+          'opfg-storage-touch-drag',
+          {
+            detail: {
+              phase: 'move',
+              clientX,
+              clientY,
+              source,
+            },
+          },
+        ),
+      );
+    };
+
+    const onTouchStart = (
+      touchEvent: TouchEvent,
+    ) => {
+      if (
+        active
+        || touchEvent.touches.length !== 1
+      ) {
+        return;
+      }
+
+      const target =
+        touchEvent.target instanceof Element
+          ? touchEvent.target
+          : null;
+
+      const slotElement =
+        target?.closest<HTMLElement>(
+          '[data-opfg-storage-slot]',
+        );
+
+      const source =
+        parseSlot(
+          slotElement?.dataset.opfgStorageSlot,
+        );
+
+      const touch =
+        touchEvent.touches.item(0);
+
+      if (
+        !source
+        || !touch
+        || !slotElement
+      ) {
+        return;
+      }
+
+      active = {
+        identifier: touch.identifier,
+        source,
+        sourceElement: slotElement,
+        startX: touch.clientX,
+        startY: touch.clientY,
+        dragging: false,
+      };
+    };
+
+    const onTouchMove = (
+      touchEvent: TouchEvent,
+    ) => {
+      if (!active) return;
+
+      const touch =
+        findTouch(
+          touchEvent.touches,
+          active.identifier,
+        );
+
+      if (!touch) return;
+
+      const distance = Math.hypot(
+        touch.clientX - active.startX,
+        touch.clientY - active.startY,
+      );
+
+      if (
+        !active.dragging
+        && distance < 8
+      ) {
+        return;
+      }
+
+      if (!active.dragging) {
+        active.dragging = true;
+
+        createDragGhost(
+          active.sourceElement,
+          touch.clientX,
+          touch.clientY,
+        );
+      }
+
+      touchEvent.preventDefault();
+
+      moveDragGhost(
+        touch.clientX,
+        touch.clientY,
+      );
+
+      dispatchDrawerHover(
+        touch.clientX,
+        touch.clientY,
+        active.source,
+      );
+    };
+
+    const finishTouchDrag = (
+      touchEvent: TouchEvent,
+      cancelled: boolean,
+    ) => {
+      if (!active) return;
+
+      const touch =
+        findTouch(
+          touchEvent.changedTouches,
+          active.identifier,
+        );
+
+      if (!touch) return;
+
+      const drag = active;
+      active = null;
+
+      removeDragGhost();
+
+      if (
+        cancelled
+        || !drag.dragging
+      ) {
+        return;
+      }
+
+      touchEvent.preventDefault();
+
+      const destination =
+        slotAtPoint(
+          touch.clientX,
+          touch.clientY,
+        );
+
+      if (destination) {
+        session.applySystemAction((next) => {
+          moveItem(
+            next,
+            catalog,
+            drag.source,
+            destination,
+          );
+        });
+
+        selectedStorageSlotRef.current = null;
+        setSelectedStorageSlot(null);
+        return;
+      }
+
+      const drawer =
+        drawerAtPoint(
+          touch.clientX,
+          touch.clientY,
+        );
+
+      if (drawer) {
+        handleStorageDrawerDrop(
+          drawer,
+          drag.source,
+        );
+      }
+    };
+
+    const onTouchEnd = (
+      event: TouchEvent,
+    ) => {
+      finishTouchDrag(event, false);
+    };
+
+    const onTouchCancel = (
+      event: TouchEvent,
+    ) => {
+      finishTouchDrag(event, true);
+    };
+
+    document.addEventListener(
+      'touchstart',
+      onTouchStart,
+      {
+        capture: true,
+        passive: true,
+      },
+    );
+
+    window.addEventListener(
+      'touchmove',
+      onTouchMove,
+      { passive: false },
+    );
+
+    window.addEventListener(
+      'touchend',
+      onTouchEnd,
+      { passive: false },
+    );
+
+    window.addEventListener(
+      'touchcancel',
+      onTouchCancel,
+      { passive: false },
+    );
+
+    return () => {
+      removeDragGhost();
+
+      document.removeEventListener(
+        'touchstart',
+        onTouchStart,
+        true,
+      );
+
+      window.removeEventListener(
+        'touchmove',
+        onTouchMove,
+      );
+
+      window.removeEventListener(
+        'touchend',
+        onTouchEnd,
+      );
+
+      window.removeEventListener(
+        'touchcancel',
+        onTouchCancel,
+      );
+    };
+  }, [
+    catalog,
+    session,
+  ]);
+
   const changeLocale = (
     next: LocaleId,
   ) => {
@@ -1568,6 +2012,7 @@ export function EventPreview({
       <MobileSideDrawers
         translate={translate}
         onHome={onHome}
+        onStorageDrawerDrop={handleStorageDrawerDrop}
         stats={mobileStatsRail}
         inventory={
           <InventoryHudPanel

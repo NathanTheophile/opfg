@@ -401,3 +401,29 @@
     z-index: 100;
   }
 }
+/* OPFG LANDING UTILITY SCALE V4 */
+/*
+ * Language/audio controls live outside the scaled landing content.
+ * The landing mirrors its viewport scale to :root; reuse that value here.
+ */
+.opfg-landing .opfg-language-controls,
+.opfg-landing ~ .opfg-audio-controls {
+  zoom: var(--opfg-landing-scale, 1);
+}
+
+@supports not (zoom: 1) {
+  .opfg-landing .opfg-language-controls,
+  .opfg-landing ~ .opfg-audio-controls {
+    transform: scale(var(--opfg-landing-scale, 1));
+    transform-origin: right bottom;
+  }
+
+  @media (orientation: portrait) {
+    .opfg-landing .opfg-language-controls,
+    .opfg-landing ~ .opfg-audio-controls {
+      transform-origin: left bottom;
+    }
+  }
+}
+
+/* OPFG LANDING V4.1 SCALE PARITY */

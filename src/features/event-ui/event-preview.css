@@ -385,9 +385,19 @@
     display: none !important;
   }
 
-  .opfg-game-scale-content,
-  .opfg-game-adventure-region {
+  .opfg-game-scale-content {
     max-width: 32rem;
+  }
+
+  .opfg-game-adventure-region {
+    width: 100%;
+    max-width: 32rem;
+    margin-inline: 0;
+  }
+
+  .opfg-game-screen .opfg-adventure-scroll {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
   }
 
   .opfg-game-screen .opfg-adventure-scroll {
@@ -498,6 +508,11 @@
     --ui-outcome-body-padding-top: 1.2rem;
     --ui-outcome-body-padding-bottom: 1.2rem;
     --ui-outcome-continue-gap: 0.5rem;
+
+    padding-left:
+      max(0.55rem, var(--safe-area-left)) !important;
+    padding-right:
+      max(0.55rem, var(--safe-area-right)) !important;
   }
 }
 
@@ -506,4 +521,65 @@
   .opfg-game-scale-content {
     z-index: 120;
   }
+}
+
+/* OPFG MOBILE POLISH V4.4 */
+
+/* OPFG MOBILE FIXES V4.5 */
+
+/* OPFG MOBILE FEEDBACK V4.6 */
+.opfg-touch-drag-ghost {
+  position: fixed !important;
+  z-index: 10000 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+  touch-action: none !important;
+  transform:
+    translate(-50%, -50%)
+    scale(1.08);
+  transform-origin: center;
+  opacity: 0.94;
+  filter:
+    brightness(1.12)
+    drop-shadow(0 8px 12px rgb(0 0 0 / 0.52))
+    drop-shadow(0 0 8px rgb(245 194 66 / 0.24));
+  will-change: left, top;
+}
+
+.opfg-touch-drag-ghost::before {
+  pointer-events: none !important;
+}
+
+/* OPFG GAME BETA WATERMARK START */
+/*
+ * Persistent in-game beta watermark.
+ * Mirrors the landing watermark:
+ * - viewport-fixed
+ * - display/Cinzel font
+ * - 18px
+ * - 30% opacity
+ * - desktop + mobile
+ */
+.opfg-game-screen::before {
+  position: fixed;
+  top: max(0.7rem, var(--safe-area-top));
+  left: max(0.8rem, var(--safe-area-left));
+  z-index: 120;
+  content: 'BETA';
+  color: var(--text-gold-emphasis, #e8d7b5);
+  font-family: var(--font-display-family);
+  font-size: 18px;
+  font-weight: var(--font-display-weight, 700);
+  line-height: 1;
+  letter-spacing: 0.12em;
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+  text-transform: uppercase;
+  text-shadow: 0 1px 4px rgb(0 0 0 / 0.55);
+}
+/* OPFG GAME BETA WATERMARK END */
+
+.opfg-game-screen::before {
+  content: none !important;
 }

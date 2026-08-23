@@ -1,4 +1,7 @@
-import type { DragEvent, ReactNode } from 'react';
+import type {
+  DragEvent,
+  ReactNode,
+} from 'react';
 import { Anchor, Backpack, Coins, House, LockKeyhole, Navigation, Package, ShieldCheck, Shirt, UserRound } from 'lucide-react';
 import { Panel, NineSliceFrame } from '@/components/ui';
 import type { ContentCatalog, LocationDefinition } from '@/game/content/schema';
@@ -53,21 +56,42 @@ function storageKey(slot: StorageSlot): string {
     : `${slot.type}-${slot.index}`;
 }
 
+/* OPFG MOBILE TOUCH STORAGE DRAG */
+/* OPFG MOBILE FIXES V4.5 */
 function interactionProps(
   slot: StorageSlot,
   selected: StorageSlot | null | undefined,
   onSlot?: (slot: StorageSlot) => void,
 ) {
+  const serializedSlot = JSON.stringify(slot);
+
   return {
     draggable: true,
-    'data-selected': selected && storageKey(selected) === storageKey(slot) ? 'true' : undefined,
+    'data-opfg-storage-slot': serializedSlot,
+    'data-selected':
+      selected
+      && storageKey(selected) === storageKey(slot)
+        ? 'true'
+        : undefined,
     onClick: () => onSlot?.(slot),
-    onDragStart: (event: DragEvent) => event.dataTransfer.setData('application/x-opfg-storage', JSON.stringify(slot)),
-    onDragOver: (event: DragEvent) => { if (onSlot) event.preventDefault(); },
+    onDragStart: (event: DragEvent) =>
+      event.dataTransfer.setData(
+        'application/x-opfg-storage',
+        serializedSlot,
+      ),
+    onDragOver: (event: DragEvent) => {
+      if (onSlot) event.preventDefault();
+    },
     onDrop: (event: DragEvent) => {
       event.preventDefault();
       try {
-        onSlot?.(JSON.parse(event.dataTransfer.getData('application/x-opfg-storage')) as StorageSlot);
+        onSlot?.(
+          JSON.parse(
+            event.dataTransfer.getData(
+              'application/x-opfg-storage',
+            ),
+          ) as StorageSlot,
+        );
         onSlot?.(slot);
       } catch {
         // Ignore foreign drags.
