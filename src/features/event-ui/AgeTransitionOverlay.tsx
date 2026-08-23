@@ -28,13 +28,13 @@ export function AgeTransitionOverlay({
     reduceAgeMotion
       ? 650
       : coarsePointer
-        ? 4400
+        ? 2200
         : 2200;
     const coverMs =
     reduceAgeMotion
       ? 90
       : coarsePointer
-        ? 1520
+        ? 760
         : 260;
   const onCoveredRef = useRef(onCovered);
   const onCompleteRef = useRef(onComplete);
@@ -105,8 +105,8 @@ export function AgeTransitionOverlay({
                   ],
                 }}
                 transition={{
-                  delay: coarsePointer ? 0.52 : 0.26,
-                  duration: coarsePointer ? 1.44 : 0.72,
+                  delay: coarsePointer ? 0.26 : 0.26,
+                  duration: coarsePointer ? 0.72 : 0.72,
                   times: [0, 0.52, 1],
                   ease: [0.4, 0, 1, 1],
                 }}
@@ -133,8 +133,8 @@ export function AgeTransitionOverlay({
                   ],
                 }}
                 transition={{
-                  delay: coarsePointer ? 1.84 : 0.92,
-                  duration: coarsePointer ? 1.04 : 0.52,
+                  delay: coarsePointer ? 0.92 : 0.92,
+                  duration: coarsePointer ? 0.52 : 0.52,
                   times: [0, 0.7, 1],
                   ease: [0.16, 1, 0.3, 1],
                 }}

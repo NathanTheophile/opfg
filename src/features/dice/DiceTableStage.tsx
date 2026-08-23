@@ -1,6 +1,7 @@
 import type { Translator } from '@/game/localization';
 import { D20Roll } from './D20Roll';
 import './dice-table-stage.css';
+import './dice-result-impact.css';
 
 export type DiceTableStageStatus =
   | 'armed'
@@ -60,6 +61,7 @@ export function DiceTableStage({
   return (
     <div
       className={`opfg-dice-table-stage ${visible ? 'is-visible' : ''}`}
+      data-result={resolved ? status : undefined}
       aria-hidden={!visible}
     >
       <div className="opfg-dice-table-stage__module">

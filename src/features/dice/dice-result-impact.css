@@ -1,0 +1,128 @@
+/*
+ * Dice result impact FX
+ *
+ * Cheap mobile-safe punch:
+ * - one transform/opacity "ink" spread behind the die;
+ * - one full-screen edge light pulse;
+ * - no blur, backdrop-filter, animated noise, canvas or extra React state.
+ */
+
+.opfg-dice-table-stage {
+  --opfg-dice-impact-rgb: 214 67 62;
+  --opfg-dice-impact-strength: 0.24;
+
+  isolation: isolate;
+}
+
+.opfg-dice-table-stage__module {
+  z-index: 1;
+}
+
+.opfg-dice-table-stage[data-result='success'],
+.opfg-dice-table-stage[data-result='criticalSuccess'] {
+  --opfg-dice-impact-rgb: 66 201 116;
+}
+
+.opfg-dice-table-stage[data-result='failure'],
+.opfg-dice-table-stage[data-result='criticalFailure'] {
+  --opfg-dice-impact-rgb: 220 70 62;
+}
+
+.opfg-dice-table-stage[data-result='criticalSuccess'],
+.opfg-dice-table-stage[data-result='criticalFailure'] {
+  --opfg-dice-impact-strength: 0.34;
+}
+
+/* Organic spread behind the D20/result. */
+.opfg-dice-table-stage[data-result]::before {
+  position: absolute;
+  z-index: 0;
+  top: 61%;
+  left: 50%;
+  width: min(88vw, 44rem);
+  aspect-ratio: 1;
+  content: '';
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgb(var(--opfg-dice-impact-rgb) / var(--opfg-dice-impact-strength)) 0 13%,
+      rgb(var(--opfg-dice-impact-rgb) / 0.12) 30%,
+      transparent 60%
+    ),
+    radial-gradient(circle at 29% 43%, rgb(var(--opfg-dice-impact-rgb) / 0.18) 0 6%, transparent 21%),
+    radial-gradient(circle at 72% 38%, rgb(var(--opfg-dice-impact-rgb) / 0.16) 0 5%, transparent 19%),
+    radial-gradient(circle at 36% 69%, rgb(var(--opfg-dice-impact-rgb) / 0.13) 0 5%, transparent 18%),
+    radial-gradient(circle at 68% 66%, rgb(var(--opfg-dice-impact-rgb) / 0.14) 0 4%, transparent 17%);
+  transform: translate(-50%, -50%) scale(0.18);
+  transform-origin: center;
+  animation: opfg-dice-impact-spread 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Notification-like left/right edge light. */
+.opfg-dice-table-stage[data-result]::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: '';
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(ellipse 7% 28% at 0% 30%, rgb(var(--opfg-dice-impact-rgb) / 0.38), transparent 100%),
+    radial-gradient(ellipse 7% 30% at 100% 70%, rgb(var(--opfg-dice-impact-rgb) / 0.38), transparent 100%),
+    linear-gradient(90deg, rgb(var(--opfg-dice-impact-rgb) / 0.36) 0, rgb(var(--opfg-dice-impact-rgb) / 0.12) 2.6%, transparent 9%),
+    linear-gradient(270deg, rgb(var(--opfg-dice-impact-rgb) / 0.36) 0, rgb(var(--opfg-dice-impact-rgb) / 0.12) 2.6%, transparent 9%);
+  animation: opfg-dice-impact-edges 840ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes opfg-dice-impact-spread {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.18);
+  }
+
+  18% {
+    opacity: 0.9;
+  }
+
+  58% {
+    opacity: 0.62;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+}
+
+@keyframes opfg-dice-impact-edges {
+  0% { opacity: 0; }
+  16% { opacity: 0.94; }
+  48% { opacity: 0.68; }
+  100% { opacity: 0; }
+}
+
+@media (pointer: coarse) and (orientation: portrait) {
+  .opfg-dice-table-stage[data-result]::before {
+    top: 60%;
+    width: min(104vw, 34rem);
+  }
+
+  .opfg-dice-table-stage[data-result]::after {
+    background:
+      radial-gradient(ellipse 10% 30% at 0% 28%, rgb(var(--opfg-dice-impact-rgb) / 0.46), transparent 100%),
+      radial-gradient(ellipse 10% 32% at 100% 72%, rgb(var(--opfg-dice-impact-rgb) / 0.46), transparent 100%),
+      linear-gradient(90deg, rgb(var(--opfg-dice-impact-rgb) / 0.42) 0, rgb(var(--opfg-dice-impact-rgb) / 0.14) 3.5%, transparent 12%),
+      linear-gradient(270deg, rgb(var(--opfg-dice-impact-rgb) / 0.42) 0, rgb(var(--opfg-dice-impact-rgb) / 0.14) 3.5%, transparent 12%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (pointer: fine) {
+  .opfg-dice-table-stage[data-result]::before,
+  .opfg-dice-table-stage[data-result]::after {
+    animation: none;
+    opacity: 0;
+  }
+}
