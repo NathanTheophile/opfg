@@ -60,25 +60,45 @@
   }
 
   .opfg-mobile-home-button {
-    position: fixed;
-    z-index: 100;
-    right: max(0.75rem, var(--safe-area-right));
-    bottom: var(
-      --opfg-mobile-utility-bottom,
-      calc(
-        max(0px, var(--safe-area-bottom))
-        + var(--opfg-mobile-bottom-bar-height, 4.75rem)
-        + 0.55rem
+    --opfg-nine-slice-width: 8px;
+    --opfg-nine-slice-opacity: 1;
+
+    position: fixed !important;
+    isolation: isolate;
+    z-index: 150;
+    top: auto !important;
+    right: max(0.85rem, var(--safe-area-right, 0px)) !important;
+    bottom: calc(
+      var(
+        --opfg-mobile-utility-bottom,
+        calc(
+          max(0px, var(--safe-area-bottom, 0px))
+          + var(--opfg-mobile-bottom-bar-height, 4.75rem)
+          + var(--opfg-mobile-utility-gap, 0.55rem)
+        )
       )
-    );
-    width: var(--ui-utility-control-size, 3.15rem) !important;
-    min-width: var(--ui-utility-control-size, 3.15rem);
-    height: var(--ui-utility-control-size, 3.15rem);
-    min-height: var(--ui-utility-control-size, 3.15rem) !important;
+      + var(--opfg-mobile-utility-size, var(--ui-utility-control-size, 3.15rem))
+      + var(--opfg-mobile-utility-gap, 0.55rem)
+      + var(--opfg-mobile-utility-size, var(--ui-utility-control-size, 3.15rem))
+      + var(--opfg-mobile-utility-gap, 0.55rem)
+    ) !important;
+    left: auto !important;
+
+    display: grid !important;
+    width: var(--opfg-mobile-utility-size, var(--ui-utility-control-size, 3.15rem)) !important;
+    min-width: var(--opfg-mobile-utility-size, var(--ui-utility-control-size, 3.15rem)) !important;
+    height: var(--opfg-mobile-utility-size, var(--ui-utility-control-size, 3.15rem)) !important;
+    min-height: var(--opfg-mobile-utility-size, var(--ui-utility-control-size, 3.15rem)) !important;
+    place-items: center;
     padding: 0 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+    color: var(--text-gold-control);
+    pointer-events: auto;
   }
 
-  .opfg-mobile-home-button span {
+  .opfg-mobile-home-button__label {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -179,86 +199,44 @@
   }
 }
 
-/* OPFG UI FIX: true 2x portrait drawers */
-@media (orientation: portrait) {
+/* OPFG MOBILE STABILITY: cheap drawer compositing */
+@media (pointer: coarse) and (orientation: portrait) {
+  .opfg-mobile-side-tabs {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .opfg-mobile-side-tab,
   .opfg-mobile-home-button {
-    z-index: 10000;
-    right: max(0.85rem, var(--safe-area-right, 0px));
-    bottom: calc(
-      max(0px, var(--safe-area-bottom, 0px))
-      + var(--opfg-mobile-bottom-bar-height, 4.75rem)
-      + var(--opfg-mobile-utility-gap, 0.55rem)
-      + (
-        var(--opfg-mobile-utility-size, 2.65rem)
-        + var(--opfg-mobile-utility-gap, 0.55rem)
-      ) * 2
-    );
-    display: grid !important;
-    width: var(--opfg-mobile-utility-size, 2.65rem) !important;
-    min-width: var(--opfg-mobile-utility-size, 2.65rem) !important;
-    height: var(--opfg-mobile-utility-size, 2.65rem) !important;
-    min-height: var(--opfg-mobile-utility-size, 2.65rem) !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto;
+    transition: none !important;
   }
 
   .opfg-mobile-side-drawer {
-    top: auto;
-    right: auto;
-    bottom: calc(
-      max(0px, var(--safe-area-bottom))
-      + var(--opfg-mobile-bottom-bar-height, 4.75rem)
-      + 0.75rem
-    );
-    left: max(0.75rem, var(--safe-area-left));
-    width: min(
-      var(--ui-mobile-drawer-width, 21rem),
-      calc(50vw - 1rem)
-    );
-    max-width: none;
-    max-height: 42dvh;
-    overflow: auto;
-    transform: scale(2);
-    transform-origin: bottom left;
-    animation-name: opfg-mobile-panel-2x-in;
-  }
-
-  .opfg-mobile-side-drawer:is(
-    [data-drawer='inventory'],
-    [data-drawer='crew']
-  ) {
-    top: auto;
-    right: auto;
-    left: max(0.75rem, var(--safe-area-left));
-    transform: scale(2);
-    transform-origin: bottom left;
-    animation-name: opfg-mobile-panel-2x-in;
-  }
-
-  .opfg-mobile-side-drawer[data-drawer='ship'] {
-    top: auto;
-    right: max(0.75rem, var(--safe-area-right));
-    left: auto;
-    transform: scale(2);
-    transform-origin: bottom right;
-    animation-name: opfg-mobile-panel-2x-in;
-  }
-
-  .opfg-mobile-side-drawer > * {
-    width: 100%;
-    max-width: 100%;
+    animation: none !important;
   }
 }
 
-@keyframes opfg-mobile-panel-2x-in {
-  from {
-    opacity: 0;
-    transform: translateY(0.28rem) scale(1.94);
+/* OPFG MOBILE UI: framed Home below parchment */
+@media (pointer: coarse) and (orientation: portrait) {
+  .opfg-mobile-home-button {
+    --opfg-nine-slice-width: 8px;
+    --opfg-nine-slice-opacity: var(--opfg-nine-slice-opacity-default, 0.9);
+    z-index: 100;
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(2);
+  .opfg-mobile-side-drawer {
+    z-index: 140;
+  }
+}
+
+/* OPFG MOBILE HOME: NineSlice descendants must stay visible */
+@media (pointer: coarse) and (orientation: portrait) {
+  .opfg-mobile-home-button > .opfg-nine-slice {
+    z-index: 0;
+  }
+
+  .opfg-mobile-home-button > svg {
+    position: relative;
+    z-index: 1;
   }
 }

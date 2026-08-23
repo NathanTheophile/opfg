@@ -98,6 +98,8 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
   }
 
   let currentScene = SCENES[getPreferredSceneId()];
+  const mobileGlintsOnly =
+    window.matchMedia('(pointer: coarse)').matches;
 
   const scenePlate = document.createElement('div');
   scenePlate.className = 'tavern-scene-plate';
@@ -283,6 +285,10 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
   let coinGlints: CoinGlint[] = [];
   const dust: DustParticle[] = [];
 
+  /* OPFG MOBILE PERF TEST: disable dust particles on coarse pointers */
+  const disableDustParticles =
+    window.matchMedia('(pointer: coarse)').matches;
+
   function buildCoinGlints(points: CoinGlintPoint[]): CoinGlint[] {
     return points.map((point) => ({
       ...point,
@@ -320,6 +326,11 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
 
   function resetDust(): void {
     dust.length = 0;
+
+    if (disableDustParticles) {
+      return;
+    }
+
     for (let i = 0; i < 118; i += 1) dust.push(createDustParticle(true));
   }
 
@@ -565,7 +576,9 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
   ): void {
     ctx.clearRect(0, 0, currentScene.artWidth, currentScene.artHeight);
 
-    drawAnimatedFlame(t, intensity, flicker, gust, flameStretch, flameWidth, flameLean);
+    if (!mobileGlintsOnly) {
+      drawAnimatedFlame(t, intensity, flicker, gust, flameStretch, flameWidth, flameLean);
+    }
 
     for (const glint of coinGlints) {
       if (!glint.active) continue;
@@ -651,6 +664,24 @@ export function mountTavernBackground(app: HTMLDivElement): () => void {
   }
 
   function animate(nowMs: number): void {
+    /* OPFG MOBILE PERF: coin glints only */
+    if (mobileGlintsOnly) {
+      const frameNow = nowMs / 1000;
+      const delta = clamp(frameNow - lastTime, 0, 0.05);
+      lastTime = frameNow;
+      elapsed += delta;
+      const t = elapsed;
+
+      if (t >= nextGlintAt) triggerRandomGlint(t);
+
+      // drawEffects clears the FX canvas and renders active coin glints.
+      // Flame is skipped above and dust is empty on mobile.
+      drawEffects(t, 0, 0, 0, 0, 1, 1, 0);
+
+      if (!disposed) animationFrameId = requestAnimationFrame(animate);
+      return;
+    }
+
     const now = nowMs / 1000;
     const delta = Math.min(now - lastTime, 0.05);
     lastTime = now;

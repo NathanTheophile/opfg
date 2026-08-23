@@ -362,6 +362,10 @@ export function EventPreview({
 
 
 
+  const coarsePointer =
+    typeof window !== 'undefined'
+    && window.matchMedia('(pointer: coarse)').matches;
+
   const translate: Translator = (key, params) =>
     t(key, locale, {
       playerName: session.gameState?.player.profile.name ?? '',
@@ -410,18 +414,25 @@ export function EventPreview({
 
     const measureAndFit = () => {
       /*
-       * Always measure from a true unscaled frame.
-       * Reading offsetWidth immediately after changing the CSS variable
-       * forces Chromium/WebKit to commit the style before bounds are read.
+       * Never reset the live gameplay tree to scale(1) for measurement.
+       * Mobile visualViewport resize events can fire repeatedly while browser
+       * chrome settles; forcing a 1x layout here makes the HUD visibly flash.
+       *
+       * getBoundingClientRect() is already uniformly transformed by the current
+       * stage scale, so natural dimensions can be recovered by dividing by it.
        */
-      stage.style.setProperty(
-        '--opfg-game-ui-scale',
-        '1',
-      );
-
-      adventureScrollRef.current?.style.removeProperty('max-height');
-
-      void stage.offsetWidth;
+      const currentScale =
+        Math.max(
+          0.25,
+          Number.parseFloat(
+            stage.style.getPropertyValue('--opfg-game-ui-scale'),
+          )
+          || Number.parseFloat(
+            window.getComputedStyle(stage)
+              .getPropertyValue('--opfg-game-ui-scale'),
+          )
+          || 1,
+        );
 
       const viewport =
         window.visualViewport;
@@ -522,13 +533,13 @@ export function EventPreview({
       const naturalWidth =
         Math.max(
           1,
-          right - left,
+          (right - left) / currentScale,
         );
 
       const naturalHeight =
         Math.max(
           1,
-          bottom - top,
+          (bottom - top) / currentScale,
         );
 
       const scale =
@@ -544,17 +555,30 @@ export function EventPreview({
       const value =
         scale.toFixed(4);
 
-      stage.style.setProperty(
-        '--opfg-game-ui-scale',
-        value,
-      );
-
-      document.documentElement
-        .style
-        .setProperty(
+      if (
+        stage.style.getPropertyValue(
+          '--opfg-game-ui-scale',
+        ) !== value
+      ) {
+        stage.style.setProperty(
           '--opfg-game-ui-scale',
           value,
         );
+      }
+
+      if (
+        document.documentElement.style
+          .getPropertyValue(
+            '--opfg-game-ui-scale',
+          ) !== value
+      ) {
+        document.documentElement
+          .style
+          .setProperty(
+            '--opfg-game-ui-scale',
+            value,
+          );
+      }
 
       /*
        * The whole HUD scales only from viewport changes. Story overflow is
@@ -581,6 +605,11 @@ export function EventPreview({
           );
         } else {
           const scrollRect = adventureScroll.getBoundingClientRect();
+          const stageRect = stage.getBoundingClientRect();
+          const naturalScrollTop =
+            (scrollRect.top - stageRect.top) / currentScale;
+          const projectedScrollTop =
+            stageRect.top + naturalScrollTop * scale;
           const mobileTabs = document.querySelector<HTMLElement>(
             '.opfg-mobile-side-tabs',
           );
@@ -588,12 +617,12 @@ export function EventPreview({
             ? mobileTabs.getBoundingClientRect().top
             : viewportHeight;
           const visibleBottom = Math.max(
-            scrollRect.top + 160 * scale,
+            projectedScrollTop + 160 * scale,
             Math.min(viewportHeight, mobileTabsTop) - 10,
           );
           const maxNaturalScrollHeight = Math.max(
             160,
-            (visibleBottom - scrollRect.top) / scale,
+            (visibleBottom - projectedScrollTop) / scale,
           );
 
           adventureScroll.style.setProperty(
@@ -793,6 +822,7 @@ export function EventPreview({
                   : undefined,
                 dice: preview?.available
                   ? {
+                      statId: preview.statId,
                       statLabel:
                         translate(
                           STAT_KEYS[
@@ -898,7 +928,7 @@ export function EventPreview({
         () => {
           setOutcomeRevealed(true);
         },
-        reducedMotion ? 1 : 310,
+        reducedMotion || coarsePointer ? 1 : 310,
       );
 
     return () =>
@@ -1440,10 +1470,12 @@ export function EventPreview({
                         {outcomeRevealed && (
                           <motion.div
                             key="outcome"
-                            initial={{
-                              opacity: 0,
-                              y: -4,
-                            }}
+                            initial={coarsePointer
+                              ? false
+                              : {
+                                  opacity: 0,
+                                  y: -4,
+                                }}
                             animate={{
                               opacity: 1,
                               y: 0,
@@ -1451,15 +1483,17 @@ export function EventPreview({
                             exit={{
                               opacity: 0,
                             }}
-                            transition={{
-                              duration: 0.16,
-                              ease: [
-                                0.16,
-                                1,
-                                0.3,
-                                1,
-                              ],
-                            }}
+                            transition={coarsePointer
+                              ? { duration: 0 }
+                              : {
+                                  duration: 0.16,
+                                  ease: [
+                                    0.16,
+                                    1,
+                                    0.3,
+                                    1,
+                                  ],
+                                }}
                           >
                             <OutcomePanel
                               outcome={outcomeView}

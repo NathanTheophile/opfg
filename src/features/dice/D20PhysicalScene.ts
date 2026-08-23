@@ -92,6 +92,7 @@ export interface D20SceneOptions {
 
 export class D20Scene {
   private readonly canvas: HTMLCanvasElement;
+  private readonly mobilePerformanceMode: boolean;
   private readonly renderer: THREE.WebGLRenderer;
   private readonly scene = new THREE.Scene();
   private readonly camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
@@ -115,14 +116,21 @@ export class D20Scene {
     this.canvas = canvas;
     this.onComplete = onComplete;
     this.onContextLost = onContextLost;
+    this.mobilePerformanceMode =
+      window.matchMedia('(pointer: coarse)').matches;
 
+    /* OPFG MOBILE D20 QUALITY: uncapped RAF + 1.5 DPR + AA */
     this.renderer = new THREE.WebGLRenderer({
       canvas,
       alpha: true,
       antialias: true,
       powerPreference: 'high-performance',
     });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    this.renderer.setPixelRatio(
+      this.mobilePerformanceMode
+        ? Math.min(window.devicePixelRatio || 1, 1.5)
+        : Math.min(window.devicePixelRatio || 1, 2),
+    );
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 0.92;
@@ -218,6 +226,7 @@ export class D20Scene {
     if (!animation || this.disposed) return;
 
     const p = THREE.MathUtils.clamp((now - animation.startedAt) / animation.durationMs, 0, 1);
+
     this.updatePose(animation, p);
     this.updateReveal(animation, p);
     this.render();
@@ -772,6 +781,12 @@ export class D20Scene {
       ], 2));
 
       const texture = createNumberTexture(value);
+      if (this.mobilePerformanceMode) {
+        texture.anisotropy = Math.min(
+          8,
+          this.renderer.capabilities.getMaxAnisotropy(),
+        );
+      }
       this.textures.push(texture);
 
       // The gold, brushed texture and engraved inner shadow are already baked
@@ -801,6 +816,13 @@ export class D20Scene {
 
   private buildLighting(): void {
     this.scene.add(new THREE.HemisphereLight(0xffe4b6, 0x100b07, 0.64));
+
+    if (this.mobilePerformanceMode) {
+      const key = new THREE.DirectionalLight(0xffc064, 1.8);
+      key.position.set(-3.4, 4.8, 4.2);
+      this.scene.add(key);
+      return;
+    }
 
     const key = new THREE.SpotLight(0xffc064, 42, 12, Math.PI / 4.5, 0.7, 1.45);
     key.position.set(-3.4, 4.8, 4.2);

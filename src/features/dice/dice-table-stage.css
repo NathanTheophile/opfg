@@ -42,6 +42,7 @@
 }
 
 .opfg-dice-table-stage__meta span {
+  font-family: var(--font-display-family);
   color: var(--text-secondary);
   font-size: 0.82rem;
   font-weight: 700;
@@ -109,6 +110,7 @@
 }
 
 .opfg-dice-table-stage__result {
+  font-family: var(--font-display-family);
   position: absolute;
   z-index: 7;
   inset: 0;
@@ -181,13 +183,6 @@
   }
 }
 
-@media (max-width: 40rem) {
-  .opfg-dice-table-stage__module {
-    top: 64%;
-    width: 94vw;
-    height: min(19rem, 38vh);
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
   .opfg-dice-table-stage,
@@ -259,4 +254,84 @@
 /* OPFG RELEASE FIX: lower dice total */
 .opfg-dice-table-stage__result small {
   transform: translateY(clamp(1.8rem, 2.2vw, 3.4rem));
+}
+
+/* OPFG MOBILE UI: readable dice copy x2 */
+@media (pointer: coarse) and (orientation: portrait) {
+  .opfg-dice-table-stage__meta {
+    gap: 1.1rem;
+  }
+
+  .opfg-dice-table-stage__meta span {
+    font-size: 1.64rem;
+  }
+
+  .opfg-dice-table-stage__meta strong {
+    font-size: 2.3rem;
+  }
+
+  .opfg-dice-table-stage__trigger {
+    padding-top: 1.35rem;
+  }
+
+  .opfg-dice-table-stage__trigger span {
+    font-size: 2rem;
+  }
+
+  .opfg-dice-table-stage__result span {
+    font-size: 1.72rem;
+  }
+
+  .opfg-dice-table-stage__result small {
+    font-size: 2.1rem;
+  }
+}
+
+/*
+ * OPFG MOBILE DICE — canonical portrait tuning
+ * Kept at the end of this stylesheet intentionally so the responsive/release
+ * typography rules above cannot override the phone-specific hierarchy.
+ */
+@media (max-width: 40rem) {
+  .opfg-dice-table-stage__module {
+    top: 64%;
+    width: 94vw;
+    height: min(19rem, 38vh);
+  }
+
+  .opfg-dice-table-stage__meta {
+    top: -3.5rem;
+    gap: 0.42rem;
+  }
+
+  /* Stat: intentionally quieter than roll/result. */
+  .opfg-dice-table-stage__meta span {
+    font-size: 1.35rem;
+    letter-spacing: 0.08em;
+  }
+
+  .opfg-dice-table-stage__meta strong {
+    font-size: 1.35rem;
+    font-family: var(--font-display-family);
+    
+  }
+
+  /* Preserve the raised positions from the previous spacing pass. */
+  .opfg-dice-table-stage__trigger span,
+  .opfg-dice-table-stage__result > span {
+    position: relative;
+    top: -2.4rem;
+  }
+
+  /* Roll prompt stays readable without competing with the outcome. */
+  .opfg-dice-table-stage__trigger span {
+    font-family: var(--font-display-family);
+    top: -3rem;
+    font-size: 2rem;
+  }
+
+  /* Outcome gets the strongest hierarchy of the upper copy. */
+  .opfg-dice-table-stage__result > span {
+    font-size: 2rem;
+  }
 }
