@@ -102,7 +102,8 @@ const COMMUNITY_LINKS = [
   {
     id: 'discord',
     label: 'Discord',
-    href: import.meta.env.VITE_DISCORD_URL,
+    href: import.meta.env.VITE_DISCORD_URL ||
+      'https://discord.gg/U59e42HSQ',
   },
 ] as const;
 
@@ -123,13 +124,6 @@ const LANDING_SHOWCASE_COPY = {
     gazetteTitle: 'La Gazette des Destinées',
     gazetteSubtitle: 'Devlog & prochaines escales',
     news: [
-      {
-        eyebrow: 'DEVLOG',
-        title: 'Derniers préparatifs',
-        body:
-          'Polish mobile, performances et dernière passe de QA avant la V1.',
-        tone: 'gold',
-      },
       {
         eyebrow: 'À VENIR',
         title: 'Plus de destinées',
