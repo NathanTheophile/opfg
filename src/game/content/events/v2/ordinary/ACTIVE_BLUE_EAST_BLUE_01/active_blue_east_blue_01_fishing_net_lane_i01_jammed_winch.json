@@ -1,0 +1,88 @@
+{
+  "id": "active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch",
+  "kind": "immediate",
+  "titleKey": "event.active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch.title",
+  "textKey": "event.active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch.text",
+  "choices": [
+    {
+      "id": "cut_the_net",
+      "textKey": "event.active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch.choice.cut_the_net.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_the_net_outcome",
+          "textKey": "event.active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch.choice.cut_the_net.outcome.cut_the_net_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "haul_him_back",
+      "textKey": "event.active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch.choice.haul_him_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "haul_him_back_outcome",
+          "textKey": "event.active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch.choice.haul_him_back.outcome.haul_him_back_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "brace_the_winch",
+      "textKey": "event.active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch.choice.brace_the_winch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "brace_the_winch_outcome",
+          "textKey": "event.active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch.choice.brace_the_winch.outcome.brace_the_winch_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

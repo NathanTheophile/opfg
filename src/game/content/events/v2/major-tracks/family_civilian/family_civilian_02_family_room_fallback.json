@@ -1,0 +1,96 @@
+{
+  "id": "family_civilian_02_family_room_fallback",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_civilian",
+    "chapterId": "childhood_02",
+    "nodeId": "family_civilian_02_family_room_fallback",
+    "selectionPriority": 0,
+    "parentNodeIds": [
+      "family_civilian_01_fathers_work_bell",
+      "family_civilian_01_two_parents_rent_table"
+    ],
+    "fallback": true
+  },
+  "eligibility": {
+    "type": "affiliationIs",
+    "affiliationId": "civilian"
+  },
+  "titleKey": "event.family_civilian_02_family_room_fallback.title",
+  "textKey": "event.family_civilian_02_family_room_fallback.text",
+  "choices": [
+    {
+      "id": "take",
+      "textKey": "event.family_civilian_02_family_room_fallback.choice.take.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_family_room_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_family_room_fallback.choice.take.outcome.take.text"
+        }
+      }
+    },
+    {
+      "id": "ask",
+      "textKey": "event.family_civilian_02_family_room_fallback.choice.ask.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_family_room_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_family_room_fallback.choice.ask.outcome.ask.text"
+        }
+      }
+    },
+    {
+      "id": "wait",
+      "textKey": "event.family_civilian_02_family_room_fallback.choice.wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_family_room_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_family_room_fallback.choice.wait.outcome.wait.text"
+        }
+      }
+    },
+    {
+      "id": "remember_meal",
+      "availableIf": {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_01_fathers_work_bell_i01_reaction",
+        "outcomeId": "protect"
+      },
+      "textKey": "event.family_civilian_02_family_room_fallback.choice.remember_meal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "remember_meal",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_family_room_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_family_room_fallback.choice.remember_meal.outcome.remember_meal.text"
+        }
+      }
+    }
+  ]
+}

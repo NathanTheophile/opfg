@@ -1,0 +1,77 @@
+{
+  "id": "active_bounty_hunter_01_prisoner_transfer_i3",
+  "titleKey": "event.active_bounty_hunter_01_prisoner_transfer_i3.title",
+  "textKey": "event.active_bounty_hunter_01_prisoner_transfer_i3.text",
+  "choices": [
+    {
+      "id": "full_report",
+      "textKey": "event.active_bounty_hunter_01_prisoner_transfer_i3.choice.full_report.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_prisoner_transfer_i3.choice.full_report.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1200
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_bribe",
+      "textKey": "event.active_bounty_hunter_01_prisoner_transfer_i3.choice.keep_bribe.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_prisoner_transfer_i3.choice.keep_bribe.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 900
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "active_bounty_hunter_01_prisoner_transfer_i1",
+        "choiceId": "accept_money"
+      }
+    },
+    {
+      "id": "demand_witness",
+      "textKey": "event.active_bounty_hunter_01_prisoner_transfer_i3.choice.demand_witness.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_prisoner_transfer_i3.choice.demand_witness.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1100
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "immediate"
+}

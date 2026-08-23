@@ -1,0 +1,183 @@
+{
+  "id": "active_blue_east_blue_01_contraband_under_keel",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_contraband_under_keel.title",
+  "textKey": "event.active_blue_east_blue_01_contraband_under_keel.text",
+  "choices": [
+    {
+      "id": "cut_it_free",
+      "textKey": "event.active_blue_east_blue_01_contraband_under_keel.choice.cut_it_free.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cut_it_free_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_contraband_under_keel.choice.cut_it_free.outcome.cut_it_free_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_contraband_under_keel_i01_cut_bundle"
+              }
+            ]
+          },
+          "failure": {
+            "id": "cut_it_free_failure",
+            "textKey": "event.active_blue_east_blue_01_contraband_under_keel.choice.cut_it_free.outcome.cut_it_free_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_contraband_under_keel_i01_cut_bundle"
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "cut_it_free_success",
+            "textKey": "event.active_blue_east_blue_01_contraband_under_keel.choice.cut_it_free.outcome.cut_it_free_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_contraband_under_keel_i01_cut_bundle"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cut_it_free_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_contraband_under_keel.choice.cut_it_free.outcome.cut_it_free_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_contraband_under_keel_i01_cut_bundle"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_the_wake",
+      "textKey": "event.active_blue_east_blue_01_contraband_under_keel.choice.read_the_wake.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_the_wake_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_contraband_under_keel.choice.read_the_wake.outcome.read_the_wake_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_contraband_under_keel_i01_cut_bundle"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "read_the_wake_failure",
+            "textKey": "event.active_blue_east_blue_01_contraband_under_keel.choice.read_the_wake.outcome.read_the_wake_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_contraband_under_keel_i01_cut_bundle"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_the_wake_success",
+            "textKey": "event.active_blue_east_blue_01_contraband_under_keel.choice.read_the_wake.outcome.read_the_wake_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_contraband_under_keel_i01_cut_bundle"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_the_wake_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_contraband_under_keel.choice.read_the_wake.outcome.read_the_wake_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_contraband_under_keel_i01_cut_bundle"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_course",
+      "textKey": "event.active_blue_east_blue_01_contraband_under_keel.choice.hold_course.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hold_course_outcome",
+          "textKey": "event.active_blue_east_blue_01_contraband_under_keel.choice.hold_course.outcome.hold_course_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_east_blue_01_contraband_under_keel_i01_cut_bundle"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 408
+      }
+    ]
+  }
+}

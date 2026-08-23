@@ -1,0 +1,99 @@
+{
+  "id": "active_generic_sea_01_missing_stars",
+  "kind": "normal",
+  "replay": { "cooldownMonths": 24 },
+  "titleKey": "event.active_generic_sea_01_missing_stars.title",
+  "textKey": "event.active_generic_sea_01_missing_stars.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "dead_reckon",
+      "textKey": "event.active_generic_sea_01_missing_stars.choice.dead_reckon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_missing_stars.choice.dead_reckon.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wait_window",
+      "textKey": "event.active_generic_sea_01_missing_stars.choice.wait_window.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_missing_stars.choice.wait_window.outcome.done.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "navigator_help",
+      "textKey": "event.active_generic_sea_01_missing_stars.choice.navigator_help.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_missing_stars.choice.navigator_help.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "navigator"
+      }
+    },
+    {
+      "id": "cautious_hold",
+      "textKey": "event.active_generic_sea_01_missing_stars.choice.cautious_hold.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_missing_stars.choice.cautious_hold.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "cautious"
+      }
+    }
+  ]
+}

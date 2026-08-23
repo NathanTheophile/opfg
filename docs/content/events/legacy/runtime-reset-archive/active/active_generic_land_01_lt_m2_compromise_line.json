@@ -1,0 +1,94 @@
+{
+  "id": "active_generic_land_01_lt_m2_compromise_line",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_land_01_lt_m2_compromise_line.title",
+  "textKey": "event.active_generic_land_01_lt_m2_compromise_line.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "break_confidentiality",
+      "textKey": "event.active_generic_land_01_lt_m2_compromise_line.choice.break_confidentiality.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_m2_compromise_line.choice.break_confidentiality.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_16_common_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "honor_confidentiality",
+      "textKey": "event.active_generic_land_01_lt_m2_compromise_line.choice.honor_confidentiality.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_m2_compromise_line.choice.honor_confidentiality.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_16_common_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "seek_joint_statement",
+      "textKey": "event.active_generic_land_01_lt_m2_compromise_line.choice.seek_joint_statement.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_m2_compromise_line.choice.seek_joint_statement.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_16_common_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

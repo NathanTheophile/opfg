@@ -1,0 +1,127 @@
+{
+  "id": "active_recruitment_new_cast_01_last_knot",
+  "kind": "normal",
+  "titleKey": "event.active_recruitment_new_cast_01_last_knot.title",
+  "textKey": "event.active_recruitment_new_cast_01_last_knot.text",
+  "choices": [
+    {
+      "id": "offer_a_berth",
+      "textKey": "event.active_recruitment_new_cast_01_last_knot.choice.offer_a_berth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "offer_a_berth_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_last_knot.choice.offer_a_berth.outcome.offer_a_berth_outcome.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "active_recruit_knot_runner",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_knot_runner",
+              "amount": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_the_favor",
+      "textKey": "event.active_recruitment_new_cast_01_last_knot.choice.keep_the_favor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_the_favor_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_last_knot.choice.keep_the_favor.outcome.keep_the_favor_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_knot_runner",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "clear_the_account",
+      "textKey": "event.active_recruitment_new_cast_01_last_knot.choice.clear_the_account.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "clear_the_account_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_last_knot.choice.clear_the_account.outcome.clear_the_account_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_knot_runner",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "active_recruit_knot_runner"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_new_cast_01_three_debts_one_bell"
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "active_recruit_knot_runner",
+        "value": 5
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "active_recruit_knot_runner"
+      }
+    ]
+  }
+}

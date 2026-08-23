@@ -1,0 +1,133 @@
+{
+  "id": "active_paradise_p3_wild_01_stormneedle_island_needle_spray",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p3_wild_01_stormneedle_island_needle_spray.title",
+  "textKey": "event.active_paradise_p3_wild_01_stormneedle_island_needle_spray.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p3_wild"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "stormneedle_island"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "act",
+      "textKey": "event.active_paradise_p3_wild_01_stormneedle_island_needle_spray.choice.act.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "act_critical_failure",
+            "textKey": "event.active_paradise_p3_wild_01_stormneedle_island_needle_spray.choice.act.outcome.act_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "act_failure",
+            "textKey": "event.active_paradise_p3_wild_01_stormneedle_island_needle_spray.choice.act.outcome.act_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              }
+            ]
+          },
+          "success": {
+            "id": "act_success",
+            "textKey": "event.active_paradise_p3_wild_01_stormneedle_island_needle_spray.choice.act.outcome.act_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "act_critical_success",
+            "textKey": "event.active_paradise_p3_wild_01_stormneedle_island_needle_spray.choice.act.outcome.act_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "careful",
+      "textKey": "event.active_paradise_p3_wild_01_stormneedle_island_needle_spray.choice.careful.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "careful_resolved",
+          "textKey": "event.active_paradise_p3_wild_01_stormneedle_island_needle_spray.choice.careful.outcome.careful_resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw",
+      "textKey": "event.active_paradise_p3_wild_01_stormneedle_island_needle_spray.choice.withdraw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "withdraw_resolved",
+          "textKey": "event.active_paradise_p3_wild_01_stormneedle_island_needle_spray.choice.withdraw.outcome.withdraw_resolved.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "crew_role",
+      "textKey": "event.active_paradise_p3_wild_01_stormneedle_island_needle_spray.choice.crew_role.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crew_role_resolved",
+          "textKey": "event.active_paradise_p3_wild_01_stormneedle_island_needle_spray.choice.crew_role.outcome.crew_role_resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "helmsman"
+      }
+    }
+  ]
+}

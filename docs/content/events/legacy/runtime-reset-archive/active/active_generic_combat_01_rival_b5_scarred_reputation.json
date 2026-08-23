@@ -1,0 +1,59 @@
+{
+  "id": "active_generic_combat_01_rival_b5_scarred_reputation",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_b5_scarred_reputation.title",
+  "textKey": "event.active_generic_combat_01_rival_b5_scarred_reputation.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "cut_story",
+      "textKey": "event.active_generic_combat_01_rival_b5_scarred_reputation.choice.cut_story.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_story_outcome",
+          "textKey": "event.active_generic_combat_01_rival_b5_scarred_reputation.choice.cut_story.outcome.cut_story_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_s6_same_target",
+              "delayMonths": 14
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "own_story",
+      "textKey": "event.active_generic_combat_01_rival_b5_scarred_reputation.choice.own_story.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "own_story_outcome",
+          "textKey": "event.active_generic_combat_01_rival_b5_scarred_reputation.choice.own_story.outcome.own_story_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_s6_same_target",
+              "delayMonths": 14
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

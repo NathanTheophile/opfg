@@ -1,0 +1,113 @@
+{
+  "id": "career_marine_03_divided_orders",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_marine",
+    "chapterId": "active_03",
+    "nodeId": "career_marine_03_divided_orders",
+    "parentNodeIds": [
+      "career_marine_02_night_roster",
+      "career_marine_02_refugee_quay",
+      "career_marine_02_unmarked_cutter",
+      "career_marine_02_relief_patrol"
+    ],
+    "selectionPriority": 20
+  },
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_02_night_roster",
+        "outcomeId": "duty"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_02_refugee_quay",
+        "outcomeId": "duty"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_02_unmarked_cutter",
+        "outcomeId": "duty"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_02_relief_patrol",
+        "outcomeId": "duty"
+      }
+    ]
+  },
+  "titleKey": "event.career_marine_03_divided_orders.title",
+  "textKey": "event.career_marine_03_divided_orders.text",
+  "choices": [
+    {
+      "id": "duty",
+      "textKey": "event.career_marine_03_divided_orders.choice.duty.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "duty",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_marine_03_divided_orders_i01_resolution"
+            }
+          ],
+          "textKey": "event.career_marine_03_divided_orders.choice.duty.outcome.duty.text"
+        }
+      }
+    },
+    {
+      "id": "shield",
+      "textKey": "event.career_marine_03_divided_orders.choice.shield.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shield",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_marine_03_divided_orders_i01_resolution"
+            }
+          ],
+          "textKey": "event.career_marine_03_divided_orders.choice.shield.outcome.shield.text"
+        }
+      }
+    },
+    {
+      "id": "initiative",
+      "textKey": "event.career_marine_03_divided_orders.choice.initiative.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "initiative",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_marine_03_divided_orders_i01_resolution"
+            }
+          ],
+          "textKey": "event.career_marine_03_divided_orders.choice.initiative.outcome.initiative.text"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "id": "active_recruitment_opportunities_01_notice_carver_burning_board",
+  "kind": "normal",
+  "cast": [
+    "active_recruit_notice_carver"
+  ],
+  "titleKey": "event.active_recruitment_opportunities_01_notice_carver_burning_board.title",
+  "textKey": "event.active_recruitment_opportunities_01_notice_carver_burning_board.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "city"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "village"
+          }
+        ]
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_new_cast_01_blank_board"
+      },
+      {
+        "type": "npcMonthsSinceInteractionAtLeast",
+        "npcId": "active_recruit_notice_carver",
+        "value": 3
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "active_recruit_notice_carver"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "save_the_names",
+      "textKey": "event.active_recruitment_opportunities_01_notice_carver_burning_board.choice.save_the_names.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_opportunities_01_notice_carver_burning_board.choice.save_the_names.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_notice_carver",
+                "amount": -4
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_opportunities_01_notice_carver_burning_board.choice.save_the_names.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_notice_carver",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_opportunities_01_notice_carver_burning_board.choice.save_the_names.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "active_recruit_notice_carver",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_notice_carver",
+                "amount": 5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_opportunities_01_notice_carver_burning_board.choice.save_the_names.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "active_recruit_notice_carver",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_notice_carver",
+                "amount": 7
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "fund_a_new_board",
+      "textKey": "event.active_recruitment_opportunities_01_notice_carver_burning_board.choice.fund_a_new_board.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "new_board",
+          "textKey": "event.active_recruitment_opportunities_01_notice_carver_burning_board.choice.fund_a_new_board.outcome.new_board.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            },
+            {
+              "type": "setNpcStatus",
+              "npcId": "active_recruit_notice_carver",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_notice_carver",
+              "amount": 5
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    },
+    {
+      "id": "let_the_board_burn",
+      "textKey": "event.active_recruitment_opportunities_01_notice_carver_burning_board.choice.let_the_board_burn.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_recruitment_opportunities_01_notice_carver_burning_board.choice.let_the_board_burn.outcome.leave.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_notice_carver",
+              "amount": -4
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

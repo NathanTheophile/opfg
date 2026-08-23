@@ -1,0 +1,77 @@
+{
+  "id": "active_crew_social_01_i_hidden_wound_confront",
+  "kind": "immediate",
+  "titleKey": "event.active_crew_social_01_i_hidden_wound_confront.title",
+  "textKey": "event.active_crew_social_01_i_hidden_wound_confront.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "reject_debt",
+      "textKey": "event.active_crew_social_01_i_hidden_wound_confront.choice.reject_debt.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_i_hidden_wound_confront.choice.reject_debt.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_hidden_wound_tasks"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_truth",
+      "textKey": "event.active_crew_social_01_i_hidden_wound_confront.choice.ask_truth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_i_hidden_wound_confront.choice.ask_truth.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_hidden_wound_tasks"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_choose",
+      "textKey": "event.active_crew_social_01_i_hidden_wound_confront.choice.let_choose.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_i_hidden_wound_confront.choice.let_choose.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_hidden_wound_tasks"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

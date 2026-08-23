@@ -1,0 +1,174 @@
+{
+  "id": "career_civilian_02_craft_the_split_pump",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_01_inherited_stake",
+            "choiceId": "craft"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_01_fresh_start",
+            "choiceId": "craft"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_civilian",
+    "chapterId": "active_02",
+    "nodeId": "career_civilian_02_craft_the_split_pump",
+    "parentNodeIds": [
+      "career_civilian_01_inherited_stake",
+      "career_civilian_01_fresh_start"
+    ],
+    "selectionPriority": 20
+  },
+  "titleKey": "event.career_civilian_02_craft_the_split_pump.title",
+  "textKey": "event.career_civilian_02_craft_the_split_pump.text",
+  "choices": [
+    {
+      "id": "trade",
+      "textKey": "event.career_civilian_02_craft_the_split_pump.choice.trade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1000
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 2
+            }
+          ],
+          "textKey": "event.career_civilian_02_craft_the_split_pump.choice.trade.outcome.trade.text"
+        }
+      }
+    },
+    {
+      "id": "horizon",
+      "textKey": "event.career_civilian_02_craft_the_split_pump.choice.horizon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "horizon",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_02_craft_the_split_pump.choice.horizon.outcome.horizon.text"
+        }
+      }
+    },
+    {
+      "id": "craft",
+      "textKey": "event.career_civilian_02_craft_the_split_pump.choice.craft.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "craft_critical_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              }
+            ],
+            "textKey": "event.career_civilian_02_craft_the_split_pump.choice.craft.outcome.craft_critical_failure.text"
+          },
+          "failure": {
+            "id": "craft_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.career_civilian_02_craft_the_split_pump.choice.craft.outcome.craft_failure.text"
+          },
+          "success": {
+            "id": "craft_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ],
+            "textKey": "event.career_civilian_02_craft_the_split_pump.choice.craft.outcome.craft_success.text"
+          },
+          "criticalSuccess": {
+            "id": "craft_critical_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              }
+            ],
+            "textKey": "event.career_civilian_02_craft_the_split_pump.choice.craft.outcome.craft_critical_success.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "community",
+      "textKey": "event.career_civilian_02_craft_the_split_pump.choice.community.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "community",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_02_craft_the_split_pump.choice.community.outcome.community.text"
+        }
+      }
+    }
+  ]
+}

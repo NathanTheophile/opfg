@@ -1,0 +1,95 @@
+{
+  "id": "ch_generic_late_01_kitchen_smoke_i3_oil_cloth",
+  "kind": "immediate",
+  "titleKey": "event.ch_generic_late_01_kitchen_smoke_i3_oil_cloth.title",
+  "textKey": "event.ch_generic_late_01_kitchen_smoke_i3_oil_cloth.text",
+  "choices": [
+    {
+      "id": "smother_cloth",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "smother",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_kitchen_smoke_i4_bucket_line"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_kitchen_smoke_i3_oil_cloth.choice.smother_cloth.outcome.smother.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_kitchen_smoke_i3_oil_cloth.choice.smother_cloth.text"
+    },
+    {
+      "id": "pull_rack",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rack_cf",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_kitchen_smoke_i4_bucket_line"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_kitchen_smoke_i3_oil_cloth.choice.pull_rack.outcome.rack_cf.text"
+          },
+          "failure": {
+            "id": "rack_f",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_kitchen_smoke_i4_bucket_line"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_kitchen_smoke_i3_oil_cloth.choice.pull_rack.outcome.rack_f.text"
+          },
+          "success": {
+            "id": "rack_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_kitchen_smoke_i4_bucket_line"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_kitchen_smoke_i3_oil_cloth.choice.pull_rack.outcome.rack_s.text"
+          },
+          "criticalSuccess": {
+            "id": "rack_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_kitchen_smoke_i4_bucket_line"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_kitchen_smoke_i3_oil_cloth.choice.pull_rack.outcome.rack_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_kitchen_smoke_i3_oil_cloth.choice.pull_rack.text"
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "id": "active_civilian_01_clinic_after_hours",
+  "titleKey": "event.active_civilian_01_clinic_after_hours.title",
+  "textKey": "event.active_civilian_01_clinic_after_hours.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "medical"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "assess",
+      "textKey": "event.active_civilian_01_clinic_after_hours.choice.assess.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "assess_criticalFailure",
+            "textKey": "event.active_civilian_01_clinic_after_hours.choice.assess.outcome.assess_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "assess_failure",
+            "textKey": "event.active_civilian_01_clinic_after_hours.choice.assess.outcome.assess_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "assess_success",
+            "textKey": "event.active_civilian_01_clinic_after_hours.choice.assess.outcome.assess_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "assess_criticalSuccess",
+            "textKey": "event.active_civilian_01_clinic_after_hours.choice.assess.outcome.assess_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "medic",
+      "textKey": "event.active_civilian_01_clinic_after_hours.choice.medic.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "medic_result",
+          "textKey": "event.active_civilian_01_clinic_after_hours.choice.medic.outcome.medic_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "medic"
+      }
+    },
+    {
+      "id": "refer",
+      "textKey": "event.active_civilian_01_clinic_after_hours.choice.refer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refer_result",
+          "textKey": "event.active_civilian_01_clinic_after_hours.choice.refer.outcome.refer_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

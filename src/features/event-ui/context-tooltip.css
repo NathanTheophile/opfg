@@ -1,0 +1,169 @@
+.opfg-context-tooltip__trigger {
+  min-width: 0;
+}
+
+.opfg-context-tooltip {
+  --opfg-context-tooltip-accent: var(--accent-gold);
+
+  position: fixed;
+  z-index: 10000;
+  width: max-content;
+  max-width: min(var(--ui-tooltip-max-width), calc(100vw - 1.25rem));
+  pointer-events: none;
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--opfg-context-tooltip-accent) 26%,
+      var(--border-default)
+    );
+  border-radius: var(--ui-tooltip-radius);
+  padding: var(--ui-tooltip-py) var(--ui-tooltip-px);
+  background:
+    linear-gradient(
+      115deg,
+      color-mix(
+        in srgb,
+        var(--opfg-context-tooltip-accent) 9%,
+        transparent
+      ),
+      transparent 48%
+    ),
+    var(--opfg-ink-900, #24160f);
+  box-shadow:
+    0 12px 32px rgb(0 0 0 / 0.42),
+    inset 0 1px 0 rgb(255 255 255 / 0.035);
+  color: var(--text-primary);
+  transform: scale(var(--opfg-game-ui-scale, 1));
+  transform-origin: top left;
+  animation: opfg-context-tooltip-in 120ms
+    cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.opfg-context-tooltip::before {
+  position: absolute;
+  width: 0.38rem;
+  height: 0.38rem;
+  border: inherit;
+  background: var(--opfg-ink-900, #24160f);
+  content: '';
+  transform: rotate(45deg);
+}
+
+.opfg-context-tooltip[data-placement='right']::before {
+  top: 50%;
+  left: -0.24rem;
+  border-top: 0;
+  border-right: 0;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.opfg-context-tooltip[data-placement='left']::before {
+  top: 50%;
+  right: -0.24rem;
+  border-bottom: 0;
+  border-left: 0;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.opfg-context-tooltip[data-placement='bottom']::before {
+  top: -0.24rem;
+  left: 50%;
+  border-right: 0;
+  border-bottom: 0;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.opfg-context-tooltip[data-placement='top']::before {
+  bottom: -0.24rem;
+  left: 50%;
+  border-top: 0;
+  border-left: 0;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.opfg-context-tooltip__title {
+  color: var(--opfg-context-tooltip-accent);
+  font-size: var(--ui-tooltip-title-size);
+  font-weight: 850;
+  line-height: 1.15;
+}
+
+.opfg-context-tooltip__meta {
+  margin-top: 0.24rem;
+  color: var(--text-secondary);
+  font-size: var(--ui-tooltip-meta-size);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+}
+
+.opfg-context-tooltip__detail {
+  display: block;
+  margin-top: 0.42rem;
+  color: var(--text-muted);
+  font-size: var(--ui-tooltip-detail-size);
+  font-weight: 450;
+  line-height: var(--ui-tooltip-detail-leading);
+}
+
+/* General HUD tooltips are deliberately opaque for readability. */
+.opfg-context-tooltip[data-accented='false'] {
+  width: min(16.5rem, calc(100vw - 1.25rem));
+  max-width: min(16.5rem, calc(100vw - 1.25rem));
+  border: 1px solid var(--border-default);
+  background: var(--surface-tooltip);
+  box-shadow:
+    0 14px 38px rgb(0 0 0 / 0.52),
+    inset 0 1px 0 rgb(255 255 255 / 0.04);
+  backdrop-filter: none;
+}
+
+.opfg-context-tooltip[data-accented='false']::before {
+  display: block;
+  border-color: var(--border-default);
+  background: var(--surface-tooltip);
+}
+
+.opfg-context-tooltip[data-accented='false'][data-placement='right']::before {
+  border-top: 0;
+  border-right: 0;
+}
+
+.opfg-context-tooltip[data-accented='false'][data-placement='left']::before {
+  border-bottom: 0;
+  border-left: 0;
+}
+
+.opfg-context-tooltip[data-accented='false'][data-placement='bottom']::before {
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.opfg-context-tooltip[data-accented='false'][data-placement='top']::before {
+  border-top: 0;
+  border-left: 0;
+}
+
+.opfg-context-tooltip[data-accented='false'] .opfg-context-tooltip__title {
+  color: var(--text-tooltip-title);
+}
+
+.opfg-context-tooltip[data-accented='false'] .opfg-context-tooltip__detail {
+  color: var(--text-tooltip-detail);
+}
+
+@keyframes opfg-context-tooltip-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-context-tooltip {
+    animation-duration: 1ms;
+  }
+}

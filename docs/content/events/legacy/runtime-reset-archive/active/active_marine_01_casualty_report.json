@@ -1,0 +1,160 @@
+{
+  "id": "active_marine_01_casualty_report",
+  "kind": "normal",
+  "titleKey": "event.active_marine_01_casualty_report.title",
+  "textKey": "event.active_marine_01_casualty_report.text",
+  "choices": [
+    {
+      "id": "rewrite_factual_report",
+      "textKey": "event.active_marine_01_casualty_report.choice.rewrite_factual_report.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_marine_01_casualty_report_rewrite_factual_report_criticalfailure",
+            "textKey": "event.active_marine_01_casualty_report.choice.rewrite_factual_report.outcome.active_marine_01_casualty_report_rewrite_factual_report_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_casualty_report_board",
+                "delayMonths": 8
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_marine_01_casualty_report_rewrite_factual_report_failure",
+            "textKey": "event.active_marine_01_casualty_report.choice.rewrite_factual_report.outcome.active_marine_01_casualty_report_rewrite_factual_report_failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_casualty_report_board",
+                "delayMonths": 8
+              }
+            ]
+          },
+          "success": {
+            "id": "active_marine_01_casualty_report_rewrite_factual_report_success",
+            "textKey": "event.active_marine_01_casualty_report.choice.rewrite_factual_report.outcome.active_marine_01_casualty_report_rewrite_factual_report_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_casualty_report_board",
+                "delayMonths": 8
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_marine_01_casualty_report_rewrite_factual_report_criticalsuccess",
+            "textKey": "event.active_marine_01_casualty_report.choice.rewrite_factual_report.outcome.active_marine_01_casualty_report_rewrite_factual_report_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_casualty_report_board",
+                "delayMonths": 8
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "accept_command_responsibility",
+      "textKey": "event.active_marine_01_casualty_report.choice.accept_command_responsibility.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_casualty_report_accept_command_responsibility",
+          "textKey": "event.active_marine_01_casualty_report.choice.accept_command_responsibility.outcome.active_marine_01_casualty_report_accept_command_responsibility.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_casualty_report_board",
+              "delayMonths": 8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "follow_staff_version",
+      "textKey": "event.active_marine_01_casualty_report.choice.follow_staff_version.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_casualty_report_follow_staff_version",
+          "textKey": "event.active_marine_01_casualty_report.choice.follow_staff_version.outcome.active_marine_01_casualty_report_follow_staff_version.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_casualty_report_board",
+              "delayMonths": 8
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 228
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_commander"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      }
+    ]
+  }
+}

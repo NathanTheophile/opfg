@@ -1,0 +1,138 @@
+{
+  "id": "ch_north_blue_01_swallow_supply_skiff",
+  "titleKey": "event.ch_north_blue_01_swallow_supply_skiff.title",
+  "textKey": "event.ch_north_blue_01_swallow_supply_skiff.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "locationIs",
+        "locationId": "swallow_island"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "grab_painter",
+      "textKey": "event.ch_north_blue_01_swallow_supply_skiff.choice.grab_painter.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "grab_painter_critical_failure",
+            "textKey": "event.ch_north_blue_01_swallow_supply_skiff.choice.grab_painter.outcome.grab_painter_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_north_blue_01_swallow_supply_skiff_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "grab_painter_failure",
+            "textKey": "event.ch_north_blue_01_swallow_supply_skiff.choice.grab_painter.outcome.grab_painter_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_north_blue_01_swallow_supply_skiff_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "grab_painter_success",
+            "textKey": "event.ch_north_blue_01_swallow_supply_skiff.choice.grab_painter.outcome.grab_painter_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_north_blue_01_swallow_supply_skiff_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "grab_painter_critical_success",
+            "textKey": "event.ch_north_blue_01_swallow_supply_skiff.choice.grab_painter.outcome.grab_painter_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_north_blue_01_swallow_supply_skiff_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "protect_boxes",
+      "textKey": "event.ch_north_blue_01_swallow_supply_skiff.choice.protect_boxes.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "protect_boxes_result",
+          "textKey": "event.ch_north_blue_01_swallow_supply_skiff.choice.protect_boxes.outcome.protect_boxes_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_north_blue_01_swallow_supply_skiff_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_shoreline",
+      "textKey": "event.ch_north_blue_01_swallow_supply_skiff.choice.call_shoreline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "call_shoreline_result",
+          "textKey": "event.ch_north_blue_01_swallow_supply_skiff.choice.call_shoreline.outcome.call_shoreline_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_north_blue_01_swallow_supply_skiff_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

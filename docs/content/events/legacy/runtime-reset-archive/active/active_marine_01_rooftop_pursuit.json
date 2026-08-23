@@ -1,0 +1,152 @@
+{
+  "id": "active_marine_01_rooftop_pursuit",
+  "kind": "normal",
+  "titleKey": "event.active_marine_01_rooftop_pursuit.title",
+  "textKey": "event.active_marine_01_rooftop_pursuit.text",
+  "choices": [
+    {
+      "id": "cut_across_roofs",
+      "textKey": "event.active_marine_01_rooftop_pursuit.choice.cut_across_roofs.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_marine_01_rooftop_pursuit_cut_across_roofs_criticalfailure",
+            "textKey": "event.active_marine_01_rooftop_pursuit.choice.cut_across_roofs.outcome.active_marine_01_rooftop_pursuit_cut_across_roofs_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_marine_01_rooftop_pursuit_cut_across_roofs_failure",
+            "textKey": "event.active_marine_01_rooftop_pursuit.choice.cut_across_roofs.outcome.active_marine_01_rooftop_pursuit_cut_across_roofs_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "active_marine_01_rooftop_pursuit_cut_across_roofs_success",
+            "textKey": "event.active_marine_01_rooftop_pursuit.choice.cut_across_roofs.outcome.active_marine_01_rooftop_pursuit_cut_across_roofs_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_marine_01_rooftop_pursuit_cut_across_roofs_criticalsuccess",
+            "textKey": "event.active_marine_01_rooftop_pursuit.choice.cut_across_roofs.outcome.active_marine_01_rooftop_pursuit_cut_across_roofs_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "stay_on_street",
+      "textKey": "event.active_marine_01_rooftop_pursuit.choice.stay_on_street.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_rooftop_pursuit_stay_on_street",
+          "textKey": "event.active_marine_01_rooftop_pursuit.choice.stay_on_street.outcome.active_marine_01_rooftop_pursuit_stay_on_street.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "watch_his_goal",
+      "textKey": "event.active_marine_01_rooftop_pursuit.choice.watch_his_goal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_rooftop_pursuit_watch_his_goal",
+          "textKey": "event.active_marine_01_rooftop_pursuit.choice.watch_his_goal.outcome.active_marine_01_rooftop_pursuit_watch_his_goal.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 186
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_petty_officer"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "city"
+          }
+        ]
+      }
+    ]
+  }
+}

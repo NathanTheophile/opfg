@@ -1,0 +1,94 @@
+{
+  "id": "active_bounty_hunter_01_information_price",
+  "titleKey": "event.active_bounty_hunter_01_information_price.title",
+  "textKey": "event.active_bounty_hunter_01_information_price.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "bounty_hunter"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "black_market"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "pay",
+      "textKey": "event.active_bounty_hunter_01_information_price.choice.pay.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_information_price.choice.pay.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -800
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 800
+      }
+    },
+    {
+      "id": "trade_questions",
+      "textKey": "event.active_bounty_hunter_01_information_price.choice.trade_questions.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_information_price.choice.trade_questions.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "walk",
+      "textKey": "event.active_bounty_hunter_01_information_price.choice.walk.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_information_price.choice.walk.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

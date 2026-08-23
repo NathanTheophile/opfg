@@ -1,0 +1,166 @@
+{
+  "id": "career_marine_04_counted_rations",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_marine",
+    "chapterId": "active_04",
+    "nodeId": "career_marine_04_counted_rations",
+    "parentNodeIds": [
+      "career_marine_03_divided_orders",
+      "career_marine_03_cell_six",
+      "career_marine_03_false_pennant",
+      "career_marine_03_incomplete_report"
+    ],
+    "selectionPriority": 20
+  },
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_03_divided_orders",
+        "outcomeId": "shield"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_03_cell_six",
+        "outcomeId": "shield"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_03_false_pennant",
+        "outcomeId": "shield"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_03_incomplete_report",
+        "outcomeId": "shield"
+      }
+    ]
+  },
+  "titleKey": "event.career_marine_04_counted_rations.title",
+  "textKey": "event.career_marine_04_counted_rations.text",
+  "choices": [
+    {
+      "id": "duty",
+      "textKey": "event.career_marine_04_counted_rations.choice.duty.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "duty_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_04_counted_rations_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_04_counted_rations.choice.duty.outcome.duty_criticalFailure.text"
+          },
+          "failure": {
+            "id": "duty_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_04_counted_rations_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_04_counted_rations.choice.duty.outcome.duty_failure.text"
+          },
+          "success": {
+            "id": "duty_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_04_counted_rations_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_04_counted_rations.choice.duty.outcome.duty_success.text"
+          },
+          "criticalSuccess": {
+            "id": "duty_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_04_counted_rations_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_04_counted_rations.choice.duty.outcome.duty_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "shield",
+      "textKey": "event.career_marine_04_counted_rations.choice.shield.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shield",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_marine_04_counted_rations_i01_resolution"
+            }
+          ],
+          "textKey": "event.career_marine_04_counted_rations.choice.shield.outcome.shield.text"
+        }
+      }
+    },
+    {
+      "id": "initiative",
+      "textKey": "event.career_marine_04_counted_rations.choice.initiative.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "initiative",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_marine_04_counted_rations_i01_resolution"
+            }
+          ],
+          "textKey": "event.career_marine_04_counted_rations.choice.initiative.outcome.initiative.text"
+        }
+      }
+    }
+  ]
+}

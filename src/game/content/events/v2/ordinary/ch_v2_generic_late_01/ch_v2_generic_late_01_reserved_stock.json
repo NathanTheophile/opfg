@@ -1,0 +1,110 @@
+{
+  "id": "ch_v2_generic_late_01_reserved_stock",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_reserved_stock.title",
+  "textKey": "event.ch_v2_generic_late_01_reserved_stock.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "food"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "keep_reservation",
+      "textKey": "event.ch_v2_generic_late_01_reserved_stock.choice.keep_reservation.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_reservation_outcome",
+          "textKey": "event.ch_v2_generic_late_01_reserved_stock.choice.keep_reservation.outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "sell_higher",
+      "textKey": "event.ch_v2_generic_late_01_reserved_stock.choice.sell_higher.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sell_higher_outcome",
+          "textKey": "event.ch_v2_generic_late_01_reserved_stock.choice.sell_higher.outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 100
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "set_deadline",
+      "textKey": "event.ch_v2_generic_late_01_reserved_stock.choice.set_deadline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "set_deadline_outcome",
+          "textKey": "event.ch_v2_generic_late_01_reserved_stock.choice.set_deadline.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "demand_premium",
+      "textKey": "event.ch_v2_generic_late_01_reserved_stock.choice.demand_premium.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "greedy"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "demand_premium_outcome",
+          "textKey": "event.ch_v2_generic_late_01_reserved_stock.choice.demand_premium.outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 150
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

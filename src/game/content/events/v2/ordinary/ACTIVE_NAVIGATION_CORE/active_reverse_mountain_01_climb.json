@@ -1,0 +1,167 @@
+{
+  "id": "active_reverse_mountain_01_climb",
+  "kind": "immediate",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "reverse_mountain"
+      }
+    ]
+  },
+  "titleKey": "event.active_reverse_mountain_01_climb.title",
+  "textKey": "event.active_reverse_mountain_01_climb.text",
+  "choices": [
+    {
+      "id": "force_passage",
+      "textKey": "event.active_reverse_mountain_01_climb.choice.force_passage.text",
+      "resolution": {
+        "type": "dice",
+        "actor": {
+          "type": "player"
+        },
+        "statId": "agility",
+        "successThreshold": 12,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_reverse_mountain_01_climb.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_descent"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_reverse_mountain_01_climb.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_descent"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_reverse_mountain_01_climb.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_descent"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_reverse_mountain_01_climb.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_descent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "follow_current",
+      "textKey": "event.active_reverse_mountain_01_climb.choice.follow_current.text",
+      "resolution": {
+        "type": "dice",
+        "actor": {
+          "type": "player"
+        },
+        "statId": "navigation",
+        "successThreshold": 12,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_reverse_mountain_01_climb.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_descent"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_reverse_mountain_01_climb.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_descent"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_reverse_mountain_01_climb.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_descent"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_reverse_mountain_01_climb.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_descent"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

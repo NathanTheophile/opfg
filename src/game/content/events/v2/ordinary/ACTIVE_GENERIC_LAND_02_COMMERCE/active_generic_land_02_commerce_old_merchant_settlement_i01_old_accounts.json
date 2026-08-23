@@ -1,0 +1,77 @@
+{
+  "id": "active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts.title",
+  "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts.text",
+  "choices": [
+    {
+      "id": "take_refund",
+      "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts.choice.take_refund.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_refund_outcome",
+          "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts.choice.take_refund.outcome.take_refund_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1000
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shake_hands",
+      "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts.choice.shake_hands.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shake_hands_outcome",
+          "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts.choice.shake_hands.outcome.shake_hands_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pay_reduced",
+      "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts.choice.pay_reduced.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_reduced_outcome",
+          "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts.choice.pay_reduced.outcome.pay_reduced_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 3
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    }
+  ],
+  "cast": [
+    "neighborhood_merchant"
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "id": "active_generic_land_01_lt_08_crossroads_request",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_land_01_lt_08_crossroads_request.title",
+  "textKey": "event.active_generic_land_01_lt_08_crossroads_request.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "open_hearing",
+      "textKey": "event.active_generic_land_01_lt_08_crossroads_request.choice.open_hearing.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_08_crossroads_request.choice.open_hearing.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_p1_open_room",
+              "delayMonths": 15
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "private_mediation",
+      "textKey": "event.active_generic_land_01_lt_08_crossroads_request.choice.private_mediation.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_08_crossroads_request.choice.private_mediation.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_m1_private_table",
+              "delayMonths": 15
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw_role",
+      "textKey": "event.active_generic_land_01_lt_08_crossroads_request.choice.withdraw_role.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_08_crossroads_request.choice.withdraw_role.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_q1_closed_door",
+              "delayMonths": 15
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

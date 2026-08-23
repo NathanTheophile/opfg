@@ -1,0 +1,172 @@
+{
+  "id": "ch_combat_01_hill_sprint_rival",
+  "titleKey": "event.ch_combat_01_hill_sprint_rival.title",
+  "textKey": "event.ch_combat_01_hill_sprint_rival.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 143
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "keep_pace",
+      "textKey": "event.ch_combat_01_hill_sprint_rival.choice.keep_pace.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "ankle_roll",
+            "textKey": "event.ch_combat_01_hill_sprint_rival.choice.keep_pace.outcome.ankle_roll.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_hill_sprint_rival_i1"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 2
+              }
+            ]
+          },
+          "failure": {
+            "id": "pace_breaks",
+            "textKey": "event.ch_combat_01_hill_sprint_rival.choice.keep_pace.outcome.pace_breaks.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_hill_sprint_rival_i1"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 2
+              }
+            ]
+          },
+          "success": {
+            "id": "pace_held",
+            "textKey": "event.ch_combat_01_hill_sprint_rival.choice.keep_pace.outcome.pace_held.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_hill_sprint_rival_i1"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 4
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "breathing_found",
+            "textKey": "event.ch_combat_01_hill_sprint_rival.choice.keep_pace.outcome.breathing_found.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_hill_sprint_rival_i1"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 5
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "take_wide_line",
+      "textKey": "event.ch_combat_01_hill_sprint_rival.choice.take_wide_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wide_line",
+          "textKey": "event.ch_combat_01_hill_sprint_rival.choice.take_wide_line.outcome.wide_line.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_hill_sprint_rival_i1"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_the_cut",
+      "textKey": "event.ch_combat_01_hill_sprint_rival.choice.call_the_cut.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_called",
+          "textKey": "event.ch_combat_01_hill_sprint_rival.choice.call_the_cut.outcome.cut_called.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_hill_sprint_rival_i1"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "childhood_rival"
+  ]
+}

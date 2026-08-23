@@ -1,0 +1,204 @@
+{
+  "id": "career_civilian_03_community_the_dock_levy",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_02_trade_the_missing_manifest",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_02_horizon_the_passage_under_fog",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_02_craft_the_split_pump",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_02_community_the_alley_on_fire",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_02_fallback",
+            "choiceId": "community"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_civilian",
+    "chapterId": "active_03",
+    "nodeId": "career_civilian_03_community_the_dock_levy",
+    "parentNodeIds": [
+      "career_civilian_02_trade_the_missing_manifest",
+      "career_civilian_02_horizon_the_passage_under_fog",
+      "career_civilian_02_craft_the_split_pump",
+      "career_civilian_02_community_the_alley_on_fire",
+      "career_civilian_02_fallback"
+    ],
+    "selectionPriority": 20
+  },
+  "titleKey": "event.career_civilian_03_community_the_dock_levy.title",
+  "textKey": "event.career_civilian_03_community_the_dock_levy.text",
+  "choices": [
+    {
+      "id": "trade",
+      "textKey": "event.career_civilian_03_community_the_dock_levy.choice.trade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1250
+            }
+          ],
+          "textKey": "event.career_civilian_03_community_the_dock_levy.choice.trade.outcome.trade.text"
+        }
+      }
+    },
+    {
+      "id": "horizon",
+      "textKey": "event.career_civilian_03_community_the_dock_levy.choice.horizon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "horizon",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_03_community_the_dock_levy.choice.horizon.outcome.horizon.text"
+        }
+      }
+    },
+    {
+      "id": "craft",
+      "textKey": "event.career_civilian_03_community_the_dock_levy.choice.craft.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "craft",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_03_community_the_dock_levy.choice.craft.outcome.craft.text"
+        }
+      }
+    },
+    {
+      "id": "community",
+      "textKey": "event.career_civilian_03_community_the_dock_levy.choice.community.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "community_critical_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_03_community_the_dock_levy_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_03_community_the_dock_levy.choice.community.outcome.community_critical_failure.text"
+          },
+          "failure": {
+            "id": "community_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_03_community_the_dock_levy_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_03_community_the_dock_levy.choice.community.outcome.community_failure.text"
+          },
+          "success": {
+            "id": "community_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_03_community_the_dock_levy_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_03_community_the_dock_levy.choice.community.outcome.community_success.text"
+          },
+          "criticalSuccess": {
+            "id": "community_critical_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_03_community_the_dock_levy_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_03_community_the_dock_levy.choice.community.outcome.community_critical_success.text"
+          }
+        }
+      }
+    }
+  ]
+}

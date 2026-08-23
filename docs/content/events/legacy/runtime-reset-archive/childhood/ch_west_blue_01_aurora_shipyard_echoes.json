@@ -1,0 +1,114 @@
+{
+  "id": "ch_west_blue_01_aurora_shipyard_echoes",
+  "kind": "normal",
+  "titleKey": "event.ch_west_blue_01_aurora_shipyard_echoes.title",
+  "textKey": "event.ch_west_blue_01_aurora_shipyard_echoes.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationIs",
+        "locationId": "ilisia_aurora_city"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "spot_loose_plate",
+      "textKey": "event.ch_west_blue_01_aurora_shipyard_echoes.choice.spot_loose_plate.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "plate_missed",
+            "textKey": "event.ch_west_blue_01_aurora_shipyard_echoes.choice.spot_loose_plate.outcome.plate_missed.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "plate_uncertain",
+            "textKey": "event.ch_west_blue_01_aurora_shipyard_echoes.choice.spot_loose_plate.outcome.plate_uncertain.text",
+            "effects": []
+          },
+          "success": {
+            "id": "plate_spotted",
+            "textKey": "event.ch_west_blue_01_aurora_shipyard_echoes.choice.spot_loose_plate.outcome.plate_spotted.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "plate_chain_seen",
+            "textKey": "event.ch_west_blue_01_aurora_shipyard_echoes.choice.spot_loose_plate.outcome.plate_chain_seen.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "warn_worker",
+      "textKey": "event.ch_west_blue_01_aurora_shipyard_echoes.choice.warn_worker.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "worker_warned",
+          "textKey": "event.ch_west_blue_01_aurora_shipyard_echoes.choice.warn_worker.outcome.worker_warned.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stay_back",
+      "textKey": "event.ch_west_blue_01_aurora_shipyard_echoes.choice.stay_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "line_respected",
+          "textKey": "event.ch_west_blue_01_aurora_shipyard_echoes.choice.stay_back.outcome.line_respected.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

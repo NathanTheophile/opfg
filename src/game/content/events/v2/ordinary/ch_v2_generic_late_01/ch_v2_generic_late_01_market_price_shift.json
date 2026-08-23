@@ -1,0 +1,197 @@
+{
+  "id": "ch_v2_generic_late_01_market_price_shift",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_market_price_shift.title",
+  "textKey": "event.ch_v2_generic_late_01_market_price_shift.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "food"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "bargain_bundle",
+      "textKey": "event.ch_v2_generic_late_01_market_price_shift.choice.bargain_bundle.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bargain_bundle_cf",
+            "textKey": "event.ch_v2_generic_late_01_market_price_shift.choice.bargain_bundle.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_market_price_shift_i01_price_board"
+              }
+            ]
+          },
+          "failure": {
+            "id": "bargain_bundle_f",
+            "textKey": "event.ch_v2_generic_late_01_market_price_shift.choice.bargain_bundle.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_market_price_shift_i01_price_board"
+              }
+            ]
+          },
+          "success": {
+            "id": "bargain_bundle_s",
+            "textKey": "event.ch_v2_generic_late_01_market_price_shift.choice.bargain_bundle.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "bargain_bundle_cs",
+            "textKey": "event.ch_v2_generic_late_01_market_price_shift.choice.bargain_bundle.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 3
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "swap_equivalents",
+      "textKey": "event.ch_v2_generic_late_01_market_price_shift.choice.swap_equivalents.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "swap_equivalents_cf",
+            "textKey": "event.ch_v2_generic_late_01_market_price_shift.choice.swap_equivalents.outcome.cf.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_market_price_shift_i01_price_board"
+              }
+            ]
+          },
+          "failure": {
+            "id": "swap_equivalents_f",
+            "textKey": "event.ch_v2_generic_late_01_market_price_shift.choice.swap_equivalents.outcome.f.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_late_01_market_price_shift_i01_price_board"
+              }
+            ]
+          },
+          "success": {
+            "id": "swap_equivalents_s",
+            "textKey": "event.ch_v2_generic_late_01_market_price_shift.choice.swap_equivalents.outcome.s.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "swap_equivalents_cs",
+            "textKey": "event.ch_v2_generic_late_01_market_price_shift.choice.swap_equivalents.outcome.cs.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "drop_one_item",
+      "textKey": "event.ch_v2_generic_late_01_market_price_shift.choice.drop_one_item.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "drop_one_item_outcome",
+          "textKey": "event.ch_v2_generic_late_01_market_price_shift.choice.drop_one_item.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pay_difference",
+      "textKey": "event.ch_v2_generic_late_01_market_price_shift.choice.pay_difference.text",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 50
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_difference_outcome",
+          "textKey": "event.ch_v2_generic_late_01_market_price_shift.choice.pay_difference.outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -50
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

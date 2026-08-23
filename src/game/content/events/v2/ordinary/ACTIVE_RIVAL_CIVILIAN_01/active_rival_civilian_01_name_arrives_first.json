@@ -1,0 +1,330 @@
+{
+  "id": "active_rival_civilian_01_name_arrives_first",
+  "kind": "scheduled",
+  "cast": [
+    "neighborhood_merchant"
+  ],
+  "titleKey": "event.active_rival_civilian_01_name_arrives_first.title",
+  "textKey": "event.active_rival_civilian_01_name_arrives_first.text",
+  "choices": [
+    {
+      "id": "win_hearing",
+      "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.win_hearing.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hearing_cf",
+            "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.win_hearing.outcome.hearing_cf.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": -2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_civilian_01_public_ledger",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "hearing_f",
+            "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.win_hearing.outcome.hearing_f.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_civilian_01_joint_chart",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "hearing_s",
+            "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.win_hearing.outcome.hearing_s.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": 5
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_civilian_01_joint_chart",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hearing_cs",
+            "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.win_hearing.outcome.hearing_cs.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": 8
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_civilian_01_joint_chart",
+                "delayMonths": 18
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "seed_rumor",
+      "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.seed_rumor.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rumor_cf",
+            "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.seed_rumor.outcome.rumor_cf.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": -10
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_civilian_01_public_ledger",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "rumor_f",
+            "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.seed_rumor.outcome.rumor_f.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": -8
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_civilian_01_public_ledger",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "rumor_s",
+            "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.seed_rumor.outcome.rumor_s.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 1250
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": -12
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_civilian_01_public_ledger",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "rumor_cs",
+            "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.seed_rumor.outcome.rumor_cs.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": -10
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_civilian_01_public_ledger",
+                "delayMonths": 18
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "use_shared_salvage",
+      "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.use_shared_salvage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "use_shared_salvage",
+          "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.use_shared_salvage.outcome.use_shared_salvage.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 6
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_civilian_01_joint_chart",
+              "delayMonths": 18
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "active_rival_civilian_01_shared_salvage"
+      }
+    },
+    {
+      "id": "call_rival",
+      "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.call_rival.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "call_rival",
+          "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.call_rival.outcome.call_rival.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_civilian_01_joint_chart",
+              "delayMonths": 18
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "neighborhood_merchant",
+        "value": 15
+      }
+    },
+    {
+      "id": "produce_unpaid",
+      "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.produce_unpaid.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "produce_unpaid",
+          "textKey": "event.active_rival_civilian_01_name_arrives_first.choice.produce_unpaid.outcome.produce_unpaid.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_civilian_01_public_ledger",
+              "delayMonths": 18
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "active_rival_civilian_01_cold_invoice"
+          },
+          {
+            "type": "npcRelationshipAtMost",
+            "npcId": "neighborhood_merchant",
+            "value": -10
+          }
+        ]
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerPhaseIs",
+          "phase": "active"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerAffiliationIs",
+          "affiliationId": "civilian"
+        }
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "dead"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "departed"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "unavailable"
+      }
+    ]
+  }
+}

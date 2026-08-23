@@ -1,0 +1,164 @@
+{
+  "id": "active_generic_sea_02_anchor_chain_drag",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_02_anchor_chain_drag.title",
+  "textKey": "event.active_generic_sea_02_anchor_chain_drag.text",
+  "choices": [
+    {
+      "id": "haul_short_section",
+      "textKey": "event.active_generic_sea_02_anchor_chain_drag.choice.haul_short_section.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "haul_short_section_criticalFailure",
+            "textKey": "event.active_generic_sea_02_anchor_chain_drag.outcome.haul_short_section_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "haul_short_section_failure",
+            "textKey": "event.active_generic_sea_02_anchor_chain_drag.outcome.haul_short_section_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "haul_short_section_success",
+            "textKey": "event.active_generic_sea_02_anchor_chain_drag.outcome.haul_short_section_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_anchor_chain_drag_i01"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "haul_short_section_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_anchor_chain_drag.outcome.haul_short_section_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_anchor_chain_drag_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "rig_a_purchase",
+      "textKey": "event.active_generic_sea_02_anchor_chain_drag.choice.rig_a_purchase.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rig_a_purchase_criticalFailure",
+            "textKey": "event.active_generic_sea_02_anchor_chain_drag.outcome.rig_a_purchase_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "rig_a_purchase_failure",
+            "textKey": "event.active_generic_sea_02_anchor_chain_drag.outcome.rig_a_purchase_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "rig_a_purchase_success",
+            "textKey": "event.active_generic_sea_02_anchor_chain_drag.outcome.rig_a_purchase_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_anchor_chain_drag_i01"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "rig_a_purchase_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_anchor_chain_drag.outcome.rig_a_purchase_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_anchor_chain_drag_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "drop_the_chain",
+      "textKey": "event.active_generic_sea_02_anchor_chain_drag.choice.drop_the_chain.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "drop_the_chain_result",
+          "textKey": "event.active_generic_sea_02_anchor_chain_drag.outcome.drop_the_chain_result.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

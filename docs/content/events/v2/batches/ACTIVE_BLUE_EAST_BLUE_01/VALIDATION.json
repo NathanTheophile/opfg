@@ -1,0 +1,84 @@
+{
+  "status": "structural_pass_repo_validation_pending",
+  "sourceOfTruth": {
+    "repository": "NathanTheophile/opfg",
+    "branch": "dev",
+    "head": "dc3819121ae8e74aaa898afefedbc7cdb5666df8",
+    "contentSchemaVersion": 15,
+    "saveVersionObserved": 22
+  },
+  "structuralValidation": {
+    "status": "PASS",
+    "eventDefinitions": 62,
+    "normalRoots": 30,
+    "immediateEvents": 15,
+    "scheduledEvents": 17,
+    "diceRoots": 18,
+    "immediateRoots": 15,
+    "landRoots": 22,
+    "seaRoots": 8,
+    "exactLocationRoots": 9,
+    "blueWideRoots": 21,
+    "shortThreads": {
+      "active_blue_east_blue_01_fish_market_fake_weights": {
+        "maxMonths": 8,
+        "maxTemporalLayers": 3
+      },
+      "active_blue_east_blue_01_contraband_under_keel": {
+        "maxMonths": 12,
+        "maxTemporalLayers": 3
+      },
+      "active_blue_east_blue_01_coastal_toll_skiff": {
+        "maxMonths": 6,
+        "maxTemporalLayers": 3
+      },
+      "active_blue_east_blue_01_merchant_convoy_gap": {
+        "maxMonths": 15,
+        "maxTemporalLayers": 3
+      },
+      "active_blue_east_blue_01_dockyard_wage_book": {
+        "maxMonths": 10,
+        "maxTemporalLayers": 3
+      }
+    },
+    "lifetime": {
+      "seed": "active_blue_east_blue_01_coastwatch_bell",
+      "maxMonths": 114,
+      "temporalLayers": 6
+    },
+    "localeKeysPerLanguage": 602
+  },
+  "checksPassed": [
+    "all 62 Event JSON files parse; IDs are unique and namespaced",
+    "30 Normal roots; 15 Immediate; 17 Scheduled",
+    "15/30 roots open Immediate mini-arcs (50%)",
+    "18/30 roots contain root DiceChecks (60%)",
+    "all Normal roots gate currentSeaIs(east_blue) + active + exactly one land/sea context",
+    "22 land / 8 sea; 9 exact-location-or-cluster / 21 Blue-wide",
+    "all Immediate/Scheduled references resolve to the correct Event kind; no orphan descendants",
+    "every Event has at least one unconditional resolvable Choice",
+    "no outcome schedules sibling future chapters; every short thread stays at <=3 temporal layers and <=24 months",
+    "short-thread maximum spans: 8 / 12 / 6 / 15 / 10 months",
+    "regional Lifetime longest path is 114 months across 6 temporal layers",
+    "short-thread and Lifetime seeds are horizon-capped so their longest normal path can finish by ageMonths 420",
+    "all Scheduled returns are active-only + scheduledReach unrestricted; remote-return fiction does not tiny-location-lock the player",
+    "negative Berry costs are deterministic and protected by berriesAtLeast; no Dice branch can overdraw Berrys",
+    "all negative Ship Health outcomes declare shipDamageCause",
+    "Active Reputation never decreases; no bounty/career/rank/title/leadership/navigation movement effects are authored",
+    "recruitment choices enforce canRecruitNpc + candidate state protection; participating persistent NPCs are in cast",
+    "FR and EN fragments each contain 602 referenced keys; root/body/choice/outcome copy passes current text budgets",
+    "Wave 1 sea collision pass removed direct mailbag/signal overlaps before finalization"
+  ],
+  "repoLevelValidation": {
+    "npm run validate-content": "not_run_in_worker_environment",
+    "npm test": "not_run_in_worker_environment",
+    "npm run build": "not_run_in_worker_environment",
+    "reason": "No writable/authenticated repository checkout is available. GitHub connector writes would create commits, forbidden by this batch. Shared localization fragments also require sequential integration before global content validation."
+  },
+  "requiredAfterIntegration": [
+    "merge namespaced FR/EN fragments through the repository integration path",
+    "npm run validate-content",
+    "npm test",
+    "npm run build"
+  ]
+}

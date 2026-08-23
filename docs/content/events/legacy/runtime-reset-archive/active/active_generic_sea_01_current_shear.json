@@ -1,0 +1,138 @@
+{
+  "id": "active_generic_sea_01_current_shear",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_current_shear.title",
+  "textKey": "event.active_generic_sea_01_current_shear.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_shear",
+      "textKey": "event.active_generic_sea_01_current_shear.choice.read_shear.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_01_current_shear.choice.read_shear.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_current_shear_i1_sideways_wake"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_01_current_shear.choice.read_shear.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_current_shear_i1_sideways_wake"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_01_current_shear.choice.read_shear.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_current_shear_i1_sideways_wake"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_01_current_shear.choice.read_shear.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_current_shear_i1_sideways_wake"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "accept_drift",
+      "textKey": "event.active_generic_sea_01_current_shear.choice.accept_drift.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_current_shear.choice.accept_drift.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_current_shear_i1_sideways_wake"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leader_turn",
+      "textKey": "event.active_generic_sea_01_current_shear.choice.leader_turn.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_current_shear.choice.leader_turn.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_current_shear_i1_sideways_wake"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "isLeader"
+      }
+    }
+  ]
+}

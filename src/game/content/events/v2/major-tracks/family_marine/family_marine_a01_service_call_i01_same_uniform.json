@@ -1,0 +1,80 @@
+{
+  "id": "family_marine_a01_service_call_i01_same_uniform",
+  "kind": "immediate",
+  "cast": [
+    "player_parent_1"
+  ],
+  "titleKey": "event.family_marine_a01_service_call_i01_same_uniform.title",
+  "textKey": "event.family_marine_a01_service_call_i01_same_uniform.text",
+  "choices": [
+    {
+      "id": "answer_plainly",
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "family_marine_a01_service_call",
+        "choiceId": "answer_plainly"
+      },
+      "textKey": "event.family_marine_a01_service_call_i01_same_uniform.choice.answer_plainly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "own_duty",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 5
+            }
+          ],
+          "textKey": "event.family_marine_a01_service_call_i01_same_uniform.choice.answer_plainly.outcome.own_duty.text"
+        }
+      }
+    },
+    {
+      "id": "invoke_inheritance",
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "family_marine_a01_service_call",
+        "choiceId": "invoke_inheritance"
+      },
+      "textKey": "event.family_marine_a01_service_call_i01_same_uniform.choice.invoke_inheritance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "named_inheritance",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 8
+            }
+          ],
+          "textKey": "event.family_marine_a01_service_call_i01_same_uniform.choice.invoke_inheritance.outcome.named_inheritance.text"
+        }
+      }
+    },
+    {
+      "id": "draw_boundary",
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "family_marine_a01_service_call",
+        "choiceId": "draw_boundary"
+      },
+      "textKey": "event.family_marine_a01_service_call_i01_same_uniform.choice.draw_boundary.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "boundary_held",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -3
+            }
+          ],
+          "textKey": "event.family_marine_a01_service_call_i01_same_uniform.choice.draw_boundary.outcome.boundary_held.text"
+        }
+      }
+    }
+  ]
+}

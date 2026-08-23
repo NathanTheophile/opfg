@@ -1,0 +1,84 @@
+{
+  "id": "active_marine_01_sealed_manifest_s2_three_copies",
+  "kind": "scheduled",
+  "titleKey": "event.active_marine_01_sealed_manifest_s2_three_copies.title",
+  "textKey": "event.active_marine_01_sealed_manifest_s2_three_copies.text",
+  "choices": [
+    {
+      "id": "preserve_chain",
+      "textKey": "event.active_marine_01_sealed_manifest_s2_three_copies.choice.preserve_chain.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_s2_three_copies_preserve_chain",
+          "textKey": "event.active_marine_01_sealed_manifest_s2_three_copies.choice.preserve_chain.outcome.active_marine_01_sealed_manifest_s2_three_copies_preserve_chain.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s3a_preserve_chain",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "quiet_correction",
+      "textKey": "event.active_marine_01_sealed_manifest_s2_three_copies.choice.quiet_correction.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_s2_three_copies_quiet_correction",
+          "textKey": "event.active_marine_01_sealed_manifest_s2_three_copies.choice.quiet_correction.outcome.active_marine_01_sealed_manifest_s2_three_copies_quiet_correction.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s3b_quiet_correction",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "confront_command",
+      "textKey": "event.active_marine_01_sealed_manifest_s2_three_copies.choice.confront_command.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_s2_three_copies_confront_command",
+          "textKey": "event.active_marine_01_sealed_manifest_s2_three_copies.choice.confront_command.outcome.active_marine_01_sealed_manifest_s2_three_copies_confront_command.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s3c_confront_command",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 200,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "marine"
+    }
+  }
+}

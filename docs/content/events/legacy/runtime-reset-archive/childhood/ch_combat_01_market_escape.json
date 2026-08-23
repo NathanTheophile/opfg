@@ -1,0 +1,181 @@
+{
+  "id": "ch_combat_01_market_escape",
+  "titleKey": "event.ch_combat_01_market_escape.title",
+  "textKey": "event.ch_combat_01_market_escape.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "run_together",
+      "textKey": "event.ch_combat_01_market_escape.choice.run_together.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "caught_sleeve",
+            "textKey": "event.ch_combat_01_market_escape.choice.run_together.outcome.caught_sleeve.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_market_escape_i1"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 4
+              }
+            ]
+          },
+          "failure": {
+            "id": "gap_closes",
+            "textKey": "event.ch_combat_01_market_escape.choice.run_together.outcome.gap_closes.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_market_escape_i1"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 4
+              }
+            ]
+          },
+          "success": {
+            "id": "pace_shared",
+            "textKey": "event.ch_combat_01_market_escape.choice.run_together.outcome.pace_shared.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_market_escape_i1"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 5
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crowd_used",
+            "textKey": "event.ch_combat_01_market_escape.choice.run_together.outcome.crowd_used.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_market_escape_i1"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 6
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "send_friend_first",
+      "textKey": "event.ch_combat_01_market_escape.choice.send_friend_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "friend_sent",
+          "textKey": "event.ch_combat_01_market_escape.choice.send_friend_first.outcome.friend_sent.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_market_escape_i1"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shout_what_happened",
+      "textKey": "event.ch_combat_01_market_escape.choice.shout_what_happened.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "truth_shouted",
+          "textKey": "event.ch_combat_01_market_escape.choice.shout_what_happened.outcome.truth_shouted.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_market_escape_i1"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "childhood_friend"
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "id": "active_blue_north_blue_01_clocktown_false_permit",
+  "kind": "normal",
+  "titleKey": "event.active_blue_north_blue_01_clocktown_false_permit.title",
+  "textKey": "event.active_blue_north_blue_01_clocktown_false_permit.text",
+  "choices": [
+    {
+      "id": "risk",
+      "textKey": "event.active_blue_north_blue_01_clocktown_false_permit.choice.risk.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "risk_criticalfailure",
+            "textKey": "event.active_blue_north_blue_01_clocktown_false_permit.choice.risk.outcome.risk_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_north_blue_01_st_permit_s02_registry",
+                "delayMonths": 4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_clocktown_false_permit_i01_second_stamp"
+              }
+            ]
+          },
+          "failure": {
+            "id": "risk_failure",
+            "textKey": "event.active_blue_north_blue_01_clocktown_false_permit.choice.risk.outcome.risk_failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_north_blue_01_st_permit_s02_registry",
+                "delayMonths": 4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_clocktown_false_permit_i01_second_stamp"
+              }
+            ]
+          },
+          "success": {
+            "id": "risk_success",
+            "textKey": "event.active_blue_north_blue_01_clocktown_false_permit.choice.risk.outcome.risk_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_north_blue_01_st_permit_s02_registry",
+                "delayMonths": 4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_clocktown_false_permit_i01_second_stamp"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "risk_criticalsuccess",
+            "textKey": "event.active_blue_north_blue_01_clocktown_false_permit.choice.risk.outcome.risk_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_north_blue_01_st_permit_s02_registry",
+                "delayMonths": 4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_clocktown_false_permit_i01_second_stamp"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "approach_1",
+      "textKey": "event.active_blue_north_blue_01_clocktown_false_permit.choice.approach_1.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_1_outcome",
+          "textKey": "event.active_blue_north_blue_01_clocktown_false_permit.choice.approach_1.outcome.approach_1_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_north_blue_01_st_permit_s02_registry",
+              "delayMonths": 4
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_north_blue_01_clocktown_false_permit_i01_second_stamp"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "approach_2",
+      "textKey": "event.active_blue_north_blue_01_clocktown_false_permit.choice.approach_2.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_2_outcome",
+          "textKey": "event.active_blue_north_blue_01_clocktown_false_permit.choice.approach_2.outcome.approach_2_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_north_blue_01_st_permit_s02_registry",
+              "delayMonths": 4
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_north_blue_01_clocktown_false_permit_i01_second_stamp"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "city"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "flevance"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "germa_empire"
+        }
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 407
+      }
+    ]
+  }
+}

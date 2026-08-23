@@ -1,0 +1,98 @@
+{
+  "id": "active_marine_01_promotion_captain",
+  "kind": "normal",
+  "titleKey": "event.active_marine_01_promotion_captain.title",
+  "textKey": "event.active_marine_01_promotion_captain.text",
+  "choices": [
+    {
+      "id": "accept_field_focus",
+      "textKey": "event.active_marine_01_promotion_captain.choice.accept_field_focus.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_promotion_captain_accept_field_focus",
+          "textKey": "event.active_marine_01_promotion_captain.choice.accept_field_focus.outcome.active_marine_01_promotion_captain_accept_field_focus.text",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_captain"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_command_focus",
+      "textKey": "event.active_marine_01_promotion_captain.choice.accept_command_focus.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_promotion_captain_accept_command_focus",
+          "textKey": "event.active_marine_01_promotion_captain.choice.accept_command_focus.outcome.active_marine_01_promotion_captain_accept_command_focus.text",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_captain"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_without_speech",
+      "textKey": "event.active_marine_01_promotion_captain.choice.accept_without_speech.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_promotion_captain_accept_without_speech",
+          "textKey": "event.active_marine_01_promotion_captain.choice.accept_without_speech.outcome.active_marine_01_promotion_captain_accept_without_speech.text",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_captain"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 252
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "careerRankIs",
+        "rankId": "marine_commander"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 42
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      }
+    ]
+  }
+}

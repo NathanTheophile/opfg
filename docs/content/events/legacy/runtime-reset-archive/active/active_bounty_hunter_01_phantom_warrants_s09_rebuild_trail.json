@@ -1,0 +1,60 @@
+{
+  "id": "active_bounty_hunter_01_phantom_warrants_s09_rebuild_trail",
+  "titleKey": "event.active_bounty_hunter_01_phantom_warrants_s09_rebuild_trail.title",
+  "textKey": "event.active_bounty_hunter_01_phantom_warrants_s09_rebuild_trail.text",
+  "choices": [
+    {
+      "id": "use_new_case",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s09_rebuild_trail.choice.use_new_case.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s09_rebuild_trail.choice.use_new_case.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s10_scapegoat",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "seek_witness",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s09_rebuild_trail.choice.seek_witness.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s09_rebuild_trail.choice.seek_witness.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s10_scapegoat",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "bounty_hunter"
+    }
+  },
+  "eligibility": {
+    "type": "isOnLand"
+  }
+}

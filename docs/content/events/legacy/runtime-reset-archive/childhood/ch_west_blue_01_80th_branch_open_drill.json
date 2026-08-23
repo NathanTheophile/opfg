@@ -1,0 +1,118 @@
+{
+  "id": "ch_west_blue_01_80th_branch_open_drill",
+  "kind": "normal",
+  "titleKey": "event.ch_west_blue_01_80th_branch_open_drill.title",
+  "textKey": "event.ch_west_blue_01_80th_branch_open_drill.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "west_blue"
+      },
+      {
+        "type": "affiliationIs",
+        "affiliationId": "marine"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "hold_position",
+      "textKey": "event.ch_west_blue_01_80th_branch_open_drill.choice.hold_position.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "position_broken",
+            "textKey": "event.ch_west_blue_01_80th_branch_open_drill.choice.hold_position.outcome.position_broken.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "position_shaky",
+            "textKey": "event.ch_west_blue_01_80th_branch_open_drill.choice.hold_position.outcome.position_shaky.text",
+            "effects": []
+          },
+          "success": {
+            "id": "position_held",
+            "textKey": "event.ch_west_blue_01_80th_branch_open_drill.choice.hold_position.outcome.position_held.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "position_leads",
+            "textKey": "event.ch_west_blue_01_80th_branch_open_drill.choice.hold_position.outcome.position_leads.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "question_plan",
+      "textKey": "event.ch_west_blue_01_80th_branch_open_drill.choice.question_plan.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "plan_questioned",
+          "textKey": "event.ch_west_blue_01_80th_branch_open_drill.choice.question_plan.outcome.plan_questioned.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "watch_medics",
+      "textKey": "event.ch_west_blue_01_80th_branch_open_drill.choice.watch_medics.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "medics_watched",
+          "textKey": "event.ch_west_blue_01_80th_branch_open_drill.choice.watch_medics.outcome.medics_watched.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

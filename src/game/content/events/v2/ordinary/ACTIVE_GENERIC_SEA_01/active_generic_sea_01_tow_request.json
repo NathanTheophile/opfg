@@ -1,0 +1,104 @@
+{
+  "id": "active_generic_sea_01_tow_request",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_tow_request.title",
+  "textKey": "event.active_generic_sea_01_tow_request.text",
+  "choices": [
+    {
+      "id": "tow_free",
+      "textKey": "event.active_generic_sea_01_tow_request.choice.tow_free.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tow_free_outcome",
+          "textKey": "event.active_generic_sea_01_tow_request.choice.tow_free.outcome.tow_free_outcome.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_tow_request_i01_unmarked_sacks"
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    },
+    {
+      "id": "tow_for_fee",
+      "textKey": "event.active_generic_sea_01_tow_request.choice.tow_for_fee.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tow_for_fee_outcome",
+          "textKey": "event.active_generic_sea_01_tow_request.choice.tow_for_fee.outcome.tow_for_fee_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 800
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_tow_request_i01_unmarked_sacks"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "offer_rigging_advice",
+      "textKey": "event.active_generic_sea_01_tow_request.choice.offer_rigging_advice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "offer_rigging_advice_outcome",
+          "textKey": "event.active_generic_sea_01_tow_request.choice.offer_rigging_advice.outcome.offer_rigging_advice_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "resourceful"
+      }
+    },
+    {
+      "id": "refuse_tow",
+      "textKey": "event.active_generic_sea_01_tow_request.choice.refuse_tow.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_tow_outcome",
+          "textKey": "event.active_generic_sea_01_tow_request.choice.refuse_tow.outcome.refuse_tow_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

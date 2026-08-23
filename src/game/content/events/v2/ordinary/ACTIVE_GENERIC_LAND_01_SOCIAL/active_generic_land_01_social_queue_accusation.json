@@ -1,0 +1,196 @@
+{
+  "id": "active_generic_land_01_social_queue_accusation",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_01_social_queue_accusation.title",
+  "textKey": "event.active_generic_land_01_social_queue_accusation.text",
+  "choices": [
+    {
+      "id": "explain_the_marker",
+      "textKey": "event.active_generic_land_01_social_queue_accusation.choice.explain_the_marker.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "explanation_sounds_excuse",
+            "textKey": "event.active_generic_land_01_social_queue_accusation.choice.explain_the_marker.outcome.explanation_sounds_excuse.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_queue_accusation_i01_witness"
+              }
+            ]
+          },
+          "failure": {
+            "id": "accuser_unmoved",
+            "textKey": "event.active_generic_land_01_social_queue_accusation.choice.explain_the_marker.outcome.accuser_unmoved.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_queue_accusation_i01_witness"
+              }
+            ]
+          },
+          "success": {
+            "id": "line_listens",
+            "textKey": "event.active_generic_land_01_social_queue_accusation.choice.explain_the_marker.outcome.line_listens.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_queue_accusation_i01_witness"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "line_accepts",
+            "textKey": "event.active_generic_land_01_social_queue_accusation.choice.explain_the_marker.outcome.line_accepts.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_queue_accusation_i01_witness"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_the_queue_custom",
+      "textKey": "event.active_generic_land_01_social_queue_accusation.choice.read_the_queue_custom.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "marker_misread",
+            "textKey": "event.active_generic_land_01_social_queue_accusation.choice.read_the_queue_custom.outcome.marker_misread.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_queue_accusation_i01_witness"
+              }
+            ]
+          },
+          "failure": {
+            "id": "custom_unclear",
+            "textKey": "event.active_generic_land_01_social_queue_accusation.choice.read_the_queue_custom.outcome.custom_unclear.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_queue_accusation_i01_witness"
+              }
+            ]
+          },
+          "success": {
+            "id": "custom_seen",
+            "textKey": "event.active_generic_land_01_social_queue_accusation.choice.read_the_queue_custom.outcome.custom_seen.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_queue_accusation_i01_witness"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "missing_token_found",
+            "textKey": "event.active_generic_land_01_social_queue_accusation.choice.read_the_queue_custom.outcome.missing_token_found.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_queue_accusation_i01_witness"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "yield_the_place",
+      "textKey": "event.active_generic_land_01_social_queue_accusation.choice.yield_the_place.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "place_yielded",
+          "textKey": "event.active_generic_land_01_social_queue_accusation.choice.yield_the_place.outcome.place_yielded.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_queue_accusation_i01_witness"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "demand_public_apology",
+      "textKey": "event.active_generic_land_01_social_queue_accusation.choice.demand_public_apology.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "proud"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "apology_demanded",
+          "textKey": "event.active_generic_land_01_social_queue_accusation.choice.demand_public_apology.outcome.apology_demanded.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_queue_accusation_i01_witness"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

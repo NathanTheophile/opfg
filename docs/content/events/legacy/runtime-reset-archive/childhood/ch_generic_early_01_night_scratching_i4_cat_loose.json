@@ -1,0 +1,103 @@
+{
+  "id": "ch_generic_early_01_night_scratching_i4_cat_loose",
+  "titleKey": "event.ch_generic_early_01_night_scratching_i4_cat_loose.title",
+  "textKey": "event.ch_generic_early_01_night_scratching_i4_cat_loose.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "catch_bowls",
+      "textKey": "event.ch_generic_early_01_night_scratching_i4_cat_loose.choice.catch_bowls.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bowls_crash",
+            "textKey": "event.ch_generic_early_01_night_scratching_i4_cat_loose.choice.catch_bowls.outcome.bowls_crash.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "some_break",
+            "textKey": "event.ch_generic_early_01_night_scratching_i4_cat_loose.choice.catch_bowls.outcome.some_break.text",
+            "effects": []
+          },
+          "success": {
+            "id": "bowls_saved",
+            "textKey": "event.ch_generic_early_01_night_scratching_i4_cat_loose.choice.catch_bowls.outcome.bowls_saved.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_night_scratching_i5_explain_mess"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "bowls_and_cat",
+            "textKey": "event.ch_generic_early_01_night_scratching_i4_cat_loose.choice.catch_bowls.outcome.bowls_and_cat.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_night_scratching_i5_explain_mess"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "open_exit",
+      "textKey": "event.ch_generic_early_01_night_scratching_i4_cat_loose.choice.open_exit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "exit_opened",
+          "textKey": "event.ch_generic_early_01_night_scratching_i4_cat_loose.choice.open_exit.outcome.exit_opened.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_night_scratching_i5_explain_mess"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "freeze",
+      "textKey": "event.ch_generic_early_01_night_scratching_i4_cat_loose.choice.freeze.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cat_escapes",
+          "textKey": "event.ch_generic_early_01_night_scratching_i4_cat_loose.choice.freeze.outcome.cat_escapes.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_night_scratching_i5_explain_mess"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

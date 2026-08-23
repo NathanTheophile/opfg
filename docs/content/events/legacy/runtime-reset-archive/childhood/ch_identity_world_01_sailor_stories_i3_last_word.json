@@ -1,0 +1,92 @@
+{
+  "id": "ch_identity_world_01_sailor_stories_i3_last_word",
+  "titleKey": "event.ch_identity_world_01_sailor_stories_i3_last_word.title",
+  "textKey": "event.ch_identity_world_01_sailor_stories_i3_last_word.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "give_benefit",
+      "textKey": "event.ch_identity_world_01_sailor_stories_i3_last_word.choice.give_benefit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trust_grows",
+          "textKey": "event.ch_identity_world_01_sailor_stories_i3_last_word.choice.give_benefit.outcome.trust_grows.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "trusting"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "trusting"
+            }
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "suspicious"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "verify_first",
+      "textKey": "event.ch_identity_world_01_sailor_stories_i3_last_word.choice.verify_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "suspicion_grows",
+          "textKey": "event.ch_identity_world_01_sailor_stories_i3_last_word.choice.verify_first.outcome.suspicion_grows.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "suspicious"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "suspicious"
+            }
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "trusting"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "keep_balance",
+      "textKey": "event.ch_identity_world_01_sailor_stories_i3_last_word.choice.keep_balance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "balance_kept",
+          "textKey": "event.ch_identity_world_01_sailor_stories_i3_last_word.choice.keep_balance.outcome.balance_kept.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

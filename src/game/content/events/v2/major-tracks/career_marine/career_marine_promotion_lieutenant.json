@@ -1,0 +1,74 @@
+{
+  "id": "career_marine_promotion_lieutenant",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 18
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_recruit"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerRankAtLeast",
+          "rankId": "marine_lieutenant"
+        }
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_03_divided_orders"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_03_cell_six"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_03_false_pennant"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_03_incomplete_report"
+          }
+        ]
+      }
+    ]
+  },
+  "titleKey": "event.career_marine_promotion_lieutenant.title",
+  "textKey": "event.career_marine_promotion_lieutenant.text",
+  "choices": [
+    {
+      "id": "assume_rank",
+      "textKey": "event.career_marine_promotion_lieutenant.choice.assume_rank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "promoted",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_lieutenant"
+            }
+          ],
+          "textKey": "event.career_marine_promotion_lieutenant.choice.assume_rank.outcome.promoted.text"
+        }
+      }
+    }
+  ]
+}

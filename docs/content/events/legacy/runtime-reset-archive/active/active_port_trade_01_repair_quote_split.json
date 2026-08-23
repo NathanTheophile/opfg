@@ -1,0 +1,217 @@
+{
+  "id": "active_port_trade_01_repair_quote_split",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_repair_quote_split.title",
+  "textKey": "event.active_port_trade_01_repair_quote_split.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "ship_repair"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "isLeader"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "shipIs",
+                "shipId": "dinghy"
+              },
+              {
+                "type": "shipHealthAtMost",
+                "value": 17
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "shipIs",
+                "shipId": "sloop"
+              },
+              {
+                "type": "shipHealthAtMost",
+                "value": 29
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "shipIs",
+                "shipId": "caravel"
+              },
+              {
+                "type": "shipHealthAtMost",
+                "value": 37
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "shipIs",
+                "shipId": "brig"
+              },
+              {
+                "type": "shipHealthAtMost",
+                "value": 49
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "shipIs",
+                "shipId": "merchant_ship"
+              },
+              {
+                "type": "shipHealthAtMost",
+                "value": 41
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "shipIs",
+                "shipId": "galleon"
+              },
+              {
+                "type": "shipHealthAtMost",
+                "value": 64
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "diagnostic",
+      "textKey": "event.active_port_trade_01_repair_quote_split.choice.diagnostic.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_port_trade_01_repair_quote_split.choice.diagnostic.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_port_trade_01_repair_quote_split_i1_open_hull"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_port_trade_01_repair_quote_split.choice.diagnostic.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_port_trade_01_repair_quote_split_i1_open_hull"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_port_trade_01_repair_quote_split.choice.diagnostic.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_port_trade_01_repair_quote_split_i1_open_hull"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_port_trade_01_repair_quote_split.choice.diagnostic.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_port_trade_01_repair_quote_split_i1_open_hull"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "reparation_minimale",
+      "textKey": "event.active_port_trade_01_repair_quote_split.choice.reparation_minimale.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "minimal",
+          "textKey": "event.active_port_trade_01_repair_quote_split.choice.reparation_minimale.outcome.minimal.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_repair_quote_split_i1_open_hull"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "reporter",
+      "textKey": "event.active_port_trade_01_repair_quote_split.choice.reporter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "report",
+          "textKey": "event.active_port_trade_01_repair_quote_split.choice.reporter.outcome.report.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "id": "active_port_trade_01_lt_s3a",
+  "kind": "scheduled",
+  "titleKey": "event.active_port_trade_01_lt_s3a.title",
+  "textKey": "event.active_port_trade_01_lt_s3a.text",
+  "eligibility": {
+    "type": "locationHasService",
+    "serviceId": "trade"
+  },
+  "choices": [
+    {
+      "id": "payer_securite",
+      "textKey": "event.active_port_trade_01_lt_s3a.choice.payer_securite.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "payer_securite",
+          "textKey": "event.active_port_trade_01_lt_s3a.choice.payer_securite.outcome.payer_securite.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -90
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s4a",
+              "delayMonths": 12
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 90
+      }
+    },
+    {
+      "id": "renegocier",
+      "textKey": "event.active_port_trade_01_lt_s3a.choice.renegocier.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "renegocier",
+          "textKey": "event.active_port_trade_01_lt_s3a.choice.renegocier.outcome.renegocier.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s4a",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

@@ -1,0 +1,85 @@
+{
+  "id": "active_blue_east_blue_01_repair_queue",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_repair_queue.title",
+  "textKey": "event.active_blue_east_blue_01_repair_queue.text",
+  "choices": [
+    {
+      "id": "buy_priority",
+      "textKey": "event.active_blue_east_blue_01_repair_queue.choice.buy_priority.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy_priority_outcome",
+          "textKey": "event.active_blue_east_blue_01_repair_queue.choice.buy_priority.outcome.buy_priority_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1500
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1500
+      }
+    },
+    {
+      "id": "trade_labor",
+      "textKey": "event.active_blue_east_blue_01_repair_queue.choice.trade_labor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade_labor_outcome",
+          "textKey": "event.active_blue_east_blue_01_repair_queue.choice.trade_labor.outcome.trade_labor_outcome.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wait_your_turn",
+      "textKey": "event.active_blue_east_blue_01_repair_queue.choice.wait_your_turn.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait_your_turn_outcome",
+          "textKey": "event.active_blue_east_blue_01_repair_queue.choice.wait_your_turn.outcome.wait_your_turn_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "ship_repair"
+      }
+    ]
+  }
+}

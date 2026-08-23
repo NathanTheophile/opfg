@@ -1,0 +1,105 @@
+.opfg-event-panel {
+  --opfg-event-ornament-bottom: -8px;
+  --opfg-event-ornament-left: -5px;
+  --opfg-event-ornament-bottom-width: clamp(42px, 3.3vw, 50px);
+
+  position: relative;
+  overflow: visible !important;
+}
+
+.opfg-event-panel__header,
+.opfg-event-panel__choices {
+  background: transparent !important;
+}
+
+.opfg-event-panel__header {
+  border-radius: var(--radius-panel) var(--radius-panel) 0 0;
+}
+
+.opfg-event-panel__choices {
+  border-radius: 0 0 var(--radius-panel) var(--radius-panel);
+}
+
+.opfg-event-panel[data-mode='collapsed'] .opfg-event-panel__header {
+  border-radius: var(--radius-panel);
+}
+
+
+
+/*
+ * Upper-right Event ornament.
+ *
+ * This ornament intentionally lives OUTSIDE .opfg-adventure-scroll so the
+ * scrollport cannot clip its negative top offset. It is anchored to the
+ * adventure region, whose horizontal inset is the same variable used by the
+ * EventPanel inside the scrollport. The lower ornament remains attached to
+ * .opfg-event-panel::after because it must follow panel height changes.
+ */
+.opfg-game-adventure-region {
+  --opfg-event-fixed-ornament-top: -5px;
+  --opfg-event-fixed-ornament-right: -6px;
+  --opfg-event-fixed-ornament-width: clamp(40px, 3.2vw, 48px);
+}
+
+.opfg-event-fixed-ornament--top-right {
+  position: absolute;
+  z-index: 12;
+  top: var(--opfg-event-fixed-ornament-top);
+  right: calc(
+    var(--opfg-adventure-inline-padding, 1.15rem)
+    + var(--opfg-event-fixed-ornament-right)
+  );
+  width: var(--opfg-event-fixed-ornament-width);
+  aspect-ratio: 256 / 282;
+  pointer-events: none;
+  user-select: none;
+  background-image: url('./assets/panel-corner-rope-top.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.92;
+  filter: drop-shadow(0 3px 6px rgb(0 0 0 / 0.34));
+  transform: scaleX(-1);
+}
+
+.opfg-event-panel::after {
+  position: absolute;
+  z-index: 10;
+  bottom: var(--opfg-event-ornament-bottom);
+  left: var(--opfg-event-ornament-left);
+  width: var(--opfg-event-ornament-bottom-width);
+  aspect-ratio: 256 / 266;
+  content: '';
+  pointer-events: none;
+  user-select: none;
+  background-image: url('./assets/panel-corner-rope-bottom.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.92;
+  filter: drop-shadow(0 3px 6px rgb(0 0 0 / 0.34));
+}
+
+.opfg-event-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Event-specific parchment spacing. Shared surface lives in ui-shared.css. */
+.opfg-event-panel__body {
+  padding-block: 0.42rem 0.36rem;
+}
+
+@media (max-width: 768px) {
+  .opfg-game-adventure-region {
+    --opfg-event-fixed-ornament-top: -4px;
+    --opfg-event-fixed-ornament-right: 0px;
+    --opfg-event-fixed-ornament-width: 40px;
+  }
+
+  .opfg-event-panel {
+    --opfg-event-ornament-bottom: -6px;
+    --opfg-event-ornament-left: -5px;
+    --opfg-event-ornament-bottom-width: 48px;
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "id": "ch_v2_identity_world_01_traveling_notebook_s01_first_return",
+  "titleKey": "event.ch_v2_identity_world_01_traveling_notebook_s01_first_return.title",
+  "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s01_first_return.text",
+  "kind": "scheduled",
+  "choices": [
+    {
+      "id": "compare_answers",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s01_first_return.choice.compare_answers.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answers_compared",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s01_first_return.choice.compare_answers.outcome.answers_compared.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s02_what_counts_as_answer",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "follow_one_hand",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s01_first_return.choice.follow_one_hand.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "one_hand_followed",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s01_first_return.choice.follow_one_hand.outcome.one_hand_followed.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s02_what_counts_as_answer",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "add_new_question",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s01_first_return.choice.add_new_question.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "new_question_added",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s01_first_return.choice.add_new_question.outcome.new_question_added.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s02_what_counts_as_answer",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "isOnLand"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

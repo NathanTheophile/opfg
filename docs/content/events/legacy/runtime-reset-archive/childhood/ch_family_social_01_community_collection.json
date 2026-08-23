@@ -1,0 +1,150 @@
+{
+  "id": "ch_family_social_01_community_collection",
+  "titleKey": "event.ch_family_social_01_community_collection.title",
+  "textKey": "event.ch_family_social_01_community_collection.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 156
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "organize_rounds",
+      "textKey": "event.ch_family_social_01_community_collection.choice.organize_rounds.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "collection_shames",
+            "textKey": "event.ch_family_social_01_community_collection.choice.organize_rounds.outcome.collection_shames.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "collection_works_barely",
+            "textKey": "event.ch_family_social_01_community_collection.choice.organize_rounds.outcome.collection_works_barely.text",
+            "effects": []
+          },
+          "success": {
+            "id": "collection_respectful",
+            "textKey": "event.ch_family_social_01_community_collection.choice.organize_rounds.outcome.collection_respectful.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "collection_unites",
+            "textKey": "event.ch_family_social_01_community_collection.choice.organize_rounds.outcome.collection_unites.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "take_protective_role",
+      "textKey": "event.ch_family_social_01_community_collection.choice.take_protective_role.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "protected_people",
+          "textKey": "event.ch_family_social_01_community_collection.choice.take_protective_role.outcome.protected_people.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "protective"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "protective"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "solve_with_materials",
+      "textKey": "event.ch_family_social_01_community_collection.choice.solve_with_materials.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "materials_reused",
+          "textKey": "event.ch_family_social_01_community_collection.choice.solve_with_materials.outcome.materials_reused.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "resourceful"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "resourceful"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "contribute_quietly",
+      "textKey": "event.ch_family_social_01_community_collection.choice.contribute_quietly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "quiet_contribution",
+          "textKey": "event.ch_family_social_01_community_collection.choice.contribute_quietly.outcome.quiet_contribution.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

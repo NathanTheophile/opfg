@@ -1,0 +1,112 @@
+{
+  "id": "active_generic_sea_01_current_shear_i2_hidden_foam",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_01_current_shear_i2_hidden_foam.title",
+  "textKey": "event.active_generic_sea_01_current_shear_i2_hidden_foam.text",
+  "choices": [
+    {
+      "id": "judge_patch",
+      "textKey": "event.active_generic_sea_01_current_shear_i2_hidden_foam.choice.judge_patch.text",
+      "availableIf": { "type": "hasShip" },
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_01_current_shear_i2_hidden_foam.choice.judge_patch.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_current_shear_i3_clear_water"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_01_current_shear_i2_hidden_foam.choice.judge_patch.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_current_shear_i3_clear_water"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_01_current_shear_i2_hidden_foam.choice.judge_patch.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_current_shear_i3_clear_water"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_01_current_shear_i2_hidden_foam.choice.judge_patch.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_current_shear_i3_clear_water"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "avoid_patch",
+      "textKey": "event.active_generic_sea_01_current_shear_i2_hidden_foam.choice.avoid_patch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_current_shear_i2_hidden_foam.choice.avoid_patch.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_current_shear_i3_clear_water"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "helmsman_feel",
+      "textKey": "event.active_generic_sea_01_current_shear_i2_hidden_foam.choice.helmsman_feel.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_current_shear_i2_hidden_foam.choice.helmsman_feel.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_current_shear_i3_clear_water"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "helmsman"
+      }
+    }
+  ]
+}

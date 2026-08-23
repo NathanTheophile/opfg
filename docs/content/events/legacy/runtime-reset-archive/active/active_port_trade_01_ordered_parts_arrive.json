@@ -1,0 +1,65 @@
+{
+  "id": "active_port_trade_01_ordered_parts_arrive",
+  "kind": "scheduled",
+  "titleKey": "event.active_port_trade_01_ordered_parts_arrive.title",
+  "textKey": "event.active_port_trade_01_ordered_parts_arrive.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "locationHasService",
+        "serviceId": "ship_repair"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "monter",
+      "textKey": "event.active_port_trade_01_ordered_parts_arrive.choice.monter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "montee",
+          "textKey": "event.active_port_trade_01_ordered_parts_arrive.choice.monter.outcome.montee.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -260
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 7
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 260
+      }
+    },
+    {
+      "id": "renoncer",
+      "textKey": "event.active_port_trade_01_ordered_parts_arrive.choice.renoncer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "renonce",
+          "textKey": "event.active_port_trade_01_ordered_parts_arrive.choice.renoncer.outcome.renonce.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "hasShip"
+    }
+  }
+}

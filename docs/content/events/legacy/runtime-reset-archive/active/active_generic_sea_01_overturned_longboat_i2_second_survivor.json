@@ -1,0 +1,123 @@
+{
+  "id": "active_generic_sea_01_overturned_longboat_i2_second_survivor",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_01_overturned_longboat_i2_second_survivor.title",
+  "textKey": "event.active_generic_sea_01_overturned_longboat_i2_second_survivor.text",
+  "choices": [
+    {
+      "id": "dive_under",
+      "textKey": "event.active_generic_sea_01_overturned_longboat_i2_second_survivor.choice.dive_under.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_01_overturned_longboat_i2_second_survivor.choice.dive_under.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overturned_longboat_i3_empty_seat"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_01_overturned_longboat_i2_second_survivor.choice.dive_under.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overturned_longboat_i3_empty_seat"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_01_overturned_longboat_i2_second_survivor.choice.dive_under.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overturned_longboat_i3_empty_seat"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_01_overturned_longboat_i2_second_survivor.choice.dive_under.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_overturned_longboat_i3_empty_seat"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "turn_boat",
+      "textKey": "event.active_generic_sea_01_overturned_longboat_i2_second_survivor.choice.turn_boat.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_overturned_longboat_i2_second_survivor.choice.turn_boat.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_overturned_longboat_i3_empty_seat"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fishman_dive",
+      "textKey": "event.active_generic_sea_01_overturned_longboat_i2_second_survivor.choice.fishman_dive.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_overturned_longboat_i2_second_survivor.choice.fishman_dive.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_overturned_longboat_i3_empty_seat"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "raceIs",
+        "raceId": "fishman"
+      }
+    }
+  ]
+}

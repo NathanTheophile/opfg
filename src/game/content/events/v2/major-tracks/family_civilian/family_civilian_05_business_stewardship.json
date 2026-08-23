@@ -1,0 +1,115 @@
+{
+  "id": "family_civilian_05_business_stewardship",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_civilian",
+    "chapterId": "childhood_05",
+    "nodeId": "family_civilian_05_business_stewardship",
+    "selectionPriority": 20,
+    "parentNodeIds": [
+      "family_civilian_04_business_expansion_plan",
+      "family_civilian_04_enterprise_race_fallback"
+    ]
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "socialClassIs",
+        "socialClassId": "wealthy"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasOutcome",
+            "eventId": "family_civilian_04_business_expansion_plan_i01_reaction",
+            "outcomeId": "help"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "family_civilian_04_enterprise_race_fallback_i01_reaction",
+            "outcomeId": "help"
+          }
+        ]
+      }
+    ]
+  },
+  "titleKey": "event.family_civilian_05_business_stewardship.title",
+  "textKey": "event.family_civilian_05_business_stewardship.text",
+  "choices": [
+    {
+      "id": "touch",
+      "textKey": "event.family_civilian_05_business_stewardship.choice.touch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "touch",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_business_stewardship_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_business_stewardship.choice.touch.outcome.touch.text"
+        }
+      }
+    },
+    {
+      "id": "ask",
+      "textKey": "event.family_civilian_05_business_stewardship.choice.ask.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_business_stewardship_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_business_stewardship.choice.ask.outcome.ask.text"
+        }
+      }
+    },
+    {
+      "id": "wait",
+      "textKey": "event.family_civilian_05_business_stewardship.choice.wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_business_stewardship_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_business_stewardship.choice.wait.outcome.wait.text"
+        }
+      }
+    },
+    {
+      "id": "remember_second_shop",
+      "availableIf": {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_04_business_expansion_plan_i01_reaction",
+        "outcomeId": "protect"
+      },
+      "textKey": "event.family_civilian_05_business_stewardship.choice.remember_second_shop.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "remember_second_shop",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_05_business_stewardship_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_05_business_stewardship.choice.remember_second_shop.outcome.remember_second_shop.text"
+        }
+      }
+    }
+  ]
+}

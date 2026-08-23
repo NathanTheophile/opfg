@@ -1,0 +1,74 @@
+{
+  "id": "ch_v2_generic_late_01_queue_steward_i01_side_deal",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_generic_late_01_queue_steward_i01_side_deal.title",
+  "textKey": "event.ch_v2_generic_late_01_queue_steward_i01_side_deal.text",
+  "choices": [
+    {
+      "id": "refuse_side_deal",
+      "textKey": "event.ch_v2_generic_late_01_queue_steward_i01_side_deal.choice.refuse_side_deal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_side_deal_outcome",
+          "textKey": "event.ch_v2_generic_late_01_queue_steward_i01_side_deal.choice.refuse_side_deal.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_late_01_queue_steward_i02_one_short"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "write_public_rule",
+      "textKey": "event.ch_v2_generic_late_01_queue_steward_i01_side_deal.choice.write_public_rule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "write_public_rule_outcome",
+          "textKey": "event.ch_v2_generic_late_01_queue_steward_i01_side_deal.choice.write_public_rule.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_late_01_queue_steward_i02_one_short"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_promise",
+      "textKey": "event.ch_v2_generic_late_01_queue_steward_i01_side_deal.choice.accept_promise.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_promise_outcome",
+          "textKey": "event.ch_v2_generic_late_01_queue_steward_i01_side_deal.choice.accept_promise.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_late_01_queue_steward_i02_one_short"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

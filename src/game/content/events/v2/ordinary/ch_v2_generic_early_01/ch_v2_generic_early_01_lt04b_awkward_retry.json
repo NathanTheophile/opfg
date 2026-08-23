@@ -1,0 +1,81 @@
+{
+  "id": "ch_v2_generic_early_01_lt04b_awkward_retry",
+  "kind": "scheduled",
+  "priority": 100,
+  "cast": [
+    "neighborhood_merchant"
+  ],
+  "titleKey": "event.ch_v2_generic_early_01_lt04b_awkward_retry.title",
+  "textKey": "event.ch_v2_generic_early_01_lt04b_awkward_retry.text",
+  "choices": [
+    {
+      "id": "stay_put",
+      "textKey": "event.ch_v2_generic_early_01_lt04b_awkward_retry.choice.stay_put.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stayed",
+          "textKey": "event.ch_v2_generic_early_01_lt04b_awkward_retry.choice.stay_put.outcome.stayed.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_early_01_lt05_note_catches_up",
+              "delayMonths": 48
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "move_shade",
+      "textKey": "event.ch_v2_generic_early_01_lt04b_awkward_retry.choice.move_shade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shade",
+          "textKey": "event.ch_v2_generic_early_01_lt04b_awkward_retry.choice.move_shade.outcome.shade.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_early_01_lt05_note_catches_up",
+              "delayMonths": 48
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave",
+      "textKey": "event.ch_v2_generic_early_01_lt04b_awkward_retry.choice.leave.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "left",
+          "textKey": "event.ch_v2_generic_early_01_lt04b_awkward_retry.choice.leave.outcome.left.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_early_01_lt05_note_catches_up",
+              "delayMonths": 48
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

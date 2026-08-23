@@ -1,0 +1,88 @@
+{
+  "id": "active_paradise_p4_kingdoms_01_route_seals_s04_open_registry",
+  "kind": "scheduled",
+  "titleKey": "event.active_paradise_p4_kingdoms_01_route_seals_s04_open_registry.title",
+  "textKey": "event.active_paradise_p4_kingdoms_01_route_seals_s04_open_registry.text",
+  "choices": [
+    {
+      "id": "publish_error",
+      "textKey": "event.active_paradise_p4_kingdoms_01_route_seals_s04_open_registry.choice.publish_error.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "publish_error_outcome",
+          "textKey": "event.active_paradise_p4_kingdoms_01_route_seals_s04_open_registry.choice.publish_error.outcome.publish_error_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "quiet_correction",
+      "textKey": "event.active_paradise_p4_kingdoms_01_route_seals_s04_open_registry.choice.quiet_correction.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "quiet_correction_outcome",
+          "textKey": "event.active_paradise_p4_kingdoms_01_route_seals_s04_open_registry.choice.quiet_correction.outcome.quiet_correction_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "return_copies",
+      "textKey": "event.active_paradise_p4_kingdoms_01_route_seals_s04_open_registry.choice.return_copies.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "return_copies_outcome",
+          "textKey": "event.active_paradise_p4_kingdoms_01_route_seals_s04_open_registry.choice.return_copies.outcome.return_copies_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p4_kingdoms"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "locationIs",
+        "locationId": "sabaody_archipelago"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "currentSeaIs",
+          "seaId": "grand_line_paradise"
+        }
+      }
+    ]
+  }
+}

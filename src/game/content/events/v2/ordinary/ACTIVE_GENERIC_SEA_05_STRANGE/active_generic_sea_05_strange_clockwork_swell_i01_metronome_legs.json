@@ -1,0 +1,129 @@
+{
+  "id": "active_generic_sea_05_strange_clockwork_swell_i01_metronome_legs",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_05_strange_clockwork_swell_i01_metronome_legs.title",
+  "textKey": "event.active_generic_sea_05_strange_clockwork_swell_i01_metronome_legs.text",
+  "choices": [
+    {
+      "id": "trap_bucket",
+      "textKey": "event.active_generic_sea_05_strange_clockwork_swell_i01_metronome_legs.choice.trap_bucket.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trapped",
+          "textKey": "event.active_generic_sea_05_strange_clockwork_swell_i01_metronome_legs.choice.trap_bucket.outcome.trapped.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_clockwork_swell_i02_backward_tick"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "retune_weight",
+      "textKey": "event.active_generic_sea_05_strange_clockwork_swell_i01_metronome_legs.choice.retune_weight.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "retune_weight_criticalfailure",
+            "textKey": "event.active_generic_sea_05_strange_clockwork_swell_i01_metronome_legs.choice.retune_weight.outcome.retune_weight_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_clockwork_swell_i02_backward_tick"
+              }
+            ]
+          },
+          "failure": {
+            "id": "retune_weight_failure",
+            "textKey": "event.active_generic_sea_05_strange_clockwork_swell_i01_metronome_legs.choice.retune_weight.outcome.retune_weight_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_clockwork_swell_i02_backward_tick"
+              }
+            ]
+          },
+          "success": {
+            "id": "retune_weight_success",
+            "textKey": "event.active_generic_sea_05_strange_clockwork_swell_i01_metronome_legs.choice.retune_weight.outcome.retune_weight_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_clockwork_swell_i02_backward_tick"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "retune_weight_criticalsuccess",
+            "textKey": "event.active_generic_sea_05_strange_clockwork_swell_i01_metronome_legs.choice.retune_weight.outcome.retune_weight_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_clockwork_swell_i02_backward_tick"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "kick_overboard",
+      "textKey": "event.active_generic_sea_05_strange_clockwork_swell_i01_metronome_legs.choice.kick_overboard.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "kicked",
+          "textKey": "event.active_generic_sea_05_strange_clockwork_swell_i01_metronome_legs.choice.kick_overboard.outcome.kicked.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_clockwork_swell_i02_backward_tick"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "hasShip"
+  }
+}

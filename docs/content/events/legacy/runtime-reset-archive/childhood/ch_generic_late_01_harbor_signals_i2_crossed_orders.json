@@ -1,0 +1,52 @@
+{
+  "id": "ch_generic_late_01_harbor_signals_i2_crossed_orders",
+  "kind": "immediate",
+  "titleKey": "event.ch_generic_late_01_harbor_signals_i2_crossed_orders.title",
+  "textKey": "event.ch_generic_late_01_harbor_signals_i2_crossed_orders.text",
+  "choices": [
+    {
+      "id": "one_boat_yields",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "yield",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_harbor_signals_i3_angry_crews"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_harbor_signals_i2_crossed_orders.choice.one_boat_yields.outcome.yield.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_harbor_signals_i2_crossed_orders.choice.one_boat_yields.text"
+    },
+    {
+      "id": "both_stop",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "both_stop",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_harbor_signals_i3_angry_crews"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_harbor_signals_i2_crossed_orders.choice.both_stop.outcome.both_stop.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_harbor_signals_i2_crossed_orders.choice.both_stop.text"
+    }
+  ]
+}

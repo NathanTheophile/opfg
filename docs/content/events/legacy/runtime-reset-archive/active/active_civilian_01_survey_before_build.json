@@ -1,0 +1,146 @@
+{
+  "id": "active_civilian_01_survey_before_build",
+  "titleKey": "event.active_civilian_01_survey_before_build.title",
+  "textKey": "event.active_civilian_01_survey_before_build.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "industrial"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "research"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "inspect",
+      "textKey": "event.active_civilian_01_survey_before_build.choice.inspect.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "inspect_criticalFailure",
+            "textKey": "event.active_civilian_01_survey_before_build.choice.inspect.outcome.inspect_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "inspect_failure",
+            "textKey": "event.active_civilian_01_survey_before_build.choice.inspect.outcome.inspect_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "inspect_success",
+            "textKey": "event.active_civilian_01_survey_before_build.choice.inspect.outcome.inspect_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "inspect_criticalSuccess",
+            "textKey": "event.active_civilian_01_survey_before_build.choice.inspect.outcome.inspect_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "scholar",
+      "textKey": "event.active_civilian_01_survey_before_build.choice.scholar.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "scholar_result",
+          "textKey": "event.active_civilian_01_survey_before_build.choice.scholar.outcome.scholar_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "scholar"
+      }
+    },
+    {
+      "id": "small_start",
+      "textKey": "event.active_civilian_01_survey_before_build.choice.small_start.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "small_start_result",
+          "textKey": "event.active_civilian_01_survey_before_build.choice.small_start.outcome.small_start_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

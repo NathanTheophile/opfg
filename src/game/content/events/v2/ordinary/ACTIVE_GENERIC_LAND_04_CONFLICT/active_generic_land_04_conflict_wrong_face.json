@@ -1,0 +1,207 @@
+{
+  "id": "active_generic_land_04_conflict_wrong_face",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_04_conflict_wrong_face.title",
+  "textKey": "event.active_generic_land_04_conflict_wrong_face.text",
+  "choices": [
+    {
+      "id": "prove_mismatch",
+      "textKey": "event.active_generic_land_04_conflict_wrong_face.choice.prove_mismatch",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "prove_mismatch_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_wrong_face.outcome.prove_mismatch.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_face_i01_wall"
+              }
+            ]
+          },
+          "failure": {
+            "id": "prove_mismatch_failure",
+            "textKey": "event.active_generic_land_04_conflict_wrong_face.outcome.prove_mismatch.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_face_i01_wall"
+              }
+            ]
+          },
+          "success": {
+            "id": "prove_mismatch_success",
+            "textKey": "event.active_generic_land_04_conflict_wrong_face.outcome.prove_mismatch.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_face_i01_wall"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "prove_mismatch_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_wrong_face.outcome.prove_mismatch.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_face_i01_wall"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "talk_down",
+      "textKey": "event.active_generic_land_04_conflict_wrong_face.choice.talk_down",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "talk_down_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_wrong_face.outcome.talk_down.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_face_i01_wall"
+              }
+            ]
+          },
+          "failure": {
+            "id": "talk_down_failure",
+            "textKey": "event.active_generic_land_04_conflict_wrong_face.outcome.talk_down.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_face_i01_wall"
+              }
+            ]
+          },
+          "success": {
+            "id": "talk_down_success",
+            "textKey": "event.active_generic_land_04_conflict_wrong_face.outcome.talk_down.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_face_i01_wall"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "talk_down_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_wrong_face.outcome.talk_down.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_face_i01_wall"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "marine_status",
+      "textKey": "event.active_generic_land_04_conflict_wrong_face.choice.marine_status",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "marine_status",
+          "textKey": "event.active_generic_land_04_conflict_wrong_face.outcome.marine_status",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_wrong_face_i01_wall"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      }
+    },
+    {
+      "id": "submit",
+      "textKey": "event.active_generic_land_04_conflict_wrong_face.choice.submit",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "submit",
+          "textKey": "event.active_generic_land_04_conflict_wrong_face.outcome.submit",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_wrong_face_i01_wall"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

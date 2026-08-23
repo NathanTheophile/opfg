@@ -1,0 +1,165 @@
+{
+  "id": "active_bounty_hunter_01_corrupt_notice",
+  "titleKey": "event.active_bounty_hunter_01_corrupt_notice.title",
+  "textKey": "event.active_bounty_hunter_01_corrupt_notice.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "bounty_hunter"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "government"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "marine_services"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "refuse_document",
+      "textKey": "event.active_bounty_hunter_01_corrupt_notice.choice.refuse_document.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_corrupt_notice.choice.refuse_document.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "addTrait",
+              "traitId": "honest"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_corrupt_notice_backlash",
+              "delayMonths": 3
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "deceptive"
+        }
+      }
+    },
+    {
+      "id": "probe",
+      "textKey": "event.active_bounty_hunter_01_corrupt_notice.choice.probe.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_bounty_hunter_01_corrupt_notice.choice.probe.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_corrupt_notice_backlash",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_bounty_hunter_01_corrupt_notice.choice.probe.outcome.failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_corrupt_notice_backlash",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_bounty_hunter_01_corrupt_notice.choice.probe.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_corrupt_notice_backlash",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_bounty_hunter_01_corrupt_notice.choice.probe.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_corrupt_notice_backlash",
+                "delayMonths": 3
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "take_money",
+      "textKey": "event.active_bounty_hunter_01_corrupt_notice.choice.take_money.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_corrupt_notice.choice.take_money.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1500
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

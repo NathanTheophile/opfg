@@ -1,0 +1,221 @@
+{
+  "id": "active_blue_east_blue_01_clinic_triage",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_clinic_triage.title",
+  "textKey": "event.active_blue_east_blue_01_clinic_triage.text",
+  "choices": [
+    {
+      "id": "sort_the_injured",
+      "textKey": "event.active_blue_east_blue_01_clinic_triage.choice.sort_the_injured.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "sort_the_injured_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_clinic_triage.choice.sort_the_injured.outcome.sort_the_injured_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_clinic_triage_i01_last_bandage"
+              }
+            ]
+          },
+          "failure": {
+            "id": "sort_the_injured_failure",
+            "textKey": "event.active_blue_east_blue_01_clinic_triage.choice.sort_the_injured.outcome.sort_the_injured_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_clinic_triage_i01_last_bandage"
+              }
+            ]
+          },
+          "success": {
+            "id": "sort_the_injured_success",
+            "textKey": "event.active_blue_east_blue_01_clinic_triage.choice.sort_the_injured.outcome.sort_the_injured_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "ari",
+                "amount": 5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_clinic_triage_i01_last_bandage"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "sort_the_injured_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_clinic_triage.choice.sort_the_injured.outcome.sort_the_injured_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "ari",
+                "amount": 5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_clinic_triage_i01_last_bandage"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "calm_the_room",
+      "textKey": "event.active_blue_east_blue_01_clinic_triage.choice.calm_the_room.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "calm_the_room_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_clinic_triage.choice.calm_the_room.outcome.calm_the_room_criticalfailure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_clinic_triage_i01_last_bandage"
+              }
+            ]
+          },
+          "failure": {
+            "id": "calm_the_room_failure",
+            "textKey": "event.active_blue_east_blue_01_clinic_triage.choice.calm_the_room.outcome.calm_the_room_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_clinic_triage_i01_last_bandage"
+              }
+            ]
+          },
+          "success": {
+            "id": "calm_the_room_success",
+            "textKey": "event.active_blue_east_blue_01_clinic_triage.choice.calm_the_room.outcome.calm_the_room_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "ari",
+                "amount": 5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_clinic_triage_i01_last_bandage"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "calm_the_room_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_clinic_triage.choice.calm_the_room.outcome.calm_the_room_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "ari",
+                "amount": 5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_clinic_triage_i01_last_bandage"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "fetch_supplies",
+      "textKey": "event.active_blue_east_blue_01_clinic_triage.choice.fetch_supplies.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fetch_supplies_outcome",
+          "textKey": "event.active_blue_east_blue_01_clinic_triage.choice.fetch_supplies.outcome.fetch_supplies_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "ari",
+              "amount": 3
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_east_blue_01_clinic_triage_i01_last_bandage"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "ari"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "medical"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "crew"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

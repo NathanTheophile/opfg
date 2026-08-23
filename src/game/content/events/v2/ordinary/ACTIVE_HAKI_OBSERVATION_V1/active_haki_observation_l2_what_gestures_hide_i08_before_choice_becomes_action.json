@@ -1,0 +1,123 @@
+{
+  "id": "active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action.title",
+  "textKey": "event.active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action.text",
+  "choices": [
+    {
+      "id": "catch_intent_birth",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action.choice.catch_intent_birth.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "headache_but_found",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action.choice.catch_intent_birth.outcome.headache_but_found.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "raiseHakiTo",
+                "hakiType": "observation",
+                "level": 2
+              }
+            ]
+          },
+          "failure": {
+            "id": "rough_control",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action.choice.catch_intent_birth.outcome.rough_control.text",
+            "effects": [
+              {
+                "type": "raiseHakiTo",
+                "hakiType": "observation",
+                "level": 2
+              }
+            ]
+          },
+          "success": {
+            "id": "controlled_read",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action.choice.catch_intent_birth.outcome.controlled_read.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "raiseHakiTo",
+                "hakiType": "observation",
+                "level": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "intent_is_loud",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action.choice.catch_intent_birth.outcome.intent_is_loud.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "raiseHakiTo",
+                "hakiType": "observation",
+                "level": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "recreate_state",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action.choice.recreate_state.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "state_recreated",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action.choice.recreate_state.outcome.state_recreated.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "raiseHakiTo",
+              "hakiType": "observation",
+              "level": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    },
+    {
+      "id": "act_on_intent",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action.choice.act_on_intent.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "act_before_motion",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action.choice.act_on_intent.outcome.act_before_motion.text",
+          "effects": [
+            {
+              "type": "raiseHakiTo",
+              "hakiType": "observation",
+              "level": 2
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

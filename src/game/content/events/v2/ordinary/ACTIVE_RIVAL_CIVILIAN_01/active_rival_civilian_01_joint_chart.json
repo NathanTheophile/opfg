@@ -1,0 +1,146 @@
+{
+  "id": "active_rival_civilian_01_joint_chart",
+  "kind": "scheduled",
+  "cast": [
+    "neighborhood_merchant"
+  ],
+  "titleKey": "event.active_rival_civilian_01_joint_chart.title",
+  "textKey": "event.active_rival_civilian_01_joint_chart.text",
+  "choices": [
+    {
+      "id": "joint_run",
+      "textKey": "event.active_rival_civilian_01_joint_chart.choice.joint_run.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "joint_run",
+          "textKey": "event.active_rival_civilian_01_joint_chart.choice.joint_run.outcome.joint_run.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1500
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 8
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_civilian_01_empty_chair",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "divide_map",
+      "textKey": "event.active_rival_civilian_01_joint_chart.choice.divide_map.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "divide_map",
+          "textKey": "event.active_rival_civilian_01_joint_chart.choice.divide_map.outcome.divide_map.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 750
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_civilian_01_empty_chair",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "race_route",
+      "textKey": "event.active_rival_civilian_01_joint_chart.choice.race_route.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "race_route",
+          "textKey": "event.active_rival_civilian_01_joint_chart.choice.race_route.outcome.race_route.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_civilian_01_empty_chair",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerPhaseIs",
+          "phase": "active"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerAffiliationIs",
+          "affiliationId": "civilian"
+        }
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "dead"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "departed"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "unavailable"
+      }
+    ]
+  }
+}

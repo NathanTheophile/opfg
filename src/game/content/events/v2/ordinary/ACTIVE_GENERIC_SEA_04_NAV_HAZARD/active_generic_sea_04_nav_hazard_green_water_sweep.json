@@ -1,0 +1,102 @@
+{
+  "id": "active_generic_sea_04_nav_hazard_green_water_sweep",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_04_nav_hazard_green_water_sweep.title",
+  "textKey": "event.active_generic_sea_04_nav_hazard_green_water_sweep.text",
+  "choices": [
+    {
+      "id": "brace_low",
+      "textKey": "event.active_generic_sea_04_nav_hazard_green_water_sweep.choice.brace_low.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "brace_low",
+          "textKey": "event.active_generic_sea_04_nav_hazard_green_water_sweep.outcome.brace_low.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "turn_bow_more",
+      "textKey": "event.active_generic_sea_04_nav_hazard_green_water_sweep.choice.turn_bow_more.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "turn_bow_more",
+          "textKey": "event.active_generic_sea_04_nav_hazard_green_water_sweep.outcome.turn_bow_more.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    },
+    {
+      "id": "hold_course",
+      "textKey": "event.active_generic_sea_04_nav_hazard_green_water_sweep.choice.hold_course.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hold_course",
+          "textKey": "event.active_generic_sea_04_nav_hazard_green_water_sweep.outcome.hold_course.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -2
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    },
+    {
+      "id": "helmsman_green",
+      "textKey": "event.active_generic_sea_04_nav_hazard_green_water_sweep.choice.helmsman_green.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "helmsman_green",
+          "textKey": "event.active_generic_sea_04_nav_hazard_green_water_sweep.outcome.helmsman_green.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "helmsman"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "id": "ch_v2_generic_late_01_favor_s01_first_return",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_favor_s01_first_return.title",
+  "textKey": "event.ch_v2_generic_late_01_favor_s01_first_return.text",
+  "choices": [
+    {
+      "id": "forward",
+      "textKey": "event.ch_v2_generic_late_01_favor_s01_first_return.choice.forward.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "forward_outcome",
+          "textKey": "event.ch_v2_generic_late_01_favor_s01_first_return.choice.forward.outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s02a_pass_it_on",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "settle",
+      "textKey": "event.ch_v2_generic_late_01_favor_s01_first_return.choice.settle.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "settle_outcome",
+          "textKey": "event.ch_v2_generic_late_01_favor_s01_first_return.choice.settle.outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 50
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s02b_settle_it",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "name_cost",
+      "textKey": "event.ch_v2_generic_late_01_favor_s01_first_return.choice.name_cost.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "name_cost_outcome",
+          "textKey": "event.ch_v2_generic_late_01_favor_s01_first_return.choice.name_cost.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s02b_settle_it",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "id": "active_ending_marine_top_command",
+  "kind": "normal",
+  "titleKey": "event.active_ending_marine_top_command.title",
+  "textKey": "event.active_ending_marine_top_command.text",
+  "choices": [
+    {
+      "id": "centralize",
+      "textKey": "event.active_ending_marine_top_command.choice.centralize.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "centralize",
+          "textKey": "event.active_ending_marine_top_command.choice.centralize.outcome.centralize.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_marine_top_command_i01"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "delegate",
+      "textKey": "event.active_ending_marine_top_command.choice.delegate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "delegate",
+          "textKey": "event.active_ending_marine_top_command.choice.delegate.outcome.delegate.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_marine_top_command_i01"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "protect_corridor",
+      "textKey": "event.active_ending_marine_top_command.choice.protect_corridor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "protect_corridor",
+          "textKey": "event.active_ending_marine_top_command.choice.protect_corridor.outcome.protect_corridor.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_marine_top_command_i01"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 420
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 78
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_admiral"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "bountyAtLeast",
+          "value": 1
+        }
+      }
+    ]
+  }
+}

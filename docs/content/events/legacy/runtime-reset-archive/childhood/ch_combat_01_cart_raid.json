@@ -1,0 +1,148 @@
+{
+  "id": "ch_combat_01_cart_raid",
+  "titleKey": "event.ch_combat_01_cart_raid.title",
+  "textKey": "event.ch_combat_01_cart_raid.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 144
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "hold_cart",
+      "textKey": "event.ch_combat_01_cart_raid.choice.hold_cart.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cart_hits",
+            "textKey": "event.ch_combat_01_cart_raid.choice.hold_cart.outcome.cart_hits.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_cart_raid_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "cart_slides",
+            "textKey": "event.ch_combat_01_cart_raid.choice.hold_cart.outcome.cart_slides.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_cart_raid_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "cart_stabilized",
+            "textKey": "event.ch_combat_01_cart_raid.choice.hold_cart.outcome.cart_stabilized.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_cart_raid_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cart_anchored",
+            "textKey": "event.ch_combat_01_cart_raid.choice.hold_cart.outcome.cart_anchored.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_cart_raid_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_people",
+      "textKey": "event.ch_combat_01_cart_raid.choice.clear_people.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "people_cleared",
+          "textKey": "event.ch_combat_01_cart_raid.choice.clear_people.outcome.people_cleared.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_cart_raid_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "raise_alarm",
+      "textKey": "event.ch_combat_01_cart_raid.choice.raise_alarm.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alarm_raised",
+          "textKey": "event.ch_combat_01_cart_raid.choice.raise_alarm.outcome.alarm_raised.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_cart_raid_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "id": "ch_family_social_01_friend_at_gate",
+  "titleKey": "event.ch_family_social_01_friend_at_gate.title",
+  "textKey": "event.ch_family_social_01_friend_at_gate.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 114
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 162
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "make_room",
+      "textKey": "event.ch_family_social_01_friend_at_gate.choice.make_room.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "luck",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "awkward_scene",
+            "textKey": "event.ch_family_social_01_friend_at_gate.choice.make_room.outcome.awkward_scene.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 1
+              }
+            ]
+          },
+          "failure": {
+            "id": "brief_visit",
+            "textKey": "event.ch_family_social_01_friend_at_gate.choice.make_room.outcome.brief_visit.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 2
+              }
+            ]
+          },
+          "success": {
+            "id": "easy_visit",
+            "textKey": "event.ch_family_social_01_friend_at_gate.choice.make_room.outcome.easy_visit.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 5
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "perfect_cover",
+            "textKey": "event.ch_family_social_01_friend_at_gate.choice.make_room.outcome.perfect_cover.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 2
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 6
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "meet_outside",
+      "textKey": "event.ch_family_social_01_friend_at_gate.choice.meet_outside.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "met_outside",
+          "textKey": "event.ch_family_social_01_friend_at_gate.choice.meet_outside.outcome.met_outside.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_openly",
+      "textKey": "event.ch_family_social_01_friend_at_gate.choice.ask_openly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "asked_openly",
+          "textKey": "event.ch_family_social_01_friend_at_gate.choice.ask_openly.outcome.asked_openly.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 4
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "childhood_friend"
+  ]
+}

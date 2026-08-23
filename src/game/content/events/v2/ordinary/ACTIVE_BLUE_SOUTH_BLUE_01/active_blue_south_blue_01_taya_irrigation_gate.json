@@ -1,0 +1,193 @@
+{
+  "id": "active_blue_south_blue_01_taya_irrigation_gate",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "taya_village"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_taya_irrigation_gate.title",
+  "textKey": "event.active_blue_south_blue_01_taya_irrigation_gate.text",
+  "choices": [
+    {
+      "id": "lift_gate",
+      "textKey": "event.active_blue_south_blue_01_taya_irrigation_gate.choice.lift_gate.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "lift_gate_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_taya_irrigation_gate.choice.lift_gate.outcome.lift_gate_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_taya_irrigation_gate_i01_second_field"
+              }
+            ]
+          },
+          "failure": {
+            "id": "lift_gate_failure",
+            "textKey": "event.active_blue_south_blue_01_taya_irrigation_gate.choice.lift_gate.outcome.lift_gate_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_taya_irrigation_gate_i01_second_field"
+              }
+            ]
+          },
+          "success": {
+            "id": "lift_gate_success",
+            "textKey": "event.active_blue_south_blue_01_taya_irrigation_gate.choice.lift_gate.outcome.lift_gate_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_taya_irrigation_gate_i01_second_field"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "lift_gate_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_taya_irrigation_gate.choice.lift_gate.outcome.lift_gate_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_taya_irrigation_gate_i01_second_field"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_flow",
+      "textKey": "event.active_blue_south_blue_01_taya_irrigation_gate.choice.read_flow.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_flow_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_taya_irrigation_gate.choice.read_flow.outcome.read_flow_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_taya_irrigation_gate_i01_second_field"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_flow_failure",
+            "textKey": "event.active_blue_south_blue_01_taya_irrigation_gate.choice.read_flow.outcome.read_flow_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_taya_irrigation_gate_i01_second_field"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_flow_success",
+            "textKey": "event.active_blue_south_blue_01_taya_irrigation_gate.choice.read_flow.outcome.read_flow_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_taya_irrigation_gate_i01_second_field"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_flow_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_taya_irrigation_gate.choice.read_flow.outcome.read_flow_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_taya_irrigation_gate_i01_second_field"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "sandbag_path",
+      "textKey": "event.active_blue_south_blue_01_taya_irrigation_gate.choice.sandbag_path.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bags",
+          "textKey": "event.active_blue_south_blue_01_taya_irrigation_gate.choice.sandbag_path.outcome.bags.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_south_blue_01_taya_irrigation_gate_i01_second_field"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

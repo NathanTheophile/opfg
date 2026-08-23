@@ -1,0 +1,151 @@
+{
+  "id": "active_civilian_01_chart_commission",
+  "titleKey": "event.active_civilian_01_chart_commission.title",
+  "textKey": "event.active_civilian_01_chart_commission.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "take_soundings",
+      "textKey": "event.active_civilian_01_chart_commission.choice.take_soundings.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "take_soundings_criticalFailure",
+            "textKey": "event.active_civilian_01_chart_commission.choice.take_soundings.outcome.take_soundings_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_chart_commission_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "take_soundings_failure",
+            "textKey": "event.active_civilian_01_chart_commission.choice.take_soundings.outcome.take_soundings_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_chart_commission_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "take_soundings_success",
+            "textKey": "event.active_civilian_01_chart_commission.choice.take_soundings.outcome.take_soundings_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_chart_commission_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "take_soundings_criticalSuccess",
+            "textKey": "event.active_civilian_01_chart_commission.choice.take_soundings.outcome.take_soundings_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_civilian_01_chart_commission_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "navigator_role",
+      "textKey": "event.active_civilian_01_chart_commission.choice.navigator_role.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "navigator_role_result",
+          "textKey": "event.active_civilian_01_chart_commission.choice.navigator_role.outcome.navigator_role_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_chart_commission_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "navigator"
+      }
+    },
+    {
+      "id": "slow_line",
+      "textKey": "event.active_civilian_01_chart_commission.choice.slow_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "slow_line_result",
+          "textKey": "event.active_civilian_01_chart_commission.choice.slow_line.outcome.slow_line_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_chart_commission_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

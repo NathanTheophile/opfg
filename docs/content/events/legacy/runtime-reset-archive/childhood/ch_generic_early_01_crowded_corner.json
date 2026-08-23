@@ -1,0 +1,148 @@
+{
+  "id": "ch_generic_early_01_crowded_corner",
+  "titleKey": "event.ch_generic_early_01_crowded_corner.title",
+  "textKey": "event.ch_generic_early_01_crowded_corner.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "stay_and_call",
+      "textKey": "event.ch_generic_early_01_crowded_corner.choice.stay_and_call.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "voice_breaks",
+            "textKey": "event.ch_generic_early_01_crowded_corner.choice.stay_and_call.outcome.voice_breaks.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 1
+              }
+            ]
+          },
+          "failure": {
+            "id": "no_answer_yet",
+            "textKey": "event.ch_generic_early_01_crowded_corner.choice.stay_and_call.outcome.no_answer_yet.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 2
+              }
+            ]
+          },
+          "success": {
+            "id": "answer_returns",
+            "textKey": "event.ch_generic_early_01_crowded_corner.choice.stay_and_call.outcome.answer_returns.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 4
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "clear_call",
+            "textKey": "event.ch_generic_early_01_crowded_corner.choice.stay_and_call.outcome.clear_call.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 5
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "find_landmark",
+      "textKey": "event.ch_generic_early_01_crowded_corner.choice.find_landmark.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "landmark_found",
+          "textKey": "event.ch_generic_early_01_crowded_corner.choice.find_landmark.outcome.landmark_found.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_vendor",
+      "textKey": "event.ch_generic_early_01_crowded_corner.choice.ask_vendor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "vendor_helps",
+          "textKey": "event.ch_generic_early_01_crowded_corner.choice.ask_vendor.outcome.vendor_helps.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 95
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "cast": [
+    "childhood_friend"
+  ]
+}

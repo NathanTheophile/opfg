@@ -1,0 +1,117 @@
+{
+  "id": "active_generic_sea_05_strange_silent_bell_i02_everything_drops",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_05_strange_silent_bell_i02_everything_drops.title",
+  "textKey": "event.active_generic_sea_05_strange_silent_bell_i02_everything_drops.text",
+  "choices": [
+    {
+      "id": "catch_falling",
+      "textKey": "event.active_generic_sea_05_strange_silent_bell_i02_everything_drops.choice.catch_falling.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "catch_falling_criticalfailure",
+            "textKey": "event.active_generic_sea_05_strange_silent_bell_i02_everything_drops.choice.catch_falling.outcome.catch_falling_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "catch_falling_failure",
+            "textKey": "event.active_generic_sea_05_strange_silent_bell_i02_everything_drops.choice.catch_falling.outcome.catch_falling_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "catch_falling_success",
+            "textKey": "event.active_generic_sea_05_strange_silent_bell_i02_everything_drops.choice.catch_falling.outcome.catch_falling_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "catch_falling_criticalsuccess",
+            "textKey": "event.active_generic_sea_05_strange_silent_bell_i02_everything_drops.choice.catch_falling.outcome.catch_falling_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "take_cover",
+      "textKey": "event.active_generic_sea_05_strange_silent_bell_i02_everything_drops.choice.take_cover.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "covered",
+          "textKey": "event.active_generic_sea_05_strange_silent_bell_i02_everything_drops.choice.take_cover.outcome.covered.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "watch_sink",
+      "textKey": "event.active_generic_sea_05_strange_silent_bell_i02_everything_drops.choice.watch_sink.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "watched_sink",
+          "textKey": "event.active_generic_sea_05_strange_silent_bell_i02_everything_drops.choice.watch_sink.outcome.watched_sink.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "hasShip"
+  }
+}

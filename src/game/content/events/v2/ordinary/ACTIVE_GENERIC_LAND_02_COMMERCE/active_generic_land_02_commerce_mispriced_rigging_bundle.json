@@ -1,0 +1,99 @@
+{
+  "id": "active_generic_land_02_commerce_mispriced_rigging_bundle",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_mispriced_rigging_bundle.title",
+  "textKey": "event.active_generic_land_02_commerce_mispriced_rigging_bundle.text",
+  "choices": [
+    {
+      "id": "pay_marked",
+      "textKey": "event.active_generic_land_02_commerce_mispriced_rigging_bundle.choice.pay_marked.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_marked_outcome",
+          "textKey": "event.active_generic_land_02_commerce_mispriced_rigging_bundle.choice.pay_marked.outcome.pay_marked_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1500
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "luck",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1500
+      }
+    },
+    {
+      "id": "point_error",
+      "textKey": "event.active_generic_land_02_commerce_mispriced_rigging_bundle.choice.point_error.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "point_error_outcome",
+          "textKey": "event.active_generic_land_02_commerce_mispriced_rigging_bundle.choice.point_error.outcome.point_error_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pay_new",
+      "textKey": "event.active_generic_land_02_commerce_mispriced_rigging_bundle.choice.pay_new.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_new_outcome",
+          "textKey": "event.active_generic_land_02_commerce_mispriced_rigging_bundle.choice.pay_new.outcome.pay_new_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2500
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2500
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "general_goods"
+      }
+    ]
+  }
+}

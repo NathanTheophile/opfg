@@ -1,0 +1,106 @@
+{
+  "id": "family_civilian_03_neighbor_debt_circle",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_civilian",
+    "chapterId": "childhood_03",
+    "nodeId": "family_civilian_03_neighbor_debt_circle",
+    "selectionPriority": 10,
+    "parentNodeIds": [
+      "family_civilian_02_poor_credit_chalk",
+      "family_civilian_02_scarcity_fallback"
+    ]
+  },
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_02_poor_credit_chalk_i01_reaction",
+        "outcomeId": "help"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_02_scarcity_fallback_i01_reaction",
+        "outcomeId": "help"
+      }
+    ]
+  },
+  "titleKey": "event.family_civilian_03_neighbor_debt_circle.title",
+  "textKey": "event.family_civilian_03_neighbor_debt_circle.text",
+  "choices": [
+    {
+      "id": "take",
+      "textKey": "event.family_civilian_03_neighbor_debt_circle.choice.take.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_03_neighbor_debt_circle_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_03_neighbor_debt_circle.choice.take.outcome.take.text"
+        }
+      }
+    },
+    {
+      "id": "ask",
+      "textKey": "event.family_civilian_03_neighbor_debt_circle.choice.ask.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_03_neighbor_debt_circle_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_03_neighbor_debt_circle.choice.ask.outcome.ask.text"
+        }
+      }
+    },
+    {
+      "id": "wait",
+      "textKey": "event.family_civilian_03_neighbor_debt_circle.choice.wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_03_neighbor_debt_circle_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_03_neighbor_debt_circle.choice.wait.outcome.wait.text"
+        }
+      }
+    },
+    {
+      "id": "remember_chalk",
+      "availableIf": {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_02_poor_credit_chalk_i01_reaction",
+        "outcomeId": "protect"
+      },
+      "textKey": "event.family_civilian_03_neighbor_debt_circle.choice.remember_chalk.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "remember_chalk",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_03_neighbor_debt_circle_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_03_neighbor_debt_circle.choice.remember_chalk.outcome.remember_chalk.text"
+        }
+      }
+    }
+  ]
+}

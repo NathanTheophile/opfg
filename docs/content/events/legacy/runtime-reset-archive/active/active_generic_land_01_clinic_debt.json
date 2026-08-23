@@ -1,0 +1,106 @@
+{
+  "id": "active_generic_land_01_clinic_debt",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_01_clinic_debt.title",
+  "textKey": "event.active_generic_land_01_clinic_debt.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "medical"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "pay_fee",
+      "textKey": "event.active_generic_land_01_clinic_debt.choice.pay_fee.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_clinic_debt.choice.pay_fee.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -400
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_clinic_debt_return",
+              "delayMonths": 4
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 400
+      }
+    },
+    {
+      "id": "argue_emergency",
+      "textKey": "event.active_generic_land_01_clinic_debt.choice.argue_emergency.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_clinic_debt.choice.argue_emergency.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stay_as_witness",
+      "textKey": "event.active_generic_land_01_clinic_debt.choice.stay_as_witness.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_clinic_debt.choice.stay_as_witness.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_clinic",
+      "textKey": "event.active_generic_land_01_clinic_debt.choice.leave_clinic.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_clinic_debt.choice.leave_clinic.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

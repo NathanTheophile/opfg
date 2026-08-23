@@ -1,0 +1,111 @@
+{
+  "id": "ch_generic_late_01_borrowed_bucket",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_borrowed_bucket.title",
+  "textKey": "event.ch_generic_late_01_borrowed_bucket.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "lend",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lent",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_borrowed_bucket_return",
+              "delayMonths": 6
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_borrowed_bucket.choice.lend.outcome.lent.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_borrowed_bucket.choice.lend.text"
+    },
+    {
+      "id": "go_with",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accompanied",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_borrowed_bucket_return",
+              "delayMonths": 6
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_borrowed_bucket.choice.go_with.outcome.accompanied.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_borrowed_bucket.choice.go_with.text"
+    },
+    {
+      "id": "refuse",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refused",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_borrowed_bucket.choice.refuse.outcome.refused.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_borrowed_bucket.choice.refuse.text"
+    },
+    {
+      "id": "trusting_lend",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "trusting"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trusted",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_borrowed_bucket_return",
+              "delayMonths": 6
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_borrowed_bucket.choice.trusting_lend.outcome.trusted.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_borrowed_bucket.choice.trusting_lend.text"
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+{
+  "id": "active_blue_south_blue_01_winter_gale_cargo",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_winter_gale_cargo.title",
+  "textKey": "event.active_blue_south_blue_01_winter_gale_cargo.text",
+  "choices": [
+    {
+      "id": "reef_fast",
+      "textKey": "event.active_blue_south_blue_01_winter_gale_cargo.choice.reef_fast.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "reef_fast_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_winter_gale_cargo.choice.reef_fast.outcome.reef_fast_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_winter_gale_cargo_i01_frozen_lashings"
+              }
+            ]
+          },
+          "failure": {
+            "id": "reef_fast_failure",
+            "textKey": "event.active_blue_south_blue_01_winter_gale_cargo.choice.reef_fast.outcome.reef_fast_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_winter_gale_cargo_i01_frozen_lashings"
+              }
+            ]
+          },
+          "success": {
+            "id": "reef_fast_success",
+            "textKey": "event.active_blue_south_blue_01_winter_gale_cargo.choice.reef_fast.outcome.reef_fast_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_winter_gale_cargo_i01_frozen_lashings"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "reef_fast_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_winter_gale_cargo.choice.reef_fast.outcome.reef_fast_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_winter_gale_cargo_i01_frozen_lashings"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "turn_stern",
+      "textKey": "event.active_blue_south_blue_01_winter_gale_cargo.choice.turn_stern.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "turn_stern_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_winter_gale_cargo.choice.turn_stern.outcome.turn_stern_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_winter_gale_cargo_i01_frozen_lashings"
+              }
+            ]
+          },
+          "failure": {
+            "id": "turn_stern_failure",
+            "textKey": "event.active_blue_south_blue_01_winter_gale_cargo.choice.turn_stern.outcome.turn_stern_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_winter_gale_cargo_i01_frozen_lashings"
+              }
+            ]
+          },
+          "success": {
+            "id": "turn_stern_success",
+            "textKey": "event.active_blue_south_blue_01_winter_gale_cargo.choice.turn_stern.outcome.turn_stern_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_winter_gale_cargo_i01_frozen_lashings"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "turn_stern_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_winter_gale_cargo.choice.turn_stern.outcome.turn_stern_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_winter_gale_cargo_i01_frozen_lashings"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "drop_speed",
+      "textKey": "event.active_blue_south_blue_01_winter_gale_cargo.choice.drop_speed.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "slow",
+          "textKey": "event.active_blue_south_blue_01_winter_gale_cargo.choice.drop_speed.outcome.slow.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_south_blue_01_winter_gale_cargo_i01_frozen_lashings"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

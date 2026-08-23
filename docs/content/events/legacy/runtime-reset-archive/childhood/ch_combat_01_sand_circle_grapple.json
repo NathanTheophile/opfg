@@ -1,0 +1,134 @@
+{
+  "id": "ch_combat_01_sand_circle_grapple",
+  "titleKey": "event.ch_combat_01_sand_circle_grapple.title",
+  "textKey": "event.ch_combat_01_sand_circle_grapple.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "drive_forward",
+      "textKey": "event.ch_combat_01_sand_circle_grapple.choice.drive_forward.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "overcommitted",
+            "textKey": "event.ch_combat_01_sand_circle_grapple.choice.drive_forward.outcome.overcommitted.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_sand_circle_grapple_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "stalled",
+            "textKey": "event.ch_combat_01_sand_circle_grapple.choice.drive_forward.outcome.stalled.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_sand_circle_grapple_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "center_taken",
+            "textKey": "event.ch_combat_01_sand_circle_grapple.choice.drive_forward.outcome.center_taken.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_sand_circle_grapple_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "leverage_found",
+            "textKey": "event.ch_combat_01_sand_circle_grapple.choice.drive_forward.outcome.leverage_found.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_sand_circle_grapple_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pivot_around",
+      "textKey": "event.ch_combat_01_sand_circle_grapple.choice.pivot_around.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "angle_sought",
+          "textKey": "event.ch_combat_01_sand_circle_grapple.choice.pivot_around.outcome.angle_sought.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_sand_circle_grapple_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "study_first",
+      "textKey": "event.ch_combat_01_sand_circle_grapple.choice.study_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rhythm_studied",
+          "textKey": "event.ch_combat_01_sand_circle_grapple.choice.study_first.outcome.rhythm_studied.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_sand_circle_grapple_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "id": "ch_north_blue_01_whiteport_icefall",
+  "titleKey": "event.ch_north_blue_01_whiteport_icefall.title",
+  "textKey": "event.ch_north_blue_01_whiteport_icefall.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "locationIs",
+        "locationId": "whiteland_whiteport"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "spot_break",
+      "textKey": "event.ch_north_blue_01_whiteport_icefall.choice.spot_break.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "spot_break_critical_failure",
+            "textKey": "event.ch_north_blue_01_whiteport_icefall.choice.spot_break.outcome.spot_break_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_north_blue_01_whiteport_icefall_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "spot_break_failure",
+            "textKey": "event.ch_north_blue_01_whiteport_icefall.choice.spot_break.outcome.spot_break_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_north_blue_01_whiteport_icefall_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "spot_break_success",
+            "textKey": "event.ch_north_blue_01_whiteport_icefall.choice.spot_break.outcome.spot_break_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_north_blue_01_whiteport_icefall_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "spot_break_critical_success",
+            "textKey": "event.ch_north_blue_01_whiteport_icefall.choice.spot_break.outcome.spot_break_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_north_blue_01_whiteport_icefall_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_people",
+      "textKey": "event.ch_north_blue_01_whiteport_icefall.choice.clear_people.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "clear_people_result",
+          "textKey": "event.ch_north_blue_01_whiteport_icefall.choice.clear_people.outcome.clear_people_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_north_blue_01_whiteport_icefall_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "move_cart",
+      "textKey": "event.ch_north_blue_01_whiteport_icefall.choice.move_cart.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "move_cart_result",
+          "textKey": "event.ch_north_blue_01_whiteport_icefall.choice.move_cart.outcome.move_cart_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_north_blue_01_whiteport_icefall_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

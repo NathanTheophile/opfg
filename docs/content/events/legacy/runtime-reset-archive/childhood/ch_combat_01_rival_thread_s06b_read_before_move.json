@@ -1,0 +1,50 @@
+{
+  "id": "ch_combat_01_rival_thread_s06b_read_before_move",
+  "titleKey": "event.ch_combat_01_rival_thread_s06b_read_before_move.title",
+  "textKey": "event.ch_combat_01_rival_thread_s06b_read_before_move.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "choices": [
+    {
+      "id": "teach_read",
+      "textKey": "event.ch_combat_01_rival_thread_s06b_read_before_move.choice.teach_read.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "read_taught",
+          "textKey": "event.ch_combat_01_rival_thread_s06b_read_before_move.choice.teach_read.outcome.read_taught.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_rival_thread_s07_second_measure",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_edge",
+      "textKey": "event.ch_combat_01_rival_thread_s06b_read_before_move.choice.keep_edge.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "edge_kept",
+          "textKey": "event.ch_combat_01_rival_thread_s06b_read_before_move.choice.keep_edge.outcome.edge_kept.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_rival_thread_s07_second_measure",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

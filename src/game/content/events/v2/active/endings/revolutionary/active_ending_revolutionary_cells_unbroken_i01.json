@@ -1,0 +1,116 @@
+{
+  "id": "active_ending_revolutionary_cells_unbroken_i01",
+  "kind": "immediate",
+  "titleKey": "event.active_ending_revolutionary_cells_unbroken_i01.title",
+  "textKey": "event.active_ending_revolutionary_cells_unbroken_i01.text",
+  "choices": [
+    {
+      "id": "talk_through_checkpoint",
+      "textKey": "event.active_ending_revolutionary_cells_unbroken_i01.choice.talk_through_checkpoint.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "talk_criticalFailure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_cells_unbroken_i02"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 2000
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_cells_unbroken_i01.choice.talk_through_checkpoint.outcome.talk_criticalFailure.text"
+          },
+          "failure": {
+            "id": "talk_failure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_cells_unbroken_i02"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1000
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_cells_unbroken_i01.choice.talk_through_checkpoint.outcome.talk_failure.text"
+          },
+          "success": {
+            "id": "talk_success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_cells_unbroken_i02"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_cells_unbroken_i01.choice.talk_through_checkpoint.outcome.talk_success.text"
+          },
+          "criticalSuccess": {
+            "id": "talk_criticalSuccess",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_ending_revolutionary_cells_unbroken_i02"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.active_ending_revolutionary_cells_unbroken_i01.choice.talk_through_checkpoint.outcome.talk_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "use_service_lanes",
+      "textKey": "event.active_ending_revolutionary_cells_unbroken_i01.choice.use_service_lanes.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "use_service_lanes",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_revolutionary_cells_unbroken_i02"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyBounty",
+              "amount": 500
+            }
+          ],
+          "textKey": "event.active_ending_revolutionary_cells_unbroken_i01.choice.use_service_lanes.outcome.use_service_lanes.text"
+        }
+      }
+    }
+  ]
+}

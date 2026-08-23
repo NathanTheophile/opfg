@@ -1,0 +1,73 @@
+{
+  "id": "active_crew_social_01_s_culture_voice_or_order",
+  "kind": "scheduled",
+  "titleKey": "event.active_crew_social_01_s_culture_voice_or_order.title",
+  "textKey": "event.active_crew_social_01_s_culture_voice_or_order.text",
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "hasCrew"
+    }
+  },
+  "choices": [
+    {
+      "id": "open_floor",
+      "textKey": "event.active_crew_social_01_s_culture_voice_or_order.choice.open_floor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_voice_or_order.choice.open_floor.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_open_floor_1",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "clear_command",
+      "textKey": "event.active_crew_social_01_s_culture_voice_or_order.choice.clear_command.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_voice_or_order.choice.clear_command.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_command_1",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "expert_call",
+      "textKey": "event.active_crew_social_01_s_culture_voice_or_order.choice.expert_call.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_voice_or_order.choice.expert_call.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_expertise_1",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "crewSizeAtLeast",
+    "value": 2
+  }
+}

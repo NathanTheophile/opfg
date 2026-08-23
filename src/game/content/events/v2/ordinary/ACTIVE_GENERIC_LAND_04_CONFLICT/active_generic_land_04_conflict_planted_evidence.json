@@ -1,0 +1,220 @@
+{
+  "id": "active_generic_land_04_conflict_planted_evidence",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_04_conflict_planted_evidence.title",
+  "textKey": "event.active_generic_land_04_conflict_planted_evidence.text",
+  "choices": [
+    {
+      "id": "expose",
+      "textKey": "event.active_generic_land_04_conflict_planted_evidence.choice.expose",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "expose_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_planted_evidence.outcome.expose.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_planted_evidence_i01_search"
+              }
+            ]
+          },
+          "failure": {
+            "id": "expose_failure",
+            "textKey": "event.active_generic_land_04_conflict_planted_evidence.outcome.expose.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_planted_evidence_i01_search"
+              }
+            ]
+          },
+          "success": {
+            "id": "expose_success",
+            "textKey": "event.active_generic_land_04_conflict_planted_evidence.outcome.expose.success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_planted_evidence_i01_search"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "expose_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_planted_evidence.outcome.expose.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_planted_evidence_i01_search"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "control_room",
+      "textKey": "event.active_generic_land_04_conflict_planted_evidence.choice.control_room",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "control_room_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_planted_evidence.outcome.control_room.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_planted_evidence_i01_search"
+              }
+            ]
+          },
+          "failure": {
+            "id": "control_room_failure",
+            "textKey": "event.active_generic_land_04_conflict_planted_evidence.outcome.control_room.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_planted_evidence_i01_search"
+              }
+            ]
+          },
+          "success": {
+            "id": "control_room_success",
+            "textKey": "event.active_generic_land_04_conflict_planted_evidence.outcome.control_room.success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_planted_evidence_i01_search"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "control_room_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_planted_evidence.outcome.control_room.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_planted_evidence_i01_search"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "marine_order",
+      "textKey": "event.active_generic_land_04_conflict_planted_evidence.choice.marine_order",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "marine_order",
+          "textKey": "event.active_generic_land_04_conflict_planted_evidence.outcome.marine_order",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_planted_evidence_i01_search"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      }
+    },
+    {
+      "id": "submit",
+      "textKey": "event.active_generic_land_04_conflict_planted_evidence.choice.submit",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "submit",
+          "textKey": "event.active_generic_land_04_conflict_planted_evidence.outcome.submit",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_planted_evidence_i01_search"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "walk",
+      "textKey": "event.active_generic_land_04_conflict_planted_evidence.choice.walk",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "walk",
+          "textKey": "event.active_generic_land_04_conflict_planted_evidence.outcome.walk",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

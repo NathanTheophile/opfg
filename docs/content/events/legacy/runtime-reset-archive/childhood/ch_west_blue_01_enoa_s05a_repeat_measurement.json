@@ -1,0 +1,56 @@
+{
+  "id": "ch_west_blue_01_enoa_s05a_repeat_measurement",
+  "kind": "scheduled",
+  "titleKey": "event.ch_west_blue_01_enoa_s05a_repeat_measurement.title",
+  "textKey": "event.ch_west_blue_01_enoa_s05a_repeat_measurement.text",
+  "choices": [
+    {
+      "id": "mark_pattern",
+      "textKey": "event.ch_west_blue_01_enoa_s05a_repeat_measurement.choice.mark_pattern.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pattern_marked",
+          "textKey": "event.ch_west_blue_01_enoa_s05a_repeat_measurement.choice.mark_pattern.outcome.pattern_marked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_enoa_s06_shared_draft",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stay_cautious",
+      "textKey": "event.ch_west_blue_01_enoa_s05a_repeat_measurement.choice.stay_cautious.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pattern_reserved",
+          "textKey": "event.ch_west_blue_01_enoa_s05a_repeat_measurement.choice.stay_cautious.outcome.pattern_reserved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_enoa_s06_shared_draft",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

@@ -1,0 +1,77 @@
+{
+  "id": "ch_v2_generic_late_01_quiet_counter_i01_extra_coin",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_generic_late_01_quiet_counter_i01_extra_coin.title",
+  "textKey": "event.ch_v2_generic_late_01_quiet_counter_i01_extra_coin.text",
+  "choices": [
+    {
+      "id": "put_in_till",
+      "textKey": "event.ch_v2_generic_late_01_quiet_counter_i01_extra_coin.choice.put_in_till.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "put_in_till_outcome",
+          "textKey": "event.ch_v2_generic_late_01_quiet_counter_i01_extra_coin.choice.put_in_till.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_late_01_quiet_counter_i02_owner_returns"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "return_coin",
+      "textKey": "event.ch_v2_generic_late_01_quiet_counter_i01_extra_coin.choice.return_coin.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "return_coin_outcome",
+          "textKey": "event.ch_v2_generic_late_01_quiet_counter_i01_extra_coin.choice.return_coin.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_late_01_quiet_counter_i02_owner_returns"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_coin",
+      "textKey": "event.ch_v2_generic_late_01_quiet_counter_i01_extra_coin.choice.keep_coin.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_coin_outcome",
+          "textKey": "event.ch_v2_generic_late_01_quiet_counter_i01_extra_coin.choice.keep_coin.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_late_01_quiet_counter_i02_owner_returns"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "neighborhood_merchant"
+  ]
+}

@@ -1,0 +1,249 @@
+{
+  "id": "active_blue_south_blue_01_medicine_flag_at_sea",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_medicine_flag_at_sea.title",
+  "textKey": "event.active_blue_south_blue_01_medicine_flag_at_sea.text",
+  "choices": [
+    {
+      "id": "escort_hard",
+      "textKey": "event.active_blue_south_blue_01_medicine_flag_at_sea.choice.escort_hard.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "escort_hard_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_medicine_flag_at_sea.choice.escort_hard.outcome.escort_hard_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_at_sea_i01_last_patient"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_return_s02",
+                "delayMonths": 6
+              }
+            ]
+          },
+          "failure": {
+            "id": "escort_hard_failure",
+            "textKey": "event.active_blue_south_blue_01_medicine_flag_at_sea.choice.escort_hard.outcome.escort_hard_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_at_sea_i01_last_patient"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_return_s02",
+                "delayMonths": 6
+              }
+            ]
+          },
+          "success": {
+            "id": "escort_hard_success",
+            "textKey": "event.active_blue_south_blue_01_medicine_flag_at_sea.choice.escort_hard.outcome.escort_hard_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_at_sea_i01_last_patient"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_return_s02",
+                "delayMonths": 6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "escort_hard_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_medicine_flag_at_sea.choice.escort_hard.outcome.escort_hard_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_at_sea_i01_last_patient"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_return_s02",
+                "delayMonths": 6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "transfer_crates",
+      "textKey": "event.active_blue_south_blue_01_medicine_flag_at_sea.choice.transfer_crates.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "transfer_crates_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_medicine_flag_at_sea.choice.transfer_crates.outcome.transfer_crates_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_at_sea_i01_last_patient"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_return_s02",
+                "delayMonths": 6
+              }
+            ]
+          },
+          "failure": {
+            "id": "transfer_crates_failure",
+            "textKey": "event.active_blue_south_blue_01_medicine_flag_at_sea.choice.transfer_crates.outcome.transfer_crates_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_at_sea_i01_last_patient"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_return_s02",
+                "delayMonths": 6
+              }
+            ]
+          },
+          "success": {
+            "id": "transfer_crates_success",
+            "textKey": "event.active_blue_south_blue_01_medicine_flag_at_sea.choice.transfer_crates.outcome.transfer_crates_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_at_sea_i01_last_patient"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_return_s02",
+                "delayMonths": 6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "transfer_crates_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_medicine_flag_at_sea.choice.transfer_crates.outcome.transfer_crates_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_at_sea_i01_last_patient"
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_south_blue_01_medicine_flag_return_s02",
+                "delayMonths": 6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "signal_port",
+      "textKey": "event.active_blue_south_blue_01_medicine_flag_at_sea.choice.signal_port.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "signal",
+          "textKey": "event.active_blue_south_blue_01_medicine_flag_at_sea.choice.signal_port.outcome.signal.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_south_blue_01_medicine_flag_at_sea_i01_last_patient"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_south_blue_01_medicine_flag_return_s02",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

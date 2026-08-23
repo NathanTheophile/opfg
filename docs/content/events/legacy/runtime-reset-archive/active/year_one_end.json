@@ -1,0 +1,177 @@
+{
+  "id": "year_one_end",
+  "titleKey": "event.year_one_end.title",
+  "textKey": "event.year_one_end.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasFlag",
+        "flagId": "reefs_crossed"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "loguetown"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "npcStatusIs",
+              "npcId": "mira",
+              "status": "crew"
+            }
+          },
+          {
+            "type": "hasFlag",
+            "flagId": "mira_hunters_resolved"
+          }
+        ]
+      }
+    ]
+  },
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "press_on",
+      "textKey": "event.year_one_end.choice.press_on.text",
+      "availableIf": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "shipHealthAtLeast",
+            "value": 1
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasShip"
+            }
+          }
+        ]
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "year_one_continues",
+          "textKey": "event.year_one_end.choice.press_on.outcome.year_one_continues.text",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "ending_press_on"
+            },
+            {
+              "type": "endCareer",
+              "reason": "legacy"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "use_mira_passage",
+      "textKey": "event.year_one_end.choice.use_mira_passage.text",
+      "visibleIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "hasItem",
+            "itemId": "mira_letter_of_passage"
+          },
+          {
+            "type": "shipHealthAtLeast",
+            "value": 1
+          }
+        ]
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "year_one_mira_favor",
+          "textKey": "event.year_one_end.choice.use_mira_passage.outcome.year_one_mira_favor.text",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "ending_mira_favor"
+            },
+            {
+              "type": "endCareer",
+              "reason": "legacy"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "sail_with_mira",
+      "textKey": "event.year_one_end.choice.sail_with_mira.text",
+      "visibleIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "npcStatusIs",
+            "npcId": "mira",
+            "status": "crew"
+          },
+          {
+            "type": "npcRelationshipAtLeast",
+            "npcId": "mira",
+            "value": 40
+          },
+          {
+            "type": "shipHealthAtLeast",
+            "value": 1
+          }
+        ]
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "year_one_with_mira",
+          "textKey": "event.year_one_end.choice.sail_with_mira.outcome.year_one_with_mira.text",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "ending_with_mira"
+            },
+            {
+              "type": "endCareer",
+              "reason": "legacy"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "make_landfall",
+      "textKey": "event.year_one_end.choice.make_landfall.text",
+      "visibleIf": {
+        "type": "shipHealthAtMost",
+        "value": 0
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "year_one_ship_broken",
+          "textKey": "event.year_one_end.choice.make_landfall.outcome.year_one_ship_broken.text",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "ending_ship_broken"
+            },
+            {
+              "type": "endCareer",
+              "reason": "legacy"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

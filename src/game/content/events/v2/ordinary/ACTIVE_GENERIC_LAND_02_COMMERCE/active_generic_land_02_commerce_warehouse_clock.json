@@ -1,0 +1,165 @@
+{
+  "id": "active_generic_land_02_commerce_warehouse_clock",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_warehouse_clock.title",
+  "textKey": "event.active_generic_land_02_commerce_warehouse_clock.text",
+  "choices": [
+    {
+      "id": "shoulder_sacks",
+      "textKey": "event.active_generic_land_02_commerce_warehouse_clock.choice.shoulder_sacks.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "shoulder_sacks_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_warehouse_clock.choice.shoulder_sacks.outcome.shoulder_sacks_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_warehouse_clock_i01_jammed_door"
+              }
+            ]
+          },
+          "failure": {
+            "id": "shoulder_sacks_failure",
+            "textKey": "event.active_generic_land_02_commerce_warehouse_clock.choice.shoulder_sacks.outcome.shoulder_sacks_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_warehouse_clock_i01_jammed_door"
+              }
+            ]
+          },
+          "success": {
+            "id": "shoulder_sacks_success",
+            "textKey": "event.active_generic_land_02_commerce_warehouse_clock.choice.shoulder_sacks.outcome.shoulder_sacks_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_warehouse_clock_i01_jammed_door"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "shoulder_sacks_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_warehouse_clock.choice.shoulder_sacks.outcome.shoulder_sacks_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_warehouse_clock_i01_jammed_door"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "thread_carts",
+      "textKey": "event.active_generic_land_02_commerce_warehouse_clock.choice.thread_carts.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "thread_carts_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_warehouse_clock.choice.thread_carts.outcome.thread_carts_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_warehouse_clock_i01_jammed_door"
+              }
+            ]
+          },
+          "failure": {
+            "id": "thread_carts_failure",
+            "textKey": "event.active_generic_land_02_commerce_warehouse_clock.choice.thread_carts.outcome.thread_carts_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_warehouse_clock_i01_jammed_door"
+              }
+            ]
+          },
+          "success": {
+            "id": "thread_carts_success",
+            "textKey": "event.active_generic_land_02_commerce_warehouse_clock.choice.thread_carts.outcome.thread_carts_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_warehouse_clock_i01_jammed_door"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "thread_carts_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_warehouse_clock.choice.thread_carts.outcome.thread_carts_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_warehouse_clock_i01_jammed_door"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "decline_rush",
+      "textKey": "event.active_generic_land_02_commerce_warehouse_clock.choice.decline_rush.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decline_rush_outcome",
+          "textKey": "event.active_generic_land_02_commerce_warehouse_clock.choice.decline_rush.outcome.decline_rush_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  }
+}

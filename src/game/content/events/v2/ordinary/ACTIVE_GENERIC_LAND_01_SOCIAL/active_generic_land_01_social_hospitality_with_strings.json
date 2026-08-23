@@ -1,0 +1,215 @@
+{
+  "id": "active_generic_land_01_social_hospitality_with_strings",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_01_social_hospitality_with_strings.title",
+  "textKey": "event.active_generic_land_01_social_hospitality_with_strings.text",
+  "choices": [
+    {
+      "id": "refuse_without_insult",
+      "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.refuse_without_insult.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "host_offended",
+            "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.refuse_without_insult.outcome.host_offended.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_hospitality_with_strings_i01_other_house"
+              }
+            ]
+          },
+          "failure": {
+            "id": "host_pushes",
+            "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.refuse_without_insult.outcome.host_pushes.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_hospitality_with_strings_i01_other_house"
+              }
+            ]
+          },
+          "success": {
+            "id": "boundary_clear",
+            "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.refuse_without_insult.outcome.boundary_clear.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_hospitality_with_strings_i01_other_house"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "boundary_applauded",
+            "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.refuse_without_insult.outcome.boundary_applauded.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_hospitality_with_strings_i01_other_house"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "turn_the_question_back",
+      "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.turn_the_question_back.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "question_misses",
+            "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.turn_the_question_back.outcome.question_misses.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_hospitality_with_strings_i01_other_house"
+              }
+            ]
+          },
+          "failure": {
+            "id": "host_dodges",
+            "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.turn_the_question_back.outcome.host_dodges.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_hospitality_with_strings_i01_other_house"
+              }
+            ]
+          },
+          "success": {
+            "id": "strings_named",
+            "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.turn_the_question_back.outcome.strings_named.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_hospitality_with_strings_i01_other_house"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "room_sees_it",
+            "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.turn_the_question_back.outcome.room_sees_it.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_hospitality_with_strings_i01_other_house"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_and_leave",
+      "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.pay_and_leave.text",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paid_exit",
+          "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.pay_and_leave.outcome.paid_exit.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_hospitality_with_strings_i01_other_house"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_their_side",
+      "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.take_their_side.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "side_taken",
+          "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.take_their_side.outcome.side_taken.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_hospitality_with_strings_i01_other_house"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "name_the_hidden_price",
+      "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.name_the_hidden_price.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "suspicious"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hidden_price_named",
+          "textKey": "event.active_generic_land_01_social_hospitality_with_strings.choice.name_the_hidden_price.outcome.hidden_price_named.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_hospitality_with_strings_i01_other_house"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

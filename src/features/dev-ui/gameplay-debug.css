@@ -1,0 +1,413 @@
+[data-opfg-gameplay-debug] {
+  --debug-bg: rgb(18 15 13 / 96%);
+  --debug-bg-soft: rgb(255 255 255 / 4%);
+  --debug-border: rgb(235 205 145 / 18%);
+  --debug-border-strong: rgb(235 205 145 / 34%);
+  --debug-text: rgb(245 235 216);
+  --debug-muted: rgb(196 183 161 / 68%);
+  --debug-gold: rgb(229 189 104);
+  --debug-blue: rgb(105 194 230);
+
+  box-sizing: border-box;
+  color: var(--debug-text);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+[data-opfg-gameplay-debug] *,
+[data-opfg-gameplay-debug] *::before,
+[data-opfg-gameplay-debug] *::after {
+  box-sizing: border-box;
+}
+
+.opfg-gameplay-debug-launcher {
+  position: fixed;
+  z-index: 10000;
+  bottom: 18px;
+  left: 64px;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid var(--debug-border-strong);
+  border-radius: 9px;
+  background: var(--debug-bg);
+  box-shadow: 0 12px 36px rgb(0 0 0 / 45%);
+  color: var(--debug-blue);
+  cursor: pointer;
+}
+
+.opfg-gameplay-debug {
+  position: fixed;
+  z-index: 10001;
+  top: 14px;
+  right: 14px;
+  bottom: 14px;
+  display: flex;
+  width: min(390px, calc(100vw - 28px));
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--debug-border-strong);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgb(105 194 230 / 5%), transparent 18%),
+    var(--debug-bg);
+  box-shadow: 0 24px 70px rgb(0 0 0 / 55%);
+  backdrop-filter: blur(12px);
+}
+
+.opfg-gameplay-debug button,
+.opfg-gameplay-debug input,
+.opfg-gameplay-debug select {
+  font: inherit;
+}
+
+.opfg-gameplay-debug button,
+.opfg-gameplay-debug input,
+.opfg-gameplay-debug select {
+  border: 1px solid var(--debug-border);
+  border-radius: 7px;
+  background: var(--debug-bg-soft);
+  color: var(--debug-text);
+}
+
+.opfg-gameplay-debug button {
+  cursor: pointer;
+}
+
+.opfg-gameplay-debug button:hover:not(:disabled) {
+  border-color: var(--debug-border-strong);
+  background: rgb(255 255 255 / 7%);
+}
+
+.opfg-gameplay-debug button:disabled {
+  cursor: not-allowed;
+  opacity: 0.38;
+}
+
+.opfg-gameplay-debug__header {
+  display: flex;
+  min-height: 58px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--debug-border);
+  padding: 10px 12px;
+}
+
+.opfg-gameplay-debug__header > div {
+  display: grid;
+}
+
+.opfg-gameplay-debug__header strong {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.opfg-gameplay-debug__header small {
+  margin-top: 2px;
+  color: var(--debug-muted);
+  font-size: 9px;
+}
+
+.opfg-gameplay-debug__header button {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+}
+
+.opfg-gameplay-debug__scroll {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 8px 10px 14px;
+}
+
+.opfg-gameplay-debug__empty {
+  padding: 24px 16px;
+  color: var(--debug-muted);
+  font-size: 11px;
+  text-align: center;
+}
+
+.opfg-gameplay-debug__section {
+  border-bottom: 1px solid var(--debug-border);
+  padding: 4px 0 8px;
+}
+
+.opfg-gameplay-debug__section-toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 6px;
+  border: 0 !important;
+  background: transparent !important;
+  padding: 7px 2px;
+  color: var(--debug-gold) !important;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.opfg-gameplay-debug__section-toggle svg {
+  transform: rotate(-90deg);
+  transition: transform 120ms ease;
+}
+
+.opfg-gameplay-debug__section-toggle svg.is-open {
+  transform: rotate(0deg);
+}
+
+.opfg-gameplay-debug__section-body {
+  display: grid;
+  gap: 6px;
+  padding: 2px 0 4px;
+}
+
+.opfg-gameplay-debug__number,
+.opfg-gameplay-debug__wide-number {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 158px;
+  align-items: center;
+  gap: 8px;
+  color: var(--debug-muted);
+  font-size: 10px;
+}
+
+.opfg-gameplay-debug__number > div {
+  display: grid;
+  grid-template-columns: 30px 1fr 30px;
+}
+
+.opfg-gameplay-debug__number button,
+.opfg-gameplay-debug__number input,
+.opfg-gameplay-debug__wide-number input {
+  min-height: 28px;
+}
+
+.opfg-gameplay-debug__number button {
+  border-radius: 0;
+}
+
+.opfg-gameplay-debug__number button:first-child {
+  border-radius: 7px 0 0 7px;
+}
+
+.opfg-gameplay-debug__number button:last-child {
+  border-radius: 0 7px 7px 0;
+}
+
+.opfg-gameplay-debug__number input,
+.opfg-gameplay-debug__wide-number input {
+  width: 100%;
+  padding: 0 7px;
+  text-align: right;
+}
+
+.opfg-gameplay-debug__number input {
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0;
+}
+
+.opfg-gameplay-debug__age-readout {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--debug-muted);
+  font-size: 10px;
+}
+
+.opfg-gameplay-debug__age-readout strong {
+  color: var(--debug-text);
+  font-size: 12px;
+}
+
+.opfg-gameplay-debug__age-slider {
+  width: 100%;
+  accent-color: var(--debug-blue);
+}
+
+.opfg-gameplay-debug__search {
+  display: flex;
+  min-height: 30px;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--debug-border);
+  border-radius: 7px;
+  padding: 0 8px;
+  color: var(--debug-muted);
+}
+
+.opfg-gameplay-debug__search input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 10px;
+}
+
+.opfg-gameplay-debug__give-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 58px auto;
+  gap: 5px;
+}
+
+.opfg-gameplay-debug__give-row select,
+.opfg-gameplay-debug__give-row input,
+.opfg-gameplay-debug__give-row button {
+  min-width: 0;
+  min-height: 30px;
+  padding: 0 7px;
+  font-size: 10px;
+}
+
+.opfg-gameplay-debug__give-row button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--debug-blue);
+  font-weight: 800;
+}
+
+.opfg-gameplay-debug__warning {
+  margin: 0;
+  color: rgb(235 153 120);
+  font-size: 9px;
+}
+
+.opfg-gameplay-debug__owned {
+  color: var(--debug-muted);
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.opfg-gameplay-debug__trait-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.opfg-gameplay-debug__trait-grid button {
+  min-height: 28px;
+  overflow: hidden;
+  padding: 0 7px;
+  font-size: 9px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.opfg-gameplay-debug__trait-grid button.is-active {
+  border-color: rgb(105 194 230 / 55%);
+  background: rgb(105 194 230 / 11%);
+  color: rgb(155 222 249);
+}
+
+/* STAB_PATCH_UI_UX_01 crew debug */
+.opfg-gameplay-debug__crew-row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr) auto;
+  gap: 5px;
+}
+
+.opfg-gameplay-debug__crew-row select,
+.opfg-gameplay-debug__crew-row button {
+  min-width: 0;
+  min-height: 30px;
+  padding: 0 7px;
+  font-size: 10px;
+}
+
+.opfg-gameplay-debug__crew-row button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--debug-blue);
+  font-weight: 800;
+}
+
+.opfg-gameplay-debug__action-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 5px;
+}
+
+.opfg-gameplay-debug__action-row select,
+.opfg-gameplay-debug__action-row button {
+  min-width: 0;
+  min-height: 30px;
+  padding: 0 7px;
+  font-size: 10px;
+}
+
+.opfg-gameplay-debug__action-row button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--debug-blue);
+  font-weight: 800;
+}
+
+@media (max-width: 26rem) {
+  .opfg-gameplay-debug {
+    top: max(6px, var(--safe-area-top, 0px));
+    right: max(6px, var(--safe-area-right, 0px));
+    bottom: max(6px, var(--safe-area-bottom, 0px));
+    left: max(6px, var(--safe-area-left, 0px));
+    width: auto;
+  }
+
+  .opfg-gameplay-debug__number,
+  .opfg-gameplay-debug__wide-number {
+    grid-template-columns: minmax(0, 1fr) 132px;
+  }
+
+  .opfg-gameplay-debug__give-row {
+    grid-template-columns: minmax(0, 1fr) 52px;
+  }
+
+  .opfg-gameplay-debug__give-row button {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+
+  .opfg-gameplay-debug__crew-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .opfg-gameplay-debug__crew-row button { grid-column: 1 / -1; justify-content: center; }
+}
+
+@media (orientation: portrait) {
+  .opfg-gameplay-debug-launcher {
+    right: max(0.85rem, var(--safe-area-right, 0px));
+    bottom: calc(
+      max(0px, var(--safe-area-bottom, 0px))
+      + var(--opfg-mobile-bottom-bar-height, 4.75rem)
+      + var(--opfg-mobile-utility-gap, 0.55rem)
+      + var(--opfg-mobile-utility-size, 2.65rem)
+      + var(--opfg-mobile-utility-gap, 0.55rem)
+    );
+    left: auto;
+  }
+}
+
+
+/* OPFG RELEASE FIX: debug player name */
+.opfg-gameplay-debug__action-row input {
+  min-width: 0;
+  min-height: 30px;
+  padding: 0 7px;
+  font-size: 10px;
+}
+
+/* OPFG MOBILE UI: debug launcher behind gameplay parchment */
+@media (pointer: coarse) and (orientation: portrait) {
+  .opfg-gameplay-debug-launcher {
+    z-index: 100;
+  }
+}

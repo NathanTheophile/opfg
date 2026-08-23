@@ -1,0 +1,98 @@
+{
+  "id": "active_port_trade_01_night_market_counterfeit",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_night_market_counterfeit.title",
+  "textKey": "event.active_port_trade_01_night_market_counterfeit.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "black_market"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "questionner",
+      "textKey": "event.active_port_trade_01_night_market_counterfeit.choice.questionner.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "question",
+          "textKey": "event.active_port_trade_01_night_market_counterfeit.choice.questionner.outcome.question.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "marchander",
+      "textKey": "event.active_port_trade_01_night_market_counterfeit.choice.marchander.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "marchande",
+          "textKey": "event.active_port_trade_01_night_market_counterfeit.choice.marchander.outcome.marchande.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -90
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "berriesAtLeast",
+            "value": 90
+          },
+          {
+            "type": "hasTrait",
+            "traitId": "deceptive"
+          }
+        ]
+      }
+    },
+    {
+      "id": "partir",
+      "textKey": "event.active_port_trade_01_night_market_counterfeit.choice.partir.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "parti",
+          "textKey": "event.active_port_trade_01_night_market_counterfeit.choice.partir.outcome.parti.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

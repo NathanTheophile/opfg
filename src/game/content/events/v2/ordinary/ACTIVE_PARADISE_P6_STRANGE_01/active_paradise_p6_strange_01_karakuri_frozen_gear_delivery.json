@@ -1,0 +1,175 @@
+{
+  "id": "active_paradise_p6_strange_01_karakuri_frozen_gear_delivery",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p6_strange_01_karakuri_frozen_gear_delivery.title",
+  "textKey": "event.active_paradise_p6_strange_01_karakuri_frozen_gear_delivery.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p6_strange"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "karakuri_island"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "haul_the_sled",
+      "textKey": "event.active_paradise_p6_strange_01_karakuri_frozen_gear_delivery.choice.haul_the_sled",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "haul_the_sled_critical_failure",
+            "textKey": "event.active_paradise_p6_strange_01_karakuri_frozen_gear_delivery.outcome.haul_the_sled.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_karakuri_frozen_gear_delivery_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "haul_the_sled_failure",
+            "textKey": "event.active_paradise_p6_strange_01_karakuri_frozen_gear_delivery.outcome.haul_the_sled.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_karakuri_frozen_gear_delivery_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "haul_the_sled_success",
+            "textKey": "event.active_paradise_p6_strange_01_karakuri_frozen_gear_delivery.outcome.haul_the_sled.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_karakuri_frozen_gear_delivery_i01"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "haul_the_sled_critical_success",
+            "textKey": "event.active_paradise_p6_strange_01_karakuri_frozen_gear_delivery.outcome.haul_the_sled.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_karakuri_frozen_gear_delivery_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "find_a_warmer_route",
+      "textKey": "event.active_paradise_p6_strange_01_karakuri_frozen_gear_delivery.choice.find_a_warmer_route",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "find_a_warmer_route_critical_failure",
+            "textKey": "event.active_paradise_p6_strange_01_karakuri_frozen_gear_delivery.outcome.find_a_warmer_route.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_karakuri_frozen_gear_delivery_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "find_a_warmer_route_failure",
+            "textKey": "event.active_paradise_p6_strange_01_karakuri_frozen_gear_delivery.outcome.find_a_warmer_route.failure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_karakuri_frozen_gear_delivery_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "find_a_warmer_route_success",
+            "textKey": "event.active_paradise_p6_strange_01_karakuri_frozen_gear_delivery.outcome.find_a_warmer_route.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_karakuri_frozen_gear_delivery_i01"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "find_a_warmer_route_critical_success",
+            "textKey": "event.active_paradise_p6_strange_01_karakuri_frozen_gear_delivery.outcome.find_a_warmer_route.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p6_strange_01_karakuri_frozen_gear_delivery_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "wait_for_the_heater",
+      "textKey": "event.active_paradise_p6_strange_01_karakuri_frozen_gear_delivery.choice.wait_for_the_heater",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait_for_the_heater",
+          "textKey": "event.active_paradise_p6_strange_01_karakuri_frozen_gear_delivery.outcome.wait_for_the_heater",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

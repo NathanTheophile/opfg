@@ -1,0 +1,158 @@
+{
+  "id": "active_haki_armament_l5_impossible_blow",
+  "kind": "normal",
+  "titleKey": "event.active_haki_armament_l5_impossible_blow.title",
+  "textKey": "event.active_haki_armament_l5_impossible_blow.text",
+  "choices": [
+    {
+      "id": "draw_attention",
+      "textKey": "event.active_haki_armament_l5_impossible_blow.choice.draw_attention.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_haki_armament_l5_impossible_blow.choice.draw_attention.text.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -8
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l5_impossible_blow_i01_ground_shakes"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_haki_armament_l5_impossible_blow.choice.draw_attention.text.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l5_impossible_blow_i01_ground_shakes"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_haki_armament_l5_impossible_blow.choice.draw_attention.text.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l5_impossible_blow_i01_ground_shakes"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_haki_armament_l5_impossible_blow.choice.draw_attention.text.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l5_impossible_blow_i01_ground_shakes"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "smash_cart",
+      "textKey": "event.active_haki_armament_l5_impossible_blow.choice.smash_cart.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "result",
+          "textKey": "event.active_haki_armament_l5_impossible_blow.choice.smash_cart.text.outcome.result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_armament_l5_impossible_blow_i01_ground_shakes"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stand_in_open",
+      "textKey": "event.active_haki_armament_l5_impossible_blow.choice.stand_in_open.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "result",
+          "textKey": "event.active_haki_armament_l5_impossible_blow.choice.stand_in_open.text.outcome.result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_armament_l5_impossible_blow_i01_ground_shakes"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hakiSourceTotalAtLeast",
+        "hakiType": "armament",
+        "value": 95
+      },
+      {
+        "type": "hakiAtLeast",
+        "hakiType": "armament",
+        "level": 4
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "hakiAtLeast",
+          "hakiType": "armament",
+          "level": 5
+        }
+      }
+    ]
+  }
+}

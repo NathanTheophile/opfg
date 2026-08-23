@@ -1,0 +1,97 @@
+{
+  "id": "active_paradise_p4_kingdoms_01_route_seals_s02_counterseal",
+  "kind": "scheduled",
+  "titleKey": "event.active_paradise_p4_kingdoms_01_route_seals_s02_counterseal.title",
+  "textKey": "event.active_paradise_p4_kingdoms_01_route_seals_s02_counterseal.text",
+  "choices": [
+    {
+      "id": "submit_copy",
+      "textKey": "event.active_paradise_p4_kingdoms_01_route_seals_s02_counterseal.choice.submit_copy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "submit_copy_outcome",
+          "textKey": "event.active_paradise_p4_kingdoms_01_route_seals_s02_counterseal.choice.submit_copy.outcome.submit_copy_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p4_kingdoms_01_route_seals_s03_rejected_papers",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_counterseal",
+      "textKey": "event.active_paradise_p4_kingdoms_01_route_seals_s02_counterseal.choice.accept_counterseal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_counterseal_outcome",
+          "textKey": "event.active_paradise_p4_kingdoms_01_route_seals_s02_counterseal.choice.accept_counterseal.outcome.accept_counterseal_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p4_kingdoms_01_route_seals_s03_rejected_papers",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_revision",
+      "textKey": "event.active_paradise_p4_kingdoms_01_route_seals_s02_counterseal.choice.refuse_revision.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_revision_outcome",
+          "textKey": "event.active_paradise_p4_kingdoms_01_route_seals_s02_counterseal.choice.refuse_revision.outcome.refuse_revision_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p4_kingdoms_01_route_seals_s03_rejected_papers",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p4_kingdoms"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "locationIs",
+        "locationId": "sabaody_archipelago"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "currentSeaIs",
+          "seaId": "grand_line_paradise"
+        }
+      }
+    ]
+  }
+}

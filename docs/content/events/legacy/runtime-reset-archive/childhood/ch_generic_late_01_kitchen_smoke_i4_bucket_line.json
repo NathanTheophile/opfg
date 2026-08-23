@@ -1,0 +1,91 @@
+{
+  "id": "ch_generic_late_01_kitchen_smoke_i4_bucket_line",
+  "kind": "immediate",
+  "titleKey": "event.ch_generic_late_01_kitchen_smoke_i4_bucket_line.title",
+  "textKey": "event.ch_generic_late_01_kitchen_smoke_i4_bucket_line.text",
+  "choices": [
+    {
+      "id": "organize_line",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "line_cf",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_kitchen_smoke_i5_floor_embers"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_kitchen_smoke_i4_bucket_line.choice.organize_line.outcome.line_cf.text"
+          },
+          "failure": {
+            "id": "line_f",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_kitchen_smoke_i5_floor_embers"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_kitchen_smoke_i4_bucket_line.choice.organize_line.outcome.line_f.text"
+          },
+          "success": {
+            "id": "line_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_kitchen_smoke_i5_floor_embers"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_kitchen_smoke_i4_bucket_line.choice.organize_line.outcome.line_s.text"
+          },
+          "criticalSuccess": {
+            "id": "line_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_kitchen_smoke_i5_floor_embers"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_kitchen_smoke_i4_bucket_line.choice.organize_line.outcome.line_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_kitchen_smoke_i4_bucket_line.choice.organize_line.text"
+    },
+    {
+      "id": "side_route",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "side_route",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_kitchen_smoke_i5_floor_embers"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_kitchen_smoke_i4_bucket_line.choice.side_route.outcome.side_route.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_kitchen_smoke_i4_bucket_line.choice.side_route.text"
+    }
+  ]
+}

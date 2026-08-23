@@ -1,0 +1,141 @@
+{
+  "id": "active_rival_civilian_01_shared_salvage",
+  "kind": "scheduled",
+  "cast": [
+    "neighborhood_merchant"
+  ],
+  "titleKey": "event.active_rival_civilian_01_shared_salvage.title",
+  "textKey": "event.active_rival_civilian_01_shared_salvage.text",
+  "choices": [
+    {
+      "id": "split_receipts",
+      "textKey": "event.active_rival_civilian_01_shared_salvage.choice.split_receipts.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "split_receipts",
+          "textKey": "event.active_rival_civilian_01_shared_salvage.choice.split_receipts.outcome.split_receipts.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1000
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 6
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_civilian_01_name_arrives_first",
+              "delayMonths": 20
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_first",
+      "textKey": "event.active_rival_civilian_01_shared_salvage.choice.take_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_first",
+          "textKey": "event.active_rival_civilian_01_shared_salvage.choice.take_first.outcome.take_first.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1750
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_civilian_01_name_arrives_first",
+              "delayMonths": 20
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_him_count",
+      "textKey": "event.active_rival_civilian_01_shared_salvage.choice.let_him_count.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "let_him_count",
+          "textKey": "event.active_rival_civilian_01_shared_salvage.choice.let_him_count.outcome.let_him_count.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 750
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 8
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_civilian_01_name_arrives_first",
+              "delayMonths": 20
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerPhaseIs",
+          "phase": "active"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerAffiliationIs",
+          "affiliationId": "civilian"
+        }
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "dead"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "departed"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "unavailable"
+      }
+    ]
+  }
+}

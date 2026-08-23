@@ -1,0 +1,108 @@
+{
+  "id": "active_generic_land_05_strange_tortoise_taxi_i01_shell_jam",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_05_strange_tortoise_taxi_i01_shell_jam.title",
+  "textKey": "event.active_generic_land_05_strange_tortoise_taxi_i01_shell_jam.text",
+  "choices": [
+    {
+      "id": "separate_shells",
+      "textKey": "event.active_generic_land_05_strange_tortoise_taxi_i01_shell_jam.choice.separate_shells.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "shells_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_tortoise_taxi_i01_shell_jam.choice.separate_shells.outcome.shells_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "shells_failure",
+            "textKey": "event.active_generic_land_05_strange_tortoise_taxi_i01_shell_jam.choice.separate_shells.outcome.shells_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "shells_success",
+            "textKey": "event.active_generic_land_05_strange_tortoise_taxi_i01_shell_jam.choice.separate_shells.outcome.shells_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "shells_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_tortoise_taxi_i01_shell_jam.choice.separate_shells.outcome.shells_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "unbuckle_side",
+      "textKey": "event.active_generic_land_05_strange_tortoise_taxi_i01_shell_jam.choice.unbuckle_side.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "saddle_removed",
+          "textKey": "event.active_generic_land_05_strange_tortoise_taxi_i01_shell_jam.choice.unbuckle_side.outcome.saddle_removed.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -100
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 100
+      }
+    },
+    {
+      "id": "wait_tortoises",
+      "textKey": "event.active_generic_land_05_strange_tortoise_taxi_i01_shell_jam.choice.wait_tortoises.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "waited",
+          "textKey": "event.active_generic_land_05_strange_tortoise_taxi_i01_shell_jam.choice.wait_tortoises.outcome.waited.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

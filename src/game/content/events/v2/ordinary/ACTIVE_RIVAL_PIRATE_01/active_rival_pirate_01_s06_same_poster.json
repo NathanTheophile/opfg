@@ -1,0 +1,155 @@
+{
+  "id": "active_rival_pirate_01_s06_same_poster",
+  "kind": "scheduled",
+  "titleKey": "event.active_rival_pirate_01_s06_same_poster.title",
+  "textKey": "event.active_rival_pirate_01_s06_same_poster.text",
+  "choices": [
+    {
+      "id": "share_the_headline",
+      "textKey": "event.active_rival_pirate_01_s06_same_poster.choice.share_the_headline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "share_the_headline_outcome",
+          "textKey": "event.active_rival_pirate_01_s06_same_poster.choice.share_the_headline.outcome.share_the_headline_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_rival_pirate_01_captain",
+              "amount": 5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_pirate_01_s07_friend_in_crossfire",
+              "delayMonths": 18
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "active_rival_pirate_01_captain",
+        "value": 18
+      }
+    },
+    {
+      "id": "burn_her_half_of_the_page",
+      "textKey": "event.active_rival_pirate_01_s06_same_poster.choice.burn_her_half_of_the_page.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "burn_her_half_of_the_page_outcome",
+          "textKey": "event.active_rival_pirate_01_s06_same_poster.choice.burn_her_half_of_the_page.outcome.burn_her_half_of_the_page_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_rival_pirate_01_captain",
+              "amount": -4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_pirate_01_s07_knife_wake",
+              "delayMonths": 18
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "npcRelationshipAtMost",
+        "npcId": "active_rival_pirate_01_captain",
+        "value": -10
+      }
+    },
+    {
+      "id": "accept_a_clean_race",
+      "textKey": "event.active_rival_pirate_01_s06_same_poster.choice.accept_a_clean_race.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_a_clean_race_outcome",
+          "textKey": "event.active_rival_pirate_01_s06_same_poster.choice.accept_a_clean_race.outcome.accept_a_clean_race_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_rival_pirate_01_captain",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_pirate_01_s07_race_for_the_bell",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ignore_the_comparison",
+      "textKey": "event.active_rival_pirate_01_s06_same_poster.choice.ignore_the_comparison.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ignore_the_comparison_outcome",
+          "textKey": "event.active_rival_pirate_01_s06_same_poster.choice.ignore_the_comparison.outcome.ignore_the_comparison_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_pirate_01_s07_race_for_the_bell",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "active_rival_pirate_01_captain"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerAffiliationIs",
+          "affiliationId": "pirate"
+        }
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "active_rival_pirate_01_captain",
+        "status": "dead"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "active_rival_pirate_01_captain",
+        "status": "departed"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "active_rival_pirate_01_captain",
+        "status": "unavailable"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "active_rival_pirate_01_captain",
+        "status": "crew"
+      }
+    ]
+  }
+}

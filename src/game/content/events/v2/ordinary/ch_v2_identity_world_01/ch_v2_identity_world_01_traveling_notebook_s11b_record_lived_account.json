@@ -1,0 +1,77 @@
+{
+  "id": "ch_v2_identity_world_01_traveling_notebook_s11b_record_lived_account",
+  "titleKey": "event.ch_v2_identity_world_01_traveling_notebook_s11b_record_lived_account.title",
+  "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s11b_record_lived_account.text",
+  "kind": "scheduled",
+  "choices": [
+    {
+      "id": "restore_context",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s11b_record_lived_account.choice.restore_context.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "context_restored",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s11b_record_lived_account.choice.restore_context.outcome.context_restored.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s12_returned_again",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_bad_summary_visible",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s11b_record_lived_account.choice.keep_bad_summary_visible.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bad_summary_visible",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s11b_record_lived_account.choice.keep_bad_summary_visible.outcome.bad_summary_visible.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s12_returned_again",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_next_reader_to_paraphrase",
+      "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s11b_record_lived_account.choice.ask_next_reader_to_paraphrase.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paraphrase_requested",
+          "textKey": "event.ch_v2_identity_world_01_traveling_notebook_s11b_record_lived_account.choice.ask_next_reader_to_paraphrase.outcome.paraphrase_requested.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_identity_world_01_traveling_notebook_s12_returned_again",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "isOnLand"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

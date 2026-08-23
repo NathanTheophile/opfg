@@ -1,0 +1,106 @@
+{
+  "id": "active_haki_armament_01_life_07a_chase_enforcer",
+  "kind": "scheduled",
+  "titleKey": "event.active_haki_armament_01_life_07a_chase_enforcer.title",
+  "textKey": "event.active_haki_armament_01_life_07a_chase_enforcer.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "ordinary",
+      "textKey": "event.active_haki_armament_01_life_07a_chase_enforcer.choice.ordinary.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_haki_armament_01_life_07a_chase_enforcer.choice.ordinary.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_armament_01_life_08a_bridge_duel",
+                "delayMonths": 10
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_haki_armament_01_life_07a_chase_enforcer.choice.ordinary.outcome.failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_armament_01_life_08a_bridge_duel",
+                "delayMonths": 10
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_haki_armament_01_life_07a_chase_enforcer.choice.ordinary.outcome.success.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_armament_01_life_08a_bridge_duel",
+                "delayMonths": 10
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_haki_armament_01_life_07a_chase_enforcer.choice.ordinary.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_armament_01_life_08a_bridge_duel",
+                "delayMonths": 10
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "haki",
+      "textKey": "event.active_haki_armament_01_life_07a_chase_enforcer.choice.haki.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "success",
+          "textKey": "event.active_haki_armament_01_life_07a_chase_enforcer.choice.haki.outcome.success.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_armament_01_life_08a_bridge_duel",
+              "delayMonths": 10
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "armament",
+        "level": 1
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

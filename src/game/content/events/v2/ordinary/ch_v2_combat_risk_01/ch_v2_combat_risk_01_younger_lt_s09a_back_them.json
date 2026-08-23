@@ -1,0 +1,86 @@
+{
+  "id": "ch_v2_combat_risk_01_younger_lt_s09a_back_them",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_combat_risk_01_younger_lt_s09a_back_them.title",
+  "textKey": "event.ch_v2_combat_risk_01_younger_lt_s09a_back_them.text",
+  "choices": [
+    {
+      "id": "separate_costs",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s09a_back_them.choice.separate_costs.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "separate_costs",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s09a_back_them.choice.separate_costs.outcome.separate_costs.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 6
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s10a_cost_of_action",
+              "delayMonths": 22
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "own_damage",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s09a_back_them.choice.own_damage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "own_damage",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s09a_back_them.choice.own_damage.outcome.own_damage.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s10a_cost_of_action",
+              "delayMonths": 22
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dismiss_cost",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s09a_back_them.choice.dismiss_cost.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "dismiss_cost",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s09a_back_them.choice.dismiss_cost.outcome.dismiss_cost.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": -3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s10a_cost_of_action",
+              "delayMonths": 22
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "childhood_younger"
+  ],
+  "priority": 100,
+  "cancelIf": {
+    "type": "npcStatusIs",
+    "npcId": "childhood_younger",
+    "status": "dead"
+  }
+}

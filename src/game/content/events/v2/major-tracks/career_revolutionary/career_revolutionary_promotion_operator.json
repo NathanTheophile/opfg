@@ -1,0 +1,50 @@
+{
+  "id": "career_revolutionary_promotion_operator",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "careerRankIs",
+        "rankId": "revolutionary_agent"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 30
+      }
+    ]
+  },
+  "titleKey": "event.career_revolutionary_promotion_operator.title",
+  "textKey": "event.career_revolutionary_promotion_operator.text",
+  "choices": [
+    {
+      "id": "receive_rank",
+      "textKey": "event.career_revolutionary_promotion_operator.choice.receive_rank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "promoted",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "revolutionary_operator"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            }
+          ],
+          "textKey": "event.career_revolutionary_promotion_operator.choice.receive_rank.outcome.promoted.text"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "id": "active_generic_sea_01_inspection_signal_i01_search_request",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_01_inspection_signal_i01_search_request.title",
+  "textKey": "event.active_generic_sea_01_inspection_signal_i01_search_request.text",
+  "choices": [
+    {
+      "id": "allow_search",
+      "textKey": "event.active_generic_sea_01_inspection_signal_i01_search_request.choice.allow_search.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "allow_search_outcome",
+          "textKey": "event.active_generic_sea_01_inspection_signal_i01_search_request.choice.allow_search.outcome.allow_search_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "ask_basis",
+      "textKey": "event.active_generic_sea_01_inspection_signal_i01_search_request.choice.ask_basis.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_basis_outcome",
+          "textKey": "event.active_generic_sea_01_inspection_signal_i01_search_request.choice.ask_basis.outcome.ask_basis_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hospitality",
+      "textKey": "event.active_generic_sea_01_inspection_signal_i01_search_request.choice.hospitality.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hospitality_outcome",
+          "textKey": "event.active_generic_sea_01_inspection_signal_i01_search_request.choice.hospitality.outcome.hospitality_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "sociable"
+      }
+    },
+    {
+      "id": "refuse_boarding",
+      "textKey": "event.active_generic_sea_01_inspection_signal_i01_search_request.choice.refuse_boarding.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_boarding_outcome",
+          "textKey": "event.active_generic_sea_01_inspection_signal_i01_search_request.choice.refuse_boarding.outcome.refuse_boarding_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "active_generic_combat_01_rival_b4_doorstep_challenge",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_b4_doorstep_challenge.title",
+  "textKey": "event.active_generic_combat_01_rival_b4_doorstep_challenge.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "clear_space",
+      "textKey": "event.active_generic_combat_01_rival_b4_doorstep_challenge.choice.clear_space.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "clear_space_outcome",
+          "textKey": "event.active_generic_combat_01_rival_b4_doorstep_challenge.choice.clear_space.outcome.clear_space_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_b5_scarred_reputation",
+              "delayMonths": 12
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_b4_doorstep_challenge_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_hit",
+      "textKey": "event.active_generic_combat_01_rival_b4_doorstep_challenge.choice.take_hit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_hit_outcome",
+          "textKey": "event.active_generic_combat_01_rival_b4_doorstep_challenge.choice.take_hit.outcome.take_hit_outcome.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_b5_scarred_reputation",
+              "delayMonths": 12
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_b4_doorstep_challenge_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

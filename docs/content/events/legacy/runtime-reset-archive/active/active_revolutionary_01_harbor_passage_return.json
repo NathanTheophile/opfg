@@ -1,0 +1,77 @@
+{
+  "id": "active_revolutionary_01_harbor_passage_return",
+  "kind": "scheduled",
+  "titleKey": "event.active_revolutionary_01_harbor_passage_return.title",
+  "textKey": "event.active_revolutionary_01_harbor_passage_return.text",
+  "choices": [
+    {
+      "id": "teach_method",
+      "textKey": "event.active_revolutionary_01_harbor_passage_return.choice.teach_method.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_harbor_passage_return.choice.teach_method.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_local",
+      "textKey": "event.active_revolutionary_01_harbor_passage_return.choice.keep_local.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_harbor_passage_return.choice.keep_local.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "revolutionary"
+    }
+  }
+}

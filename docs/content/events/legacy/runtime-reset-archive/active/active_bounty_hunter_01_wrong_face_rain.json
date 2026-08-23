@@ -1,0 +1,140 @@
+{
+  "id": "active_bounty_hunter_01_wrong_face_rain",
+  "titleKey": "event.active_bounty_hunter_01_wrong_face_rain.title",
+  "textKey": "event.active_bounty_hunter_01_wrong_face_rain.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "bounty_hunter"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "urban"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "intercept",
+      "textKey": "event.active_bounty_hunter_01_wrong_face_rain.choice.intercept.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_bounty_hunter_01_wrong_face_rain.choice.intercept.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_bounty_hunter_01_wrong_face_rain_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_bounty_hunter_01_wrong_face_rain.choice.intercept.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_bounty_hunter_01_wrong_face_rain_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_bounty_hunter_01_wrong_face_rain.choice.intercept.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_bounty_hunter_01_wrong_face_rain_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_bounty_hunter_01_wrong_face_rain.choice.intercept.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_bounty_hunter_01_wrong_face_rain_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "verify",
+      "textKey": "event.active_bounty_hunter_01_wrong_face_rain.choice.verify.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_wrong_face_rain.choice.verify.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_bounty_hunter_01_wrong_face_rain_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_pass",
+      "textKey": "event.active_bounty_hunter_01_wrong_face_rain.choice.let_pass.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_wrong_face_rain.choice.let_pass.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

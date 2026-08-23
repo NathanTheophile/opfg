@@ -1,0 +1,57 @@
+{
+  "id": "active_marine_01_sealed_manifest_s12a_repercussions",
+  "kind": "scheduled",
+  "titleKey": "event.active_marine_01_sealed_manifest_s12a_repercussions.title",
+  "textKey": "event.active_marine_01_sealed_manifest_s12a_repercussions.text",
+  "choices": [
+    {
+      "id": "teach_limits",
+      "textKey": "event.active_marine_01_sealed_manifest_s12a_repercussions.choice.teach_limits.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_s12a_repercussions_teach_limits",
+          "textKey": "event.active_marine_01_sealed_manifest_s12a_repercussions.choice.teach_limits.outcome.active_marine_01_sealed_manifest_s12a_repercussions_teach_limits.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s13_final_audit",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_record_stand",
+      "textKey": "event.active_marine_01_sealed_manifest_s12a_repercussions.choice.let_record_stand.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_s12a_repercussions_let_record_stand",
+          "textKey": "event.active_marine_01_sealed_manifest_s12a_repercussions.choice.let_record_stand.outcome.active_marine_01_sealed_manifest_s12a_repercussions_let_record_stand.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s13_final_audit",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "marine"
+    }
+  }
+}

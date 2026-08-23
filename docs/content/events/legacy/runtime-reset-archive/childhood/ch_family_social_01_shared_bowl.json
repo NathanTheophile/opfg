@@ -1,0 +1,133 @@
+{
+  "id": "ch_family_social_01_shared_bowl",
+  "titleKey": "event.ch_family_social_01_shared_bowl.title",
+  "textKey": "event.ch_family_social_01_shared_bowl.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 12
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 36
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "share_evenly",
+      "textKey": "event.ch_family_social_01_shared_bowl.choice.share_evenly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shared_evenly",
+          "textKey": "event.ch_family_social_01_shared_bowl.choice.share_evenly.outcome.shared_evenly.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "give_yours",
+      "textKey": "event.ch_family_social_01_shared_bowl.choice.give_yours.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "gave_yours",
+          "textKey": "event.ch_family_social_01_shared_bowl.choice.give_yours.outcome.gave_yours.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "generous"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "generous"
+            }
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "greedy"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "claim_portion",
+      "textKey": "event.ch_family_social_01_shared_bowl.choice.claim_portion.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "claimed_portion",
+          "textKey": "event.ch_family_social_01_shared_bowl.choice.claim_portion.outcome.claimed_portion.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "greedy"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "greedy"
+            }
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "generous"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "make_game",
+      "textKey": "event.ch_family_social_01_shared_bowl.choice.make_game.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "made_game",
+          "textKey": "event.ch_family_social_01_shared_bowl.choice.make_game.outcome.made_game.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

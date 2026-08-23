@@ -1,0 +1,102 @@
+{
+  "id": "ch_generic_early_01_three_breaths",
+  "titleKey": "event.ch_generic_early_01_three_breaths.title",
+  "textKey": "event.ch_generic_early_01_three_breaths.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "name_breathe_choose",
+      "textKey": "event.ch_generic_early_01_three_breaths.choice.name_breathe_choose.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ritual_begins",
+          "textKey": "event.ch_generic_early_01_three_breaths.choice.name_breathe_choose.outcome.ritual_begins.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s01_first_return",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_company",
+      "textKey": "event.ch_generic_early_01_three_breaths.choice.ask_company.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shared_start",
+          "textKey": "event.ch_generic_early_01_three_breaths.choice.ask_company.outcome.shared_start.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s01_first_return",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rush_through",
+      "textKey": "event.ch_generic_early_01_three_breaths.choice.rush_through.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rushed_start",
+          "textKey": "event.ch_generic_early_01_three_breaths.choice.rush_through.outcome.rushed_start.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s01_first_return",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_name",
+      "textKey": "event.ch_generic_early_01_three_breaths.choice.refuse_name.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "thread_ends_at_seed",
+          "textKey": "event.ch_generic_early_01_three_breaths.choice.refuse_name.outcome.thread_ends_at_seed.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  },
+  "lifetimeThreadSeed": true
+}

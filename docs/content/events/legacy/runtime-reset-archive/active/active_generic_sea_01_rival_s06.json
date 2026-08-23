@@ -1,0 +1,98 @@
+{
+  "id": "active_generic_sea_01_rival_s06",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_sea_01_rival_s06.title",
+  "textKey": "event.active_generic_sea_01_rival_s06.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "help",
+      "textKey": "event.active_generic_sea_01_rival_s06.choice.help.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s06.choice.help.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s07_a",
+              "delayMonths": 14
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "challenge",
+      "textKey": "event.active_generic_sea_01_rival_s06.choice.challenge.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s06.choice.challenge.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s07_b",
+              "delayMonths": 14
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_clear",
+      "textKey": "event.active_generic_sea_01_rival_s06.choice.keep_clear.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s06.choice.keep_clear.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s07_c",
+              "delayMonths": 14
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

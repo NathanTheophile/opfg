@@ -1,0 +1,74 @@
+{
+  "id": "career_marine_promotion_commodore",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 48
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_recruit"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerRankAtLeast",
+          "rankId": "marine_commodore"
+        }
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_06_three_ships"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_06_hospital_signal"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_06_convoy_breach"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_06_priority_chart"
+          }
+        ]
+      }
+    ]
+  },
+  "titleKey": "event.career_marine_promotion_commodore.title",
+  "textKey": "event.career_marine_promotion_commodore.text",
+  "choices": [
+    {
+      "id": "assume_rank",
+      "textKey": "event.career_marine_promotion_commodore.choice.assume_rank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "promoted",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_commodore"
+            }
+          ],
+          "textKey": "event.career_marine_promotion_commodore.choice.assume_rank.outcome.promoted.text"
+        }
+      }
+    }
+  ]
+}

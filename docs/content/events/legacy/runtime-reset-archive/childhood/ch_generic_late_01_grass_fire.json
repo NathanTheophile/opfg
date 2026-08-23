@@ -1,0 +1,142 @@
+{
+  "id": "ch_generic_late_01_grass_fire",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_grass_fire.title",
+  "textKey": "event.ch_generic_late_01_grass_fire.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "rural"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "forest"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "wilderness"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "take_charge",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "charge_cf",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_grass_fire_i1_scrape_line"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_grass_fire.choice.take_charge.outcome.charge_cf.text"
+          },
+          "failure": {
+            "id": "charge_f",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_grass_fire_i1_scrape_line"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_grass_fire.choice.take_charge.outcome.charge_f.text"
+          },
+          "success": {
+            "id": "charge_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_grass_fire_i1_scrape_line"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_grass_fire.choice.take_charge.outcome.charge_s.text"
+          },
+          "criticalSuccess": {
+            "id": "charge_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_grass_fire_i1_scrape_line"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_grass_fire.choice.take_charge.outcome.charge_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_grass_fire.choice.take_charge.text"
+    },
+    {
+      "id": "stamp_edge",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "edge",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_grass_fire_i1_scrape_line"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_grass_fire.choice.stamp_edge.outcome.edge.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_grass_fire.choice.stamp_edge.text"
+    },
+    {
+      "id": "fetch_water",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "water",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_grass_fire_i1_scrape_line"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_grass_fire.choice.fetch_water.outcome.water.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_grass_fire.choice.fetch_water.text"
+    }
+  ]
+}

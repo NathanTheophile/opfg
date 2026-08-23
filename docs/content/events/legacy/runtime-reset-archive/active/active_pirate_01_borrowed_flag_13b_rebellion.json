@@ -1,0 +1,66 @@
+{
+  "id": "active_pirate_01_borrowed_flag_13b_rebellion",
+  "kind": "scheduled",
+  "titleKey": "event.active_pirate_01_borrowed_flag_13b_rebellion.title",
+  "textKey": "event.active_pirate_01_borrowed_flag_13b_rebellion.text",
+  "choices": [
+    {
+      "id": "let_go",
+      "textKey": "event.active_pirate_01_borrowed_flag_13b_rebellion.choice.let_go.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_13b_rebellion.choice.let_go.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_14b_price_of_fear",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "enforce_payment",
+      "textKey": "event.active_pirate_01_borrowed_flag_13b_rebellion.choice.enforce_payment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_13b_rebellion.choice.enforce_payment.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 300
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_14b_price_of_fear",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "pirate"
+    }
+  },
+  "fallbackEventId": "active_pirate_01_borrowed_flag_departure"
+}

@@ -1,0 +1,153 @@
+{
+  "id": "active_generic_land_05_strange_soup_cannon_i01_pressure_valve",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_05_strange_soup_cannon_i01_pressure_valve.title",
+  "textKey": "event.active_generic_land_05_strange_soup_cannon_i01_pressure_valve.text",
+  "choices": [
+    {
+      "id": "close_valve",
+      "textKey": "event.active_generic_land_05_strange_soup_cannon_i01_pressure_valve.choice.close_valve.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "valve_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon_i01_pressure_valve.choice.close_valve.outcome.valve_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -7
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i02_bowl_salvo"
+              }
+            ]
+          },
+          "failure": {
+            "id": "valve_failure",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon_i01_pressure_valve.choice.close_valve.outcome.valve_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i02_bowl_salvo"
+              }
+            ]
+          },
+          "success": {
+            "id": "valve_success",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon_i01_pressure_valve.choice.close_valve.outcome.valve_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i02_bowl_salvo"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "valve_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon_i01_pressure_valve.choice.close_valve.outcome.valve_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i02_bowl_salvo"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cool_pipe",
+      "textKey": "event.active_generic_land_05_strange_soup_cannon_i01_pressure_valve.choice.cool_pipe.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cool_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon_i01_pressure_valve.choice.cool_pipe.outcome.cool_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i02_bowl_salvo"
+              }
+            ]
+          },
+          "failure": {
+            "id": "cool_failure",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon_i01_pressure_valve.choice.cool_pipe.outcome.cool_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i02_bowl_salvo"
+              }
+            ]
+          },
+          "success": {
+            "id": "cool_success",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon_i01_pressure_valve.choice.cool_pipe.outcome.cool_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i02_bowl_salvo"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cool_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon_i01_pressure_valve.choice.cool_pipe.outcome.cool_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i02_bowl_salvo"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "open_relief",
+      "textKey": "event.active_generic_land_05_strange_soup_cannon_i01_pressure_valve.choice.open_relief.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "relief_open",
+          "textKey": "event.active_generic_land_05_strange_soup_cannon_i01_pressure_valve.choice.open_relief.outcome.relief_open.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_soup_cannon_i02_bowl_salvo"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

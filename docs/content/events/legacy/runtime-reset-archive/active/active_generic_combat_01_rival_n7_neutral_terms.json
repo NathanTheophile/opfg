@@ -1,0 +1,68 @@
+{
+  "id": "active_generic_combat_01_rival_n7_neutral_terms",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_n7_neutral_terms.title",
+  "textKey": "event.active_generic_combat_01_rival_n7_neutral_terms.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "simple_terms",
+      "textKey": "event.active_generic_combat_01_rival_n7_neutral_terms.choice.simple_terms.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "simple_terms_outcome",
+          "textKey": "event.active_generic_combat_01_rival_n7_neutral_terms.choice.simple_terms.outcome.simple_terms_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_n8_truce_broken",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "distance",
+      "textKey": "event.active_generic_combat_01_rival_n7_neutral_terms.choice.distance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "distance_outcome",
+          "textKey": "event.active_generic_combat_01_rival_n7_neutral_terms.choice.distance.outcome.distance_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_n8_truce_broken",
+              "delayMonths": 14
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

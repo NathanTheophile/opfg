@@ -1,0 +1,170 @@
+{
+  "id": "active_generic_sea_03_danger_bomb_barrels",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_bomb_barrels.title",
+  "textKey": "event.active_generic_sea_03_danger_bomb_barrels.text",
+  "choices": [
+    {
+      "id": "thread_barrels",
+      "textKey": "event.active_generic_sea_03_danger_bomb_barrels.choice.thread_barrels.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_bomb_barrels.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -7
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_03_danger_bomb_barrels.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_03_danger_bomb_barrels.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_bomb_barrels_i01_tethered"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_03_danger_bomb_barrels.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_bomb_barrels_i01_tethered"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_fuses",
+      "textKey": "event.active_generic_sea_03_danger_bomb_barrels.choice.read_fuses.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_bomb_barrels.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -7
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_03_danger_bomb_barrels.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_03_danger_bomb_barrels.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_bomb_barrels_i01_tethered"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_03_danger_bomb_barrels.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_bomb_barrels_i01_tethered"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "shoot_nearest",
+      "textKey": "event.active_generic_sea_03_danger_bomb_barrels.choice.shoot_nearest.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shoot_nearest",
+          "textKey": "event.active_generic_sea_03_danger_bomb_barrels.outcome.shoot_nearest.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -4
+            }
+          ],
+          "shipDamageCause": "enemy"
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

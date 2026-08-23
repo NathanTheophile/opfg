@@ -1,0 +1,190 @@
+{
+  "id": "active_generic_land_05_strange_soup_cannon",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "food"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_05_strange_soup_cannon.title",
+  "textKey": "event.active_generic_land_05_strange_soup_cannon.text",
+  "choices": [
+    {
+      "id": "turn_cannon",
+      "textKey": "event.active_generic_land_05_strange_soup_cannon.choice.turn_cannon.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "turn_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon.choice.turn_cannon.outcome.turn_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i01_pressure_valve"
+              }
+            ]
+          },
+          "failure": {
+            "id": "turn_failure",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon.choice.turn_cannon.outcome.turn_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i01_pressure_valve"
+              }
+            ]
+          },
+          "success": {
+            "id": "turn_success",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon.choice.turn_cannon.outcome.turn_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i01_pressure_valve"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "turn_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon.choice.turn_cannon.outcome.turn_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i01_pressure_valve"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_gauge",
+      "textKey": "event.active_generic_land_05_strange_soup_cannon.choice.read_gauge.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "gauge_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon.choice.read_gauge.outcome.gauge_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i01_pressure_valve"
+              }
+            ]
+          },
+          "failure": {
+            "id": "gauge_failure",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon.choice.read_gauge.outcome.gauge_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i01_pressure_valve"
+              }
+            ]
+          },
+          "success": {
+            "id": "gauge_success",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon.choice.read_gauge.outcome.gauge_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i01_pressure_valve"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "gauge_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_soup_cannon.choice.read_gauge.outcome.gauge_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_soup_cannon_i01_pressure_valve"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cook_override",
+      "textKey": "event.active_generic_land_05_strange_soup_cannon.choice.cook_override.text",
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "cook"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cook_purged",
+          "textKey": "event.active_generic_land_05_strange_soup_cannon.choice.cook_override.outcome.cook_purged.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_soup_cannon_i01_pressure_valve"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "duck_tables",
+      "textKey": "event.active_generic_land_05_strange_soup_cannon.choice.duck_tables.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tables_flipped",
+          "textKey": "event.active_generic_land_05_strange_soup_cannon.choice.duck_tables.outcome.tables_flipped.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_soup_cannon_i01_pressure_valve"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

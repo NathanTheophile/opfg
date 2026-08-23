@@ -1,0 +1,209 @@
+{
+  "id": "ch_v2_race_human_01_standard_toolbox",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "raceIs",
+        "raceId": "human"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "titleKey": "event.ch_v2_race_human_01_standard_toolbox.title",
+  "textKey": "event.ch_v2_race_human_01_standard_toolbox.text",
+  "choices": [
+    {
+      "id": "reassign_roles",
+      "textKey": "event.ch_v2_race_human_01_standard_toolbox.choice.reassign_roles.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "reassign_roles_criticalfailure",
+            "textKey": "event.ch_v2_race_human_01_standard_toolbox.choice.reassign_roles.outcome.reassign_roles_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_human_01_standard_toolbox_i01_roles_overlap"
+              }
+            ]
+          },
+          "failure": {
+            "id": "reassign_roles_failure",
+            "textKey": "event.ch_v2_race_human_01_standard_toolbox.choice.reassign_roles.outcome.reassign_roles_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_human_01_standard_toolbox_i01_roles_overlap"
+              }
+            ]
+          },
+          "success": {
+            "id": "reassign_roles_success",
+            "textKey": "event.ch_v2_race_human_01_standard_toolbox.choice.reassign_roles.outcome.reassign_roles_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_human_01_standard_toolbox_i01_roles_overlap"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "reassign_roles_criticalsuccess",
+            "textKey": "event.ch_v2_race_human_01_standard_toolbox.choice.reassign_roles.outcome.reassign_roles_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_human_01_standard_toolbox_i01_roles_overlap"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "negotiate_rotation",
+      "textKey": "event.ch_v2_race_human_01_standard_toolbox.choice.negotiate_rotation.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "negotiate_rotation_criticalfailure",
+            "textKey": "event.ch_v2_race_human_01_standard_toolbox.choice.negotiate_rotation.outcome.negotiate_rotation_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_human_01_standard_toolbox_i01_roles_overlap"
+              }
+            ]
+          },
+          "failure": {
+            "id": "negotiate_rotation_failure",
+            "textKey": "event.ch_v2_race_human_01_standard_toolbox.choice.negotiate_rotation.outcome.negotiate_rotation_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_human_01_standard_toolbox_i01_roles_overlap"
+              }
+            ]
+          },
+          "success": {
+            "id": "negotiate_rotation_success",
+            "textKey": "event.ch_v2_race_human_01_standard_toolbox.choice.negotiate_rotation.outcome.negotiate_rotation_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_human_01_standard_toolbox_i01_roles_overlap"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "negotiate_rotation_criticalsuccess",
+            "textKey": "event.ch_v2_race_human_01_standard_toolbox.choice.negotiate_rotation.outcome.negotiate_rotation_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_human_01_standard_toolbox_i01_roles_overlap"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cover_everything",
+      "textKey": "event.ch_v2_race_human_01_standard_toolbox.choice.cover_everything.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cover_everything_outcome",
+          "textKey": "event.ch_v2_race_human_01_standard_toolbox.choice.cover_everything.outcome.cover_everything_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_human_01_standard_toolbox_i01_roles_overlap"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "adapt_handles",
+      "textKey": "event.ch_v2_race_human_01_standard_toolbox.choice.adapt_handles.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "resourceful"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "adapt_handles_outcome",
+          "textKey": "event.ch_v2_race_human_01_standard_toolbox.choice.adapt_handles.outcome.adapt_handles_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_human_01_standard_toolbox_i01_roles_overlap"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

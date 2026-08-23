@@ -1,0 +1,83 @@
+{
+  "id": "active_generic_combat_01_rolling_deck_training",
+  "kind": "normal",
+  "titleKey": "event.active_generic_combat_01_rolling_deck_training.title",
+  "textKey": "event.active_generic_combat_01_rolling_deck_training.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "engage",
+      "textKey": "event.active_generic_combat_01_rolling_deck_training.choice.engage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "engage_outcome",
+          "textKey": "event.active_generic_combat_01_rolling_deck_training.choice.engage.outcome.engage_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rolling_deck_training_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "control",
+      "textKey": "event.active_generic_combat_01_rolling_deck_training.choice.control.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "control_outcome",
+          "textKey": "event.active_generic_combat_01_rolling_deck_training.choice.control.outcome.control_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rolling_deck_training_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw",
+      "textKey": "event.active_generic_combat_01_rolling_deck_training.choice.withdraw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "withdraw_outcome",
+          "textKey": "event.active_generic_combat_01_rolling_deck_training.choice.withdraw.outcome.withdraw_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

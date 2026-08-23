@@ -1,0 +1,50 @@
+{
+  "id": "ch_combat_01_rival_thread_s06a_cost_of_winning",
+  "titleKey": "event.ch_combat_01_rival_thread_s06a_cost_of_winning.title",
+  "textKey": "event.ch_combat_01_rival_thread_s06a_cost_of_winning.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "choices": [
+    {
+      "id": "acknowledge_cost",
+      "textKey": "event.ch_combat_01_rival_thread_s06a_cost_of_winning.choice.acknowledge_cost.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cost_acknowledged",
+          "textKey": "event.ch_combat_01_rival_thread_s06a_cost_of_winning.choice.acknowledge_cost.outcome.cost_acknowledged.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_rival_thread_s07_second_measure",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "defend_result",
+      "textKey": "event.ch_combat_01_rival_thread_s06a_cost_of_winning.choice.defend_result.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "result_defended",
+          "textKey": "event.ch_combat_01_rival_thread_s06a_cost_of_winning.choice.defend_result.outcome.result_defended.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_rival_thread_s07_second_measure",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

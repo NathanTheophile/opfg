@@ -1,0 +1,149 @@
+{
+  "id": "ch_east_blue_01_shimotsuki_bamboo_rack",
+  "kind": "normal",
+  "titleKey": "event.ch_east_blue_01_shimotsuki_bamboo_rack.title",
+  "textKey": "event.ch_east_blue_01_shimotsuki_bamboo_rack.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      },
+      {
+        "type": "locationIs",
+        "locationId": "shimotsuki_village"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "hold_rack",
+      "textKey": "event.ch_east_blue_01_shimotsuki_bamboo_rack.choice.hold_rack.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rack_falls",
+            "textKey": "event.ch_east_blue_01_shimotsuki_bamboo_rack.choice.hold_rack.outcome.rack_falls.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_shimotsuki_rack_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "rack_halfheld",
+            "textKey": "event.ch_east_blue_01_shimotsuki_bamboo_rack.choice.hold_rack.outcome.rack_halfheld.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_shimotsuki_rack_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "rack_stopped",
+            "textKey": "event.ch_east_blue_01_shimotsuki_bamboo_rack.choice.hold_rack.outcome.rack_stopped.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_shimotsuki_rack_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "rack_anchored",
+            "textKey": "event.ch_east_blue_01_shimotsuki_bamboo_rack.choice.hold_rack.outcome.rack_anchored.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_shimotsuki_rack_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "move_children",
+      "textKey": "event.ch_east_blue_01_shimotsuki_bamboo_rack.choice.move_children.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "children_clear",
+          "textKey": "event.ch_east_blue_01_shimotsuki_bamboo_rack.choice.move_children.outcome.children_clear.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_east_blue_01_shimotsuki_rack_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "catch_loose_bamboo",
+      "textKey": "event.ch_east_blue_01_shimotsuki_bamboo_rack.choice.catch_loose_bamboo.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "loose_saved",
+          "textKey": "event.ch_east_blue_01_shimotsuki_bamboo_rack.choice.catch_loose_bamboo.outcome.loose_saved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_east_blue_01_shimotsuki_rack_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "id": "active_generic_land_01_tree_boundary",
+  "kind": "normal",
+  "replay": { "cooldownMonths": 24 },
+  "titleKey": "event.active_generic_land_01_tree_boundary.title",
+  "textKey": "event.active_generic_land_01_tree_boundary.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "forest"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "rural"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "pause_cutting",
+      "textKey": "event.active_generic_land_01_tree_boundary.choice.pause_cutting.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_tree_boundary.choice.pause_cutting.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compare_old_marks",
+      "textKey": "event.active_generic_land_01_tree_boundary.choice.compare_old_marks.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_tree_boundary.choice.compare_old_marks.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "side_with_crew",
+      "textKey": "event.active_generic_land_01_tree_boundary.choice.side_with_crew.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_tree_boundary.choice.side_with_crew.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "suspicious_paint",
+      "textKey": "event.active_generic_land_01_tree_boundary.choice.suspicious_paint.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_tree_boundary.choice.suspicious_paint.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "suspicious"
+      }
+    }
+  ]
+}

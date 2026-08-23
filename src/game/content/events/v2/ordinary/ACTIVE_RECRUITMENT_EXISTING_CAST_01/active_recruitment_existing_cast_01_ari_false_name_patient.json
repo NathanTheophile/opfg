@@ -1,0 +1,161 @@
+{
+  "id": "active_recruitment_existing_cast_01_ari_false_name_patient",
+  "kind": "normal",
+  "cast": [
+    "ari"
+  ],
+  "titleKey": "event.active_recruitment_existing_cast_01_ari_false_name_patient.title",
+  "textKey": "event.active_recruitment_existing_cast_01_ari_false_name_patient.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 215
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_blue_east_blue_01_clinic_triage"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "ari"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "medical"
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "ari",
+        "value": 0
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "take_both_aboard",
+      "textKey": "event.active_recruitment_existing_cast_01_ari_false_name_patient.choice.take_both_aboard.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "join",
+          "textKey": "event.active_recruitment_existing_cast_01_ari_false_name_patient.choice.take_both_aboard.outcome.join.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "ari",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "ari",
+              "amount": 7
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hold_the_door",
+      "textKey": "event.active_recruitment_existing_cast_01_ari_false_name_patient.choice.hold_the_door.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cover",
+          "textKey": "event.active_recruitment_existing_cast_01_ari_false_name_patient.choice.hold_the_door.outcome.cover.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "ari",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "ari",
+              "amount": 6
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "erase_your_trace",
+      "textKey": "event.active_recruitment_existing_cast_01_ari_false_name_patient.choice.erase_your_trace.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "self",
+          "textKey": "event.active_recruitment_existing_cast_01_ari_false_name_patient.choice.erase_your_trace.outcome.self.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "ari",
+              "amount": -8
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

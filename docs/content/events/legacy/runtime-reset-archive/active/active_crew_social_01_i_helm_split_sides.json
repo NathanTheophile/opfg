@@ -1,0 +1,82 @@
+{
+  "id": "active_crew_social_01_i_helm_split_sides",
+  "kind": "immediate",
+  "titleKey": "event.active_crew_social_01_i_helm_split_sides.title",
+  "textKey": "event.active_crew_social_01_i_helm_split_sides.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "stop_camps",
+      "textKey": "event.active_crew_social_01_i_helm_split_sides.choice.stop_camps.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_i_helm_split_sides.choice.stop_camps.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_helm_split_call"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_speak",
+      "textKey": "event.active_crew_social_01_i_helm_split_sides.choice.let_speak.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_i_helm_split_sides.choice.let_speak.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_helm_split_call"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "return_facts",
+      "textKey": "event.active_crew_social_01_i_helm_split_sides.choice.return_facts.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_i_helm_split_sides.choice.return_facts.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_helm_split_call"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

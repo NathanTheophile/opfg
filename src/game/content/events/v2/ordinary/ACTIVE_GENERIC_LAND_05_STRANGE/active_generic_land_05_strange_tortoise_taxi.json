@@ -1,0 +1,203 @@
+{
+  "id": "active_generic_land_05_strange_tortoise_taxi",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "urban"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_05_strange_tortoise_taxi.title",
+  "textKey": "event.active_generic_land_05_strange_tortoise_taxi.text",
+  "choices": [
+    {
+      "id": "grab_harness",
+      "textKey": "event.active_generic_land_05_strange_tortoise_taxi.choice.grab_harness.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "harness_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_tortoise_taxi.choice.grab_harness.outcome.harness_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_tortoise_taxi_i01_shell_jam"
+              }
+            ]
+          },
+          "failure": {
+            "id": "harness_failure",
+            "textKey": "event.active_generic_land_05_strange_tortoise_taxi.choice.grab_harness.outcome.harness_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_tortoise_taxi_i01_shell_jam"
+              }
+            ]
+          },
+          "success": {
+            "id": "harness_success",
+            "textKey": "event.active_generic_land_05_strange_tortoise_taxi.choice.grab_harness.outcome.harness_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_tortoise_taxi_i01_shell_jam"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "harness_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_tortoise_taxi.choice.grab_harness.outcome.harness_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_tortoise_taxi_i01_shell_jam"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "calm_pattern",
+      "textKey": "event.active_generic_land_05_strange_tortoise_taxi.choice.calm_pattern.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "calm_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_tortoise_taxi.choice.calm_pattern.outcome.calm_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_tortoise_taxi_i01_shell_jam"
+              }
+            ]
+          },
+          "failure": {
+            "id": "calm_failure",
+            "textKey": "event.active_generic_land_05_strange_tortoise_taxi.choice.calm_pattern.outcome.calm_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_tortoise_taxi_i01_shell_jam"
+              }
+            ]
+          },
+          "success": {
+            "id": "calm_success",
+            "textKey": "event.active_generic_land_05_strange_tortoise_taxi.choice.calm_pattern.outcome.calm_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_tortoise_taxi_i01_shell_jam"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "calm_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_tortoise_taxi.choice.calm_pattern.outcome.calm_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_tortoise_taxi_i01_shell_jam"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "helmsman_signal",
+      "textKey": "event.active_generic_land_05_strange_tortoise_taxi.choice.helmsman_signal.text",
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "helmsman"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "helmsman_guided",
+          "textKey": "event.active_generic_land_05_strange_tortoise_taxi.choice.helmsman_signal.outcome.helmsman_guided.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_tortoise_taxi_i01_shell_jam"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "clear_sidewalk",
+      "textKey": "event.active_generic_land_05_strange_tortoise_taxi.choice.clear_sidewalk.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sidewalk_cleared",
+          "textKey": "event.active_generic_land_05_strange_tortoise_taxi.choice.clear_sidewalk.outcome.sidewalk_cleared.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_tortoise_taxi_i01_shell_jam"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

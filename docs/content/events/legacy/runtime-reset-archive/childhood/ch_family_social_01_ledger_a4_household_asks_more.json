@@ -1,0 +1,63 @@
+{
+  "id": "ch_family_social_01_ledger_a4_household_asks_more",
+  "titleKey": "event.ch_family_social_01_ledger_a4_household_asks_more.title",
+  "textKey": "event.ch_family_social_01_ledger_a4_household_asks_more.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "accept_label",
+      "textKey": "event.ch_family_social_01_ledger_a4_household_asks_more.choice.accept_label.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "label_accepted",
+          "textKey": "event.ch_family_social_01_ledger_a4_household_asks_more.choice.accept_label.outcome.label_accepted.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_a5_boundary_test",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "share_load",
+      "textKey": "event.ch_family_social_01_ledger_a4_household_asks_more.choice.share_load.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "load_shared",
+          "textKey": "event.ch_family_social_01_ledger_a4_household_asks_more.choice.share_load.outcome.load_shared.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_a5_boundary_test",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "walk_out",
+      "textKey": "event.ch_family_social_01_ledger_a4_household_asks_more.choice.walk_out.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "walked_out",
+          "textKey": "event.ch_family_social_01_ledger_a4_household_asks_more.choice.walk_out.outcome.walked_out.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

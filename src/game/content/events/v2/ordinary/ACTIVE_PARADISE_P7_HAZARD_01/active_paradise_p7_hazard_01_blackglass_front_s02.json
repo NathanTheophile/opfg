@@ -1,0 +1,132 @@
+{
+  "id": "active_paradise_p7_hazard_01_blackglass_front_s02",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "unrestricted",
+  "titleKey": "event.active_paradise_p7_hazard_01_blackglass_front_s02.title",
+  "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s02.text",
+  "choices": [
+    {
+      "id": "read_grains",
+      "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s02.choice.read_grains.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_grains_criticalFailure",
+            "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s02.choice.read_grains.outcome.read_grains_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -7
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p7_hazard_01_blackglass_front_s03",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_grains_failure",
+            "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s02.choice.read_grains.outcome.read_grains_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p7_hazard_01_blackglass_front_s03",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "success": {
+            "id": "read_grains_success",
+            "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s02.choice.read_grains.outcome.read_grains_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p7_hazard_01_blackglass_front_s03",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_grains_criticalSuccess",
+            "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s02.choice.read_grains.outcome.read_grains_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p7_hazard_01_blackglass_front_s03",
+                "delayMonths": 3
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "lash_everything",
+      "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s02.choice.lash_everything.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lash_everything_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_blackglass_front_s02.choice.lash_everything.outcome.lash_everything_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p7_hazard_01_blackglass_front_s03",
+              "delayMonths": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p7_hazard"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "grand_line_paradise"
+      }
+    ]
+  },
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "locationIs",
+        "locationId": "sabaody_archipelago"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "currentSeaIs",
+          "seaId": "grand_line_paradise"
+        }
+      }
+    ]
+  }
+}

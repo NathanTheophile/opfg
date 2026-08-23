@@ -1,0 +1,253 @@
+{
+  "id": "active_rival_marine_01_two_signatures",
+  "kind": "normal",
+  "cast": [
+    "active_rival_marine_01_peer_officer"
+  ],
+  "titleKey": "event.active_rival_marine_01_two_signatures.title",
+  "textKey": "event.active_rival_marine_01_two_signatures.text",
+  "choices": [
+    {
+      "id": "hold_evidence_line",
+      "textKey": "event.active_rival_marine_01_two_signatures.choice.hold_evidence_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "evidence_secured",
+          "textKey": "event.active_rival_marine_01_two_signatures.choice.hold_evidence_line.outcome.evidence_secured.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_rival_marine_01_peer_officer",
+              "amount": 2
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_marine_01_after_action_board",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "break_for_civilians",
+      "textKey": "event.active_rival_marine_01_two_signatures.choice.break_for_civilians.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 12,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rescue_critical_failure",
+            "textKey": "event.active_rival_marine_01_two_signatures.choice.break_for_civilians.outcome.rescue_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": -3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_after_action_board",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "failure": {
+            "id": "rescue_failure",
+            "textKey": "event.active_rival_marine_01_two_signatures.choice.break_for_civilians.outcome.rescue_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_after_action_board",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "success": {
+            "id": "rescue_success",
+            "textKey": "event.active_rival_marine_01_two_signatures.choice.break_for_civilians.outcome.rescue_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": 3
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_after_action_board",
+                "delayMonths": 12
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "rescue_critical_success",
+            "textKey": "event.active_rival_marine_01_two_signatures.choice.break_for_civilians.outcome.rescue_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_after_action_board",
+                "delayMonths": 12
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "split_the_assignment",
+      "textKey": "event.active_rival_marine_01_two_signatures.choice.split_the_assignment.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 13,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "split_critical_failure",
+            "textKey": "event.active_rival_marine_01_two_signatures.choice.split_the_assignment.outcome.split_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": -3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_after_action_board",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "failure": {
+            "id": "split_failure",
+            "textKey": "event.active_rival_marine_01_two_signatures.choice.split_the_assignment.outcome.split_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_after_action_board",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "success": {
+            "id": "split_success",
+            "textKey": "event.active_rival_marine_01_two_signatures.choice.split_the_assignment.outcome.split_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": 4
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_after_action_board",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "split_critical_success",
+            "textKey": "event.active_rival_marine_01_two_signatures.choice.split_the_assignment.outcome.split_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_after_action_board",
+                "delayMonths": 12
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 192
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 240
+      }
+    ]
+  }
+}

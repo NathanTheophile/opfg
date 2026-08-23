@@ -1,0 +1,88 @@
+{
+  "id": "ch_west_blue_01_bellflower_harvest_bells",
+  "kind": "normal",
+  "titleKey": "event.ch_west_blue_01_bellflower_harvest_bells.title",
+  "textKey": "event.ch_west_blue_01_bellflower_harvest_bells.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 36
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 95
+      },
+      {
+        "type": "locationIs",
+        "locationId": "bellflower_village"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "save_seed_baskets",
+      "textKey": "event.ch_west_blue_01_bellflower_harvest_bells.choice.save_seed_baskets.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "seeds_saved",
+          "textKey": "event.ch_west_blue_01_bellflower_harvest_bells.choice.save_seed_baskets.outcome.seeds_saved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_bellflower_harvest_return",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "help_old_farmer",
+      "textKey": "event.ch_west_blue_01_bellflower_harvest_bells.choice.help_old_farmer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "neighbor_helped",
+          "textKey": "event.ch_west_blue_01_bellflower_harvest_bells.choice.help_old_farmer.outcome.neighbor_helped.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ring_warning_bell",
+      "textKey": "event.ch_west_blue_01_bellflower_harvest_bells.choice.ring_warning_bell.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "warning_spread",
+          "textKey": "event.ch_west_blue_01_bellflower_harvest_bells.choice.ring_warning_bell.outcome.warning_spread.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

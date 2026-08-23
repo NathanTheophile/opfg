@@ -1,0 +1,145 @@
+{
+  "id": "active_marine_01_contested_evacuation_order",
+  "kind": "normal",
+  "titleKey": "event.active_marine_01_contested_evacuation_order.title",
+  "textKey": "event.active_marine_01_contested_evacuation_order.text",
+  "choices": [
+    {
+      "id": "read_fire_path",
+      "textKey": "event.active_marine_01_contested_evacuation_order.choice.read_fire_path.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_marine_01_contested_evacuation_order_read_fire_path_criticalfailure",
+            "textKey": "event.active_marine_01_contested_evacuation_order.choice.read_fire_path.outcome.active_marine_01_contested_evacuation_order_read_fire_path_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_contested_evacuation_order_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_marine_01_contested_evacuation_order_read_fire_path_failure",
+            "textKey": "event.active_marine_01_contested_evacuation_order.choice.read_fire_path.outcome.active_marine_01_contested_evacuation_order_read_fire_path_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_contested_evacuation_order_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "active_marine_01_contested_evacuation_order_read_fire_path_success",
+            "textKey": "event.active_marine_01_contested_evacuation_order.choice.read_fire_path.outcome.active_marine_01_contested_evacuation_order_read_fire_path_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_contested_evacuation_order_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_marine_01_contested_evacuation_order_read_fire_path_criticalsuccess",
+            "textKey": "event.active_marine_01_contested_evacuation_order.choice.read_fire_path.outcome.active_marine_01_contested_evacuation_order_read_fire_path_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_contested_evacuation_order_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "open_corridor",
+      "textKey": "event.active_marine_01_contested_evacuation_order.choice.open_corridor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_contested_evacuation_order_open_corridor",
+          "textKey": "event.active_marine_01_contested_evacuation_order.choice.open_corridor.outcome.active_marine_01_contested_evacuation_order_open_corridor.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_marine_01_contested_evacuation_order_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hold_and_signal",
+      "textKey": "event.active_marine_01_contested_evacuation_order.choice.hold_and_signal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_contested_evacuation_order_hold_and_signal",
+          "textKey": "event.active_marine_01_contested_evacuation_order.choice.hold_and_signal.outcome.active_marine_01_contested_evacuation_order_hold_and_signal.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_marine_01_contested_evacuation_order_i1"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 192
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_lieutenant"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "urban"
+      }
+    ]
+  }
+}

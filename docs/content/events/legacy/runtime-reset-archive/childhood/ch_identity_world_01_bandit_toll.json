@@ -1,0 +1,213 @@
+{
+  "id": "ch_identity_world_01_bandit_toll",
+  "titleKey": "event.ch_identity_world_01_bandit_toll.title",
+  "textKey": "event.ch_identity_world_01_bandit_toll.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "criminal"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "rural"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "challenge_bluff",
+      "textKey": "event.ch_identity_world_01_bandit_toll.choice.challenge_bluff.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bluff_backfires",
+            "textKey": "event.ch_identity_world_01_bandit_toll.choice.challenge_bluff.outcome.bluff_backfires.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_bandit_toll_s01_toll_story",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "bandits_laugh",
+            "textKey": "event.ch_identity_world_01_bandit_toll.choice.challenge_bluff.outcome.bandits_laugh.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_bandit_toll_s01_toll_story",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "bandits_hesitate",
+            "textKey": "event.ch_identity_world_01_bandit_toll.choice.challenge_bluff.outcome.bandits_hesitate.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_bandit_toll_s01_toll_story",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "bandits_fold",
+            "textKey": "event.ch_identity_world_01_bandit_toll.choice.challenge_bluff.outcome.bandits_fold.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_bandit_toll_s01_toll_story",
+                "delayMonths": 18
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "move_roadblock",
+      "textKey": "event.ch_identity_world_01_bandit_toll.choice.move_roadblock.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "post_falls",
+            "textKey": "event.ch_identity_world_01_bandit_toll.choice.move_roadblock.outcome.post_falls.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_bandit_toll_s01_toll_story",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "post_stubborn",
+            "textKey": "event.ch_identity_world_01_bandit_toll.choice.move_roadblock.outcome.post_stubborn.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_bandit_toll_s01_toll_story",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "road_open",
+            "textKey": "event.ch_identity_world_01_bandit_toll.choice.move_roadblock.outcome.road_open.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_bandit_toll_s01_toll_story",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "road_clear",
+            "textKey": "event.ch_identity_world_01_bandit_toll.choice.move_roadblock.outcome.road_clear.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_bandit_toll_s01_toll_story",
+                "delayMonths": 18
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_and_pass",
+      "textKey": "event.ch_identity_world_01_bandit_toll.choice.pay_and_pass.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paid_passage",
+          "textKey": "event.ch_identity_world_01_bandit_toll.choice.pay_and_pass.outcome.paid_passage.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_bandit_toll_s01_toll_story",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "turn_back",
+      "textKey": "event.ch_identity_world_01_bandit_toll.choice.turn_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "turned_back",
+          "textKey": "event.ch_identity_world_01_bandit_toll.choice.turn_back.outcome.turned_back.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_bandit_toll_s01_toll_story",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "id": "active_paradise_p7_hazard_01_thunderhead_watch_rotation",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p7_hazard_01_thunderhead_watch_rotation.title",
+  "textKey": "event.active_paradise_p7_hazard_01_thunderhead_watch_rotation.text",
+  "choices": [
+    {
+      "id": "take_watch",
+      "textKey": "event.active_paradise_p7_hazard_01_thunderhead_watch_rotation.choice.take_watch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_watch_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_thunderhead_watch_rotation.choice.take_watch.outcome.take_watch_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "first_mate_roster",
+      "textKey": "event.active_paradise_p7_hazard_01_thunderhead_watch_rotation.choice.first_mate_roster.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "first_mate_roster_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_thunderhead_watch_rotation.choice.first_mate_roster.outcome.first_mate_roster_outcome.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "first_mate"
+      }
+    },
+    {
+      "id": "sleep_in_turns",
+      "textKey": "event.active_paradise_p7_hazard_01_thunderhead_watch_rotation.choice.sleep_in_turns.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sleep_in_turns_outcome",
+          "textKey": "event.active_paradise_p7_hazard_01_thunderhead_watch_rotation.choice.sleep_in_turns.outcome.sleep_in_turns_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p7_hazard"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "thunderhead_island"
+      }
+    ]
+  }
+}

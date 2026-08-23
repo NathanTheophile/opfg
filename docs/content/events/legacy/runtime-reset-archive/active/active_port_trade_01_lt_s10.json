@@ -1,0 +1,60 @@
+{
+  "id": "active_port_trade_01_lt_s10",
+  "kind": "scheduled",
+  "titleKey": "event.active_port_trade_01_lt_s10.title",
+  "textKey": "event.active_port_trade_01_lt_s10.text",
+  "eligibility": {
+    "type": "locationHasService",
+    "serviceId": "trade"
+  },
+  "choices": [
+    {
+      "id": "auditer",
+      "textKey": "event.active_port_trade_01_lt_s10.choice.auditer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "auditer",
+          "textKey": "event.active_port_trade_01_lt_s10.choice.auditer.outcome.auditer.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s11",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "nouveau_cycle",
+      "textKey": "event.active_port_trade_01_lt_s10.choice.nouveau_cycle.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "nouveau_cycle",
+          "textKey": "event.active_port_trade_01_lt_s10.choice.nouveau_cycle.outcome.nouveau_cycle.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s11",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

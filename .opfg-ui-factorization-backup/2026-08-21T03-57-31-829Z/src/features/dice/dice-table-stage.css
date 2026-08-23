@@ -1,0 +1,200 @@
+.opfg-dice-table-stage {
+  position: fixed;
+  z-index: 70;
+  inset: 0;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 180ms var(--ease-standard),
+    visibility 0s linear 180ms;
+}
+
+.opfg-dice-table-stage.is-visible {
+  visibility: visible;
+  opacity: 1;
+  transition:
+    opacity 180ms var(--ease-standard) 90ms,
+    visibility 0s linear 0s;
+}
+
+.opfg-dice-table-stage__module {
+  position: absolute;
+  left: 50%;
+  top: 61%;
+  width: min(44rem, 78vw);
+  height: min(23rem, 42vh);
+  transform: translate(-50%, -50%);
+}
+
+.opfg-dice-table-stage__meta {
+  position: absolute;
+  z-index: 5;
+  top: -0.2rem;
+  left: 50%;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  transform: translateX(-50%);
+  color: var(--text-primary);
+  text-shadow: 0 2px 14px rgb(0 0 0 / 70%);
+  white-space: nowrap;
+}
+
+.opfg-dice-table-stage__meta span {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.opfg-dice-table-stage__meta strong {
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.opfg-dice-table-stage__meta[data-sign="positive"] strong {
+  color: oklch(0.76 0.15 145);
+}
+
+.opfg-dice-table-stage__meta[data-sign="negative"] strong {
+  color: oklch(0.72 0.17 30);
+}
+
+.opfg-dice-table-stage__field {
+  position: absolute;
+  inset: 2.3rem 0 0;
+}
+
+/*
+ * No panel, no opaque surface: the Three.js alpha canvas is composited
+ * directly over the existing 2D tavern/table background.
+ */
+.opfg-dice-table-stage__field .opfg-d20-roll {
+  overflow: visible;
+}
+
+.opfg-dice-table-stage__trigger {
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  border: 0;
+  padding: 1.1rem 0 0;
+  background: transparent;
+  color: var(--gold);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.opfg-dice-table-stage__trigger:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -0.25rem;
+  border-radius: var(--radius-panel);
+}
+
+.opfg-dice-table-stage__trigger span {
+  display: block;
+  font-size: clamp(1rem, 1.4vw, 1.35rem);
+  font-weight: 950;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  text-shadow:
+    0 3px 16px rgb(0 0 0 / 80%),
+    0 0 18px color-mix(in srgb, var(--gold) 35%, transparent);
+  animation: opfg-table-dice-prompt 1080ms cubic-bezier(0.37, 0, 0.63, 1) infinite;
+}
+
+.opfg-dice-table-stage__result {
+  position: absolute;
+  z-index: 7;
+  inset: 0;
+  display: grid;
+  place-items: start center;
+  padding-top: 1rem;
+  pointer-events: none;
+}
+
+.opfg-dice-table-stage__result span {
+  display: block;
+  max-width: 90%;
+  padding: 0.38rem 0.65rem;
+  color: var(--text-primary);
+  font-size: clamp(0.86rem, 1.2vw, 1.08rem);
+  font-weight: 950;
+  letter-spacing: 0.15em;
+  text-align: center;
+  text-shadow:
+    0 3px 15px rgb(0 0 0 / 88%),
+    0 0 20px currentColor;
+  animation: opfg-table-dice-result 660ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.opfg-dice-table-stage__result[data-result="success"] span,
+.opfg-dice-table-stage__result[data-result="criticalSuccess"] span {
+  color: oklch(0.8 0.15 145);
+}
+
+.opfg-dice-table-stage__result[data-result="failure"] span,
+.opfg-dice-table-stage__result[data-result="criticalFailure"] span {
+  color: oklch(0.74 0.17 30);
+}
+
+@keyframes opfg-table-dice-prompt {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.64;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes opfg-table-dice-result {
+  0% {
+    transform: translateY(0.4rem) scale(0.78);
+    opacity: 0;
+  }
+
+  58% {
+    transform: translateY(0) scale(1.08);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 68rem) {
+  .opfg-dice-table-stage__module {
+    top: 62%;
+    width: min(38rem, 88vw);
+    height: min(21rem, 40vh);
+  }
+}
+
+@media (max-width: 40rem) {
+  .opfg-dice-table-stage__module {
+    top: 64%;
+    width: 94vw;
+    height: min(19rem, 38vh);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-dice-table-stage,
+  .opfg-dice-table-stage__trigger span,
+  .opfg-dice-table-stage__result span {
+    transition-duration: 1ms;
+    animation-duration: 1ms;
+    animation-iteration-count: 1;
+  }
+}

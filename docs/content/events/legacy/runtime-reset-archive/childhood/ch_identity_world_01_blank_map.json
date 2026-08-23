@@ -1,0 +1,140 @@
+{
+  "id": "ch_identity_world_01_blank_map",
+  "titleKey": "event.ch_identity_world_01_blank_map.title",
+  "textKey": "event.ch_identity_world_01_blank_map.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "challenge_map",
+      "textKey": "event.ch_identity_world_01_blank_map.choice.challenge_map.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "map_confusion",
+            "textKey": "event.ch_identity_world_01_blank_map.choice.challenge_map.outcome.map_confusion.text",
+            "effects": []
+          },
+          "failure": {
+            "id": "map_doubt",
+            "textKey": "event.ch_identity_world_01_blank_map.choice.challenge_map.outcome.map_doubt.text",
+            "effects": []
+          },
+          "success": {
+            "id": "map_gap",
+            "textKey": "event.ch_identity_world_01_blank_map.choice.challenge_map.outcome.map_gap.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "map_bias",
+            "textKey": "event.ch_identity_world_01_blank_map.choice.challenge_map.outcome.map_bias.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ask_source",
+      "textKey": "event.ch_identity_world_01_blank_map.choice.ask_source.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "source_asked",
+          "textKey": "event.ch_identity_world_01_blank_map.choice.ask_source.outcome.source_asked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "embrace_unknown",
+      "textKey": "event.ch_identity_world_01_blank_map.choice.embrace_unknown.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "curiosity_marked",
+          "textKey": "event.ch_identity_world_01_blank_map.choice.embrace_unknown.outcome.curiosity_marked.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "curious"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "curious"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "accept_map",
+      "textKey": "event.ch_identity_world_01_blank_map.choice.accept_map.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "map_accepted",
+          "textKey": "event.ch_identity_world_01_blank_map.choice.accept_map.outcome.map_accepted.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

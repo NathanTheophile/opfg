@@ -1,0 +1,179 @@
+{
+  "id": "active_generic_sea_01_barrel_survivor",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_barrel_survivor.title",
+  "textKey": "event.active_generic_sea_01_barrel_survivor.text",
+  "choices": [
+    {
+      "id": "haul_fast",
+      "textKey": "event.active_generic_sea_01_barrel_survivor.choice.haul_fast.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "haul_fast_criticalfailure",
+            "textKey": "event.active_generic_sea_01_barrel_survivor.choice.haul_fast.outcome.haul_fast_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_barrel_survivor_i01_abandoned_hand"
+              }
+            ]
+          },
+          "failure": {
+            "id": "haul_fast_failure",
+            "textKey": "event.active_generic_sea_01_barrel_survivor.choice.haul_fast.outcome.haul_fast_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_barrel_survivor_i01_abandoned_hand"
+              }
+            ]
+          },
+          "success": {
+            "id": "haul_fast_success",
+            "textKey": "event.active_generic_sea_01_barrel_survivor.choice.haul_fast.outcome.haul_fast_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_barrel_survivor_i01_abandoned_hand"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "haul_fast_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_barrel_survivor.choice.haul_fast.outcome.haul_fast_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_barrel_survivor_i01_abandoned_hand"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "medic_rescue",
+      "textKey": "event.active_generic_sea_01_barrel_survivor.choice.medic_rescue.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "medic_rescue_criticalfailure",
+            "textKey": "event.active_generic_sea_01_barrel_survivor.choice.medic_rescue.outcome.medic_rescue_criticalfailure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_barrel_survivor_i01_abandoned_hand"
+              }
+            ]
+          },
+          "failure": {
+            "id": "medic_rescue_failure",
+            "textKey": "event.active_generic_sea_01_barrel_survivor.choice.medic_rescue.outcome.medic_rescue_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_barrel_survivor_i01_abandoned_hand"
+              }
+            ]
+          },
+          "success": {
+            "id": "medic_rescue_success",
+            "textKey": "event.active_generic_sea_01_barrel_survivor.choice.medic_rescue.outcome.medic_rescue_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_barrel_survivor_i01_abandoned_hand"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "medic_rescue_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_barrel_survivor.choice.medic_rescue.outcome.medic_rescue_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_barrel_survivor_i01_abandoned_hand"
+              }
+            ]
+          }
+        },
+        "actor": {
+          "type": "crewRole",
+          "roleId": "medic",
+          "statId": "intelligence"
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "medic"
+      }
+    },
+    {
+      "id": "throw_line",
+      "textKey": "event.active_generic_sea_01_barrel_survivor.choice.throw_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "throw_line_outcome",
+          "textKey": "event.active_generic_sea_01_barrel_survivor.choice.throw_line.outcome.throw_line_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_barrel_survivor_i01_abandoned_hand"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

@@ -1,0 +1,172 @@
+.opfg-choice-button .opfg-choice-dice-badge {
+  align-self: stretch;
+  min-height: 0;
+  height: auto;
+  gap: var(--ui-choice-dice-gap);
+  padding:
+    var(--ui-choice-dice-padding-y)
+    var(--ui-choice-dice-padding-x);
+  font-size: var(--ui-choice-dice-text-size);
+}
+
+.opfg-choice-button .opfg-choice-dice-badge > svg {
+  width: var(--ui-choice-dice-icon-size);
+  height: var(--ui-choice-dice-icon-size);
+  flex: 0 0 auto;
+}
+
+.opfg-choice-stat-effects {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.38rem;
+  margin-top: 0.48rem;
+}
+
+.opfg-choice-stat-effect {
+  --opfg-stat-color: var(--accent-gold);
+
+  position: relative;
+  display: inline-flex;
+  min-width: 2.8rem;
+  height: 1.72rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.34rem;
+  border: 1px solid
+    color-mix(in srgb, var(--opfg-stat-color) 24%, var(--border-subtle));
+  border-radius: 0.48rem;
+  padding: 0 0.48rem;
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--opfg-stat-color) 10%, transparent),
+      color-mix(in srgb, var(--opfg-stat-color) 3%, transparent)
+    ),
+    color-mix(in srgb, var(--surface-soft) 82%, transparent);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.025);
+  line-height: 1;
+}
+
+.opfg-choice-stat-effect__icon {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  color: var(--opfg-stat-color);
+  stroke-width: 2.15;
+}
+
+.opfg-choice-stat-effect__value {
+  color: var(--text-primary);
+  font-size: 0.74rem;
+  font-weight: 850;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+.opfg-choice-stat-effect[data-tone="positive"] .opfg-choice-stat-effect__value {
+  color: var(--feedback-positive);
+}
+
+.opfg-choice-stat-effect[data-tone="negative"] .opfg-choice-stat-effect__value {
+  color: var(--feedback-negative);
+}
+
+/* Stat names stay out of the choice visually, but remain available on hover. */
+.opfg-choice-stat-effect::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  z-index: 90;
+  left: 50%;
+  bottom: calc(100% + 0.42rem);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 0.2rem);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+  padding: 0.32rem 0.46rem;
+  background: var(--surface-strong);
+  box-shadow: var(--shadow-control);
+  color: var(--text-primary);
+  font-size: 0.66rem;
+  font-weight: 650;
+  white-space: nowrap;
+  transition:
+    opacity 110ms var(--ease-standard),
+    transform 110ms var(--ease-standard);
+}
+
+.opfg-choice-stat-effect:hover::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-choice-stat-effect::after {
+    transition-duration: 1ms;
+  }
+}
+
+/* OPFG CHOICE DICE: stat-colored compact badge */
+.opfg-choice-dice-badge {
+  --opfg-stat-color: var(--accent-gold);
+
+  border-color:
+    color-mix(in srgb, var(--opfg-stat-color) 48%, var(--border-subtle)) !important;
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--opfg-stat-color) 16%, transparent),
+      color-mix(in srgb, var(--opfg-stat-color) 6%, transparent)
+    ),
+    color-mix(in srgb, var(--surface-soft) 82%, transparent) !important;
+  color: var(--opfg-stat-color) !important;
+}
+
+.opfg-choice-dice-badge[data-stat="morale"] {
+  --opfg-stat-color: var(--stat-morale);
+}
+
+.opfg-choice-dice-badge[data-stat="strength"] {
+  --opfg-stat-color: var(--stat-strength);
+}
+
+.opfg-choice-dice-badge[data-stat="agility"] {
+  --opfg-stat-color: var(--stat-agility);
+}
+
+.opfg-choice-dice-badge[data-stat="observation"] {
+  --opfg-stat-color: var(--stat-observation);
+}
+
+.opfg-choice-dice-badge[data-stat="intelligence"] {
+  --opfg-stat-color: var(--stat-intelligence);
+}
+
+.opfg-choice-dice-badge[data-stat="navigation"] {
+  --opfg-stat-color: var(--stat-navigation);
+}
+
+.opfg-choice-dice-badge[data-stat="charisma"] {
+  --opfg-stat-color: var(--stat-charisma);
+}
+
+.opfg-choice-dice-badge[data-stat="luck"] {
+  --opfg-stat-color: var(--stat-luck);
+}
+
+.opfg-choice-button .opfg-choice-dice-badge__dice,
+.opfg-choice-button .opfg-choice-dice-badge__stat {
+  width: var(--ui-choice-dice-icon-size);
+  height: var(--ui-choice-dice-icon-size);
+  flex: 0 0 auto;
+  color: currentColor;
+}
+
+.opfg-choice-dice-badge__probability {
+  color: currentColor;
+  font-size: inherit;
+  font-weight: 850;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

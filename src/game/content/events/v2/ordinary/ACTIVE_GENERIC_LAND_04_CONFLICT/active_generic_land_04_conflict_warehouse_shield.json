@@ -1,0 +1,219 @@
+{
+  "id": "active_generic_land_04_conflict_warehouse_shield",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_04_conflict_warehouse_shield.title",
+  "textKey": "event.active_generic_land_04_conflict_warehouse_shield.text",
+  "choices": [
+    {
+      "id": "break_hold",
+      "textKey": "event.active_generic_land_04_conflict_warehouse_shield.choice.break_hold",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "break_hold_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_warehouse_shield.outcome.break_hold.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_warehouse_shield_i01_crate"
+              }
+            ]
+          },
+          "failure": {
+            "id": "break_hold_failure",
+            "textKey": "event.active_generic_land_04_conflict_warehouse_shield.outcome.break_hold.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_warehouse_shield_i01_crate"
+              }
+            ]
+          },
+          "success": {
+            "id": "break_hold_success",
+            "textKey": "event.active_generic_land_04_conflict_warehouse_shield.outcome.break_hold.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_warehouse_shield_i01_crate"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "break_hold_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_warehouse_shield.outcome.break_hold.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_warehouse_shield_i01_crate"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "talk_guard",
+      "textKey": "event.active_generic_land_04_conflict_warehouse_shield.choice.talk_guard",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "talk_guard_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_warehouse_shield.outcome.talk_guard.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_warehouse_shield_i01_crate"
+              }
+            ]
+          },
+          "failure": {
+            "id": "talk_guard_failure",
+            "textKey": "event.active_generic_land_04_conflict_warehouse_shield.outcome.talk_guard.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_warehouse_shield_i01_crate"
+              }
+            ]
+          },
+          "success": {
+            "id": "talk_guard_success",
+            "textKey": "event.active_generic_land_04_conflict_warehouse_shield.outcome.talk_guard.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_warehouse_shield_i01_crate"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "talk_guard_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_warehouse_shield.outcome.talk_guard.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_warehouse_shield_i01_crate"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "go_limp",
+      "textKey": "event.active_generic_land_04_conflict_warehouse_shield.choice.go_limp",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "go_limp",
+          "textKey": "event.active_generic_land_04_conflict_warehouse_shield.outcome.go_limp",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_warehouse_shield_i01_crate"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cooperate",
+      "textKey": "event.active_generic_land_04_conflict_warehouse_shield.choice.cooperate",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cooperate",
+          "textKey": "event.active_generic_land_04_conflict_warehouse_shield.outcome.cooperate",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_warehouse_shield_i01_crate"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "trade"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "industrial"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          }
+        ]
+      }
+    ]
+  }
+}

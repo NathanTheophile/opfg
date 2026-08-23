@@ -1,0 +1,62 @@
+{
+  "id": "active_marine_01_sealed_manifest_s7q_internal_board",
+  "kind": "scheduled",
+  "titleKey": "event.active_marine_01_sealed_manifest_s7q_internal_board.title",
+  "textKey": "event.active_marine_01_sealed_manifest_s7q_internal_board.text",
+  "choices": [
+    {
+      "id": "demand_minutes",
+      "textKey": "event.active_marine_01_sealed_manifest_s7q_internal_board.choice.demand_minutes.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_s7q_internal_board_demand_minutes",
+          "textKey": "event.active_marine_01_sealed_manifest_s7q_internal_board.choice.demand_minutes.outcome.active_marine_01_sealed_manifest_s7q_internal_board_demand_minutes.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s8q_missing_minutes",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "trust_board",
+      "textKey": "event.active_marine_01_sealed_manifest_s7q_internal_board.choice.trust_board.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_s7q_internal_board_trust_board",
+          "textKey": "event.active_marine_01_sealed_manifest_s7q_internal_board.choice.trust_board.outcome.active_marine_01_sealed_manifest_s7q_internal_board_trust_board.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s8q_missing_minutes",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "marine"
+    }
+  }
+}

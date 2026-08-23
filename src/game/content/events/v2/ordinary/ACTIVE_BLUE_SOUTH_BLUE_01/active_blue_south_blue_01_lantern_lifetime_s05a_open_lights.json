@@ -1,0 +1,61 @@
+{
+  "id": "active_blue_south_blue_01_lantern_lifetime_s05a_open_lights",
+  "kind": "scheduled",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "titleKey": "event.active_blue_south_blue_01_lantern_lifetime_s05a_open_lights.title",
+  "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s05a_open_lights.text",
+  "choices": [
+    {
+      "id": "leave_open",
+      "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s05a_open_lights.choice.leave_open.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "open",
+          "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s05a_open_lights.choice.leave_open.outcome.open.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hand_to_locals",
+      "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s05a_open_lights.choice.hand_to_locals.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hand",
+          "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s05a_open_lights.choice.hand_to_locals.outcome.hand.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "currentSeaIs",
+      "seaId": "south_blue"
+    }
+  },
+  "fallbackEventId": "active_blue_south_blue_01_lantern_lifetime_outside_south_blue"
+}

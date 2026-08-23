@@ -1,0 +1,244 @@
+{
+  "id": "career_revolutionary_09_free_towns",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_08_synchronized_ports",
+            "choiceId": "people"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_08_evacuation_corridor",
+            "choiceId": "people"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_08_signal_fortress",
+            "choiceId": "people"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_revolutionary_08_missing_commander",
+            "choiceId": "people"
+          }
+        ]
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_revolutionary",
+    "chapterId": "active_09_legacy",
+    "nodeId": "career_revolutionary_09_free_towns",
+    "parentNodeIds": [
+      "career_revolutionary_08_synchronized_ports",
+      "career_revolutionary_08_evacuation_corridor",
+      "career_revolutionary_08_signal_fortress",
+      "career_revolutionary_08_missing_commander"
+    ],
+    "selectionPriority": 30
+  },
+  "titleKey": "event.career_revolutionary_09_free_towns.title",
+  "textKey": "event.career_revolutionary_09_free_towns.text",
+  "choices": [
+    {
+      "id": "network",
+      "textKey": "event.career_revolutionary_09_free_towns.choice.network.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "network_criticalFailure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_09_free_towns_i01"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1500
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.career_revolutionary_09_free_towns.choice.network.outcome.network_criticalFailure.text"
+          },
+          "failure": {
+            "id": "network_failure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_09_free_towns_i01"
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 500
+              }
+            ],
+            "textKey": "event.career_revolutionary_09_free_towns.choice.network.outcome.network_failure.text"
+          },
+          "success": {
+            "id": "network_success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_09_free_towns_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.career_revolutionary_09_free_towns.choice.network.outcome.network_success.text"
+          },
+          "criticalSuccess": {
+            "id": "network_criticalSuccess",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_09_free_towns_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.career_revolutionary_09_free_towns.choice.network.outcome.network_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "people",
+      "textKey": "event.career_revolutionary_09_free_towns.choice.people.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "people",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_revolutionary_09_free_towns_i01"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_revolutionary_09_free_towns.choice.people.outcome.people.text"
+        }
+      }
+    },
+    {
+      "id": "strike",
+      "textKey": "event.career_revolutionary_09_free_towns.choice.strike.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "strike_criticalFailure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_09_free_towns_i01"
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 2000
+              }
+            ],
+            "textKey": "event.career_revolutionary_09_free_towns.choice.strike.outcome.strike_criticalFailure.text"
+          },
+          "failure": {
+            "id": "strike_failure",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_09_free_towns_i01"
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1000
+              }
+            ],
+            "textKey": "event.career_revolutionary_09_free_towns.choice.strike.outcome.strike_failure.text"
+          },
+          "success": {
+            "id": "strike_success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_09_free_towns_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 1500
+              }
+            ],
+            "textKey": "event.career_revolutionary_09_free_towns.choice.strike.outcome.strike_success.text"
+          },
+          "criticalSuccess": {
+            "id": "strike_criticalSuccess",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_revolutionary_09_free_towns_i01"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 3000
+              }
+            ],
+            "textKey": "event.career_revolutionary_09_free_towns.choice.strike.outcome.strike_criticalSuccess.text"
+          }
+        }
+      }
+    }
+  ]
+}

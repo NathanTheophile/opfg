@@ -1,0 +1,75 @@
+{
+  "id": "ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant",
+  "kind": "immediate",
+  "cast": [
+    "neighborhood_merchant"
+  ],
+  "titleKey": "event.ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant.title",
+  "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant.text",
+  "choices": [
+    {
+      "id": "tell_truth",
+      "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant.choice.tell_truth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trust_begins",
+          "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant.choice.tell_truth.outcome.trust_begins.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_early_01_lt01_first_return",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "promise_results",
+      "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant.choice.promise_results.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "thin_trust",
+          "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant.choice.promise_results.outcome.thin_trust.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_early_01_lt01_first_return",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shrug",
+      "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant.choice.shrug.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "thread_ends",
+          "textKey": "event.ch_v2_generic_early_01_tiny_delivery_i03_back_to_merchant.choice.shrug.outcome.thread_ends.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -2
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

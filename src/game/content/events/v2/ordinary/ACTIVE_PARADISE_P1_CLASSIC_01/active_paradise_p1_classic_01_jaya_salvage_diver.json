@@ -1,0 +1,102 @@
+{
+  "id": "active_paradise_p1_classic_01_jaya_salvage_diver",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p1_classic_01_jaya_salvage_diver.title",
+  "textKey": "event.active_paradise_p1_classic_01_jaya_salvage_diver.text",
+  "choices": [
+    {
+      "id": "pace_the_ascent",
+      "textKey": "event.active_paradise_p1_classic_01_jaya_salvage_diver.choice.pace_the_ascent.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "pace_the_ascent_criticalfailure",
+            "textKey": "event.active_paradise_p1_classic_01_jaya_salvage_diver.choice.pace_the_ascent.outcome.pace_the_ascent_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              }
+            ]
+          },
+          "failure": {
+            "id": "pace_the_ascent_failure",
+            "textKey": "event.active_paradise_p1_classic_01_jaya_salvage_diver.choice.pace_the_ascent.outcome.pace_the_ascent_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              }
+            ]
+          },
+          "success": {
+            "id": "pace_the_ascent_success",
+            "textKey": "event.active_paradise_p1_classic_01_jaya_salvage_diver.choice.pace_the_ascent.outcome.pace_the_ascent_success.text",
+            "effects": []
+          },
+          "criticalSuccess": {
+            "id": "pace_the_ascent_criticalsuccess",
+            "textKey": "event.active_paradise_p1_classic_01_jaya_salvage_diver.choice.pace_the_ascent.outcome.pace_the_ascent_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "let_the_medic_take_over",
+      "textKey": "event.active_paradise_p1_classic_01_jaya_salvage_diver.choice.let_the_medic_take_over.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "let_the_medic_take_over_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_jaya_salvage_diver.choice.let_the_medic_take_over.outcome.let_the_medic_take_over_outcome.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "medic"
+      }
+    },
+    {
+      "id": "cut_the_salvage_bag",
+      "textKey": "event.active_paradise_p1_classic_01_jaya_salvage_diver.choice.cut_the_salvage_bag.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_the_salvage_bag_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_jaya_salvage_diver.choice.cut_the_salvage_bag.outcome.cut_the_salvage_bag_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p1_classic"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "jaya_island"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "id": "ch_combat_01_cloth_tail_chase_i1",
+  "titleKey": "event.ch_combat_01_cloth_tail_chase_i1.title",
+  "textKey": "event.ch_combat_01_cloth_tail_chase_i1.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "check_knees",
+      "textKey": "event.ch_combat_01_cloth_tail_chase_i1.choice.check_knees.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "knees_checked",
+          "textKey": "event.ch_combat_01_cloth_tail_chase_i1.choice.check_knees.outcome.knees_checked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_cloth_tail_chase_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "separate_runners",
+      "textKey": "event.ch_combat_01_cloth_tail_chase_i1.choice.separate_runners.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "runners_separated",
+          "textKey": "event.ch_combat_01_cloth_tail_chase_i1.choice.separate_runners.outcome.runners_separated.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_cloth_tail_chase_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "return_cloths",
+      "textKey": "event.ch_combat_01_cloth_tail_chase_i1.choice.return_cloths.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cloths_returned",
+          "textKey": "event.ch_combat_01_cloth_tail_chase_i1.choice.return_cloths.outcome.cloths_returned.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_cloth_tail_chase_i2"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

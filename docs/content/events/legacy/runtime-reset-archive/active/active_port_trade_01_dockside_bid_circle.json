@@ -1,0 +1,136 @@
+{
+  "id": "active_port_trade_01_dockside_bid_circle",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_dockside_bid_circle.title",
+  "textKey": "event.active_port_trade_01_dockside_bid_circle.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "inspecter",
+      "textKey": "event.active_port_trade_01_dockside_bid_circle.choice.inspecter.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_port_trade_01_dockside_bid_circle.choice.inspecter.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_port_trade_01_dockside_bid_circle_i1_manifest"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_port_trade_01_dockside_bid_circle.choice.inspecter.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_port_trade_01_dockside_bid_circle_i1_manifest"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_port_trade_01_dockside_bid_circle.choice.inspecter.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_port_trade_01_dockside_bid_circle_i1_manifest"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_port_trade_01_dockside_bid_circle.choice.inspecter.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_port_trade_01_dockside_bid_circle_i1_manifest"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "offre_basse",
+      "textKey": "event.active_port_trade_01_dockside_bid_circle.choice.offre_basse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "offre_tentee",
+          "textKey": "event.active_port_trade_01_dockside_bid_circle.choice.offre_basse.outcome.offre_tentee.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_dockside_bid_circle_i1_manifest"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "retrait",
+      "textKey": "event.active_port_trade_01_dockside_bid_circle.choice.retrait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "retrait_prudent",
+          "textKey": "event.active_port_trade_01_dockside_bid_circle.choice.retrait.outcome.retrait_prudent.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

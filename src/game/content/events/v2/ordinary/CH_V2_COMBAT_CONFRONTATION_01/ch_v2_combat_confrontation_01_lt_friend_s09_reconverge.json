@@ -1,0 +1,79 @@
+{
+  "id": "ch_v2_combat_confrontation_01_lt_friend_s09_reconverge",
+  "kind": "scheduled",
+  "priority": 100,
+  "titleKey": "event.ch_v2_combat_confrontation_01_lt_friend_s09_reconverge.title",
+  "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s09_reconverge.text",
+  "choices": [
+    {
+      "id": "save_person",
+      "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s09_reconverge.choice.save_person",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "save_person_outcome",
+          "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s09_reconverge.outcome.save_person_outcome",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_confrontation_01_lt_friend_s10_pass_method",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "save_exit",
+      "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s09_reconverge.choice.save_exit",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "save_exit_outcome",
+          "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s09_reconverge.outcome.save_exit_outcome",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_confrontation_01_lt_friend_s10_pass_method",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "save_choice",
+      "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s09_reconverge.choice.save_choice",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "save_choice_outcome",
+          "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s09_reconverge.outcome.save_choice_outcome",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_confrontation_01_lt_friend_s10_pass_method",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cancelIf": {
+    "type": "npcStatusIs",
+    "npcId": "childhood_friend",
+    "status": "dead"
+  },
+  "scheduledReach": "unrestricted"
+}

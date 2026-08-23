@@ -1,0 +1,95 @@
+{
+  "id": "active_paradise_p1_classic_01_route_markers_l4_clean_board",
+  "kind": "scheduled",
+  "titleKey": "event.active_paradise_p1_classic_01_route_markers_l4_clean_board.title",
+  "textKey": "event.active_paradise_p1_classic_01_route_markers_l4_clean_board.text",
+  "choices": [
+    {
+      "id": "remove_the_board",
+      "textKey": "event.active_paradise_p1_classic_01_route_markers_l4_clean_board.choice.remove_the_board.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "remove_the_board_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_route_markers_l4_clean_board.choice.remove_the_board.outcome.remove_the_board_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_a_current_rule",
+      "textKey": "event.active_paradise_p1_classic_01_route_markers_l4_clean_board.choice.leave_a_current_rule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_a_current_rule_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_route_markers_l4_clean_board.choice.leave_a_current_rule.outcome.leave_a_current_rule_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "walk_away",
+      "textKey": "event.active_paradise_p1_classic_01_route_markers_l4_clean_board.choice.walk_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "walk_away_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_route_markers_l4_clean_board.choice.walk_away.outcome.walk_away_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p1_classic"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "currentSeaIs",
+              "seaId": "grand_line_paradise"
+            },
+            {
+              "type": "currentSeaIs",
+              "seaId": "sky"
+            }
+          ]
+        }
+      },
+      {
+        "type": "locationIs",
+        "locationId": "sabaody_archipelago"
+      }
+    ]
+  }
+}

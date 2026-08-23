@@ -1,0 +1,212 @@
+{
+  "id": "active_generic_land_05_strange_noodle_tower",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "food"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_05_strange_noodle_tower.title",
+  "textKey": "event.active_generic_land_05_strange_noodle_tower.text",
+  "choices": [
+    {
+      "id": "brace_tower",
+      "textKey": "event.active_generic_land_05_strange_noodle_tower.choice.brace_tower.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "brace_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_noodle_tower.choice.brace_tower.outcome.brace_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_noodle_tower_i01_sauce_wave"
+              }
+            ]
+          },
+          "failure": {
+            "id": "brace_failure",
+            "textKey": "event.active_generic_land_05_strange_noodle_tower.choice.brace_tower.outcome.brace_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_noodle_tower_i01_sauce_wave"
+              }
+            ]
+          },
+          "success": {
+            "id": "brace_success",
+            "textKey": "event.active_generic_land_05_strange_noodle_tower.choice.brace_tower.outcome.brace_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_noodle_tower_i01_sauce_wave"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "brace_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_noodle_tower.choice.brace_tower.outcome.brace_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_noodle_tower_i01_sauce_wave"
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 200
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cut_sections",
+      "textKey": "event.active_generic_land_05_strange_noodle_tower.choice.cut_sections.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cut_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_noodle_tower.choice.cut_sections.outcome.cut_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_noodle_tower_i01_sauce_wave"
+              }
+            ]
+          },
+          "failure": {
+            "id": "cut_failure",
+            "textKey": "event.active_generic_land_05_strange_noodle_tower.choice.cut_sections.outcome.cut_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_noodle_tower_i01_sauce_wave"
+              }
+            ]
+          },
+          "success": {
+            "id": "cut_success",
+            "textKey": "event.active_generic_land_05_strange_noodle_tower.choice.cut_sections.outcome.cut_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_noodle_tower_i01_sauce_wave"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cut_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_noodle_tower.choice.cut_sections.outcome.cut_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_noodle_tower_i01_sauce_wave"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cook_call",
+      "textKey": "event.active_generic_land_05_strange_noodle_tower.choice.cook_call.text",
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "cook"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cook_sliced",
+          "textKey": "event.active_generic_land_05_strange_noodle_tower.choice.cook_call.outcome.cook_sliced.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_noodle_tower_i01_sauce_wave"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "save_bowls",
+      "textKey": "event.active_generic_land_05_strange_noodle_tower.choice.save_bowls.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bowls_saved",
+          "textKey": "event.active_generic_land_05_strange_noodle_tower.choice.save_bowls.outcome.bowls_saved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_noodle_tower_i01_sauce_wave"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

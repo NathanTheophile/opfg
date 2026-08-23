@@ -1,0 +1,79 @@
+{
+  "id": "ch_v2_generic_late_01_favor_s05b_open_ended",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_favor_s05b_open_ended.title",
+  "textKey": "event.ch_v2_generic_late_01_favor_s05b_open_ended.text",
+  "choices": [
+    {
+      "id": "finish_anyway",
+      "textKey": "event.ch_v2_generic_late_01_favor_s05b_open_ended.choice.finish_anyway.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "finish_anyway_outcome",
+          "textKey": "event.ch_v2_generic_late_01_favor_s05b_open_ended.choice.finish_anyway.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s06b_cost_arrives",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stop_late",
+      "textKey": "event.ch_v2_generic_late_01_favor_s05b_open_ended.choice.stop_late.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stop_late_outcome",
+          "textKey": "event.ch_v2_generic_late_01_favor_s05b_open_ended.choice.stop_late.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s06b_cost_arrives",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_return",
+      "textKey": "event.ch_v2_generic_late_01_favor_s05b_open_ended.choice.ask_return.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_return_outcome",
+          "textKey": "event.ch_v2_generic_late_01_favor_s05b_open_ended.choice.ask_return.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s06b_cost_arrives",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

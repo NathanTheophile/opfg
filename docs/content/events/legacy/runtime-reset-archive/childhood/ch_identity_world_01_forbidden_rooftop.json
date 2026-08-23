@@ -1,0 +1,142 @@
+{
+  "id": "ch_identity_world_01_forbidden_rooftop",
+  "titleKey": "event.ch_identity_world_01_forbidden_rooftop.title",
+  "textKey": "event.ch_identity_world_01_forbidden_rooftop.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 143
+      },
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "any",
+            "conditions": [
+              {
+                "type": "locationHasTag",
+                "tagId": "urban"
+              },
+              {
+                "type": "locationHasTag",
+                "tagId": "city"
+              }
+            ]
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "coastal"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "climb_anyway",
+      "textKey": "event.ch_identity_world_01_forbidden_rooftop.choice.climb_anyway.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "caught_early",
+            "textKey": "event.ch_identity_world_01_forbidden_rooftop.choice.climb_anyway.outcome.caught_early.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_forbidden_rooftop_i1_guard_whistle"
+              }
+            ]
+          },
+          "failure": {
+            "id": "noisy_climb",
+            "textKey": "event.ch_identity_world_01_forbidden_rooftop.choice.climb_anyway.outcome.noisy_climb.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_forbidden_rooftop_i1_guard_whistle"
+              }
+            ]
+          },
+          "success": {
+            "id": "clean_climb",
+            "textKey": "event.ch_identity_world_01_forbidden_rooftop.choice.climb_anyway.outcome.clean_climb.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_forbidden_rooftop_i1_guard_whistle"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "perfect_climb",
+            "textKey": "event.ch_identity_world_01_forbidden_rooftop.choice.climb_anyway.outcome.perfect_climb.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_forbidden_rooftop_i1_guard_whistle"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ask_permission",
+      "textKey": "event.ch_identity_world_01_forbidden_rooftop.choice.ask_permission.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "permission_asked",
+          "textKey": "event.ch_identity_world_01_forbidden_rooftop.choice.ask_permission.outcome.permission_asked.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_forbidden_rooftop_i1_guard_whistle"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "respect_sign",
+      "textKey": "event.ch_identity_world_01_forbidden_rooftop.choice.respect_sign.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sign_respected",
+          "textKey": "event.ch_identity_world_01_forbidden_rooftop.choice.respect_sign.outcome.sign_respected.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

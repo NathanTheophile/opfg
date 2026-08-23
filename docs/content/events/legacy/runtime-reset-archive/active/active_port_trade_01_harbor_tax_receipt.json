@@ -1,0 +1,140 @@
+{
+  "id": "active_port_trade_01_harbor_tax_receipt",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_harbor_tax_receipt.title",
+  "textKey": "event.active_port_trade_01_harbor_tax_receipt.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "lire",
+      "textKey": "event.active_port_trade_01_harbor_tax_receipt.choice.lire.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_port_trade_01_harbor_tax_receipt.choice.lire.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -80
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_port_trade_01_harbor_tax_receipt.choice.lire.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -50
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_port_trade_01_harbor_tax_receipt.choice.lire.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -20
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_port_trade_01_harbor_tax_receipt.choice.lire.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 80
+      }
+    },
+    {
+      "id": "payer",
+      "textKey": "event.active_port_trade_01_harbor_tax_receipt.choice.payer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paye",
+          "textKey": "event.active_port_trade_01_harbor_tax_receipt.choice.payer.outcome.paye.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -70
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 70
+      }
+    },
+    {
+      "id": "annuler",
+      "textKey": "event.active_port_trade_01_harbor_tax_receipt.choice.annuler.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "annule",
+          "textKey": "event.active_port_trade_01_harbor_tax_receipt.choice.annuler.outcome.annule.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

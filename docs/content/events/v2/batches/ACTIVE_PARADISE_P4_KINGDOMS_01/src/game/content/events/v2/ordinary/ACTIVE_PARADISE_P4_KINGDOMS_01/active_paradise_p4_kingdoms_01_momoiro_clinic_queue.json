@@ -1,0 +1,150 @@
+{
+  "id": "active_paradise_p4_kingdoms_01_momoiro_clinic_queue",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.title",
+  "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.text",
+  "choices": [
+    {
+      "id": "risk",
+      "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.choice.risk.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "risk_criticalfailure",
+            "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.choice.risk.outcome.risk_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "risk_failure",
+            "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.choice.risk.outcome.risk_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "risk_success",
+            "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.choice.risk.outcome.risk_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "risk_criticalsuccess",
+            "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.choice.risk.outcome.risk_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "alt_1",
+      "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.choice.alt_1.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alt_1_outcome",
+          "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.choice.alt_1.outcome.alt_1_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "alt_2",
+      "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.choice.alt_2.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alt_2_outcome",
+          "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.choice.alt_2.outcome.alt_2_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "role",
+      "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.choice.role.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "role_criticalfailure",
+            "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.choice.role.outcome.role_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "role_failure",
+            "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.choice.role.outcome.role_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "role_success",
+            "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.choice.role.outcome.role_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "role_criticalsuccess",
+            "textKey": "event.active_paradise_p4_kingdoms_01_momoiro_clinic_queue.choice.role.outcome.role_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        },
+        "actor": {
+          "type": "crewRole",
+          "roleId": "medic",
+          "statId": "intelligence"
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "medic"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p4_kingdoms"
+      },
+      {
+        "type": "locationWithin",
+        "locationId": "momoiro_island"
+      }
+    ]
+  }
+}

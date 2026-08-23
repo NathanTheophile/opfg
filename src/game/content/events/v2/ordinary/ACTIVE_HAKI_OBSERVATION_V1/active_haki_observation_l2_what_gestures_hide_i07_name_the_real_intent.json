@@ -1,0 +1,120 @@
+{
+  "id": "active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent.title",
+  "textKey": "event.active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent.text",
+  "choices": [
+    {
+      "id": "order_everyone",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent.choice.order_everyone.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "commands_collide",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent.choice.order_everyone.outcome.commands_collide.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action"
+              }
+            ]
+          },
+          "failure": {
+            "id": "one_ignores",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent.choice.order_everyone.outcome.one_ignores.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action"
+              }
+            ]
+          },
+          "success": {
+            "id": "room_settles",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent.choice.order_everyone.outcome.room_settles.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "spoken_before_motion",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent.choice.order_everyone.outcome.spoken_before_motion.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "secure_satchel",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent.choice.secure_satchel.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "object_secured",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent.choice.secure_satchel.outcome.object_secured.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "state_each_intent",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent.choice.state_each_intent.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "room_stunned",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent.choice.state_each_intent.outcome.room_stunned.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l2_what_gestures_hide_i08_before_choice_becomes_action"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    }
+  ]
+}

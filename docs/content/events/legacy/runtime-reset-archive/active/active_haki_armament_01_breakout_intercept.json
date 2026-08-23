@@ -1,0 +1,132 @@
+{
+  "id": "active_haki_armament_01_breakout_intercept",
+  "kind": "normal",
+  "titleKey": "event.active_haki_armament_01_breakout_intercept.title",
+  "textKey": "event.active_haki_armament_01_breakout_intercept.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "ordinary",
+      "textKey": "event.active_haki_armament_01_breakout_intercept.choice.ordinary.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_haki_armament_01_breakout_intercept.choice.ordinary.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_armament_01_intercept_aftermath",
+                "delayMonths": 2
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_haki_armament_01_breakout_intercept.choice.ordinary.outcome.failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_armament_01_intercept_aftermath",
+                "delayMonths": 2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_haki_armament_01_breakout_intercept.choice.ordinary.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_armament_01_intercept_aftermath",
+                "delayMonths": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_haki_armament_01_breakout_intercept.choice.ordinary.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_armament_01_intercept_aftermath",
+                "delayMonths": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "alternate",
+      "textKey": "event.active_haki_armament_01_breakout_intercept.choice.alternate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alternate",
+          "textKey": "event.active_haki_armament_01_breakout_intercept.choice.alternate.outcome.alternate.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_armament_01_intercept_aftermath",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "haki",
+      "textKey": "event.active_haki_armament_01_breakout_intercept.choice.haki.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "success",
+          "textKey": "event.active_haki_armament_01_breakout_intercept.choice.haki.outcome.success.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_armament_01_intercept_aftermath",
+              "delayMonths": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "armament",
+        "level": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "id": "active_generic_sea_04_nav_hazard_crosswind_backfill",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_04_nav_hazard_crosswind_backfill.title",
+  "textKey": "event.active_generic_sea_04_nav_hazard_crosswind_backfill.text",
+  "choices": [
+    {
+      "id": "cut_sheet",
+      "textKey": "event.active_generic_sea_04_nav_hazard_crosswind_backfill.choice.cut_sheet.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_sheet",
+          "textKey": "event.active_generic_sea_04_nav_hazard_crosswind_backfill.outcome.cut_sheet.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    },
+    {
+      "id": "duck_and_release",
+      "textKey": "event.active_generic_sea_04_nav_hazard_crosswind_backfill.choice.duck_and_release.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "duck_and_release",
+          "textKey": "event.active_generic_sea_04_nav_hazard_crosswind_backfill.outcome.duck_and_release.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_mast_take",
+      "textKey": "event.active_generic_sea_04_nav_hazard_crosswind_backfill.choice.let_mast_take.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "let_mast_take",
+          "textKey": "event.active_generic_sea_04_nav_hazard_crosswind_backfill.outcome.let_mast_take.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    },
+    {
+      "id": "shipwright_backwind",
+      "textKey": "event.active_generic_sea_04_nav_hazard_crosswind_backfill.choice.shipwright_backwind.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shipwright_backwind",
+          "textKey": "event.active_generic_sea_04_nav_hazard_crosswind_backfill.outcome.shipwright_backwind.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

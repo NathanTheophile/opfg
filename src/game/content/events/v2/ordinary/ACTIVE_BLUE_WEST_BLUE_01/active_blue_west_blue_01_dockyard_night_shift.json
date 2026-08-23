@@ -1,0 +1,121 @@
+{
+  "id": "active_blue_west_blue_01_dockyard_night_shift",
+  "kind": "normal",
+  "titleKey": "event.active_blue_west_blue_01_dockyard_night_shift.title",
+  "textKey": "event.active_blue_west_blue_01_dockyard_night_shift.text",
+  "choices": [
+    {
+      "id": "take_action",
+      "textKey": "event.active_blue_west_blue_01_dockyard_night_shift.choice.take_action.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "take_action_criticalfailure",
+            "textKey": "event.active_blue_west_blue_01_dockyard_night_shift.choice.take_action.outcome.take_action_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              }
+            ]
+          },
+          "failure": {
+            "id": "take_action_failure",
+            "textKey": "event.active_blue_west_blue_01_dockyard_night_shift.choice.take_action.outcome.take_action_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "take_action_success",
+            "textKey": "event.active_blue_west_blue_01_dockyard_night_shift.choice.take_action.outcome.take_action_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "take_action_criticalsuccess",
+            "textKey": "event.active_blue_west_blue_01_dockyard_night_shift.choice.take_action.outcome.take_action_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "steady_choice",
+      "textKey": "event.active_blue_west_blue_01_dockyard_night_shift.choice.steady_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "steady_choice_outcome",
+          "textKey": "event.active_blue_west_blue_01_dockyard_night_shift.choice.steady_choice.outcome.steady_choice_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "safe_choice",
+      "textKey": "event.active_blue_west_blue_01_dockyard_night_shift.choice.safe_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safe_choice_outcome",
+          "textKey": "event.active_blue_west_blue_01_dockyard_night_shift.choice.safe_choice.outcome.safe_choice_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "west_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "ship_repair"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "shipyard"
+      }
+    ]
+  }
+}

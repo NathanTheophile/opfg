@@ -1,0 +1,125 @@
+{
+  "id": "active_generic_sea_01_fog_bell_contact",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_fog_bell_contact.title",
+  "textKey": "event.active_generic_sea_01_fog_bell_contact.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "locate_sound",
+      "textKey": "event.active_generic_sea_01_fog_bell_contact.choice.locate_sound.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_01_fog_bell_contact.choice.locate_sound.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fog_bell_contact_i1_second_tone"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_01_fog_bell_contact.choice.locate_sound.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fog_bell_contact_i1_second_tone"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_01_fog_bell_contact.choice.locate_sound.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fog_bell_contact_i1_second_tone"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_01_fog_bell_contact.choice.locate_sound.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fog_bell_contact_i1_second_tone"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "answer_bell",
+      "textKey": "event.active_generic_sea_01_fog_bell_contact.choice.answer_bell.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_fog_bell_contact.choice.answer_bell.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_fog_bell_contact_i1_second_tone"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stay_silent",
+      "textKey": "event.active_generic_sea_01_fog_bell_contact.choice.stay_silent.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_fog_bell_contact.choice.stay_silent.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

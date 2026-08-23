@@ -1,0 +1,69 @@
+{
+  "id": "ch_family_social_01_ledger_s7_shared_cost",
+  "titleKey": "event.ch_family_social_01_ledger_s7_shared_cost.title",
+  "textKey": "event.ch_family_social_01_ledger_s7_shared_cost.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "contribute_time",
+      "textKey": "event.ch_family_social_01_ledger_s7_shared_cost.choice.contribute_time.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "time_contributed",
+          "textKey": "event.ch_family_social_01_ledger_s7_shared_cost.choice.contribute_time.outcome.time_contributed.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_s8_public_reckoning",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "contribute_money",
+      "textKey": "event.ch_family_social_01_ledger_s7_shared_cost.choice.contribute_money.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "money_contributed",
+          "textKey": "event.ch_family_social_01_ledger_s7_shared_cost.choice.contribute_money.outcome.money_contributed.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_s8_public_reckoning",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline_share",
+      "textKey": "event.ch_family_social_01_ledger_s7_shared_cost.choice.decline_share.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "share_declined",
+          "textKey": "event.ch_family_social_01_ledger_s7_shared_cost.choice.decline_share.outcome.share_declined.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_s8_public_reckoning",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

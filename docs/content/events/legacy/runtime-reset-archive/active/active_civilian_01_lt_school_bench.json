@@ -1,0 +1,78 @@
+{
+  "id": "active_civilian_01_lt_school_bench",
+  "titleKey": "event.active_civilian_01_lt_school_bench.title",
+  "textKey": "event.active_civilian_01_lt_school_bench.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "rotate_teachers",
+      "textKey": "event.active_civilian_01_lt_school_bench.choice.rotate_teachers.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rotate_teachers_result",
+          "textKey": "event.active_civilian_01_lt_school_bench.choice.rotate_teachers.outcome.rotate_teachers_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_others_take_tools",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "public_lessons",
+      "textKey": "event.active_civilian_01_lt_school_bench.choice.public_lessons.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "public_lessons_result",
+          "textKey": "event.active_civilian_01_lt_school_bench.choice.public_lessons.outcome.public_lessons_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_others_take_tools",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

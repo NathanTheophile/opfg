@@ -1,0 +1,113 @@
+{
+  "id": "ch_generic_early_01_borrowed_broom_i2_wobbling_stack",
+  "titleKey": "event.ch_generic_early_01_borrowed_broom_i2_wobbling_stack.title",
+  "textKey": "event.ch_generic_early_01_borrowed_broom_i2_wobbling_stack.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "brace_stack",
+      "textKey": "event.ch_generic_early_01_borrowed_broom_i2_wobbling_stack.choice.brace_stack.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stack_braced",
+          "textKey": "event.ch_generic_early_01_borrowed_broom_i2_wobbling_stack.choice.brace_stack.outcome.stack_braced.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_borrowed_broom_i3_adult_returns"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "catch_stack",
+      "textKey": "event.ch_generic_early_01_borrowed_broom_i2_wobbling_stack.choice.catch_stack.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "pile_falls",
+            "textKey": "event.ch_generic_early_01_borrowed_broom_i2_wobbling_stack.choice.catch_stack.outcome.pile_falls.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "half_falls",
+            "textKey": "event.ch_generic_early_01_borrowed_broom_i2_wobbling_stack.choice.catch_stack.outcome.half_falls.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_borrowed_broom_i3_adult_returns"
+              }
+            ]
+          },
+          "success": {
+            "id": "pile_saved",
+            "textKey": "event.ch_generic_early_01_borrowed_broom_i2_wobbling_stack.choice.catch_stack.outcome.pile_saved.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_borrowed_broom_i3_adult_returns"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "pile_reset",
+            "textKey": "event.ch_generic_early_01_borrowed_broom_i2_wobbling_stack.choice.catch_stack.outcome.pile_reset.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_borrowed_broom_i3_adult_returns"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_help",
+      "textKey": "event.ch_generic_early_01_borrowed_broom_i2_wobbling_stack.choice.call_help.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "help_arrives",
+          "textKey": "event.ch_generic_early_01_borrowed_broom_i2_wobbling_stack.choice.call_help.outcome.help_arrives.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_borrowed_broom_i3_adult_returns"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

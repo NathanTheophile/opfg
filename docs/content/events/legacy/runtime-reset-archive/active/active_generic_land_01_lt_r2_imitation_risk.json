@@ -1,0 +1,94 @@
+{
+  "id": "active_generic_land_01_lt_r2_imitation_risk",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_land_01_lt_r2_imitation_risk.title",
+  "textKey": "event.active_generic_land_01_lt_r2_imitation_risk.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "denounce_misuse",
+      "textKey": "event.active_generic_land_01_lt_r2_imitation_risk.choice.denounce_misuse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_r2_imitation_risk.choice.denounce_misuse.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_r3_distant_reference",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "publish_checklist",
+      "textKey": "event.active_generic_land_01_lt_r2_imitation_risk.choice.publish_checklist.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_r2_imitation_risk.choice.publish_checklist.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_r3_distant_reference",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stay_out",
+      "textKey": "event.active_generic_land_01_lt_r2_imitation_risk.choice.stay_out.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_r2_imitation_risk.choice.stay_out.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_r3_distant_reference",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

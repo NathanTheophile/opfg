@@ -1,0 +1,137 @@
+{
+  "id": "ch_generic_early_01_tidepool_glint",
+  "titleKey": "event.ch_generic_early_01_tidepool_glint.title",
+  "textKey": "event.ch_generic_early_01_tidepool_glint.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "watch_pattern",
+      "textKey": "event.ch_generic_early_01_tidepool_glint.choice.watch_pattern.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "splash_face",
+            "textKey": "event.ch_generic_early_01_tidepool_glint.choice.watch_pattern.outcome.splash_face.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_younger",
+                "amount": 2
+              }
+            ]
+          },
+          "failure": {
+            "id": "glint_lost",
+            "textKey": "event.ch_generic_early_01_tidepool_glint.choice.watch_pattern.outcome.glint_lost.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_younger",
+                "amount": 2
+              }
+            ]
+          },
+          "success": {
+            "id": "see_shell",
+            "textKey": "event.ch_generic_early_01_tidepool_glint.choice.watch_pattern.outcome.see_shell.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_younger",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "see_creature",
+            "textKey": "event.ch_generic_early_01_tidepool_glint.choice.watch_pattern.outcome.see_creature.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_younger",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "reach_fast",
+      "textKey": "event.ch_generic_early_01_tidepool_glint.choice.reach_fast.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hand_in_water",
+          "textKey": "event.ch_generic_early_01_tidepool_glint.choice.reach_fast.outcome.hand_in_water.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_it",
+      "textKey": "event.ch_generic_early_01_tidepool_glint.choice.leave_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "glint_left",
+          "textKey": "event.ch_generic_early_01_tidepool_glint.choice.leave_it.outcome.glint_left.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "coastal"
+      }
+    ]
+  },
+  "cast": [
+    "childhood_younger"
+  ]
+}

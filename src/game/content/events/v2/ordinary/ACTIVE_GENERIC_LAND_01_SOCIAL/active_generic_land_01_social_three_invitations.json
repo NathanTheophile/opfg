@@ -1,0 +1,82 @@
+{
+  "id": "active_generic_land_01_social_three_invitations",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_01_social_three_invitations.title",
+  "textKey": "event.active_generic_land_01_social_three_invitations.text",
+  "choices": [
+    {
+      "id": "take_first_invitation",
+      "textKey": "event.active_generic_land_01_social_three_invitations.choice.take_first_invitation.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "first_invite",
+          "textKey": "event.active_generic_land_01_social_three_invitations.choice.take_first_invitation.outcome.first_invite.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "visit_all_three",
+      "textKey": "event.active_generic_land_01_social_three_invitations.choice.visit_all_three.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "all_three",
+          "textKey": "event.active_generic_land_01_social_three_invitations.choice.visit_all_three.outcome.all_three.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send_gifts",
+      "textKey": "event.active_generic_land_01_social_three_invitations.choice.send_gifts.text",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "gifts_sent",
+          "textKey": "event.active_generic_land_01_social_three_invitations.choice.send_gifts.outcome.gifts_sent.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline_everyone",
+      "textKey": "event.active_generic_land_01_social_three_invitations.choice.decline_everyone.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "all_declined",
+          "textKey": "event.active_generic_land_01_social_three_invitations.choice.decline_everyone.outcome.all_declined.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

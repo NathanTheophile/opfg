@@ -1,0 +1,123 @@
+{
+  "id": "ch_generic_late_01_closing_bell",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_closing_bell.title",
+  "textKey": "event.ch_generic_late_01_closing_bell.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "village"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "rural"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "ring_now",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "late_ring",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_closing_bell_second_chance",
+              "delayMonths": 6
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_closing_bell.choice.ring_now.outcome.late_ring.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_closing_bell.choice.ring_now.text"
+    },
+    {
+      "id": "check_clock",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "checked",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_closing_bell_second_chance",
+              "delayMonths": 6
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_closing_bell.choice.check_clock.outcome.checked.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_closing_bell.choice.check_clock.text"
+    },
+    {
+      "id": "ask_backup",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "backup",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_closing_bell_second_chance",
+              "delayMonths": 6
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_closing_bell.choice.ask_backup.outcome.backup.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_closing_bell.choice.ask_backup.text"
+    },
+    {
+      "id": "pretend_done",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pretend",
+          "effects": [],
+          "textKey": "event.ch_generic_late_01_closing_bell.choice.pretend_done.outcome.pretend.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_closing_bell.choice.pretend_done.text"
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "id": "career_civilian_06_community_the_empty_seat",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_05_trade_the_withheld_wages",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_05_horizon_those_following_your_route",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_05_craft_the_jammed_sterilizer",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_05_community_the_shelter_overflows",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_05_fallback",
+            "choiceId": "community"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_civilian",
+    "chapterId": "active_06",
+    "nodeId": "career_civilian_06_community_the_empty_seat",
+    "parentNodeIds": [
+      "career_civilian_05_trade_the_withheld_wages",
+      "career_civilian_05_horizon_those_following_your_route",
+      "career_civilian_05_craft_the_jammed_sterilizer",
+      "career_civilian_05_community_the_shelter_overflows",
+      "career_civilian_05_fallback"
+    ],
+    "selectionPriority": 20
+  },
+  "titleKey": "event.career_civilian_06_community_the_empty_seat.title",
+  "textKey": "event.career_civilian_06_community_the_empty_seat.text",
+  "choices": [
+    {
+      "id": "trade",
+      "textKey": "event.career_civilian_06_community_the_empty_seat.choice.trade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 2000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_06_community_the_empty_seat.choice.trade.outcome.trade.text"
+        }
+      }
+    },
+    {
+      "id": "horizon",
+      "textKey": "event.career_civilian_06_community_the_empty_seat.choice.horizon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "horizon",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ],
+          "textKey": "event.career_civilian_06_community_the_empty_seat.choice.horizon.outcome.horizon.text"
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "craft",
+      "textKey": "event.career_civilian_06_community_the_empty_seat.choice.craft.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "craft",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_06_community_the_empty_seat.choice.craft.outcome.craft.text"
+        }
+      }
+    },
+    {
+      "id": "community",
+      "textKey": "event.career_civilian_06_community_the_empty_seat.choice.community.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "community",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_civilian_06_community_the_empty_seat_i01"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_06_community_the_empty_seat.choice.community.outcome.community.text"
+        }
+      }
+    }
+  ]
+}

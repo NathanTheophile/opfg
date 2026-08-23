@@ -1,0 +1,144 @@
+{
+  "id": "active_recruitment_new_cast_01_blank_board",
+  "kind": "normal",
+  "titleKey": "event.active_recruitment_new_cast_01_blank_board.title",
+  "textKey": "event.active_recruitment_new_cast_01_blank_board.text",
+  "choices": [
+    {
+      "id": "offer_a_berth",
+      "textKey": "event.active_recruitment_new_cast_01_blank_board.choice.offer_a_berth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "offer_a_berth_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_blank_board.choice.offer_a_berth.outcome.offer_a_berth_outcome.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "active_recruit_notice_carver",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_notice_carver",
+              "amount": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "commission_one_notice",
+      "textKey": "event.active_recruitment_new_cast_01_blank_board.choice.commission_one_notice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "commission_one_notice_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_blank_board.choice.commission_one_notice.outcome.commission_one_notice_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_notice_carver",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "leave_the_board_blank",
+      "textKey": "event.active_recruitment_new_cast_01_blank_board.choice.leave_the_board_blank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_the_board_blank_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_blank_board.choice.leave_the_board_blank.outcome.leave_the_board_blank_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_notice_carver",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "active_recruit_notice_carver"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "city"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "village"
+          }
+        ]
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_new_cast_01_mirror_stamp"
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "active_recruit_notice_carver",
+        "value": 5
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "active_recruit_notice_carver"
+      }
+    ]
+  }
+}

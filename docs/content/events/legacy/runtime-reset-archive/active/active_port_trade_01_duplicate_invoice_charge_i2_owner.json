@@ -1,0 +1,63 @@
+{
+  "id": "active_port_trade_01_duplicate_invoice_charge_i2_owner",
+  "kind": "immediate",
+  "titleKey": "event.active_port_trade_01_duplicate_invoice_charge_i2_owner.title",
+  "textKey": "event.active_port_trade_01_duplicate_invoice_charge_i2_owner.text",
+  "choices": [
+    {
+      "id": "partager",
+      "textKey": "event.active_port_trade_01_duplicate_invoice_charge_i2_owner.choice.partager.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "partage",
+          "textKey": "event.active_port_trade_01_duplicate_invoice_charge_i2_owner.choice.partager.outcome.partage.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_duplicate_invoice_charge_i3_settlement"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dernier",
+      "textKey": "event.active_port_trade_01_duplicate_invoice_charge_i2_owner.choice.dernier.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "responsable",
+          "textKey": "event.active_port_trade_01_duplicate_invoice_charge_i2_owner.choice.dernier.outcome.responsable.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_duplicate_invoice_charge_i3_settlement"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "public",
+      "textKey": "event.active_port_trade_01_duplicate_invoice_charge_i2_owner.choice.public.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "public",
+          "textKey": "event.active_port_trade_01_duplicate_invoice_charge_i2_owner.choice.public.outcome.public.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_duplicate_invoice_charge_i3_settlement"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

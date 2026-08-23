@@ -1,0 +1,76 @@
+{
+  "id": "active_generic_combat_01_rival_p8_roofline_extraction",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_p8_roofline_extraction.title",
+  "textKey": "event.active_generic_combat_01_rival_p8_roofline_extraction.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "trust",
+      "textKey": "event.active_generic_combat_01_rival_p8_roofline_extraction.choice.trust.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trust_outcome",
+          "textKey": "event.active_generic_combat_01_rival_p8_roofline_extraction.choice.trust.outcome.trust_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_p9_debt_named",
+              "delayMonths": 12
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_p8_roofline_extraction_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "share",
+      "textKey": "event.active_generic_combat_01_rival_p8_roofline_extraction.choice.share.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "share_outcome",
+          "textKey": "event.active_generic_combat_01_rival_p8_roofline_extraction.choice.share.outcome.share_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_p9_debt_named",
+              "delayMonths": 12
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_p8_roofline_extraction_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

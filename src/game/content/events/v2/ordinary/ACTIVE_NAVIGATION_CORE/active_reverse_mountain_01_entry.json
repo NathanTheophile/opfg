@@ -1,0 +1,87 @@
+{
+  "id": "active_reverse_mountain_01_entry",
+  "kind": "normal",
+  "titleKey": "event.active_reverse_mountain_01_entry.title",
+  "textKey": "event.active_reverse_mountain_01_entry.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "reverse_mountain"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "watch_current",
+      "textKey": "event.active_reverse_mountain_01_entry.choice.watch_current",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "watch_current",
+          "textKey": "event.active_reverse_mountain_01_entry.outcome.watch_current",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_reverse_mountain_01_i01_first_current"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "brace_early",
+      "textKey": "event.active_reverse_mountain_01_entry.choice.brace_early",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "brace_early",
+          "textKey": "event.active_reverse_mountain_01_entry.outcome.brace_early",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_reverse_mountain_01_i01_first_current"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "move_forward",
+      "textKey": "event.active_reverse_mountain_01_entry.choice.move_forward",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "move_forward",
+          "textKey": "event.active_reverse_mountain_01_entry.outcome.move_forward",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_reverse_mountain_01_i01_first_current"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

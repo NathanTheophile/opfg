@@ -1,0 +1,78 @@
+{
+  "id": "active_civilian_01_lt_craft_house",
+  "titleKey": "event.active_civilian_01_lt_craft_house.title",
+  "textKey": "event.active_civilian_01_lt_craft_house.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "publish_limits",
+      "textKey": "event.active_civilian_01_lt_craft_house.choice.publish_limits.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "publish_limits_result",
+          "textKey": "event.active_civilian_01_lt_craft_house.choice.publish_limits.outcome.publish_limits_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_hands_know_name",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mentor_craft",
+      "textKey": "event.active_civilian_01_lt_craft_house.choice.mentor_craft.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mentor_craft_result",
+          "textKey": "event.active_civilian_01_lt_craft_house.choice.mentor_craft.outcome.mentor_craft_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_hands_know_name",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

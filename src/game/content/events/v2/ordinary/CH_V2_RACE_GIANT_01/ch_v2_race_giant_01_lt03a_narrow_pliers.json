@@ -1,0 +1,97 @@
+{
+  "id": "ch_v2_race_giant_01_lt03a_narrow_pliers",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_race_giant_01_lt03a_narrow_pliers.title",
+  "textKey": "event.ch_v2_race_giant_01_lt03a_narrow_pliers.text",
+  "choices": [
+    {
+      "id": "bare_control",
+      "textKey": "event.ch_v2_race_giant_01_lt03a_narrow_pliers.choice.bare_control.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bare_control_criticalfailure",
+            "textKey": "event.ch_v2_race_giant_01_lt03a_narrow_pliers.choice.bare_control.outcome.bare_control_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_race_giant_01_lt04a_spring_latch",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "failure": {
+            "id": "bare_control_failure",
+            "textKey": "event.ch_v2_race_giant_01_lt03a_narrow_pliers.choice.bare_control.outcome.bare_control_failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_race_giant_01_lt04a_spring_latch",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "success": {
+            "id": "bare_control_success",
+            "textKey": "event.ch_v2_race_giant_01_lt03a_narrow_pliers.choice.bare_control.outcome.bare_control_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_race_giant_01_lt04a_spring_latch",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "bare_control_criticalsuccess",
+            "textKey": "event.ch_v2_race_giant_01_lt03a_narrow_pliers.choice.bare_control.outcome.bare_control_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_race_giant_01_lt04a_spring_latch",
+                "delayMonths": 24
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "rest_wrist",
+      "textKey": "event.ch_v2_race_giant_01_lt03a_narrow_pliers.choice.rest_wrist.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rested",
+          "textKey": "event.ch_v2_race_giant_01_lt03a_narrow_pliers.choice.rest_wrist.outcome.rested.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_giant_01_lt04a_spring_latch",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100
+}

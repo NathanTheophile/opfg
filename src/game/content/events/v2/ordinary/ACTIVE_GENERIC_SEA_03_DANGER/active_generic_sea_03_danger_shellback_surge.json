@@ -1,0 +1,81 @@
+{
+  "id": "active_generic_sea_03_danger_shellback_surge",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_shellback_surge.title",
+  "textKey": "event.active_generic_sea_03_danger_shellback_surge.text",
+  "choices": [
+    {
+      "id": "grab_rail",
+      "textKey": "event.active_generic_sea_03_danger_shellback_surge.choice.grab_rail.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "grab_rail",
+          "textKey": "event.active_generic_sea_03_danger_shellback_surge.outcome.grab_rail.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -2
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    },
+    {
+      "id": "shift_weight",
+      "textKey": "event.active_generic_sea_03_danger_shellback_surge.choice.shift_weight.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shift_weight",
+          "textKey": "event.active_generic_sea_03_danger_shellback_surge.outcome.shift_weight.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cut_dragging_line",
+      "textKey": "event.active_generic_sea_03_danger_shellback_surge.choice.cut_dragging_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_dragging_line",
+          "textKey": "event.active_generic_sea_03_danger_shellback_surge.outcome.cut_dragging_line.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

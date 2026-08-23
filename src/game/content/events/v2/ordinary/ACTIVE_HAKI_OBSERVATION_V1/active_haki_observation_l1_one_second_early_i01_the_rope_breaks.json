@@ -1,0 +1,115 @@
+{
+  "id": "active_haki_observation_l1_one_second_early_i01_the_rope_breaks",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l1_one_second_early_i01_the_rope_breaks.title",
+  "textKey": "event.active_haki_observation_l1_one_second_early_i01_the_rope_breaks.text",
+  "choices": [
+    {
+      "id": "catch_swing",
+      "textKey": "event.active_haki_observation_l1_one_second_early_i01_the_rope_breaks.choice.catch_swing.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "crushed_hands",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i01_the_rope_breaks.choice.catch_swing.outcome.crushed_hands.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i02_runaway_cart"
+              }
+            ]
+          },
+          "failure": {
+            "id": "slowed_only",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i01_the_rope_breaks.choice.catch_swing.outcome.slowed_only.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i02_runaway_cart"
+              }
+            ]
+          },
+          "success": {
+            "id": "held",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i01_the_rope_breaks.choice.catch_swing.outcome.held.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i02_runaway_cart"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "turned_safe",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i01_the_rope_breaks.choice.catch_swing.outcome.turned_safe.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i02_runaway_cart"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_lane",
+      "textKey": "event.active_haki_observation_l1_one_second_early_i01_the_rope_breaks.choice.clear_lane.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lane_cleared",
+          "textKey": "event.active_haki_observation_l1_one_second_early_i01_the_rope_breaks.choice.clear_lane.outcome.lane_cleared.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l1_one_second_early_i02_runaway_cart"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cut_second_line",
+      "textKey": "event.active_haki_observation_l1_one_second_early_i01_the_rope_breaks.choice.cut_second_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "load_dropped",
+          "textKey": "event.active_haki_observation_l1_one_second_early_i01_the_rope_breaks.choice.cut_second_line.outcome.load_dropped.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l1_one_second_early_i02_runaway_cart"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

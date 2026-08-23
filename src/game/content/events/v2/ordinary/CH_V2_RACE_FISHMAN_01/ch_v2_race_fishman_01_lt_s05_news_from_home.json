@@ -1,0 +1,82 @@
+{
+  "id": "ch_v2_race_fishman_01_lt_s05_news_from_home",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_race_fishman_01_lt_s05_news_from_home.title",
+  "textKey": "event.ch_v2_race_fishman_01_lt_s05_news_from_home.text",
+  "choices": [
+    {
+      "id": "remember_choice_branch",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s05_news_from_home.choice.remember_choice_branch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "branch_a_recalled",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s05_news_from_home.choice.remember_choice_branch.outcome.branch_a_recalled.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s06_new_shore_same_question",
+              "delayMonths": 18
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "ch_v2_race_fishman_01_lt_s04a_terms_remembered"
+      }
+    },
+    {
+      "id": "remember_refusal_branch",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s05_news_from_home.choice.remember_refusal_branch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "branch_b_recalled",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s05_news_from_home.choice.remember_refusal_branch.outcome.branch_b_recalled.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s06_new_shore_same_question",
+              "delayMonths": 18
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "ch_v2_race_fishman_01_lt_s04b_asked_properly"
+      }
+    },
+    {
+      "id": "let_story_travel",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s05_news_from_home.choice.let_story_travel.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "story_travels",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s05_news_from_home.choice.let_story_travel.outcome.story_travels.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s06_new_shore_same_question",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

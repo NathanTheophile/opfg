@@ -1,0 +1,80 @@
+{
+  "id": "active_generic_sea_01_night_mast_knock",
+  "kind": "normal",
+  "replay": { "cooldownMonths": 24 },
+  "titleKey": "event.active_generic_sea_01_night_mast_knock.title",
+  "textKey": "event.active_generic_sea_01_night_mast_knock.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "trace_vibration",
+      "textKey": "event.active_generic_sea_01_night_mast_knock.choice.trace_vibration.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_night_mast_knock.choice.trace_vibration.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wake_shipwright",
+      "textKey": "event.active_generic_sea_01_night_mast_knock.choice.wake_shipwright.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_night_mast_knock.choice.wake_shipwright.outcome.done.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    },
+    {
+      "id": "leave_till_morning",
+      "textKey": "event.active_generic_sea_01_night_mast_knock.choice.leave_till_morning.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_night_mast_knock.choice.leave_till_morning.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

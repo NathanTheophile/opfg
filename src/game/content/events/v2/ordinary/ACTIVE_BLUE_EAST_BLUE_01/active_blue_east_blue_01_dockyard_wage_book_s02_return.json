@@ -1,0 +1,71 @@
+{
+  "id": "active_blue_east_blue_01_dockyard_wage_book_s02_return",
+  "kind": "scheduled",
+  "titleKey": "event.active_blue_east_blue_01_dockyard_wage_book_s02_return.title",
+  "textKey": "event.active_blue_east_blue_01_dockyard_wage_book_s02_return.text",
+  "choices": [
+    {
+      "id": "send_the_receipt",
+      "textKey": "event.active_blue_east_blue_01_dockyard_wage_book_s02_return.choice.send_the_receipt.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "send_the_receipt_outcome",
+          "textKey": "event.active_blue_east_blue_01_dockyard_wage_book_s02_return.choice.send_the_receipt.outcome.send_the_receipt_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_dockyard_wage_book_s03_close",
+              "delayMonths": 5
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "active_blue_east_blue_01_dockyard_wage_book",
+        "choiceId": "pay_one_worker"
+      }
+    },
+    {
+      "id": "add_pressure",
+      "textKey": "event.active_blue_east_blue_01_dockyard_wage_book_s02_return.choice.add_pressure.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "add_pressure_outcome",
+          "textKey": "event.active_blue_east_blue_01_dockyard_wage_book_s02_return.choice.add_pressure.outcome.add_pressure_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_dockyard_wage_book_s03_close",
+              "delayMonths": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_them_the_copy",
+      "textKey": "event.active_blue_east_blue_01_dockyard_wage_book_s02_return.choice.leave_them_the_copy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_them_the_copy_outcome",
+          "textKey": "event.active_blue_east_blue_01_dockyard_wage_book_s02_return.choice.leave_them_the_copy.outcome.leave_them_the_copy_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

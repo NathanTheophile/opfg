@@ -1,0 +1,83 @@
+{
+  "id": "active_generic_combat_01_drifting_skiff_threat",
+  "kind": "normal",
+  "titleKey": "event.active_generic_combat_01_drifting_skiff_threat.title",
+  "textKey": "event.active_generic_combat_01_drifting_skiff_threat.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "engage",
+      "textKey": "event.active_generic_combat_01_drifting_skiff_threat.choice.engage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "engage_outcome",
+          "textKey": "event.active_generic_combat_01_drifting_skiff_threat.choice.engage.outcome.engage_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_drifting_skiff_threat_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "control",
+      "textKey": "event.active_generic_combat_01_drifting_skiff_threat.choice.control.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "control_outcome",
+          "textKey": "event.active_generic_combat_01_drifting_skiff_threat.choice.control.outcome.control_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_drifting_skiff_threat_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw",
+      "textKey": "event.active_generic_combat_01_drifting_skiff_threat.choice.withdraw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "withdraw_outcome",
+          "textKey": "event.active_generic_combat_01_drifting_skiff_threat.choice.withdraw.outcome.withdraw_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

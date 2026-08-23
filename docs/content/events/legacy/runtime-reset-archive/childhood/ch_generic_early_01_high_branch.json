@@ -1,0 +1,143 @@
+{
+  "id": "ch_generic_early_01_high_branch",
+  "titleKey": "event.ch_generic_early_01_high_branch.title",
+  "textKey": "event.ch_generic_early_01_high_branch.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "climb",
+      "textKey": "event.ch_generic_early_01_high_branch.choice.climb.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hard_drop",
+            "textKey": "event.ch_generic_early_01_high_branch.choice.climb.outcome.hard_drop.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 4
+              }
+            ]
+          },
+          "failure": {
+            "id": "come_down",
+            "textKey": "event.ch_generic_early_01_high_branch.choice.climb.outcome.come_down.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 2
+              }
+            ]
+          },
+          "success": {
+            "id": "toy_recovered",
+            "textKey": "event.ch_generic_early_01_high_branch.choice.climb.outcome.toy_recovered.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 5
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "easy_recovery",
+            "textKey": "event.ch_generic_early_01_high_branch.choice.climb.outcome.easy_recovery.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_friend",
+                "amount": 6
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "long_pole",
+      "textKey": "event.ch_generic_early_01_high_branch.choice.long_pole.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pole_solution",
+          "textKey": "event.ch_generic_early_01_high_branch.choice.long_pole.outcome.pole_solution.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wait_taller",
+      "textKey": "event.ch_generic_early_01_high_branch.choice.wait_taller.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "waited_help",
+          "textKey": "event.ch_generic_early_01_high_branch.choice.wait_taller.outcome.waited_help.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_friend",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  },
+  "cast": [
+    "childhood_friend"
+  ]
+}

@@ -1,0 +1,232 @@
+.opfg-crew-rail {
+  width: var(--ui-crew-width);
+  display: grid;
+  justify-items: start;
+  gap: var(--ui-crew-gap);
+  overflow: visible;
+}
+
+.opfg-crew-header {
+  width: var(--ui-crew-width);
+}
+
+.opfg-crew-member-row {
+  display: grid;
+  width: max-content;
+  grid-template-columns: auto;
+  align-items: start;
+  gap: 0.3rem;
+}
+
+.opfg-crew-member-row.has-power {
+  grid-template-columns: auto auto;
+}
+
+.opfg-crew-member-panel {
+  width: var(--ui-crew-width);
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+  transition: width 220ms var(--ease-standard);
+}
+
+.opfg-crew-member-panel.is-expanded {
+  width: max-content;
+  min-width: var(--ui-crew-width);
+}
+
+.opfg-crew-member__header {
+  display: block;
+  width: 100%;
+  border-radius: inherit;
+}
+
+.opfg-crew-member__toggle {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) 1.2rem;
+  min-height: var(--ui-crew-row-height);
+  align-items: center;
+  column-gap: 0.45rem;
+  border: 0;
+  border-radius: inherit;
+  padding: 0.42rem var(--ui-crew-row-px);
+  background: transparent;
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.opfg-crew-member-panel.is-expanded .opfg-crew-member__toggle {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.opfg-crew-member__toggle:hover {
+  background: transparent;
+  filter: brightness(var(--ui-hover-brightness));
+}
+
+.opfg-crew-member__role {
+  position: relative;
+  display: grid;
+  place-items: center;
+  color: var(--accent-gold);
+}
+
+.opfg-crew-member__name {
+  min-width: 0;
+  overflow: hidden;
+  font-size: var(--ui-crew-name-size);
+  font-weight: 720;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.opfg-crew-member__power-tooltip {
+  display: block;
+  width: var(--ui-crew-row-height);
+  height: var(--ui-crew-row-height);
+  align-self: start;
+}
+
+.opfg-crew-member__power {
+  --opfg-nine-slice-width: 11px;
+
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  place-items: center;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--accent-gold);
+  cursor: pointer;
+  transition:
+    filter var(--motion-fast) var(--ease-standard),
+    opacity var(--motion-fast) var(--ease-standard);
+}
+
+.opfg-crew-member__power > svg {
+  position: relative;
+  z-index: 1;
+}
+
+.opfg-crew-member__power:hover:not(:disabled) {
+  filter: brightness(var(--ui-hover-brightness));
+}
+
+.opfg-crew-member__power:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.opfg-crew-member__chevron {
+  justify-self: end;
+  color: var(--text-muted);
+  transition:
+    transform 180ms var(--ease-standard),
+    color 150ms var(--ease-standard);
+}
+
+.opfg-crew-member-panel.is-expanded .opfg-crew-member__chevron {
+  transform: rotate(90deg);
+  color: var(--accent-gold);
+}
+
+.opfg-crew-member__stats {
+  width: max-content;
+  display: grid;
+  grid-template-columns: repeat(4, 2.1rem);
+  column-gap: var(--ui-crew-stat-column-gap);
+  row-gap: var(--ui-crew-stat-row-gap);
+  max-height: 0;
+  overflow: hidden;
+  border-top: 0 solid var(--border-subtle);
+  padding: 0 0.42rem;
+  opacity: 0;
+  transform: translateY(-0.15rem);
+  transition:
+    max-height 220ms var(--ease-standard),
+    opacity 160ms var(--ease-standard),
+    transform 180ms var(--ease-standard),
+    padding 180ms var(--ease-standard),
+    border-width 180ms var(--ease-standard);
+}
+
+.opfg-crew-member__actions,
+.opfg-crew-destinations,
+.opfg-companion-selector {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.5rem;
+}
+
+.opfg-companion-selector {
+  width: var(--ui-crew-width);
+  font-size: 0.72rem;
+}
+
+.opfg-crew-action {
+  border: 1px solid color-mix(in srgb, var(--accent-gold) 45%, transparent);
+  border-radius: 0.35rem;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.72rem;
+  color: inherit;
+}
+
+.opfg-crew-action:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.opfg-crew-power-confirm {
+  background: color-mix(in srgb, var(--accent-gold) 16%, transparent);
+  border-color: color-mix(in srgb, var(--accent-gold) 70%, transparent);
+  font-weight: 700;
+}
+
+.opfg-crew-member-panel.is-expanded .opfg-crew-member__stats {
+  max-height: 5.4rem;
+  overflow: visible;
+  border-top-width: 1px;
+  padding: 0.3rem 0.42rem 0.5rem;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.opfg-crew-stat {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  justify-items: center;
+  gap: 0.1rem;
+  color: var(--opfg-stat-color, var(--accent-gold));
+}
+
+.opfg-crew-stat svg {
+  color: var(--opfg-stat-color, var(--accent-gold));
+  stroke: currentColor;
+}
+
+.opfg-crew-stat b {
+  color: var(--text-muted);
+  font-size: var(--ui-crew-stat-number-size);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* Health keeps its dedicated readable numeric treatment. */
+.opfg-crew-stat[data-stat="health"] b {
+  color: var(--opfg-stat-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-crew-member-panel,
+  .opfg-crew-member__chevron,
+  .opfg-crew-member__stats {
+    transition: none;
+  }
+}

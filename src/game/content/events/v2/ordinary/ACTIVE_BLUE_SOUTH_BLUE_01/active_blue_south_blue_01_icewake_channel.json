@@ -1,0 +1,191 @@
+{
+  "id": "active_blue_south_blue_01_icewake_channel",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_icewake_channel.title",
+  "textKey": "event.active_blue_south_blue_01_icewake_channel.text",
+  "choices": [
+    {
+      "id": "read_blue_water",
+      "textKey": "event.active_blue_south_blue_01_icewake_channel.choice.read_blue_water.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_blue_water_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_icewake_channel.choice.read_blue_water.outcome.read_blue_water_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_icewake_channel_i01_blue_gap"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_blue_water_failure",
+            "textKey": "event.active_blue_south_blue_01_icewake_channel.choice.read_blue_water.outcome.read_blue_water_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_icewake_channel_i01_blue_gap"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_blue_water_success",
+            "textKey": "event.active_blue_south_blue_01_icewake_channel.choice.read_blue_water.outcome.read_blue_water_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_icewake_channel_i01_blue_gap"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_blue_water_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_icewake_channel.choice.read_blue_water.outcome.read_blue_water_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_icewake_channel_i01_blue_gap"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "force_turn",
+      "textKey": "event.active_blue_south_blue_01_icewake_channel.choice.force_turn.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "force_turn_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_icewake_channel.choice.force_turn.outcome.force_turn_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -7
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_icewake_channel_i01_blue_gap"
+              }
+            ]
+          },
+          "failure": {
+            "id": "force_turn_failure",
+            "textKey": "event.active_blue_south_blue_01_icewake_channel.choice.force_turn.outcome.force_turn_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_icewake_channel_i01_blue_gap"
+              }
+            ]
+          },
+          "success": {
+            "id": "force_turn_success",
+            "textKey": "event.active_blue_south_blue_01_icewake_channel.choice.force_turn.outcome.force_turn_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_icewake_channel_i01_blue_gap"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "force_turn_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_icewake_channel.choice.force_turn.outcome.force_turn_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_south_blue_01_icewake_channel_i01_blue_gap"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "back_off",
+      "textKey": "event.active_blue_south_blue_01_icewake_channel.choice.back_off.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "back",
+          "textKey": "event.active_blue_south_blue_01_icewake_channel.choice.back_off.outcome.back.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_south_blue_01_icewake_channel_i01_blue_gap"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

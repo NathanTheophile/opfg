@@ -1,0 +1,66 @@
+{
+  "id": "active_blue_south_blue_01_lantern_lifetime_s02a_public_roster",
+  "kind": "scheduled",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "titleKey": "event.active_blue_south_blue_01_lantern_lifetime_s02a_public_roster.title",
+  "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s02a_public_roster.text",
+  "choices": [
+    {
+      "id": "keep_names_open",
+      "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s02a_public_roster.choice.keep_names_open.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "open",
+          "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s02a_public_roster.choice.keep_names_open.outcome.open.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_south_blue_01_lantern_lifetime_s03_broken_chain",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hide_routes",
+      "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s02a_public_roster.choice.hide_routes.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hide",
+          "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s02a_public_roster.choice.hide_routes.outcome.hide.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_south_blue_01_lantern_lifetime_s03_broken_chain",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "currentSeaIs",
+      "seaId": "south_blue"
+    }
+  },
+  "fallbackEventId": "active_blue_south_blue_01_lantern_lifetime_outside_south_blue"
+}

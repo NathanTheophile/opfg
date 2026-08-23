@@ -1,0 +1,143 @@
+{
+  "id": "ch_south_blue_01_briss_fever_landing",
+  "titleKey": "event.ch_south_blue_01_briss_fever_landing.title",
+  "textKey": "event.ch_south_blue_01_briss_fever_landing.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "locationIs",
+        "locationId": "briss_port"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "clear_space",
+      "textKey": "event.ch_south_blue_01_briss_fever_landing.choice.clear_space.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "crowd_pushes",
+            "textKey": "event.ch_south_blue_01_briss_fever_landing.choice.clear_space.outcome.crowd_pushes.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_south_blue_01_briss_fever_landing_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "partial_space",
+            "textKey": "event.ch_south_blue_01_briss_fever_landing.choice.clear_space.outcome.partial_space.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_south_blue_01_briss_fever_landing_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "space_opened",
+            "textKey": "event.ch_south_blue_01_briss_fever_landing.choice.clear_space.outcome.space_opened.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_south_blue_01_briss_fever_landing_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "lane_opened",
+            "textKey": "event.ch_south_blue_01_briss_fever_landing.choice.clear_space.outcome.lane_opened.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_south_blue_01_briss_fever_landing_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_medical",
+      "textKey": "event.ch_south_blue_01_briss_fever_landing.choice.call_medical.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "help_called",
+          "textKey": "event.ch_south_blue_01_briss_fever_landing.choice.call_medical.outcome.help_called.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_south_blue_01_briss_fever_landing_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "steady_sailor",
+      "textKey": "event.ch_south_blue_01_briss_fever_landing.choice.steady_sailor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sailor_steady",
+          "textKey": "event.ch_south_blue_01_briss_fever_landing.choice.steady_sailor.outcome.sailor_steady.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_south_blue_01_briss_fever_landing_i1"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

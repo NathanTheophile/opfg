@@ -1,0 +1,94 @@
+{
+  "id": "active_paradise_p2_trade_01_diver_rope_dispute",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p2_trade_01_diver_rope_dispute.title",
+  "textKey": "event.active_paradise_p2_trade_01_diver_rope_dispute.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p2_trade"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "glassreef_island"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "practical",
+      "textKey": "event.active_paradise_p2_trade_01_diver_rope_dispute.choice.practical.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "practical_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_diver_rope_dispute.choice.practical.outcome.practical_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "step_back",
+      "textKey": "event.active_paradise_p2_trade_01_diver_rope_dispute.choice.step_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "step_back_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_diver_rope_dispute.choice.step_back.outcome.step_back_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "broker",
+      "textKey": "event.active_paradise_p2_trade_01_diver_rope_dispute.choice.broker.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "broker_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_diver_rope_dispute.choice.broker.outcome.broker_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -300
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 300
+      }
+    },
+    {
+      "id": "use_helmsman",
+      "textKey": "event.active_paradise_p2_trade_01_diver_rope_dispute.choice.use_helmsman.text",
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "helmsman"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "use_helmsman_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_diver_rope_dispute.choice.use_helmsman.outcome.use_helmsman_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

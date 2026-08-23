@@ -1,0 +1,108 @@
+{
+  "id": "ch_identity_world_01_public_queue",
+  "titleKey": "event.ch_identity_world_01_public_queue.title",
+  "textKey": "event.ch_identity_world_01_public_queue.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "government"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "royal"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "capital"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "call_out_rule",
+      "textKey": "event.ch_identity_world_01_public_queue.choice.call_out_rule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rule_called",
+          "textKey": "event.ch_identity_world_01_public_queue.choice.call_out_rule.outcome.rule_called.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_clerk",
+      "textKey": "event.ch_identity_world_01_public_queue.choice.ask_clerk.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "clerk_asked",
+          "textKey": "event.ch_identity_world_01_public_queue.choice.ask_clerk.outcome.clerk_asked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "observe_power",
+      "textKey": "event.ch_identity_world_01_public_queue.choice.observe_power.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "power_observed",
+          "textKey": "event.ch_identity_world_01_public_queue.choice.observe_power.outcome.power_observed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ignore_queue",
+      "textKey": "event.ch_identity_world_01_public_queue.choice.ignore_queue.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "queue_ignored",
+          "textKey": "event.ch_identity_world_01_public_queue.choice.ignore_queue.outcome.queue_ignored.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

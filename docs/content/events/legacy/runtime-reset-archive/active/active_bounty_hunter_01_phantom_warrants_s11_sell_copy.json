@@ -1,0 +1,65 @@
+{
+  "id": "active_bounty_hunter_01_phantom_warrants_s11_sell_copy",
+  "titleKey": "event.active_bounty_hunter_01_phantom_warrants_s11_sell_copy.title",
+  "textKey": "event.active_bounty_hunter_01_phantom_warrants_s11_sell_copy.text",
+  "choices": [
+    {
+      "id": "verify_handoff",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s11_sell_copy.choice.verify_handoff.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s11_sell_copy.choice.verify_handoff.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s12_sell_end",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_money",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s11_sell_copy.choice.take_money.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s11_sell_copy.choice.take_money.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 2000
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s12_sell_end",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "bounty_hunter"
+    }
+  },
+  "eligibility": {
+    "type": "isOnLand"
+  }
+}

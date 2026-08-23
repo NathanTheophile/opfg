@@ -1,0 +1,81 @@
+{
+  "id": "active_port_trade_01_lt_s1",
+  "kind": "scheduled",
+  "titleKey": "event.active_port_trade_01_lt_s1.title",
+  "textKey": "event.active_port_trade_01_lt_s1.text",
+  "eligibility": {
+    "type": "locationHasService",
+    "serviceId": "trade"
+  },
+  "choices": [
+    {
+      "id": "verifier",
+      "textKey": "event.active_port_trade_01_lt_s1.choice.verifier.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "verifier",
+          "textKey": "event.active_port_trade_01_lt_s1.choice.verifier.outcome.verifier.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s2",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "negocier",
+      "textKey": "event.active_port_trade_01_lt_s1.choice.negocier.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "negocier",
+          "textKey": "event.active_port_trade_01_lt_s1.choice.negocier.outcome.negocier.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 180
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s2",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accepter",
+      "textKey": "event.active_port_trade_01_lt_s1.choice.accepter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accepter",
+          "textKey": "event.active_port_trade_01_lt_s1.choice.accepter.outcome.accepter.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 120
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s2",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

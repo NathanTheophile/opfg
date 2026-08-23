@@ -1,0 +1,94 @@
+{
+  "id": "ch_generic_early_01_three_breaths_s07_changed_meaning",
+  "titleKey": "event.ch_generic_early_01_three_breaths_s07_changed_meaning.title",
+  "textKey": "event.ch_generic_early_01_three_breaths_s07_changed_meaning.text",
+  "kind": "scheduled",
+  "choices": [
+    {
+      "id": "accept_shared_history",
+      "textKey": "event.ch_generic_early_01_three_breaths_s07_changed_meaning.choice.accept_shared_history.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shared_history_accepted",
+          "textKey": "event.ch_generic_early_01_three_breaths_s07_changed_meaning.choice.accept_shared_history.outcome.shared_history_accepted.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s08_storm_inside",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "ch_generic_early_01_three_breaths_s06a_used_by_another"
+      }
+    },
+    {
+      "id": "admit_privacy_cost",
+      "textKey": "event.ch_generic_early_01_three_breaths_s07_changed_meaning.choice.admit_privacy_cost.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "privacy_cost_admitted",
+          "textKey": "event.ch_generic_early_01_three_breaths_s07_changed_meaning.choice.admit_privacy_cost.outcome.privacy_cost_admitted.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s08_storm_inside",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "ch_generic_early_01_three_breaths_s06b_secret_weight"
+      }
+    },
+    {
+      "id": "keep_simple",
+      "textKey": "event.ch_generic_early_01_three_breaths_s07_changed_meaning.choice.keep_simple.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "principle_kept",
+          "textKey": "event.ch_generic_early_01_three_breaths_s07_changed_meaning.choice.keep_simple.outcome.principle_kept.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s08_storm_inside",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stop_here",
+      "textKey": "event.ch_generic_early_01_three_breaths_s07_changed_meaning.choice.stop_here.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "thread_end_at_s7",
+          "textKey": "event.ch_generic_early_01_three_breaths_s07_changed_meaning.choice.stop_here.outcome.thread_end_at_s7.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

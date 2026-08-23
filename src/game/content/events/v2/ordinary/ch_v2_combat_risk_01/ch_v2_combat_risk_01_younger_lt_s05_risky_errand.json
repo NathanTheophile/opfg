@@ -1,0 +1,86 @@
+{
+  "id": "ch_v2_combat_risk_01_younger_lt_s05_risky_errand",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_combat_risk_01_younger_lt_s05_risky_errand.title",
+  "textKey": "event.ch_v2_combat_risk_01_younger_lt_s05_risky_errand.text",
+  "choices": [
+    {
+      "id": "back_plan",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s05_risky_errand.choice.back_plan.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "back_plan",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s05_risky_errand.choice.back_plan.outcome.back_plan.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s06a_plan_followed",
+              "delayMonths": 22
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_limits",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s05_risky_errand.choice.ask_limits.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_limits",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s05_risky_errand.choice.ask_limits.outcome.ask_limits.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 6
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s06a_plan_followed",
+              "delayMonths": 22
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "forbid_again",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s05_risky_errand.choice.forbid_again.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "forbid_again",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s05_risky_errand.choice.forbid_again.outcome.forbid_again.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": -4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s06b_own_call",
+              "delayMonths": 22
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "childhood_younger"
+  ],
+  "priority": 100,
+  "cancelIf": {
+    "type": "npcStatusIs",
+    "npcId": "childhood_younger",
+    "status": "dead"
+  }
+}

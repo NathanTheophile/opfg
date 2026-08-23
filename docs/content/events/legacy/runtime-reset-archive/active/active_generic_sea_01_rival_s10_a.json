@@ -1,0 +1,94 @@
+{
+  "id": "active_generic_sea_01_rival_s10_a",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_sea_01_rival_s10_a.title",
+  "textKey": "event.active_generic_sea_01_rival_s10_a.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "pass_on",
+      "textKey": "event.active_generic_sea_01_rival_s10_a.choice.pass_on.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s10_a.choice.pass_on.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s11_a",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "use_only",
+      "textKey": "event.active_generic_sea_01_rival_s10_a.choice.use_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s10_a.choice.use_only.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s11_a",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "verify_first",
+      "textKey": "event.active_generic_sea_01_rival_s10_a.choice.verify_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s10_a.choice.verify_first.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s11_a",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

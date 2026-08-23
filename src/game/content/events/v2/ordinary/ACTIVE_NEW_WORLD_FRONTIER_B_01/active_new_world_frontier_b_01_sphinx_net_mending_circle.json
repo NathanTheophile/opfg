@@ -1,0 +1,99 @@
+{
+  "id": "active_new_world_frontier_b_01_sphinx_net_mending_circle",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_b_01_sphinx_net_mending_circle.title",
+  "textKey": "event.active_new_world_frontier_b_01_sphinx_net_mending_circle.text",
+  "choices": [
+    {
+      "id": "lend_hands",
+      "textKey": "event.active_new_world_frontier_b_01_sphinx_net_mending_circle.choice.lend_hands.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lend_hands_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_sphinx_net_mending_circle.choice.lend_hands.outcome.lend_hands_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "buy_cord",
+      "textKey": "event.active_new_world_frontier_b_01_sphinx_net_mending_circle.choice.buy_cord.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy_cord_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_sphinx_net_mending_circle.choice.buy_cord.outcome.buy_cord_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -750
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 750
+      }
+    },
+    {
+      "id": "use_shipwright",
+      "textKey": "event.active_new_world_frontier_b_01_sphinx_net_mending_circle.choice.use_shipwright.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "use_shipwright_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_sphinx_net_mending_circle.choice.use_shipwright.outcome.use_shipwright_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    },
+    {
+      "id": "do_not_choose",
+      "textKey": "event.active_new_world_frontier_b_01_sphinx_net_mending_circle.choice.do_not_choose.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "do_not_choose_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_sphinx_net_mending_circle.choice.do_not_choose.outcome.do_not_choose_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "sphinx"
+      }
+    ]
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "id": "active_civilian_01_lt_public_offer",
+  "titleKey": "event.active_civilian_01_lt_public_offer.title",
+  "textKey": "event.active_civilian_01_lt_public_offer.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "accept_space",
+      "textKey": "event.active_civilian_01_lt_public_offer.choice.accept_space.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_space_result",
+          "textKey": "event.active_civilian_01_lt_public_offer.choice.accept_space.outcome.accept_space_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_what_remains",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stay_independent",
+      "textKey": "event.active_civilian_01_lt_public_offer.choice.stay_independent.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stay_independent_result",
+          "textKey": "event.active_civilian_01_lt_public_offer.choice.stay_independent.outcome.stay_independent_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_what_remains",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "temporary_use",
+      "textKey": "event.active_civilian_01_lt_public_offer.choice.temporary_use.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "temporary_use_result",
+          "textKey": "event.active_civilian_01_lt_public_offer.choice.temporary_use.outcome.temporary_use_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_what_remains",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

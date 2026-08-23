@@ -1,0 +1,92 @@
+{
+  "id": "active_revolutionary_01_lantern_route_seed",
+  "kind": "normal",
+  "titleKey": "event.active_revolutionary_01_lantern_route_seed.title",
+  "textKey": "event.active_revolutionary_01_lantern_route_seed.text",
+  "choices": [
+    {
+      "id": "one_house",
+      "textKey": "event.active_revolutionary_01_lantern_route_seed.choice.one_house.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_lantern_route_seed.choice.one_house.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_revolutionary_01_lantern_first_house",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "civilian_terms",
+      "textKey": "event.active_revolutionary_01_lantern_route_seed.choice.civilian_terms.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_lantern_route_seed.choice.civilian_terms.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_revolutionary_01_lantern_first_house",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cautious_start",
+      "textKey": "event.active_revolutionary_01_lantern_route_seed.choice.cautious_start.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_lantern_route_seed.choice.cautious_start.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_revolutionary_01_lantern_first_house",
+              "delayMonths": 12
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "cautious"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "lifetimeThreadSeed": true
+}

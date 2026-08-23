@@ -1,0 +1,86 @@
+{
+  "id": "ch_v2_peers_01_lt_rival_s13_better_than_before",
+  "kind": "scheduled",
+  "narrativeFamily": "child_peer",
+  "priority": 100,
+  "eligibility": {
+    "type": "hasPlayed",
+    "eventId": "ch_v2_peers_01_lt_rival_s12_last_scorecard"
+  },
+  "cast": [
+    "childhood_rival"
+  ],
+  "titleKey": "event.ch_v2_peers_01_lt_rival_s13_better_than_before.title",
+  "textKey": "event.ch_v2_peers_01_lt_rival_s13_better_than_before.text",
+  "choices": [
+    {
+      "id": "person",
+      "textKey": "event.ch_v2_peers_01_lt_rival_s13_better_than_before.choice.person.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "person",
+          "textKey": "event.ch_v2_peers_01_lt_rival_s13_better_than_before.choice.person.outcome.person.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 6
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "childhood_rival",
+        "value": 8
+      }
+    },
+    {
+      "id": "self",
+      "textKey": "event.ch_v2_peers_01_lt_rival_s13_better_than_before.choice.self.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "self",
+          "textKey": "event.ch_v2_peers_01_lt_rival_s13_better_than_before.choice.self.outcome.self.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "score",
+      "textKey": "event.ch_v2_peers_01_lt_rival_s13_better_than_before.choice.score.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "score",
+          "textKey": "event.ch_v2_peers_01_lt_rival_s13_better_than_before.choice.score.outcome.score.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": -1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "npcRelationshipAtMost",
+        "npcId": "childhood_rival",
+        "value": 2
+      }
+    }
+  ]
+}

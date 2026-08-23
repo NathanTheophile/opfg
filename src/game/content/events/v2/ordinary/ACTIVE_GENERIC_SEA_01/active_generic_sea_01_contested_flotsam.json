@@ -1,0 +1,171 @@
+{
+  "id": "active_generic_sea_01_contested_flotsam",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_contested_flotsam.title",
+  "textKey": "event.active_generic_sea_01_contested_flotsam.text",
+  "choices": [
+    {
+      "id": "talk_split",
+      "textKey": "event.active_generic_sea_01_contested_flotsam.choice.talk_split.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "talk_split_criticalfailure",
+            "textKey": "event.active_generic_sea_01_contested_flotsam.choice.talk_split.outcome.talk_split_criticalfailure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_contested_flotsam_i01_open_strongbox"
+              }
+            ]
+          },
+          "failure": {
+            "id": "talk_split_failure",
+            "textKey": "event.active_generic_sea_01_contested_flotsam.choice.talk_split.outcome.talk_split_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_contested_flotsam_i01_open_strongbox"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "talk_split_success",
+            "textKey": "event.active_generic_sea_01_contested_flotsam.choice.talk_split.outcome.talk_split_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_contested_flotsam_i01_open_strongbox"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "talk_split_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_contested_flotsam.choice.talk_split.outcome.talk_split_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_contested_flotsam_i01_open_strongbox"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hook_first",
+      "textKey": "event.active_generic_sea_01_contested_flotsam.choice.hook_first.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hook_first_criticalfailure",
+            "textKey": "event.active_generic_sea_01_contested_flotsam.choice.hook_first.outcome.hook_first_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_contested_flotsam_i01_open_strongbox"
+              }
+            ]
+          },
+          "failure": {
+            "id": "hook_first_failure",
+            "textKey": "event.active_generic_sea_01_contested_flotsam.choice.hook_first.outcome.hook_first_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_contested_flotsam_i01_open_strongbox"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "hook_first_success",
+            "textKey": "event.active_generic_sea_01_contested_flotsam.choice.hook_first.outcome.hook_first_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_contested_flotsam_i01_open_strongbox"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hook_first_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_contested_flotsam.choice.hook_first.outcome.hook_first_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_contested_flotsam_i01_open_strongbox"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cede_box",
+      "textKey": "event.active_generic_sea_01_contested_flotsam.choice.cede_box.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cede_box_outcome",
+          "textKey": "event.active_generic_sea_01_contested_flotsam.choice.cede_box.outcome.cede_box_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

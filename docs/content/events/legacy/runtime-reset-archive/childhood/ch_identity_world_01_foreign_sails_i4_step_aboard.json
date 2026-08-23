@@ -1,0 +1,64 @@
+{
+  "id": "ch_identity_world_01_foreign_sails_i4_step_aboard",
+  "titleKey": "event.ch_identity_world_01_foreign_sails_i4_step_aboard.title",
+  "textKey": "event.ch_identity_world_01_foreign_sails_i4_step_aboard.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "study_chart_wall",
+      "textKey": "event.ch_identity_world_01_foreign_sails_i4_step_aboard.choice.study_chart_wall.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "charts_seen",
+          "textKey": "event.ch_identity_world_01_foreign_sails_i4_step_aboard.choice.study_chart_wall.outcome.charts_seen.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_foreign_sails_i5_departure_bell"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_about_home",
+      "textKey": "event.ch_identity_world_01_foreign_sails_i4_step_aboard.choice.ask_about_home.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "home_described",
+          "textKey": "event.ch_identity_world_01_foreign_sails_i4_step_aboard.choice.ask_about_home.outcome.home_described.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_foreign_sails_i5_departure_bell"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline_boarding",
+      "textKey": "event.ch_identity_world_01_foreign_sails_i4_step_aboard.choice.decline_boarding.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stayed_quay",
+          "textKey": "event.ch_identity_world_01_foreign_sails_i4_step_aboard.choice.decline_boarding.outcome.stayed_quay.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_foreign_sails_i5_departure_bell"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,209 @@
+{
+  "id": "active_generic_sea_01_distress_lantern",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_distress_lantern.title",
+  "textKey": "event.active_generic_sea_01_distress_lantern.text",
+  "choices": [
+    {
+      "id": "close_cleanly",
+      "textKey": "event.active_generic_sea_01_distress_lantern.choice.close_cleanly.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "close_cleanly_criticalfailure",
+            "textKey": "event.active_generic_sea_01_distress_lantern.choice.close_cleanly.outcome.close_cleanly_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_distress_lantern_i01_broken_rudder"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "close_cleanly_failure",
+            "textKey": "event.active_generic_sea_01_distress_lantern.choice.close_cleanly.outcome.close_cleanly_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_distress_lantern_i01_broken_rudder"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "close_cleanly_success",
+            "textKey": "event.active_generic_sea_01_distress_lantern.choice.close_cleanly.outcome.close_cleanly_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_distress_lantern_i01_broken_rudder"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "close_cleanly_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_distress_lantern.choice.close_cleanly.outcome.close_cleanly_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_distress_lantern_i01_broken_rudder"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "navigator_line",
+      "textKey": "event.active_generic_sea_01_distress_lantern.choice.navigator_line.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "navigator_line_criticalfailure",
+            "textKey": "event.active_generic_sea_01_distress_lantern.choice.navigator_line.outcome.navigator_line_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_distress_lantern_i01_broken_rudder"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "navigator_line_failure",
+            "textKey": "event.active_generic_sea_01_distress_lantern.choice.navigator_line.outcome.navigator_line_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_distress_lantern_i01_broken_rudder"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "navigator_line_success",
+            "textKey": "event.active_generic_sea_01_distress_lantern.choice.navigator_line.outcome.navigator_line_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_distress_lantern_i01_broken_rudder"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "navigator_line_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_distress_lantern.choice.navigator_line.outcome.navigator_line_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_distress_lantern_i01_broken_rudder"
+              }
+            ]
+          }
+        },
+        "actor": {
+          "type": "crewRole",
+          "roleId": "navigator",
+          "statId": "observation"
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "navigator"
+      }
+    },
+    {
+      "id": "answer_from_distance",
+      "textKey": "event.active_generic_sea_01_distress_lantern.choice.answer_from_distance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_from_distance_outcome",
+          "textKey": "event.active_generic_sea_01_distress_lantern.choice.answer_from_distance.outcome.answer_from_distance_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_distress_lantern_i01_broken_rudder"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_course",
+      "textKey": "event.active_generic_sea_01_distress_lantern.choice.keep_course.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_course_outcome",
+          "textKey": "event.active_generic_sea_01_distress_lantern.choice.keep_course.outcome.keep_course_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

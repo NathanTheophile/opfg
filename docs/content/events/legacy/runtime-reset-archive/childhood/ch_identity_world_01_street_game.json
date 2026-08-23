@@ -1,0 +1,138 @@
+{
+  "id": "ch_identity_world_01_street_game",
+  "titleKey": "event.ch_identity_world_01_street_game.title",
+  "textKey": "event.ch_identity_world_01_street_game.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "city"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "village"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "rural"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "rewrite_rules",
+      "textKey": "event.ch_identity_world_01_street_game.choice.rewrite_rules.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rules_rewritten",
+          "textKey": "event.ch_identity_world_01_street_game.choice.rewrite_rules.outcome.rules_rewritten.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "giant_brace",
+      "textKey": "event.ch_identity_world_01_street_game.choice.giant_brace.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "giant_help",
+          "textKey": "event.ch_identity_world_01_street_game.choice.giant_brace.outcome.giant_help.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "raceIs",
+        "raceId": "giant"
+      }
+    },
+    {
+      "id": "longarm_ribbon",
+      "textKey": "event.ch_identity_world_01_street_game.choice.longarm_ribbon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "longarm_help",
+          "textKey": "event.ch_identity_world_01_street_game.choice.longarm_ribbon.outcome.longarm_help.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "raceIs",
+        "raceId": "longarm"
+      }
+    },
+    {
+      "id": "mink_balance",
+      "textKey": "event.ch_identity_world_01_street_game.choice.mink_balance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mink_help",
+          "textKey": "event.ch_identity_world_01_street_game.choice.mink_balance.outcome.mink_help.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "raceIs",
+        "raceId": "mink"
+      }
+    },
+    {
+      "id": "leave_game",
+      "textKey": "event.ch_identity_world_01_street_game.choice.leave_game.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "game_left",
+          "textKey": "event.ch_identity_world_01_street_game.choice.leave_game.outcome.game_left.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

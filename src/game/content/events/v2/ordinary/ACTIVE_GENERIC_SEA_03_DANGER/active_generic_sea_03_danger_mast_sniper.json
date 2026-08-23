@@ -1,0 +1,226 @@
+{
+  "id": "active_generic_sea_03_danger_mast_sniper",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_mast_sniper.title",
+  "textKey": "event.active_generic_sea_03_danger_mast_sniper.text",
+  "choices": [
+    {
+      "id": "spot_glint",
+      "textKey": "event.active_generic_sea_03_danger_mast_sniper.choice.spot_glint.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "luck",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_mast_sniper.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -7
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_03_danger_mast_sniper.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_03_danger_mast_sniper.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_mast_sniper_i01_swing"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_03_danger_mast_sniper.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_mast_sniper_i01_swing"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cross_open_deck",
+      "textKey": "event.active_generic_sea_03_danger_mast_sniper.choice.cross_open_deck.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_mast_sniper.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -7
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_03_danger_mast_sniper.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_03_danger_mast_sniper.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_mast_sniper_i01_swing"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_03_danger_mast_sniper.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_mast_sniper_i01_swing"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "crew_countershot",
+      "textKey": "event.active_generic_sea_03_danger_mast_sniper.choice.crew_countershot.text",
+      "availableIf": {
+        "type": "hasCrew"
+      },
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "crew_critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_mast_sniper.outcome.crew_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcStat",
+                "npcSelector": "diceActor",
+                "statId": "health",
+                "amount": -5
+              }
+            ]
+          },
+          "failure": {
+            "id": "crew_failure",
+            "textKey": "event.active_generic_sea_03_danger_mast_sniper.outcome.crew_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcStat",
+                "npcSelector": "diceActor",
+                "statId": "health",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "crew_success",
+            "textKey": "event.active_generic_sea_03_danger_mast_sniper.outcome.crew_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_mast_sniper_i01_swing"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crew_critical_success",
+            "textKey": "event.active_generic_sea_03_danger_mast_sniper.outcome.crew_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcStat",
+                "npcSelector": "diceActor",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_mast_sniper_i01_swing"
+              }
+            ]
+          }
+        },
+        "actor": {
+          "type": "bestCrew",
+          "statId": "observation"
+        }
+      }
+    },
+    {
+      "id": "drop_low",
+      "textKey": "event.active_generic_sea_03_danger_mast_sniper.choice.drop_low.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "drop_low",
+          "textKey": "event.active_generic_sea_03_danger_mast_sniper.outcome.drop_low.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

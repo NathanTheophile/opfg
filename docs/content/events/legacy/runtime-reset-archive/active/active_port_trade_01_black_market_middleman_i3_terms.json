@@ -1,0 +1,67 @@
+{
+  "id": "active_port_trade_01_black_market_middleman_i3_terms",
+  "kind": "immediate",
+  "titleKey": "event.active_port_trade_01_black_market_middleman_i3_terms.title",
+  "textKey": "event.active_port_trade_01_black_market_middleman_i3_terms.text",
+  "choices": [
+    {
+      "id": "acheter",
+      "textKey": "event.active_port_trade_01_black_market_middleman_i3_terms.choice.acheter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "achat",
+          "textKey": "event.active_port_trade_01_black_market_middleman_i3_terms.choice.acheter.outcome.achat.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -300
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 300
+      }
+    },
+    {
+      "id": "negocier_commission",
+      "textKey": "event.active_port_trade_01_black_market_middleman_i3_terms.choice.negocier_commission.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "commission_reduite",
+          "textKey": "event.active_port_trade_01_black_market_middleman_i3_terms.choice.negocier_commission.outcome.commission_reduite.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -240
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 240
+      }
+    },
+    {
+      "id": "renoncer",
+      "textKey": "event.active_port_trade_01_black_market_middleman_i3_terms.choice.renoncer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "renonce",
+          "textKey": "event.active_port_trade_01_black_market_middleman_i3_terms.choice.renoncer.outcome.renonce.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

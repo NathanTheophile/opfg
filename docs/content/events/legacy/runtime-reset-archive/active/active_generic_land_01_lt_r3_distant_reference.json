@@ -1,0 +1,94 @@
+{
+  "id": "active_generic_land_01_lt_r3_distant_reference",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_land_01_lt_r3_distant_reference.title",
+  "textKey": "event.active_generic_land_01_lt_r3_distant_reference.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "accept_anonymity",
+      "textKey": "event.active_generic_land_01_lt_r3_distant_reference.choice.accept_anonymity.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_r3_distant_reference.choice.accept_anonymity.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_r4_public_legacy",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "tell_origin",
+      "textKey": "event.active_generic_land_01_lt_r3_distant_reference.choice.tell_origin.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_r3_distant_reference.choice.tell_origin.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_r4_public_legacy",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "check_rule",
+      "textKey": "event.active_generic_land_01_lt_r3_distant_reference.choice.check_rule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_r3_distant_reference.choice.check_rule.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_r4_public_legacy",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

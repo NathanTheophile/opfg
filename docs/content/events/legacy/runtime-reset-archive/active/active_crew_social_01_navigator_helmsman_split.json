@@ -1,0 +1,140 @@
+{
+  "id": "active_crew_social_01_navigator_helmsman_split",
+  "kind": "normal",
+  "titleKey": "event.active_crew_social_01_navigator_helmsman_split.title",
+  "textKey": "event.active_crew_social_01_navigator_helmsman_split.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasCrewRole",
+        "roleId": "navigator"
+      },
+      {
+        "type": "hasCrewRole",
+        "roleId": "helmsman"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "mediate",
+      "textKey": "event.active_crew_social_01_navigator_helmsman_split.choice.mediate.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_crew_social_01_navigator_helmsman_split.choice.mediate.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_crew_social_01_i_helm_split_current"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_crew_social_01_navigator_helmsman_split.choice.mediate.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_crew_social_01_i_helm_split_current"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_crew_social_01_navigator_helmsman_split.choice.mediate.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_crew_social_01_i_helm_split_current"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_crew_social_01_navigator_helmsman_split.choice.mediate.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_crew_social_01_i_helm_split_current"
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "sociable"
+            },
+            "value": 2,
+            "displayLabelKey": "event.active_crew_social_01_navigator_helmsman_split.choice.mediate.modifier.sociable"
+          }
+        ]
+      }
+    },
+    {
+      "id": "navigator",
+      "textKey": "event.active_crew_social_01_navigator_helmsman_split.choice.navigator.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_navigator_helmsman_split.choice.navigator.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_helm_split_current"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "helmsman",
+      "textKey": "event.active_crew_social_01_navigator_helmsman_split.choice.helmsman.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_navigator_helmsman_split.choice.helmsman.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_helm_split_current"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

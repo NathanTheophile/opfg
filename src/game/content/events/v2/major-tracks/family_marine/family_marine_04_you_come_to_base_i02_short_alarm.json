@@ -1,0 +1,164 @@
+{
+  "id": "family_marine_04_you_come_to_base_i02_short_alarm",
+  "kind": "immediate",
+  "titleKey": "event.family_marine_04_you_come_to_base_i02_short_alarm.title",
+  "textKey": "event.family_marine_04_you_come_to_base_i02_short_alarm.text",
+  "choices": [
+    {
+      "id": "find_father",
+      "textKey": "event.family_marine_04_you_come_to_base_i02_short_alarm.choice.find_father.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "find_cf",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "player_parent_1",
+                "amount": -5
+              }
+            ],
+            "textKey": "event.family_marine_04_you_come_to_base_i02_short_alarm.choice.find_father.outcome.find_cf.text"
+          },
+          "failure": {
+            "id": "find_f",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "player_parent_1",
+                "amount": -5
+              }
+            ],
+            "textKey": "event.family_marine_04_you_come_to_base_i02_short_alarm.choice.find_father.outcome.find_f.text"
+          },
+          "success": {
+            "id": "find_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "player_parent_1",
+                "amount": 5
+              }
+            ],
+            "textKey": "event.family_marine_04_you_come_to_base_i02_short_alarm.choice.find_father.outcome.find_s.text"
+          },
+          "criticalSuccess": {
+            "id": "find_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "player_parent_1",
+                "amount": 5
+              }
+            ],
+            "textKey": "event.family_marine_04_you_come_to_base_i02_short_alarm.choice.find_father.outcome.find_cs.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "stay_storehouse",
+      "textKey": "event.family_marine_04_you_come_to_base_i02_short_alarm.choice.stay_storehouse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stay_storehouse",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": -1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 5
+            }
+          ],
+          "textKey": "event.family_marine_04_you_come_to_base_i02_short_alarm.choice.stay_storehouse.outcome.stay_storehouse.text"
+        }
+      }
+    },
+    {
+      "id": "help_clear",
+      "textKey": "event.family_marine_04_you_come_to_base_i02_short_alarm.choice.help_clear.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "help_clear",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 5
+            }
+          ],
+          "textKey": "event.family_marine_04_you_come_to_base_i02_short_alarm.choice.help_clear.outcome.help_clear.text"
+        }
+      }
+    }
+  ]
+}

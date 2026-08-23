@@ -1,0 +1,123 @@
+{
+  "id": "ch_opening_household_bandit_01",
+  "kind": "normal",
+  "titleKey": "event.ch_opening_household_bandit_01.title",
+  "textKey": "event.ch_opening_household_bandit_01.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 12
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 23
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "familyStructureIs",
+          "familyStructureId": "orphan"
+        }
+      },
+      {
+        "type": "affiliationIs",
+        "affiliationId": "bandit"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "copy_whistle",
+      "textKey": "event.ch_opening_household_bandit_01.choice.copy_whistle.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "whistle_echo",
+          "textKey": "event.ch_opening_household_bandit_01.choice.copy_whistle.outcome.whistle_echo.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hug_sack",
+      "textKey": "event.ch_opening_household_bandit_01.choice.hug_sack.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sack_guarded",
+          "textKey": "event.ch_opening_household_bandit_01.choice.hug_sack.outcome.sack_guarded.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "peek_out",
+      "textKey": "event.ch_opening_household_bandit_01.choice.peek_out.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "road_seen",
+          "textKey": "event.ch_opening_household_bandit_01.choice.peek_out.outcome.road_seen.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "spill_sack",
+      "textKey": "event.ch_opening_household_bandit_01.choice.spill_sack.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sack_spilled",
+          "textKey": "event.ch_opening_household_bandit_01.choice.spill_sack.outcome.sack_spilled.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "player_parent_1"
+  ],
+  "narrativeFamily": "origin_family",
+  "openingRole": "origin_echo"
+}

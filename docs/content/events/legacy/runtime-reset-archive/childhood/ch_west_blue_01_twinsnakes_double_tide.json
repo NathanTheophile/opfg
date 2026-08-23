@@ -1,0 +1,161 @@
+{
+  "id": "ch_west_blue_01_twinsnakes_double_tide",
+  "kind": "normal",
+  "titleKey": "event.ch_west_blue_01_twinsnakes_double_tide.title",
+  "textKey": "event.ch_west_blue_01_twinsnakes_double_tide.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationIs",
+        "locationId": "twinsnakes_island"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "cross_slick_rocks",
+      "textKey": "event.ch_west_blue_01_twinsnakes_double_tide.choice.cross_slick_rocks.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rocks_bad_fall",
+            "textKey": "event.ch_west_blue_01_twinsnakes_double_tide.choice.cross_slick_rocks.outcome.rocks_bad_fall.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "rocks_soaked",
+            "textKey": "event.ch_west_blue_01_twinsnakes_double_tide.choice.cross_slick_rocks.outcome.rocks_soaked.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "rocks_crossed",
+            "textKey": "event.ch_west_blue_01_twinsnakes_double_tide.choice.cross_slick_rocks.outcome.rocks_crossed.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "rocks_flow",
+            "textKey": "event.ch_west_blue_01_twinsnakes_double_tide.choice.cross_slick_rocks.outcome.rocks_flow.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "wait_for_ebb",
+      "textKey": "event.ch_west_blue_01_twinsnakes_double_tide.choice.wait_for_ebb.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ebb_waited",
+          "textKey": "event.ch_west_blue_01_twinsnakes_double_tide.choice.wait_for_ebb.outcome.ebb_waited.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "impulsive"
+        }
+      }
+    },
+    {
+      "id": "take_risky_cut",
+      "textKey": "event.ch_west_blue_01_twinsnakes_double_tide.choice.take_risky_cut.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bold_cut",
+          "textKey": "event.ch_west_blue_01_twinsnakes_double_tide.choice.take_risky_cut.outcome.bold_cut.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "audacious"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "cautious"
+        }
+      }
+    },
+    {
+      "id": "mark_safe_route",
+      "textKey": "event.ch_west_blue_01_twinsnakes_double_tide.choice.mark_safe_route.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safe_route_marked",
+          "textKey": "event.ch_west_blue_01_twinsnakes_double_tide.choice.mark_safe_route.outcome.safe_route_marked.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "cautious"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "audacious"
+        }
+      }
+    }
+  ]
+}

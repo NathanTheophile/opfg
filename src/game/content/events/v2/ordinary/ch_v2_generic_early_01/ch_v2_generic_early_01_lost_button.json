@@ -1,0 +1,195 @@
+{
+  "id": "ch_v2_generic_early_01_lost_button",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 24
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 60
+      }
+    ]
+  },
+  "titleKey": "event.ch_v2_generic_early_01_lost_button.title",
+  "textKey": "event.ch_v2_generic_early_01_lost_button.text",
+  "choices": [
+    {
+      "id": "search_edges",
+      "textKey": "event.ch_v2_generic_early_01_lost_button.choice.search_edges.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "search_edges_criticalfailure",
+            "textKey": "event.ch_v2_generic_early_01_lost_button.choice.search_edges.outcome.search_edges_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_lost_button_i01_under_board"
+              }
+            ]
+          },
+          "failure": {
+            "id": "search_edges_failure",
+            "textKey": "event.ch_v2_generic_early_01_lost_button.choice.search_edges.outcome.search_edges_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_lost_button_i01_under_board"
+              }
+            ]
+          },
+          "success": {
+            "id": "search_edges_success",
+            "textKey": "event.ch_v2_generic_early_01_lost_button.choice.search_edges.outcome.search_edges_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_lost_button_i01_under_board"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "search_edges_criticalsuccess",
+            "textKey": "event.ch_v2_generic_early_01_lost_button.choice.search_edges.outcome.search_edges_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_lost_button_i01_under_board"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "retrace_steps",
+      "textKey": "event.ch_v2_generic_early_01_lost_button.choice.retrace_steps.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "luck",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "retrace_steps_criticalfailure",
+            "textKey": "event.ch_v2_generic_early_01_lost_button.choice.retrace_steps.outcome.retrace_steps_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_lost_button_i01_under_board"
+              }
+            ]
+          },
+          "failure": {
+            "id": "retrace_steps_failure",
+            "textKey": "event.ch_v2_generic_early_01_lost_button.choice.retrace_steps.outcome.retrace_steps_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_lost_button_i01_under_board"
+              }
+            ]
+          },
+          "success": {
+            "id": "retrace_steps_success",
+            "textKey": "event.ch_v2_generic_early_01_lost_button.choice.retrace_steps.outcome.retrace_steps_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_lost_button_i01_under_board"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "retrace_steps_criticalsuccess",
+            "textKey": "event.ch_v2_generic_early_01_lost_button.choice.retrace_steps.outcome.retrace_steps_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_lost_button_i01_under_board"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ask_shape",
+      "textKey": "event.ch_v2_generic_early_01_lost_button.choice.ask_shape.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "described",
+          "textKey": "event.ch_v2_generic_early_01_lost_button.choice.ask_shape.outcome.described.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_lost_button_i01_under_board"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wait_light",
+      "textKey": "event.ch_v2_generic_early_01_lost_button.choice.wait_light.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "patient"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "patient_search",
+          "textKey": "event.ch_v2_generic_early_01_lost_button.choice.wait_light.outcome.patient_search.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_lost_button_i01_under_board"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

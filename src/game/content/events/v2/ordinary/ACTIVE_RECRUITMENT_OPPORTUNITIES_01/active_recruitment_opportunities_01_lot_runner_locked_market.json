@@ -1,0 +1,221 @@
+{
+  "id": "active_recruitment_opportunities_01_lot_runner_locked_market",
+  "kind": "normal",
+  "cast": [
+    "active_recruit_lot_runner"
+  ],
+  "titleKey": "event.active_recruitment_opportunities_01_lot_runner_locked_market.title",
+  "textKey": "event.active_recruitment_opportunities_01_lot_runner_locked_market.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_new_cast_01_after_last_lot"
+      },
+      {
+        "type": "npcMonthsSinceInteractionAtLeast",
+        "npcId": "active_recruit_lot_runner",
+        "value": 3
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_lot_runner",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_lot_runner",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_lot_runner",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_lot_runner",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "active_recruit_lot_runner"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "reopen_the_gate",
+      "textKey": "event.active_recruitment_opportunities_01_lot_runner_locked_market.choice.reopen_the_gate.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_opportunities_01_lot_runner_locked_market.choice.reopen_the_gate.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": -4
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_opportunities_01_lot_runner_locked_market.choice.reopen_the_gate.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_opportunities_01_lot_runner_locked_market.choice.reopen_the_gate.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "active_recruit_lot_runner",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": 5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_opportunities_01_lot_runner_locked_market.choice.reopen_the_gate.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "active_recruit_lot_runner",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_lot_runner",
+                "amount": 7
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "buy_the_seized_lot",
+      "textKey": "event.active_recruitment_opportunities_01_lot_runner_locked_market.choice.buy_the_seized_lot.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy",
+          "textKey": "event.active_recruitment_opportunities_01_lot_runner_locked_market.choice.buy_the_seized_lot.outcome.buy.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1500
+            },
+            {
+              "type": "setNpcStatus",
+              "npcId": "active_recruit_lot_runner",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_lot_runner",
+              "amount": 5
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1500
+      }
+    },
+    {
+      "id": "walk_away_from_the_crowd",
+      "textKey": "event.active_recruitment_opportunities_01_lot_runner_locked_market.choice.walk_away_from_the_crowd.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_recruitment_opportunities_01_lot_runner_locked_market.choice.walk_away_from_the_crowd.outcome.leave.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_lot_runner",
+              "amount": -3
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

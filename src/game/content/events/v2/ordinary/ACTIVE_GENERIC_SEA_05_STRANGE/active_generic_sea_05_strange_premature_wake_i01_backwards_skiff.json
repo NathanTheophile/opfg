@@ -1,0 +1,69 @@
+{
+  "id": "active_generic_sea_05_strange_premature_wake_i01_backwards_skiff",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_05_strange_premature_wake_i01_backwards_skiff.title",
+  "textKey": "event.active_generic_sea_05_strange_premature_wake_i01_backwards_skiff.text",
+  "choices": [
+    {
+      "id": "hail",
+      "textKey": "event.active_generic_sea_05_strange_premature_wake_i01_backwards_skiff.choice.hail.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hailed",
+          "textKey": "event.active_generic_sea_05_strange_premature_wake_i01_backwards_skiff.choice.hail.outcome.hailed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_premature_wake_i02_tomorrows_right_of_way"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "clear_lane",
+      "textKey": "event.active_generic_sea_05_strange_premature_wake_i01_backwards_skiff.choice.clear_lane.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cleared",
+          "textKey": "event.active_generic_sea_05_strange_premature_wake_i01_backwards_skiff.choice.clear_lane.outcome.cleared.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_premature_wake_i02_tomorrows_right_of_way"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "demand_answer",
+      "textKey": "event.active_generic_sea_05_strange_premature_wake_i01_backwards_skiff.choice.demand_answer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "demanded",
+          "textKey": "event.active_generic_sea_05_strange_premature_wake_i01_backwards_skiff.choice.demand_answer.outcome.demanded.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_premature_wake_i02_tomorrows_right_of_way"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "id": "active_generic_land_01_lt_p1_open_room",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_land_01_lt_p1_open_room.title",
+  "textKey": "event.active_generic_land_01_lt_p1_open_room.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "order_by_fact",
+      "textKey": "event.active_generic_land_01_lt_p1_open_room.choice.order_by_fact.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_p1_open_room.choice.order_by_fact.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_p2_conflicting_accounts",
+              "delayMonths": 9
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_people_speak",
+      "textKey": "event.active_generic_land_01_lt_p1_open_room.choice.let_people_speak.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_p1_open_room.choice.let_people_speak.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_p2_conflicting_accounts",
+              "delayMonths": 9
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "limit_your_role",
+      "textKey": "event.active_generic_land_01_lt_p1_open_room.choice.limit_your_role.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_p1_open_room.choice.limit_your_role.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_p2_conflicting_accounts",
+              "delayMonths": 9
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

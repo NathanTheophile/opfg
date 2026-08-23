@@ -1,0 +1,125 @@
+{
+  "id": "family_marine_a04_family_under_scrutiny",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_marine",
+    "chapterId": "adult_family_04",
+    "nodeId": "family_marine_a04_family_under_scrutiny",
+    "parentNodeIds": [
+      "family_marine_a03_rank_and_name",
+      "family_marine_a03_record_without_him",
+      "family_marine_a03_you_write_first"
+    ],
+    "selectionPriority": 60
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "npcStatusIs",
+        "npcId": "player_parent_1",
+        "status": "active"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 35
+      }
+    ]
+  },
+  "cast": [
+    "player_parent_1"
+  ],
+  "titleKey": "event.family_marine_a04_family_under_scrutiny.title",
+  "textKey": "event.family_marine_a04_family_under_scrutiny.text",
+  "choices": [
+    {
+      "id": "separate_records",
+      "textKey": "event.family_marine_a04_family_under_scrutiny.choice.separate_records.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "separate_records",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a04_family_under_scrutiny_i01_two_records"
+            }
+          ],
+          "textKey": "event.family_marine_a04_family_under_scrutiny.choice.separate_records.outcome.separate_records.text"
+        }
+      }
+    },
+    {
+      "id": "defend_father",
+      "textKey": "event.family_marine_a04_family_under_scrutiny.choice.defend_father.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "defend_father",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a04_family_under_scrutiny_i01_two_records"
+            }
+          ],
+          "textKey": "event.family_marine_a04_family_under_scrutiny.choice.defend_father.outcome.defend_father.text"
+        }
+      }
+    },
+    {
+      "id": "answer_as_marine",
+      "availableIf": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      "textKey": "event.family_marine_a04_family_under_scrutiny.choice.answer_as_marine.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_as_marine",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a04_family_under_scrutiny_i01_two_records"
+            }
+          ],
+          "textKey": "event.family_marine_a04_family_under_scrutiny.choice.answer_as_marine.outcome.answer_as_marine.text"
+        }
+      }
+    },
+    {
+      "id": "refuse_authority",
+      "availableIf": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "civilian"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          },
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "revolutionary"
+          }
+        ]
+      },
+      "textKey": "event.family_marine_a04_family_under_scrutiny.choice.refuse_authority.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_authority",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_a04_family_under_scrutiny_i01_two_records"
+            }
+          ],
+          "textKey": "event.family_marine_a04_family_under_scrutiny.choice.refuse_authority.outcome.refuse_authority.text"
+        }
+      }
+    }
+  ]
+}

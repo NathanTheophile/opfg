@@ -1,0 +1,94 @@
+/*
+ * OPFG TYPOGRAPHY
+ * ---------------------------------------------------------------------------
+ * Art direction:
+ * - Titles / hooks: Cinzel Bold (700)
+ * - Information / body: Inter Regular (400)
+ * - Controls / emphasis: Inter SemiBold (600)
+ *
+ * Expected local assets:
+ *   public/assets/fonts/Cinzel-Bold.woff2
+ *   public/assets/fonts/Inter-Regular.woff2
+ *   public/assets/fonts/Inter-SemiBold.woff2
+ *
+ * TTF fallbacks with the same basename are also supported.
+ */
+
+@font-face {
+  font-family: "Cinzel";
+  src:
+    local("Cinzel Bold"),
+    local("Cinzel-Bold"),
+    url("/assets/fonts/Cinzel-Bold.woff2") format("woff2"),
+    url("/assets/fonts/Cinzel-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src:
+    local("Inter Regular"),
+    local("Inter-Regular"),
+    url("/assets/fonts/Inter-Regular.woff2") format("woff2"),
+    url("/assets/fonts/Inter-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src:
+    local("Inter SemiBold"),
+    local("Inter-SemiBold"),
+    url("/assets/fonts/Inter-SemiBold.woff2") format("woff2"),
+    url("/assets/fonts/Inter-SemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+/*
+ * Keep typography semantic and centralized.
+ * These rules are intentionally unlayered: they are imported after Tailwind
+ * and the shared UI system so title/control roles stay authoritative even when
+ * a component still carries an older font-weight utility.
+ */
+body {
+  font-family: var(--font-ui);
+  font-weight: var(--font-ui-weight-regular);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-display {
+  font-family: var(--font-display-family);
+  font-weight: var(--font-display-weight);
+}
+
+button,
+[role="button"],
+label,
+legend,
+summary,
+strong,
+b {
+  font-family: var(--font-ui);
+  font-weight: var(--font-ui-weight-semibold);
+}
+
+h1 strong,
+h2 strong,
+h3 strong,
+h4 strong,
+h5 strong,
+h6 strong {
+  font-family: inherit;
+  font-weight: inherit;
+}

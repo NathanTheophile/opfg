@@ -1,0 +1,104 @@
+{
+  "id": "ch_generic_early_01_storm_shutters",
+  "titleKey": "event.ch_generic_early_01_storm_shutters.title",
+  "textKey": "event.ch_generic_early_01_storm_shutters.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "cross_room",
+      "textKey": "event.ch_generic_early_01_storm_shutters.choice.cross_room.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "freeze_midway",
+            "textKey": "event.ch_generic_early_01_storm_shutters.choice.cross_room.outcome.freeze_midway.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "retreat_from_noise",
+            "textKey": "event.ch_generic_early_01_storm_shutters.choice.cross_room.outcome.retreat_from_noise.text",
+            "effects": []
+          },
+          "success": {
+            "id": "hold_shutter",
+            "textKey": "event.ch_generic_early_01_storm_shutters.choice.cross_room.outcome.hold_shutter.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "steady_in_storm",
+            "textKey": "event.ch_generic_early_01_storm_shutters.choice.cross_room.outcome.steady_in_storm.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "gather_loose",
+      "textKey": "event.ch_generic_early_01_storm_shutters.choice.gather_loose.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "loose_items_gathered",
+          "textKey": "event.ch_generic_early_01_storm_shutters.choice.gather_loose.outcome.loose_items_gathered.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stay_safe",
+      "textKey": "event.ch_generic_early_01_storm_shutters.choice.stay_safe.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safe_helper",
+          "textKey": "event.ch_generic_early_01_storm_shutters.choice.stay_safe.outcome.safe_helper.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  }
+}

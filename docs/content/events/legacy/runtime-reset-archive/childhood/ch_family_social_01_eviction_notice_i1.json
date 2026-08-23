@@ -1,0 +1,54 @@
+{
+  "id": "ch_family_social_01_eviction_notice_i1",
+  "titleKey": "event.ch_family_social_01_eviction_notice_i1.title",
+  "textKey": "event.ch_family_social_01_eviction_notice_i1.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "compare_receipts",
+      "textKey": "event.ch_family_social_01_eviction_notice_i1.choice.compare_receipts.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "receipts_compared",
+          "textKey": "event.ch_family_social_01_eviction_notice_i1.choice.compare_receipts.outcome.receipts_compared.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_family_social_01_eviction_notice_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_delay",
+      "textKey": "event.ch_family_social_01_eviction_notice_i1.choice.ask_delay.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "delay_requested",
+          "textKey": "event.ch_family_social_01_eviction_notice_i1.choice.ask_delay.outcome.delay_requested.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_family_social_01_eviction_notice_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_departure",
+      "textKey": "event.ch_family_social_01_eviction_notice_i1.choice.accept_departure.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "departure_accepted",
+          "textKey": "event.ch_family_social_01_eviction_notice_i1.choice.accept_departure.outcome.departure_accepted.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

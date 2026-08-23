@@ -1,0 +1,81 @@
+{
+  "id": "ch_v2_generic_late_01_favor_s02b_settle_it",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_favor_s02b_settle_it.title",
+  "textKey": "event.ch_v2_generic_late_01_favor_s02b_settle_it.text",
+  "choices": [
+    {
+      "id": "close_account",
+      "textKey": "event.ch_v2_generic_late_01_favor_s02b_settle_it.choice.close_account.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "close_account_outcome",
+          "textKey": "event.ch_v2_generic_late_01_favor_s02b_settle_it.choice.close_account.outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 50
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s03b_exact_account",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_note",
+      "textKey": "event.ch_v2_generic_late_01_favor_s02b_settle_it.choice.keep_note.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_note_outcome",
+          "textKey": "event.ch_v2_generic_late_01_favor_s02b_settle_it.choice.keep_note.outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 50
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s03b_exact_account",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_extra",
+      "textKey": "event.ch_v2_generic_late_01_favor_s02b_settle_it.choice.refuse_extra.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_extra_outcome",
+          "textKey": "event.ch_v2_generic_late_01_favor_s02b_settle_it.choice.refuse_extra.outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 25
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_generic_late_01_favor_s03b_exact_account",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

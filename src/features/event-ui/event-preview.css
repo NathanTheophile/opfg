@@ -1,0 +1,585 @@
+/* Event flow layout, typography and responsive behavior. */
+.opfg-adventure-stack {
+  display: grid;
+  gap: var(--ui-adventure-stack-gap);
+  background: transparent;
+}
+
+.opfg-game-adventure-region {
+  margin-top: var(--ui-hud-adventure-gap) !important;
+}
+
+.opfg-adventure-scroll {
+  max-height: calc(100dvh - 14.5rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 var(--ui-adventure-inline-padding) 0.65rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.opfg-adventure-scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.opfg-overflow-panel {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.opfg-adventure-size-shell {
+  overflow: visible;
+  background: transparent;
+  transform: none !important;
+}
+
+.opfg-event-panel {
+  --opfg-event-location-icon-slot-width: calc(0.64rem - 1px);
+  --opfg-event-location-icon-size: calc(0.64rem - 1px);
+  --opfg-event-location-icon-transform: translateX(2px) translateY(-2px) scale(0.9);
+  min-width: 0;
+  max-width: 100%;
+  font-size: 0.9rem;
+  box-shadow: none;
+  transition: none;
+}
+
+.opfg-event-panel__header,
+.opfg-event-panel__body,
+.opfg-event-panel__choices {
+  min-width: 0;
+  max-width: 100%;
+  transition:
+    opacity 105ms ease,
+    filter 105ms ease;
+}
+
+.opfg-event-panel__body {
+  padding-block:
+    var(--ui-event-body-pt)
+    var(--ui-event-body-pb);
+}
+
+.opfg-event-panel[data-content-visible='false'] :is(
+  .opfg-event-panel__header,
+  .opfg-event-panel__body,
+  .opfg-event-panel__choices
+) {
+  opacity: 0;
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.opfg-event-panel[data-content-visible='true'] :is(
+  .opfg-event-panel__header,
+  .opfg-event-panel__body,
+  .opfg-event-panel__choices
+) {
+  opacity: 1;
+  filter: none;
+}
+
+.opfg-event-panel[data-mode='collapsed'] {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: 0;
+}
+
+.opfg-event-panel__header {
+  margin-bottom: 0;
+  padding:
+    var(--ui-event-header-pt)
+    var(--ui-event-header-px)
+    var(--ui-event-header-pb);
+}
+
+.opfg-event-panel__header-layout {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  align-items: stretch;
+  gap: 0.9rem;
+}
+
+.opfg-event-panel__header-copy {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: 0.22rem;
+}
+
+.opfg-event-panel__meta-location {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 0.28rem;
+  overflow: hidden;
+  color: var(--ui-panel-heading-color);
+  font-family: var(--font-ui);
+  font-size: 0.55rem;
+  font-weight: var(--ui-panel-heading-weight);
+  letter-spacing: var(--ui-panel-heading-tracking);
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.opfg-event-panel__meta-location > svg {
+  transform: var(--opfg-event-location-icon-transform);
+  transform-origin: center;
+}
+
+.opfg-event-panel__meta-location > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.opfg-event-panel__meta-location > svg {
+  width: var(--opfg-event-location-icon-size) !important;
+  min-width: var(--opfg-event-location-icon-slot-width) !important;
+  height: var(--opfg-event-location-icon-size) !important;
+  flex: 0 0 auto;
+}
+
+.opfg-event-panel__meta-time {
+  display: grid;
+  align-self: stretch;
+  align-content: center;
+  justify-items: end;
+  gap: 0.3rem;
+  color: color-mix(in srgb, var(--text-primary) 82%, var(--ui-panel-heading-color));
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  line-height: 1.2;
+}
+
+.opfg-event-panel__meta-time > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.28rem;
+  white-space: nowrap;
+}
+
+.opfg-event-panel__meta-time svg {
+  flex: 0 0 auto;
+  color: var(--ui-panel-heading-color);
+  opacity: 0.82;
+}
+
+.opfg-event-panel__title {
+  padding-left: 0.9rem;
+  font-size: var(--ui-event-title-size);
+  line-height: 1.08;
+}
+
+.opfg-event-panel__body-copy {
+  position: relative;
+  max-width: 66ch;
+  padding-left: 0.72rem;
+  font-size: var(--ui-event-body-size);
+  font-weight: 650;
+  line-height: var(--ui-event-body-leading);
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.18);
+  text-wrap: pretty;
+}
+
+.opfg-event-panel__body-copy::before {
+  position: absolute;
+  top: 0.08rem;
+  bottom: 0.08rem;
+  left: 0;
+  width: 2px;
+  border-radius: 999px;
+  background: rgb(82 46 21 / 0.58);
+  content: '';
+}
+
+.opfg-event-panel__choices {
+  border-top: 1px solid var(--border-subtle);
+  padding:
+    var(--ui-event-choice-area-py)
+    var(--ui-event-choice-area-px)
+    0.58rem;
+  background: transparent;
+}
+
+.opfg-event-panel[data-mode='resolved'] .opfg-event-panel__choices {
+  padding-bottom: 0.72rem;
+}
+
+.opfg-event-panel__choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-choice-gap);
+}
+
+.opfg-choice-button {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  min-height: var(--ui-choice-min-height);
+  height: auto;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: var(--ui-choice-radius);
+  padding: var(--ui-choice-py) var(--ui-choice-px);
+  font-size: var(--ui-choice-text-size);
+  font-weight: 500;
+  line-height: 1.22;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.opfg-choice-button :is(span, strong, p) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.opfg-choice-button .opfg-choice-stat-effects {
+  margin-top: 0.22rem;
+}
+
+.opfg-choice-button.opfg-button-glass:hover:not(:disabled),
+.opfg-choice-button.opfg-button-glass:active:not(:disabled) {
+  animation: none;
+  transform: none;
+  translate: 0 0;
+}
+
+.opfg-event-panel[data-mode='resolved'] .opfg-event-panel__choice {
+  opacity: 0.42;
+  transition:
+    opacity var(--motion-fast) var(--ease-standard),
+    filter var(--motion-fast) var(--ease-standard);
+}
+
+.opfg-event-panel[data-mode='resolved'] .opfg-event-panel__choice[data-selected='true'] {
+  overflow: visible;
+  opacity: 1;
+}
+
+.opfg-event-panel[data-mode='resolved'] .opfg-event-panel__choice:not([data-selected='true']) {
+  display: flex;
+}
+
+.opfg-event-panel[data-mode='resolved'] .opfg-choice-button {
+  opacity: 1;
+}
+
+.opfg-narrative-person__name {
+  color: var(--accent-gold);
+  font-weight: 850;
+}
+
+.opfg-narrative-person__relation {
+  color: rgb(91 62 41 / 0.7);
+  font-size: 0.84em;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.opfg-event-panel__location-flag,
+.opfg-event-panel__input {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.opfg-event-panel__divider {
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.opfg-event-panel__choice {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.opfg-event-panel__input {
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgb(0 0 0 / 20%);
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.opfg-event-panel__location-flag {
+  position: relative;
+  left: 0;
+  display: block;
+  width: fit-content;
+  margin-inline: 0;
+  padding-inline: 0;
+  overflow: hidden;
+  color: var(--accent-gold);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: none;
+  translate: none;
+}
+
+/* Whole gameplay composition scaling. */
+.opfg-game-screen {
+  width: 100%;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden !important;
+}
+
+.opfg-game-scale-content {
+  --opfg-game-ui-scale: 1;
+
+  position: relative;
+  transform: scale(var(--opfg-game-ui-scale));
+  transform-origin: top center;
+  will-change: transform;
+}
+
+.opfg-game-side-rail {
+  display: none !important;
+}
+
+.opfg-game-side-rail--stats {
+  right: calc(100% + var(--ui-adventure-rail-gap)) !important;
+}
+
+.opfg-game-side-rail--crew {
+  left: calc(100% + var(--ui-adventure-rail-gap)) !important;
+}
+
+@media (orientation: landscape) {
+  .opfg-game-side-rail--stats {
+    display: flex !important;
+  }
+
+  .opfg-game-side-rail--crew {
+    display: block !important;
+  }
+
+  .opfg-game-screen .opfg-adventure-scroll {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+}
+
+@media (orientation: portrait) {
+  .opfg-game-side-rail {
+    display: none !important;
+  }
+
+  .opfg-game-scale-content {
+    max-width: 32rem;
+  }
+
+  .opfg-game-adventure-region {
+    width: 100%;
+    max-width: 32rem;
+    margin-inline: 0;
+  }
+
+  .opfg-game-screen .opfg-adventure-scroll {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .opfg-game-screen .opfg-adventure-scroll {
+    scroll-padding-bottom: 0.75rem;
+    padding-bottom: 0.75rem !important;
+  }
+}
+
+@media (max-width: 79.999rem) {
+  .opfg-adventure-scroll {
+    max-height: none;
+  }
+}
+
+@media (max-width: 48rem) {
+  .opfg-event-panel__header {
+    padding-inline: 0.56rem;
+  }
+
+  .opfg-event-panel__title {
+    padding-left: 0.18rem;
+  }
+
+  .opfg-event-panel__body-copy {
+    max-width: none;
+    font-size: 0.88rem;
+    line-height: 1.43;
+  }
+
+  .opfg-event-panel__choices,
+  .opfg-event-panel[data-mode='resolved'] .opfg-event-panel__choices {
+    padding-inline: 0.72rem;
+  }
+
+  .opfg-event-panel__header-layout {
+    gap: 0.62rem;
+  }
+
+  .opfg-event-panel__meta-location,
+  .opfg-event-panel__meta-time {
+    font-size: 0.58rem;
+  }
+}
+
+@media (max-width: 40rem) {
+  .opfg-event-panel[data-mode='resolved'] .opfg-event-panel__choice:not([data-selected='true']) {
+    display: none;
+  }
+}
+
+@media (max-width: 24.5rem) {
+  .opfg-event-panel__header {
+    padding-inline: 0.82rem;
+  }
+
+  .opfg-event-panel__meta-location {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .opfg-event-panel__body-copy {
+    padding-left: 0.58rem;
+    font-size: 0.86rem;
+  }
+
+  .opfg-event-panel__input {
+    padding-inline: 0.8rem;
+    font-size: 1rem;
+  }
+
+  .opfg-choice-button {
+    min-height: 2.65rem;
+    padding-inline: 0.68rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-event-panel__header,
+  .opfg-event-panel__body,
+  .opfg-event-panel__choices {
+    transition-duration: 1ms;
+  }
+}
+
+/* OPFG MOBILE STABILITY: disable narrative blink */
+@media (pointer: coarse) and (orientation: portrait) {
+  .opfg-event-panel__header,
+  .opfg-event-panel__body,
+  .opfg-event-panel__choices {
+    transition: none !important;
+  }
+
+  .opfg-event-panel[data-content-visible='false'] :is(
+    .opfg-event-panel__header,
+    .opfg-event-panel__body,
+    .opfg-event-panel__choices
+  ) {
+    opacity: 1 !important;
+    filter: none !important;
+  }
+}
+
+/* OPFG MOBILE UI: final parchment spacing */
+@media (pointer: coarse) and (orientation: portrait) {
+  .opfg-game-screen {
+    --ui-event-body-pt: 18px;
+    --ui-event-body-pb: 18px;
+    --ui-outcome-body-padding-top: 1.2rem;
+    --ui-outcome-body-padding-bottom: 1.2rem;
+    --ui-outcome-continue-gap: 0.5rem;
+
+    padding-left:
+      max(0.55rem, var(--safe-area-left)) !important;
+    padding-right:
+      max(0.55rem, var(--safe-area-right)) !important;
+  }
+}
+
+/* OPFG MOBILE UI: event above utility launchers */
+@media (pointer: coarse) and (orientation: portrait) {
+  .opfg-game-scale-content {
+    z-index: 120;
+  }
+}
+
+/* OPFG MOBILE POLISH V4.4 */
+
+/* OPFG MOBILE FIXES V4.5 */
+
+/* OPFG MOBILE FEEDBACK V4.6 */
+.opfg-touch-drag-ghost {
+  position: fixed !important;
+  z-index: 10000 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+  touch-action: none !important;
+  transform:
+    translate(-50%, -50%)
+    scale(1.08);
+  transform-origin: center;
+  opacity: 0.94;
+  filter:
+    brightness(1.12)
+    drop-shadow(0 8px 12px rgb(0 0 0 / 0.52))
+    drop-shadow(0 0 8px rgb(245 194 66 / 0.24));
+  will-change: left, top;
+}
+
+.opfg-touch-drag-ghost::before {
+  pointer-events: none !important;
+}
+
+/* OPFG GAME BETA WATERMARK START */
+/*
+ * Persistent in-game beta watermark.
+ * Mirrors the landing watermark:
+ * - viewport-fixed
+ * - display/Cinzel font
+ * - 18px
+ * - 30% opacity
+ * - desktop + mobile
+ */
+.opfg-game-screen::before {
+  position: fixed;
+  top: max(0.7rem, var(--safe-area-top));
+  left: max(0.8rem, var(--safe-area-left));
+  z-index: 120;
+  content: 'BETA';
+  color: var(--text-gold-emphasis, #e8d7b5);
+  font-family: var(--font-display-family);
+  font-size: 18px;
+  font-weight: var(--font-display-weight, 700);
+  line-height: 1;
+  letter-spacing: 0.12em;
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+  text-transform: uppercase;
+  text-shadow: 0 1px 4px rgb(0 0 0 / 0.55);
+}
+/* OPFG GAME BETA WATERMARK END */
+
+.opfg-game-screen::before {
+  content: none !important;
+}

@@ -1,0 +1,94 @@
+{
+  "id": "active_blue_east_blue_01_dockyard_wage_book",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_dockyard_wage_book.title",
+  "textKey": "event.active_blue_east_blue_01_dockyard_wage_book.text",
+  "choices": [
+    {
+      "id": "copy_the_missing_names",
+      "textKey": "event.active_blue_east_blue_01_dockyard_wage_book.choice.copy_the_missing_names.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "copy_the_missing_names_outcome",
+          "textKey": "event.active_blue_east_blue_01_dockyard_wage_book.choice.copy_the_missing_names.outcome.copy_the_missing_names_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_dockyard_wage_book_s02_return",
+              "delayMonths": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pay_one_worker",
+      "textKey": "event.active_blue_east_blue_01_dockyard_wage_book.choice.pay_one_worker.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_one_worker_outcome",
+          "textKey": "event.active_blue_east_blue_01_dockyard_wage_book.choice.pay_one_worker.outcome.pay_one_worker_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_dockyard_wage_book_s02_return",
+              "delayMonths": 5
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    },
+    {
+      "id": "refuse_the_dispute",
+      "textKey": "event.active_blue_east_blue_01_dockyard_wage_book.choice.refuse_the_dispute.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_the_dispute_outcome",
+          "textKey": "event.active_blue_east_blue_01_dockyard_wage_book.choice.refuse_the_dispute.outcome.refuse_the_dispute_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_dockyard_wage_book_s02_return",
+              "delayMonths": 5
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "ship_repair"
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 410
+      }
+    ]
+  }
+}

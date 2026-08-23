@@ -1,0 +1,90 @@
+{
+  "id": "active_civilian_01_dockside_triage_i1",
+  "titleKey": "event.active_civilian_01_dockside_triage_i1.title",
+  "textKey": "event.active_civilian_01_dockside_triage_i1.text",
+  "kind": "immediate",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "airway",
+      "textKey": "event.active_civilian_01_dockside_triage_i1.choice.airway.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "airway_result",
+          "textKey": "event.active_civilian_01_dockside_triage_i1.choice.airway.outcome.airway_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_dockside_triage_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "bleeding",
+      "textKey": "event.active_civilian_01_dockside_triage_i1.choice.bleeding.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bleeding_result",
+          "textKey": "event.active_civilian_01_dockside_triage_i1.choice.bleeding.outcome.bleeding_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_dockside_triage_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "protective",
+      "textKey": "event.active_civilian_01_dockside_triage_i1.choice.protective.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "protective_result",
+          "textKey": "event.active_civilian_01_dockside_triage_i1.choice.protective.outcome.protective_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_dockside_triage_i2"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "protective"
+      }
+    }
+  ]
+}

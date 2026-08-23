@@ -1,0 +1,69 @@
+{
+  "id": "ch_south_blue_01_samba_double_booking_i1",
+  "titleKey": "event.ch_south_blue_01_samba_double_booking_i1.title",
+  "textKey": "event.ch_south_blue_01_samba_double_booking_i1.text",
+  "choices": [
+    {
+      "id": "count_in",
+      "textKey": "event.ch_south_blue_01_samba_double_booking_i1.choice.count_in.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "count_shared",
+          "textKey": "event.ch_south_blue_01_samba_double_booking_i1.choice.count_in.outcome.count_shared.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_south_blue_01_samba_double_booking_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "separate_halves",
+      "textKey": "event.ch_south_blue_01_samba_double_booking_i1.choice.separate_halves.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "halves_split",
+          "textKey": "event.ch_south_blue_01_samba_double_booking_i1.choice.separate_halves.outcome.halves_split.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_south_blue_01_samba_double_booking_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_clash",
+      "textKey": "event.ch_south_blue_01_samba_double_booking_i1.choice.let_clash.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "clash_grows",
+          "textKey": "event.ch_south_blue_01_samba_double_booking_i1.choice.let_clash.outcome.clash_grows.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_south_blue_01_samba_double_booking_i2"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "immediate"
+}

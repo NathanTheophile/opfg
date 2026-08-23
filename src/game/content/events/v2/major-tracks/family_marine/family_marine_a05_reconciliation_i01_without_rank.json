@@ -1,0 +1,78 @@
+{
+  "id": "family_marine_a05_reconciliation_i01_without_rank",
+  "kind": "immediate",
+  "cast": [
+    "player_parent_1"
+  ],
+  "titleKey": "event.family_marine_a05_reconciliation_i01_without_rank.title",
+  "textKey": "event.family_marine_a05_reconciliation_i01_without_rank.text",
+  "choices": [
+    {
+      "id": "take_fund",
+      "textKey": "event.family_marine_a05_reconciliation_i01_without_rank.choice.take_fund.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fund_accepted",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 5000
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 5
+            }
+          ],
+          "textKey": "event.family_marine_a05_reconciliation_i01_without_rank.choice.take_fund.outcome.fund_accepted.text"
+        }
+      }
+    },
+    {
+      "id": "share_record",
+      "textKey": "event.family_marine_a05_reconciliation_i01_without_rank.choice.share_record.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "path_recognized",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 8
+            }
+          ],
+          "textKey": "event.family_marine_a05_reconciliation_i01_without_rank.choice.share_record.outcome.path_recognized.text"
+        }
+      }
+    },
+    {
+      "id": "let_him_go",
+      "textKey": "event.family_marine_a05_reconciliation_i01_without_rank.choice.let_him_go.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "debt_closed",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 10
+            },
+            {
+              "type": "setNpcStatus",
+              "npcId": "player_parent_1",
+              "status": "departed"
+            }
+          ],
+          "textKey": "event.family_marine_a05_reconciliation_i01_without_rank.choice.let_him_go.outcome.debt_closed.text"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "id": "ch_generic_late_01_passage_dispute",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_passage_dispute.title",
+  "textKey": "event.ch_generic_late_01_passage_dispute.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "argue_right",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "gate_cf",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_passage_dispute.choice.argue_right.outcome.gate_cf.text"
+          },
+          "failure": {
+            "id": "gate_f",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_passage_dispute.choice.argue_right.outcome.gate_f.text"
+          },
+          "success": {
+            "id": "gate_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_passage_dispute.choice.argue_right.outcome.gate_s.text"
+          },
+          "criticalSuccess": {
+            "id": "gate_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_passage_dispute.choice.argue_right.outcome.gate_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_passage_dispute.choice.argue_right.text"
+    },
+    {
+      "id": "take_detour",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "detour",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_passage_dispute.choice.take_detour.outcome.detour.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_passage_dispute.choice.take_detour.text"
+    },
+    {
+      "id": "bring_others",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "group",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_passage_dispute.choice.bring_others.outcome.group.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_passage_dispute.choice.bring_others.text"
+    }
+  ]
+}

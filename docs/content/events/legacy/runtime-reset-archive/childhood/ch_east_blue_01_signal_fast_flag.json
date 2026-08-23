@@ -1,0 +1,55 @@
+{
+  "id": "ch_east_blue_01_signal_fast_flag",
+  "kind": "scheduled",
+  "titleKey": "event.ch_east_blue_01_signal_fast_flag.title",
+  "textKey": "event.ch_east_blue_01_signal_fast_flag.text",
+  "choices": [
+    {
+      "id": "raise_early",
+      "textKey": "event.ch_east_blue_01_signal_fast_flag.choice.raise_early.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "early_flag",
+          "textKey": "event.ch_east_blue_01_signal_fast_flag.choice.raise_early.outcome.early_flag.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_east_blue_01_signal_false_alarm",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wait_one_sign",
+      "textKey": "event.ch_east_blue_01_signal_fast_flag.choice.wait_one_sign.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "one_more_sign",
+          "textKey": "event.ch_east_blue_01_signal_fast_flag.choice.wait_one_sign.outcome.one_more_sign.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_east_blue_01_signal_false_alarm",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100
+}

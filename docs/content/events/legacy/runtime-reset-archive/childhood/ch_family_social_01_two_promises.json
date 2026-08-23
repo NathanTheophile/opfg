@@ -1,0 +1,151 @@
+{
+  "id": "ch_family_social_01_two_promises",
+  "titleKey": "event.ch_family_social_01_two_promises.title",
+  "textKey": "event.ch_family_social_01_two_promises.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 36
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 84
+      },
+      {
+        "type": "familyStructureIs",
+        "familyStructureId": "two_parents"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "npcStatusIs",
+          "npcId": "player_parent_1",
+          "status": "dead"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "npcStatusIs",
+          "npcId": "player_parent_2",
+          "status": "dead"
+        }
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "choose_parent_one",
+      "textKey": "event.ch_family_social_01_two_promises.choice.choose_parent_one.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "parent_one_first",
+          "textKey": "event.ch_family_social_01_two_promises.choice.choose_parent_one.outcome.parent_one_first.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 5
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_2",
+              "amount": -3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "choose_parent_two",
+      "textKey": "event.ch_family_social_01_two_promises.choice.choose_parent_two.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "parent_two_first",
+          "textKey": "event.ch_family_social_01_two_promises.choice.choose_parent_two.outcome.parent_two_first.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -3
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_2",
+              "amount": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "negotiate_together",
+      "textKey": "event.ch_family_social_01_two_promises.choice.negotiate_together.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shared_time",
+          "textKey": "event.ch_family_social_01_two_promises.choice.negotiate_together.outcome.shared_time.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 3
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_2",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hide_until_evening",
+      "textKey": "event.ch_family_social_01_two_promises.choice.hide_until_evening.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hid_from_choice",
+          "textKey": "event.ch_family_social_01_two_promises.choice.hide_until_evening.outcome.hid_from_choice.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -2
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_2",
+              "amount": -2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "player_parent_1",
+    "player_parent_2"
+  ]
+}

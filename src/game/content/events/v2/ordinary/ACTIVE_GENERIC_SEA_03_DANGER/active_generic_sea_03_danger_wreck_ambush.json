@@ -1,0 +1,177 @@
+{
+  "id": "active_generic_sea_03_danger_wreck_ambush",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_wreck_ambush.title",
+  "textKey": "event.active_generic_sea_03_danger_wreck_ambush.text",
+  "choices": [
+    {
+      "id": "find_slits",
+      "textKey": "event.active_generic_sea_03_danger_wreck_ambush.choice.find_slits.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_wreck_ambush.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_03_danger_wreck_ambush.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_03_danger_wreck_ambush.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_wreck_ambush_i01_grapple"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_03_danger_wreck_ambush.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_wreck_ambush_i01_grapple"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pass_stern",
+      "textKey": "event.active_generic_sea_03_danger_wreck_ambush.choice.pass_stern.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_wreck_ambush.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_03_danger_wreck_ambush.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_03_danger_wreck_ambush.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_wreck_ambush_i01_grapple"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_03_danger_wreck_ambush.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_wreck_ambush_i01_grapple"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "fire_back_blind",
+      "textKey": "event.active_generic_sea_03_danger_wreck_ambush.choice.fire_back_blind.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fire_back_blind",
+          "textKey": "event.active_generic_sea_03_danger_wreck_ambush.outcome.fire_back_blind.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -2
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            }
+          ],
+          "shipDamageCause": "enemy"
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

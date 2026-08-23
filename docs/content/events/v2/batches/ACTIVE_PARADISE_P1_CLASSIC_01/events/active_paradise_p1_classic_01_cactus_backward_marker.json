@@ -1,0 +1,126 @@
+{
+  "id": "active_paradise_p1_classic_01_cactus_backward_marker",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p1_classic_01_cactus_backward_marker.title",
+  "textKey": "event.active_paradise_p1_classic_01_cactus_backward_marker.text",
+  "choices": [
+    {
+      "id": "inspect_the_marker",
+      "textKey": "event.active_paradise_p1_classic_01_cactus_backward_marker.choice.inspect_the_marker.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "inspect_the_marker_criticalfailure",
+            "textKey": "event.active_paradise_p1_classic_01_cactus_backward_marker.choice.inspect_the_marker.outcome.inspect_the_marker_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p1_classic_01_route_markers_l2_split_pennant",
+                "delayMonths": 2
+              }
+            ]
+          },
+          "failure": {
+            "id": "inspect_the_marker_failure",
+            "textKey": "event.active_paradise_p1_classic_01_cactus_backward_marker.choice.inspect_the_marker.outcome.inspect_the_marker_failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p1_classic_01_route_markers_l2_split_pennant",
+                "delayMonths": 2
+              }
+            ]
+          },
+          "success": {
+            "id": "inspect_the_marker_success",
+            "textKey": "event.active_paradise_p1_classic_01_cactus_backward_marker.choice.inspect_the_marker.outcome.inspect_the_marker_success.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p1_classic_01_route_markers_l2_split_pennant",
+                "delayMonths": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "inspect_the_marker_criticalsuccess",
+            "textKey": "event.active_paradise_p1_classic_01_cactus_backward_marker.choice.inspect_the_marker.outcome.inspect_the_marker_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_paradise_p1_classic_01_route_markers_l2_split_pennant",
+                "delayMonths": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "reset_by_local_word",
+      "textKey": "event.active_paradise_p1_classic_01_cactus_backward_marker.choice.reset_by_local_word.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reset_by_local_word_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_cactus_backward_marker.choice.reset_by_local_word.outcome.reset_by_local_word_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p1_classic_01_route_markers_l2_split_pennant",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_a_warning",
+      "textKey": "event.active_paradise_p1_classic_01_cactus_backward_marker.choice.leave_a_warning.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_a_warning_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_cactus_backward_marker.choice.leave_a_warning.outcome.leave_a_warning_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p1_classic_01_route_markers_l2_split_pennant",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p1_classic"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "cactus_island"
+      }
+    ]
+  }
+}

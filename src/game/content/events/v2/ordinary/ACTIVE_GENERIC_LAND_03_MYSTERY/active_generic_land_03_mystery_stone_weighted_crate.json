@@ -1,0 +1,176 @@
+{
+  "id": "active_generic_land_03_mystery_stone_weighted_crate",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_03_mystery_stone_weighted_crate.title",
+  "textKey": "event.active_generic_land_03_mystery_stone_weighted_crate.text",
+  "choices": [
+    {
+      "id": "listen_shift",
+      "textKey": "event.active_generic_land_03_mystery_stone_weighted_crate.choice.listen_shift.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "listen_shift_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_stone_weighted_crate.choice.listen_shift.outcome.listen_shift_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stone_weighted_crate_i01_false_bottom"
+              }
+            ]
+          },
+          "failure": {
+            "id": "listen_shift_failure",
+            "textKey": "event.active_generic_land_03_mystery_stone_weighted_crate.choice.listen_shift.outcome.listen_shift_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stone_weighted_crate_i01_false_bottom"
+              }
+            ]
+          },
+          "success": {
+            "id": "listen_shift_success",
+            "textKey": "event.active_generic_land_03_mystery_stone_weighted_crate.choice.listen_shift.outcome.listen_shift_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stone_weighted_crate_i01_false_bottom"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "listen_shift_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_stone_weighted_crate.choice.listen_shift.outcome.listen_shift_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stone_weighted_crate_i01_false_bottom"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pick_test_crate",
+      "textKey": "event.active_generic_land_03_mystery_stone_weighted_crate.choice.pick_test_crate.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "luck",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "pick_test_crate_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_stone_weighted_crate.choice.pick_test_crate.outcome.pick_test_crate_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stone_weighted_crate_i01_false_bottom"
+              }
+            ]
+          },
+          "failure": {
+            "id": "pick_test_crate_failure",
+            "textKey": "event.active_generic_land_03_mystery_stone_weighted_crate.choice.pick_test_crate.outcome.pick_test_crate_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stone_weighted_crate_i01_false_bottom"
+              }
+            ]
+          },
+          "success": {
+            "id": "pick_test_crate_success",
+            "textKey": "event.active_generic_land_03_mystery_stone_weighted_crate.choice.pick_test_crate.outcome.pick_test_crate_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stone_weighted_crate_i01_false_bottom"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "pick_test_crate_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_stone_weighted_crate.choice.pick_test_crate.outcome.pick_test_crate_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_stone_weighted_crate_i01_false_bottom"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "demand_opening",
+      "textKey": "event.active_generic_land_03_mystery_stone_weighted_crate.choice.demand_opening.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "demanded",
+          "textKey": "event.active_generic_land_03_mystery_stone_weighted_crate.choice.demand_opening.outcome.demanded.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_stone_weighted_crate_i01_false_bottom"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  }
+}

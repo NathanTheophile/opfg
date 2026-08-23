@@ -1,0 +1,99 @@
+{
+  "id": "ch_v2_race_fishman_01_rinse_bucket_removed",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_race_fishman_01_rinse_bucket_removed.title",
+  "textKey": "event.ch_v2_race_fishman_01_rinse_bucket_removed.text",
+  "choices": [
+    {
+      "id": "take_separate_cup",
+      "textKey": "event.ch_v2_race_fishman_01_rinse_bucket_removed.choice.take_separate_cup.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cup_taken",
+          "textKey": "event.ch_v2_race_fishman_01_rinse_bucket_removed.choice.take_separate_cup.outcome.cup_taken.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "put_it_back",
+      "textKey": "event.ch_v2_race_fishman_01_rinse_bucket_removed.choice.put_it_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cup_returned",
+          "textKey": "event.ch_v2_race_fishman_01_rinse_bucket_removed.choice.put_it_back.outcome.cup_returned.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_same_bucket",
+      "textKey": "event.ch_v2_race_fishman_01_rinse_bucket_removed.choice.ask_same_bucket.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "same_bucket",
+          "textKey": "event.ch_v2_race_fishman_01_rinse_bucket_removed.choice.ask_same_bucket.outcome.same_bucket.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "name_the_insult",
+      "textKey": "event.ch_v2_race_fishman_01_rinse_bucket_removed.choice.name_the_insult.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "public_refusal",
+          "textKey": "event.ch_v2_race_fishman_01_rinse_bucket_removed.choice.name_the_insult.outcome.public_refusal.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "proud"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 83
+      },
+      {
+        "type": "raceIs",
+        "raceId": "fishman"
+      }
+    ]
+  }
+}

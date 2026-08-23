@@ -1,0 +1,149 @@
+{
+  "id": "ch_south_blue_01_southport_grain_shavings",
+  "titleKey": "event.ch_south_blue_01_southport_grain_shavings.title",
+  "textKey": "event.ch_south_blue_01_southport_grain_shavings.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 95
+      },
+      {
+        "type": "locationIs",
+        "locationId": "sorbet_southport"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_the_wood",
+      "textKey": "event.ch_south_blue_01_southport_grain_shavings.choice.read_the_wood.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "wrong_plank",
+            "textKey": "event.ch_south_blue_01_southport_grain_shavings.choice.read_the_wood.outcome.wrong_plank.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_south_blue_01_southport_grain_followup",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "inconclusive",
+            "textKey": "event.ch_south_blue_01_southport_grain_shavings.choice.read_the_wood.outcome.inconclusive.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_south_blue_01_southport_grain_followup",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "matched_grain",
+            "textKey": "event.ch_south_blue_01_southport_grain_shavings.choice.read_the_wood.outcome.matched_grain.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_south_blue_01_southport_grain_followup",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "matched_defect",
+            "textKey": "event.ch_south_blue_01_southport_grain_shavings.choice.read_the_wood.outcome.matched_defect.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_south_blue_01_southport_grain_followup",
+                "delayMonths": 18
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "fetch_shipwright",
+      "textKey": "event.ch_south_blue_01_southport_grain_shavings.choice.fetch_shipwright.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shipwright_called",
+          "textKey": "event.ch_south_blue_01_southport_grain_shavings.choice.fetch_shipwright.outcome.shipwright_called.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_south_blue_01_southport_grain_followup",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_samples",
+      "textKey": "event.ch_south_blue_01_southport_grain_shavings.choice.keep_samples.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "samples_sorted",
+          "textKey": "event.ch_south_blue_01_southport_grain_shavings.choice.keep_samples.outcome.samples_sorted.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_south_blue_01_southport_grain_followup",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

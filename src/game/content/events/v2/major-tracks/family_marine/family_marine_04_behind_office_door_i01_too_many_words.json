@@ -1,0 +1,74 @@
+{
+  "id": "family_marine_04_behind_office_door_i01_too_many_words",
+  "kind": "immediate",
+  "titleKey": "event.family_marine_04_behind_office_door_i01_too_many_words.title",
+  "textKey": "event.family_marine_04_behind_office_door_i01_too_many_words.text",
+  "choices": [
+    {
+      "id": "stay",
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "family_marine_04_behind_office_door",
+        "choiceId": "listen"
+      },
+      "textKey": "event.family_marine_04_behind_office_door_i01_too_many_words.choice.stay.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hears_reason",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_04_behind_office_door_i02_door_opens"
+            }
+          ],
+          "textKey": "event.family_marine_04_behind_office_door_i01_too_many_words.choice.stay.outcome.hears_reason.text"
+        }
+      }
+    },
+    {
+      "id": "call_again",
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "family_marine_04_behind_office_door",
+        "choiceId": "call"
+      },
+      "textKey": "event.family_marine_04_behind_office_door_i01_too_many_words.choice.call_again.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "interrupt",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_04_behind_office_door_i02_door_opens"
+            }
+          ],
+          "textKey": "event.family_marine_04_behind_office_door_i01_too_many_words.choice.call_again.outcome.interrupt.text"
+        }
+      }
+    },
+    {
+      "id": "keep_walking",
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "family_marine_04_behind_office_door",
+        "choiceId": "leave"
+      },
+      "textKey": "event.family_marine_04_behind_office_door_i01_too_many_words.choice.keep_walking.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leaves_secret",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_04_behind_office_door_i02_door_opens"
+            }
+          ],
+          "textKey": "event.family_marine_04_behind_office_door_i01_too_many_words.choice.keep_walking.outcome.leaves_secret.text"
+        }
+      }
+    }
+  ]
+}

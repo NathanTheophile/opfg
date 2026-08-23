@@ -1,0 +1,58 @@
+{
+  "id": "active_port_trade_01_duplicate_invoice_charge_i1_stamps",
+  "kind": "immediate",
+  "titleKey": "event.active_port_trade_01_duplicate_invoice_charge_i1_stamps.title",
+  "textKey": "event.active_port_trade_01_duplicate_invoice_charge_i1_stamps.text",
+  "choices": [
+    {
+      "id": "ordre",
+      "textKey": "event.active_port_trade_01_duplicate_invoice_charge_i1_stamps.choice.ordre.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ordre",
+          "textKey": "event.active_port_trade_01_duplicate_invoice_charge_i1_stamps.choice.ordre.outcome.ordre.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_duplicate_invoice_charge_i2_owner"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "bluffer",
+      "textKey": "event.active_port_trade_01_duplicate_invoice_charge_i1_stamps.choice.bluffer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bluff",
+          "textKey": "event.active_port_trade_01_duplicate_invoice_charge_i1_stamps.choice.bluffer.outcome.bluff.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_duplicate_invoice_charge_i2_owner"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "deceptive"
+      }
+    },
+    {
+      "id": "partir",
+      "textKey": "event.active_port_trade_01_duplicate_invoice_charge_i1_stamps.choice.partir.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "parti",
+          "textKey": "event.active_port_trade_01_duplicate_invoice_charge_i1_stamps.choice.partir.outcome.parti.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

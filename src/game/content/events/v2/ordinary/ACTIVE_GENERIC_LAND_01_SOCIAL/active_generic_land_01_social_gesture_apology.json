@@ -1,0 +1,186 @@
+{
+  "id": "active_generic_land_01_social_gesture_apology",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_01_social_gesture_apology.title",
+  "textKey": "event.active_generic_land_01_social_gesture_apology.text",
+  "choices": [
+    {
+      "id": "apologize_properly",
+      "textKey": "event.active_generic_land_01_social_gesture_apology.choice.apologize_properly.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "apology_worse",
+            "textKey": "event.active_generic_land_01_social_gesture_apology.choice.apologize_properly.outcome.apology_worse.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_gesture_apology_i01_custom_disputed"
+              }
+            ]
+          },
+          "failure": {
+            "id": "apology_doubted",
+            "textKey": "event.active_generic_land_01_social_gesture_apology.choice.apologize_properly.outcome.apology_doubted.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_gesture_apology_i01_custom_disputed"
+              }
+            ]
+          },
+          "success": {
+            "id": "apology_accepted",
+            "textKey": "event.active_generic_land_01_social_gesture_apology.choice.apologize_properly.outcome.apology_accepted.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_gesture_apology_i01_custom_disputed"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "apology_wins_room",
+            "textKey": "event.active_generic_land_01_social_gesture_apology.choice.apologize_properly.outcome.apology_wins_room.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_gesture_apology_i01_custom_disputed"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "copy_the_correct_gesture",
+      "textKey": "event.active_generic_land_01_social_gesture_apology.choice.copy_the_correct_gesture.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "gesture_wrong_again",
+            "textKey": "event.active_generic_land_01_social_gesture_apology.choice.copy_the_correct_gesture.outcome.gesture_wrong_again.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_gesture_apology_i01_custom_disputed"
+              }
+            ]
+          },
+          "failure": {
+            "id": "gesture_uncertain",
+            "textKey": "event.active_generic_land_01_social_gesture_apology.choice.copy_the_correct_gesture.outcome.gesture_uncertain.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_gesture_apology_i01_custom_disputed"
+              }
+            ]
+          },
+          "success": {
+            "id": "gesture_correct",
+            "textKey": "event.active_generic_land_01_social_gesture_apology.choice.copy_the_correct_gesture.outcome.gesture_correct.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_gesture_apology_i01_custom_disputed"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "gesture_clean",
+            "textKey": "event.active_generic_land_01_social_gesture_apology.choice.copy_the_correct_gesture.outcome.gesture_clean.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_gesture_apology_i01_custom_disputed"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "own_the_outsider_mistake",
+      "textKey": "event.active_generic_land_01_social_gesture_apology.choice.own_the_outsider_mistake.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mistake_owned",
+          "textKey": "event.active_generic_land_01_social_gesture_apology.choice.own_the_outsider_mistake.outcome.mistake_owned.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_gesture_apology_i01_custom_disputed"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_the_ritual",
+      "textKey": "event.active_generic_land_01_social_gesture_apology.choice.refuse_the_ritual.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "proud"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ritual_refused",
+          "textKey": "event.active_generic_land_01_social_gesture_apology.choice.refuse_the_ritual.outcome.ritual_refused.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_gesture_apology_i01_custom_disputed"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

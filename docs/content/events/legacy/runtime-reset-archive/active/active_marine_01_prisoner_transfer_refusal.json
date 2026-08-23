@@ -1,0 +1,147 @@
+{
+  "id": "active_marine_01_prisoner_transfer_refusal",
+  "kind": "normal",
+  "titleKey": "event.active_marine_01_prisoner_transfer_refusal.title",
+  "textKey": "event.active_marine_01_prisoner_transfer_refusal.text",
+  "choices": [
+    {
+      "id": "compare_documents",
+      "textKey": "event.active_marine_01_prisoner_transfer_refusal.choice.compare_documents.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_marine_01_prisoner_transfer_refusal_compare_documents_criticalfailure",
+            "textKey": "event.active_marine_01_prisoner_transfer_refusal.choice.compare_documents.outcome.active_marine_01_prisoner_transfer_refusal_compare_documents_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_prisoner_transfer_refusal_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_marine_01_prisoner_transfer_refusal_compare_documents_failure",
+            "textKey": "event.active_marine_01_prisoner_transfer_refusal.choice.compare_documents.outcome.active_marine_01_prisoner_transfer_refusal_compare_documents_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_prisoner_transfer_refusal_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "active_marine_01_prisoner_transfer_refusal_compare_documents_success",
+            "textKey": "event.active_marine_01_prisoner_transfer_refusal.choice.compare_documents.outcome.active_marine_01_prisoner_transfer_refusal_compare_documents_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_prisoner_transfer_refusal_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_marine_01_prisoner_transfer_refusal_compare_documents_criticalsuccess",
+            "textKey": "event.active_marine_01_prisoner_transfer_refusal.choice.compare_documents.outcome.active_marine_01_prisoner_transfer_refusal_compare_documents_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_marine_01_prisoner_transfer_refusal_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hear_the_prisoner",
+      "textKey": "event.active_marine_01_prisoner_transfer_refusal.choice.hear_the_prisoner.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_prisoner_transfer_refusal_hear_the_prisoner",
+          "textKey": "event.active_marine_01_prisoner_transfer_refusal.choice.hear_the_prisoner.outcome.active_marine_01_prisoner_transfer_refusal_hear_the_prisoner.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_marine_01_prisoner_transfer_refusal_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "secure_first",
+      "textKey": "event.active_marine_01_prisoner_transfer_refusal.choice.secure_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_prisoner_transfer_refusal_secure_first",
+          "textKey": "event.active_marine_01_prisoner_transfer_refusal.choice.secure_first.outcome.active_marine_01_prisoner_transfer_refusal_secure_first.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_marine_01_prisoner_transfer_refusal_i1"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 186
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_petty_officer"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      }
+    ]
+  }
+}

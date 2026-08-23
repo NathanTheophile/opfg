@@ -1,0 +1,198 @@
+{
+  "id": "active_recruitment_new_cast_01_face_under_paste",
+  "kind": "normal",
+  "titleKey": "event.active_recruitment_new_cast_01_face_under_paste.title",
+  "textKey": "event.active_recruitment_new_cast_01_face_under_paste.text",
+  "choices": [
+    {
+      "id": "peel_the_layers",
+      "textKey": "event.active_recruitment_new_cast_01_face_under_paste.choice.peel_the_layers.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "peel_the_layers_criticalfailure",
+            "textKey": "event.active_recruitment_new_cast_01_face_under_paste.choice.peel_the_layers.outcome.peel_the_layers_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_notice_carver",
+                "amount": -3
+              }
+            ]
+          },
+          "failure": {
+            "id": "peel_the_layers_failure",
+            "textKey": "event.active_recruitment_new_cast_01_face_under_paste.choice.peel_the_layers.outcome.peel_the_layers_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "peel_the_layers_success",
+            "textKey": "event.active_recruitment_new_cast_01_face_under_paste.choice.peel_the_layers.outcome.peel_the_layers_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_notice_carver",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_face_under_paste_i01_under_the_paste"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "peel_the_layers_criticalsuccess",
+            "textKey": "event.active_recruitment_new_cast_01_face_under_paste.choice.peel_the_layers.outcome.peel_the_layers_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_notice_carver",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_face_under_paste_i01_under_the_paste"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_back_the_clerk",
+      "textKey": "event.active_recruitment_new_cast_01_face_under_paste.choice.hold_back_the_clerk.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hold_back_the_clerk_criticalfailure",
+            "textKey": "event.active_recruitment_new_cast_01_face_under_paste.choice.hold_back_the_clerk.outcome.hold_back_the_clerk_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_notice_carver",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "hold_back_the_clerk_failure",
+            "textKey": "event.active_recruitment_new_cast_01_face_under_paste.choice.hold_back_the_clerk.outcome.hold_back_the_clerk_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "hold_back_the_clerk_success",
+            "textKey": "event.active_recruitment_new_cast_01_face_under_paste.choice.hold_back_the_clerk.outcome.hold_back_the_clerk_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_notice_carver",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_face_under_paste_i01_under_the_paste"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hold_back_the_clerk_criticalsuccess",
+            "textKey": "event.active_recruitment_new_cast_01_face_under_paste.choice.hold_back_the_clerk.outcome.hold_back_the_clerk_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_notice_carver",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_face_under_paste_i01_under_the_paste"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "let_the_wall_go",
+      "textKey": "event.active_recruitment_new_cast_01_face_under_paste.choice.let_the_wall_go.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "let_the_wall_go_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_face_under_paste.choice.let_the_wall_go.outcome.let_the_wall_go_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "cast": [
+    "active_recruit_notice_carver"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "city"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "village"
+          }
+        ]
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "crew"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

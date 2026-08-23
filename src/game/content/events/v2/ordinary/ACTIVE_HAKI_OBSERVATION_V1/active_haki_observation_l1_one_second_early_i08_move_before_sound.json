@@ -1,0 +1,118 @@
+{
+  "id": "active_haki_observation_l1_one_second_early_i08_move_before_sound",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l1_one_second_early_i08_move_before_sound.title",
+  "textKey": "event.active_haki_observation_l1_one_second_early_i08_move_before_sound.text",
+  "choices": [
+    {
+      "id": "trust_first_signal",
+      "textKey": "event.active_haki_observation_l1_one_second_early_i08_move_before_sound.choice.trust_first_signal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accepted_sense",
+          "textKey": "event.active_haki_observation_l1_one_second_early_i08_move_before_sound.choice.trust_first_signal.outcome.accepted_sense.text",
+          "effects": [
+            {
+              "type": "raiseHakiTo",
+              "hakiType": "observation",
+              "level": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "separate_noise",
+      "textKey": "event.active_haki_observation_l1_one_second_early_i08_move_before_sound.choice.separate_noise.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "painful_focus",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i08_move_before_sound.choice.separate_noise.outcome.painful_focus.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "raiseHakiTo",
+                "hakiType": "observation",
+                "level": 1
+              }
+            ]
+          },
+          "failure": {
+            "id": "late_but_real",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i08_move_before_sound.choice.separate_noise.outcome.late_but_real.text",
+            "effects": [
+              {
+                "type": "raiseHakiTo",
+                "hakiType": "observation",
+                "level": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "clear_presence",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i08_move_before_sound.choice.separate_noise.outcome.clear_presence.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "raiseHakiTo",
+                "hakiType": "observation",
+                "level": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "world_one_second_late",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i08_move_before_sound.choice.separate_noise.outcome.world_one_second_late.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "raiseHakiTo",
+                "hakiType": "observation",
+                "level": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "breathe_and_act",
+      "textKey": "event.active_haki_observation_l1_one_second_early_i08_move_before_sound.choice.breathe_and_act.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "deliberate_trust",
+          "textKey": "event.active_haki_observation_l1_one_second_early_i08_move_before_sound.choice.breathe_and_act.outcome.deliberate_trust.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "raiseHakiTo",
+              "hakiType": "observation",
+              "level": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

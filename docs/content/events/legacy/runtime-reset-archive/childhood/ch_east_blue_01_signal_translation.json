@@ -1,0 +1,55 @@
+{
+  "id": "ch_east_blue_01_signal_translation",
+  "kind": "scheduled",
+  "titleKey": "event.ch_east_blue_01_signal_translation.title",
+  "textKey": "event.ch_east_blue_01_signal_translation.text",
+  "choices": [
+    {
+      "id": "compare_context",
+      "textKey": "event.ch_east_blue_01_signal_translation.choice.compare_context.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "context_translation",
+          "textKey": "event.ch_east_blue_01_signal_translation.choice.compare_context.outcome.context_translation.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_east_blue_01_signal_return_question",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_before_copy",
+      "textKey": "event.ch_east_blue_01_signal_translation.choice.ask_before_copy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "careful_translation",
+          "textKey": "event.ch_east_blue_01_signal_translation.choice.ask_before_copy.outcome.careful_translation.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_east_blue_01_signal_return_question",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100
+}

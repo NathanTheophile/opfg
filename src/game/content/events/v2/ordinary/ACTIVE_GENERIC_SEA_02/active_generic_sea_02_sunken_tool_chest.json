@@ -1,0 +1,150 @@
+{
+  "id": "active_generic_sea_02_sunken_tool_chest",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_02_sunken_tool_chest.title",
+  "textKey": "event.active_generic_sea_02_sunken_tool_chest.text",
+  "choices": [
+    {
+      "id": "dive_for_handle",
+      "textKey": "event.active_generic_sea_02_sunken_tool_chest.choice.dive_for_handle.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "dive_for_handle_criticalFailure",
+            "textKey": "event.active_generic_sea_02_sunken_tool_chest.outcome.dive_for_handle_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -7
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "dive_for_handle_failure",
+            "textKey": "event.active_generic_sea_02_sunken_tool_chest.outcome.dive_for_handle_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "dive_for_handle_success",
+            "textKey": "event.active_generic_sea_02_sunken_tool_chest.outcome.dive_for_handle_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_sunken_tool_chest_i01"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "dive_for_handle_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_sunken_tool_chest.outcome.dive_for_handle_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_sunken_tool_chest_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "snag_it_with_line",
+      "textKey": "event.active_generic_sea_02_sunken_tool_chest.choice.snag_it_with_line.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "snag_it_with_line_criticalFailure",
+            "textKey": "event.active_generic_sea_02_sunken_tool_chest.outcome.snag_it_with_line_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "snag_it_with_line_failure",
+            "textKey": "event.active_generic_sea_02_sunken_tool_chest.outcome.snag_it_with_line_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "snag_it_with_line_success",
+            "textKey": "event.active_generic_sea_02_sunken_tool_chest.outcome.snag_it_with_line_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_sunken_tool_chest_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "snag_it_with_line_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_sunken_tool_chest.outcome.snag_it_with_line_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_sunken_tool_chest_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "leave_the_chest",
+      "textKey": "event.active_generic_sea_02_sunken_tool_chest.choice.leave_the_chest.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_the_chest_result",
+          "textKey": "event.active_generic_sea_02_sunken_tool_chest.outcome.leave_the_chest_result.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  }
+}

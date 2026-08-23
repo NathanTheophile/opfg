@@ -1,0 +1,120 @@
+{
+  "id": "ch_v2_race_giant_01_lt01_tiny_hinge",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_race_giant_01_lt01_tiny_hinge.title",
+  "textKey": "event.ch_v2_race_giant_01_lt01_tiny_hinge.text",
+  "choices": [
+    {
+      "id": "align_pin",
+      "textKey": "event.ch_v2_race_giant_01_lt01_tiny_hinge.choice.align_pin.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "align_pin_criticalfailure",
+            "textKey": "event.ch_v2_race_giant_01_lt01_tiny_hinge.choice.align_pin.outcome.align_pin_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_race_giant_01_lt02_human_tool",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "failure": {
+            "id": "align_pin_failure",
+            "textKey": "event.ch_v2_race_giant_01_lt01_tiny_hinge.choice.align_pin.outcome.align_pin_failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_race_giant_01_lt02_human_tool",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "success": {
+            "id": "align_pin_success",
+            "textKey": "event.ch_v2_race_giant_01_lt01_tiny_hinge.choice.align_pin.outcome.align_pin_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_race_giant_01_lt02_human_tool",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "align_pin_criticalsuccess",
+            "textKey": "event.ch_v2_race_giant_01_lt01_tiny_hinge.choice.align_pin.outcome.align_pin_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_v2_race_giant_01_lt02_human_tool",
+                "delayMonths": 24
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "table_edge",
+      "textKey": "event.ch_v2_race_giant_01_lt01_tiny_hinge.choice.table_edge.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "table_support",
+          "textKey": "event.ch_v2_race_giant_01_lt01_tiny_hinge.choice.table_edge.outcome.table_support.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_giant_01_lt02_human_tool",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_force",
+      "textKey": "event.ch_v2_race_giant_01_lt01_tiny_hinge.choice.refuse_force.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "no_force",
+          "textKey": "event.ch_v2_race_giant_01_lt01_tiny_hinge.choice.refuse_force.outcome.no_force.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_giant_01_lt02_human_tool",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100
+}

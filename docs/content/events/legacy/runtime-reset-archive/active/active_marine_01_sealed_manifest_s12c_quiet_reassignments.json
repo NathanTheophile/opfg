@@ -1,0 +1,61 @@
+{
+  "id": "active_marine_01_sealed_manifest_s12c_quiet_reassignments",
+  "kind": "scheduled",
+  "titleKey": "event.active_marine_01_sealed_manifest_s12c_quiet_reassignments.title",
+  "textKey": "event.active_marine_01_sealed_manifest_s12c_quiet_reassignments.text",
+  "choices": [
+    {
+      "id": "document_pattern",
+      "textKey": "event.active_marine_01_sealed_manifest_s12c_quiet_reassignments.choice.document_pattern.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_s12c_quiet_reassignments_document_pattern",
+          "textKey": "event.active_marine_01_sealed_manifest_s12c_quiet_reassignments.choice.document_pattern.outcome.active_marine_01_sealed_manifest_s12c_quiet_reassignments_document_pattern.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s13_final_audit",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "avoid_reopening_every_case",
+      "textKey": "event.active_marine_01_sealed_manifest_s12c_quiet_reassignments.choice.avoid_reopening_every_case.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_sealed_manifest_s12c_quiet_reassignments_avoid_reopening_every_case",
+          "textKey": "event.active_marine_01_sealed_manifest_s12c_quiet_reassignments.choice.avoid_reopening_every_case.outcome.active_marine_01_sealed_manifest_s12c_quiet_reassignments_avoid_reopening_every_case.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_sealed_manifest_s13_final_audit",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "marine"
+    }
+  }
+}

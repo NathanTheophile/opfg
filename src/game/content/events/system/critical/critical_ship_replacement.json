@@ -1,0 +1,38 @@
+{
+  "id": "critical_ship_replacement",
+  "kind": "critical",
+  "trigger": { "type": "shipReplacementPending" },
+  "titleKey": "event.critical_ship_replacement.title",
+  "textKey": "event.critical_ship_replacement.text",
+  "choices": [
+    {
+      "id": "destroy_old_ship",
+      "textKey": "event.critical_ship_replacement.choice.destroy_old_ship.text",
+      "availableIf": { "type": "isOnLand" },
+      "resolution": { "type": "deterministic", "outcome": {
+        "id": "old_ship_destroyed",
+        "textKey": "event.critical_ship_replacement.choice.destroy_old_ship.outcome.old_ship_destroyed.text",
+        "effects": [{ "type": "resolveShipReplacement", "disposition": "destroy" }]
+      } }
+    },
+    {
+      "id": "sell_old_ship",
+      "textKey": "event.critical_ship_replacement.choice.sell_old_ship.text",
+      "availableIf": { "type": "canSellShip" },
+      "resolution": { "type": "deterministic", "outcome": {
+        "id": "old_ship_sold",
+        "textKey": "event.critical_ship_replacement.choice.sell_old_ship.outcome.old_ship_sold.text",
+        "effects": [{ "type": "resolveShipReplacement", "disposition": "sell", "berries": 25 }]
+      } }
+    },
+    {
+      "id": "abandon_old_ship",
+      "textKey": "event.critical_ship_replacement.choice.abandon_old_ship.text",
+      "resolution": { "type": "deterministic", "outcome": {
+        "id": "old_ship_abandoned",
+        "textKey": "event.critical_ship_replacement.choice.abandon_old_ship.outcome.old_ship_abandoned.text",
+        "effects": [{ "type": "resolveShipReplacement", "disposition": "abandon" }]
+      } }
+    }
+  ]
+}

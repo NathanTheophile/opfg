@@ -1,0 +1,56 @@
+{
+  "id": "ch_west_blue_01_enoa_s08a_publish_anomaly",
+  "kind": "scheduled",
+  "titleKey": "event.ch_west_blue_01_enoa_s08a_publish_anomaly.title",
+  "textKey": "event.ch_west_blue_01_enoa_s08a_publish_anomaly.text",
+  "choices": [
+    {
+      "id": "stand_by_note",
+      "textKey": "event.ch_west_blue_01_enoa_s08a_publish_anomaly.choice.stand_by_note.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "note_defended",
+          "textKey": "event.ch_west_blue_01_enoa_s08a_publish_anomaly.choice.stand_by_note.outcome.note_defended.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_enoa_s09a_merchant_pushback",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "invite_corrections",
+      "textKey": "event.ch_west_blue_01_enoa_s08a_publish_anomaly.choice.invite_corrections.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "corrections_invited",
+          "textKey": "event.ch_west_blue_01_enoa_s08a_publish_anomaly.choice.invite_corrections.outcome.corrections_invited.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_enoa_s09a_merchant_pushback",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

@@ -1,0 +1,109 @@
+{
+  "id": "active_generic_combat_01_crew_sparring_rotation",
+  "kind": "normal",
+  "titleKey": "event.active_generic_combat_01_crew_sparring_rotation.title",
+  "textKey": "event.active_generic_combat_01_crew_sparring_rotation.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasCrew"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "engage",
+      "textKey": "event.active_generic_combat_01_crew_sparring_rotation.choice.engage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "engage_outcome",
+          "textKey": "event.active_generic_combat_01_crew_sparring_rotation.choice.engage.outcome.engage_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_crew_sparring_rotation_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "control",
+      "textKey": "event.active_generic_combat_01_crew_sparring_rotation.choice.control.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "control_outcome",
+          "textKey": "event.active_generic_combat_01_crew_sparring_rotation.choice.control.outcome.control_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_crew_sparring_rotation_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw",
+      "textKey": "event.active_generic_combat_01_crew_sparring_rotation.choice.withdraw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "withdraw_outcome",
+          "textKey": "event.active_generic_combat_01_crew_sparring_rotation.choice.withdraw.outcome.withdraw_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "fighter_partner",
+      "textKey": "event.active_generic_combat_01_crew_sparring_rotation.choice.fighter_partner.text",
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "fighter"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fighter_partner_outcome",
+          "textKey": "event.active_generic_combat_01_crew_sparring_rotation.choice.fighter_partner.outcome.fighter_partner_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_crew_sparring_rotation_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

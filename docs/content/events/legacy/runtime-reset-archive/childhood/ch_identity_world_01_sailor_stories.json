@@ -1,0 +1,133 @@
+{
+  "id": "ch_identity_world_01_sailor_stories",
+  "titleKey": "event.ch_identity_world_01_sailor_stories.title",
+  "textKey": "event.ch_identity_world_01_sailor_stories.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 96
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 143
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "trade"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "food"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "join_argument",
+      "textKey": "event.ch_identity_world_01_sailor_stories.choice.join_argument.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "laughed_off",
+            "textKey": "event.ch_identity_world_01_sailor_stories.choice.join_argument.outcome.laughed_off.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_sailor_stories_i1_three_versions"
+              }
+            ]
+          },
+          "failure": {
+            "id": "few_answers",
+            "textKey": "event.ch_identity_world_01_sailor_stories.choice.join_argument.outcome.few_answers.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_sailor_stories_i1_three_versions"
+              }
+            ]
+          },
+          "success": {
+            "id": "good_questions",
+            "textKey": "event.ch_identity_world_01_sailor_stories.choice.join_argument.outcome.good_questions.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_sailor_stories_i1_three_versions"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "argument_turns",
+            "textKey": "event.ch_identity_world_01_sailor_stories.choice.join_argument.outcome.argument_turns.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_sailor_stories_i1_three_versions"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "listen_only",
+      "textKey": "event.ch_identity_world_01_sailor_stories.choice.listen_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "listened",
+          "textKey": "event.ch_identity_world_01_sailor_stories.choice.listen_only.outcome.listened.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_sailor_stories_i1_three_versions"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dismiss_boasts",
+      "textKey": "event.ch_identity_world_01_sailor_stories.choice.dismiss_boasts.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "boasts_dismissed",
+          "textKey": "event.ch_identity_world_01_sailor_stories.choice.dismiss_boasts.outcome.boasts_dismissed.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

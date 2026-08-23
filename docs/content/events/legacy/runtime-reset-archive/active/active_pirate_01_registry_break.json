@@ -1,0 +1,182 @@
+{
+  "id": "active_pirate_01_registry_break",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_registry_break.title",
+  "textKey": "event.active_pirate_01_registry_break.text",
+  "choices": [
+    {
+      "id": "steal_the_ledger",
+      "textKey": "event.active_pirate_01_registry_break.choice.steal_the_ledger.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_pirate_01_registry_break.choice.steal_the_ledger.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "setCareerAffiliation",
+                "affiliationId": "pirate"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_pirate_01_first_wanted_notice",
+                "delayMonths": 2
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_pirate_01_registry_break.choice.steal_the_ledger.outcome.failure.text",
+            "effects": [
+              {
+                "type": "setCareerAffiliation",
+                "affiliationId": "pirate"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_pirate_01_first_wanted_notice",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_pirate_01_registry_break.choice.steal_the_ledger.outcome.success.text",
+            "effects": [
+              {
+                "type": "setCareerAffiliation",
+                "affiliationId": "pirate"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_pirate_01_first_wanted_notice",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_pirate_01_registry_break.choice.steal_the_ledger.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setCareerAffiliation",
+                "affiliationId": "pirate"
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_pirate_01_first_wanted_notice",
+                "delayMonths": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "declare_outlaw",
+      "textKey": "event.active_pirate_01_registry_break.choice.declare_outlaw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_registry_break.choice.declare_outlaw.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "setCareerAffiliation",
+              "affiliationId": "pirate"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_first_wanted_notice",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pay_under_protest",
+      "textKey": "event.active_pirate_01_registry_break.choice.pay_under_protest.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_registry_break.choice.pay_under_protest.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -50
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 50
+      }
+    },
+    {
+      "id": "walk_away",
+      "textKey": "event.active_pirate_01_registry_break.choice.walk_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_registry_break.choice.walk_away.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  }
+}

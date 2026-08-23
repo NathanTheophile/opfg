@@ -1,0 +1,233 @@
+{
+  "id": "mira_hunters",
+  "titleKey": "event.mira_hunters.title",
+  "textKey": "event.mira_hunters.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasFlag",
+        "flagId": "reefs_crossed"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "loguetown"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "mira",
+        "status": "crew"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "mira_confession",
+            "choiceId": "trust_mira"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "mira_confession",
+            "choiceId": "keep_watch"
+          }
+        ]
+      }
+    ]
+  },
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "let_mira_speak",
+      "textKey": "event.mira_hunters.choice.let_mira_speak.text",
+      "availableIf": {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "mira",
+        "value": 40
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mira_hunters_negotiated",
+          "textKey": "event.mira_hunters.choice.let_mira_speak.outcome.mira_hunters_negotiated.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": 10
+            },
+            {
+              "type": "setFlag",
+              "flagId": "mira_hunters_peaceful"
+            },
+            {
+              "type": "setFlag",
+              "flagId": "mira_hunters_resolved"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "bluff_hunters",
+      "textKey": "event.mira_hunters.choice.bluff_hunters.text",
+      "availableIf": {
+        "type": "statAtLeast",
+        "statId": "charisma",
+        "value": 35
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mira_hunters_bluffed",
+          "textKey": "event.mira_hunters.choice.bluff_hunters.outcome.mira_hunters_bluffed.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": 5
+            },
+            {
+              "type": "setFlag",
+              "flagId": "mira_hunters_resolved"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "outrun_hunters",
+      "textKey": "event.mira_hunters.choice.outrun_hunters.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 13,
+        "modifiers": [
+          {
+            "condition": {
+              "type": "shipHealthAtMost",
+              "value": 10
+            },
+            "value": -4,
+            "displayLabelKey": "event.mira_hunters.choice.outrun_hunters.modifier.0.label"
+          }
+        ],
+        "outcomes": {
+          "criticalFailure": {
+            "id": "mira_hunters_escape_catastrophe",
+            "textKey": "event.mira_hunters.choice.outrun_hunters.outcome.mira_hunters_escape_catastrophe.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -10
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "mira",
+                "amount": -10
+              },
+              {
+                "type": "setNpcStatus",
+                "npcId": "mira",
+                "status": "departed"
+              },
+              {
+                "type": "setFlag",
+                "flagId": "mira_hunters_resolved"
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "mira_hunters_escape_failure",
+            "textKey": "event.mira_hunters.choice.outrun_hunters.outcome.mira_hunters_escape_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -10
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "mira",
+                "amount": -5
+              },
+              {
+                "type": "setFlag",
+                "flagId": "mira_hunters_resolved"
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "mira_hunters_escape_success",
+            "textKey": "event.mira_hunters.choice.outrun_hunters.outcome.mira_hunters_escape_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "mira",
+                "amount": 10
+              },
+              {
+                "type": "setFlag",
+                "flagId": "mira_hunters_resolved"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "mira_hunters_escape_exceptional",
+            "textKey": "event.mira_hunters.choice.outrun_hunters.outcome.mira_hunters_escape_exceptional.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "mira",
+                "amount": 15
+              },
+              {
+                "type": "setFlag",
+                "flagId": "mira_hunters_resolved"
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "hasShip"
+      }
+    },
+    {
+      "id": "hand_over_mira",
+      "textKey": "event.mira_hunters.choice.hand_over_mira.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mira_hunters_betrayed",
+          "textKey": "event.mira_hunters.choice.hand_over_mira.outcome.mira_hunters_betrayed.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": -50
+            },
+            {
+              "type": "setNpcStatus",
+              "npcId": "mira",
+              "status": "unavailable"
+            },
+            {
+              "type": "setFlag",
+              "flagId": "mira_betrayed"
+            },
+            {
+              "type": "setFlag",
+              "flagId": "mira_hunters_resolved"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

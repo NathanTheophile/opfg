@@ -1,0 +1,96 @@
+{
+  "id": "family_civilian_02_local_fallback",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_civilian",
+    "chapterId": "childhood_02",
+    "nodeId": "family_civilian_02_local_fallback",
+    "selectionPriority": 0,
+    "parentNodeIds": [
+      "family_civilian_01_fishman_washbasin",
+      "family_civilian_01_household_fallback"
+    ],
+    "fallback": true
+  },
+  "eligibility": {
+    "type": "affiliationIs",
+    "affiliationId": "civilian"
+  },
+  "titleKey": "event.family_civilian_02_local_fallback.title",
+  "textKey": "event.family_civilian_02_local_fallback.text",
+  "choices": [
+    {
+      "id": "take",
+      "textKey": "event.family_civilian_02_local_fallback.choice.take.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_local_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_local_fallback.choice.take.outcome.take.text"
+        }
+      }
+    },
+    {
+      "id": "ask",
+      "textKey": "event.family_civilian_02_local_fallback.choice.ask.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_local_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_local_fallback.choice.ask.outcome.ask.text"
+        }
+      }
+    },
+    {
+      "id": "wait",
+      "textKey": "event.family_civilian_02_local_fallback.choice.wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_local_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_local_fallback.choice.wait.outcome.wait.text"
+        }
+      }
+    },
+    {
+      "id": "remember_basin",
+      "availableIf": {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_01_fishman_washbasin_i01_reaction",
+        "outcomeId": "protect"
+      },
+      "textKey": "event.family_civilian_02_local_fallback.choice.remember_basin.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "remember_basin",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_02_local_fallback_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_02_local_fallback.choice.remember_basin.outcome.remember_basin.text"
+        }
+      }
+    }
+  ]
+}

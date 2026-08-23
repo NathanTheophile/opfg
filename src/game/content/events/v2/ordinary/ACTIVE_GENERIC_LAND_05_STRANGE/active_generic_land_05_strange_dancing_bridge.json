@@ -1,0 +1,200 @@
+{
+  "id": "active_generic_land_05_strange_dancing_bridge",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_05_strange_dancing_bridge.title",
+  "textKey": "event.active_generic_land_05_strange_dancing_bridge.text",
+  "choices": [
+    {
+      "id": "cross_pattern",
+      "textKey": "event.active_generic_land_05_strange_dancing_bridge.choice.cross_pattern.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "pattern_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_dancing_bridge.choice.cross_pattern.outcome.pattern_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_dancing_bridge_i01_counterweight"
+              }
+            ]
+          },
+          "failure": {
+            "id": "pattern_failure",
+            "textKey": "event.active_generic_land_05_strange_dancing_bridge.choice.cross_pattern.outcome.pattern_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_dancing_bridge_i01_counterweight"
+              }
+            ]
+          },
+          "success": {
+            "id": "pattern_success",
+            "textKey": "event.active_generic_land_05_strange_dancing_bridge.choice.cross_pattern.outcome.pattern_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_dancing_bridge_i01_counterweight"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "pattern_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_dancing_bridge.choice.cross_pattern.outcome.pattern_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_dancing_bridge_i01_counterweight"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "match_mechanism",
+      "textKey": "event.active_generic_land_05_strange_dancing_bridge.choice.match_mechanism.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "mechanism_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_dancing_bridge.choice.match_mechanism.outcome.mechanism_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_dancing_bridge_i01_counterweight"
+              }
+            ]
+          },
+          "failure": {
+            "id": "mechanism_failure",
+            "textKey": "event.active_generic_land_05_strange_dancing_bridge.choice.match_mechanism.outcome.mechanism_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_dancing_bridge_i01_counterweight"
+              }
+            ]
+          },
+          "success": {
+            "id": "mechanism_success",
+            "textKey": "event.active_generic_land_05_strange_dancing_bridge.choice.match_mechanism.outcome.mechanism_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_dancing_bridge_i01_counterweight"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "mechanism_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_dancing_bridge.choice.match_mechanism.outcome.mechanism_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_dancing_bridge_i01_counterweight"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "shipwright_help",
+      "textKey": "event.active_generic_land_05_strange_dancing_bridge.choice.shipwright_help.text",
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shipwright_read",
+          "textKey": "event.active_generic_land_05_strange_dancing_bridge.choice.shipwright_help.outcome.shipwright_read.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_dancing_bridge_i01_counterweight"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wait_on_center",
+      "textKey": "event.active_generic_land_05_strange_dancing_bridge.choice.wait_on_center.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "waited_center",
+          "textKey": "event.active_generic_land_05_strange_dancing_bridge.choice.wait_on_center.outcome.waited_center.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_dancing_bridge_i01_counterweight"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "id": "ch_identity_world_01_foreign_sails_i2_broken_lid",
+  "titleKey": "event.ch_identity_world_01_foreign_sails_i2_broken_lid.title",
+  "textKey": "event.ch_identity_world_01_foreign_sails_i2_broken_lid.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "protect_contents",
+      "textKey": "event.ch_identity_world_01_foreign_sails_i2_broken_lid.choice.protect_contents.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "contents_protected",
+          "textKey": "event.ch_identity_world_01_foreign_sails_i2_broken_lid.choice.protect_contents.outcome.contents_protected.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_foreign_sails_i3_owner_returns"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "read_markings",
+      "textKey": "event.ch_identity_world_01_foreign_sails_i2_broken_lid.choice.read_markings.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "markings_wrong",
+            "textKey": "event.ch_identity_world_01_foreign_sails_i2_broken_lid.choice.read_markings.outcome.markings_wrong.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i3_owner_returns"
+              }
+            ]
+          },
+          "failure": {
+            "id": "markings_unknown",
+            "textKey": "event.ch_identity_world_01_foreign_sails_i2_broken_lid.choice.read_markings.outcome.markings_unknown.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i3_owner_returns"
+              }
+            ]
+          },
+          "success": {
+            "id": "markings_pattern",
+            "textKey": "event.ch_identity_world_01_foreign_sails_i2_broken_lid.choice.read_markings.outcome.markings_pattern.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i3_owner_returns"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "markings_route",
+            "textKey": "event.ch_identity_world_01_foreign_sails_i2_broken_lid.choice.read_markings.outcome.markings_route.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_foreign_sails_i3_owner_returns"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_crew",
+      "textKey": "event.ch_identity_world_01_foreign_sails_i2_broken_lid.choice.call_crew.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crew_called",
+          "textKey": "event.ch_identity_world_01_foreign_sails_i2_broken_lid.choice.call_crew.outcome.crew_called.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_foreign_sails_i3_owner_returns"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

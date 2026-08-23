@@ -1,0 +1,105 @@
+{
+  "id": "active_paradise_p1_classic_01_sabaody_root_channels",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p1_classic_01_sabaody_root_channels.title",
+  "textKey": "event.active_paradise_p1_classic_01_sabaody_root_channels.text",
+  "choices": [
+    {
+      "id": "pick_the_quiet_channel",
+      "textKey": "event.active_paradise_p1_classic_01_sabaody_root_channels.choice.pick_the_quiet_channel.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "pick_the_quiet_channel_criticalfailure",
+            "textKey": "event.active_paradise_p1_classic_01_sabaody_root_channels.choice.pick_the_quiet_channel.outcome.pick_the_quiet_channel_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "pick_the_quiet_channel_failure",
+            "textKey": "event.active_paradise_p1_classic_01_sabaody_root_channels.choice.pick_the_quiet_channel.outcome.pick_the_quiet_channel_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "pick_the_quiet_channel_success",
+            "textKey": "event.active_paradise_p1_classic_01_sabaody_root_channels.choice.pick_the_quiet_channel.outcome.pick_the_quiet_channel_success.text",
+            "effects": []
+          },
+          "criticalSuccess": {
+            "id": "pick_the_quiet_channel_criticalsuccess",
+            "textKey": "event.active_paradise_p1_classic_01_sabaody_root_channels.choice.pick_the_quiet_channel.outcome.pick_the_quiet_channel_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "wait_for_the_patrol",
+      "textKey": "event.active_paradise_p1_classic_01_sabaody_root_channels.choice.wait_for_the_patrol.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait_for_the_patrol_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_sabaody_root_channels.choice.wait_for_the_patrol.outcome.wait_for_the_patrol_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "follow_the_first_mate",
+      "textKey": "event.active_paradise_p1_classic_01_sabaody_root_channels.choice.follow_the_first_mate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "follow_the_first_mate_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_sabaody_root_channels.choice.follow_the_first_mate.outcome.follow_the_first_mate_outcome.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "first_mate"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p1_classic"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "sabaody_archipelago"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

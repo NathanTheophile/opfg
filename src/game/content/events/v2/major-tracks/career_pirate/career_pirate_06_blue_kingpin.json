@@ -1,0 +1,199 @@
+{
+  "id": "career_pirate_06_blue_kingpin",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_06_great_line_choice",
+    "nodeId": "career_pirate_06_blue_kingpin",
+    "parentNodeIds": [
+      "career_pirate_05_captain_without_permission",
+      "career_pirate_05_island_tax",
+      "career_pirate_05_hunters_at_breakfast",
+      "career_pirate_05_black_market_lantern"
+    ],
+    "selectionPriority": 30
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "currentSeaIs",
+            "seaId": "east_blue"
+          },
+          {
+            "type": "currentSeaIs",
+            "seaId": "west_blue"
+          },
+          {
+            "type": "currentSeaIs",
+            "seaId": "north_blue"
+          },
+          {
+            "type": "currentSeaIs",
+            "seaId": "south_blue"
+          }
+        ]
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 20
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.career_pirate_06_blue_kingpin.title",
+  "textKey": "event.career_pirate_06_blue_kingpin.text",
+  "choices": [
+    {
+      "id": "outtalk_kingpin",
+      "textKey": "event.career_pirate_06_blue_kingpin.choice.outtalk_kingpin.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "outtalk_kingpin_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_06_blue_kingpin_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_06_blue_kingpin.choice.outtalk_kingpin.outcome.outtalk_kingpin_criticalFailure.text"
+          },
+          "failure": {
+            "id": "outtalk_kingpin_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_06_blue_kingpin_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_06_blue_kingpin.choice.outtalk_kingpin.outcome.outtalk_kingpin_failure.text"
+          },
+          "success": {
+            "id": "outtalk_kingpin_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 12000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_06_blue_kingpin_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_06_blue_kingpin.choice.outtalk_kingpin.outcome.outtalk_kingpin_success.text"
+          },
+          "criticalSuccess": {
+            "id": "outtalk_kingpin_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 24000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_06_blue_kingpin_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_06_blue_kingpin.choice.outtalk_kingpin.outcome.outtalk_kingpin_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_once",
+      "textKey": "event.career_pirate_06_blue_kingpin.choice.pay_once.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_once",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -5000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_06_blue_kingpin_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_06_blue_kingpin.choice.pay_once.outcome.pay_once.text"
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 5000
+      }
+    },
+    {
+      "id": "break_table",
+      "textKey": "event.career_pirate_06_blue_kingpin.choice.break_table.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "break_table",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "modifyBounty",
+              "amount": 15000
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_06_blue_kingpin_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_06_blue_kingpin.choice.break_table.outcome.break_table.text"
+        }
+      }
+    }
+  ]
+}

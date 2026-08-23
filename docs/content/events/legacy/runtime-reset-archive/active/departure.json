@@ -1,0 +1,48 @@
+{
+  "id": "departure",
+  "titleKey": "event.departure.title",
+  "textKey": "event.departure.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasShip"
+      },
+      { "type": "any", "conditions": [
+        { "type": "locationIs", "locationId": "foosha_village" },
+        { "type": "locationIs", "locationId": "kano_happo_port" },
+        { "type": "locationIs", "locationId": "lvneel_norlune_port" },
+        { "type": "locationIs", "locationId": "baterilla_harbor" }
+      ] }
+    ]
+  },
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "set_sail",
+      "textKey": "event.departure.choice.set_sail.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "departure_set_sail",
+          "textKey": "event.departure.choice.set_sail.outcome.departure_set_sail.text",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "career_departed"
+            },
+            {
+              "type": "moveToLocation",
+              "locationId": "loguetown",
+              "travelState": "at_sea"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

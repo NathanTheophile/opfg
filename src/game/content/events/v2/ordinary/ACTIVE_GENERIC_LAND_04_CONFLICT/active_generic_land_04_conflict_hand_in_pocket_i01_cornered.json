@@ -1,0 +1,67 @@
+{
+  "id": "active_generic_land_04_conflict_hand_in_pocket_i01_cornered",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_04_conflict_hand_in_pocket_i01_cornered.title",
+  "textKey": "event.active_generic_land_04_conflict_hand_in_pocket_i01_cornered.text",
+  "choices": [
+    {
+      "id": "offer_exit",
+      "textKey": "event.active_generic_land_04_conflict_hand_in_pocket_i01_cornered.choice.offer_exit",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "offer_exit",
+          "textKey": "event.active_generic_land_04_conflict_hand_in_pocket_i01_cornered.outcome.offer_exit",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_hand_in_pocket_i02_purse"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "close_in",
+      "textKey": "event.active_generic_land_04_conflict_hand_in_pocket_i01_cornered.choice.close_in",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "close_in",
+          "textKey": "event.active_generic_land_04_conflict_hand_in_pocket_i01_cornered.outcome.close_in",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_hand_in_pocket_i02_purse"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "back_off",
+      "textKey": "event.active_generic_land_04_conflict_hand_in_pocket_i01_cornered.choice.back_off",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "back_off",
+          "textKey": "event.active_generic_land_04_conflict_hand_in_pocket_i01_cornered.outcome.back_off",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    }
+  ]
+}

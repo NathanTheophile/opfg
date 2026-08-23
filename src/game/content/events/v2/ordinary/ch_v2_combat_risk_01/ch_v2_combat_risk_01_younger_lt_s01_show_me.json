@@ -1,0 +1,86 @@
+{
+  "id": "ch_v2_combat_risk_01_younger_lt_s01_show_me",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_combat_risk_01_younger_lt_s01_show_me.title",
+  "textKey": "event.ch_v2_combat_risk_01_younger_lt_s01_show_me.text",
+  "choices": [
+    {
+      "id": "teach_test",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s01_show_me.choice.teach_test.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "teach_test",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s01_show_me.choice.teach_test.outcome.teach_test.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s02a_first_lesson",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_lead",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s01_show_me.choice.let_lead.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "let_lead",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s01_show_me.choice.let_lead.outcome.let_lead.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s02a_first_lesson",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "forbid_risk",
+      "textKey": "event.ch_v2_combat_risk_01_younger_lt_s01_show_me.choice.forbid_risk.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "forbid_risk",
+          "textKey": "event.ch_v2_combat_risk_01_younger_lt_s01_show_me.choice.forbid_risk.outcome.forbid_risk.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": -4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_risk_01_younger_lt_s02b_kept_back",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "childhood_younger"
+  ],
+  "priority": 100,
+  "cancelIf": {
+    "type": "npcStatusIs",
+    "npcId": "childhood_younger",
+    "status": "dead"
+  }
+}

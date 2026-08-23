@@ -1,0 +1,142 @@
+{
+  "id": "active_rival_civilian_01_fair_margin",
+  "kind": "scheduled",
+  "cast": [
+    "neighborhood_merchant"
+  ],
+  "titleKey": "event.active_rival_civilian_01_fair_margin.title",
+  "textKey": "event.active_rival_civilian_01_fair_margin.text",
+  "choices": [
+    {
+      "id": "accept_books",
+      "textKey": "event.active_rival_civilian_01_fair_margin.choice.accept_books.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_books",
+          "textKey": "event.active_rival_civilian_01_fair_margin.choice.accept_books.outcome.accept_books.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 6
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_civilian_01_warehouse_fire",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "raise_stake",
+      "textKey": "event.active_rival_civilian_01_fair_margin.choice.raise_stake.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "raise_stake",
+          "textKey": "event.active_rival_civilian_01_fair_margin.choice.raise_stake.outcome.raise_stake.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_civilian_01_warehouse_fire",
+              "delayMonths": 18
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "decline",
+      "textKey": "event.active_rival_civilian_01_fair_margin.choice.decline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decline",
+          "textKey": "event.active_rival_civilian_01_fair_margin.choice.decline.outcome.decline.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_civilian_01_warehouse_fire",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerPhaseIs",
+          "phase": "active"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerAffiliationIs",
+          "affiliationId": "civilian"
+        }
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "dead"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "departed"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "unavailable"
+      }
+    ]
+  }
+}

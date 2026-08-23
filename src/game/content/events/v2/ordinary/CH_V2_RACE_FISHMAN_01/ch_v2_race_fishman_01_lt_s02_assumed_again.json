@@ -1,0 +1,68 @@
+{
+  "id": "ch_v2_race_fishman_01_lt_s02_assumed_again",
+  "kind": "scheduled",
+  "titleKey": "event.ch_v2_race_fishman_01_lt_s02_assumed_again.title",
+  "textKey": "event.ch_v2_race_fishman_01_lt_s02_assumed_again.text",
+  "choices": [
+    {
+      "id": "keep_helping_by_choice",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s02_assumed_again.choice.keep_helping_by_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "choice_kept",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s02_assumed_again.choice.keep_helping_by_choice.outcome.choice_kept.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s03a_help_by_choice",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_assumption",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s02_assumed_again.choice.refuse_assumption.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "assumption_refused",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s02_assumed_again.choice.refuse_assumption.outcome.assumption_refused.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s03b_refusal_heard",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_for_request",
+      "textKey": "event.ch_v2_race_fishman_01_lt_s02_assumed_again.choice.ask_for_request.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "request_reframed",
+          "textKey": "event.ch_v2_race_fishman_01_lt_s02_assumed_again.choice.ask_for_request.outcome.request_reframed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_race_fishman_01_lt_s03a_help_by_choice",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100
+}

@@ -1,0 +1,81 @@
+{
+  "id": "active_civilian_01_chart_commission_i1",
+  "titleKey": "event.active_civilian_01_chart_commission_i1.title",
+  "textKey": "event.active_civilian_01_chart_commission_i1.text",
+  "kind": "immediate",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "parallel",
+      "textKey": "event.active_civilian_01_chart_commission_i1.choice.parallel.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "parallel_result",
+          "textKey": "event.active_civilian_01_chart_commission_i1.choice.parallel.outcome.parallel_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_chart_commission_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cross_carefully",
+      "textKey": "event.active_civilian_01_chart_commission_i1.choice.cross_carefully.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cross_carefully_result",
+          "textKey": "event.active_civilian_01_chart_commission_i1.choice.cross_carefully.outcome.cross_carefully_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_chart_commission_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mark_unsafe",
+      "textKey": "event.active_civilian_01_chart_commission_i1.choice.mark_unsafe.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mark_unsafe_result",
+          "textKey": "event.active_civilian_01_chart_commission_i1.choice.mark_unsafe.outcome.mark_unsafe_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_chart_commission_i2"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

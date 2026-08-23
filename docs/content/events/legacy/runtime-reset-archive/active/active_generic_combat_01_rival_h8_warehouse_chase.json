@@ -1,0 +1,76 @@
+{
+  "id": "active_generic_combat_01_rival_h8_warehouse_chase",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_h8_warehouse_chase.title",
+  "textKey": "event.active_generic_combat_01_rival_h8_warehouse_chase.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "capture_space",
+      "textKey": "event.active_generic_combat_01_rival_h8_warehouse_chase.choice.capture_space.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "capture_space_outcome",
+          "textKey": "event.active_generic_combat_01_rival_h8_warehouse_chase.choice.capture_space.outcome.capture_space_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_h9_no_clean_win",
+              "delayMonths": 12
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_h8_warehouse_chase_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "break_group",
+      "textKey": "event.active_generic_combat_01_rival_h8_warehouse_chase.choice.break_group.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "break_group_outcome",
+          "textKey": "event.active_generic_combat_01_rival_h8_warehouse_chase.choice.break_group.outcome.break_group_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_h9_no_clean_win",
+              "delayMonths": 12
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_h8_warehouse_chase_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

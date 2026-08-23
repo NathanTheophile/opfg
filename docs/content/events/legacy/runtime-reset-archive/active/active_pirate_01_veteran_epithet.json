@@ -1,0 +1,110 @@
+{
+  "id": "active_pirate_01_veteran_epithet",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_veteran_epithet.title",
+  "textKey": "event.active_pirate_01_veteran_epithet.text",
+  "choices": [
+    {
+      "id": "accept_title",
+      "textKey": "event.active_pirate_01_veteran_epithet.choice.accept_title.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_veteran_epithet.choice.accept_title.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "setCareerTitle",
+              "titleId": "veteran"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "reject_title",
+      "textKey": "event.active_pirate_01_veteran_epithet.choice.reject_title.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_veteran_epithet.choice.reject_title.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "use_title",
+      "textKey": "event.active_pirate_01_veteran_epithet.choice.use_title.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_veteran_epithet.choice.use_title.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "setCareerTitle",
+              "titleId": "veteran"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "food"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 27
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerTitleIs",
+          "titleId": "veteran"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerTitleIs",
+          "titleId": "legend"
+        }
+      }
+    ]
+  }
+}

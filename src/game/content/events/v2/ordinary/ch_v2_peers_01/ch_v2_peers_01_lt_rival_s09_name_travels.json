@@ -1,0 +1,86 @@
+{
+  "id": "ch_v2_peers_01_lt_rival_s09_name_travels",
+  "kind": "scheduled",
+  "narrativeFamily": "child_peer",
+  "priority": 100,
+  "eligibility": {
+    "type": "hasPlayed",
+    "eventId": "ch_v2_peers_01_lt_rival_s08_same_question"
+  },
+  "cast": [
+    "childhood_rival"
+  ],
+  "titleKey": "event.ch_v2_peers_01_lt_rival_s09_name_travels.title",
+  "textKey": "event.ch_v2_peers_01_lt_rival_s09_name_travels.text",
+  "choices": [
+    {
+      "id": "praise",
+      "textKey": "event.ch_v2_peers_01_lt_rival_s09_name_travels.choice.praise.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "praise",
+          "textKey": "event.ch_v2_peers_01_lt_rival_s09_name_travels.choice.praise.outcome.praise.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_peers_01_lt_rival_s10a_send_praise",
+              "delayMonths": 36
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "childhood_rival",
+        "value": 3
+      }
+    },
+    {
+      "id": "challenge",
+      "textKey": "event.ch_v2_peers_01_lt_rival_s09_name_travels.choice.challenge.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "challenge",
+          "textKey": "event.ch_v2_peers_01_lt_rival_s09_name_travels.choice.challenge.outcome.challenge.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": -1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_peers_01_lt_rival_s10b_send_challenge",
+              "delayMonths": 36
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "release",
+      "textKey": "event.ch_v2_peers_01_lt_rival_s09_name_travels.choice.release.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "release",
+          "textKey": "event.ch_v2_peers_01_lt_rival_s09_name_travels.choice.release.outcome.release.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

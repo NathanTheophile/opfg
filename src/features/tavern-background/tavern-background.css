@@ -1,0 +1,225 @@
+.tavern-background {
+  position: fixed;
+  inset: 0;
+  z-index: var(--layer-background);
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  background: #08090d;
+}
+
+.tavern-scene-plate {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--plate-width, 1536px);
+  height: var(--plate-height, 1024px);
+  transform:
+    translate(-50%, -50%)
+    translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0);
+  transform-origin: center;
+  will-change: transform;
+  overflow: hidden;
+  user-select: none;
+  pointer-events: none;
+}
+
+.tavern-concept-art,
+.tavern-scene-layer,
+.tavern-fx-canvas,
+.tavern-lightning-highlights {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.tavern-concept-art {
+  display: block;
+  object-fit: fill;
+  -webkit-user-drag: none;
+}
+
+.tavern-scene-layer {
+  pointer-events: none;
+}
+
+.tavern-ambient-dim {
+  z-index: 1;
+  background: #05070b;
+  opacity: 0.014;
+  will-change: opacity;
+}
+
+.tavern-room-warm {
+  z-index: 2;
+  background: rgb(255 122 36);
+  opacity: 0.018;
+  mix-blend-mode: screen;
+  will-change: opacity;
+}
+
+.tavern-radial-light {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  width: 10%;
+  height: 10%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  will-change: transform, opacity, left, top;
+  /* Prevent any readable circular boundary from the light sprites. */
+  filter: blur(18px);
+}
+
+.tavern-ambient-warm {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 190, 105, 0.36) 0%,
+    rgba(255, 126, 42, 0.13) 30%,
+    rgba(255, 92, 18, 0) 100%
+  );
+}
+
+.tavern-table-glow {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 173, 76, 0.28) 0%,
+    rgba(255, 116, 28, 0.10) 30%,
+    rgba(255, 91, 15, 0) 100%
+  );
+}
+
+.tavern-lantern-glow {
+  filter: blur(34px);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 222, 155, 0.50) 0%,
+    rgba(255, 171, 77, 0.24) 22%,
+    rgba(255, 116, 30, 0.10) 48%,
+    rgba(255, 92, 18, 0.035) 68%,
+    rgba(255, 90, 12, 0) 100%
+  );
+}
+
+.tavern-flame-glow {
+  z-index: 4;
+  filter: blur(22px);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 248, 205, 0.62) 0%,
+    rgba(255, 204, 104, 0.30) 22%,
+    rgba(255, 153, 52, 0.11) 48%,
+    rgba(255, 110, 25, 0.035) 68%,
+    rgba(255, 125, 28, 0) 100%
+  );
+}
+
+.tavern-lightning-wash {
+  z-index: 5;
+  opacity: 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  will-change: opacity;
+  /* Light entering through an implied window on the left: large, soft coverage. */
+  background:
+    radial-gradient(
+      ellipse 98% 150% at -10% 46%,
+      rgba(220, 238, 255, 0.58) 0%,
+      rgba(198, 226, 255, 0.32) 21%,
+      rgba(178, 214, 255, 0.14) 43%,
+      rgba(165, 205, 255, 0.045) 60%,
+      rgba(160, 205, 255, 0) 76%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(220, 238, 255, 0.22) 0%,
+      rgba(194, 225, 255, 0.105) 28%,
+      rgba(170, 210, 255, 0.025) 52%,
+      rgba(160, 200, 255, 0) 68%
+    );
+  filter: blur(5px);
+}
+
+.tavern-lightning-highlights {
+  z-index: 6;
+  display: block;
+  object-fit: fill;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0;
+  will-change: opacity;
+}
+
+.tavern-fx-canvas {
+  z-index: 7;
+  display: block;
+  pointer-events: none;
+}
+
+.tavern-passing-shadow {
+  position: absolute;
+  z-index: 8;
+  top: -58%;
+  left: 0;
+  width: 28%;
+  height: 58%;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  transform-origin: 50% 50%;
+  filter: blur(72px);
+  mix-blend-mode: multiply;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.92) 0%,
+    rgba(0, 0, 0, 0.78) 28%,
+    rgba(0, 0, 0, 0.48) 56%,
+    rgba(0, 0, 0, 0.18) 76%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  will-change: left, top, opacity, transform;
+}
+
+.tavern-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 110px rgba(2, 4, 8, 0.20),
+    inset 0 -55px 90px rgba(1, 3, 6, 0.18);
+}
+
+.tavern-atmosphere::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    transparent 0%,
+    transparent 58%,
+    rgba(3, 5, 9, 0.08) 78%,
+    rgba(2, 3, 6, 0.22) 100%
+  );
+}
+
+/* OPFG MOBILE PERF: static tavern + coin glints only */
+@media (pointer: coarse) {
+  .tavern-ambient-dim,
+  .tavern-room-warm,
+  .tavern-radial-light,
+  .tavern-lightning-wash,
+  .tavern-lightning-highlights,
+  .tavern-passing-shadow {
+    display: none !important;
+  }
+
+  .tavern-scene-plate {
+    --parallax-x: 0px !important;
+    --parallax-y: 0px !important;
+  }
+}

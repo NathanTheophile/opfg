@@ -1,0 +1,108 @@
+{
+  "id": "active_haki_observation_l2_what_gestures_hide_i06_two_moves_one_lie",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l2_what_gestures_hide_i06_two_moves_one_lie.title",
+  "textKey": "event.active_haki_observation_l2_what_gestures_hide_i06_two_moves_one_lie.text",
+  "choices": [
+    {
+      "id": "follow_intention_not_hand",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i06_two_moves_one_lie.choice.follow_intention_not_hand.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "feint_bites",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i06_two_moves_one_lie.choice.follow_intention_not_hand.outcome.feint_bites.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent"
+              }
+            ]
+          },
+          "failure": {
+            "id": "late_choice",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i06_two_moves_one_lie.choice.follow_intention_not_hand.outcome.late_choice.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent"
+              }
+            ]
+          },
+          "success": {
+            "id": "true_exit",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i06_two_moves_one_lie.choice.follow_intention_not_hand.outcome.true_exit.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "feint_seen_before",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i06_two_moves_one_lie.choice.follow_intention_not_hand.outcome.feint_seen_before.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "block_exit",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i06_two_moves_one_lie.choice.block_exit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "exit_closed",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide_i06_two_moves_one_lie.choice.block_exit.outcome.exit_closed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_feint_pass",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i06_two_moves_one_lie.choice.let_feint_pass.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "feint_exposed",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide_i06_two_moves_one_lie.choice.let_feint_pass.outcome.feint_exposed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l2_what_gestures_hide_i07_name_the_real_intent"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "id": "active_paradise_p2_trade_01_porter_rotation",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p2_trade_01_porter_rotation.title",
+  "textKey": "event.active_paradise_p2_trade_01_porter_rotation.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p2_trade"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "shade_port"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "practical",
+      "textKey": "event.active_paradise_p2_trade_01_porter_rotation.choice.practical.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "practical_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_porter_rotation.choice.practical.outcome.practical_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step_back",
+      "textKey": "event.active_paradise_p2_trade_01_porter_rotation.choice.step_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "step_back_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_porter_rotation.choice.step_back.outcome.step_back_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "broker",
+      "textKey": "event.active_paradise_p2_trade_01_porter_rotation.choice.broker.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "broker_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_porter_rotation.choice.broker.outcome.broker_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -300
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 300
+      }
+    }
+  ]
+}

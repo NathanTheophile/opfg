@@ -1,0 +1,178 @@
+{
+  "id": "active_generic_land_05_strange_rotating_street",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "urban"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_05_strange_rotating_street.title",
+  "textKey": "event.active_generic_land_05_strange_rotating_street.text",
+  "choices": [
+    {
+      "id": "jump_sections",
+      "textKey": "event.active_generic_land_05_strange_rotating_street.choice.jump_sections.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "jump_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_rotating_street.choice.jump_sections.outcome.jump_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rotating_street_i01_gear_teeth"
+              }
+            ]
+          },
+          "failure": {
+            "id": "jump_failure",
+            "textKey": "event.active_generic_land_05_strange_rotating_street.choice.jump_sections.outcome.jump_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rotating_street_i01_gear_teeth"
+              }
+            ]
+          },
+          "success": {
+            "id": "jump_success",
+            "textKey": "event.active_generic_land_05_strange_rotating_street.choice.jump_sections.outcome.jump_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rotating_street_i01_gear_teeth"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "jump_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_rotating_street.choice.jump_sections.outcome.jump_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rotating_street_i01_gear_teeth"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "track_gears",
+      "textKey": "event.active_generic_land_05_strange_rotating_street.choice.track_gears.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "gear_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_rotating_street.choice.track_gears.outcome.gear_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rotating_street_i01_gear_teeth"
+              }
+            ]
+          },
+          "failure": {
+            "id": "gear_failure",
+            "textKey": "event.active_generic_land_05_strange_rotating_street.choice.track_gears.outcome.gear_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rotating_street_i01_gear_teeth"
+              }
+            ]
+          },
+          "success": {
+            "id": "gear_success",
+            "textKey": "event.active_generic_land_05_strange_rotating_street.choice.track_gears.outcome.gear_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rotating_street_i01_gear_teeth"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "gear_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_rotating_street.choice.track_gears.outcome.gear_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_rotating_street_i01_gear_teeth"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pull_public_clear",
+      "textKey": "event.active_generic_land_05_strange_rotating_street.choice.pull_public_clear.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cleared",
+          "textKey": "event.active_generic_land_05_strange_rotating_street.choice.pull_public_clear.outcome.cleared.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_rotating_street_i01_gear_teeth"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

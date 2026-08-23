@@ -1,0 +1,294 @@
+{
+  "id": "active_recruitment_existing_cast_01_rival_pirate_boarding_score",
+  "kind": "normal",
+  "cast": [
+    "childhood_rival"
+  ],
+  "titleKey": "event.active_recruitment_existing_cast_01_rival_pirate_boarding_score.title",
+  "textKey": "event.active_recruitment_existing_cast_01_rival_pirate_boarding_score.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 215
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "careerAffiliationIs",
+            "affiliationId": "pirate"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "ch_v2_peers_01_rival_assistant_intro"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "childhood_rival",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "childhood_rival"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "east_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "east_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "west_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "west_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "north_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "north_blue"
+              }
+            ]
+          },
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "originSeaIs",
+                "seaId": "south_blue"
+              },
+              {
+                "type": "currentSeaIs",
+                "seaId": "south_blue"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "childhood_rival",
+        "value": -10
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "take_the_gangway",
+      "textKey": "event.active_recruitment_existing_cast_01_rival_pirate_boarding_score.choice.take_the_gangway.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_pirate_boarding_score.choice.take_the_gangway.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": -6
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_pirate_boarding_score.choice.take_the_gangway.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_pirate_boarding_score.choice.take_the_gangway.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_rival",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 6
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_pirate_boarding_score.choice.take_the_gangway.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_rival",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 8
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_their_captains_bluff",
+      "textKey": "event.active_recruitment_existing_cast_01_rival_pirate_boarding_score.choice.call_their_captains_bluff.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_pirate_boarding_score.choice.call_their_captains_bluff.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": -5
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_pirate_boarding_score.choice.call_their_captains_bluff.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_pirate_boarding_score.choice.call_their_captains_bluff.outcome.success.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_rival",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 6
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_recruitment_existing_cast_01_rival_pirate_boarding_score.choice.call_their_captains_bluff.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "setNpcStatus",
+                "npcId": "childhood_rival",
+                "status": "crew"
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "childhood_rival",
+                "amount": 8
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "refuse_the_score",
+      "textKey": "event.active_recruitment_existing_cast_01_rival_pirate_boarding_score.choice.refuse_the_score.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse",
+          "textKey": "event.active_recruitment_existing_cast_01_rival_pirate_boarding_score.choice.refuse_the_score.outcome.refuse.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": -7
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "id": "active_recruitment_new_cast_01_name_without_body",
+  "kind": "normal",
+  "titleKey": "event.active_recruitment_new_cast_01_name_without_body.title",
+  "textKey": "event.active_recruitment_new_cast_01_name_without_body.text",
+  "choices": [
+    {
+      "id": "trace_the_rope",
+      "textKey": "event.active_recruitment_new_cast_01_name_without_body.choice.trace_the_rope.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "trace_the_rope_criticalfailure",
+            "textKey": "event.active_recruitment_new_cast_01_name_without_body.choice.trace_the_rope.outcome.trace_the_rope_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_wake_keeper",
+                "amount": -3
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "failure": {
+            "id": "trace_the_rope_failure",
+            "textKey": "event.active_recruitment_new_cast_01_name_without_body.choice.trace_the_rope.outcome.trace_the_rope_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "trace_the_rope_success",
+            "textKey": "event.active_recruitment_new_cast_01_name_without_body.choice.trace_the_rope.outcome.trace_the_rope_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_wake_keeper",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_name_without_body_i01_brass_tag"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "trace_the_rope_criticalsuccess",
+            "textKey": "event.active_recruitment_new_cast_01_name_without_body.choice.trace_the_rope.outcome.trace_the_rope_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_wake_keeper",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_name_without_body_i01_brass_tag"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "question_the_fishers",
+      "textKey": "event.active_recruitment_new_cast_01_name_without_body.choice.question_the_fishers.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "question_the_fishers_criticalfailure",
+            "textKey": "event.active_recruitment_new_cast_01_name_without_body.choice.question_the_fishers.outcome.question_the_fishers_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_wake_keeper",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "question_the_fishers_failure",
+            "textKey": "event.active_recruitment_new_cast_01_name_without_body.choice.question_the_fishers.outcome.question_the_fishers_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "question_the_fishers_success",
+            "textKey": "event.active_recruitment_new_cast_01_name_without_body.choice.question_the_fishers.outcome.question_the_fishers_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_wake_keeper",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_name_without_body_i01_brass_tag"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "question_the_fishers_criticalsuccess",
+            "textKey": "event.active_recruitment_new_cast_01_name_without_body.choice.question_the_fishers.outcome.question_the_fishers_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_wake_keeper",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_name_without_body_i01_brass_tag"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "leave_the_tag",
+      "textKey": "event.active_recruitment_new_cast_01_name_without_body.choice.leave_the_tag.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_the_tag_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_name_without_body.choice.leave_the_tag.outcome.leave_the_tag_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_wake_keeper",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "active_recruit_wake_keeper"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "coastal"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          }
+        ]
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_wake_keeper",
+              "status": "crew"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "id": "career_civilian_06_fallback",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_civilian",
+    "chapterId": "active_06",
+    "nodeId": "career_civilian_06_fallback",
+    "parentNodeIds": [
+      "career_civilian_05_trade_the_withheld_wages",
+      "career_civilian_05_horizon_those_following_your_route",
+      "career_civilian_05_craft_the_jammed_sterilizer",
+      "career_civilian_05_community_the_shelter_overflows",
+      "career_civilian_05_fallback"
+    ],
+    "fallback": true
+  },
+  "titleKey": "event.career_civilian_06_fallback.title",
+  "textKey": "event.career_civilian_06_fallback.text",
+  "choices": [
+    {
+      "id": "trade",
+      "textKey": "event.career_civilian_06_fallback.choice.trade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 2000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_06_fallback.choice.trade.outcome.trade.text"
+        }
+      }
+    },
+    {
+      "id": "horizon",
+      "textKey": "event.career_civilian_06_fallback.choice.horizon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "horizon",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ],
+          "textKey": "event.career_civilian_06_fallback.choice.horizon.outcome.horizon.text"
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "craft",
+      "textKey": "event.career_civilian_06_fallback.choice.craft.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "craft",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_06_fallback.choice.craft.outcome.craft.text"
+        }
+      }
+    },
+    {
+      "id": "community",
+      "textKey": "event.career_civilian_06_fallback.choice.community.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "community",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_06_fallback.choice.community.outcome.community.text"
+        }
+      }
+    }
+  ]
+}

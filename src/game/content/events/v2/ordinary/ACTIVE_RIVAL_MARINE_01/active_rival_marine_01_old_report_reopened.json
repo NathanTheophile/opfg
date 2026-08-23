@@ -1,0 +1,324 @@
+{
+  "id": "active_rival_marine_01_old_report_reopened",
+  "kind": "scheduled",
+  "cast": [
+    "active_rival_marine_01_peer_officer"
+  ],
+  "titleKey": "event.active_rival_marine_01_old_report_reopened.title",
+  "textKey": "event.active_rival_marine_01_old_report_reopened.text",
+  "choices": [
+    {
+      "id": "back_her_for_lead",
+      "textKey": "event.active_rival_marine_01_old_report_reopened.choice.back_her_for_lead.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "her_lead_backed",
+          "textKey": "event.active_rival_marine_01_old_report_reopened.choice.back_her_for_lead.outcome.her_lead_backed.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_rival_marine_01_peer_officer",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_marine_01_last_order",
+              "delayMonths": 18
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "npcRelationshipAtLeast",
+            "npcId": "active_rival_marine_01_peer_officer",
+            "value": 8
+          },
+          {
+            "type": "any",
+            "conditions": [
+              {
+                "type": "hasChosen",
+                "eventId": "active_rival_marine_01_shared_credit",
+                "choiceId": "name_her_contribution"
+              },
+              {
+                "type": "hasChosen",
+                "eventId": "active_rival_marine_01_contested_responsibility",
+                "choiceId": "own_your_part"
+              },
+              {
+                "type": "hasOutcome",
+                "eventId": "active_rival_marine_01_cut_off_together",
+                "outcomeId": "joint_plan_success"
+              },
+              {
+                "type": "hasOutcome",
+                "eventId": "active_rival_marine_01_cut_off_together",
+                "outcomeId": "joint_plan_critical_success"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "request_joint_authority",
+      "textKey": "event.active_rival_marine_01_old_report_reopened.choice.request_joint_authority.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "joint_authority_critical_failure",
+            "textKey": "event.active_rival_marine_01_old_report_reopened.choice.request_joint_authority.outcome.joint_authority_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": -3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_last_order",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "joint_authority_failure",
+            "textKey": "event.active_rival_marine_01_old_report_reopened.choice.request_joint_authority.outcome.joint_authority_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_last_order",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "joint_authority_success",
+            "textKey": "event.active_rival_marine_01_old_report_reopened.choice.request_joint_authority.outcome.joint_authority_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": 3
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_last_order",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "joint_authority_critical_success",
+            "textKey": "event.active_rival_marine_01_old_report_reopened.choice.request_joint_authority.outcome.joint_authority_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_last_order",
+                "delayMonths": 18
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "hasChosen",
+              "eventId": "active_rival_marine_01_shared_credit",
+              "choiceId": "name_her_contribution"
+            },
+            "value": 2,
+            "displayLabelKey": "event.active_rival_marine_01_old_report_reopened.choice.request_joint_authority.modifier.shared_credit.label"
+          },
+          {
+            "condition": {
+              "type": "hasChosen",
+              "eventId": "active_rival_marine_01_contested_responsibility",
+              "choiceId": "pin_the_failure"
+            },
+            "value": -2,
+            "displayLabelKey": "event.active_rival_marine_01_old_report_reopened.choice.request_joint_authority.modifier.old_blame.label"
+          },
+          {
+            "condition": {
+              "type": "npcRelationshipAtLeast",
+              "npcId": "active_rival_marine_01_peer_officer",
+              "value": 10
+            },
+            "value": 1,
+            "displayLabelKey": "event.active_rival_marine_01_old_report_reopened.choice.request_joint_authority.modifier.earned_trust.label"
+          }
+        ]
+      }
+    },
+    {
+      "id": "contest_her_record",
+      "textKey": "event.active_rival_marine_01_old_report_reopened.choice.contest_her_record.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "contest_critical_failure",
+            "textKey": "event.active_rival_marine_01_old_report_reopened.choice.contest_her_record.outcome.contest_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": -5
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_last_order",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "failure": {
+            "id": "contest_failure",
+            "textKey": "event.active_rival_marine_01_old_report_reopened.choice.contest_her_record.outcome.contest_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": -3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_last_order",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "success": {
+            "id": "contest_success",
+            "textKey": "event.active_rival_marine_01_old_report_reopened.choice.contest_her_record.outcome.contest_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_marine_01_peer_officer",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_last_order",
+                "delayMonths": 18
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "contest_critical_success",
+            "textKey": "event.active_rival_marine_01_old_report_reopened.choice.contest_her_record.outcome.contest_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_marine_01_last_order",
+                "delayMonths": 18
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "active_rival_marine_01_contested_responsibility",
+            "choiceId": "pin_the_failure"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "active_rival_marine_01_after_action_board",
+            "outcomeId": "separate_report"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "active_rival_marine_01_after_action_board",
+            "outcomeId": "wording_critical_failure"
+          }
+        ]
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 418
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "ageAtLeastMonths",
+        "value": 419
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerAffiliationIs",
+          "affiliationId": "marine"
+        }
+      }
+    ]
+  }
+}

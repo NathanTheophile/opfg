@@ -1,0 +1,143 @@
+{
+  "id": "ch_combat_01_loose_dog_charge",
+  "titleKey": "event.ch_combat_01_loose_dog_charge.title",
+  "textKey": "event.ch_combat_01_loose_dog_charge.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "draw_it_away",
+      "textKey": "event.ch_combat_01_loose_dog_charge.choice.draw_it_away.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "slipped_hard",
+            "textKey": "event.ch_combat_01_loose_dog_charge.choice.draw_it_away.outcome.slipped_hard.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_loose_dog_charge_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "clipped_on_turn",
+            "textKey": "event.ch_combat_01_loose_dog_charge.choice.draw_it_away.outcome.clipped_on_turn.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_loose_dog_charge_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "clean_angle",
+            "textKey": "event.ch_combat_01_loose_dog_charge.choice.draw_it_away.outcome.clean_angle.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_loose_dog_charge_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "perfect_arc",
+            "textKey": "event.ch_combat_01_loose_dog_charge.choice.draw_it_away.outcome.perfect_arc.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_combat_01_loose_dog_charge_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "freeze_and_lower",
+      "textKey": "event.ch_combat_01_loose_dog_charge.choice.freeze_and_lower.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "noise_lowered",
+          "textKey": "event.ch_combat_01_loose_dog_charge.choice.freeze_and_lower.outcome.noise_lowered.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_loose_dog_charge_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pull_child_back",
+      "textKey": "event.ch_combat_01_loose_dog_charge.choice.pull_child_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "child_pulled",
+          "textKey": "event.ch_combat_01_loose_dog_charge.choice.pull_child_back.outcome.child_pulled.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_loose_dog_charge_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

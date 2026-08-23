@@ -1,0 +1,171 @@
+{
+  "id": "active_generic_land_03_mystery_footprints_wall",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_03_mystery_footprints_wall.title",
+  "textKey": "event.active_generic_land_03_mystery_footprints_wall.text",
+  "choices": [
+    {
+      "id": "read_prints",
+      "textKey": "event.active_generic_land_03_mystery_footprints_wall.choice.read_prints.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_prints_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_footprints_wall.choice.read_prints.outcome.read_prints_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_footprints_wall_i01_hinged_brick"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_prints_failure",
+            "textKey": "event.active_generic_land_03_mystery_footprints_wall.choice.read_prints.outcome.read_prints_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_footprints_wall_i01_hinged_brick"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_prints_success",
+            "textKey": "event.active_generic_land_03_mystery_footprints_wall.choice.read_prints.outcome.read_prints_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_footprints_wall_i01_hinged_brick"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_prints_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_footprints_wall.choice.read_prints.outcome.read_prints_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_footprints_wall_i01_hinged_brick"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "choose_brick",
+      "textKey": "event.active_generic_land_03_mystery_footprints_wall.choice.choose_brick.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "luck",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "choose_brick_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_footprints_wall.choice.choose_brick.outcome.choose_brick_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_footprints_wall_i01_hinged_brick"
+              }
+            ]
+          },
+          "failure": {
+            "id": "choose_brick_failure",
+            "textKey": "event.active_generic_land_03_mystery_footprints_wall.choice.choose_brick.outcome.choose_brick_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_footprints_wall_i01_hinged_brick"
+              }
+            ]
+          },
+          "success": {
+            "id": "choose_brick_success",
+            "textKey": "event.active_generic_land_03_mystery_footprints_wall.choice.choose_brick.outcome.choose_brick_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_footprints_wall_i01_hinged_brick"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "choose_brick_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_footprints_wall.choice.choose_brick.outcome.choose_brick_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_footprints_wall_i01_hinged_brick"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "tap_wall",
+      "textKey": "event.active_generic_land_03_mystery_footprints_wall.choice.tap_wall.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tapped",
+          "textKey": "event.active_generic_land_03_mystery_footprints_wall.choice.tap_wall.outcome.tapped.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_footprints_wall_i01_hinged_brick"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

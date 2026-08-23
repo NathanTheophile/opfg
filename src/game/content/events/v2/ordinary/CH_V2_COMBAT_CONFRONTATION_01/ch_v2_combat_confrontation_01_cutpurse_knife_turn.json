@@ -1,0 +1,191 @@
+{
+  "id": "ch_v2_combat_confrontation_01_cutpurse_knife_turn",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_combat_confrontation_01_cutpurse_knife_turn.title",
+  "textKey": "event.ch_v2_combat_confrontation_01_cutpurse_knife_turn.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 144
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "clear_blade",
+      "textKey": "event.ch_v2_combat_confrontation_01_cutpurse_knife_turn.choice.clear_blade",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "clear_blade_criticalFailure",
+            "textKey": "event.ch_v2_combat_confrontation_01_cutpurse_knife_turn.outcome.clear_blade_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_cutpurse_knife_turn_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "clear_blade_failure",
+            "textKey": "event.ch_v2_combat_confrontation_01_cutpurse_knife_turn.outcome.clear_blade_failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_cutpurse_knife_turn_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "clear_blade_success",
+            "textKey": "event.ch_v2_combat_confrontation_01_cutpurse_knife_turn.outcome.clear_blade_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_cutpurse_knife_turn_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "clear_blade_criticalSuccess",
+            "textKey": "event.ch_v2_combat_confrontation_01_cutpurse_knife_turn.outcome.clear_blade_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_cutpurse_knife_turn_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "trap_exit",
+      "textKey": "event.ch_v2_combat_confrontation_01_cutpurse_knife_turn.choice.trap_exit",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "trap_exit_criticalFailure",
+            "textKey": "event.ch_v2_combat_confrontation_01_cutpurse_knife_turn.outcome.trap_exit_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_cutpurse_knife_turn_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "trap_exit_failure",
+            "textKey": "event.ch_v2_combat_confrontation_01_cutpurse_knife_turn.outcome.trap_exit_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_cutpurse_knife_turn_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "trap_exit_success",
+            "textKey": "event.ch_v2_combat_confrontation_01_cutpurse_knife_turn.outcome.trap_exit_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_cutpurse_knife_turn_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "trap_exit_criticalSuccess",
+            "textKey": "event.ch_v2_combat_confrontation_01_cutpurse_knife_turn.outcome.trap_exit_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_combat_confrontation_01_cutpurse_knife_turn_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "give_space",
+      "textKey": "event.ch_v2_combat_confrontation_01_cutpurse_knife_turn.choice.give_space",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "give_space_outcome",
+          "textKey": "event.ch_v2_combat_confrontation_01_cutpurse_knife_turn.outcome.give_space_outcome",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_combat_confrontation_01_cutpurse_knife_turn_i01"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

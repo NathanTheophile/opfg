@@ -1,0 +1,364 @@
+{
+  "id": "active_generic_sea_04_nav_hazard_magnetic_squall",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.title",
+  "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.text",
+  "choices": [
+    {
+      "id": "wave_memory",
+      "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.choice.wave_memory.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "actor": {
+          "type": "player"
+        },
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip"
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "all",
+              "conditions": [
+                {
+                  "type": "currentSeaIs",
+                  "seaId": "grand_line_paradise"
+                },
+                {
+                  "type": "not",
+                  "condition": {
+                    "type": "activeLogPoseIs",
+                    "logPoseType": "paradise"
+                  }
+                }
+              ]
+            },
+            "value": -2,
+            "displayLabelKey": "event.active_generic_sea_04_nav_hazard.modifier.paradise_no_log_pose"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cloud_motion",
+      "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.choice.cloud_motion.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "actor": {
+          "type": "player"
+        },
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip"
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "all",
+              "conditions": [
+                {
+                  "type": "currentSeaIs",
+                  "seaId": "grand_line_paradise"
+                },
+                {
+                  "type": "not",
+                  "condition": {
+                    "type": "activeLogPoseIs",
+                    "logPoseType": "paradise"
+                  }
+                }
+              ]
+            },
+            "value": -2,
+            "displayLabelKey": "event.active_generic_sea_04_nav_hazard.modifier.paradise_no_log_pose"
+          }
+        ]
+      }
+    },
+    {
+      "id": "navigator_memory",
+      "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.choice.navigator_memory.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 12,
+        "actor": {
+          "type": "crewRole",
+          "roleId": "navigator",
+          "statId": "morale"
+        },
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip"
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "all",
+              "conditions": [
+                {
+                  "type": "currentSeaIs",
+                  "seaId": "grand_line_paradise"
+                },
+                {
+                  "type": "not",
+                  "condition": {
+                    "type": "activeLogPoseIs",
+                    "logPoseType": "paradise"
+                  }
+                }
+              ]
+            },
+            "value": -2,
+            "displayLabelKey": "event.active_generic_sea_04_nav_hazard.modifier.paradise_no_log_pose"
+          }
+        ]
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "navigator"
+      }
+    },
+    {
+      "id": "log_pose_pulse",
+      "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.choice.log_pose_pulse.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "luck",
+        "successThreshold": 11,
+        "actor": {
+          "type": "player"
+        },
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip"
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "activeLogPoseIs",
+        "logPoseType": "paradise"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

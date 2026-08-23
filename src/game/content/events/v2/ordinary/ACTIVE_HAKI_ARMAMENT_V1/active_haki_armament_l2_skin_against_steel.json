@@ -1,0 +1,148 @@
+{
+  "id": "active_haki_armament_l2_skin_against_steel",
+  "kind": "normal",
+  "titleKey": "event.active_haki_armament_l2_skin_against_steel.title",
+  "textKey": "event.active_haki_armament_l2_skin_against_steel.text",
+  "choices": [
+    {
+      "id": "dive_for_brake",
+      "textKey": "event.active_haki_armament_l2_skin_against_steel.choice.dive_for_brake.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_haki_armament_l2_skin_against_steel.choice.dive_for_brake.text.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l2_skin_against_steel_i01_cable_whip"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_haki_armament_l2_skin_against_steel.choice.dive_for_brake.text.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l2_skin_against_steel_i01_cable_whip"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_haki_armament_l2_skin_against_steel.choice.dive_for_brake.text.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l2_skin_against_steel_i01_cable_whip"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_haki_armament_l2_skin_against_steel.choice.dive_for_brake.text.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l2_skin_against_steel_i01_cable_whip"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_deck",
+      "textKey": "event.active_haki_armament_l2_skin_against_steel.choice.clear_deck.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "result",
+          "textKey": "event.active_haki_armament_l2_skin_against_steel.choice.clear_deck.text.outcome.result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_armament_l2_skin_against_steel_i01_cable_whip"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "grab_post",
+      "textKey": "event.active_haki_armament_l2_skin_against_steel.choice.grab_post.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "result",
+          "textKey": "event.active_haki_armament_l2_skin_against_steel.choice.grab_post.text.outcome.result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_armament_l2_skin_against_steel_i01_cable_whip"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "hakiSourceTotalAtLeast",
+        "hakiType": "armament",
+        "value": 80
+      },
+      {
+        "type": "hakiAtLeast",
+        "hakiType": "armament",
+        "level": 1
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "hakiAtLeast",
+          "hakiType": "armament",
+          "level": 2
+        }
+      }
+    ]
+  }
+}

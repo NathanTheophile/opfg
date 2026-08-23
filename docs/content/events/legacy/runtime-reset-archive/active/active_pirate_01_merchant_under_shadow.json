@@ -1,0 +1,126 @@
+{
+  "id": "active_pirate_01_merchant_under_shadow",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_merchant_under_shadow.title",
+  "textKey": "event.active_pirate_01_merchant_under_shadow.text",
+  "choices": [
+    {
+      "id": "protect_fairly",
+      "textKey": "event.active_pirate_01_merchant_under_shadow.choice.protect_fairly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_merchant_under_shadow.choice.protect_fairly.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 100
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_merchant_word_returns",
+              "delayMonths": 8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "charge_heavily",
+      "textKey": "event.active_pirate_01_merchant_under_shadow.choice.charge_heavily.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_merchant_under_shadow.choice.charge_heavily.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 300
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_merchant_resentment_returns",
+              "delayMonths": 8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse",
+      "textKey": "event.active_pirate_01_merchant_under_shadow.choice.refuse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_merchant_under_shadow.choice.refuse.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "protective_choice",
+      "textKey": "event.active_pirate_01_merchant_under_shadow.choice.protective_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_merchant_under_shadow.choice.protective_choice.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_merchant_word_returns",
+              "delayMonths": 8
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "protective"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "id": "active_generic_land_02_commerce_wet_timber_lot",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_wet_timber_lot.title",
+  "textKey": "event.active_generic_land_02_commerce_wet_timber_lot.text",
+  "choices": [
+    {
+      "id": "check_grain",
+      "textKey": "event.active_generic_land_02_commerce_wet_timber_lot.choice.check_grain.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "check_grain_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_wet_timber_lot.choice.check_grain.outcome.check_grain_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_wet_timber_lot_i01_final_lot"
+              }
+            ]
+          },
+          "failure": {
+            "id": "check_grain_failure",
+            "textKey": "event.active_generic_land_02_commerce_wet_timber_lot.choice.check_grain.outcome.check_grain_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_wet_timber_lot_i01_final_lot"
+              }
+            ]
+          },
+          "success": {
+            "id": "check_grain_success",
+            "textKey": "event.active_generic_land_02_commerce_wet_timber_lot.choice.check_grain.outcome.check_grain_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_wet_timber_lot_i01_final_lot"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "check_grain_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_wet_timber_lot.choice.check_grain.outcome.check_grain_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_wet_timber_lot_i01_final_lot"
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "press_discount",
+      "textKey": "event.active_generic_land_02_commerce_wet_timber_lot.choice.press_discount.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "press_discount_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_wet_timber_lot.choice.press_discount.outcome.press_discount_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_wet_timber_lot_i01_final_lot"
+              }
+            ]
+          },
+          "failure": {
+            "id": "press_discount_failure",
+            "textKey": "event.active_generic_land_02_commerce_wet_timber_lot.choice.press_discount.outcome.press_discount_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_wet_timber_lot_i01_final_lot"
+              }
+            ]
+          },
+          "success": {
+            "id": "press_discount_success",
+            "textKey": "event.active_generic_land_02_commerce_wet_timber_lot.choice.press_discount.outcome.press_discount_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_wet_timber_lot_i01_final_lot"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "press_discount_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_wet_timber_lot.choice.press_discount.outcome.press_discount_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_wet_timber_lot_i01_final_lot"
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "leave_lot",
+      "textKey": "event.active_generic_land_02_commerce_wet_timber_lot.choice.leave_lot.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_lot_outcome",
+          "textKey": "event.active_generic_land_02_commerce_wet_timber_lot.choice.leave_lot.outcome.leave_lot_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  }
+}

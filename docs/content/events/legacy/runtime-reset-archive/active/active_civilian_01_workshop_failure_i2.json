@@ -1,0 +1,84 @@
+{
+  "id": "active_civilian_01_workshop_failure_i2",
+  "titleKey": "event.active_civilian_01_workshop_failure_i2.title",
+  "textKey": "event.active_civilian_01_workshop_failure_i2.text",
+  "kind": "immediate",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "load_test",
+      "textKey": "event.active_civilian_01_workshop_failure_i2.choice.load_test.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "load_test_result",
+          "textKey": "event.active_civilian_01_workshop_failure_i2.choice.load_test.outcome.load_test_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_workshop_failure_i3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "partial_demo",
+      "textKey": "event.active_civilian_01_workshop_failure_i2.choice.partial_demo.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "partial_demo_result",
+          "textKey": "event.active_civilian_01_workshop_failure_i2.choice.partial_demo.outcome.partial_demo_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_workshop_failure_i3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cautious",
+      "textKey": "event.active_civilian_01_workshop_failure_i2.choice.cautious.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cautious_result",
+          "textKey": "event.active_civilian_01_workshop_failure_i2.choice.cautious.outcome.cautious_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_workshop_failure_i3"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "cautious"
+      }
+    }
+  ]
+}

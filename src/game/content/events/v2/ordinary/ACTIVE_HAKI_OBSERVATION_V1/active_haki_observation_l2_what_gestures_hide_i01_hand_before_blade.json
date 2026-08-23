@@ -1,0 +1,111 @@
+{
+  "id": "active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade.title",
+  "textKey": "event.active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade.text",
+  "choices": [
+    {
+      "id": "call_bluff",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade.choice.call_bluff.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "crowd_turns",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade.choice.call_bluff.outcome.crowd_turns.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation"
+              }
+            ]
+          },
+          "failure": {
+            "id": "hesitation",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade.choice.call_bluff.outcome.hesitation.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation"
+              }
+            ]
+          },
+          "success": {
+            "id": "frozen_hand",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade.choice.call_bluff.outcome.frozen_hand.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "words_land_first",
+            "textKey": "event.active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade.choice.call_bluff.outcome.words_land_first.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pin_wrist",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade.choice.pin_wrist.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wrist_pinned",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade.choice.pin_wrist.outcome.wrist_pinned.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "move_satchel",
+      "textKey": "event.active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade.choice.move_satchel.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "object_removed",
+          "textKey": "event.active_haki_observation_l2_what_gestures_hide_i01_hand_before_blade.choice.move_satchel.outcome.object_removed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l2_what_gestures_hide_i02_fear_under_accusation"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

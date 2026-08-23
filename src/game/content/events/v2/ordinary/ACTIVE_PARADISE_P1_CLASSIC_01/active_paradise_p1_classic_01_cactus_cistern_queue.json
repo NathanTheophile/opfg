@@ -1,0 +1,120 @@
+{
+  "id": "active_paradise_p1_classic_01_cactus_cistern_queue",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p1_classic_01_cactus_cistern_queue.title",
+  "textKey": "event.active_paradise_p1_classic_01_cactus_cistern_queue.text",
+  "choices": [
+    {
+      "id": "read_the_gauge",
+      "textKey": "event.active_paradise_p1_classic_01_cactus_cistern_queue.choice.read_the_gauge.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_the_gauge_criticalfailure",
+            "textKey": "event.active_paradise_p1_classic_01_cactus_cistern_queue.choice.read_the_gauge.outcome.read_the_gauge_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_the_gauge_failure",
+            "textKey": "event.active_paradise_p1_classic_01_cactus_cistern_queue.choice.read_the_gauge.outcome.read_the_gauge_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "read_the_gauge_success",
+            "textKey": "event.active_paradise_p1_classic_01_cactus_cistern_queue.choice.read_the_gauge.outcome.read_the_gauge_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_the_gauge_criticalsuccess",
+            "textKey": "event.active_paradise_p1_classic_01_cactus_cistern_queue.choice.read_the_gauge.outcome.read_the_gauge_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "yield_the_turn",
+      "textKey": "event.active_paradise_p1_classic_01_cactus_cistern_queue.choice.yield_the_turn.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "yield_the_turn_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_cactus_cistern_queue.choice.yield_the_turn.outcome.yield_the_turn_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "split_the_ration",
+      "textKey": "event.active_paradise_p1_classic_01_cactus_cistern_queue.choice.split_the_ration.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "split_the_ration_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_cactus_cistern_queue.choice.split_the_ration.outcome.split_the_ration_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p1_classic"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "cactus_island"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

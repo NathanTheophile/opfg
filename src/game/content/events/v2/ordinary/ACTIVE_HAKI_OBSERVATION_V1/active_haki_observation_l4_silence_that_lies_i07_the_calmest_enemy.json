@@ -1,0 +1,112 @@
+{
+  "id": "active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy.title",
+  "textKey": "event.active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy.text",
+  "choices": [
+    {
+      "id": "draw_commitment",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy.choice.draw_commitment.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bait_backfires",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy.choice.draw_commitment.outcome.bait_backfires.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -8
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent"
+              }
+            ]
+          },
+          "failure": {
+            "id": "small_reaction",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy.choice.draw_commitment.outcome.small_reaction.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent"
+              }
+            ]
+          },
+          "success": {
+            "id": "commitment_drawn",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy.choice.draw_commitment.outcome.commitment_drawn.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "controlled_mask_cracks",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy.choice.draw_commitment.outcome.controlled_mask_cracks.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "deny_opening",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy.choice.deny_opening.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stalemate_breaks",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy.choice.deny_opening.outcome.stalemate_breaks.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "read_context_too",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy.choice.read_context_too.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "whole_picture",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i07_the_calmest_enemy.choice.read_context_too.outcome.whole_picture.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 3
+      }
+    }
+  ]
+}

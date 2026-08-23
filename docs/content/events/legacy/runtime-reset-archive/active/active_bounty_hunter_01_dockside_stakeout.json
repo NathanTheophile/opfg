@@ -1,0 +1,126 @@
+{
+  "id": "active_bounty_hunter_01_dockside_stakeout",
+  "titleKey": "event.active_bounty_hunter_01_dockside_stakeout.title",
+  "textKey": "event.active_bounty_hunter_01_dockside_stakeout.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "bounty_hunter"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "shadow",
+      "textKey": "event.active_bounty_hunter_01_dockside_stakeout.choice.shadow.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_bounty_hunter_01_dockside_stakeout.choice.shadow.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_bounty_hunter_01_dockside_stakeout_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_bounty_hunter_01_dockside_stakeout.choice.shadow.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_bounty_hunter_01_dockside_stakeout_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_bounty_hunter_01_dockside_stakeout.choice.shadow.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_bounty_hunter_01_dockside_stakeout_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_bounty_hunter_01_dockside_stakeout.choice.shadow.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_bounty_hunter_01_dockside_stakeout_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "use_rooftops",
+      "textKey": "event.active_bounty_hunter_01_dockside_stakeout.choice.use_rooftops.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_dockside_stakeout.choice.use_rooftops.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_bounty_hunter_01_dockside_stakeout_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "hasDevilFruit"
+          },
+          {
+            "type": "devilFruitHasTag",
+            "tagId": "mobility"
+          }
+        ]
+      }
+    },
+    {
+      "id": "wait",
+      "textKey": "event.active_bounty_hunter_01_dockside_stakeout.choice.wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_dockside_stakeout.choice.wait.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

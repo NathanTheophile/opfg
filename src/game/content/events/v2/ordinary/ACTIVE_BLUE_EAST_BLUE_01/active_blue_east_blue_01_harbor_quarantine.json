@@ -1,0 +1,171 @@
+{
+  "id": "active_blue_east_blue_01_harbor_quarantine",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_harbor_quarantine.title",
+  "textKey": "event.active_blue_east_blue_01_harbor_quarantine.text",
+  "choices": [
+    {
+      "id": "inspect_the_symptoms",
+      "textKey": "event.active_blue_east_blue_01_harbor_quarantine.choice.inspect_the_symptoms.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "inspect_the_symptoms_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_harbor_quarantine.choice.inspect_the_symptoms.outcome.inspect_the_symptoms_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_harbor_quarantine_i01_hidden_passenger"
+              }
+            ]
+          },
+          "failure": {
+            "id": "inspect_the_symptoms_failure",
+            "textKey": "event.active_blue_east_blue_01_harbor_quarantine.choice.inspect_the_symptoms.outcome.inspect_the_symptoms_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_harbor_quarantine_i01_hidden_passenger"
+              }
+            ]
+          },
+          "success": {
+            "id": "inspect_the_symptoms_success",
+            "textKey": "event.active_blue_east_blue_01_harbor_quarantine.choice.inspect_the_symptoms.outcome.inspect_the_symptoms_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_harbor_quarantine_i01_hidden_passenger"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "inspect_the_symptoms_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_harbor_quarantine.choice.inspect_the_symptoms.outcome.inspect_the_symptoms_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_harbor_quarantine_i01_hidden_passenger"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "control_the_crowd",
+      "textKey": "event.active_blue_east_blue_01_harbor_quarantine.choice.control_the_crowd.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "control_the_crowd_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_harbor_quarantine.choice.control_the_crowd.outcome.control_the_crowd_criticalfailure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_harbor_quarantine_i01_hidden_passenger"
+              }
+            ]
+          },
+          "failure": {
+            "id": "control_the_crowd_failure",
+            "textKey": "event.active_blue_east_blue_01_harbor_quarantine.choice.control_the_crowd.outcome.control_the_crowd_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_harbor_quarantine_i01_hidden_passenger"
+              }
+            ]
+          },
+          "success": {
+            "id": "control_the_crowd_success",
+            "textKey": "event.active_blue_east_blue_01_harbor_quarantine.choice.control_the_crowd.outcome.control_the_crowd_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_harbor_quarantine_i01_hidden_passenger"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "control_the_crowd_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_harbor_quarantine.choice.control_the_crowd.outcome.control_the_crowd_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_harbor_quarantine_i01_hidden_passenger"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "respect_the_quarantine",
+      "textKey": "event.active_blue_east_blue_01_harbor_quarantine.choice.respect_the_quarantine.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "respect_the_quarantine_outcome",
+          "textKey": "event.active_blue_east_blue_01_harbor_quarantine.choice.respect_the_quarantine.outcome.respect_the_quarantine_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_east_blue_01_harbor_quarantine_i01_hidden_passenger"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "medical"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "coastal"
+      }
+    ]
+  }
+}

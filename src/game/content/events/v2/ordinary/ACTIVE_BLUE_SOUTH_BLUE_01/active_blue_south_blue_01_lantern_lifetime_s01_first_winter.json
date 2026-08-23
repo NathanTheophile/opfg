@@ -1,0 +1,78 @@
+{
+  "id": "active_blue_south_blue_01_lantern_lifetime_s01_first_winter",
+  "kind": "scheduled",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "titleKey": "event.active_blue_south_blue_01_lantern_lifetime_s01_first_winter.title",
+  "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s01_first_winter.text",
+  "choices": [
+    {
+      "id": "publish_roster",
+      "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s01_first_winter.choice.publish_roster.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "public",
+          "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s01_first_winter.choice.publish_roster.outcome.public.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_south_blue_01_lantern_lifetime_s02a_public_roster",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_pilots_run",
+      "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s01_first_winter.choice.let_pilots_run.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "private",
+          "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s01_first_winter.choice.let_pilots_run.outcome.private.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_south_blue_01_lantern_lifetime_s02b_private_roster",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "walk_away",
+      "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s01_first_winter.choice.walk_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "away",
+          "textKey": "event.active_blue_south_blue_01_lantern_lifetime_s01_first_winter.choice.walk_away.outcome.away.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "currentSeaIs",
+      "seaId": "south_blue"
+    }
+  },
+  "fallbackEventId": "active_blue_south_blue_01_lantern_lifetime_outside_south_blue"
+}

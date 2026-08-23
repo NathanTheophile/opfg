@@ -1,0 +1,141 @@
+{
+  "id": "ch_south_blue_01_karate_scored_board",
+  "titleKey": "event.ch_south_blue_01_karate_scored_board.title",
+  "textKey": "event.ch_south_blue_01_karate_scored_board.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      },
+      {
+        "type": "locationIs",
+        "locationId": "karate_island"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "expose_cut",
+      "textKey": "event.ch_south_blue_01_karate_scored_board.choice.expose_cut.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fair_test",
+          "textKey": "event.ch_south_blue_01_karate_scored_board.choice.expose_cut.outcome.fair_test.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "honest"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "honest"
+            }
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "deceptive"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "keep_secret",
+      "textKey": "event.ch_south_blue_01_karate_scored_board.choice.keep_secret.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rigged_win",
+          "textKey": "event.ch_south_blue_01_karate_scored_board.choice.keep_secret.outcome.rigged_win.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "deceptive"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "deceptive"
+            }
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "honest"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "swap_quietly",
+      "textKey": "event.ch_south_blue_01_karate_scored_board.choice.swap_quietly.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "quiet_swap",
+          "textKey": "event.ch_south_blue_01_karate_scored_board.choice.swap_quietly.outcome.quiet_swap.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "tell_candidate",
+      "textKey": "event.ch_south_blue_01_karate_scored_board.choice.tell_candidate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "candidate_knows",
+          "textKey": "event.ch_south_blue_01_karate_scored_board.choice.tell_candidate.outcome.candidate_knows.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

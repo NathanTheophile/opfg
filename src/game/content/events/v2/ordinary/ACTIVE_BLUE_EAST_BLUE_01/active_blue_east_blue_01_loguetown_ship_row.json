@@ -1,0 +1,114 @@
+{
+  "id": "active_blue_east_blue_01_loguetown_ship_row",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_loguetown_ship_row.title",
+  "textKey": "event.active_blue_east_blue_01_loguetown_ship_row.text",
+  "choices": [
+    {
+      "id": "buy_dinghy",
+      "textKey": "event.active_blue_east_blue_01_loguetown_ship_row.choice.buy_dinghy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy_dinghy_outcome",
+          "textKey": "event.active_blue_east_blue_01_loguetown_ship_row.choice.buy_dinghy.outcome.buy_dinghy_outcome.text",
+          "effects": [
+            {
+              "type": "buyShip",
+              "shipId": "dinghy"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "canAcquireShip",
+            "shipId": "dinghy"
+          },
+          {
+            "type": "berriesAtLeast",
+            "value": 5000
+          },
+          {
+            "type": "canBuyShip",
+            "shipId": "dinghy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "buy_sloop",
+      "textKey": "event.active_blue_east_blue_01_loguetown_ship_row.choice.buy_sloop.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy_sloop_outcome",
+          "textKey": "event.active_blue_east_blue_01_loguetown_ship_row.choice.buy_sloop.outcome.buy_sloop_outcome.text",
+          "effects": [
+            {
+              "type": "buyShip",
+              "shipId": "sloop"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "canAcquireShip",
+            "shipId": "sloop"
+          },
+          {
+            "type": "berriesAtLeast",
+            "value": 25000
+          },
+          {
+            "type": "canBuyShip",
+            "shipId": "sloop"
+          }
+        ]
+      }
+    },
+    {
+      "id": "inspect_only",
+      "textKey": "event.active_blue_east_blue_01_loguetown_ship_row.choice.inspect_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "inspect_only_outcome",
+          "textKey": "event.active_blue_east_blue_01_loguetown_ship_row.choice.inspect_only.outcome.inspect_only_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "loguetown"
+      }
+    ]
+  }
+}

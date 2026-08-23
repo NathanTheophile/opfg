@@ -1,0 +1,171 @@
+{
+  "id": "active_revolutionary_01_signal_mast",
+  "kind": "normal",
+  "titleKey": "event.active_revolutionary_01_signal_mast.title",
+  "textKey": "event.active_revolutionary_01_signal_mast.text",
+  "choices": [
+    {
+      "id": "disable_relay",
+      "textKey": "event.active_revolutionary_01_signal_mast.choice.disable_relay.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_revolutionary_01_signal_mast.choice.disable_relay.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_revolutionary_01_signal_mast_audit",
+                "delayMonths": 4
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_revolutionary_01_signal_mast.choice.disable_relay.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_revolutionary_01_signal_mast_audit",
+                "delayMonths": 4
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_revolutionary_01_signal_mast.choice.disable_relay.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_revolutionary_01_signal_mast_audit",
+                "delayMonths": 4
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_revolutionary_01_signal_mast.choice.disable_relay.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_revolutionary_01_signal_mast_audit",
+                "delayMonths": 4
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "misalign_schedule",
+      "textKey": "event.active_revolutionary_01_signal_mast.choice.misalign_schedule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_signal_mast.choice.misalign_schedule.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_revolutionary_01_signal_mast_audit",
+              "delayMonths": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "observe_only",
+      "textKey": "event.active_revolutionary_01_signal_mast.choice.observe_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_signal_mast.choice.observe_only.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "government"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "military"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "marine_presence"
+          }
+        ]
+      }
+    ]
+  }
+}

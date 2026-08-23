@@ -1,0 +1,92 @@
+{
+  "id": "active_generic_land_02_commerce_overbooked_berth",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_overbooked_berth.title",
+  "textKey": "event.active_generic_land_02_commerce_overbooked_berth.text",
+  "choices": [
+    {
+      "id": "take_refund",
+      "textKey": "event.active_generic_land_02_commerce_overbooked_berth.choice.take_refund.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_refund_outcome",
+          "textKey": "event.active_generic_land_02_commerce_overbooked_berth.choice.take_refund.outcome.take_refund_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_02_commerce_overbooked_berth_i01_loading_window"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pay_priority",
+      "textKey": "event.active_generic_land_02_commerce_overbooked_berth.choice.pay_priority.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_priority_outcome",
+          "textKey": "event.active_generic_land_02_commerce_overbooked_berth.choice.pay_priority.outcome.pay_priority_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_02_commerce_overbooked_berth_i01_loading_window"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    },
+    {
+      "id": "split_window",
+      "textKey": "event.active_generic_land_02_commerce_overbooked_berth.choice.split_window.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "split_window_outcome",
+          "textKey": "event.active_generic_land_02_commerce_overbooked_berth.choice.split_window.outcome.split_window_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_02_commerce_overbooked_berth_i01_loading_window"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  }
+}

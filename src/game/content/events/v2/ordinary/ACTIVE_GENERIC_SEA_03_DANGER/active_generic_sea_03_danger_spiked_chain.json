@@ -1,0 +1,84 @@
+{
+  "id": "active_generic_sea_03_danger_spiked_chain",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_spiked_chain.title",
+  "textKey": "event.active_generic_sea_03_danger_spiked_chain.text",
+  "choices": [
+    {
+      "id": "cut_chain_weapon",
+      "textKey": "event.active_generic_sea_03_danger_spiked_chain.choice.cut_chain_weapon.text",
+      "availableIf": {
+        "type": "hasEquippedWeapon",
+        "damageType": "cutting"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_chain_weapon",
+          "textKey": "event.active_generic_sea_03_danger_spiked_chain.outcome.cut_chain_weapon.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "turn_across",
+      "textKey": "event.active_generic_sea_03_danger_spiked_chain.choice.turn_across.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "turn_across",
+          "textKey": "event.active_generic_sea_03_danger_spiked_chain.outcome.turn_across.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -3
+            }
+          ],
+          "shipDamageCause": "enemy"
+        }
+      }
+    },
+    {
+      "id": "reverse_fire",
+      "textKey": "event.active_generic_sea_03_danger_spiked_chain.choice.reverse_fire.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reverse_fire",
+          "textKey": "event.active_generic_sea_03_danger_spiked_chain.outcome.reverse_fire.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -2
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            }
+          ],
+          "shipDamageCause": "enemy"
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

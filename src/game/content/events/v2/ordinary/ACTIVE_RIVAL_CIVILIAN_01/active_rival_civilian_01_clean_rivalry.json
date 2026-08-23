@@ -1,0 +1,123 @@
+{
+  "id": "active_rival_civilian_01_clean_rivalry",
+  "kind": "scheduled",
+  "cast": [
+    "neighborhood_merchant"
+  ],
+  "titleKey": "event.active_rival_civilian_01_clean_rivalry.title",
+  "textKey": "event.active_rival_civilian_01_clean_rivalry.text",
+  "choices": [
+    {
+      "id": "answer_numbers",
+      "textKey": "event.active_rival_civilian_01_clean_rivalry.choice.answer_numbers.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_numbers",
+          "textKey": "event.active_rival_civilian_01_clean_rivalry.choice.answer_numbers.outcome.answer_numbers.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 4
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "praise_one_line",
+      "textKey": "event.active_rival_civilian_01_clean_rivalry.choice.praise_one_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "praise_one_line",
+          "textKey": "event.active_rival_civilian_01_clean_rivalry.choice.praise_one_line.outcome.praise_one_line.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "close_book",
+      "textKey": "event.active_rival_civilian_01_clean_rivalry.choice.close_book.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "close_book",
+          "textKey": "event.active_rival_civilian_01_clean_rivalry.choice.close_book.outcome.close_book.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerPhaseIs",
+          "phase": "active"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerAffiliationIs",
+          "affiliationId": "civilian"
+        }
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "dead"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "departed"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "unavailable"
+      }
+    ]
+  }
+}

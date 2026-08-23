@@ -1,0 +1,104 @@
+{
+  "id": "active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "unrestricted",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "not",
+        "condition": {
+          "type": "currentSeaIs",
+          "seaId": "grand_line_paradise"
+        }
+      },
+      {
+        "type": "locationIs",
+        "locationId": "sabaody_archipelago"
+      }
+    ]
+  },
+  "titleKey": "event.active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice.title",
+  "textKey": "event.active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p2_trade"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "grand_line_paradise"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "document",
+      "textKey": "event.active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice.choice.document.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "document_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice.choice.document.outcome.document_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p2_trade_01_trade_mark_s03_split_manifest",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "warn",
+      "textKey": "event.active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice.choice.warn.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "warn_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice.choice.warn.outcome.warn_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p2_trade_01_trade_mark_s03_split_manifest",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline",
+      "textKey": "event.active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice.choice.decline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decline_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_trade_mark_s02_duplicate_invoice.choice.decline.outcome.decline_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p2_trade_01_trade_mark_s03_split_manifest",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

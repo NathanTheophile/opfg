@@ -1,0 +1,172 @@
+{
+  "id": "active_rival_revolutionary_01_countermand",
+  "kind": "scheduled",
+  "cast": [
+    "active_rival_revolutionary_01_rival"
+  ],
+  "titleKey": "event.active_rival_revolutionary_01_countermand.title",
+  "textKey": "event.active_rival_revolutionary_01_countermand.text",
+  "choices": [
+    {
+      "id": "admit_the_bad_call",
+      "textKey": "event.active_rival_revolutionary_01_countermand.choice.admit_the_bad_call.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "admit_the_bad_call",
+          "textKey": "event.active_rival_revolutionary_01_countermand.choice.admit_the_bad_call.outcome.admit_the_bad_call.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_rival_revolutionary_01_rival",
+              "amount": 7
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_revolutionary_01_burned_route",
+              "delayMonths": 24
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "demand_an_apology",
+      "textKey": "event.active_rival_revolutionary_01_countermand.choice.demand_an_apology.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "demand_an_apology_criticalfailure",
+            "textKey": "event.active_rival_revolutionary_01_countermand.choice.demand_an_apology.outcome.demand_an_apology_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_revolutionary_01_rival",
+                "amount": -8
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_revolutionary_01_burned_route",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "failure": {
+            "id": "demand_an_apology_failure",
+            "textKey": "event.active_rival_revolutionary_01_countermand.choice.demand_an_apology.outcome.demand_an_apology_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_revolutionary_01_rival",
+                "amount": -5
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_revolutionary_01_burned_route",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "success": {
+            "id": "demand_an_apology_success",
+            "textKey": "event.active_rival_revolutionary_01_countermand.choice.demand_an_apology.outcome.demand_an_apology_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_revolutionary_01_rival",
+                "amount": 3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_revolutionary_01_burned_route",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "demand_an_apology_criticalsuccess",
+            "textKey": "event.active_rival_revolutionary_01_countermand.choice.demand_an_apology.outcome.demand_an_apology_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_revolutionary_01_rival",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_revolutionary_01_burned_route",
+                "delayMonths": 24
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "keep_score",
+      "textKey": "event.active_rival_revolutionary_01_countermand.choice.keep_score.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_score",
+          "textKey": "event.active_rival_revolutionary_01_countermand.choice.keep_score.outcome.keep_score.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_rival_revolutionary_01_rival",
+              "amount": -5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_revolutionary_01_burned_route",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "ageAtLeastMonths",
+        "value": 419
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerAffiliationIs",
+          "affiliationId": "revolutionary"
+        }
+      }
+    ]
+  }
+}

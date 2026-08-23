@@ -1,0 +1,121 @@
+{
+  "id": "ch_v2_race_fishman_01_show_us",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_race_fishman_01_show_us.title",
+  "textKey": "event.ch_v2_race_fishman_01_show_us.text",
+  "choices": [
+    {
+      "id": "choose_one_demo",
+      "textKey": "event.ch_v2_race_fishman_01_show_us.choice.choose_one_demo.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "one_demo",
+          "textKey": "event.ch_v2_race_fishman_01_show_us.choice.choose_one_demo.outcome.one_demo.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_show_us_i01_one_more_request"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "return_coin_once",
+      "textKey": "event.ch_v2_race_fishman_01_show_us.choice.return_coin_once.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "coin_returned",
+          "textKey": "event.ch_v2_race_fishman_01_show_us.choice.return_coin_once.outcome.coin_returned.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_show_us_i01_one_more_request"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "set_boundary_now",
+      "textKey": "event.ch_v2_race_fishman_01_show_us.choice.set_boundary_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "boundary_now",
+          "textKey": "event.ch_v2_race_fishman_01_show_us.choice.set_boundary_now.outcome.boundary_now.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_show_us_i01_one_more_request"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_the_water",
+      "textKey": "event.ch_v2_race_fishman_01_show_us.choice.leave_the_water.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "left_water",
+          "textKey": "event.ch_v2_race_fishman_01_show_us.choice.leave_the_water.outcome.left_water.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 131
+      },
+      {
+        "type": "raceIs",
+        "raceId": "fishman"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "coastal"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          }
+        ]
+      }
+    ]
+  }
+}

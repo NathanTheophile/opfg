@@ -1,0 +1,78 @@
+{
+  "id": "active_generic_land_02_commerce_medical_shortage_counter",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_medical_shortage_counter.title",
+  "textKey": "event.active_generic_land_02_commerce_medical_shortage_counter.text",
+  "choices": [
+    {
+      "id": "buy_service",
+      "textKey": "event.active_generic_land_02_commerce_medical_shortage_counter.choice.buy_service.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy_service_outcome",
+          "textKey": "event.active_generic_land_02_commerce_medical_shortage_counter.choice.buy_service.outcome.buy_service_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2000
+            },
+            {
+              "type": "modifyHealth",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2000
+      }
+    },
+    {
+      "id": "leave_for_other",
+      "textKey": "event.active_generic_land_02_commerce_medical_shortage_counter.choice.leave_for_other.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_for_other_outcome",
+          "textKey": "event.active_generic_land_02_commerce_medical_shortage_counter.choice.leave_for_other.outcome.leave_for_other_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "walk_away",
+      "textKey": "event.active_generic_land_02_commerce_medical_shortage_counter.choice.walk_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "walk_away_outcome",
+          "textKey": "event.active_generic_land_02_commerce_medical_shortage_counter.choice.walk_away.outcome.walk_away_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "medical"
+      }
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "id": "active_civilian_01_chart_commission_i3",
+  "titleKey": "event.active_civilian_01_chart_commission_i3.title",
+  "textKey": "event.active_civilian_01_chart_commission_i3.text",
+  "kind": "immediate",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "public_warning",
+      "textKey": "event.active_civilian_01_chart_commission_i3.choice.public_warning.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "public_warning_result",
+          "textKey": "event.active_civilian_01_chart_commission_i3.choice.public_warning.outcome.public_warning_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "client_first",
+      "textKey": "event.active_civilian_01_chart_commission_i3.choice.client_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "client_first_result",
+          "textKey": "event.active_civilian_01_chart_commission_i3.choice.client_first.outcome.client_first_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 180
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "navigator_copy",
+      "textKey": "event.active_civilian_01_chart_commission_i3.choice.navigator_copy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "navigator_copy_result",
+          "textKey": "event.active_civilian_01_chart_commission_i3.choice.navigator_copy.outcome.navigator_copy_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "navigator"
+      }
+    }
+  ]
+}

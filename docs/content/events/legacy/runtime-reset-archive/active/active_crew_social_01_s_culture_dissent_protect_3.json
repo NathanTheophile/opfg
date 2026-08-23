@@ -1,0 +1,65 @@
+{
+  "id": "active_crew_social_01_s_culture_dissent_protect_3",
+  "kind": "scheduled",
+  "titleKey": "event.active_crew_social_01_s_culture_dissent_protect_3.title",
+  "textKey": "event.active_crew_social_01_s_culture_dissent_protect_3.text",
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "hasCrew"
+    }
+  },
+  "choices": [
+    {
+      "id": "keep_practice",
+      "textKey": "event.active_crew_social_01_s_culture_dissent_protect_3.choice.keep_practice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_dissent_protect_3.choice.keep_practice.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_credit_test",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "reopen",
+      "textKey": "event.active_crew_social_01_s_culture_dissent_protect_3.choice.reopen.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_dissent_protect_3.choice.reopen.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_credit_test",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "crewSizeAtLeast",
+    "value": 2
+  }
+}

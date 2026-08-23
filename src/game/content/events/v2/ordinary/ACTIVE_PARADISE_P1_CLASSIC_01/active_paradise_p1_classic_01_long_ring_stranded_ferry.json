@@ -1,0 +1,105 @@
+{
+  "id": "active_paradise_p1_classic_01_long_ring_stranded_ferry",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p1_classic_01_long_ring_stranded_ferry.title",
+  "textKey": "event.active_paradise_p1_classic_01_long_ring_stranded_ferry.text",
+  "choices": [
+    {
+      "id": "read_the_returning_tide",
+      "textKey": "event.active_paradise_p1_classic_01_long_ring_stranded_ferry.choice.read_the_returning_tide.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_the_returning_tide_criticalfailure",
+            "textKey": "event.active_paradise_p1_classic_01_long_ring_stranded_ferry.choice.read_the_returning_tide.outcome.read_the_returning_tide_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_the_returning_tide_failure",
+            "textKey": "event.active_paradise_p1_classic_01_long_ring_stranded_ferry.choice.read_the_returning_tide.outcome.read_the_returning_tide_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "read_the_returning_tide_success",
+            "textKey": "event.active_paradise_p1_classic_01_long_ring_stranded_ferry.choice.read_the_returning_tide.outcome.read_the_returning_tide_success.text",
+            "effects": []
+          },
+          "criticalSuccess": {
+            "id": "read_the_returning_tide_criticalsuccess",
+            "textKey": "event.active_paradise_p1_classic_01_long_ring_stranded_ferry.choice.read_the_returning_tide.outcome.read_the_returning_tide_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "unload_the_baskets",
+      "textKey": "event.active_paradise_p1_classic_01_long_ring_stranded_ferry.choice.unload_the_baskets.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "unload_the_baskets_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_long_ring_stranded_ferry.choice.unload_the_baskets.outcome.unload_the_baskets_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "follow_the_navigator",
+      "textKey": "event.active_paradise_p1_classic_01_long_ring_stranded_ferry.choice.follow_the_navigator.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "follow_the_navigator_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_long_ring_stranded_ferry.choice.follow_the_navigator.outcome.follow_the_navigator_outcome.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "navigator"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p1_classic"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "long_ring_long_land"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

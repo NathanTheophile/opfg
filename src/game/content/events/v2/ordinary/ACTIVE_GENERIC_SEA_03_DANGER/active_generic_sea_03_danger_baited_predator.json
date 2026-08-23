@@ -1,0 +1,81 @@
+{
+  "id": "active_generic_sea_03_danger_baited_predator",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_baited_predator.title",
+  "textKey": "event.active_generic_sea_03_danger_baited_predator.text",
+  "choices": [
+    {
+      "id": "cut_bait_free",
+      "textKey": "event.active_generic_sea_03_danger_baited_predator.choice.cut_bait_free.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_bait_free",
+          "textKey": "event.active_generic_sea_03_danger_baited_predator.outcome.cut_bait_free.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "heel_away",
+      "textKey": "event.active_generic_sea_03_danger_baited_predator.choice.heel_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "heel_away",
+          "textKey": "event.active_generic_sea_03_danger_baited_predator.outcome.heel_away.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -2
+            }
+          ],
+          "shipDamageCause": "enemy"
+        }
+      }
+    },
+    {
+      "id": "turn_on_raiders",
+      "textKey": "event.active_generic_sea_03_danger_baited_predator.choice.turn_on_raiders.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "turn_on_raiders",
+          "textKey": "event.active_generic_sea_03_danger_baited_predator.outcome.turn_on_raiders.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "shipDamageCause": "enemy"
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

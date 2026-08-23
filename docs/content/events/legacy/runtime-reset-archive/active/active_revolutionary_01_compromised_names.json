@@ -1,0 +1,112 @@
+{
+  "id": "active_revolutionary_01_compromised_names",
+  "kind": "normal",
+  "titleKey": "event.active_revolutionary_01_compromised_names.title",
+  "textKey": "event.active_revolutionary_01_compromised_names.text",
+  "choices": [
+    {
+      "id": "evacuate_first",
+      "textKey": "event.active_revolutionary_01_compromised_names.choice.evacuate_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_compromised_names.choice.evacuate_first.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "test_leak",
+      "textKey": "event.active_revolutionary_01_compromised_names.choice.test_leak.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_compromised_names.choice.test_leak.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cut_everyone",
+      "textKey": "event.active_revolutionary_01_compromised_names.choice.cut_everyone.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_compromised_names.choice.cut_everyone.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "suspicious_trace",
+      "textKey": "event.active_revolutionary_01_compromised_names.choice.suspicious_trace.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_compromised_names.choice.suspicious_trace.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "suspicious"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 6
+      }
+    ]
+  }
+}

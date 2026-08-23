@@ -1,0 +1,208 @@
+{
+  "id": "active_generic_land_01_social_borrowed_reputation",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_01_social_borrowed_reputation.title",
+  "textKey": "event.active_generic_land_01_social_borrowed_reputation.text",
+  "choices": [
+    {
+      "id": "correct_gently",
+      "textKey": "event.active_generic_land_01_social_borrowed_reputation.choice.correct_gently.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "gentle_fails",
+            "textKey": "event.active_generic_land_01_social_borrowed_reputation.choice.correct_gently.outcome.gentle_fails.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_borrowed_reputation_i01_fake_adventure"
+              }
+            ]
+          },
+          "failure": {
+            "id": "braggart_doubles",
+            "textKey": "event.active_generic_land_01_social_borrowed_reputation.choice.correct_gently.outcome.braggart_doubles.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_borrowed_reputation_i01_fake_adventure"
+              }
+            ]
+          },
+          "success": {
+            "id": "line_drawn",
+            "textKey": "event.active_generic_land_01_social_borrowed_reputation.choice.correct_gently.outcome.line_drawn.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_borrowed_reputation_i01_fake_adventure"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crowd_gets_it",
+            "textKey": "event.active_generic_land_01_social_borrowed_reputation.choice.correct_gently.outcome.crowd_gets_it.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_borrowed_reputation_i01_fake_adventure"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "let_them_overplay",
+      "textKey": "event.active_generic_land_01_social_borrowed_reputation.choice.let_them_overplay.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "patience_breaks",
+            "textKey": "event.active_generic_land_01_social_borrowed_reputation.choice.let_them_overplay.outcome.patience_breaks.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_borrowed_reputation_i01_fake_adventure"
+              }
+            ]
+          },
+          "failure": {
+            "id": "crowd_believes",
+            "textKey": "event.active_generic_land_01_social_borrowed_reputation.choice.let_them_overplay.outcome.crowd_believes.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_borrowed_reputation_i01_fake_adventure"
+              }
+            ]
+          },
+          "success": {
+            "id": "braggart_trips",
+            "textKey": "event.active_generic_land_01_social_borrowed_reputation.choice.let_them_overplay.outcome.braggart_trips.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_borrowed_reputation_i01_fake_adventure"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "braggart_confesses_half",
+            "textKey": "event.active_generic_land_01_social_borrowed_reputation.choice.let_them_overplay.outcome.braggart_confesses_half.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_borrowed_reputation_i01_fake_adventure"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "confirm_for_now",
+      "textKey": "event.active_generic_land_01_social_borrowed_reputation.choice.confirm_for_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lie_confirmed",
+          "textKey": "event.active_generic_land_01_social_borrowed_reputation.choice.confirm_for_now.outcome.lie_confirmed.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_borrowed_reputation_i01_fake_adventure"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "say_no_plainly",
+      "textKey": "event.active_generic_land_01_social_borrowed_reputation.choice.say_no_plainly.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "honest"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "plain_denial",
+          "textKey": "event.active_generic_land_01_social_borrowed_reputation.choice.say_no_plainly.outcome.plain_denial.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_borrowed_reputation_i01_fake_adventure"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

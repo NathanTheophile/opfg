@@ -1,0 +1,74 @@
+{
+  "id": "career_marine_promotion_petty_officer",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 8
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_recruit"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerRankAtLeast",
+          "rankId": "marine_petty_officer"
+        }
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_02_night_roster"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_02_refugee_quay"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_02_unmarked_cutter"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_02_relief_patrol"
+          }
+        ]
+      }
+    ]
+  },
+  "titleKey": "event.career_marine_promotion_petty_officer.title",
+  "textKey": "event.career_marine_promotion_petty_officer.text",
+  "choices": [
+    {
+      "id": "assume_rank",
+      "textKey": "event.career_marine_promotion_petty_officer.choice.assume_rank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "promoted",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_petty_officer"
+            }
+          ],
+          "textKey": "event.career_marine_promotion_petty_officer.choice.assume_rank.outcome.promoted.text"
+        }
+      }
+    }
+  ]
+}

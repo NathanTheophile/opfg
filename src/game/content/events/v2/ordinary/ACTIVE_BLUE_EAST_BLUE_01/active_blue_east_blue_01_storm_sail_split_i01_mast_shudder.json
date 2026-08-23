@@ -1,0 +1,81 @@
+{
+  "id": "active_blue_east_blue_01_storm_sail_split_i01_mast_shudder",
+  "kind": "immediate",
+  "titleKey": "event.active_blue_east_blue_01_storm_sail_split_i01_mast_shudder.title",
+  "textKey": "event.active_blue_east_blue_01_storm_sail_split_i01_mast_shudder.text",
+  "choices": [
+    {
+      "id": "brace_it_now",
+      "textKey": "event.active_blue_east_blue_01_storm_sail_split_i01_mast_shudder.choice.brace_it_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "brace_it_now_outcome",
+          "textKey": "event.active_blue_east_blue_01_storm_sail_split_i01_mast_shudder.choice.brace_it_now.outcome.brace_it_now_outcome.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "save_materials",
+      "textKey": "event.active_blue_east_blue_01_storm_sail_split_i01_mast_shudder.choice.save_materials.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "save_materials_outcome",
+          "textKey": "event.active_blue_east_blue_01_storm_sail_split_i01_mast_shudder.choice.save_materials.outcome.save_materials_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "pay_for_parts",
+      "textKey": "event.active_blue_east_blue_01_storm_sail_split_i01_mast_shudder.choice.pay_for_parts.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_for_parts_outcome",
+          "textKey": "event.active_blue_east_blue_01_storm_sail_split_i01_mast_shudder.choice.pay_for_parts.outcome.pay_for_parts_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "id": "family_marine_04_quartermaster_measure",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_marine",
+    "chapterId": "childhood_02",
+    "nodeId": "family_marine_04_quartermaster_measure",
+    "parentNodeIds": [
+      "family_marine_01_no_box_on_form"
+    ],
+    "selectionPriority": 30,
+    "specialPathId": "marine_giant"
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "raceIs",
+        "raceId": "giant"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_01_no_box_on_form",
+        "outcomeId": "giant_invite"
+      }
+    ]
+  },
+  "titleKey": "event.family_marine_04_quartermaster_measure.title",
+  "textKey": "event.family_marine_04_quartermaster_measure.text",
+  "choices": [
+    {
+      "id": "cooperate",
+      "textKey": "event.family_marine_04_quartermaster_measure.choice.cooperate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cooperate",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_04_quartermaster_measure_i01_notebook"
+            }
+          ],
+          "textKey": "event.family_marine_04_quartermaster_measure.choice.cooperate.outcome.cooperate.text"
+        }
+      }
+    },
+    {
+      "id": "ask_why",
+      "textKey": "event.family_marine_04_quartermaster_measure.choice.ask_why.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "why_cf",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_04_quartermaster_measure_i01_notebook"
+              }
+            ],
+            "textKey": "event.family_marine_04_quartermaster_measure.choice.ask_why.outcome.why_cf.text"
+          },
+          "failure": {
+            "id": "why_f",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_04_quartermaster_measure_i01_notebook"
+              }
+            ],
+            "textKey": "event.family_marine_04_quartermaster_measure.choice.ask_why.outcome.why_f.text"
+          },
+          "success": {
+            "id": "why_s",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_04_quartermaster_measure_i01_notebook"
+              }
+            ],
+            "textKey": "event.family_marine_04_quartermaster_measure.choice.ask_why.outcome.why_s.text"
+          },
+          "criticalSuccess": {
+            "id": "why_cs",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_04_quartermaster_measure_i01_notebook"
+              }
+            ],
+            "textKey": "event.family_marine_04_quartermaster_measure.choice.ask_why.outcome.why_cs.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "stop",
+      "textKey": "event.family_marine_04_quartermaster_measure.choice.stop.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stop",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_04_quartermaster_measure_i01_notebook"
+            }
+          ],
+          "textKey": "event.family_marine_04_quartermaster_measure.choice.stop.outcome.stop.text"
+        }
+      }
+    }
+  ]
+}

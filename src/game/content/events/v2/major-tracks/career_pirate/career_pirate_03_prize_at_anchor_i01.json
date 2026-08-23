@@ -1,0 +1,103 @@
+{
+  "id": "career_pirate_03_prize_at_anchor_i01",
+  "kind": "immediate",
+  "titleKey": "event.career_pirate_03_prize_at_anchor_i01.title",
+  "textKey": "event.career_pirate_03_prize_at_anchor_i01.text",
+  "choices": [
+    {
+      "id": "claim_sloop",
+      "availableIf": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasOutcome",
+            "eventId": "career_pirate_03_prize_at_anchor",
+            "outcomeId": "take_deck_success"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "career_pirate_03_prize_at_anchor",
+            "outcomeId": "take_deck_criticalSuccess"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "career_pirate_03_prize_at_anchor",
+            "outcomeId": "buy_claim"
+          }
+        ]
+      },
+      "textKey": "event.career_pirate_03_prize_at_anchor_i01.choice.claim_sloop.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "claim_sloop",
+          "effects": [
+            {
+              "type": "acquireShip",
+              "shipId": "sloop",
+              "name": "Seafoam"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ],
+          "textKey": "event.career_pirate_03_prize_at_anchor_i01.choice.claim_sloop.outcome.claim_sloop.text"
+        }
+      }
+    },
+    {
+      "id": "strip_value",
+      "availableIf": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasOutcome",
+            "eventId": "career_pirate_03_prize_at_anchor",
+            "outcomeId": "take_deck_success"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "career_pirate_03_prize_at_anchor",
+            "outcomeId": "take_deck_criticalSuccess"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "career_pirate_03_prize_at_anchor",
+            "outcomeId": "buy_claim"
+          }
+        ]
+      },
+      "textKey": "event.career_pirate_03_prize_at_anchor_i01.choice.strip_value.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "strip_value",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 12000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_pirate_03_prize_at_anchor_i01.choice.strip_value.outcome.strip_value.text"
+        }
+      }
+    },
+    {
+      "id": "walk_away",
+      "textKey": "event.career_pirate_03_prize_at_anchor_i01.choice.walk_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "walk_away",
+          "effects": [],
+          "textKey": "event.career_pirate_03_prize_at_anchor_i01.choice.walk_away.outcome.walk_away.text"
+        }
+      }
+    }
+  ]
+}

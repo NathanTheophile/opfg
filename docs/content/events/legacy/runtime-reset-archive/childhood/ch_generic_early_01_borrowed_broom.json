@@ -1,0 +1,117 @@
+{
+  "id": "ch_generic_early_01_borrowed_broom",
+  "titleKey": "event.ch_generic_early_01_borrowed_broom.title",
+  "textKey": "event.ch_generic_early_01_borrowed_broom.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "imitate",
+      "textKey": "event.ch_generic_early_01_borrowed_broom.choice.imitate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sweep_started",
+          "textKey": "event.ch_generic_early_01_borrowed_broom.choice.imitate.outcome.sweep_started.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_borrowed_broom_i1_dust_cloud"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 4
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_first",
+      "textKey": "event.ch_generic_early_01_borrowed_broom.choice.ask_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "permission_given",
+          "textKey": "event.ch_generic_early_01_borrowed_broom.choice.ask_first.outcome.permission_given.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": -1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_it",
+      "textKey": "event.ch_generic_early_01_borrowed_broom.choice.leave_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "left_alone",
+          "textKey": "event.ch_generic_early_01_borrowed_broom.choice.leave_it.outcome.left_alone.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_rival",
+              "amount": 2
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  },
+  "cast": [
+    "childhood_rival",
+    "neighborhood_merchant"
+  ]
+}

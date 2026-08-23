@@ -1,0 +1,123 @@
+{
+  "id": "active_port_trade_01_weapon_lot_provenance",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_weapon_lot_provenance.title",
+  "textKey": "event.active_port_trade_01_weapon_lot_provenance.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "weapons"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "inspecter",
+      "textKey": "event.active_port_trade_01_weapon_lot_provenance.choice.inspecter.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_port_trade_01_weapon_lot_provenance.choice.inspecter.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_port_trade_01_weapon_lot_provenance.choice.inspecter.outcome.failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_port_trade_01_weapon_lot_provenance.choice.inspecter.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_port_trade_01_weapon_lot_provenance.choice.inspecter.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "acheter",
+      "textKey": "event.active_port_trade_01_weapon_lot_provenance.choice.acheter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "achat",
+          "textKey": "event.active_port_trade_01_weapon_lot_provenance.choice.acheter.outcome.achat.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -260
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 260
+      }
+    },
+    {
+      "id": "refuser",
+      "textKey": "event.active_port_trade_01_weapon_lot_provenance.choice.refuser.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refus",
+          "textKey": "event.active_port_trade_01_weapon_lot_provenance.choice.refuser.outcome.refus.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

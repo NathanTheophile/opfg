@@ -1,0 +1,146 @@
+{
+  "id": "active_haki_observation_l3_world_without_eyes",
+  "kind": "normal",
+  "titleKey": "event.active_haki_observation_l3_world_without_eyes.title",
+  "textKey": "event.active_haki_observation_l3_world_without_eyes.text",
+  "choices": [
+    {
+      "id": "find_first_exit",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes.choice.find_first_exit.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "wrong_wall",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes.choice.find_first_exit.outcome.wrong_wall.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i01_smoke_takes_the_room"
+              }
+            ]
+          },
+          "failure": {
+            "id": "slow_route",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes.choice.find_first_exit.outcome.slow_route.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i01_smoke_takes_the_room"
+              }
+            ]
+          },
+          "success": {
+            "id": "route_found",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes.choice.find_first_exit.outcome.route_found.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i01_smoke_takes_the_room"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "presence_marks_path",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes.choice.find_first_exit.outcome.presence_marks_path.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i01_smoke_takes_the_room"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "drop_low",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes.choice.drop_low.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "low_path",
+          "textKey": "event.active_haki_observation_l3_world_without_eyes.choice.drop_low.outcome.low_path.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l3_world_without_eyes_i01_smoke_takes_the_room"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "feel_movement",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes.choice.feel_movement.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "eyes_abandoned",
+          "textKey": "event.active_haki_observation_l3_world_without_eyes.choice.feel_movement.outcome.eyes_abandoned.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l3_world_without_eyes_i01_smoke_takes_the_room"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 2
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hakiSourceTotalAtLeast",
+        "hakiType": "observation",
+        "value": 85
+      },
+      {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 2
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "hakiAtLeast",
+          "hakiType": "observation",
+          "level": 3
+        }
+      }
+    ]
+  }
+}

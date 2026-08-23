@@ -1,0 +1,76 @@
+{
+  "id": "active_generic_combat_01_rival_a4_bridge_pressure",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_a4_bridge_pressure.title",
+  "textKey": "event.active_generic_combat_01_rival_a4_bridge_pressure.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "protect",
+      "textKey": "event.active_generic_combat_01_rival_a4_bridge_pressure.choice.protect.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "protect_outcome",
+          "textKey": "event.active_generic_combat_01_rival_a4_bridge_pressure.choice.protect.outcome.protect_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_a5_debt_without_words",
+              "delayMonths": 12
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_a4_bridge_pressure_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "split",
+      "textKey": "event.active_generic_combat_01_rival_a4_bridge_pressure.choice.split.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "split_outcome",
+          "textKey": "event.active_generic_combat_01_rival_a4_bridge_pressure.choice.split.outcome.split_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_a5_debt_without_words",
+              "delayMonths": 12
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_rival_a4_bridge_pressure_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

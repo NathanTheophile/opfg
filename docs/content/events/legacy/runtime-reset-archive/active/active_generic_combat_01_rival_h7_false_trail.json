@@ -1,0 +1,68 @@
+{
+  "id": "active_generic_combat_01_rival_h7_false_trail",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_h7_false_trail.title",
+  "textKey": "event.active_generic_combat_01_rival_h7_false_trail.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "set_trap",
+      "textKey": "event.active_generic_combat_01_rival_h7_false_trail.choice.set_trap.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "set_trap_outcome",
+          "textKey": "event.active_generic_combat_01_rival_h7_false_trail.choice.set_trap.outcome.set_trap_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_h8_warehouse_chase",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "limit",
+      "textKey": "event.active_generic_combat_01_rival_h7_false_trail.choice.limit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "limit_outcome",
+          "textKey": "event.active_generic_combat_01_rival_h7_false_trail.choice.limit.outcome.limit_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_h8_warehouse_chase",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

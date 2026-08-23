@@ -1,0 +1,170 @@
+{
+  "id": "active_generic_combat_01_burglary_caught_midway",
+  "kind": "normal",
+  "titleKey": "event.active_generic_combat_01_burglary_caught_midway.title",
+  "textKey": "event.active_generic_combat_01_burglary_caught_midway.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "lodging"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "engage",
+      "textKey": "event.active_generic_combat_01_burglary_caught_midway.choice.engage.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "engage_criticalfailure",
+            "textKey": "event.active_generic_combat_01_burglary_caught_midway.choice.engage.outcome.engage_criticalfailure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_generic_combat_01_scheduled_burglary_rumor_callback",
+                "delayMonths": 4
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_burglary_caught_midway_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "engage_failure",
+            "textKey": "event.active_generic_combat_01_burglary_caught_midway.choice.engage.outcome.engage_failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_generic_combat_01_scheduled_burglary_rumor_callback",
+                "delayMonths": 4
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_burglary_caught_midway_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "engage_success",
+            "textKey": "event.active_generic_combat_01_burglary_caught_midway.choice.engage.outcome.engage_success.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_generic_combat_01_scheduled_burglary_rumor_callback",
+                "delayMonths": 4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_burglary_caught_midway_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "engage_criticalsuccess",
+            "textKey": "event.active_generic_combat_01_burglary_caught_midway.choice.engage.outcome.engage_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_generic_combat_01_scheduled_burglary_rumor_callback",
+                "delayMonths": 4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_combat_01_burglary_caught_midway_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "control",
+      "textKey": "event.active_generic_combat_01_burglary_caught_midway.choice.control.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "control_outcome",
+          "textKey": "event.active_generic_combat_01_burglary_caught_midway.choice.control.outcome.control_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_scheduled_burglary_rumor_callback",
+              "delayMonths": 4
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_combat_01_burglary_caught_midway_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw",
+      "textKey": "event.active_generic_combat_01_burglary_caught_midway.choice.withdraw.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "withdraw_outcome",
+          "textKey": "event.active_generic_combat_01_burglary_caught_midway.choice.withdraw.outcome.withdraw_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "id": "active_paradise_p2_trade_01_beach_icebox",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p2_trade_01_beach_icebox.title",
+  "textKey": "event.active_paradise_p2_trade_01_beach_icebox.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p2_trade"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "kyuuka_island"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "intervene",
+      "textKey": "event.active_paradise_p2_trade_01_beach_icebox.choice.intervene.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 13,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "intervene_criticalfailure",
+            "textKey": "event.active_paradise_p2_trade_01_beach_icebox.choice.intervene.outcome.intervene_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -7
+              }
+            ]
+          },
+          "failure": {
+            "id": "intervene_failure",
+            "textKey": "event.active_paradise_p2_trade_01_beach_icebox.choice.intervene.outcome.intervene_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              }
+            ]
+          },
+          "success": {
+            "id": "intervene_success",
+            "textKey": "event.active_paradise_p2_trade_01_beach_icebox.choice.intervene.outcome.intervene_success.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 800
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "intervene_criticalsuccess",
+            "textKey": "event.active_paradise_p2_trade_01_beach_icebox.choice.intervene.outcome.intervene_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 1600
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "practical",
+      "textKey": "event.active_paradise_p2_trade_01_beach_icebox.choice.practical.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "practical_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_beach_icebox.choice.practical.outcome.practical_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p2_trade_01_beach_icebox_i01"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step_back",
+      "textKey": "event.active_paradise_p2_trade_01_beach_icebox.choice.step_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "step_back_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_beach_icebox.choice.step_back.outcome.step_back_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "use_cook",
+      "textKey": "event.active_paradise_p2_trade_01_beach_icebox.choice.use_cook.text",
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "cook"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "use_cook_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_beach_icebox.choice.use_cook.outcome.use_cook_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

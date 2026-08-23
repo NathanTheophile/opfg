@@ -1,0 +1,70 @@
+{
+  "id": "family_civilian_adult_01_home_postmark_fallback_i01_reaction",
+  "kind": "immediate",
+  "titleKey": "event.family_civilian_adult_01_home_postmark_fallback_i01_reaction.title",
+  "textKey": "event.family_civilian_adult_01_home_postmark_fallback_i01_reaction.text",
+  "choices": [
+    {
+      "id": "keep_channel",
+      "textKey": "event.family_civilian_adult_01_home_postmark_fallback_i01_reaction.choice.keep_channel.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_channel",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.family_civilian_adult_01_home_postmark_fallback_i01_reaction.choice.keep_channel.outcome.keep_channel.text"
+        }
+      }
+    },
+    {
+      "id": "send_help",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2500
+      },
+      "textKey": "event.family_civilian_adult_01_home_postmark_fallback_i01_reaction.choice.send_help.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "send_help",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2500
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.family_civilian_adult_01_home_postmark_fallback_i01_reaction.choice.send_help.outcome.send_help.text"
+        }
+      }
+    },
+    {
+      "id": "close_channel",
+      "textKey": "event.family_civilian_adult_01_home_postmark_fallback_i01_reaction.choice.close_channel.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "close_channel",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ],
+          "textKey": "event.family_civilian_adult_01_home_postmark_fallback_i01_reaction.choice.close_channel.outcome.close_channel.text"
+        }
+      }
+    }
+  ]
+}

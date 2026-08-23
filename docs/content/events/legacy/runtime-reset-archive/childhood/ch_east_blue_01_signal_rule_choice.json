@@ -1,0 +1,45 @@
+{
+  "id": "ch_east_blue_01_signal_rule_choice",
+  "kind": "scheduled",
+  "titleKey": "event.ch_east_blue_01_signal_rule_choice.title",
+  "textKey": "event.ch_east_blue_01_signal_rule_choice.text",
+  "choices": [
+    {
+      "id": "choose_speed",
+      "textKey": "event.ch_east_blue_01_signal_rule_choice.choice.choose_speed.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "speed_branch",
+          "textKey": "event.ch_east_blue_01_signal_rule_choice.choice.choose_speed.outcome.speed_branch.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_east_blue_01_signal_fast_flag",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "choose_confirmation",
+      "textKey": "event.ch_east_blue_01_signal_rule_choice.choice.choose_confirmation.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "confirmation_branch",
+          "textKey": "event.ch_east_blue_01_signal_rule_choice.choice.choose_confirmation.outcome.confirmation_branch.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_east_blue_01_signal_double_check",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100
+}

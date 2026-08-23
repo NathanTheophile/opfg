@@ -1,0 +1,154 @@
+{
+  "id": "career_marine_02_night_roster",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_marine",
+    "chapterId": "active_02",
+    "nodeId": "career_marine_02_night_roster",
+    "parentNodeIds": [
+      "career_marine_01_inherited_colors",
+      "career_marine_01_new_uniform"
+    ],
+    "selectionPriority": 20
+  },
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_01_inherited_colors",
+        "outcomeId": "duty"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_01_new_uniform",
+        "outcomeId": "duty"
+      }
+    ]
+  },
+  "titleKey": "event.career_marine_02_night_roster.title",
+  "textKey": "event.career_marine_02_night_roster.text",
+  "choices": [
+    {
+      "id": "duty",
+      "textKey": "event.career_marine_02_night_roster.choice.duty.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "duty",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_marine_02_night_roster_i01_resolution"
+            }
+          ],
+          "textKey": "event.career_marine_02_night_roster.choice.duty.outcome.duty.text"
+        }
+      }
+    },
+    {
+      "id": "shield",
+      "textKey": "event.career_marine_02_night_roster.choice.shield.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shield",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_marine_02_night_roster_i01_resolution"
+            }
+          ],
+          "textKey": "event.career_marine_02_night_roster.choice.shield.outcome.shield.text"
+        }
+      }
+    },
+    {
+      "id": "initiative",
+      "textKey": "event.career_marine_02_night_roster.choice.initiative.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "initiative_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_02_night_roster_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_02_night_roster.choice.initiative.outcome.initiative_criticalFailure.text"
+          },
+          "failure": {
+            "id": "initiative_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_02_night_roster_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_02_night_roster.choice.initiative.outcome.initiative_failure.text"
+          },
+          "success": {
+            "id": "initiative_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_02_night_roster_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_02_night_roster.choice.initiative.outcome.initiative_success.text"
+          },
+          "criticalSuccess": {
+            "id": "initiative_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_02_night_roster_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_02_night_roster.choice.initiative.outcome.initiative_criticalSuccess.text"
+          }
+        }
+      }
+    }
+  ]
+}

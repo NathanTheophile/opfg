@@ -1,0 +1,178 @@
+{
+  "id": "active_blue_east_blue_01_sixis_water_cask",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_sixis_water_cask.title",
+  "textKey": "event.active_blue_east_blue_01_sixis_water_cask.text",
+  "choices": [
+    {
+      "id": "read_the_birds",
+      "textKey": "event.active_blue_east_blue_01_sixis_water_cask.choice.read_the_birds.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_the_birds_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_sixis_water_cask.choice.read_the_birds.outcome.read_the_birds_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_sixis_water_cask_i01_shadow_cave"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_the_birds_failure",
+            "textKey": "event.active_blue_east_blue_01_sixis_water_cask.choice.read_the_birds.outcome.read_the_birds_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_sixis_water_cask_i01_shadow_cave"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_the_birds_success",
+            "textKey": "event.active_blue_east_blue_01_sixis_water_cask.choice.read_the_birds.outcome.read_the_birds_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_sixis_water_cask_i01_shadow_cave"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_the_birds_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_sixis_water_cask.choice.read_the_birds.outcome.read_the_birds_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_sixis_water_cask_i01_shadow_cave"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "build_a_still",
+      "textKey": "event.active_blue_east_blue_01_sixis_water_cask.choice.build_a_still.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "build_a_still_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_sixis_water_cask.choice.build_a_still.outcome.build_a_still_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_sixis_water_cask_i01_shadow_cave"
+              }
+            ]
+          },
+          "failure": {
+            "id": "build_a_still_failure",
+            "textKey": "event.active_blue_east_blue_01_sixis_water_cask.choice.build_a_still.outcome.build_a_still_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_sixis_water_cask_i01_shadow_cave"
+              }
+            ]
+          },
+          "success": {
+            "id": "build_a_still_success",
+            "textKey": "event.active_blue_east_blue_01_sixis_water_cask.choice.build_a_still.outcome.build_a_still_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_sixis_water_cask_i01_shadow_cave"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "build_a_still_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_sixis_water_cask.choice.build_a_still.outcome.build_a_still_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_sixis_water_cask_i01_shadow_cave"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ration_and_leave",
+      "textKey": "event.active_blue_east_blue_01_sixis_water_cask.choice.ration_and_leave.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ration_and_leave_outcome",
+          "textKey": "event.active_blue_east_blue_01_sixis_water_cask.choice.ration_and_leave.outcome.ration_and_leave_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_east_blue_01_sixis_water_cask_i01_shadow_cave"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "sixis"
+      }
+    ]
+  }
+}

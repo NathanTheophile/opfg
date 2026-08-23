@@ -1,0 +1,87 @@
+{
+  "id": "ch_combat_01_doorway_hold_i1",
+  "titleKey": "event.ch_combat_01_doorway_hold_i1.title",
+  "textKey": "event.ch_combat_01_doorway_hold_i1.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "push_door_not_person",
+      "textKey": "event.ch_combat_01_doorway_hold_i1.choice.push_door_not_person.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "door_pushed",
+          "textKey": "event.ch_combat_01_doorway_hold_i1.choice.push_door_not_person.outcome.door_pushed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_doorway_hold_i2"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "jam_with_object",
+      "textKey": "event.ch_combat_01_doorway_hold_i1.choice.jam_with_object.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "door_jammed",
+          "textKey": "event.ch_combat_01_doorway_hold_i1.choice.jam_with_object.outcome.door_jammed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_doorway_hold_i2"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "retreat_inside",
+      "textKey": "event.ch_combat_01_doorway_hold_i1.choice.retreat_inside.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "retreat_inside",
+          "textKey": "event.ch_combat_01_doorway_hold_i1.choice.retreat_inside.outcome.retreat_inside.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_doorway_hold_i2"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "childhood_younger"
+  ]
+}

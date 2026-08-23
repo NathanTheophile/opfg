@@ -1,0 +1,255 @@
+{
+  "id": "active_generic_sea_03_danger_waterline_hit",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_waterline_hit.title",
+  "textKey": "event.active_generic_sea_03_danger_waterline_hit.text",
+  "choices": [
+    {
+      "id": "find_breach",
+      "textKey": "event.active_generic_sea_03_danger_waterline_hit.choice.find_breach.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_waterline_hit.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_03_danger_waterline_hit.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_03_danger_waterline_hit.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_waterline_hit_i01_second_shot"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_03_danger_waterline_hit.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_waterline_hit_i01_second_shot"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "drive_wedge",
+      "textKey": "event.active_generic_sea_03_danger_waterline_hit.choice.drive_wedge.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_waterline_hit.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_03_danger_waterline_hit.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_03_danger_waterline_hit.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_waterline_hit_i01_second_shot"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_03_danger_waterline_hit.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_waterline_hit_i01_second_shot"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "shipwright_patch",
+      "textKey": "event.active_generic_sea_03_danger_waterline_hit.choice.shipwright_patch.text",
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      },
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "crew_critical_failure",
+            "textKey": "event.active_generic_sea_03_danger_waterline_hit.outcome.crew_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcStat",
+                "npcSelector": "diceActor",
+                "statId": "health",
+                "amount": -6
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "failure": {
+            "id": "crew_failure",
+            "textKey": "event.active_generic_sea_03_danger_waterline_hit.outcome.crew_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcStat",
+                "npcSelector": "diceActor",
+                "statId": "health",
+                "amount": -3
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "crew_success",
+            "textKey": "event.active_generic_sea_03_danger_waterline_hit.outcome.crew_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_waterline_hit_i01_second_shot"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crew_critical_success",
+            "textKey": "event.active_generic_sea_03_danger_waterline_hit.outcome.crew_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcStat",
+                "npcSelector": "diceActor",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_03_danger_waterline_hit_i01_second_shot"
+              }
+            ]
+          }
+        },
+        "actor": {
+          "type": "crewRole",
+          "roleId": "shipwright",
+          "statId": "navigation"
+        }
+      }
+    },
+    {
+      "id": "flood_compartment",
+      "textKey": "event.active_generic_sea_03_danger_waterline_hit.choice.flood_compartment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "flood_compartment",
+          "textKey": "event.active_generic_sea_03_danger_waterline_hit.outcome.flood_compartment.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ],
+          "shipDamageCause": "enemy"
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

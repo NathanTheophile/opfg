@@ -1,0 +1,92 @@
+{
+  "id": "ch_family_social_01_ledger_s1_first_request",
+  "titleKey": "event.ch_family_social_01_ledger_s1_first_request.title",
+  "textKey": "event.ch_family_social_01_ledger_s1_first_request.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "answer_yes",
+      "textKey": "event.ch_family_social_01_ledger_s1_first_request.choice.answer_yes.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answered_yes",
+          "textKey": "event.ch_family_social_01_ledger_s1_first_request.choice.answer_yes.outcome.answered_yes.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_s2_terms_named",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_details",
+      "textKey": "event.ch_family_social_01_ledger_s1_first_request.choice.ask_details.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "details_requested",
+          "textKey": "event.ch_family_social_01_ledger_s1_first_request.choice.ask_details.outcome.details_requested.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_s2_terms_named",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline_now",
+      "textKey": "event.ch_family_social_01_ledger_s1_first_request.choice.decline_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "declined_now",
+          "textKey": "event.ch_family_social_01_ledger_s1_first_request.choice.decline_now.outcome.declined_now.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_s2_terms_named",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "neighborhood_merchant"
+  ]
+}

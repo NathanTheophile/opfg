@@ -1,0 +1,99 @@
+{
+  "id": "ch_east_blue_01_foosha_gangplank",
+  "kind": "normal",
+  "titleKey": "event.ch_east_blue_01_foosha_gangplank.title",
+  "textKey": "event.ch_east_blue_01_foosha_gangplank.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 143
+      },
+      {
+        "type": "locationIs",
+        "locationId": "foosha_village"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "shield_child",
+      "textKey": "event.ch_east_blue_01_foosha_gangplank.choice.shield_child.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "child_protected",
+          "textKey": "event.ch_east_blue_01_foosha_gangplank.choice.shield_child.outcome.child_protected.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "protective"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_east_blue_01_foosha_gangplank_return",
+              "delayMonths": 24
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "protective"
+        }
+      }
+    },
+    {
+      "id": "call_crew",
+      "textKey": "event.ch_east_blue_01_foosha_gangplank.choice.call_crew.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crew_called",
+          "textKey": "event.ch_east_blue_01_foosha_gangplank.choice.call_crew.outcome.crew_called.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "guide_voice",
+      "textKey": "event.ch_east_blue_01_foosha_gangplank.choice.guide_voice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "voice_guided",
+          "textKey": "event.ch_east_blue_01_foosha_gangplank.choice.guide_voice.outcome.voice_guided.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_east_blue_01_foosha_gangplank_return",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "active_blue_east_blue_01_coastwatch_bell_lt02_watch",
+  "kind": "scheduled",
+  "titleKey": "event.active_blue_east_blue_01_coastwatch_bell_lt02_watch.title",
+  "textKey": "event.active_blue_east_blue_01_coastwatch_bell_lt02_watch.text",
+  "choices": [
+    {
+      "id": "share_the_method",
+      "textKey": "event.active_blue_east_blue_01_coastwatch_bell_lt02_watch.choice.share_the_method.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "share_the_method_outcome",
+          "textKey": "event.active_blue_east_blue_01_coastwatch_bell_lt02_watch.choice.share_the_method.outcome.share_the_method_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_coastwatch_bell_lt03_storm",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send_money",
+      "textKey": "event.active_blue_east_blue_01_coastwatch_bell_lt02_watch.choice.send_money.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "send_money_outcome",
+          "textKey": "event.active_blue_east_blue_01_coastwatch_bell_lt02_watch.choice.send_money.outcome.send_money_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2000
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_coastwatch_bell_lt03_storm",
+              "delayMonths": 18
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2000
+      }
+    },
+    {
+      "id": "tell_them_to_merge",
+      "textKey": "event.active_blue_east_blue_01_coastwatch_bell_lt02_watch.choice.tell_them_to_merge.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tell_them_to_merge_outcome",
+          "textKey": "event.active_blue_east_blue_01_coastwatch_bell_lt02_watch.choice.tell_them_to_merge.outcome.tell_them_to_merge_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_coastwatch_bell_lt03_storm",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

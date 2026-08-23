@@ -1,0 +1,141 @@
+{
+  "id": "active_generic_land_01_water_diversion",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_01_water_diversion.title",
+  "textKey": "event.active_generic_land_01_water_diversion.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "rural"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "agricultural"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_flow",
+      "textKey": "event.active_generic_land_01_water_diversion.choice.read_flow.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_land_01_water_diversion.choice.read_flow.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_land_01_water_diversion.choice.read_flow.outcome.failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_land_01_water_diversion.choice.read_flow.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_land_01_water_diversion.choice.read_flow.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "open_old_channel",
+      "textKey": "event.active_generic_land_01_water_diversion.choice.open_old_channel.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_water_diversion.choice.open_old_channel.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_both_sides",
+      "textKey": "event.active_generic_land_01_water_diversion.choice.call_both_sides.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_water_diversion.choice.call_both_sides.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_water_dispute",
+      "textKey": "event.active_generic_land_01_water_diversion.choice.leave_water_dispute.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_water_diversion.choice.leave_water_dispute.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

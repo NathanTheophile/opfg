@@ -1,0 +1,81 @@
+{
+  "id": "active_civilian_01_guildless_arbitration_i2",
+  "titleKey": "event.active_civilian_01_guildless_arbitration_i2.title",
+  "textKey": "event.active_civilian_01_guildless_arbitration_i2.text",
+  "kind": "immediate",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "strict",
+      "textKey": "event.active_civilian_01_guildless_arbitration_i2.choice.strict.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "strict_result",
+          "textKey": "event.active_civilian_01_guildless_arbitration_i2.choice.strict.outcome.strict_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_guildless_arbitration_i3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "trade_minutes",
+      "textKey": "event.active_civilian_01_guildless_arbitration_i2.choice.trade_minutes.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade_minutes_result",
+          "textKey": "event.active_civilian_01_guildless_arbitration_i2.choice.trade_minutes.outcome.trade_minutes_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_guildless_arbitration_i3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "vote",
+      "textKey": "event.active_civilian_01_guildless_arbitration_i2.choice.vote.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "vote_result",
+          "textKey": "event.active_civilian_01_guildless_arbitration_i2.choice.vote.outcome.vote_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_guildless_arbitration_i3"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

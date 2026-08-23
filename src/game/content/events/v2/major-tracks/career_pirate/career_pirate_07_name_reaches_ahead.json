@@ -1,0 +1,169 @@
+{
+  "id": "career_pirate_07_name_reaches_ahead",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_07_sea_knows_your_flag",
+    "nodeId": "career_pirate_07_name_reaches_ahead",
+    "parentNodeIds": [
+      "career_pirate_06_paradise_whisper",
+      "career_pirate_06_blue_kingpin",
+      "career_pirate_06_scarred_hull",
+      "career_pirate_06_captains_table"
+    ],
+    "selectionPriority": 1,
+    "fallback": true
+  },
+  "eligibility": {
+    "type": "isOnLand"
+  },
+  "titleKey": "event.career_pirate_07_name_reaches_ahead.title",
+  "textKey": "event.career_pirate_07_name_reaches_ahead.text",
+  "choices": [
+    {
+      "id": "calm_street",
+      "textKey": "event.career_pirate_07_name_reaches_ahead.choice.calm_street.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "calm_street_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_07_name_reaches_ahead_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_07_name_reaches_ahead.choice.calm_street.outcome.calm_street_criticalFailure.text"
+          },
+          "failure": {
+            "id": "calm_street_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_07_name_reaches_ahead_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_07_name_reaches_ahead.choice.calm_street.outcome.calm_street_failure.text"
+          },
+          "success": {
+            "id": "calm_street_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 5000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_07_name_reaches_ahead_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_07_name_reaches_ahead.choice.calm_street.outcome.calm_street_success.text"
+          },
+          "criticalSuccess": {
+            "id": "calm_street_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 10000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_07_name_reaches_ahead_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_07_name_reaches_ahead.choice.calm_street.outcome.calm_street_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "use_fear",
+      "textKey": "event.career_pirate_07_name_reaches_ahead.choice.use_fear.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "use_fear",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 3500
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "modifyBounty",
+              "amount": 10000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_07_name_reaches_ahead_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_07_name_reaches_ahead.choice.use_fear.outcome.use_fear.text"
+        }
+      }
+    },
+    {
+      "id": "reward_open_doors",
+      "textKey": "event.career_pirate_07_name_reaches_ahead.choice.reward_open_doors.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reward_open_doors",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2500
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_07_name_reaches_ahead_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_07_name_reaches_ahead.choice.reward_open_doors.outcome.reward_open_doors.text"
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2500
+      }
+    }
+  ]
+}

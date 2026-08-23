@@ -1,0 +1,84 @@
+{
+  "id": "active_bounty_hunter_01_promotion_tracker",
+  "titleKey": "event.active_bounty_hunter_01_promotion_tracker.title",
+  "textKey": "event.active_bounty_hunter_01_promotion_tracker.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "bounty_hunter"
+      },
+      {
+        "type": "careerRankIs",
+        "rankId": "bounty_hunter_novice"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 10
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "accept_rank",
+      "textKey": "event.active_bounty_hunter_01_promotion_tracker.choice.accept_rank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_promotion_tracker.choice.accept_rank.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "bounty_hunter_tracker"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_why",
+      "textKey": "event.active_bounty_hunter_01_promotion_tracker.choice.ask_why.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_promotion_tracker.choice.ask_why.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "bounty_hunter_tracker"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

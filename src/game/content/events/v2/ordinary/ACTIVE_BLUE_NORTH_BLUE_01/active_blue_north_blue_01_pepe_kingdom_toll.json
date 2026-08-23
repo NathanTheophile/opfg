@@ -1,0 +1,97 @@
+{
+  "id": "active_blue_north_blue_01_pepe_kingdom_toll",
+  "kind": "normal",
+  "titleKey": "event.active_blue_north_blue_01_pepe_kingdom_toll.title",
+  "textKey": "event.active_blue_north_blue_01_pepe_kingdom_toll.text",
+  "choices": [
+    {
+      "id": "approach_1",
+      "textKey": "event.active_blue_north_blue_01_pepe_kingdom_toll.choice.approach_1.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_1_outcome",
+          "textKey": "event.active_blue_north_blue_01_pepe_kingdom_toll.choice.approach_1.outcome.approach_1_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "approach_2",
+      "textKey": "event.active_blue_north_blue_01_pepe_kingdom_toll.choice.approach_2.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_2_outcome",
+          "textKey": "event.active_blue_north_blue_01_pepe_kingdom_toll.choice.approach_2.outcome.approach_2_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "approach_3",
+      "textKey": "event.active_blue_north_blue_01_pepe_kingdom_toll.choice.approach_3.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_3_outcome",
+          "textKey": "event.active_blue_north_blue_01_pepe_kingdom_toll.choice.approach_3.outcome.approach_3_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationWithin",
+        "locationId": "pepe_port"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "flevance"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "germa_empire"
+        }
+      }
+    ]
+  }
+}

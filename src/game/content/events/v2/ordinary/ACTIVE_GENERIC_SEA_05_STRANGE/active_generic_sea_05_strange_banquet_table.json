@@ -1,0 +1,111 @@
+{
+  "id": "active_generic_sea_05_strange_banquet_table",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_sea_05_strange_banquet_table.title",
+  "textKey": "event.active_generic_sea_05_strange_banquet_table.text",
+  "choices": [
+    {
+      "id": "accept_seat",
+      "textKey": "event.active_generic_sea_05_strange_banquet_table.choice.accept_seat.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "seated",
+          "textKey": "event.active_generic_sea_05_strange_banquet_table.choice.accept_seat.outcome.seated.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_banquet_table_i01_cutlery_march"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_price",
+      "textKey": "event.active_generic_sea_05_strange_banquet_table.choice.ask_price.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "asked_price",
+          "textKey": "event.active_generic_sea_05_strange_banquet_table.choice.ask_price.outcome.asked_price.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_banquet_table_i01_cutlery_march"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "push_away",
+      "textKey": "event.active_generic_sea_05_strange_banquet_table.choice.push_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pushed",
+          "textKey": "event.active_generic_sea_05_strange_banquet_table.choice.push_away.outcome.pushed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_banquet_table_i01_cutlery_march"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "musician_toast",
+      "textKey": "event.active_generic_sea_05_strange_banquet_table.choice.musician_toast.text",
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "musician"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "toasted",
+          "textKey": "event.active_generic_sea_05_strange_banquet_table.choice.musician_toast.outcome.toasted.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_banquet_table_i01_cutlery_march"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

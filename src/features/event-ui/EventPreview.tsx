@@ -1,0 +1,2099 @@
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useLayoutEffect,
+} from 'react';
+import {
+  AnimatePresence,
+  motion,
+} from 'motion/react';
+import { Button, Panel } from '@/components/ui';
+import type {
+  ChoiceDefinition,
+  ContentCatalog,
+  DiceResult,
+  StatId,
+} from '@/game/content/schema';
+import { getChoiceState } from '@/game/engine/conditions';
+import {
+  getDicePreview,
+  type DiceRollResult,
+} from '@/game/engine/dice';
+import type { StorageLike } from '@/game/engine/save';
+import {
+  loadLocale,
+  saveLocale,
+  t,
+  type LocaleId,
+  type Translator,
+} from '@/game/localization';
+import type {
+  GameState,
+  NpcStatId,
+} from '@/game/model/schema';
+import { PLAYER_NAME_MAX_LENGTH } from '@/game/model/playerName';
+import { useGameSession } from '@/game/session/useGameSession';
+import { moveItem, resolveOverflow, type StorageSlot } from '@/game/engine/inventory';
+import { useCrewRolePower } from '@/game/engine/crewPowers';
+import { requiresCrewManagement } from '@/game/engine/crew';
+import {
+  getActiveYearEndSummary,
+  type YearEndSummary,
+} from '@/game/engine/yearEndSummary';
+import { npcInterpolationParams } from '@/game/engine/npcNames';
+import { originNarrativeInterpolationParams } from '@/game/engine/originNarrative';
+import {
+  DiceTableStage,
+  type DiceTableStageStatus,
+} from '@/features/dice/DiceTableStage';
+import { LanguageControls } from '@/features/settings/LanguageControls';
+import { notifyUiLocaleChanged } from '@/features/settings/localeSync';
+import { AchievementToast } from '@/features/achievements/AchievementToast';
+import { FinalRunScreen } from '@/features/run-history/FinalRunScreen';
+import { PlayerStatsRail } from './PlayerStatsRail';
+import {
+  getCalendarLabel,
+  getLocationPath,
+  InventoryHudPanel,
+  ShipHudPanel,
+  TopWorldHud,
+} from './TopWorldHud';
+import { CrewRail } from './CrewRail';
+import { EventPanel } from './EventPanel';
+import { OutcomePanel } from './OutcomePanel';
+import { YearEndSummaryPanel } from './YearEndSummaryPanel';
+import { AgeTransitionOverlay } from './AgeTransitionOverlay';
+import {
+  getAgeTransition,
+  type AgeTransition,
+} from './age-transition';
+import { NavigationPanel } from './NavigationPanel';
+import { CrewManagementPanel } from './CrewManagementPanel';
+import { MobileSideDrawers } from './MobileSideDrawers';
+import type {
+  ChoiceStatChangeViewModel,
+  EventChoiceViewModel,
+  EventViewModel,
+  OutcomeEffectViewModel,
+  OutcomeViewModel,
+  PlayerDisplayStatId,
+} from './types';
+import './event-preview.css';
+
+const STAT_KEYS: Record<
+  keyof GameState['player']['stats'],
+  string
+> = {
+  health: 'stat.health',
+  morale: 'stat.morale',
+  strength: 'stat.strength',
+  agility: 'stat.agility',
+  observation: 'stat.observation',
+  intelligence: 'stat.intelligence',
+  navigation: 'stat.navigation',
+  charisma: 'stat.charisma',
+  luck: 'stat.luck',
+};
+
+const NPC_STAT_KEYS: Record<NpcStatId, string> = {
+  health: 'stat.health',
+  morale: 'stat.morale',
+  strength: 'stat.strength',
+  observation: 'stat.observation',
+  intelligence: 'stat.intelligence',
+  luck: 'stat.luck',
+  agility: 'stat.agility',
+  navigation: 'stat.navigation',
+  charisma: 'stat.charisma',
+};
+
+const RESULT_KEYS: Record<DiceResult, string> = {
+  criticalFailure: 'dice.criticalFailure',
+  failure: 'dice.failure',
+  success: 'dice.success',
+  criticalSuccess: 'dice.criticalSuccess',
+};
+
+const RESULT_HOLD_MS = 2650;
+
+interface PendingDice {
+  status: DiceTableStageStatus;
+  choiceId: string;
+  input?: string;
+  statId: StatId;
+  modifierTotal: number;
+  dice?: DiceRollResult;
+}
+
+function originPreview(
+  choice: ChoiceDefinition,
+  catalog: ContentCatalog,
+  translate: Translator,
+): ChoiceStatChangeViewModel[] {
+  if (choice.resolution.type !== 'deterministic') return [];
+
+  return choice.resolution.outcome.effects.flatMap((effect): ChoiceStatChangeViewModel[] => {
+    const format = (statId: PlayerDisplayStatId, value: number, absolute = false): ChoiceStatChangeViewModel => ({
+      statId,
+      label: translate(STAT_KEYS[statId]),
+      value,
+      absolute,
+    });
+
+    if (effect.type === 'modifyStat') return [format(effect.statId, effect.amount)];
+    if (effect.type === 'modifyHealth') return [format('health', effect.amount)];
+    if (effect.type === 'setRace') {
+      const race = catalog.races.find(({ id }) => id === effect.raceId);
+      return race
+        ? [format('health', race.initialHealth, true), ...Object.entries(race.attributeModifiers).map(([id, value]) => format(id as StatId, value))]
+        : [];
+    }
+
+    const modifiers = effect.type === 'setFamilyStructure'
+      ? catalog.familyStructures.find(({ id }) => id === effect.familyStructureId)?.attributeModifiers
+      : effect.type === 'setSocialClass'
+        ? catalog.socialClasses.find(({ id }) => id === effect.socialClassId)?.attributeModifiers
+        : undefined;
+    return Object.entries(modifiers ?? {}).map(([id, value]) => format(id as StatId, value));
+  });
+}
+
+function transitionEffects(
+  before: GameState | null,
+  after: GameState | null,
+  catalog: ContentCatalog,
+  translate: Translator,
+): OutcomeEffectViewModel[] {
+  if (!before || !after) return [];
+  const effects: OutcomeEffectViewModel[] = [];
+
+  for (const statId of Object.keys(STAT_KEYS) as PlayerDisplayStatId[]) {
+    const previous = before.player.stats[statId];
+    const next = after.player.stats[statId];
+    if (typeof previous === 'number' && typeof next === 'number' && previous !== next) {
+      const delta = next - previous;
+      effects.push({
+        id: `stat-${statId}`,
+        label: `${delta > 0 ? '+' : ''}${delta} ${translate(STAT_KEYS[statId])}`,
+        tone: delta > 0 ? 'positive' : 'warning',
+        statId,
+        delta,
+      });
+    }
+  }
+
+  for (const traitId of after.player.traits.filter((id) => !before.player.traits.includes(id))) {
+    const trait = catalog.traits.find((entry) => entry.id === traitId);
+    const traitLabel = trait ? translate(trait.nameKey) : translate('ui.trait.unknown');
+    effects.push({
+      id: `trait-${traitId}`,
+      label: translate('ui.outcome.traitAdded', { trait: traitLabel }),
+      tone: 'positive',
+      traitId,
+    });
+  }
+  return effects;
+}
+
+function renderNarrativeBody(
+  text: string,
+  cast: readonly string[] | undefined,
+  state: GameState,
+  catalog: ContentCatalog,
+  translate: Translator,
+) {
+  if (!cast || cast.length === 0) return text;
+
+  const entities = cast
+    .map((npcId) => {
+      const definition = catalog.npcs.find(({ id }) => id === npcId);
+      if (!definition) return null;
+
+      const name =
+        state.npcs[npcId]?.displayName ??
+        translate(definition.nameKey);
+
+      return {
+        npcId,
+        name,
+        relation:
+          npcId === 'player_parent_1' ||
+          npcId === 'player_parent_2'
+            ? translate('ui.npc.relation.parent')
+            : null,
+      };
+    })
+    .filter(
+      (
+        entity,
+      ): entity is {
+        npcId: string;
+        name: string;
+        relation: string | null;
+      } => entity !== null && entity.name.length > 0,
+    )
+    .sort((a, b) => b.name.length - a.name.length);
+
+  if (entities.length === 0) return text;
+
+  const escaped = entities.map(({ name }) =>
+    name.replace(/[.*+?^$\{\}()|[\]\\]/g, '\\export interface EventPreviewProps {'),
+  );
+
+  const matcher = new RegExp(
+    `(${escaped.join('|')})`,
+    'g',
+  );
+
+  const byName = new Map(
+    entities.map((entity) => [entity.name, entity]),
+  );
+
+  return (
+    <>
+      {text.split(matcher).map((part, index) => {
+        const entity = byName.get(part);
+        if (!entity) return part;
+
+        return (
+          <span
+            key={`${entity.npcId}-${index}`}
+            className="opfg-narrative-person"
+          >
+            <strong className="opfg-narrative-person__name">
+              {entity.name}
+            </strong>
+            {entity.relation && (
+              <span className="opfg-narrative-person__relation">
+                {' '}({entity.relation})
+              </span>
+            )}
+          </span>
+        );
+      })}
+    </>
+  );
+}
+
+export interface EventPreviewProps {
+  catalog: ContentCatalog;
+  storage: StorageLike;
+  autoStartNewRun?: boolean;
+  onHome?: () => void;
+}
+
+export function EventPreview({
+  catalog,
+  storage,
+  autoStartNewRun = false,
+  onHome,
+}: EventPreviewProps) {
+  const session = useGameSession(
+    catalog,
+    storage,
+  );
+
+  const autoStartHandledRef = useRef(false);
+
+  useEffect(() => {
+    if (
+      !autoStartNewRun ||
+      autoStartHandledRef.current
+    ) return;
+
+    autoStartHandledRef.current = true;
+    session.startNewRun();
+  }, [autoStartNewRun, session.startNewRun]);
+
+  const [locale, setLocale] =
+    useState<LocaleId>(() =>
+      loadLocale(
+        storage,
+        navigator.language,
+      ),
+    );
+
+  const [inputError, setInputError] =
+    useState<string | null>(null);
+
+  const [showOutcome, setShowOutcome] =
+    useState(false);
+
+  const [ageTransition, setAgeTransition] =
+    useState<AgeTransition | null>(null);
+
+  const [yearEndSummary, setYearEndSummary] =
+    useState<YearEndSummary | null>(null);
+  const pendingYearEndSummaryRef =
+    useRef<YearEndSummary | null>(null);
+
+  const [
+    outcomeRevealed,
+    setOutcomeRevealed,
+  ] = useState(false);
+
+  const [pendingDice, setPendingDice] =
+    useState<PendingDice | null>(null);
+
+  const [
+    resolvedEventView,
+    setResolvedEventView,
+  ] = useState<EventViewModel | null>(null);
+
+  const [
+    selectedChoiceId,
+    setSelectedChoiceId,
+  ] = useState<string | null>(null);
+
+  const timerRef =
+    useRef<number | null>(null);
+  const [selectedStorageSlot, setSelectedStorageSlot] = useState<StorageSlot | null>(null);
+  const selectedStorageSlotRef = useRef<StorageSlot | null>(null);
+
+  const adventureScrollRef =
+    useRef<HTMLDivElement | null>(null);
+  // OPFG responsive gameplay scaling refs
+  const gameScreenRef =
+    useRef<HTMLElement | null>(null);
+  const gameScaleRef =
+    useRef<HTMLDivElement | null>(null);
+
+
+
+  const coarsePointer =
+    typeof window !== 'undefined'
+    && window.matchMedia('(pointer: coarse)').matches;
+
+    const narrativeInterpolationParams =
+    useMemo(
+      () => ({
+        playerName:
+          session.gameState?.player.profile.name ?? '',
+        ...originNarrativeInterpolationParams(
+          session.gameState,
+          catalog,
+          (originKey, originParams) =>
+            t(
+              originKey,
+              locale,
+              originParams,
+            ),
+        ),
+        ...npcInterpolationParams(
+          session.gameState,
+          catalog,
+          (nameKey) => t(nameKey, locale),
+        ),
+      }),
+      [
+        catalog,
+        locale,
+        session.gameState,
+      ],
+    );
+
+  const translate: Translator = (key, params) =>
+    t(key, locale, {
+      ...narrativeInterpolationParams,
+      ...params,
+    });
+
+  useEffect(
+    () => () => {
+      if (timerRef.current !== null) {
+        window.clearTimeout(
+          timerRef.current,
+        );
+      }
+    },
+    [],
+  );
+  // OPFG responsive gameplay scaling effect
+  useLayoutEffect(() => {
+    if (!session.gameState) return undefined;
+
+    const screen = gameScreenRef.current;
+    const stage = gameScaleRef.current;
+
+    if (!screen || !stage) return undefined;
+
+    let frame = 0;
+    let settleTimer = 0;
+
+    const px = (value: string) =>
+      Number.parseFloat(value) || 0;
+
+    const measureAndFit = () => {
+      /*
+       * Never reset the live gameplay tree to scale(1) for measurement.
+       * Mobile visualViewport resize events can fire repeatedly while browser
+       * chrome settles; forcing a 1x layout here makes the HUD visibly flash.
+       *
+       * getBoundingClientRect() is already uniformly transformed by the current
+       * stage scale, so natural dimensions can be recovered by dividing by it.
+       */
+      const currentScale =
+        Math.max(
+          0.25,
+          Number.parseFloat(
+            stage.style.getPropertyValue('--opfg-game-ui-scale'),
+          )
+          || Number.parseFloat(
+            window.getComputedStyle(stage)
+              .getPropertyValue('--opfg-game-ui-scale'),
+          )
+          || 1,
+        );
+
+      const viewport =
+        window.visualViewport;
+
+      const viewportWidth =
+        viewport?.width
+        ?? document.documentElement.clientWidth
+        ?? window.innerWidth;
+
+      const viewportHeight =
+        viewport?.height
+        ?? document.documentElement.clientHeight
+        ?? window.innerHeight;
+
+      const screenStyle =
+        window.getComputedStyle(screen);
+
+      const horizontalPadding =
+        px(screenStyle.paddingLeft)
+        + px(screenStyle.paddingRight);
+
+      const verticalPadding =
+        px(screenStyle.paddingTop)
+        + px(screenStyle.paddingBottom);
+
+      const availableWidth =
+        Math.max(
+          1,
+          viewportWidth
+            - horizontalPadding
+            - 12,
+        );
+
+      const availableHeight =
+        Math.max(
+          1,
+          viewportHeight
+            - verticalPadding
+            - 12,
+        );
+
+      const candidates = [
+        ...stage.querySelectorAll<HTMLElement>(
+          '[data-opfg-scale-bound="true"],'
+          + '.opfg-top-world-hud',
+        ),
+      ];
+
+      const nodes =
+        candidates.filter((node) => {
+          const style =
+            window.getComputedStyle(node);
+
+          if (
+            style.display === 'none'
+            || style.visibility === 'hidden'
+          ) {
+            return false;
+          }
+
+          const rect =
+            node.getBoundingClientRect();
+
+          return (
+            rect.width > 0
+            && rect.height > 0
+          );
+        });
+
+      if (nodes.length === 0) return;
+
+      let left =
+        Number.POSITIVE_INFINITY;
+      let top =
+        Number.POSITIVE_INFINITY;
+      let right =
+        Number.NEGATIVE_INFINITY;
+      let bottom =
+        Number.NEGATIVE_INFINITY;
+
+      for (const node of nodes) {
+        const rect =
+          node.getBoundingClientRect();
+
+        left =
+          Math.min(left, rect.left);
+
+        top =
+          Math.min(top, rect.top);
+
+        right =
+          Math.max(right, rect.right);
+
+        bottom =
+          Math.max(bottom, rect.bottom);
+      }
+
+      const naturalWidth =
+        Math.max(
+          1,
+          (right - left) / currentScale,
+        );
+
+      const naturalHeight =
+        Math.max(
+          1,
+          (bottom - top) / currentScale,
+        );
+
+      const scale =
+        Math.max(
+          0.25,
+          Math.min(
+            availableWidth / naturalWidth,
+            availableHeight / naturalHeight,
+            4,
+          ),
+        );
+
+      const value =
+        scale.toFixed(4);
+
+      if (
+        stage.style.getPropertyValue(
+          '--opfg-game-ui-scale',
+        ) !== value
+      ) {
+        stage.style.setProperty(
+          '--opfg-game-ui-scale',
+          value,
+        );
+      }
+
+      if (
+        document.documentElement.style
+          .getPropertyValue(
+            '--opfg-game-ui-scale',
+          ) !== value
+      ) {
+        document.documentElement
+          .style
+          .setProperty(
+            '--opfg-game-ui-scale',
+            value,
+          );
+      }
+
+      /*
+       * The whole HUD scales only from viewport changes. Story overflow is
+       * handled locally by the central narrative viewport instead of shrinking
+       * every panel when an unusually tall Event appears.
+       */
+      const adventureScroll = adventureScrollRef.current;
+      if (adventureScroll) {
+        const portrait = window.matchMedia(
+          '(orientation: portrait)',
+        ).matches;
+
+        if (!portrait) {
+          /*
+           * Landscape has no fixed bottom drawer. Keep a stable natural
+           * viewport and let the global stage scale handle short windows.
+           * This avoids a bad transient measurement collapsing the narrative
+           * viewport to ~160px and cutting the Choice list.
+           */
+          adventureScroll.style.setProperty(
+            'max-height',
+            '42rem',
+            'important',
+          );
+        } else {
+          const scrollRect = adventureScroll.getBoundingClientRect();
+          const stageRect = stage.getBoundingClientRect();
+          const naturalScrollTop =
+            (scrollRect.top - stageRect.top) / currentScale;
+          const projectedScrollTop =
+            stageRect.top + naturalScrollTop * scale;
+          const mobileTabs = document.querySelector<HTMLElement>(
+            '.opfg-mobile-side-tabs',
+          );
+          const mobileTabsTop = mobileTabs
+            ? mobileTabs.getBoundingClientRect().top
+            : viewportHeight;
+          const visibleBottom = Math.max(
+            projectedScrollTop + 160 * scale,
+            Math.min(viewportHeight, mobileTabsTop) - 10,
+          );
+          const maxNaturalScrollHeight = Math.max(
+            160,
+            (visibleBottom - projectedScrollTop) / scale,
+          );
+
+          adventureScroll.style.setProperty(
+            'max-height',
+            maxNaturalScrollHeight.toFixed(2) + 'px',
+            'important',
+          );
+        }
+      }
+    };
+
+    const fit = () => {
+      window.cancelAnimationFrame(frame);
+
+      frame =
+        window.requestAnimationFrame(
+          measureAndFit,
+        );
+
+      /*
+       * A resize can also flip portrait/landscape media queries.
+       * Re-run once after that CSS reflow has fully settled.
+       */
+      window.clearTimeout(settleTimer);
+
+      settleTimer =
+        window.setTimeout(
+          () => {
+            window.cancelAnimationFrame(frame);
+
+            frame =
+              window.requestAnimationFrame(
+                measureAndFit,
+              );
+          },
+          80,
+        );
+    };
+
+    const orientationQuery =
+      window.matchMedia(
+        '(orientation: portrait)',
+      );
+
+    window.addEventListener(
+      'resize',
+      fit,
+      { passive: true },
+    );
+
+    window.addEventListener(
+      'orientationchange',
+      fit,
+      { passive: true },
+    );
+
+    window.visualViewport
+      ?.addEventListener(
+        'resize',
+        fit,
+        { passive: true },
+      );
+
+    orientationQuery
+      .addEventListener(
+        'change',
+        fit,
+      );
+
+    /*
+     * Fonts can change intrinsic panel dimensions after the first paint.
+     */
+    void document.fonts?.ready.then(
+      fit,
+    );
+
+    fit();
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(settleTimer);
+
+      window.removeEventListener(
+        'resize',
+        fit,
+      );
+
+      window.removeEventListener(
+        'orientationchange',
+        fit,
+      );
+
+      window.visualViewport
+        ?.removeEventListener(
+          'resize',
+          fit,
+      );
+
+      orientationQuery
+        .removeEventListener(
+          'change',
+          fit,
+        );
+
+      document.documentElement
+        .style
+        .removeProperty(
+          '--opfg-game-ui-scale',
+        );
+    };
+  }, [session.gameState !== null]);
+
+
+
+
+
+  const eventView =
+    useMemo<EventViewModel | null>(() => {
+      if (
+        !session.gameState ||
+        !session.currentEvent
+      ) {
+        return null;
+      }
+
+      const state = session.gameState;
+      const sea = catalog.seas.find(
+        ({ id }) =>
+          id ===
+          state.player.profile.originSeaId,
+      );
+
+      const choices =
+        session.currentEvent.choices.flatMap(
+          (
+            choice,
+          ): EventChoiceViewModel[] => {
+            const choiceState =
+              getChoiceState(
+                choice,
+                state,
+                catalog,
+              );
+
+            if (!choiceState.visible) {
+              return [];
+            }
+
+            const preview =
+              choice.resolution.type === 'dice'
+                ? getDicePreview(
+                    choice.resolution,
+                    state,
+                    catalog,
+                  )
+                : null;
+
+            return [
+              {
+                id: choice.id,
+                label: translate(choice.textKey, choice.interpolation),
+                disabled:
+                  !choiceState.available,
+                requirement:
+                  !choiceState.available
+                    ? translate(
+                        'ui.choice.conditionsUnmet',
+                      )
+                    : undefined,
+                statChanges:
+                  state.careerPhase ===
+                  'origins'
+                    ? originPreview(
+                        choice,
+                        catalog,
+                        translate,
+                      )
+                    : undefined,
+                textInput: choice.input
+                  ? {
+                      minLength:
+                        choice.input
+                          .minLength,
+                      maxLength:
+                        choice.input.target === 'playerName'
+                          ? Math.min(choice.input.maxLength, PLAYER_NAME_MAX_LENGTH)
+                          : choice.input.maxLength,
+                      placeholder:
+                        choice.input
+                          .placeholderKey
+                          ? translate(
+                              choice.input
+                                .placeholderKey,
+                            )
+                          : undefined,
+                    }
+                  : undefined,
+                dice: preview?.available
+                  ? {
+                      statId: preview.statId,
+                      statLabel:
+                        translate(
+                          STAT_KEYS[
+                            preview.statId
+                          ],
+                        ),
+                      successProbability:
+                        preview.successProbability,
+                      modifierTotal:
+                        preview.knownModifierTotal +
+                        preview.statModifier,
+                    }
+                  : undefined,
+              },
+            ];
+          },
+        );
+
+      return {
+        eyebrow: `${translate(
+          `phase.${state.careerPhase}`,
+        )}${
+          sea
+            ? ` · ${translate(
+                sea.nameKey,
+              )}`
+            : ''
+        }`,
+        title: translate(session.currentEvent.titleKey),
+        body: renderNarrativeBody(
+          translate(session.currentEvent.textKey, session.currentEvent.interpolation),
+          session.currentEvent.cast,
+          state,
+          catalog,
+          translate,
+        ),
+        choices,
+      };
+    }, [
+      catalog,
+      locale,
+      session.currentEvent,
+      session.gameState,
+    ]);
+
+  const outcomeView =
+    useMemo<OutcomeViewModel | null>(() => {
+      if (!session.lastResolution) {
+        return null;
+      }
+
+      const dice =
+        session.lastResolution.dice;
+
+      return {
+        body: translate(
+          session.lastResolution.outcome
+            .textKey,
+        ),
+        effects: transitionEffects(
+          session.previousState,
+          session.gameState,
+          catalog,
+          translate,
+        ),
+        dice: dice
+          ? {
+              statId: dice.statId,
+              statLabel: translate(
+                STAT_KEYS[dice.statId],
+              ),
+              rawRoll: dice.rawRoll,
+              modifier:
+                dice.modifierTotal,
+              total: dice.total,
+              result: dice.result,
+              resultLabel: translate(
+                RESULT_KEYS[dice.result],
+              ),
+            }
+          : undefined,
+      };
+    }, [
+      locale,
+      session.gameState,
+      session.lastResolution,
+      session.previousState,
+    ]);
+
+  useEffect(() => {
+    if (!showOutcome || !outcomeView) {
+      setOutcomeRevealed(false);
+      return undefined;
+    }
+
+    const reducedMotion =
+      window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
+
+    const revealTimer =
+      window.setTimeout(
+        () => {
+          setOutcomeRevealed(true);
+        },
+        reducedMotion || coarsePointer ? 1 : 310,
+      );
+
+    return () =>
+      window.clearTimeout(
+        revealTimer,
+      );
+  }, [showOutcome, outcomeView]);
+
+  useEffect(() => {
+    if (!outcomeRevealed) {
+      return undefined;
+    }
+
+    const scrollTimer =
+      window.setTimeout(() => {
+        const viewport =
+          adventureScrollRef.current;
+        if (!viewport) return;
+
+        viewport.scrollTo({
+          top: viewport.scrollHeight,
+          behavior:
+            window.matchMedia(
+              '(prefers-reduced-motion: reduce)',
+            ).matches
+              ? 'auto'
+              : 'smooth',
+        });
+      }, 80);
+
+    return () =>
+      window.clearTimeout(
+        scrollTimer,
+      );
+  }, [outcomeRevealed]);
+
+  const clearResolvedEventUi = () => {
+    setResolvedEventView(null);
+    setSelectedChoiceId(null);
+  };
+
+  const selectChoice = (
+    choice: EventChoiceViewModel,
+    input?: string,
+  ) => {
+    if (
+      choice.disabled ||
+      pendingDice
+    ) {
+      return;
+    }
+
+    try {
+      const runtimeChoice =
+        session.currentEvent?.choices.find(
+          ({ id }) => id === choice.id,
+        );
+
+      if (
+        !runtimeChoice ||
+        !session.gameState
+      ) {
+        throw new Error(
+          'Cannot resolve Choice without a current Event.',
+        );
+      }
+
+      setInputError(null);
+      setResolvedEventView(eventView);
+      setSelectedChoiceId(choice.id);
+
+      if (
+        runtimeChoice.resolution.type ===
+        'dice'
+      ) {
+        const preview = getDicePreview(
+          runtimeChoice.resolution,
+          session.gameState,
+          catalog,
+        );
+
+        if (!preview.available) {
+          throw new Error(
+            'DiceCheck is not currently available.',
+          );
+        }
+
+        setPendingDice({
+          status: 'armed',
+          choiceId: choice.id,
+          input,
+          statId: preview.statId,
+          modifierTotal:
+            preview.knownModifierTotal +
+            preview.statModifier,
+        });
+
+        return;
+      }
+
+      session.choose(
+        choice.id,
+        input,
+      );
+
+      setShowOutcome(true);
+    } catch (error) {
+      clearResolvedEventUi();
+
+      console.error('[EventPreview] Choice resolution failed.', error);
+      setInputError(translate('ui.choice.invalid'));
+    }
+  };
+
+  const rollPendingDice = () => {
+    if (
+      !pendingDice ||
+      pendingDice.status !== 'armed'
+    ) {
+      return;
+    }
+
+    try {
+      const resolution =
+        session.choose(
+          pendingDice.choiceId,
+          pendingDice.input,
+        );
+
+      if (!resolution?.dice) {
+        throw new Error(
+          'Expected a DiceCheck resolution.',
+        );
+      }
+
+      setInputError(null);
+
+      setPendingDice({
+        ...pendingDice,
+        status: 'rolling',
+        statId:
+          resolution.dice.statId,
+        modifierTotal:
+          resolution.dice.modifierTotal,
+        dice: resolution.dice,
+      });
+    } catch (error) {
+      setPendingDice(null);
+      clearResolvedEventUi();
+
+      console.error('[EventPreview] Choice resolution failed.', error);
+      setInputError(translate('ui.choice.invalid'));
+    }
+  };
+
+  const completeDiceRoll = () => {
+    if (
+      !pendingDice ||
+      pendingDice.status !==
+        'rolling' ||
+      !pendingDice.dice
+    ) {
+      return;
+    }
+
+    setPendingDice({
+      ...pendingDice,
+      status:
+        pendingDice.dice.result,
+    });
+
+    timerRef.current =
+      window.setTimeout(() => {
+        setShowOutcome(true);
+        setPendingDice(null);
+        timerRef.current = null;
+      }, RESULT_HOLD_MS);
+  };
+
+  const dismissOutcomePresentation = () => {
+    adventureScrollRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+    setOutcomeRevealed(false);
+    setShowOutcome(false);
+    setPendingDice(null);
+    clearResolvedEventUi();
+    session.continueAfterResolution();
+  };
+
+  const revealPostOutcomePresentation = (summary: YearEndSummary | null) => {
+    dismissOutcomePresentation();
+    if (summary) setYearEndSummary(summary);
+  };
+
+  const coverAgeTransition = () => {
+    const summary = pendingYearEndSummaryRef.current;
+    pendingYearEndSummaryRef.current = null;
+    revealPostOutcomePresentation(summary);
+  };
+
+  const continueFromOutcome = () => {
+    if (ageTransition !== null || yearEndSummary !== null) return;
+
+    const transition = getAgeTransition(
+      session.previousState,
+      session.gameState,
+    );
+    const summary = getActiveYearEndSummary(
+      session.previousState,
+      session.gameState,
+      catalog,
+    );
+
+    if (transition) {
+      pendingYearEndSummaryRef.current = summary;
+      setAgeTransition(transition);
+      return;
+    }
+
+    revealPostOutcomePresentation(summary);
+  };
+
+  const continueFromYearEnd = () => {
+    setYearEndSummary(null);
+  };
+
+  const handleStorageSlot = (slot: StorageSlot) => {
+    const source = selectedStorageSlotRef.current;
+    if (!source) {
+      selectedStorageSlotRef.current = slot;
+      setSelectedStorageSlot(slot);
+      return;
+    }
+    session.applySystemAction((next) => { moveItem(next, catalog, source, slot); });
+    selectedStorageSlotRef.current = null;
+    setSelectedStorageSlot(null);
+  };
+
+  /* OPFG MOBILE POLISH V4.4 */
+  const handleStorageDrawerDrop = (
+    drawer: 'inventory' | 'ship',
+    source: StorageSlot,
+  ) => {
+    session.applySystemAction((next) => {
+      let destination: StorageSlot | null = null;
+
+      if (drawer === 'ship') {
+        if (!next.ship || source.type === 'cargo') {
+          return;
+        }
+
+        const shipDefinition =
+          catalog.ships.find(
+            ({ id }) => id === next.ship?.shipId,
+          );
+
+        const capacity =
+          shipDefinition?.cargoSlots ?? 0;
+
+        if (
+          next.ship.cargo.length
+          >= capacity
+        ) {
+          return;
+        }
+
+        destination = {
+          type: 'cargo',
+          index: next.ship.cargo.length,
+        };
+      } else {
+        if (
+          source.type === 'pocket'
+          || next.player.inventory.stacks.length >= 2
+        ) {
+          return;
+        }
+
+        destination = {
+          type: 'pocket',
+          index:
+            next.player.inventory.stacks.length as
+              | 0
+              | 1,
+        };
+      }
+
+      moveItem(
+        next,
+        catalog,
+        source,
+        destination,
+      );
+    });
+
+    selectedStorageSlotRef.current = null;
+    setSelectedStorageSlot(null);
+  };
+
+    /* OPFG MOBILE FIXES V4.5 */
+  /* OPFG MOBILE FEEDBACK V4.6 */
+  useEffect(() => {
+    type ActiveTouchDrag = {
+      identifier: number;
+      source: StorageSlot;
+      sourceElement: HTMLElement;
+      startX: number;
+      startY: number;
+      dragging: boolean;
+    };
+
+    let active: ActiveTouchDrag | null = null;
+    let dragGhost: HTMLElement | null = null;
+
+    const parseSlot = (
+      value: string | undefined,
+    ): StorageSlot | null => {
+      if (!value) return null;
+
+      try {
+        return JSON.parse(value) as StorageSlot;
+      } catch {
+        return null;
+      }
+    };
+
+    const findTouch = (
+      touches: TouchList,
+      identifier: number,
+    ): Touch | null => {
+      for (
+        let index = 0;
+        index < touches.length;
+        index += 1
+      ) {
+        const touch = touches.item(index);
+
+        if (touch?.identifier === identifier) {
+          return touch;
+        }
+      }
+
+      return null;
+    };
+
+    const removeDragGhost = () => {
+      dragGhost?.remove();
+      dragGhost = null;
+    };
+
+    const createDragGhost = (
+      sourceElement: HTMLElement,
+      clientX: number,
+      clientY: number,
+    ) => {
+      removeDragGhost();
+
+      const rect =
+        sourceElement.getBoundingClientRect();
+
+      const clone =
+        sourceElement.cloneNode(true) as HTMLElement;
+
+      clone.removeAttribute('id');
+      clone.removeAttribute('draggable');
+      clone.removeAttribute('data-selected');
+      clone.removeAttribute('data-opfg-storage-slot');
+      clone.setAttribute('aria-hidden', 'true');
+      clone.classList.add(
+        'opfg-touch-drag-ghost',
+      );
+
+      clone.style.width =
+        String(Math.max(36, rect.width)) + 'px';
+      clone.style.height =
+        String(Math.max(36, rect.height)) + 'px';
+      clone.style.left = String(clientX) + 'px';
+      clone.style.top = String(clientY) + 'px';
+
+      document.body.appendChild(clone);
+      dragGhost = clone;
+    };
+
+    const moveDragGhost = (
+      clientX: number,
+      clientY: number,
+    ) => {
+      if (!dragGhost) return;
+
+      dragGhost.style.left = String(clientX) + 'px';
+      dragGhost.style.top = String(clientY) + 'px';
+    };
+
+    const drawerAtPoint = (
+      clientX: number,
+      clientY: number,
+    ): 'inventory' | 'ship' | null => {
+      const target =
+        document.elementFromPoint(
+          clientX,
+          clientY,
+        );
+
+      const tab =
+        target?.closest<HTMLElement>(
+          '[data-opfg-drawer-tab="true"]',
+        );
+
+      const drawerId = tab?.dataset.drawerId;
+
+      return drawerId === 'inventory'
+        || drawerId === 'ship'
+        ? drawerId
+        : null;
+    };
+
+    const slotAtPoint = (
+      clientX: number,
+      clientY: number,
+    ): StorageSlot | null => {
+      const target =
+        document.elementFromPoint(
+          clientX,
+          clientY,
+        );
+
+      const slotElement =
+        target?.closest<HTMLElement>(
+          '[data-opfg-storage-slot]',
+        );
+
+      return parseSlot(
+        slotElement?.dataset.opfgStorageSlot,
+      );
+    };
+
+    const dispatchDrawerHover = (
+      clientX: number,
+      clientY: number,
+      source: StorageSlot,
+    ) => {
+      window.dispatchEvent(
+        new CustomEvent(
+          'opfg-storage-touch-drag',
+          {
+            detail: {
+              phase: 'move',
+              clientX,
+              clientY,
+              source,
+            },
+          },
+        ),
+      );
+    };
+
+    const onTouchStart = (
+      touchEvent: TouchEvent,
+    ) => {
+      if (
+        active
+        || touchEvent.touches.length !== 1
+      ) {
+        return;
+      }
+
+      const target =
+        touchEvent.target instanceof Element
+          ? touchEvent.target
+          : null;
+
+      const slotElement =
+        target?.closest<HTMLElement>(
+          '[data-opfg-storage-slot]',
+        );
+
+      const source =
+        parseSlot(
+          slotElement?.dataset.opfgStorageSlot,
+        );
+
+      const touch =
+        touchEvent.touches.item(0);
+
+      if (
+        !source
+        || !touch
+        || !slotElement
+      ) {
+        return;
+      }
+
+      active = {
+        identifier: touch.identifier,
+        source,
+        sourceElement: slotElement,
+        startX: touch.clientX,
+        startY: touch.clientY,
+        dragging: false,
+      };
+    };
+
+    const onTouchMove = (
+      touchEvent: TouchEvent,
+    ) => {
+      if (!active) return;
+
+      const touch =
+        findTouch(
+          touchEvent.touches,
+          active.identifier,
+        );
+
+      if (!touch) return;
+
+      const distance = Math.hypot(
+        touch.clientX - active.startX,
+        touch.clientY - active.startY,
+      );
+
+      if (
+        !active.dragging
+        && distance < 8
+      ) {
+        return;
+      }
+
+      if (!active.dragging) {
+        active.dragging = true;
+
+        createDragGhost(
+          active.sourceElement,
+          touch.clientX,
+          touch.clientY,
+        );
+      }
+
+      touchEvent.preventDefault();
+
+      moveDragGhost(
+        touch.clientX,
+        touch.clientY,
+      );
+
+      dispatchDrawerHover(
+        touch.clientX,
+        touch.clientY,
+        active.source,
+      );
+    };
+
+    const finishTouchDrag = (
+      touchEvent: TouchEvent,
+      cancelled: boolean,
+    ) => {
+      if (!active) return;
+
+      const touch =
+        findTouch(
+          touchEvent.changedTouches,
+          active.identifier,
+        );
+
+      if (!touch) return;
+
+      const drag = active;
+      active = null;
+
+      removeDragGhost();
+
+      if (
+        cancelled
+        || !drag.dragging
+      ) {
+        return;
+      }
+
+      touchEvent.preventDefault();
+
+      const destination =
+        slotAtPoint(
+          touch.clientX,
+          touch.clientY,
+        );
+
+      if (destination) {
+        session.applySystemAction((next) => {
+          moveItem(
+            next,
+            catalog,
+            drag.source,
+            destination,
+          );
+        });
+
+        selectedStorageSlotRef.current = null;
+        setSelectedStorageSlot(null);
+        return;
+      }
+
+      const drawer =
+        drawerAtPoint(
+          touch.clientX,
+          touch.clientY,
+        );
+
+      if (drawer) {
+        handleStorageDrawerDrop(
+          drawer,
+          drag.source,
+        );
+      }
+    };
+
+    const onTouchEnd = (
+      event: TouchEvent,
+    ) => {
+      finishTouchDrag(event, false);
+    };
+
+    const onTouchCancel = (
+      event: TouchEvent,
+    ) => {
+      finishTouchDrag(event, true);
+    };
+
+    document.addEventListener(
+      'touchstart',
+      onTouchStart,
+      {
+        capture: true,
+        passive: true,
+      },
+    );
+
+    window.addEventListener(
+      'touchmove',
+      onTouchMove,
+      { passive: false },
+    );
+
+    window.addEventListener(
+      'touchend',
+      onTouchEnd,
+      { passive: false },
+    );
+
+    window.addEventListener(
+      'touchcancel',
+      onTouchCancel,
+      { passive: false },
+    );
+
+    return () => {
+      removeDragGhost();
+
+      document.removeEventListener(
+        'touchstart',
+        onTouchStart,
+        true,
+      );
+
+      window.removeEventListener(
+        'touchmove',
+        onTouchMove,
+      );
+
+      window.removeEventListener(
+        'touchend',
+        onTouchEnd,
+      );
+
+      window.removeEventListener(
+        'touchcancel',
+        onTouchCancel,
+      );
+    };
+  }, [
+    catalog,
+    session,
+  ]);
+
+  const changeLocale = (
+    next: LocaleId,
+  ) => {
+    saveLocale(storage, next);
+    setLocale(next);
+    notifyUiLocaleChanged(next);
+  };
+
+  if (!session.gameState) {
+    return (
+      <main className="min-h-dvh grid place-items-center p-6">
+        <Panel
+          variant="strong"
+          className="max-w-lg text-center"
+        >
+          <h1 className="text-3xl font-bold text-gold">
+            {translate(
+              'ui.app.title',
+            )}
+          </h1>
+
+          <p className="my-5 text-fg-secondary">
+            {translate(
+              'ui.newRun.prompt',
+            )}
+          </p>
+
+          <Button
+            size="lg"
+            onClick={() =>
+              session.startNewRun()
+            }
+          >
+            {translate(
+              'ui.action.newCareer',
+            )}
+          </Button>
+        </Panel>
+      </main>
+    );
+  }
+
+  const state = session.gameState;
+  const achievementToastId = session.newlyUnlockedAchievements[0];
+
+  if (
+    state.careerStatus === 'ended'
+    && !showOutcome
+    && pendingDice === null
+    && ageTransition === null
+    && yearEndSummary === null
+  ) {
+    return (
+      <main className="opfg-game-screen min-h-dvh w-full overflow-x-hidden overflow-y-auto pl-[max(var(--layout-gutter),var(--safe-area-left))] pr-[max(var(--layout-gutter),var(--safe-area-right))] pt-[max(var(--layout-gutter),var(--safe-area-top))] pb-[max(var(--layout-gutter),var(--safe-area-bottom))]">
+        <FinalRunScreen
+          state={state}
+          catalog={catalog}
+          locale={locale}
+          onHome={onHome}
+        />
+
+        <LanguageControls
+          locale={locale}
+          onLocaleChange={changeLocale}
+        />
+
+        {achievementToastId && (
+          <AchievementToast
+            key={achievementToastId}
+            achievementId={achievementToastId}
+            locale={locale}
+            onDismiss={() => session.dismissAchievementUnlock(achievementToastId)}
+          />
+        )}
+      </main>
+    );
+  }
+
+  const displayState =
+    pendingDice &&
+    session.previousState
+      ? session.previousState
+      : state;
+
+  const displayPreviousState =
+    pendingDice
+      ? null
+      : session.previousState;
+
+  const statsRail = (
+    <PlayerStatsRail
+      state={displayState}
+      catalog={catalog}
+      previousState={
+        displayPreviousState
+      }
+      statLabel={(id) =>
+        translate(STAT_KEYS[id])
+      }
+      translate={translate}
+      traitLabel={(id) => {
+        const trait =
+          catalog.traits.find(
+            (entry) =>
+              entry.id === id,
+          );
+
+        return trait
+          ? translate(trait.nameKey)
+          : id;
+      }}
+    />
+  );
+
+  const mobileStatsRail = (
+    <PlayerStatsRail
+      state={displayState}
+      catalog={catalog}
+      previousState={
+        displayPreviousState
+      }
+      statLabel={(id) =>
+        translate(STAT_KEYS[id])
+      }
+      translate={translate}
+      traitLabel={(id) => {
+        const trait =
+          catalog.traits.find(
+            (entry) =>
+              entry.id === id,
+          );
+
+        return trait
+          ? translate(trait.nameKey)
+          : id;
+      }}
+      forceExpanded
+    />
+  );
+
+  const crewRail = (
+    <CrewRail
+      state={displayState}
+      catalog={catalog}
+      translate={translate}
+      statLabel={(id) =>
+        translate(
+          NPC_STAT_KEYS[id],
+        )
+      }
+      onUseRolePower={(roleId, destinationId) => session.applySystemAction((next) => useCrewRolePower(next, catalog, roleId, destinationId))}
+    />
+  );
+
+  const outcomePresentationState =
+    showOutcome && session.previousState
+      ? session.previousState
+      : null;
+
+  const calendarAgeMonths =
+    outcomePresentationState?.ageMonths ??
+    displayState.ageMonths;
+
+  const locationPath = getLocationPath(displayState, catalog);
+  const currentLocation = locationPath[locationPath.length - 1];
+  const parentLocation = locationPath.length > 1
+    ? locationPath[locationPath.length - 2]
+    : null;
+  const sea = catalog.seas.find(({ id }) => id === (currentLocation?.seaId ?? displayState.player.profile.originSeaId));
+  const locationLabel = currentLocation ? translate(currentLocation.nameKey) : displayState.locationId;
+  const parentLocationLabel = parentLocation ? translate(parentLocation.nameKey) : null;
+  const eventMeta = {
+    location: `${locationLabel}${parentLocationLabel ? ` (${parentLocationLabel})` : ''}${sea ? ` - ${translate(sea.nameKey)}` : ''}`,
+    age: `${Math.floor(calendarAgeMonths / 12)} ${translate('ui.unit.years')}`,
+    date: getCalendarLabel(calendarAgeMonths, translate),
+    locationDetail: translate('ui.tooltip.world'),
+    timeDetail: translate('ui.tooltip.time'),
+  };
+
+  const hudProps = {
+    state: displayState,
+    catalog,
+    translate,
+    locale,
+    calendarAgeMonths,
+    selectedStorageSlot,
+    onStorageSlot: handleStorageSlot,
+    onHome,
+  };
+
+  const showDetachedTopEventOrnament =
+    !state.pendingOverflow &&
+    (!requiresCrewManagement(state) || yearEndSummary !== null) &&
+    Boolean(
+      yearEndSummary !== null ||
+      (showOutcome &&
+        outcomeView !== null &&
+        resolvedEventView !== null) ||
+      (pendingDice !== null &&
+        resolvedEventView !== null) ||
+      (!showOutcome &&
+        pendingDice === null &&
+        session.navigationOptions.length === 0 &&
+        eventView !== null),
+    );
+
+  return (
+    <main
+      ref={gameScreenRef}
+      className="opfg-game-screen min-h-dvh w-full overflow-x-hidden overflow-y-auto pl-[max(var(--layout-gutter),var(--safe-area-left))] pr-[max(var(--layout-gutter),var(--safe-area-right))] pt-[max(var(--layout-gutter),var(--safe-area-top))] pb-[max(var(--layout-gutter),var(--safe-area-bottom))]"
+    >
+      <div
+        ref={gameScaleRef}
+        className="opfg-game-scale-content mx-auto w-full max-w-[78rem]"
+      >
+        <TopWorldHud {...hudProps} />
+
+        <div
+          data-opfg-scale-bound="true"
+          className="opfg-game-adventure-region relative mx-auto mt-4 w-full max-w-[52rem]"
+        >
+          {showDetachedTopEventOrnament && (
+            <div
+              className="opfg-event-fixed-ornament--top-right"
+              aria-hidden="true"
+            />
+          )}
+          <div
+            data-opfg-scale-bound="true"
+            className="opfg-game-side-rail opfg-game-side-rail--stats absolute right-[calc(100%+1rem)] top-0 z-10 hidden w-[14rem] justify-end xl:flex"
+          >
+            {statsRail}
+          </div>
+
+          <div
+            data-opfg-scale-bound="true"
+            className="opfg-game-side-rail opfg-game-side-rail--crew absolute left-[calc(100%+1rem)] top-0 z-10 hidden xl:block"
+          >
+            {crewRail}
+          </div>
+
+          <div
+            ref={adventureScrollRef}
+            className="opfg-adventure-scroll"
+          >
+            <motion.div
+              className="opfg-adventure-size-shell"
+            >
+              <div
+                className={
+                  showOutcome || pendingDice
+                    ? 'opfg-adventure-stack'
+                    : undefined
+                }
+              >
+                  {state.pendingOverflow ? (
+                    <Panel variant="strong" className="opfg-overflow-panel" aria-label={translate('ui.overflow.title')}>
+                      <h2>{translate('ui.overflow.title')}</h2>
+                      <p>{translate('ui.overflow.description')}</p>
+                      {[...state.player.inventory.stacks.map((stack, index) => ({ stack, storage: 'pocket' as const, index })), ...(state.ship?.cargo ?? []).map((stack, index) => ({ stack, storage: 'cargo' as const, index }))].map(({ stack, storage, index }) => {
+                        const definition = catalog.items.find(({ id }) => id === stack.itemId);
+                        return <Button key={`${storage}-${index}`} onClick={() => session.applySystemAction((next) => resolveOverflow(next, catalog, { type: 'discardStored', storage, index }))}>
+                          {translate('ui.overflow.replace', { item: definition ? translate(definition.nameKey) : stack.itemId })}
+                        </Button>;
+                      })}
+                      {!state.pendingOverflow.mandatory && <Button onClick={() => session.applySystemAction((next) => resolveOverflow(next, catalog, { type: 'abandonIncoming' }))}>{translate('ui.overflow.abandon')}</Button>}
+                    </Panel>
+                  ) : requiresCrewManagement(state)
+                    && !showOutcome
+                    && pendingDice === null
+                    && yearEndSummary === null ? (
+                    <CrewManagementPanel
+                      state={state}
+                      catalog={catalog}
+                      translate={translate}
+                      onSystemAction={session.applySystemAction}
+                    />
+                  ) : yearEndSummary ? (
+                    <YearEndSummaryPanel
+                      summary={yearEndSummary}
+                      state={state}
+                      catalog={catalog}
+                      translate={translate}
+                      statLabel={(id) => translate(STAT_KEYS[id])}
+                      onContinue={continueFromYearEnd}
+                    />
+                  ) : showOutcome && outcomeView ? (
+                    <>
+                      {resolvedEventView && (
+                        <EventPanel
+                          event={resolvedEventView}
+                          meta={eventMeta}
+                          onChoice={() => {}}
+                          mode="resolved"
+                          selectedChoiceId={selectedChoiceId}
+                        />
+                      )}
+
+                      <AnimatePresence
+                        initial={false}
+                      >
+                        {outcomeRevealed && (
+                          <motion.div
+                            key="outcome"
+                            initial={coarsePointer
+                              ? false
+                              : {
+                                  opacity: 0,
+                                  y: -4,
+                                }}
+                            animate={{
+                              opacity: 1,
+                              y: 0,
+                            }}
+                            exit={{
+                              opacity: 0,
+                            }}
+                            transition={coarsePointer
+                              ? { duration: 0 }
+                              : {
+                                  duration: 0.16,
+                                  ease: [
+                                    0.16,
+                                    1,
+                                    0.3,
+                                    1,
+                                  ],
+                                }}
+                          >
+                            <OutcomePanel
+                              outcome={outcomeView}
+                              onContinue={continueFromOutcome}
+                              translate={translate}
+                            />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </>
+                  ) : pendingDice ? (
+                    <>
+                      {resolvedEventView && (
+                        <EventPanel
+                          event={resolvedEventView}
+                          meta={eventMeta}
+                          onChoice={() => {}}
+                          mode="collapsed"
+                          selectedChoiceId={selectedChoiceId}
+                        />
+                      )}
+
+                      <div
+                        className="min-h-[14rem]"
+                        aria-hidden="true"
+                      />
+                    </>
+                  ) : session.navigationOptions.length > 0 ? (
+                    <NavigationPanel
+                      travelState={state.travelState}
+                      options={session.navigationOptions}
+                      catalog={catalog}
+                      translate={translate}
+                      onChoice={session.chooseNavigation}
+                    />
+                  ) : eventView ? (
+                    <EventPanel
+                      event={eventView}
+                      meta={eventMeta}
+                      onChoice={selectChoice}
+                      error={inputError}
+                    />
+                  ) : (
+                    <Panel
+                      variant="strong"
+                      className="text-center"
+                    >
+                      {state.careerStatus === 'ended'
+                        ? translate('ui.careerComplete')
+                        : translate('ui.noEvent')}
+                    </Panel>
+                  )}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+
+      <MobileSideDrawers
+        translate={translate}
+        onHome={onHome}
+        onStorageDrawerDrop={handleStorageDrawerDrop}
+        stats={mobileStatsRail}
+        inventory={
+          <InventoryHudPanel
+            {...hudProps}
+          />
+        }
+        crew={crewRail}
+        ship={
+          <ShipHudPanel
+            {...hudProps}
+          />
+        }
+      />
+
+      <LanguageControls
+        locale={locale}
+        onLocaleChange={
+          changeLocale
+        }
+      />
+
+      {pendingDice === null && achievementToastId && (
+        <AchievementToast
+          key={achievementToastId}
+          achievementId={achievementToastId}
+          locale={locale}
+          onDismiss={() => session.dismissAchievementUnlock(achievementToastId)}
+        />
+      )}
+
+      {ageTransition && (
+        <AgeTransitionOverlay
+          transition={ageTransition}
+          unitLabel={translate('ui.unit.years')}
+          onCovered={coverAgeTransition}
+          onComplete={() =>
+            setAgeTransition(null)
+          }
+        />
+      )}
+
+      <DiceTableStage
+        translate={translate}
+        visible={pendingDice !== null}
+        status={
+          pendingDice?.status ??
+          'armed'
+        }
+        modifier={
+          pendingDice?.dice
+            ?.modifierTotal ??
+          pendingDice?.modifierTotal ??
+          0
+        }
+        statLabel={
+          pendingDice
+            ? translate(
+                STAT_KEYS[
+                  pendingDice.dice
+                    ?.statId ??
+                    pendingDice.statId
+                ],
+              )
+            : undefined
+        }
+        result={
+          pendingDice?.dice?.rawRoll
+        }
+        total={
+          pendingDice?.dice?.total
+        }
+        rollKey={
+          pendingDice?.dice
+            ? `${pendingDice.dice.rawRoll}-${state.rngState}`
+            : undefined
+        }
+        onRoll={rollPendingDice}
+        onComplete={
+          completeDiceRoll
+        }
+      />
+    </main>
+  );
+}

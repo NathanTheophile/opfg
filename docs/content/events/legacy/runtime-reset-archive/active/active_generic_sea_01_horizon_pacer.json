@@ -1,0 +1,118 @@
+{
+  "id": "active_generic_sea_01_horizon_pacer",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_horizon_pacer.title",
+  "textKey": "event.active_generic_sea_01_horizon_pacer.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "observe_pattern",
+      "textKey": "event.active_generic_sea_01_horizon_pacer.choice.observe_pattern.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_horizon_pacer.choice.observe_pattern.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_horizon_pacer_return",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leader_break_pattern",
+      "textKey": "event.active_generic_sea_01_horizon_pacer.choice.leader_break_pattern.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_horizon_pacer.choice.leader_break_pattern.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_horizon_pacer_return",
+              "delayMonths": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "isLeader"
+      }
+    },
+    {
+      "id": "show_no_fear",
+      "textKey": "event.active_generic_sea_01_horizon_pacer.choice.show_no_fear.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_horizon_pacer.choice.show_no_fear.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_horizon_pacer_return",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "suspicious_watch",
+      "textKey": "event.active_generic_sea_01_horizon_pacer.choice.suspicious_watch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_horizon_pacer.choice.suspicious_watch.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_horizon_pacer_return",
+              "delayMonths": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "suspicious"
+      }
+    }
+  ]
+}

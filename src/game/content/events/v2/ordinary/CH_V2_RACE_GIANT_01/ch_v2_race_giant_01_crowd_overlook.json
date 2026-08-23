@@ -1,0 +1,179 @@
+{
+  "id": "ch_v2_race_giant_01_crowd_overlook",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_race_giant_01_crowd_overlook.title",
+  "textKey": "event.ch_v2_race_giant_01_crowd_overlook.text",
+  "choices": [
+    {
+      "id": "read_gaps",
+      "textKey": "event.ch_v2_race_giant_01_crowd_overlook.choice.read_gaps.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_gaps_criticalfailure",
+            "textKey": "event.ch_v2_race_giant_01_crowd_overlook.choice.read_gaps.outcome.read_gaps_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_crowd_overlook_i01_awning_lane"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_gaps_failure",
+            "textKey": "event.ch_v2_race_giant_01_crowd_overlook.choice.read_gaps.outcome.read_gaps_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_crowd_overlook_i01_awning_lane"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_gaps_success",
+            "textKey": "event.ch_v2_race_giant_01_crowd_overlook.choice.read_gaps.outcome.read_gaps_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_crowd_overlook_i01_awning_lane"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_gaps_criticalsuccess",
+            "textKey": "event.ch_v2_race_giant_01_crowd_overlook.choice.read_gaps.outcome.read_gaps_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_crowd_overlook_i01_awning_lane"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ask_corridor",
+      "textKey": "event.ch_v2_race_giant_01_crowd_overlook.choice.ask_corridor.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "ask_corridor_criticalfailure",
+            "textKey": "event.ch_v2_race_giant_01_crowd_overlook.choice.ask_corridor.outcome.ask_corridor_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_crowd_overlook_i01_awning_lane"
+              }
+            ]
+          },
+          "failure": {
+            "id": "ask_corridor_failure",
+            "textKey": "event.ch_v2_race_giant_01_crowd_overlook.choice.ask_corridor.outcome.ask_corridor_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_crowd_overlook_i01_awning_lane"
+              }
+            ]
+          },
+          "success": {
+            "id": "ask_corridor_success",
+            "textKey": "event.ch_v2_race_giant_01_crowd_overlook.choice.ask_corridor.outcome.ask_corridor_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_crowd_overlook_i01_awning_lane"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "ask_corridor_criticalsuccess",
+            "textKey": "event.ch_v2_race_giant_01_crowd_overlook.choice.ask_corridor.outcome.ask_corridor_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_giant_01_crowd_overlook_i01_awning_lane"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "side_lane",
+      "textKey": "event.ch_v2_race_giant_01_crowd_overlook.choice.side_lane.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "side_lane",
+          "textKey": "event.ch_v2_race_giant_01_crowd_overlook.choice.side_lane.outcome.side_lane.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_giant_01_crowd_overlook_i01_awning_lane"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "raceIs",
+        "raceId": "giant"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 143
+      }
+    ]
+  },
+  "narrativeFamily": "origin_race"
+}

@@ -1,0 +1,183 @@
+{
+  "id": "ch_v2_identity_world_01_harbor_signal_mismatch",
+  "titleKey": "event.ch_v2_identity_world_01_harbor_signal_mismatch.title",
+  "textKey": "event.ch_v2_identity_world_01_harbor_signal_mismatch.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "decode_pattern",
+      "textKey": "event.ch_v2_identity_world_01_harbor_signal_mismatch.choice.decode_pattern.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "decode_pattern_critical_failure",
+            "textKey": "event.ch_v2_identity_world_01_harbor_signal_mismatch.choice.decode_pattern.outcome.decode_pattern_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_harbor_signal_mismatch_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "decode_pattern_failure",
+            "textKey": "event.ch_v2_identity_world_01_harbor_signal_mismatch.choice.decode_pattern.outcome.decode_pattern_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_harbor_signal_mismatch_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "decode_pattern_success",
+            "textKey": "event.ch_v2_identity_world_01_harbor_signal_mismatch.choice.decode_pattern.outcome.decode_pattern_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_harbor_signal_mismatch_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "decode_pattern_critical_success",
+            "textKey": "event.ch_v2_identity_world_01_harbor_signal_mismatch.choice.decode_pattern.outcome.decode_pattern_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_harbor_signal_mismatch_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_boat_intent",
+      "textKey": "event.ch_v2_identity_world_01_harbor_signal_mismatch.choice.read_boat_intent.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_boat_intent_critical_failure",
+            "textKey": "event.ch_v2_identity_world_01_harbor_signal_mismatch.choice.read_boat_intent.outcome.read_boat_intent_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_harbor_signal_mismatch_i01"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_boat_intent_failure",
+            "textKey": "event.ch_v2_identity_world_01_harbor_signal_mismatch.choice.read_boat_intent.outcome.read_boat_intent_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_harbor_signal_mismatch_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_boat_intent_success",
+            "textKey": "event.ch_v2_identity_world_01_harbor_signal_mismatch.choice.read_boat_intent.outcome.read_boat_intent_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_harbor_signal_mismatch_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_boat_intent_critical_success",
+            "textKey": "event.ch_v2_identity_world_01_harbor_signal_mismatch.choice.read_boat_intent.outcome.read_boat_intent_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_identity_world_01_harbor_signal_mismatch_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "raise_stop_signal",
+      "textKey": "event.ch_v2_identity_world_01_harbor_signal_mismatch.choice.raise_stop_signal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stop_signal_requested",
+          "textKey": "event.ch_v2_identity_world_01_harbor_signal_mismatch.choice.raise_stop_signal.outcome.stop_signal_requested.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_identity_world_01_harbor_signal_mismatch_i01"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 96
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  }
+}

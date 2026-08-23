@@ -1,0 +1,90 @@
+{
+  "id": "active_generic_sea_01_rival_s10_c",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_sea_01_rival_s10_c.title",
+  "textKey": "event.active_generic_sea_01_rival_s10_c.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "small_salute",
+      "textKey": "event.active_generic_sea_01_rival_s10_c.choice.small_salute.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s10_c.choice.small_salute.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s11_c",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "no_signal",
+      "textKey": "event.active_generic_sea_01_rival_s10_c.choice.no_signal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s10_c.choice.no_signal.outcome.done.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s11_c",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "watch_last",
+      "textKey": "event.active_generic_sea_01_rival_s10_c.choice.watch_last.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rival_s10_c.choice.watch_last.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_sea_01_rival_s11_c",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

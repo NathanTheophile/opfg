@@ -1,0 +1,102 @@
+{
+  "id": "active_paradise_p2_trade_01_reef_salvage_auction",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p2_trade_01_reef_salvage_auction.title",
+  "textKey": "event.active_paradise_p2_trade_01_reef_salvage_auction.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p2_trade"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "glassreef_island"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "intervene",
+      "textKey": "event.active_paradise_p2_trade_01_reef_salvage_auction.choice.intervene.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 13,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "intervene_criticalfailure",
+            "textKey": "event.active_paradise_p2_trade_01_reef_salvage_auction.choice.intervene.outcome.intervene_criticalfailure.text",
+            "effects": []
+          },
+          "failure": {
+            "id": "intervene_failure",
+            "textKey": "event.active_paradise_p2_trade_01_reef_salvage_auction.choice.intervene.outcome.intervene_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "intervene_success",
+            "textKey": "event.active_paradise_p2_trade_01_reef_salvage_auction.choice.intervene.outcome.intervene_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "intervene_criticalsuccess",
+            "textKey": "event.active_paradise_p2_trade_01_reef_salvage_auction.choice.intervene.outcome.intervene_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 1000
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "practical",
+      "textKey": "event.active_paradise_p2_trade_01_reef_salvage_auction.choice.practical.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "practical_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_reef_salvage_auction.choice.practical.outcome.practical_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p2_trade_01_reef_salvage_auction_i01"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step_back",
+      "textKey": "event.active_paradise_p2_trade_01_reef_salvage_auction.choice.step_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "step_back_outcome",
+          "textKey": "event.active_paradise_p2_trade_01_reef_salvage_auction.choice.step_back.outcome.step_back_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

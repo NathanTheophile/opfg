@@ -1,0 +1,158 @@
+{
+  "id": "active_generic_sea_02_cargo_net_below_flotsam",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_02_cargo_net_below_flotsam.title",
+  "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam.text",
+  "choices": [
+    {
+      "id": "probe_below_surface",
+      "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam.choice.probe_below_surface.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "probe_below_surface_criticalFailure",
+            "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam.outcome.probe_below_surface_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "probe_below_surface_failure",
+            "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam.outcome.probe_below_surface_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "probe_below_surface_success",
+            "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam.outcome.probe_below_surface_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_cargo_net_below_flotsam_i01"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "probe_below_surface_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam.outcome.probe_below_surface_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_cargo_net_below_flotsam_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hook_the_net",
+      "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam.choice.hook_the_net.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hook_the_net_criticalFailure",
+            "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam.outcome.hook_the_net_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "hook_the_net_failure",
+            "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam.outcome.hook_the_net_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_cargo_net_below_flotsam_i01"
+              }
+            ]
+          },
+          "success": {
+            "id": "hook_the_net_success",
+            "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam.outcome.hook_the_net_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_cargo_net_below_flotsam_i01"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hook_the_net_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam.outcome.hook_the_net_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_cargo_net_below_flotsam_i01"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ignore_hidden_cargo",
+      "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam.choice.ignore_hidden_cargo.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ignore_hidden_cargo_result",
+          "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam.outcome.ignore_hidden_cargo_result.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "id": "ch_opening_household_civilian_wealthy_01",
+  "kind": "normal",
+  "titleKey": "event.ch_opening_household_civilian_wealthy_01.title",
+  "textKey": "event.ch_opening_household_civilian_wealthy_01.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 12
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 23
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "familyStructureIs",
+          "familyStructureId": "orphan"
+        }
+      },
+      {
+        "type": "affiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "socialClassIs",
+        "socialClassId": "wealthy"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "return_key",
+      "textKey": "event.ch_opening_household_civilian_wealthy_01.choice.return_key.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "key_returned",
+          "textKey": "event.ch_opening_household_civilian_wealthy_01.choice.return_key.outcome.key_returned.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "try_key",
+      "textKey": "event.ch_opening_household_civilian_wealthy_01.choice.try_key.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wrong_lock",
+          "textKey": "event.ch_opening_household_civilian_wealthy_01.choice.try_key.outcome.wrong_lock.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "listen_keys",
+      "textKey": "event.ch_opening_household_civilian_wealthy_01.choice.listen_keys.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keys_sing",
+          "textKey": "event.ch_opening_household_civilian_wealthy_01.choice.listen_keys.outcome.keys_sing.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hide_key",
+      "textKey": "event.ch_opening_household_civilian_wealthy_01.choice.hide_key.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "key_hidden",
+          "textKey": "event.ch_opening_household_civilian_wealthy_01.choice.hide_key.outcome.key_hidden.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "luck",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "player_parent_1"
+  ],
+  "narrativeFamily": "origin_family",
+  "openingRole": "origin_echo"
+}

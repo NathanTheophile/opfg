@@ -1,0 +1,161 @@
+{
+  "id": "active_blue_south_blue_01_redfin_shadow_boats",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_redfin_shadow_boats.title",
+  "textKey": "event.active_blue_south_blue_01_redfin_shadow_boats.text",
+  "choices": [
+    {
+      "id": "lose_shadows",
+      "textKey": "event.active_blue_south_blue_01_redfin_shadow_boats.choice.lose_shadows.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "lose_shadows_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_redfin_shadow_boats.choice.lose_shadows.outcome.lose_shadows_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "lose_shadows_failure",
+            "textKey": "event.active_blue_south_blue_01_redfin_shadow_boats.choice.lose_shadows.outcome.lose_shadows_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ]
+          },
+          "success": {
+            "id": "lose_shadows_success",
+            "textKey": "event.active_blue_south_blue_01_redfin_shadow_boats.choice.lose_shadows.outcome.lose_shadows_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "lose_shadows_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_redfin_shadow_boats.choice.lose_shadows.outcome.lose_shadows_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "bluff_patrol",
+      "textKey": "event.active_blue_south_blue_01_redfin_shadow_boats.choice.bluff_patrol.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bluff_patrol_criticalfailure",
+            "textKey": "event.active_blue_south_blue_01_redfin_shadow_boats.choice.bluff_patrol.outcome.bluff_patrol_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "bluff_patrol_failure",
+            "textKey": "event.active_blue_south_blue_01_redfin_shadow_boats.choice.bluff_patrol.outcome.bluff_patrol_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "bluff_patrol_success",
+            "textKey": "event.active_blue_south_blue_01_redfin_shadow_boats.choice.bluff_patrol.outcome.bluff_patrol_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "bluff_patrol_criticalsuccess",
+            "textKey": "event.active_blue_south_blue_01_redfin_shadow_boats.choice.bluff_patrol.outcome.bluff_patrol_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "turn_away",
+      "textKey": "event.active_blue_south_blue_01_redfin_shadow_boats.choice.turn_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "turn",
+          "textKey": "event.active_blue_south_blue_01_redfin_shadow_boats.choice.turn_away.outcome.turn.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

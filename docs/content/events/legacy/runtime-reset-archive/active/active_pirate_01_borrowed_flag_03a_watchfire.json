@@ -1,0 +1,62 @@
+{
+  "id": "active_pirate_01_borrowed_flag_03a_watchfire",
+  "kind": "scheduled",
+  "titleKey": "event.active_pirate_01_borrowed_flag_03a_watchfire.title",
+  "textKey": "event.active_pirate_01_borrowed_flag_03a_watchfire.text",
+  "choices": [
+    {
+      "id": "answer_signal",
+      "textKey": "event.active_pirate_01_borrowed_flag_03a_watchfire.choice.answer_signal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_03a_watchfire.choice.answer_signal.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_04a_false_alarm",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "limit_signal",
+      "textKey": "event.active_pirate_01_borrowed_flag_03a_watchfire.choice.limit_signal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_03a_watchfire.choice.limit_signal.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_04a_false_alarm",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "pirate"
+    }
+  },
+  "fallbackEventId": "active_pirate_01_borrowed_flag_departure"
+}

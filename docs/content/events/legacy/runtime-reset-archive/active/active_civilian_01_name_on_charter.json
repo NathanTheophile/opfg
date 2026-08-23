@@ -1,0 +1,93 @@
+{
+  "id": "active_civilian_01_name_on_charter",
+  "titleKey": "event.active_civilian_01_name_on_charter.title",
+  "textKey": "event.active_civilian_01_name_on_charter.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 70
+      },
+      {
+        "type": "careerTitleIs",
+        "titleId": "veteran"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "accept",
+      "textKey": "event.active_civilian_01_name_on_charter.choice.accept.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_result",
+          "textKey": "event.active_civilian_01_name_on_charter.choice.accept.outcome.accept_result.text",
+          "effects": [
+            {
+              "type": "setCareerTitle",
+              "titleId": "legend"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_veteran",
+      "textKey": "event.active_civilian_01_name_on_charter.choice.keep_veteran.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_veteran_result",
+          "textKey": "event.active_civilian_01_name_on_charter.choice.keep_veteran.outcome.keep_veteran_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shared_charter",
+      "textKey": "event.active_civilian_01_name_on_charter.choice.shared_charter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shared_charter_result",
+          "textKey": "event.active_civilian_01_name_on_charter.choice.shared_charter.outcome.shared_charter_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

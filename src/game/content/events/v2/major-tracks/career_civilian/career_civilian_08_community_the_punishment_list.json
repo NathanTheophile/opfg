@@ -1,0 +1,158 @@
+{
+  "id": "career_civilian_08_community_the_punishment_list",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_07_trade_the_empty_granary",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_07_horizon_the_flagless_toll",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_07_craft_the_falling_crane",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_07_community_the_cut_cisterns",
+            "choiceId": "community"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_07_fallback",
+            "choiceId": "community"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_civilian",
+    "chapterId": "active_08",
+    "nodeId": "career_civilian_08_community_the_punishment_list",
+    "parentNodeIds": [
+      "career_civilian_07_trade_the_empty_granary",
+      "career_civilian_07_horizon_the_flagless_toll",
+      "career_civilian_07_craft_the_falling_crane",
+      "career_civilian_07_community_the_cut_cisterns",
+      "career_civilian_07_fallback"
+    ],
+    "selectionPriority": 20
+  },
+  "titleKey": "event.career_civilian_08_community_the_punishment_list.title",
+  "textKey": "event.career_civilian_08_community_the_punishment_list.text",
+  "choices": [
+    {
+      "id": "trade",
+      "textKey": "event.career_civilian_08_community_the_punishment_list.choice.trade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 2000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_08_community_the_punishment_list.choice.trade.outcome.trade.text"
+        }
+      }
+    },
+    {
+      "id": "horizon",
+      "textKey": "event.career_civilian_08_community_the_punishment_list.choice.horizon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "horizon",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ],
+          "textKey": "event.career_civilian_08_community_the_punishment_list.choice.horizon.outcome.horizon.text"
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "craft",
+      "textKey": "event.career_civilian_08_community_the_punishment_list.choice.craft.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "craft",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_08_community_the_punishment_list.choice.craft.outcome.craft.text"
+        }
+      }
+    },
+    {
+      "id": "community",
+      "textKey": "event.career_civilian_08_community_the_punishment_list.choice.community.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "community",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_civilian_08_community_the_punishment_list_i01"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_08_community_the_punishment_list.choice.community.outcome.community.text"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "id": "active_generic_land_02_commerce_disputed_scale",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_disputed_scale.title",
+  "textKey": "event.active_generic_land_02_commerce_disputed_scale.text",
+  "choices": [
+    {
+      "id": "spot_weight",
+      "textKey": "event.active_generic_land_02_commerce_disputed_scale.choice.spot_weight.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "spot_weight_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_disputed_scale.choice.spot_weight.outcome.spot_weight_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_disputed_scale_i01_reweigh"
+              }
+            ]
+          },
+          "failure": {
+            "id": "spot_weight_failure",
+            "textKey": "event.active_generic_land_02_commerce_disputed_scale.choice.spot_weight.outcome.spot_weight_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_disputed_scale_i01_reweigh"
+              }
+            ]
+          },
+          "success": {
+            "id": "spot_weight_success",
+            "textKey": "event.active_generic_land_02_commerce_disputed_scale.choice.spot_weight.outcome.spot_weight_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_disputed_scale_i01_reweigh"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "spot_weight_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_disputed_scale.choice.spot_weight.outcome.spot_weight_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_disputed_scale_i01_reweigh"
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "press_publicly",
+      "textKey": "event.active_generic_land_02_commerce_disputed_scale.choice.press_publicly.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "press_publicly_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_disputed_scale.choice.press_publicly.outcome.press_publicly_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_disputed_scale_i01_reweigh"
+              }
+            ]
+          },
+          "failure": {
+            "id": "press_publicly_failure",
+            "textKey": "event.active_generic_land_02_commerce_disputed_scale.choice.press_publicly.outcome.press_publicly_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_disputed_scale_i01_reweigh"
+              }
+            ]
+          },
+          "success": {
+            "id": "press_publicly_success",
+            "textKey": "event.active_generic_land_02_commerce_disputed_scale.choice.press_publicly.outcome.press_publicly_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_disputed_scale_i01_reweigh"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "press_publicly_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_disputed_scale.choice.press_publicly.outcome.press_publicly_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_disputed_scale_i01_reweigh"
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    },
+    {
+      "id": "take_short_count",
+      "textKey": "event.active_generic_land_02_commerce_disputed_scale.choice.take_short_count.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_short_count_outcome",
+          "textKey": "event.active_generic_land_02_commerce_disputed_scale.choice.take_short_count.outcome.take_short_count_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 750
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  }
+}

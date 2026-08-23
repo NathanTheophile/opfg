@@ -1,0 +1,101 @@
+{
+  "id": "active_crew_social_01_missed_watch_confession",
+  "kind": "normal",
+  "titleKey": "event.active_crew_social_01_missed_watch_confession.title",
+  "textKey": "event.active_crew_social_01_missed_watch_confession.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "hasCrew"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "record_fault",
+      "textKey": "event.active_crew_social_01_missed_watch_confession.choice.record_fault.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_missed_watch_confession.choice.record_fault.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "second_chance",
+      "textKey": "event.active_crew_social_01_missed_watch_confession.choice.second_chance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_missed_watch_confession.choice.second_chance.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_missed_watch_second_chance",
+              "delayMonths": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "make_rule",
+      "textKey": "event.active_crew_social_01_missed_watch_confession.choice.make_rule.text",
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "rebellious"
+        }
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_missed_watch_confession.choice.make_rule.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "disciplined"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_missed_watch_second_chance",
+              "delayMonths": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "bury_it",
+      "textKey": "event.active_crew_social_01_missed_watch_confession.choice.bury_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_missed_watch_confession.choice.bury_it.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

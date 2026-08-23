@@ -1,0 +1,114 @@
+{
+  "id": "active_generic_land_05_strange_backward_race_i01_mirror_corner",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_05_strange_backward_race_i01_mirror_corner.title",
+  "textKey": "event.active_generic_land_05_strange_backward_race_i01_mirror_corner.text",
+  "choices": [
+    {
+      "id": "hold_mirror",
+      "textKey": "event.active_generic_land_05_strange_backward_race_i01_mirror_corner.choice.hold_mirror.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hold_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_backward_race_i01_mirror_corner.choice.hold_mirror.outcome.hold_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_backward_race_i02_finish_line"
+              }
+            ]
+          },
+          "failure": {
+            "id": "hold_failure",
+            "textKey": "event.active_generic_land_05_strange_backward_race_i01_mirror_corner.choice.hold_mirror.outcome.hold_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_backward_race_i02_finish_line"
+              }
+            ]
+          },
+          "success": {
+            "id": "hold_success",
+            "textKey": "event.active_generic_land_05_strange_backward_race_i01_mirror_corner.choice.hold_mirror.outcome.hold_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_backward_race_i02_finish_line"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hold_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_backward_race_i01_mirror_corner.choice.hold_mirror.outcome.hold_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_backward_race_i02_finish_line"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "paint_arrow",
+      "textKey": "event.active_generic_land_05_strange_backward_race_i01_mirror_corner.choice.paint_arrow.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "arrow_painted",
+          "textKey": "event.active_generic_land_05_strange_backward_race_i01_mirror_corner.choice.paint_arrow.outcome.arrow_painted.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_backward_race_i02_finish_line"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "block_wrong_turn",
+      "textKey": "event.active_generic_land_05_strange_backward_race_i01_mirror_corner.choice.block_wrong_turn.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "turn_closed",
+          "textKey": "event.active_generic_land_05_strange_backward_race_i01_mirror_corner.choice.block_wrong_turn.outcome.turn_closed.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_backward_race_i02_finish_line"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

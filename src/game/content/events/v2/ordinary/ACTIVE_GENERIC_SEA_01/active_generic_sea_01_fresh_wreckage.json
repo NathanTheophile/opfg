@@ -1,0 +1,172 @@
+{
+  "id": "active_generic_sea_01_fresh_wreckage",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_fresh_wreckage.title",
+  "textKey": "event.active_generic_sea_01_fresh_wreckage.text",
+  "choices": [
+    {
+      "id": "read_drift",
+      "textKey": "event.active_generic_sea_01_fresh_wreckage.choice.read_drift.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_drift_criticalfailure",
+            "textKey": "event.active_generic_sea_01_fresh_wreckage.choice.read_drift.outcome.read_drift_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fresh_wreckage_i01_overturned_boat"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "read_drift_failure",
+            "textKey": "event.active_generic_sea_01_fresh_wreckage.choice.read_drift.outcome.read_drift_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fresh_wreckage_i01_overturned_boat"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_drift_success",
+            "textKey": "event.active_generic_sea_01_fresh_wreckage.choice.read_drift.outcome.read_drift_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fresh_wreckage_i01_overturned_boat"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_drift_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_fresh_wreckage.choice.read_drift.outcome.read_drift_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fresh_wreckage_i01_overturned_boat"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "scan_horizon",
+      "textKey": "event.active_generic_sea_01_fresh_wreckage.choice.scan_horizon.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "scan_horizon_criticalfailure",
+            "textKey": "event.active_generic_sea_01_fresh_wreckage.choice.scan_horizon.outcome.scan_horizon_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fresh_wreckage_i01_overturned_boat"
+              }
+            ]
+          },
+          "failure": {
+            "id": "scan_horizon_failure",
+            "textKey": "event.active_generic_sea_01_fresh_wreckage.choice.scan_horizon.outcome.scan_horizon_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fresh_wreckage_i01_overturned_boat"
+              }
+            ]
+          },
+          "success": {
+            "id": "scan_horizon_success",
+            "textKey": "event.active_generic_sea_01_fresh_wreckage.choice.scan_horizon.outcome.scan_horizon_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fresh_wreckage_i01_overturned_boat"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "scan_horizon_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_fresh_wreckage.choice.scan_horizon.outcome.scan_horizon_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_fresh_wreckage_i01_overturned_boat"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "avoid_field",
+      "textKey": "event.active_generic_sea_01_fresh_wreckage.choice.avoid_field.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "avoid_field_outcome",
+          "textKey": "event.active_generic_sea_01_fresh_wreckage.choice.avoid_field.outcome.avoid_field_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

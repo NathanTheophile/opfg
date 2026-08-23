@@ -1,0 +1,149 @@
+{
+  "id": "career_pirate_01_first_flag",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_01_name_on_the_water",
+    "nodeId": "career_pirate_01_first_flag",
+    "selectionPriority": 1,
+    "fallback": true
+  },
+  "eligibility": {
+    "type": "isOnLand"
+  },
+  "titleKey": "event.career_pirate_01_first_flag.title",
+  "textKey": "event.career_pirate_01_first_flag.text",
+  "choices": [
+    {
+      "id": "make_noise",
+      "textKey": "event.career_pirate_01_first_flag.choice.make_noise.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "make_noise_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_01_first_flag_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_01_first_flag.choice.make_noise.outcome.make_noise_criticalFailure.text"
+          },
+          "failure": {
+            "id": "make_noise_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_01_first_flag_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_01_first_flag.choice.make_noise.outcome.make_noise_failure.text"
+          },
+          "success": {
+            "id": "make_noise_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 2000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_01_first_flag_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_01_first_flag.choice.make_noise.outcome.make_noise_success.text"
+          },
+          "criticalSuccess": {
+            "id": "make_noise_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 5000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_01_first_flag_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_01_first_flag.choice.make_noise.outcome.make_noise_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "set_terms",
+      "textKey": "event.career_pirate_01_first_flag.choice.set_terms.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "set_terms",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_01_first_flag_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_01_first_flag.choice.set_terms.outcome.set_terms.text"
+        }
+      }
+    },
+    {
+      "id": "stay_unread",
+      "textKey": "event.career_pirate_01_first_flag.choice.stay_unread.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stay_unread",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_01_first_flag_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_01_first_flag.choice.stay_unread.outcome.stay_unread.text"
+        }
+      }
+    }
+  ]
+}

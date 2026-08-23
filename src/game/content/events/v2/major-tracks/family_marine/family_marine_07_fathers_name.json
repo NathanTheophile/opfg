@@ -1,0 +1,136 @@
+{
+  "id": "family_marine_07_fathers_name",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_marine",
+    "chapterId": "childhood_03",
+    "nodeId": "family_marine_07_fathers_name",
+    "parentNodeIds": [
+      "family_marine_04_dinner_interrupted",
+      "family_marine_04_fallback_service"
+    ],
+    "selectionPriority": 10
+  },
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_04_dinner_interrupted_i02_messenger_waits",
+        "outcomeId": "father_goes"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_04_dinner_interrupted_i02_messenger_waits",
+        "outcomeId": "father_stays"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_04_fallback_service_i01_ledger",
+        "outcomeId": "learned_routine"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_04_fallback_service_i01_ledger",
+        "outcomeId": "trusted_record"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_04_fallback_service_i01_ledger",
+        "outcomeId": "remembered_mark"
+      }
+    ]
+  },
+  "cast": [
+    "player_parent_1"
+  ],
+  "titleKey": "event.family_marine_07_fathers_name.title",
+  "textKey": "event.family_marine_07_fathers_name.text",
+  "choices": [
+    {
+      "id": "accept",
+      "textKey": "event.family_marine_07_fathers_name.choice.accept.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_07_fathers_name_i01_other_child"
+            }
+          ],
+          "textKey": "event.family_marine_07_fathers_name.choice.accept.outcome.accept.text"
+        }
+      }
+    },
+    {
+      "id": "correct",
+      "textKey": "event.family_marine_07_fathers_name.choice.correct.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "correct",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_07_fathers_name_i01_other_child"
+            }
+          ],
+          "textKey": "event.family_marine_07_fathers_name.choice.correct.outcome.correct.text"
+        }
+      }
+    },
+    {
+      "id": "boast",
+      "textKey": "event.family_marine_07_fathers_name.choice.boast.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "boast_cf",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_fathers_name_i01_other_child"
+              }
+            ],
+            "textKey": "event.family_marine_07_fathers_name.choice.boast.outcome.boast_cf.text"
+          },
+          "failure": {
+            "id": "boast_f",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_fathers_name_i01_other_child"
+              }
+            ],
+            "textKey": "event.family_marine_07_fathers_name.choice.boast.outcome.boast_f.text"
+          },
+          "success": {
+            "id": "boast_s",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_fathers_name_i01_other_child"
+              }
+            ],
+            "textKey": "event.family_marine_07_fathers_name.choice.boast.outcome.boast_s.text"
+          },
+          "criticalSuccess": {
+            "id": "boast_cs",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_fathers_name_i01_other_child"
+              }
+            ],
+            "textKey": "event.family_marine_07_fathers_name.choice.boast.outcome.boast_cs.text"
+          }
+        }
+      }
+    }
+  ]
+}

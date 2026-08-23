@@ -1,0 +1,79 @@
+{
+  "id": "active_blue_west_blue_01_royal_tax_cart",
+  "kind": "normal",
+  "titleKey": "event.active_blue_west_blue_01_royal_tax_cart.title",
+  "textKey": "event.active_blue_west_blue_01_royal_tax_cart.text",
+  "choices": [
+    {
+      "id": "take_action",
+      "textKey": "event.active_blue_west_blue_01_royal_tax_cart.choice.take_action.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_action_outcome",
+          "textKey": "event.active_blue_west_blue_01_royal_tax_cart.choice.take_action.outcome.take_action_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "steady_choice",
+      "textKey": "event.active_blue_west_blue_01_royal_tax_cart.choice.steady_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "steady_choice_outcome",
+          "textKey": "event.active_blue_west_blue_01_royal_tax_cart.choice.steady_choice.outcome.steady_choice_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "safe_choice",
+      "textKey": "event.active_blue_west_blue_01_royal_tax_cart.choice.safe_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safe_choice_outcome",
+          "textKey": "event.active_blue_west_blue_01_royal_tax_cart.choice.safe_choice.outcome.safe_choice_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "west_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "royal"
+      }
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "id": "active_generic_land_01_unsafe_bridge_warning",
+  "kind": "normal",
+  "replay": { "cooldownMonths": 24 },
+  "titleKey": "event.active_generic_land_01_unsafe_bridge_warning.title",
+  "textKey": "event.active_generic_land_01_unsafe_bridge_warning.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "wilderness"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "rural"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "mountain"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "restore_barrier",
+      "textKey": "event.active_generic_land_01_unsafe_bridge_warning.choice.restore_barrier.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_unsafe_bridge_warning.choice.restore_barrier.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "inspect_first_span",
+      "textKey": "event.active_generic_land_01_unsafe_bridge_warning.choice.inspect_first_span.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_unsafe_bridge_warning.choice.inspect_first_span.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_them_choose",
+      "textKey": "event.active_generic_land_01_unsafe_bridge_warning.choice.let_them_choose.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_unsafe_bridge_warning.choice.let_them_choose.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "cautious_close",
+      "textKey": "event.active_generic_land_01_unsafe_bridge_warning.choice.cautious_close.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_unsafe_bridge_warning.choice.cautious_close.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "cautious"
+      }
+    }
+  ]
+}

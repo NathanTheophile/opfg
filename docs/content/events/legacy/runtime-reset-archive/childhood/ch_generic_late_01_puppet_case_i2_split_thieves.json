@@ -1,0 +1,91 @@
+{
+  "id": "ch_generic_late_01_puppet_case_i2_split_thieves",
+  "kind": "immediate",
+  "titleKey": "event.ch_generic_late_01_puppet_case_i2_split_thieves.title",
+  "textKey": "event.ch_generic_late_01_puppet_case_i2_split_thieves.text",
+  "choices": [
+    {
+      "id": "watch_receiver",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "receiver",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_puppet_case_i3_return_mask"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_puppet_case_i2_split_thieves.choice.watch_receiver.outcome.receiver.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_puppet_case_i2_split_thieves.choice.watch_receiver.text"
+    },
+    {
+      "id": "catch_mask",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "catch_cf",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_puppet_case_i3_return_mask"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_puppet_case_i2_split_thieves.choice.catch_mask.outcome.catch_cf.text"
+          },
+          "failure": {
+            "id": "catch_f",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_puppet_case_i3_return_mask"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_puppet_case_i2_split_thieves.choice.catch_mask.outcome.catch_f.text"
+          },
+          "success": {
+            "id": "catch_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_puppet_case_i3_return_mask"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_puppet_case_i2_split_thieves.choice.catch_mask.outcome.catch_s.text"
+          },
+          "criticalSuccess": {
+            "id": "catch_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_puppet_case_i3_return_mask"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_puppet_case_i2_split_thieves.choice.catch_mask.outcome.catch_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_puppet_case_i2_split_thieves.choice.catch_mask.text"
+    }
+  ]
+}

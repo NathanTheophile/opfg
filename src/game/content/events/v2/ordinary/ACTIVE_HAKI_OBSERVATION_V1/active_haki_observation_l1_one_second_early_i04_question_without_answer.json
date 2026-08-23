@@ -1,0 +1,108 @@
+{
+  "id": "active_haki_observation_l1_one_second_early_i04_question_without_answer",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l1_one_second_early_i04_question_without_answer.title",
+  "textKey": "event.active_haki_observation_l1_one_second_early_i04_question_without_answer.text",
+  "choices": [
+    {
+      "id": "admit_unknown",
+      "textKey": "event.active_haki_observation_l1_one_second_early_i04_question_without_answer.choice.admit_unknown.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "honest_uncertainty",
+          "textKey": "event.active_haki_observation_l1_one_second_early_i04_question_without_answer.choice.admit_unknown.outcome.honest_uncertainty.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l1_one_second_early_i05_gap_in_noise"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dismiss_it",
+      "textKey": "event.active_haki_observation_l1_one_second_early_i04_question_without_answer.choice.dismiss_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "push_away",
+          "textKey": "event.active_haki_observation_l1_one_second_early_i04_question_without_answer.choice.dismiss_it.outcome.push_away.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l1_one_second_early_i05_gap_in_noise"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "listen_gap",
+      "textKey": "event.active_haki_observation_l1_one_second_early_i04_question_without_answer.choice.listen_gap.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "overwhelmed",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i04_question_without_answer.choice.listen_gap.outcome.overwhelmed.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i05_gap_in_noise"
+              }
+            ]
+          },
+          "failure": {
+            "id": "noise_only",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i04_question_without_answer.choice.listen_gap.outcome.noise_only.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i05_gap_in_noise"
+              }
+            ]
+          },
+          "success": {
+            "id": "gap_found",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i04_question_without_answer.choice.listen_gap.outcome.gap_found.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i05_gap_in_noise"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "pattern",
+            "textKey": "event.active_haki_observation_l1_one_second_early_i04_question_without_answer.choice.listen_gap.outcome.pattern.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l1_one_second_early_i05_gap_in_noise"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

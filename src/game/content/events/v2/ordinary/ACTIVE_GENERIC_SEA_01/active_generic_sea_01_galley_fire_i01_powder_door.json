@@ -1,0 +1,116 @@
+{
+  "id": "active_generic_sea_01_galley_fire_i01_powder_door",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_01_galley_fire_i01_powder_door.title",
+  "textKey": "event.active_generic_sea_01_galley_fire_i01_powder_door.text",
+  "choices": [
+    {
+      "id": "cut_powder_free",
+      "textKey": "event.active_generic_sea_01_galley_fire_i01_powder_door.choice.cut_powder_free.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "cut_powder_free_criticalfailure",
+            "textKey": "event.active_generic_sea_01_galley_fire_i01_powder_door.choice.cut_powder_free.outcome.cut_powder_free_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -7
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_galley_fire_i02_after_fire"
+              }
+            ]
+          },
+          "failure": {
+            "id": "cut_powder_free_failure",
+            "textKey": "event.active_generic_sea_01_galley_fire_i01_powder_door.choice.cut_powder_free.outcome.cut_powder_free_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_galley_fire_i02_after_fire"
+              }
+            ]
+          },
+          "success": {
+            "id": "cut_powder_free_success",
+            "textKey": "event.active_generic_sea_01_galley_fire_i01_powder_door.choice.cut_powder_free.outcome.cut_powder_free_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_galley_fire_i02_after_fire"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cut_powder_free_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_galley_fire_i01_powder_door.choice.cut_powder_free.outcome.cut_powder_free_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_galley_fire_i02_after_fire"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "evacuate_crew",
+      "textKey": "event.active_generic_sea_01_galley_fire_i01_powder_door.choice.evacuate_crew.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "evacuate_crew_outcome",
+          "textKey": "event.active_generic_sea_01_galley_fire_i01_powder_door.choice.evacuate_crew.outcome.evacuate_crew_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_galley_fire_i02_after_fire"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "flood_compartment",
+      "textKey": "event.active_generic_sea_01_galley_fire_i01_powder_door.choice.flood_compartment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "flood_compartment_outcome",
+          "textKey": "event.active_generic_sea_01_galley_fire_i01_powder_door.choice.flood_compartment.outcome.flood_compartment_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_galley_fire_i02_after_fire"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

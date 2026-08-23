@@ -1,0 +1,135 @@
+{
+  "id": "active_paradise_p6_strange_01_clockwork_gear_market_bargain",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p6_strange_01_clockwork_gear_market_bargain.title",
+  "textKey": "event.active_paradise_p6_strange_01_clockwork_gear_market_bargain.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p6_strange"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "clockwork_cay"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_the_price_cycle",
+      "textKey": "event.active_paradise_p6_strange_01_clockwork_gear_market_bargain.choice.read_the_price_cycle",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_the_price_cycle_critical_failure",
+            "textKey": "event.active_paradise_p6_strange_01_clockwork_gear_market_bargain.outcome.read_the_price_cycle.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_the_price_cycle_failure",
+            "textKey": "event.active_paradise_p6_strange_01_clockwork_gear_market_bargain.outcome.read_the_price_cycle.failure",
+            "effects": []
+          },
+          "success": {
+            "id": "read_the_price_cycle_success",
+            "textKey": "event.active_paradise_p6_strange_01_clockwork_gear_market_bargain.outcome.read_the_price_cycle.success",
+            "effects": []
+          },
+          "criticalSuccess": {
+            "id": "read_the_price_cycle_critical_success",
+            "textKey": "event.active_paradise_p6_strange_01_clockwork_gear_market_bargain.outcome.read_the_price_cycle.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "bargain_before_bell",
+      "textKey": "event.active_paradise_p6_strange_01_clockwork_gear_market_bargain.choice.bargain_before_bell",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bargain_before_bell_critical_failure",
+            "textKey": "event.active_paradise_p6_strange_01_clockwork_gear_market_bargain.outcome.bargain_before_bell.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "bargain_before_bell_failure",
+            "textKey": "event.active_paradise_p6_strange_01_clockwork_gear_market_bargain.outcome.bargain_before_bell.failure",
+            "effects": []
+          },
+          "success": {
+            "id": "bargain_before_bell_success",
+            "textKey": "event.active_paradise_p6_strange_01_clockwork_gear_market_bargain.outcome.bargain_before_bell.success",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 300
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "bargain_before_bell_critical_success",
+            "textKey": "event.active_paradise_p6_strange_01_clockwork_gear_market_bargain.outcome.bargain_before_bell.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 700
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "wait_one_cycle",
+      "textKey": "event.active_paradise_p6_strange_01_clockwork_gear_market_bargain.choice.wait_one_cycle",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait_one_cycle",
+          "textKey": "event.active_paradise_p6_strange_01_clockwork_gear_market_bargain.outcome.wait_one_cycle",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

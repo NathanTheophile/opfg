@@ -1,0 +1,108 @@
+{
+  "id": "ch_v2_generic_early_01_flour_footprints_i01_door_opens",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_generic_early_01_flour_footprints_i01_door_opens.title",
+  "textKey": "event.ch_v2_generic_early_01_flour_footprints_i01_door_opens.text",
+  "choices": [
+    {
+      "id": "catch_sack",
+      "textKey": "event.ch_v2_generic_early_01_flour_footprints_i01_door_opens.choice.catch_sack.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "catch_sack_criticalfailure",
+            "textKey": "event.ch_v2_generic_early_01_flour_footprints_i01_door_opens.choice.catch_sack.outcome.catch_sack_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_flour_footprints_i02_cleanup"
+              }
+            ]
+          },
+          "failure": {
+            "id": "catch_sack_failure",
+            "textKey": "event.ch_v2_generic_early_01_flour_footprints_i01_door_opens.choice.catch_sack.outcome.catch_sack_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_flour_footprints_i02_cleanup"
+              }
+            ]
+          },
+          "success": {
+            "id": "catch_sack_success",
+            "textKey": "event.ch_v2_generic_early_01_flour_footprints_i01_door_opens.choice.catch_sack.outcome.catch_sack_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_flour_footprints_i02_cleanup"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "catch_sack_criticalsuccess",
+            "textKey": "event.ch_v2_generic_early_01_flour_footprints_i01_door_opens.choice.catch_sack.outcome.catch_sack_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_flour_footprints_i02_cleanup"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "point_floor",
+      "textKey": "event.ch_v2_generic_early_01_flour_footprints_i01_door_opens.choice.point_floor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "showed",
+          "textKey": "event.ch_v2_generic_early_01_flour_footprints_i01_door_opens.choice.point_floor.outcome.showed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_flour_footprints_i02_cleanup"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_cloth",
+      "textKey": "event.ch_v2_generic_early_01_flour_footprints_i01_door_opens.choice.take_cloth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cloth",
+          "textKey": "event.ch_v2_generic_early_01_flour_footprints_i01_door_opens.choice.take_cloth.outcome.cloth.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_flour_footprints_i02_cleanup"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "id": "ch_west_blue_01_sankan_gate_i2_gate_chain",
+  "kind": "immediate",
+  "titleKey": "event.ch_west_blue_01_sankan_gate_i2_gate_chain.title",
+  "textKey": "event.ch_west_blue_01_sankan_gate_i2_gate_chain.text",
+  "choices": [
+    {
+      "id": "open_in_steps",
+      "textKey": "event.ch_west_blue_01_sankan_gate_i2_gate_chain.choice.open_in_steps.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "gate_stepped",
+          "textKey": "event.ch_west_blue_01_sankan_gate_i2_gate_chain.choice.open_in_steps.outcome.gate_stepped.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_west_blue_01_sankan_gate_i3_market_or_cargo"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "secure_small_boats",
+      "textKey": "event.ch_west_blue_01_sankan_gate_i2_gate_chain.choice.secure_small_boats.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "boats_secured",
+          "textKey": "event.ch_west_blue_01_sankan_gate_i2_gate_chain.choice.secure_small_boats.outcome.boats_secured.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_west_blue_01_sankan_gate_i3_market_or_cargo"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "free_chain",
+      "textKey": "event.ch_west_blue_01_sankan_gate_i2_gate_chain.choice.free_chain.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "chain_freed",
+          "textKey": "event.ch_west_blue_01_sankan_gate_i2_gate_chain.choice.free_chain.outcome.chain_freed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_west_blue_01_sankan_gate_i3_market_or_cargo"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

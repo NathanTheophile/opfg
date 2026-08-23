@@ -1,0 +1,128 @@
+{
+  "id": "active_generic_sea_01_rudder_shudder",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_rudder_shudder.title",
+  "textKey": "event.active_generic_sea_01_rudder_shudder.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "diagnose",
+      "textKey": "event.active_generic_sea_01_rudder_shudder.choice.diagnose.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_sea_01_rudder_shudder.choice.diagnose.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_01_rudder_shudder.choice.diagnose.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_01_rudder_shudder.choice.diagnose.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_sea_01_rudder_shudder.choice.diagnose.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "reduce_angle",
+      "textKey": "event.active_generic_sea_01_rudder_shudder.choice.reduce_angle.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rudder_shudder.choice.reduce_angle.outcome.done.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "shipwright_check",
+      "textKey": "event.active_generic_sea_01_rudder_shudder.choice.shipwright_check.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rudder_shudder.choice.shipwright_check.outcome.done.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    },
+    {
+      "id": "leader_slow",
+      "textKey": "event.active_generic_sea_01_rudder_shudder.choice.leader_slow.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_generic_sea_01_rudder_shudder.choice.leader_slow.outcome.done.text",
+          "effects": []
+        }
+      },
+      "availableIf": {
+        "type": "isLeader"
+      }
+    }
+  ]
+}

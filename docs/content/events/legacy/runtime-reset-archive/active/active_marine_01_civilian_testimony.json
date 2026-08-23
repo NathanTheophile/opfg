@@ -1,0 +1,166 @@
+{
+  "id": "active_marine_01_civilian_testimony",
+  "kind": "normal",
+  "titleKey": "event.active_marine_01_civilian_testimony.title",
+  "textKey": "event.active_marine_01_civilian_testimony.text",
+  "choices": [
+    {
+      "id": "negotiate_private_room",
+      "textKey": "event.active_marine_01_civilian_testimony.choice.negotiate_private_room.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_marine_01_civilian_testimony_negotiate_private_room_criticalfailure",
+            "textKey": "event.active_marine_01_civilian_testimony.choice.negotiate_private_room.outcome.active_marine_01_civilian_testimony_negotiate_private_room_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_civilian_testimony_echo",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_marine_01_civilian_testimony_negotiate_private_room_failure",
+            "textKey": "event.active_marine_01_civilian_testimony.choice.negotiate_private_room.outcome.active_marine_01_civilian_testimony_negotiate_private_room_failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_civilian_testimony_echo",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "success": {
+            "id": "active_marine_01_civilian_testimony_negotiate_private_room_success",
+            "textKey": "event.active_marine_01_civilian_testimony.choice.negotiate_private_room.outcome.active_marine_01_civilian_testimony_negotiate_private_room_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_civilian_testimony_echo",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_marine_01_civilian_testimony_negotiate_private_room_criticalsuccess",
+            "textKey": "event.active_marine_01_civilian_testimony.choice.negotiate_private_room.outcome.active_marine_01_civilian_testimony_negotiate_private_room_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_marine_01_civilian_testimony_echo",
+                "delayMonths": 12
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "honest"
+            },
+            "value": 1,
+            "displayLabelKey": "event.active_marine_01_civilian_testimony.choice.negotiate_private_room.modifier.honest.text"
+          }
+        ]
+      }
+    },
+    {
+      "id": "document_request",
+      "textKey": "event.active_marine_01_civilian_testimony.choice.document_request.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_civilian_testimony_document_request",
+          "textKey": "event.active_marine_01_civilian_testimony.choice.document_request.outcome.active_marine_01_civilian_testimony_document_request.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_civilian_testimony_echo",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "obey_public_hearing",
+      "textKey": "event.active_marine_01_civilian_testimony.choice.obey_public_hearing.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_civilian_testimony_obey_public_hearing",
+          "textKey": "event.active_marine_01_civilian_testimony.choice.obey_public_hearing.outcome.active_marine_01_civilian_testimony_obey_public_hearing.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_marine_01_civilian_testimony_echo",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 198
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_lieutenant"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      }
+    ]
+  }
+}

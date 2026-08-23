@@ -1,0 +1,122 @@
+{
+  "id": "active_paradise_p1_classic_01_sabaody_bubble_lift",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p1_classic_01_sabaody_bubble_lift.title",
+  "textKey": "event.active_paradise_p1_classic_01_sabaody_bubble_lift.text",
+  "choices": [
+    {
+      "id": "catch_the_safety_line",
+      "textKey": "event.active_paradise_p1_classic_01_sabaody_bubble_lift.choice.catch_the_safety_line.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "catch_the_safety_line_criticalfailure",
+            "textKey": "event.active_paradise_p1_classic_01_sabaody_bubble_lift.choice.catch_the_safety_line.outcome.catch_the_safety_line_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_sabaody_bubble_lift_i01_falling_crate"
+              }
+            ]
+          },
+          "failure": {
+            "id": "catch_the_safety_line_failure",
+            "textKey": "event.active_paradise_p1_classic_01_sabaody_bubble_lift.choice.catch_the_safety_line.outcome.catch_the_safety_line_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_sabaody_bubble_lift_i01_falling_crate"
+              }
+            ]
+          },
+          "success": {
+            "id": "catch_the_safety_line_success",
+            "textKey": "event.active_paradise_p1_classic_01_sabaody_bubble_lift.choice.catch_the_safety_line.outcome.catch_the_safety_line_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_sabaody_bubble_lift_i01_falling_crate"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "catch_the_safety_line_criticalsuccess",
+            "textKey": "event.active_paradise_p1_classic_01_sabaody_bubble_lift.choice.catch_the_safety_line.outcome.catch_the_safety_line_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_paradise_p1_classic_01_sabaody_bubble_lift_i01_falling_crate"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_the_market",
+      "textKey": "event.active_paradise_p1_classic_01_sabaody_bubble_lift.choice.clear_the_market.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "clear_the_market_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_sabaody_bubble_lift.choice.clear_the_market.outcome.clear_the_market_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p1_classic_01_sabaody_bubble_lift_i01_falling_crate"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lower_the_load",
+      "textKey": "event.active_paradise_p1_classic_01_sabaody_bubble_lift.choice.lower_the_load.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lower_the_load_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_sabaody_bubble_lift.choice.lower_the_load.outcome.lower_the_load_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_paradise_p1_classic_01_sabaody_bubble_lift_i01_falling_crate"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p1_classic"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "sabaody_archipelago"
+      }
+    ]
+  }
+}

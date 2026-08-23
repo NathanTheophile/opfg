@@ -1,0 +1,181 @@
+{
+  "id": "active_generic_land_02_commerce_stall_collapse",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_stall_collapse.title",
+  "textKey": "event.active_generic_land_02_commerce_stall_collapse.text",
+  "choices": [
+    {
+      "id": "grab_purchase",
+      "textKey": "event.active_generic_land_02_commerce_stall_collapse.choice.grab_purchase.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "grab_purchase_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_stall_collapse.choice.grab_purchase.outcome.grab_purchase_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyBerries",
+                "amount": -1000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_stall_collapse_i01_vendor_offer"
+              }
+            ]
+          },
+          "failure": {
+            "id": "grab_purchase_failure",
+            "textKey": "event.active_generic_land_02_commerce_stall_collapse.choice.grab_purchase.outcome.grab_purchase_failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_stall_collapse_i01_vendor_offer"
+              }
+            ]
+          },
+          "success": {
+            "id": "grab_purchase_success",
+            "textKey": "event.active_generic_land_02_commerce_stall_collapse.choice.grab_purchase.outcome.grab_purchase_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_stall_collapse_i01_vendor_offer"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "grab_purchase_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_stall_collapse.choice.grab_purchase.outcome.grab_purchase_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_stall_collapse_i01_vendor_offer"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    },
+    {
+      "id": "hold_frame",
+      "textKey": "event.active_generic_land_02_commerce_stall_collapse.choice.hold_frame.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hold_frame_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_stall_collapse.choice.hold_frame.outcome.hold_frame_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_stall_collapse_i01_vendor_offer"
+              }
+            ]
+          },
+          "failure": {
+            "id": "hold_frame_failure",
+            "textKey": "event.active_generic_land_02_commerce_stall_collapse.choice.hold_frame.outcome.hold_frame_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_stall_collapse_i01_vendor_offer"
+              }
+            ]
+          },
+          "success": {
+            "id": "hold_frame_success",
+            "textKey": "event.active_generic_land_02_commerce_stall_collapse.choice.hold_frame.outcome.hold_frame_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_stall_collapse_i01_vendor_offer"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hold_frame_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_stall_collapse.choice.hold_frame.outcome.hold_frame_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_stall_collapse_i01_vendor_offer"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "protect_purse",
+      "textKey": "event.active_generic_land_02_commerce_stall_collapse.choice.protect_purse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "protect_purse_outcome",
+          "textKey": "event.active_generic_land_02_commerce_stall_collapse.choice.protect_purse.outcome.protect_purse_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "general_goods"
+      }
+    ]
+  }
+}

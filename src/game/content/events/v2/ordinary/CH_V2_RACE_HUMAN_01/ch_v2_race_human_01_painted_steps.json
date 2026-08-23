@@ -1,0 +1,121 @@
+{
+  "id": "ch_v2_race_human_01_painted_steps",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "raceIs",
+        "raceId": "human"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 131
+      }
+    ]
+  },
+  "titleKey": "event.ch_v2_race_human_01_painted_steps.title",
+  "textKey": "event.ch_v2_race_human_01_painted_steps.text",
+  "choices": [
+    {
+      "id": "erase_marks",
+      "textKey": "event.ch_v2_race_human_01_painted_steps.choice.erase_marks.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "erase_marks_outcome",
+          "textKey": "event.ch_v2_race_human_01_painted_steps.choice.erase_marks.outcome.erase_marks_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_human_01_painted_steps_i01_without_marks"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_score",
+      "textKey": "event.ch_v2_race_human_01_painted_steps.choice.keep_score.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_score_outcome",
+          "textKey": "event.ch_v2_race_human_01_painted_steps.choice.keep_score.outcome.keep_score_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_human_01_painted_steps_i01_without_marks"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "move_marks",
+      "textKey": "event.ch_v2_race_human_01_painted_steps.choice.move_marks.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "move_marks_outcome",
+          "textKey": "event.ch_v2_race_human_01_painted_steps.choice.move_marks.outcome.move_marks_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_human_01_painted_steps_i01_without_marks"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "admit_helped",
+      "textKey": "event.ch_v2_race_human_01_painted_steps.choice.admit_helped.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "honest"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "admit_helped_outcome",
+          "textKey": "event.ch_v2_race_human_01_painted_steps.choice.admit_helped.outcome.admit_helped_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_human_01_painted_steps_i01_without_marks"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

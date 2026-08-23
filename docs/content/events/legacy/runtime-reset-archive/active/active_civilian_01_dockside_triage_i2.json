@@ -1,0 +1,85 @@
+{
+  "id": "active_civilian_01_dockside_triage_i2",
+  "titleKey": "event.active_civilian_01_dockside_triage_i2.title",
+  "textKey": "event.active_civilian_01_dockside_triage_i2.text",
+  "kind": "immediate",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "improvise",
+      "textKey": "event.active_civilian_01_dockside_triage_i2.choice.improvise.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "improvise_result",
+          "textKey": "event.active_civilian_01_dockside_triage_i2.choice.improvise.outcome.improvise_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_dockside_triage_i3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "relocate",
+      "textKey": "event.active_civilian_01_dockside_triage_i2.choice.relocate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "relocate_result",
+          "textKey": "event.active_civilian_01_dockside_triage_i2.choice.relocate.outcome.relocate_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_dockside_triage_i3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "resourceful",
+      "textKey": "event.active_civilian_01_dockside_triage_i2.choice.resourceful.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resourceful_result",
+          "textKey": "event.active_civilian_01_dockside_triage_i2.choice.resourceful.outcome.resourceful_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_civilian_01_dockside_triage_i3"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "resourceful"
+      }
+    }
+  ]
+}

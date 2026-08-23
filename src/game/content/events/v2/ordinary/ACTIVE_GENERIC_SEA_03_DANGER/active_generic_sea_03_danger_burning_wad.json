@@ -1,0 +1,86 @@
+{
+  "id": "active_generic_sea_03_danger_burning_wad",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_burning_wad.title",
+  "textKey": "event.active_generic_sea_03_danger_burning_wad.text",
+  "choices": [
+    {
+      "id": "smother_by_hand",
+      "textKey": "event.active_generic_sea_03_danger_burning_wad.choice.smother_by_hand.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "smother_by_hand",
+          "textKey": "event.active_generic_sea_03_danger_burning_wad.outcome.smother_by_hand.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "flood_locker",
+      "textKey": "event.active_generic_sea_03_danger_burning_wad.choice.flood_locker.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "flood_locker",
+          "textKey": "event.active_generic_sea_03_danger_burning_wad.outcome.flood_locker.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -2
+            }
+          ],
+          "shipDamageCause": "enemy"
+        }
+      }
+    },
+    {
+      "id": "seal_hatch",
+      "textKey": "event.active_generic_sea_03_danger_burning_wad.choice.seal_hatch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "seal_hatch",
+          "textKey": "event.active_generic_sea_03_danger_burning_wad.outcome.seal_hatch.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ],
+          "shipDamageCause": "enemy"
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

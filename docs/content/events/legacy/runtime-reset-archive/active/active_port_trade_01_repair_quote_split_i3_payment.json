@@ -1,0 +1,131 @@
+{
+  "id": "active_port_trade_01_repair_quote_split_i3_payment",
+  "kind": "immediate",
+  "titleKey": "event.active_port_trade_01_repair_quote_split_i3_payment.title",
+  "textKey": "event.active_port_trade_01_repair_quote_split_i3_payment.text",
+  "choices": [
+    {
+      "id": "payer",
+      "textKey": "event.active_port_trade_01_repair_quote_split_i3_payment.choice.payer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paye",
+          "textKey": "event.active_port_trade_01_repair_quote_split_i3_payment.choice.payer.outcome.paye.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 8
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "berriesAtLeast",
+                "value": 500
+              },
+              {
+                "type": "any",
+                "conditions": [
+                  {
+                    "type": "hasChosen",
+                    "eventId": "active_port_trade_01_repair_quote_split_i1_open_hull",
+                    "choiceId": "remplacer_deux"
+                  },
+                  {
+                    "type": "hasChosen",
+                    "eventId": "active_port_trade_01_repair_quote_split_i2_material",
+                    "choiceId": "meilleure"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "hasShip"
+          }
+        ]
+      }
+    },
+    {
+      "id": "acompte",
+      "textKey": "event.active_port_trade_01_repair_quote_split_i3_payment.choice.acompte.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "acompte",
+          "textKey": "event.active_port_trade_01_repair_quote_split_i3_payment.choice.acompte.outcome.acompte.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -250
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 4
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "berriesAtLeast",
+                "value": 250
+              },
+              {
+                "type": "any",
+                "conditions": [
+                  {
+                    "type": "hasChosen",
+                    "eventId": "active_port_trade_01_repair_quote_split_i1_open_hull",
+                    "choiceId": "une_piece"
+                  },
+                  {
+                    "type": "hasChosen",
+                    "eventId": "active_port_trade_01_repair_quote_split_i2_material",
+                    "choiceId": "negocier"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "hasShip"
+          }
+        ]
+      }
+    },
+    {
+      "id": "refuser",
+      "textKey": "event.active_port_trade_01_repair_quote_split_i3_payment.choice.refuser.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse",
+          "textKey": "event.active_port_trade_01_repair_quote_split_i3_payment.choice.refuser.outcome.refuse.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

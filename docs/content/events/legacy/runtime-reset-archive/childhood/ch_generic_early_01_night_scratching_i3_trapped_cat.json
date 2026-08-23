@@ -1,0 +1,108 @@
+{
+  "id": "ch_generic_early_01_night_scratching_i3_trapped_cat",
+  "titleKey": "event.ch_generic_early_01_night_scratching_i3_trapped_cat.title",
+  "textKey": "event.ch_generic_early_01_night_scratching_i3_trapped_cat.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "free_by_hand",
+      "textKey": "event.ch_generic_early_01_night_scratching_i3_trapped_cat.choice.free_by_hand.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "scratched",
+            "textKey": "event.ch_generic_early_01_night_scratching_i3_trapped_cat.choice.free_by_hand.outcome.scratched.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "cat_slips",
+            "textKey": "event.ch_generic_early_01_night_scratching_i3_trapped_cat.choice.free_by_hand.outcome.cat_slips.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_night_scratching_i4_cat_loose"
+              }
+            ]
+          },
+          "success": {
+            "id": "cat_freed",
+            "textKey": "event.ch_generic_early_01_night_scratching_i3_trapped_cat.choice.free_by_hand.outcome.cat_freed.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_night_scratching_i4_cat_loose"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "cat_calm",
+            "textKey": "event.ch_generic_early_01_night_scratching_i3_trapped_cat.choice.free_by_hand.outcome.cat_calm.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_night_scratching_i4_cat_loose"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "open_path",
+      "textKey": "event.ch_generic_early_01_night_scratching_i3_trapped_cat.choice.open_path.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "path_opened",
+          "textKey": "event.ch_generic_early_01_night_scratching_i3_trapped_cat.choice.open_path.outcome.path_opened.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_night_scratching_i4_cat_loose"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_door",
+      "textKey": "event.ch_generic_early_01_night_scratching_i3_trapped_cat.choice.leave_door.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "door_wait",
+          "textKey": "event.ch_generic_early_01_night_scratching_i3_trapped_cat.choice.leave_door.outcome.door_wait.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_night_scratching_i4_cat_loose"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

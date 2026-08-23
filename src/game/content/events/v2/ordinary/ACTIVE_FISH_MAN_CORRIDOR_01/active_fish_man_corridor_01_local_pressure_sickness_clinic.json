@@ -1,0 +1,95 @@
+{
+  "id": "active_fish_man_corridor_01_local_pressure_sickness_clinic",
+  "kind": "normal",
+  "titleKey": "events.active_fish_man_corridor_01_local_pressure_sickness_clinic.title",
+  "textKey": "events.active_fish_man_corridor_01_local_pressure_sickness_clinic.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "fish_man_island"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "sort_the_patients",
+      "textKey": "events.active_fish_man_corridor_01_local_pressure_sickness_clinic.choices.sort_the_patients.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 12,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_fish_man_corridor_01_local_pressure_sickness_clinic_sort_the_patients_critical_failure",
+            "textKey": "events.active_fish_man_corridor_01_local_pressure_sickness_clinic.choices.sort_the_patients.outcomes.critical_failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -8
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_fish_man_corridor_01_local_pressure_sickness_clinic_sort_the_patients_failure",
+            "textKey": "events.active_fish_man_corridor_01_local_pressure_sickness_clinic.choices.sort_the_patients.outcomes.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "active_fish_man_corridor_01_local_pressure_sickness_clinic_sort_the_patients_success",
+            "textKey": "events.active_fish_man_corridor_01_local_pressure_sickness_clinic.choices.sort_the_patients.outcomes.success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_fish_man_corridor_01_local_pressure_sickness_clinic_sort_the_patients_critical_success",
+            "textKey": "events.active_fish_man_corridor_01_local_pressure_sickness_clinic.choices.sort_the_patients.outcomes.critical_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

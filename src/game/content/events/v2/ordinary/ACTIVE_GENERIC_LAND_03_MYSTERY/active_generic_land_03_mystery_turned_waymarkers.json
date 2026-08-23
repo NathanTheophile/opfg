@@ -1,0 +1,172 @@
+{
+  "id": "active_generic_land_03_mystery_turned_waymarkers",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_03_mystery_turned_waymarkers.title",
+  "textKey": "event.active_generic_land_03_mystery_turned_waymarkers.text",
+  "choices": [
+    {
+      "id": "rebuild_directions",
+      "textKey": "event.active_generic_land_03_mystery_turned_waymarkers.choice.rebuild_directions.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "rebuild_directions_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_turned_waymarkers.choice.rebuild_directions.outcome.rebuild_directions_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_turned_waymarkers_i01_tollhouse_wrench"
+              }
+            ]
+          },
+          "failure": {
+            "id": "rebuild_directions_failure",
+            "textKey": "event.active_generic_land_03_mystery_turned_waymarkers.choice.rebuild_directions.outcome.rebuild_directions_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_turned_waymarkers_i01_tollhouse_wrench"
+              }
+            ]
+          },
+          "success": {
+            "id": "rebuild_directions_success",
+            "textKey": "event.active_generic_land_03_mystery_turned_waymarkers.choice.rebuild_directions.outcome.rebuild_directions_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_turned_waymarkers_i01_tollhouse_wrench"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "rebuild_directions_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_turned_waymarkers.choice.rebuild_directions.outcome.rebuild_directions_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_turned_waymarkers_i01_tollhouse_wrench"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "follow_wrong_turn",
+      "textKey": "event.active_generic_land_03_mystery_turned_waymarkers.choice.follow_wrong_turn.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "luck",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "follow_wrong_turn_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_turned_waymarkers.choice.follow_wrong_turn.outcome.follow_wrong_turn_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_turned_waymarkers_i01_tollhouse_wrench"
+              }
+            ]
+          },
+          "failure": {
+            "id": "follow_wrong_turn_failure",
+            "textKey": "event.active_generic_land_03_mystery_turned_waymarkers.choice.follow_wrong_turn.outcome.follow_wrong_turn_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_turned_waymarkers_i01_tollhouse_wrench"
+              }
+            ]
+          },
+          "success": {
+            "id": "follow_wrong_turn_success",
+            "textKey": "event.active_generic_land_03_mystery_turned_waymarkers.choice.follow_wrong_turn.outcome.follow_wrong_turn_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_turned_waymarkers_i01_tollhouse_wrench"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "follow_wrong_turn_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_turned_waymarkers.choice.follow_wrong_turn.outcome.follow_wrong_turn_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_turned_waymarkers_i01_tollhouse_wrench"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "set_arrows_back",
+      "textKey": "event.active_generic_land_03_mystery_turned_waymarkers.choice.set_arrows_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reset",
+          "textKey": "event.active_generic_land_03_mystery_turned_waymarkers.choice.set_arrows_back.outcome.reset.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_turned_waymarkers_i01_tollhouse_wrench"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

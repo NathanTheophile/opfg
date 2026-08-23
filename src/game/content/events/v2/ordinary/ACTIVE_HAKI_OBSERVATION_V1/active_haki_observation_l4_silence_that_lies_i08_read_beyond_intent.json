@@ -1,0 +1,135 @@
+{
+  "id": "active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent.title",
+  "textKey": "event.active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent.text",
+  "choices": [
+    {
+      "id": "integrate_all",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent.choice.integrate_all.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "barely_survive_read",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent.choice.integrate_all.outcome.barely_survive_read.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -10
+              },
+              {
+                "type": "raiseHakiTo",
+                "hakiType": "observation",
+                "level": 4
+              }
+            ]
+          },
+          "failure": {
+            "id": "costly_read",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent.choice.integrate_all.outcome.costly_read.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "raiseHakiTo",
+                "hakiType": "observation",
+                "level": 4
+              }
+            ]
+          },
+          "success": {
+            "id": "whole_read",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent.choice.integrate_all.outcome.whole_read.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "raiseHakiTo",
+                "hakiType": "observation",
+                "level": 4
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "expert_read",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent.choice.integrate_all.outcome.expert_read.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "raiseHakiTo",
+                "hakiType": "observation",
+                "level": 4
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "break_pattern",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent.choice.break_pattern.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pattern_broken",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent.choice.break_pattern.outcome.pattern_broken.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "raiseHakiTo",
+              "hakiType": "observation",
+              "level": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_uncertainty",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent.choice.accept_uncertainty.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "uncertainty_mastered",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i08_read_beyond_intent.choice.accept_uncertainty.outcome.uncertainty_mastered.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "raiseHakiTo",
+              "hakiType": "observation",
+              "level": 4
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 3
+      }
+    }
+  ]
+}

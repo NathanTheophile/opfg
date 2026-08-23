@@ -1,0 +1,63 @@
+{
+  "id": "ch_family_social_01_ledger_b3_audit_old_entry",
+  "titleKey": "event.ch_family_social_01_ledger_b3_audit_old_entry.title",
+  "textKey": "event.ch_family_social_01_ledger_b3_audit_old_entry.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "trace_entry",
+      "textKey": "event.ch_family_social_01_ledger_b3_audit_old_entry.choice.trace_entry.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "entry_traced",
+          "textKey": "event.ch_family_social_01_ledger_b3_audit_old_entry.choice.trace_entry.outcome.entry_traced.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_b4_contradiction_found",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mark_uncertain",
+      "textKey": "event.ch_family_social_01_ledger_b3_audit_old_entry.choice.mark_uncertain.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "entry_marked",
+          "textKey": "event.ch_family_social_01_ledger_b3_audit_old_entry.choice.mark_uncertain.outcome.entry_marked.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_ledger_b4_contradiction_found",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stop_audit",
+      "textKey": "event.ch_family_social_01_ledger_b3_audit_old_entry.choice.stop_audit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "audit_stopped",
+          "textKey": "event.ch_family_social_01_ledger_b3_audit_old_entry.choice.stop_audit.outcome.audit_stopped.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

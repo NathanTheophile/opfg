@@ -1,0 +1,69 @@
+{
+  "id": "ch_west_blue_01_masala_backstage_i1_falling_mask",
+  "kind": "immediate",
+  "titleKey": "event.ch_west_blue_01_masala_backstage_i1_falling_mask.title",
+  "textKey": "event.ch_west_blue_01_masala_backstage_i1_falling_mask.text",
+  "choices": [
+    {
+      "id": "search_floor",
+      "textKey": "event.ch_west_blue_01_masala_backstage_i1_falling_mask.choice.search_floor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pin_search",
+          "textKey": "event.ch_west_blue_01_masala_backstage_i1_falling_mask.choice.search_floor.outcome.pin_search.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_west_blue_01_masala_backstage_i2_missing_pin"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "use_spare",
+      "textKey": "event.ch_west_blue_01_masala_backstage_i1_falling_mask.choice.use_spare.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "spare_requested",
+          "textKey": "event.ch_west_blue_01_masala_backstage_i1_falling_mask.choice.use_spare.outcome.spare_requested.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_west_blue_01_masala_backstage_i2_missing_pin"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "inspect_mount",
+      "textKey": "event.ch_west_blue_01_masala_backstage_i1_falling_mask.choice.inspect_mount.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mount_checked",
+          "textKey": "event.ch_west_blue_01_masala_backstage_i1_falling_mask.choice.inspect_mount.outcome.mount_checked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_west_blue_01_masala_backstage_i2_missing_pin"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

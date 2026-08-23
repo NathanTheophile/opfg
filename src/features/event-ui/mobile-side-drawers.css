@@ -1,0 +1,254 @@
+.opfg-mobile-side-ui {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  .opfg-mobile-side-ui {
+    display: block;
+  }
+
+  .opfg-mobile-side-tabs {
+    position: fixed;
+    z-index: 84;
+    right: 0;
+    bottom: max(0px, var(--safe-area-bottom));
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.55rem;
+    padding:
+      0.65rem
+      max(0.85rem, var(--safe-area-right))
+      0.7rem
+      max(0.85rem, var(--safe-area-left));
+    border-top: 1px solid rgb(253 230 138 / 0.18);
+    background:
+      linear-gradient(180deg, rgb(6 4 3 / 0.08), rgb(6 4 3 / 0.82) 22%),
+      rgb(8 6 5 / 0.86);
+    box-shadow: 0 -12px 32px rgb(0 0 0 / 0.34);
+    backdrop-filter: blur(10px);
+  }
+
+  .opfg-mobile-side-tab,
+  .opfg-mobile-home-button {
+  --opfg-nine-slice-width: 9px;
+    display: grid;
+    place-items: center;
+    border: 1px solid transparent;
+
+    background: transparent;
+    box-shadow: none;
+    color: var(--text-muted);
+  }
+
+  .opfg-mobile-side-tab {
+    width: 100%;
+    min-width: 0;
+    height: 3.15rem;
+    cursor: pointer;
+    transition:
+      color var(--motion-fast) var(--ease-standard),
+      filter var(--motion-fast) var(--ease-standard);
+  }
+
+  .opfg-mobile-side-tab:hover,
+  .opfg-mobile-side-tab[data-active='true'],
+  .opfg-mobile-home-button:hover {
+    background: transparent;
+    color: var(--accent-gold);
+    filter: brightness(1.08);
+  }
+
+  .opfg-mobile-home-button {
+    --opfg-nine-slice-width: 8px;
+    --opfg-nine-slice-opacity: 1;
+
+    position: fixed !important;
+    isolation: isolate;
+    z-index: 150;
+    top: auto !important;
+    right: max(0.85rem, var(--safe-area-right, 0px)) !important;
+    bottom: calc(
+      var(
+        --opfg-mobile-utility-bottom,
+        calc(
+          max(0px, var(--safe-area-bottom, 0px))
+          + var(--opfg-mobile-bottom-bar-height, 4.75rem)
+          + var(--opfg-mobile-utility-gap, 0.55rem)
+        )
+      )
+      + var(--opfg-mobile-utility-size, var(--ui-utility-control-size, 3.15rem))
+      + var(--opfg-mobile-utility-gap, 0.55rem)
+      + var(--opfg-mobile-utility-size, var(--ui-utility-control-size, 3.15rem))
+      + var(--opfg-mobile-utility-gap, 0.55rem)
+    ) !important;
+    left: auto !important;
+
+    display: grid !important;
+    width: var(--opfg-mobile-utility-size, var(--ui-utility-control-size, 3.15rem)) !important;
+    min-width: var(--opfg-mobile-utility-size, var(--ui-utility-control-size, 3.15rem)) !important;
+    height: var(--opfg-mobile-utility-size, var(--ui-utility-control-size, 3.15rem)) !important;
+    min-height: var(--opfg-mobile-utility-size, var(--ui-utility-control-size, 3.15rem)) !important;
+    place-items: center;
+    padding: 0 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+    color: var(--text-gold-control);
+    pointer-events: auto;
+  }
+
+  .opfg-mobile-home-button__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .opfg-mobile-side-drawer {
+    position: fixed;
+    z-index: 140;
+    right: max(0.75rem, var(--safe-area-right));
+    bottom: calc(
+      max(0px, var(--safe-area-bottom))
+      + var(--opfg-mobile-bottom-bar-height, 4.75rem)
+      + 0.75rem
+    );
+    left: max(0.75rem, var(--safe-area-left));
+    width: calc(
+      100vw
+      - max(0.75rem, var(--safe-area-left))
+      - max(0.75rem, var(--safe-area-right))
+    );
+    max-height: calc(
+      100dvh
+      - max(0.75rem, var(--safe-area-top))
+      - max(0px, var(--safe-area-bottom))
+      - var(--opfg-mobile-bottom-bar-height, 4.75rem)
+      - 1.5rem
+    );
+    overflow: auto;
+    overscroll-behavior: contain;
+    animation: opfg-mobile-panel-in var(--motion-normal) var(--ease-emphasized);
+  }
+
+  .opfg-mobile-side-drawer:is([data-drawer='inventory'], [data-drawer='ship']) {
+    top: auto;
+    right: auto;
+    left: 50%;
+    padding-bottom: 0.9rem;
+    transform: translateX(-50%);
+    animation-name: opfg-mobile-panel-horizontal-in;
+  }
+
+  .opfg-mobile-side-drawer[data-drawer='inventory']
+    .opfg-hud-panel--inventory,
+  .opfg-mobile-side-drawer[data-drawer='ship']
+    .opfg-hud-panel--ship {
+    padding-bottom: 0.8rem;
+  }
+
+  .opfg-mobile-side-drawer .opfg-hud-home-button {
+    display: none !important;
+  }
+
+  .opfg-mobile-side-drawer :is(
+    .opfg-player-stats-module,
+    .opfg-player-stats-rail,
+    .opfg-crew-rail,
+    .opfg-crew-header,
+    .opfg-crew-member-panel,
+    .opfg-hud-panel
+  ) {
+    width: auto;
+    max-width: 100%;
+  }
+
+  .opfg-mobile-side-drawer :is(.opfg-hud-panel, .opfg-player-stats-module) {
+    min-height: auto;
+  }
+}
+
+@media (orientation: landscape) {
+  .opfg-mobile-side-ui {
+    display: none !important;
+  }
+}
+
+@keyframes opfg-mobile-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.55rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes opfg-mobile-panel-horizontal-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 0.55rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-mobile-side-drawer {
+    animation-duration: 1ms;
+  }
+}
+
+/* OPFG MOBILE STABILITY: cheap drawer compositing */
+@media (pointer: coarse) and (orientation: portrait) {
+  .opfg-mobile-side-tabs {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .opfg-mobile-side-tab,
+  .opfg-mobile-home-button {
+    transition: none !important;
+  }
+
+  .opfg-mobile-side-drawer {
+    animation: none !important;
+  }
+}
+
+/* OPFG MOBILE UI: framed Home below parchment */
+@media (pointer: coarse) and (orientation: portrait) {
+  .opfg-mobile-home-button {
+    --opfg-nine-slice-width: 8px;
+    --opfg-nine-slice-opacity: var(--opfg-nine-slice-opacity-default, 0.9);
+    z-index: 100;
+  }
+
+  .opfg-mobile-side-drawer {
+    z-index: 140;
+  }
+}
+
+/* OPFG MOBILE HOME: NineSlice descendants must stay visible */
+@media (pointer: coarse) and (orientation: portrait) {
+  .opfg-mobile-home-button > .opfg-nine-slice {
+    z-index: 0;
+  }
+
+  .opfg-mobile-home-button > svg {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* OPFG MOBILE POLISH V4.4 */
+
+/* OPFG MOBILE FIXES V4.5 */

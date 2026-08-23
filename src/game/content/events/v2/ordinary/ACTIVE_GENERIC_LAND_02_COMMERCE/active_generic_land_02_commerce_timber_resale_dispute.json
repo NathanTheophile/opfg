@@ -1,0 +1,134 @@
+{
+  "id": "active_generic_land_02_commerce_timber_resale_dispute",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_timber_resale_dispute.title",
+  "textKey": "event.active_generic_land_02_commerce_timber_resale_dispute.text",
+  "choices": [
+    {
+      "id": "negotiate_sale",
+      "textKey": "event.active_generic_land_02_commerce_timber_resale_dispute.choice.negotiate_sale.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "negotiate_sale_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_timber_resale_dispute.choice.negotiate_sale.outcome.negotiate_sale_criticalfailure.text",
+            "effects": [
+              {
+                "type": "sellItem",
+                "itemId": "timber",
+                "quantity": 1,
+                "negotiation": "criticalFailure"
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_timber_resale_dispute_i01_unloading_fee"
+              }
+            ]
+          },
+          "failure": {
+            "id": "negotiate_sale_failure",
+            "textKey": "event.active_generic_land_02_commerce_timber_resale_dispute.choice.negotiate_sale.outcome.negotiate_sale_failure.text",
+            "effects": [
+              {
+                "type": "sellItem",
+                "itemId": "timber",
+                "quantity": 1,
+                "negotiation": "failure"
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_timber_resale_dispute_i01_unloading_fee"
+              }
+            ]
+          },
+          "success": {
+            "id": "negotiate_sale_success",
+            "textKey": "event.active_generic_land_02_commerce_timber_resale_dispute.choice.negotiate_sale.outcome.negotiate_sale_success.text",
+            "effects": [
+              {
+                "type": "sellItem",
+                "itemId": "timber",
+                "quantity": 1,
+                "negotiation": "success"
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_timber_resale_dispute_i01_unloading_fee"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "negotiate_sale_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_timber_resale_dispute.choice.negotiate_sale.outcome.negotiate_sale_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "sellItem",
+                "itemId": "timber",
+                "quantity": 1,
+                "negotiation": "criticalSuccess"
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_timber_resale_dispute_i01_unloading_fee"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "sell_base",
+      "textKey": "event.active_generic_land_02_commerce_timber_resale_dispute.choice.sell_base.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sell_base_outcome",
+          "textKey": "event.active_generic_land_02_commerce_timber_resale_dispute.choice.sell_base.outcome.sell_base_outcome.text",
+          "effects": [
+            {
+              "type": "sellItem",
+              "itemId": "timber",
+              "quantity": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_02_commerce_timber_resale_dispute_i01_unloading_fee"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_timber",
+      "textKey": "event.active_generic_land_02_commerce_timber_resale_dispute.choice.keep_timber.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_timber_outcome",
+          "textKey": "event.active_generic_land_02_commerce_timber_resale_dispute.choice.keep_timber.outcome.keep_timber_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "canSellItem",
+        "itemId": "timber",
+        "quantity": 1
+      }
+    ]
+  }
+}

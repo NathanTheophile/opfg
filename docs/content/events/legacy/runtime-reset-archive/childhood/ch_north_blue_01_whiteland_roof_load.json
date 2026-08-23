@@ -1,0 +1,102 @@
+{
+  "id": "ch_north_blue_01_whiteland_roof_load",
+  "titleKey": "event.ch_north_blue_01_whiteland_roof_load.title",
+  "textKey": "event.ch_north_blue_01_whiteland_roof_load.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      },
+      {
+        "type": "locationWithin",
+        "locationId": "whiteland_kingdom"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "clear_weak_roofs",
+      "textKey": "event.ch_north_blue_01_whiteland_roof_load.choice.clear_weak_roofs.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "clear_weak_roofs_result",
+          "textKey": "event.ch_north_blue_01_whiteland_roof_load.choice.clear_weak_roofs.outcome.clear_weak_roofs_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_north_blue_01_whiteland_roof_load_followup",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "clear_busy_roofs",
+      "textKey": "event.ch_north_blue_01_whiteland_roof_load.choice.clear_busy_roofs.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "clear_busy_roofs_result",
+          "textKey": "event.ch_north_blue_01_whiteland_roof_load.choice.clear_busy_roofs.outcome.clear_busy_roofs_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_north_blue_01_whiteland_roof_load_followup",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "organize_turns",
+      "textKey": "event.ch_north_blue_01_whiteland_roof_load.choice.organize_turns.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "organize_turns_result",
+          "textKey": "event.ch_north_blue_01_whiteland_roof_load.choice.organize_turns.outcome.organize_turns_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_north_blue_01_whiteland_roof_load_followup",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

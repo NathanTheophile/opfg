@@ -1,0 +1,139 @@
+{
+  "id": "active_recruitment_new_cast_01_mirror_stamp",
+  "kind": "normal",
+  "titleKey": "event.active_recruitment_new_cast_01_mirror_stamp.title",
+  "textKey": "event.active_recruitment_new_cast_01_mirror_stamp.text",
+  "choices": [
+    {
+      "id": "take_the_blame",
+      "textKey": "event.active_recruitment_new_cast_01_mirror_stamp.choice.take_the_blame.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_the_blame_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_mirror_stamp.choice.take_the_blame.outcome.take_the_blame_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_notice_carver",
+              "amount": 4
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "buy_the_bad_sheet",
+      "textKey": "event.active_recruitment_new_cast_01_mirror_stamp.choice.buy_the_bad_sheet.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy_the_bad_sheet_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_mirror_stamp.choice.buy_the_bad_sheet.outcome.buy_the_bad_sheet_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_notice_carver",
+              "amount": 3
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "walk_past",
+      "textKey": "event.active_recruitment_new_cast_01_mirror_stamp.choice.walk_past.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "walk_past_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_mirror_stamp.choice.walk_past.outcome.walk_past_outcome.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_recruit_notice_carver",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "active_recruit_notice_carver"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "city"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "village"
+          }
+        ]
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_new_cast_01_face_under_paste"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_notice_carver",
+              "status": "crew"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

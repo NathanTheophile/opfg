@@ -1,0 +1,115 @@
+{
+  "id": "family_civilian_04_business_expansion_plan",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_civilian",
+    "chapterId": "childhood_04",
+    "nodeId": "family_civilian_04_business_expansion_plan",
+    "selectionPriority": 20,
+    "parentNodeIds": [
+      "family_civilian_03_employees_know_name",
+      "family_civilian_03_trade_fallback"
+    ]
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "socialClassIs",
+        "socialClassId": "wealthy"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasOutcome",
+            "eventId": "family_civilian_03_employees_know_name_i01_reaction",
+            "outcomeId": "help"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "family_civilian_03_trade_fallback_i01_reaction",
+            "outcomeId": "help"
+          }
+        ]
+      }
+    ]
+  },
+  "titleKey": "event.family_civilian_04_business_expansion_plan.title",
+  "textKey": "event.family_civilian_04_business_expansion_plan.text",
+  "choices": [
+    {
+      "id": "read",
+      "textKey": "event.family_civilian_04_business_expansion_plan.choice.read.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "read",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_04_business_expansion_plan_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_04_business_expansion_plan.choice.read.outcome.read.text"
+        }
+      }
+    },
+    {
+      "id": "ask",
+      "textKey": "event.family_civilian_04_business_expansion_plan.choice.ask.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_04_business_expansion_plan_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_04_business_expansion_plan.choice.ask.outcome.ask.text"
+        }
+      }
+    },
+    {
+      "id": "wait",
+      "textKey": "event.family_civilian_04_business_expansion_plan.choice.wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_04_business_expansion_plan_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_04_business_expansion_plan.choice.wait.outcome.wait.text"
+        }
+      }
+    },
+    {
+      "id": "remember_wages",
+      "availableIf": {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_03_employees_know_name_i01_reaction",
+        "outcomeId": "protect"
+      },
+      "textKey": "event.family_civilian_04_business_expansion_plan.choice.remember_wages.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "remember_wages",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_04_business_expansion_plan_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_04_business_expansion_plan.choice.remember_wages.outcome.remember_wages.text"
+        }
+      }
+    }
+  ]
+}

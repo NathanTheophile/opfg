@@ -1,0 +1,219 @@
+{
+  "id": "active_generic_land_02_commerce_old_merchant_settlement",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_old_merchant_settlement.title",
+  "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement.text",
+  "choices": [
+    {
+      "id": "read_old_ledger",
+      "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement.choice.read_old_ledger.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_old_ledger_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement.choice.read_old_ledger.outcome.read_old_ledger_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1500
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_old_ledger_failure",
+            "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement.choice.read_old_ledger.outcome.read_old_ledger_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_old_ledger_success",
+            "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement.choice.read_old_ledger.outcome.read_old_ledger_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_old_ledger_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement.choice.read_old_ledger.outcome.read_old_ledger_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": 5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts"
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1500
+      }
+    },
+    {
+      "id": "settle_face_to_face",
+      "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement.choice.settle_face_to_face.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "settle_face_to_face_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement.choice.settle_face_to_face.outcome.settle_face_to_face_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1000
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts"
+              }
+            ]
+          },
+          "failure": {
+            "id": "settle_face_to_face_failure",
+            "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement.choice.settle_face_to_face.outcome.settle_face_to_face_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts"
+              }
+            ]
+          },
+          "success": {
+            "id": "settle_face_to_face_success",
+            "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement.choice.settle_face_to_face.outcome.settle_face_to_face_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": 5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "settle_face_to_face_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement.choice.settle_face_to_face.outcome.settle_face_to_face_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "neighborhood_merchant",
+                "amount": 8
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts"
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    },
+    {
+      "id": "pay_old_debt",
+      "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement.choice.pay_old_debt.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_old_debt_outcome",
+          "textKey": "event.active_generic_land_02_commerce_old_merchant_settlement.choice.pay_old_debt.outcome.pay_old_debt_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2000
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 5
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_02_commerce_old_merchant_settlement_i01_old_accounts"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2000
+      }
+    }
+  ],
+  "cast": [
+    "neighborhood_merchant"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "neighborhood_merchant",
+        "status": "known"
+      },
+      {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    ]
+  }
+}

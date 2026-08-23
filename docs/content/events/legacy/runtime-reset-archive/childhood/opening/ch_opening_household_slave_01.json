@@ -1,0 +1,123 @@
+{
+  "id": "ch_opening_household_slave_01",
+  "kind": "normal",
+  "titleKey": "event.ch_opening_household_slave_01.title",
+  "textKey": "event.ch_opening_household_slave_01.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 12
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 23
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "familyStructureIs",
+          "familyStructureId": "orphan"
+        }
+      },
+      {
+        "type": "affiliationIs",
+        "affiliationId": "slave"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "push_bowl_parent",
+      "textKey": "event.ch_opening_household_slave_01.choice.push_bowl_parent.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shared_bowl",
+          "textKey": "event.ch_opening_household_slave_01.choice.push_bowl_parent.outcome.shared_bowl.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "watch_overseer",
+      "textKey": "event.ch_opening_household_slave_01.choice.watch_overseer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "count_learned",
+          "textKey": "event.ch_opening_household_slave_01.choice.watch_overseer.outcome.count_learned.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hide_piece",
+      "textKey": "event.ch_opening_household_slave_01.choice.hide_piece.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "piece_hidden",
+          "textKey": "event.ch_opening_household_slave_01.choice.hide_piece.outcome.piece_hidden.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "make_noise",
+      "textKey": "event.ch_opening_household_slave_01.choice.make_noise.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "attention_drawn",
+          "textKey": "event.ch_opening_household_slave_01.choice.make_noise.outcome.attention_drawn.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "player_parent_1"
+  ],
+  "narrativeFamily": "origin_family",
+  "openingRole": "origin_echo"
+}

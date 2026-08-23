@@ -1,0 +1,98 @@
+{
+  "id": "active_marine_01_promotion_lieutenant",
+  "kind": "normal",
+  "titleKey": "event.active_marine_01_promotion_lieutenant.title",
+  "textKey": "event.active_marine_01_promotion_lieutenant.text",
+  "choices": [
+    {
+      "id": "accept_field_focus",
+      "textKey": "event.active_marine_01_promotion_lieutenant.choice.accept_field_focus.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_promotion_lieutenant_accept_field_focus",
+          "textKey": "event.active_marine_01_promotion_lieutenant.choice.accept_field_focus.outcome.active_marine_01_promotion_lieutenant_accept_field_focus.text",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_lieutenant"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_command_focus",
+      "textKey": "event.active_marine_01_promotion_lieutenant.choice.accept_command_focus.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_promotion_lieutenant_accept_command_focus",
+          "textKey": "event.active_marine_01_promotion_lieutenant.choice.accept_command_focus.outcome.active_marine_01_promotion_lieutenant_accept_command_focus.text",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_lieutenant"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_without_speech",
+      "textKey": "event.active_marine_01_promotion_lieutenant.choice.accept_without_speech.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_marine_01_promotion_lieutenant_accept_without_speech",
+          "textKey": "event.active_marine_01_promotion_lieutenant.choice.accept_without_speech.outcome.active_marine_01_promotion_lieutenant_accept_without_speech.text",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_lieutenant"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 204
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "careerRankIs",
+        "rankId": "marine_petty_officer"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 18
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      }
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "id": "ch_generic_early_01_paper_boat_race",
+  "titleKey": "event.ch_generic_early_01_paper_boat_race.title",
+  "textKey": "event.ch_generic_early_01_paper_boat_race.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "read_current",
+      "textKey": "event.ch_generic_early_01_paper_boat_race.choice.read_current.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "boat_spins",
+            "textKey": "event.ch_generic_early_01_paper_boat_race.choice.read_current.outcome.boat_spins.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "slow_lane",
+            "textKey": "event.ch_generic_early_01_paper_boat_race.choice.read_current.outcome.slow_lane.text",
+            "effects": []
+          },
+          "success": {
+            "id": "good_lane",
+            "textKey": "event.ch_generic_early_01_paper_boat_race.choice.read_current.outcome.good_lane.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_early_01_paper_boat_race_scheduled_rematch",
+                "delayMonths": 12
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "perfect_lane",
+            "textKey": "event.ch_generic_early_01_paper_boat_race.choice.read_current.outcome.perfect_lane.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_early_01_paper_boat_race_scheduled_rematch",
+                "delayMonths": 12
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "race_hard",
+      "textKey": "event.ch_generic_early_01_paper_boat_race.choice.race_hard.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "competitive_race",
+          "textKey": "event.ch_generic_early_01_paper_boat_race.choice.race_hard.outcome.competitive_race.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_paper_boat_race_scheduled_rematch",
+              "delayMonths": 12
+            },
+            {
+              "type": "addTrait",
+              "traitId": "competitive"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decorate",
+      "textKey": "event.ch_generic_early_01_paper_boat_race.choice.decorate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pretty_boat",
+          "textKey": "event.ch_generic_early_01_paper_boat_race.choice.decorate.outcome.pretty_boat.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "help_smallest",
+      "textKey": "event.ch_generic_early_01_paper_boat_race.choice.help_smallest.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "helped_fold",
+          "textKey": "event.ch_generic_early_01_paper_boat_race.choice.help_smallest.outcome.helped_fold.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  }
+}

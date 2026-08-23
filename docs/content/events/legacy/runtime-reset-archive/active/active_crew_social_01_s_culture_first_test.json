@@ -1,0 +1,83 @@
+{
+  "id": "active_crew_social_01_s_culture_first_test",
+  "kind": "scheduled",
+  "titleKey": "event.active_crew_social_01_s_culture_first_test.title",
+  "textKey": "event.active_crew_social_01_s_culture_first_test.text",
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "hasCrew"
+    }
+  },
+  "choices": [
+    {
+      "id": "use_rule",
+      "textKey": "event.active_crew_social_01_s_culture_first_test.choice.use_rule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_first_test.choice.use_rule.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_voice_or_order",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decide_now",
+      "textKey": "event.active_crew_social_01_s_culture_first_test.choice.decide_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_first_test.choice.decide_now.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_voice_or_order",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_objection",
+      "textKey": "event.active_crew_social_01_s_culture_first_test.choice.ask_objection.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_first_test.choice.ask_objection.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_voice_or_order",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "crewSizeAtLeast",
+    "value": 2
+  }
+}

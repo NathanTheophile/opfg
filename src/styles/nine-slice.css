@@ -1,0 +1,275 @@
+/*
+ * OPFG explicit nine-slice renderer.
+ *
+ * Gold source texture: 1156 x 290 px
+ * Gold source cuts: X = 72 / 1084, Y = 58 / 232
+ *
+ * Parchment source texture: 1400 x 200 px
+ * Parchment source cuts: X = 72 / 1328, Y = 44 / 156
+ *
+ * No border-image is used. Each region owns an explicit crop of one source
+ * image and overlaps its neighbour, avoiding Chromium seams under fractional
+ * responsive scaling / device-pixel ratios.
+ */
+
+.opfg-nine-slice {
+  --opfg-nine-slice-edge-x: var(
+    --opfg-nine-slice-width-x,
+    var(--opfg-nine-slice-width, 10px)
+  );
+  --opfg-nine-slice-edge-y: var(
+    --opfg-nine-slice-width-y,
+    var(--opfg-nine-slice-width, 10px)
+  );
+  --opfg-nine-slice-seam-overlap: var(--opfg-nine-slice-overlap, 2px);
+
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  display: block;
+  isolation: isolate;
+  opacity: var(
+    --opfg-nine-slice-opacity,
+    var(--opfg-nine-slice-opacity-default, 1)
+  );
+  pointer-events: none;
+  user-select: none;
+}
+
+.opfg-nine-slice__slice {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.opfg-nine-slice__slice > img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  max-height: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Corners stay above edges; edges stay above center in overlap zones. */
+.opfg-nine-slice__slice[data-slice='tl'],
+.opfg-nine-slice__slice[data-slice='tr'],
+.opfg-nine-slice__slice[data-slice='bl'],
+.opfg-nine-slice__slice[data-slice='br'] {
+  z-index: 3;
+  width: var(--opfg-nine-slice-edge-x);
+  height: var(--opfg-nine-slice-edge-y);
+}
+
+.opfg-nine-slice__slice[data-slice='t'],
+.opfg-nine-slice__slice[data-slice='b'],
+.opfg-nine-slice__slice[data-slice='l'],
+.opfg-nine-slice__slice[data-slice='r'] {
+  z-index: 2;
+}
+
+.opfg-nine-slice__slice[data-slice='c'] {
+  z-index: 1;
+}
+
+.opfg-nine-slice__slice[data-slice='tl'] { top: 0; left: 0; }
+.opfg-nine-slice__slice[data-slice='tr'] { top: 0; right: 0; }
+.opfg-nine-slice__slice[data-slice='bl'] { bottom: 0; left: 0; }
+.opfg-nine-slice__slice[data-slice='br'] { right: 0; bottom: 0; }
+
+.opfg-nine-slice__slice[data-slice='t'],
+.opfg-nine-slice__slice[data-slice='b'] {
+  right: calc(
+    var(--opfg-nine-slice-edge-x)
+    - var(--opfg-nine-slice-seam-overlap)
+  );
+  left: calc(
+    var(--opfg-nine-slice-edge-x)
+    - var(--opfg-nine-slice-seam-overlap)
+  );
+  height: var(--opfg-nine-slice-edge-y);
+}
+
+.opfg-nine-slice__slice[data-slice='t'] { top: 0; }
+.opfg-nine-slice__slice[data-slice='b'] { bottom: 0; }
+
+.opfg-nine-slice__slice[data-slice='l'],
+.opfg-nine-slice__slice[data-slice='r'] {
+  top: calc(
+    var(--opfg-nine-slice-edge-y)
+    - var(--opfg-nine-slice-seam-overlap)
+  );
+  bottom: calc(
+    var(--opfg-nine-slice-edge-y)
+    - var(--opfg-nine-slice-seam-overlap)
+  );
+  width: var(--opfg-nine-slice-edge-x);
+}
+
+.opfg-nine-slice__slice[data-slice='l'] { left: 0; }
+.opfg-nine-slice__slice[data-slice='r'] { right: 0; }
+
+.opfg-nine-slice__slice[data-slice='c'] {
+  top: calc(
+    var(--opfg-nine-slice-edge-y)
+    - var(--opfg-nine-slice-seam-overlap)
+  );
+  right: calc(
+    var(--opfg-nine-slice-edge-x)
+    - var(--opfg-nine-slice-seam-overlap)
+  );
+  bottom: calc(
+    var(--opfg-nine-slice-edge-y)
+    - var(--opfg-nine-slice-seam-overlap)
+  );
+  left: calc(
+    var(--opfg-nine-slice-edge-x)
+    - var(--opfg-nine-slice-seam-overlap)
+  );
+}
+
+/* ------------------------------------------------------------------------- */
+/* Gold crop math                                                            */
+/* ------------------------------------------------------------------------- */
+
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='tl'] > img,
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='tr'] > img,
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='bl'] > img,
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='br'] > img {
+  width: 1605.555556%;
+  height: 500%;
+}
+
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='tl'] > img { top: 0; left: 0; }
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='tr'] > img { top: 0; left: -1505.555556%; }
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='bl'] > img { top: -400%; left: 0; }
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='br'] > img { top: -400%; left: -1505.555556%; }
+
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='t'] > img,
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='b'] > img {
+  left: -7.114625%;
+  width: 114.229249%;
+  height: 500%;
+}
+
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='t'] > img { top: 0; }
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='b'] > img { top: -400%; }
+
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='l'] > img,
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='r'] > img {
+  top: -33.333333%;
+  width: 1605.555556%;
+  height: 166.666667%;
+}
+
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='l'] > img { left: 0; }
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='r'] > img { left: -1505.555556%; }
+
+.opfg-nine-slice:not(.opfg-parchment-nine-slice)
+  .opfg-nine-slice__slice[data-slice='c'] > img {
+  top: -33.333333%;
+  left: -7.114625%;
+  width: 114.229249%;
+  height: 166.666667%;
+}
+
+/* ------------------------------------------------------------------------- */
+/* Parchment crop math                                                       */
+/* 1400x200; slices 72 / 44 / 72 / 44.                                      */
+/* ------------------------------------------------------------------------- */
+
+.opfg-parchment-nine-slice {
+  --opfg-nine-slice-width-x: var(--opfg-parchment-nine-slice-width-x, 16px);
+  --opfg-nine-slice-width-y: var(--opfg-parchment-nine-slice-width-y, 12px);
+  --opfg-nine-slice-opacity: 1;
+
+  z-index: 0;
+  inset: -1px;
+}
+
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='tl'] > img,
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='tr'] > img,
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='bl'] > img,
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='br'] > img {
+  width: 1944.444444%;
+  height: 454.545455%;
+}
+
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='tl'] > img { top: 0; left: 0; }
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='tr'] > img { top: 0; left: -1844.444444%; }
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='bl'] > img { top: -354.545455%; left: 0; }
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='br'] > img { top: -354.545455%; left: -1844.444444%; }
+
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='t'] > img,
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='b'] > img {
+  left: -5.732484%;
+  width: 111.464968%;
+  height: 454.545455%;
+}
+
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='t'] > img { top: 0; }
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='b'] > img { top: -354.545455%; }
+
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='l'] > img,
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='r'] > img {
+  top: -39.285714%;
+  width: 1944.444444%;
+  height: 178.571429%;
+}
+
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='l'] > img { left: 0; }
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='r'] > img { left: -1844.444444%; }
+
+.opfg-parchment-nine-slice .opfg-nine-slice__slice[data-slice='c'] > img {
+  top: -39.285714%;
+  left: -5.732484%;
+  width: 111.464968%;
+  height: 178.571429%;
+}
+
+/* Hosts that are not overlays need to anchor their absolute frame. */
+:is(
+  .opfg-hud-home-button,
+  .opfg-mobile-side-tab,
+  .opfg-utility-square,
+  .opfg-language-controls__button,
+  .opfg-music-player,
+  .opfg-landing__continue,
+  .opfg-landing__new-primary,
+  .opfg-landing__secondary-button
+) {
+  position: relative;
+  isolation: isolate;
+}
+
+/* These two must keep position:absolute from utility-controls.css. */
+.opfg-audio-mixer,
+.opfg-language-controls__menu {
+  isolation: isolate;
+  --opfg-nine-slice-opacity: var(--opfg-nine-slice-opacity-muted, 0.5);
+}
+
+.opfg-language-controls__button:focus,
+.opfg-language-controls__button:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgb(245 194 66 / 0.32),
+    0 0 12px rgb(245 194 66 / 0.18);
+}

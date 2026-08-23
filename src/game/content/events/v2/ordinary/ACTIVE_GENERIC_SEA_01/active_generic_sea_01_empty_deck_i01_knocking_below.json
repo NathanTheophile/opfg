@@ -1,0 +1,102 @@
+{
+  "id": "active_generic_sea_01_empty_deck_i01_knocking_below",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_01_empty_deck_i01_knocking_below.title",
+  "textKey": "event.active_generic_sea_01_empty_deck_i01_knocking_below.text",
+  "choices": [
+    {
+      "id": "open_hatch",
+      "textKey": "event.active_generic_sea_01_empty_deck_i01_knocking_below.choice.open_hatch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "open_hatch_outcome",
+          "textKey": "event.active_generic_sea_01_empty_deck_i01_knocking_below.choice.open_hatch.outcome.open_hatch_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_empty_deck_i02_locked_sailors"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "search_first",
+      "textKey": "event.active_generic_sea_01_empty_deck_i01_knocking_below.choice.search_first.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "search_first_criticalfailure",
+            "textKey": "event.active_generic_sea_01_empty_deck_i01_knocking_below.choice.search_first.outcome.search_first_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_empty_deck_i02_locked_sailors"
+              }
+            ]
+          },
+          "failure": {
+            "id": "search_first_failure",
+            "textKey": "event.active_generic_sea_01_empty_deck_i01_knocking_below.choice.search_first.outcome.search_first_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_empty_deck_i02_locked_sailors"
+              }
+            ]
+          },
+          "success": {
+            "id": "search_first_success",
+            "textKey": "event.active_generic_sea_01_empty_deck_i01_knocking_below.choice.search_first.outcome.search_first_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_empty_deck_i02_locked_sailors"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "search_first_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_empty_deck_i01_knocking_below.choice.search_first.outcome.search_first_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_empty_deck_i02_locked_sailors"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "retreat_now",
+      "textKey": "event.active_generic_sea_01_empty_deck_i01_knocking_below.choice.retreat_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "retreat_now_outcome",
+          "textKey": "event.active_generic_sea_01_empty_deck_i01_knocking_below.choice.retreat_now.outcome.retreat_now_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

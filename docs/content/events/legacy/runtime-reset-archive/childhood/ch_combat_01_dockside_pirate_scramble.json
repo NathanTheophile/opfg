@@ -1,0 +1,90 @@
+{
+  "id": "ch_combat_01_dockside_pirate_scramble",
+  "titleKey": "event.ch_combat_01_dockside_pirate_scramble.title",
+  "textKey": "event.ch_combat_01_dockside_pirate_scramble.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 156
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "coastal"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "clear_children",
+      "textKey": "event.ch_combat_01_dockside_pirate_scramble.choice.clear_children.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "children_cleared",
+          "textKey": "event.ch_combat_01_dockside_pirate_scramble.choice.clear_children.outcome.children_cleared.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_dockside_pirate_scramble_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "block_side_entry",
+      "textKey": "event.ch_combat_01_dockside_pirate_scramble.choice.block_side_entry.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "side_entry_blocked",
+          "textKey": "event.ch_combat_01_dockside_pirate_scramble.choice.block_side_entry.outcome.side_entry_blocked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_dockside_pirate_scramble_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_dock_adults",
+      "textKey": "event.ch_combat_01_dockside_pirate_scramble.choice.call_dock_adults.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "dock_called",
+          "textKey": "event.ch_combat_01_dockside_pirate_scramble.choice.call_dock_adults.outcome.dock_called.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_dockside_pirate_scramble_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

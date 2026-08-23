@@ -1,0 +1,102 @@
+{
+  "id": "active_generic_sea_01_drifting_mailbag",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_drifting_mailbag.title",
+  "textKey": "event.active_generic_sea_01_drifting_mailbag.text",
+  "choices": [
+    {
+      "id": "keep_sealed",
+      "textKey": "event.active_generic_sea_01_drifting_mailbag.choice.keep_sealed.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_sealed_outcome",
+          "textKey": "event.active_generic_sea_01_drifting_mailbag.choice.keep_sealed.outcome.keep_sealed_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "open_one_letter",
+      "textKey": "event.active_generic_sea_01_drifting_mailbag.choice.open_one_letter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "open_one_letter_outcome",
+          "textKey": "event.active_generic_sea_01_drifting_mailbag.choice.open_one_letter.outcome.open_one_letter_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "search_money",
+      "textKey": "event.active_generic_sea_01_drifting_mailbag.choice.search_money.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "search_money_outcome",
+          "textKey": "event.active_generic_sea_01_drifting_mailbag.choice.search_money.outcome.search_money_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 300
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "honest_return",
+      "textKey": "event.active_generic_sea_01_drifting_mailbag.choice.honest_return.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "honest_return_outcome",
+          "textKey": "event.active_generic_sea_01_drifting_mailbag.choice.honest_return.outcome.honest_return_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "honest"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

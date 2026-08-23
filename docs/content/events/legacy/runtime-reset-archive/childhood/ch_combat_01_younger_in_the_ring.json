@@ -1,0 +1,104 @@
+{
+  "id": "ch_combat_01_younger_in_the_ring",
+  "titleKey": "event.ch_combat_01_younger_in_the_ring.title",
+  "textKey": "event.ch_combat_01_younger_in_the_ring.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 84
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "step_beside",
+      "textKey": "event.ch_combat_01_younger_in_the_ring.choice.step_beside.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "beside_him",
+          "textKey": "event.ch_combat_01_younger_in_the_ring.choice.step_beside.outcome.beside_him.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_younger_in_the_ring_i1"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "change_the_target",
+      "textKey": "event.ch_combat_01_younger_in_the_ring.choice.change_the_target.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "target_changed",
+          "textKey": "event.ch_combat_01_younger_in_the_ring.choice.change_the_target.outcome.target_changed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_younger_in_the_ring_i1"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_an_adult",
+      "textKey": "event.ch_combat_01_younger_in_the_ring.choice.call_an_adult.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "adult_called",
+          "textKey": "event.ch_combat_01_younger_in_the_ring.choice.call_an_adult.outcome.adult_called.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_younger_in_the_ring_i1"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "childhood_younger"
+  ]
+}

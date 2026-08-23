@@ -1,0 +1,174 @@
+{
+  "id": "active_blue_east_blue_01_marine_checkpoint_crates",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_marine_checkpoint_crates.title",
+  "textKey": "event.active_blue_east_blue_01_marine_checkpoint_crates.text",
+  "choices": [
+    {
+      "id": "read_the_officer",
+      "textKey": "event.active_blue_east_blue_01_marine_checkpoint_crates.choice.read_the_officer.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_the_officer_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_marine_checkpoint_crates.choice.read_the_officer.outcome.read_the_officer_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_marine_checkpoint_crates_i01_open_crate"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_the_officer_failure",
+            "textKey": "event.active_blue_east_blue_01_marine_checkpoint_crates.choice.read_the_officer.outcome.read_the_officer_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_marine_checkpoint_crates_i01_open_crate"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_the_officer_success",
+            "textKey": "event.active_blue_east_blue_01_marine_checkpoint_crates.choice.read_the_officer.outcome.read_the_officer_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_marine_checkpoint_crates_i01_open_crate"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_the_officer_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_marine_checkpoint_crates.choice.read_the_officer.outcome.read_the_officer_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_marine_checkpoint_crates_i01_open_crate"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "argue_the_manifest",
+      "textKey": "event.active_blue_east_blue_01_marine_checkpoint_crates.choice.argue_the_manifest.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "argue_the_manifest_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_marine_checkpoint_crates.choice.argue_the_manifest.outcome.argue_the_manifest_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_marine_checkpoint_crates_i01_open_crate"
+              }
+            ]
+          },
+          "failure": {
+            "id": "argue_the_manifest_failure",
+            "textKey": "event.active_blue_east_blue_01_marine_checkpoint_crates.choice.argue_the_manifest.outcome.argue_the_manifest_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_marine_checkpoint_crates_i01_open_crate"
+              }
+            ]
+          },
+          "success": {
+            "id": "argue_the_manifest_success",
+            "textKey": "event.active_blue_east_blue_01_marine_checkpoint_crates.choice.argue_the_manifest.outcome.argue_the_manifest_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_marine_checkpoint_crates_i01_open_crate"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "argue_the_manifest_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_marine_checkpoint_crates.choice.argue_the_manifest.outcome.argue_the_manifest_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_marine_checkpoint_crates_i01_open_crate"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "submit_to_search",
+      "textKey": "event.active_blue_east_blue_01_marine_checkpoint_crates.choice.submit_to_search.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "submit_to_search_outcome",
+          "textKey": "event.active_blue_east_blue_01_marine_checkpoint_crates.choice.submit_to_search.outcome.submit_to_search_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_east_blue_01_marine_checkpoint_crates_i01_open_crate"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "marine_presence"
+      }
+    ]
+  }
+}

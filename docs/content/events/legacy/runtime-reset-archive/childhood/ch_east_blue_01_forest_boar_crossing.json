@@ -1,0 +1,125 @@
+{
+  "id": "ch_east_blue_01_forest_boar_crossing",
+  "kind": "normal",
+  "titleKey": "event.ch_east_blue_01_forest_boar_crossing.title",
+  "textKey": "event.ch_east_blue_01_forest_boar_crossing.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "locationWithin",
+        "locationId": "dawn_island"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_animals",
+      "textKey": "event.ch_east_blue_01_forest_boar_crossing.choice.read_animals.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "startled_boar",
+            "textKey": "event.ch_east_blue_01_forest_boar_crossing.choice.read_animals.outcome.startled_boar.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "long_wait",
+            "textKey": "event.ch_east_blue_01_forest_boar_crossing.choice.read_animals.outcome.long_wait.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "quiet_passage",
+            "textKey": "event.ch_east_blue_01_forest_boar_crossing.choice.read_animals.outcome.quiet_passage.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "clear_behavior",
+            "textKey": "event.ch_east_blue_01_forest_boar_crossing.choice.read_animals.outcome.clear_behavior.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "backtrack",
+      "textKey": "event.ch_east_blue_01_forest_boar_crossing.choice.backtrack.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safe_detour",
+          "textKey": "event.ch_east_blue_01_forest_boar_crossing.choice.backtrack.outcome.safe_detour.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wait_in_silence",
+      "textKey": "event.ch_east_blue_01_forest_boar_crossing.choice.wait_in_silence.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "patient_wait",
+          "textKey": "event.ch_east_blue_01_forest_boar_crossing.choice.wait_in_silence.outcome.patient_wait.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

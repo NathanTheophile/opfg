@@ -1,0 +1,96 @@
+{
+  "id": "active_blue_south_blue_01_market_bell_crop",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "agricultural"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_market_bell_crop.title",
+  "textKey": "event.active_blue_south_blue_01_market_bell_crop.text",
+  "choices": [
+    {
+      "id": "buy_last_lot",
+      "textKey": "event.active_blue_south_blue_01_market_bell_crop.choice.buy_last_lot.text",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 750
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy",
+          "textKey": "event.active_blue_south_blue_01_market_bell_crop.choice.buy_last_lot.outcome.buy.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -750
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "find_buyer",
+      "textKey": "event.active_blue_south_blue_01_market_bell_crop.choice.find_buyer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buyer",
+          "textKey": "event.active_blue_south_blue_01_market_bell_crop.choice.find_buyer.outcome.buyer.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "help_repack",
+      "textKey": "event.active_blue_south_blue_01_market_bell_crop.choice.help_repack.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pack",
+          "textKey": "event.active_blue_south_blue_01_market_bell_crop.choice.help_repack.outcome.pack.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_bell",
+      "textKey": "event.active_blue_south_blue_01_market_bell_crop.choice.leave_bell.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_blue_south_blue_01_market_bell_crop.choice.leave_bell.outcome.leave.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

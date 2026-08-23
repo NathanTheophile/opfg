@@ -1,0 +1,68 @@
+{
+  "id": "family_marine_a02_between_ports_i01_thin_line",
+  "kind": "immediate",
+  "cast": [
+    "player_parent_1"
+  ],
+  "titleKey": "event.family_marine_a02_between_ports_i01_thin_line.title",
+  "textKey": "event.family_marine_a02_between_ports_i01_thin_line.text",
+  "choices": [
+    {
+      "id": "reply",
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "family_marine_a02_between_ports",
+        "choiceId": "reply_to_him"
+      },
+      "textKey": "event.family_marine_a02_between_ports_i01_thin_line.choice.reply.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "thread_kept",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 3
+            }
+          ],
+          "textKey": "event.family_marine_a02_between_ports_i01_thin_line.choice.reply.outcome.thread_kept.text"
+        }
+      }
+    },
+    {
+      "id": "file",
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "family_marine_a02_between_ports",
+        "choiceId": "file_message"
+      },
+      "textKey": "event.family_marine_a02_between_ports_i01_thin_line.choice.file.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trace_kept",
+          "effects": [],
+          "textKey": "event.family_marine_a02_between_ports_i01_thin_line.choice.file.outcome.trace_kept.text"
+        }
+      }
+    },
+    {
+      "id": "blank",
+      "availableIf": {
+        "type": "hasChosen",
+        "eventId": "family_marine_a02_between_ports",
+        "choiceId": "return_blank"
+      },
+      "textKey": "event.family_marine_a02_between_ports_i01_thin_line.choice.blank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "silence_owned",
+          "effects": [],
+          "textKey": "event.family_marine_a02_between_ports_i01_thin_line.choice.blank.outcome.silence_owned.text"
+        }
+      }
+    }
+  ]
+}

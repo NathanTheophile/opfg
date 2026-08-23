@@ -1,0 +1,69 @@
+{
+  "id": "ch_generic_early_01_rules_of_game_i2_someone_leaves",
+  "titleKey": "event.ch_generic_early_01_rules_of_game_i2_someone_leaves.title",
+  "textKey": "event.ch_generic_early_01_rules_of_game_i2_someone_leaves.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "offer_restart",
+      "textKey": "event.ch_generic_early_01_rules_of_game_i2_someone_leaves.choice.offer_restart.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "restart_offered",
+          "textKey": "event.ch_generic_early_01_rules_of_game_i2_someone_leaves.choice.offer_restart.outcome.restart_offered.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_rules_of_game_i3_new_rule"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_leave",
+      "textKey": "event.ch_generic_early_01_rules_of_game_i2_someone_leaves.choice.let_leave.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "departure_respected",
+          "textKey": "event.ch_generic_early_01_rules_of_game_i2_someone_leaves.choice.let_leave.outcome.departure_respected.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_rules_of_game_i3_new_rule"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "apologize",
+      "textKey": "event.ch_generic_early_01_rules_of_game_i2_someone_leaves.choice.apologize.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "apology_made",
+          "textKey": "event.ch_generic_early_01_rules_of_game_i2_someone_leaves.choice.apologize.outcome.apology_made.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_rules_of_game_i3_new_rule"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "id": "ch_family_social_01_eviction_notice",
+  "titleKey": "event.ch_family_social_01_eviction_notice.title",
+  "textKey": "event.ch_family_social_01_eviction_notice.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 174
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "socialClassIs",
+            "socialClassId": "poor"
+          },
+          {
+            "type": "socialClassIs",
+            "socialClassId": "modest"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "check_notice",
+      "textKey": "event.ch_family_social_01_eviction_notice.choice.check_notice.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "misread_notice",
+            "textKey": "event.ch_family_social_01_eviction_notice.choice.check_notice.outcome.misread_notice.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "notice_unclear",
+            "textKey": "event.ch_family_social_01_eviction_notice.choice.check_notice.outcome.notice_unclear.text",
+            "effects": []
+          },
+          "success": {
+            "id": "notice_understood",
+            "textKey": "event.ch_family_social_01_eviction_notice.choice.check_notice.outcome.notice_understood.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "notice_flaw",
+            "textKey": "event.ch_family_social_01_eviction_notice.choice.check_notice.outcome.notice_flaw.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "call_neighbors",
+      "textKey": "event.ch_family_social_01_eviction_notice.choice.call_neighbors.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "neighbors_called",
+          "textKey": "event.ch_family_social_01_eviction_notice.choice.call_neighbors.outcome.neighbors_called.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "remove_notice",
+      "textKey": "event.ch_family_social_01_eviction_notice.choice.remove_notice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "notice_removed",
+          "textKey": "event.ch_family_social_01_eviction_notice.choice.remove_notice.outcome.notice_removed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

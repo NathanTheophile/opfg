@@ -1,0 +1,105 @@
+{
+  "id": "active_blue_south_blue_01_cold_port_auction",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "snow"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_cold_port_auction.title",
+  "textKey": "event.active_blue_south_blue_01_cold_port_auction.text",
+  "choices": [
+    {
+      "id": "bid_low",
+      "textKey": "event.active_blue_south_blue_01_cold_port_auction.choice.bid_low.text",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bid",
+          "textKey": "event.active_blue_south_blue_01_cold_port_auction.choice.bid_low.outcome.bid.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "inspect_frost",
+      "textKey": "event.active_blue_south_blue_01_cold_port_auction.choice.inspect_frost.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "inspect",
+          "textKey": "event.active_blue_south_blue_01_cold_port_auction.choice.inspect_frost.outcome.inspect.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "help_cover",
+      "textKey": "event.active_blue_south_blue_01_cold_port_auction.choice.help_cover.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cover",
+          "textKey": "event.active_blue_south_blue_01_cold_port_auction.choice.help_cover.outcome.cover.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_auction",
+      "textKey": "event.active_blue_south_blue_01_cold_port_auction.choice.leave_auction.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_blue_south_blue_01_cold_port_auction.choice.leave_auction.outcome.leave.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

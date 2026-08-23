@@ -1,0 +1,66 @@
+{
+  "id": "active_bounty_hunter_01_phantom_warrants_s08_ledger_match",
+  "titleKey": "event.active_bounty_hunter_01_phantom_warrants_s08_ledger_match.title",
+  "textKey": "event.active_bounty_hunter_01_phantom_warrants_s08_ledger_match.text",
+  "choices": [
+    {
+      "id": "follow_payments",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s08_ledger_match.choice.follow_payments.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s08_ledger_match.choice.follow_payments.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s09_ledger_source",
+              "delayMonths": 14
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compare_dates",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s08_ledger_match.choice.compare_dates.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s08_ledger_match.choice.compare_dates.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s09_ledger_source",
+              "delayMonths": 14
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "bounty_hunter"
+    }
+  },
+  "eligibility": {
+    "type": "isOnLand"
+  }
+}

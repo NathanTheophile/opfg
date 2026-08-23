@@ -1,0 +1,138 @@
+{
+  "id": "family_marine_04_dinner_interrupted",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_marine",
+    "chapterId": "childhood_02",
+    "nodeId": "family_marine_04_dinner_interrupted",
+    "parentNodeIds": [
+      "family_marine_01_family_pennant"
+    ],
+    "selectionPriority": 20
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "familyStructureIs",
+        "familyStructureId": "two_parents"
+      },
+      {
+        "type": "originParentPresent",
+        "role": "father"
+      },
+      {
+        "type": "originParentPresent",
+        "role": "mother"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasOutcome",
+            "eventId": "family_marine_01_family_pennant",
+            "outcomeId": "grab"
+          },
+          {
+            "type": "hasOutcome",
+            "eventId": "family_marine_01_family_pennant",
+            "outcomeId": "return"
+          }
+        ]
+      }
+    ]
+  },
+  "cast": [
+    "player_parent_1",
+    "player_parent_2"
+  ],
+  "titleKey": "event.family_marine_04_dinner_interrupted.title",
+  "textKey": "event.family_marine_04_dinner_interrupted.text",
+  "choices": [
+    {
+      "id": "pull_father",
+      "textKey": "event.family_marine_04_dinner_interrupted.choice.pull_father.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pull_father",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_04_dinner_interrupted_i01_two_duties"
+            }
+          ],
+          "textKey": "event.family_marine_04_dinner_interrupted.choice.pull_father.outcome.pull_father.text"
+        }
+      }
+    },
+    {
+      "id": "push_plate",
+      "textKey": "event.family_marine_04_dinner_interrupted.choice.push_plate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "push_plate",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_04_dinner_interrupted_i01_two_duties"
+            }
+          ],
+          "textKey": "event.family_marine_04_dinner_interrupted.choice.push_plate.outcome.push_plate.text"
+        }
+      }
+    },
+    {
+      "id": "say_stay",
+      "textKey": "event.family_marine_04_dinner_interrupted.choice.say_stay.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "stay_cf",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_04_dinner_interrupted_i01_two_duties"
+              }
+            ],
+            "textKey": "event.family_marine_04_dinner_interrupted.choice.say_stay.outcome.stay_cf.text"
+          },
+          "failure": {
+            "id": "stay_f",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_04_dinner_interrupted_i01_two_duties"
+              }
+            ],
+            "textKey": "event.family_marine_04_dinner_interrupted.choice.say_stay.outcome.stay_f.text"
+          },
+          "success": {
+            "id": "stay_s",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_04_dinner_interrupted_i01_two_duties"
+              }
+            ],
+            "textKey": "event.family_marine_04_dinner_interrupted.choice.say_stay.outcome.stay_s.text"
+          },
+          "criticalSuccess": {
+            "id": "stay_cs",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_04_dinner_interrupted_i01_two_duties"
+              }
+            ],
+            "textKey": "event.family_marine_04_dinner_interrupted.choice.say_stay.outcome.stay_cs.text"
+          }
+        }
+      }
+    }
+  ]
+}

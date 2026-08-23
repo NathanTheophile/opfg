@@ -1,0 +1,115 @@
+{
+  "id": "active_civilian_01_apprentice_request",
+  "titleKey": "event.active_civilian_01_apprentice_request.title",
+  "textKey": "event.active_civilian_01_apprentice_request.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 20
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "ship_repair"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "medical"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "research"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "mentor",
+      "textKey": "event.active_civilian_01_apprentice_request.choice.mentor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mentor_result",
+          "textKey": "event.active_civilian_01_apprentice_request.choice.mentor.outcome.mentor_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_apprentice_return",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "short_trial",
+      "textKey": "event.active_civilian_01_apprentice_request.choice.short_trial.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "short_trial_result",
+          "textKey": "event.active_civilian_01_apprentice_request.choice.short_trial.outcome.short_trial_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_apprentice_return",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline",
+      "textKey": "event.active_civilian_01_apprentice_request.choice.decline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decline_result",
+          "textKey": "event.active_civilian_01_apprentice_request.choice.decline.outcome.decline_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "id": "active_paradise_no_log_pose_hazard",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "grand_line_paradise"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "activeLogPoseIs",
+          "logPoseType": "paradise"
+        }
+      }
+    ]
+  },
+  "titleKey": "event.active_paradise_no_log_pose_hazard.title",
+  "textKey": "event.active_paradise_no_log_pose_hazard.text",
+  "choices": [
+    {
+      "id": "trust_instinct",
+      "textKey": "event.active_paradise_no_log_pose_hazard.choice.trust_instinct.text",
+      "resolution": {
+        "type": "dice",
+        "actor": {
+          "type": "player"
+        },
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_paradise_no_log_pose_hazard.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -7
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_paradise_no_log_pose_hazard.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_paradise_no_log_pose_hazard.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_paradise_no_log_pose_hazard.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "wait_for_sign",
+      "textKey": "event.active_paradise_no_log_pose_hazard.choice.wait_for_sign.text",
+      "resolution": {
+        "type": "dice",
+        "actor": {
+          "type": "player"
+        },
+        "statId": "observation",
+        "successThreshold": 13,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_paradise_no_log_pose_hazard.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -7
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_paradise_no_log_pose_hazard.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_paradise_no_log_pose_hazard.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_paradise_no_log_pose_hazard.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "replay": {
+    "cooldownMonths": 1
+  }
+}

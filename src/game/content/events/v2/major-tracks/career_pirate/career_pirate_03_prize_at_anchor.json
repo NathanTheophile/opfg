@@ -1,0 +1,183 @@
+{
+  "id": "career_pirate_03_prize_at_anchor",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_03_crew_and_keel",
+    "nodeId": "career_pirate_03_prize_at_anchor",
+    "parentNodeIds": [
+      "career_pirate_02_red_sail_toll",
+      "career_pirate_02_harbor_debt",
+      "career_pirate_02_false_manifest",
+      "career_pirate_02_first_story_spreads"
+    ],
+    "selectionPriority": 40
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "not",
+        "condition": {
+          "type": "hasShip"
+        }
+      },
+      {
+        "type": "canAcquireShip",
+        "shipId": "sloop"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.career_pirate_03_prize_at_anchor.title",
+  "textKey": "event.career_pirate_03_prize_at_anchor.text",
+  "choices": [
+    {
+      "id": "take_deck",
+      "textKey": "event.career_pirate_03_prize_at_anchor.choice.take_deck.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "take_deck_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -2
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_03_prize_at_anchor_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_03_prize_at_anchor.choice.take_deck.outcome.take_deck_criticalFailure.text"
+          },
+          "failure": {
+            "id": "take_deck_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_03_prize_at_anchor_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_03_prize_at_anchor.choice.take_deck.outcome.take_deck_failure.text"
+          },
+          "success": {
+            "id": "take_deck_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 10000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_03_prize_at_anchor_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_03_prize_at_anchor.choice.take_deck.outcome.take_deck_success.text"
+          },
+          "criticalSuccess": {
+            "id": "take_deck_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 20000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_03_prize_at_anchor_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_03_prize_at_anchor.choice.take_deck.outcome.take_deck_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "buy_claim",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 5000
+      },
+      "textKey": "event.career_pirate_03_prize_at_anchor.choice.buy_claim.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy_claim",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -5000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_03_prize_at_anchor_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_03_prize_at_anchor.choice.buy_claim.outcome.buy_claim.text"
+        }
+      }
+    },
+    {
+      "id": "sell_location",
+      "textKey": "event.career_pirate_03_prize_at_anchor.choice.sell_location.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sell_location",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 4000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_03_prize_at_anchor_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_03_prize_at_anchor.choice.sell_location.outcome.sell_location.text"
+        }
+      }
+    }
+  ]
+}

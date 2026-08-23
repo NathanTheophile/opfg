@@ -1,0 +1,177 @@
+{
+  "id": "active_generic_land_03_mystery_waxed_lock",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_03_mystery_waxed_lock.title",
+  "textKey": "event.active_generic_land_03_mystery_waxed_lock.text",
+  "choices": [
+    {
+      "id": "read_lock",
+      "textKey": "event.active_generic_land_03_mystery_waxed_lock.choice.read_lock.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_lock_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_waxed_lock.choice.read_lock.outcome.read_lock_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_waxed_lock_i01_ceiling_thread"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_lock_failure",
+            "textKey": "event.active_generic_land_03_mystery_waxed_lock.choice.read_lock.outcome.read_lock_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_waxed_lock_i01_ceiling_thread"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_lock_success",
+            "textKey": "event.active_generic_land_03_mystery_waxed_lock.choice.read_lock.outcome.read_lock_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_waxed_lock_i01_ceiling_thread"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_lock_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_waxed_lock.choice.read_lock.outcome.read_lock_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_waxed_lock_i01_ceiling_thread"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "test_wax",
+      "textKey": "event.active_generic_land_03_mystery_waxed_lock.choice.test_wax.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "test_wax_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_waxed_lock.choice.test_wax.outcome.test_wax_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_waxed_lock_i01_ceiling_thread"
+              }
+            ]
+          },
+          "failure": {
+            "id": "test_wax_failure",
+            "textKey": "event.active_generic_land_03_mystery_waxed_lock.choice.test_wax.outcome.test_wax_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_waxed_lock_i01_ceiling_thread"
+              }
+            ]
+          },
+          "success": {
+            "id": "test_wax_success",
+            "textKey": "event.active_generic_land_03_mystery_waxed_lock.choice.test_wax.outcome.test_wax_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_waxed_lock_i01_ceiling_thread"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "test_wax_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_waxed_lock.choice.test_wax.outcome.test_wax_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_waxed_lock_i01_ceiling_thread"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "move_trunk",
+      "textKey": "event.active_generic_land_03_mystery_waxed_lock.choice.move_trunk.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "moved_trunk",
+          "textKey": "event.active_generic_land_03_mystery_waxed_lock.choice.move_trunk.outcome.moved_trunk.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_waxed_lock_i01_ceiling_thread"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

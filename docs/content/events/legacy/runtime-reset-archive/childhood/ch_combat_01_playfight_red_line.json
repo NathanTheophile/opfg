@@ -1,0 +1,110 @@
+{
+  "id": "ch_combat_01_playfight_red_line",
+  "titleKey": "event.ch_combat_01_playfight_red_line.title",
+  "textKey": "event.ch_combat_01_playfight_red_line.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "break_the_hold",
+      "textKey": "event.ch_combat_01_playfight_red_line.choice.break_the_hold.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hold_broken",
+          "textKey": "event.ch_combat_01_playfight_red_line.choice.break_the_hold.outcome.hold_broken.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_playfight_red_line_i1"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_playfight_red_line_echo",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stand_between",
+      "textKey": "event.ch_combat_01_playfight_red_line.choice.stand_between.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pause_imposed",
+          "textKey": "event.ch_combat_01_playfight_red_line.choice.stand_between.outcome.pause_imposed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_playfight_red_line_i1"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_playfight_red_line_echo",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "answer_with_a_shove",
+      "textKey": "event.ch_combat_01_playfight_red_line.choice.answer_with_a_shove.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shove_answered",
+          "textKey": "event.ch_combat_01_playfight_red_line.choice.answer_with_a_shove.outcome.shove_answered.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_playfight_red_line_i1"
+            },
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_playfight_red_line_echo",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

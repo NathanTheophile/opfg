@@ -1,0 +1,70 @@
+{
+  "id": "active_fish_man_corridor_01_i03_arrival",
+  "kind": "immediate",
+  "titleKey": "events.active_fish_man_corridor_01_i03_arrival.title",
+  "textKey": "events.active_fish_man_corridor_01_i03_arrival.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_fish_man_corridor_01_i02_under_red_line"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "take_the_slow_berth",
+      "textKey": "events.active_fish_man_corridor_01_i03_arrival.choices.take_the_slow_berth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_fish_man_corridor_01_i03_arrival_take_the_slow_berth_resolved",
+          "textKey": "events.active_fish_man_corridor_01_i03_arrival.choices.take_the_slow_berth.outcomes.resolved",
+          "effects": [
+            {
+              "type": "moveToLocation",
+              "locationId": "fish_man_island",
+              "travelState": "on_land"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_fish_man_corridor_01_departure_window",
+              "delayMonths": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step_into_the_light",
+      "textKey": "events.active_fish_man_corridor_01_i03_arrival.choices.step_into_the_light.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_fish_man_corridor_01_i03_arrival_step_into_the_light_resolved",
+          "textKey": "events.active_fish_man_corridor_01_i03_arrival.choices.step_into_the_light.outcomes.resolved",
+          "effects": [
+            {
+              "type": "moveToLocation",
+              "locationId": "fish_man_island",
+              "travelState": "on_land"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_fish_man_corridor_01_departure_window",
+              "delayMonths": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

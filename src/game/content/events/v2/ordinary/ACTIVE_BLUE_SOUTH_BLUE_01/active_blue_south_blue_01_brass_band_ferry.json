@@ -1,0 +1,86 @@
+{
+  "id": "active_blue_south_blue_01_brass_band_ferry",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_brass_band_ferry.title",
+  "textKey": "event.active_blue_south_blue_01_brass_band_ferry.text",
+  "choices": [
+    {
+      "id": "take_musicians",
+      "textKey": "event.active_blue_south_blue_01_brass_band_ferry.choice.take_musicians.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take",
+          "textKey": "event.active_blue_south_blue_01_brass_band_ferry.choice.take_musicians.outcome.take.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_south_blue_01_brass_band_ferry_i01_missing_tuba"
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "tow_ferry",
+      "textKey": "event.active_blue_south_blue_01_brass_band_ferry.choice.tow_ferry.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tow",
+          "textKey": "event.active_blue_south_blue_01_brass_band_ferry.choice.tow_ferry.outcome.tow.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_south_blue_01_brass_band_ferry_i01_missing_tuba"
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send_signal",
+      "textKey": "event.active_blue_south_blue_01_brass_band_ferry.choice.send_signal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "signal",
+          "textKey": "event.active_blue_south_blue_01_brass_band_ferry.choice.send_signal.outcome.signal.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_south_blue_01_brass_band_ferry_i01_missing_tuba"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

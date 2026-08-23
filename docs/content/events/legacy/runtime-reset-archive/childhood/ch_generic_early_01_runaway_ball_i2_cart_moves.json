@@ -1,0 +1,93 @@
+{
+  "id": "ch_generic_early_01_runaway_ball_i2_cart_moves",
+  "titleKey": "event.ch_generic_early_01_runaway_ball_i2_cart_moves.title",
+  "textKey": "event.ch_generic_early_01_runaway_ball_i2_cart_moves.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "stop_cart",
+      "textKey": "event.ch_generic_early_01_runaway_ball_i2_cart_moves.choice.stop_cart.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cart_stopped",
+          "textKey": "event.ch_generic_early_01_runaway_ball_i2_cart_moves.choice.stop_cart.outcome.cart_stopped.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_runaway_ball_i3_return_game"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "snatch_ball",
+      "textKey": "event.ch_generic_early_01_runaway_ball_i2_cart_moves.choice.snatch_ball.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "ball_crushed",
+            "textKey": "event.ch_generic_early_01_runaway_ball_i2_cart_moves.choice.snatch_ball.outcome.ball_crushed.text",
+            "effects": []
+          },
+          "failure": {
+            "id": "miss_again",
+            "textKey": "event.ch_generic_early_01_runaway_ball_i2_cart_moves.choice.snatch_ball.outcome.miss_again.text",
+            "effects": []
+          },
+          "success": {
+            "id": "ball_saved",
+            "textKey": "event.ch_generic_early_01_runaway_ball_i2_cart_moves.choice.snatch_ball.outcome.ball_saved.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_runaway_ball_i3_return_game"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "clean_save",
+            "textKey": "event.ch_generic_early_01_runaway_ball_i2_cart_moves.choice.snatch_ball.outcome.clean_save.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_runaway_ball_i3_return_game"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "give_up",
+      "textKey": "event.ch_generic_early_01_runaway_ball_i2_cart_moves.choice.give_up.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safe_loss",
+          "textKey": "event.ch_generic_early_01_runaway_ball_i2_cart_moves.choice.give_up.outcome.safe_loss.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

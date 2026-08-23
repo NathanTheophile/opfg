@@ -1,0 +1,78 @@
+{
+  "id": "active_civilian_01_lt_precision_queue",
+  "titleKey": "event.active_civilian_01_lt_precision_queue.title",
+  "textKey": "event.active_civilian_01_lt_precision_queue.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "inspect_longer",
+      "textKey": "event.active_civilian_01_lt_precision_queue.choice.inspect_longer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "inspect_longer_result",
+          "textKey": "event.active_civilian_01_lt_precision_queue.choice.inspect_longer.outcome.inspect_longer_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_material_standard",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_challenge",
+      "textKey": "event.active_civilian_01_lt_precision_queue.choice.take_challenge.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_challenge_result",
+          "textKey": "event.active_civilian_01_lt_precision_queue.choice.take_challenge.outcome.take_challenge_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_material_standard",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

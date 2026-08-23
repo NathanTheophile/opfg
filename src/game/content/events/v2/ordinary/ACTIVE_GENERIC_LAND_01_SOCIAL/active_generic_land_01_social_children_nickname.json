@@ -1,0 +1,104 @@
+{
+  "id": "active_generic_land_01_social_children_nickname",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_01_social_children_nickname.title",
+  "textKey": "event.active_generic_land_01_social_children_nickname.text",
+  "choices": [
+    {
+      "id": "adopt_the_nickname",
+      "textKey": "event.active_generic_land_01_social_children_nickname.choice.adopt_the_nickname.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "nickname_adopted",
+          "textKey": "event.active_generic_land_01_social_children_nickname.choice.adopt_the_nickname.outcome.nickname_adopted.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_children_nickname_i01_adult_scolding"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_them_to_stop",
+      "textKey": "event.active_generic_land_01_social_children_nickname.choice.ask_them_to_stop.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "asked_to_stop",
+          "textKey": "event.active_generic_land_01_social_children_nickname.choice.ask_them_to_stop.outcome.asked_to_stop.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_children_nickname_i01_adult_scolding"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "invent_a_worse_one",
+      "textKey": "event.active_generic_land_01_social_children_nickname.choice.invent_a_worse_one.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "worse_nickname",
+          "textKey": "event.active_generic_land_01_social_children_nickname.choice.invent_a_worse_one.outcome.worse_nickname.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_children_nickname_i01_adult_scolding"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "join_the_chant",
+      "textKey": "event.active_generic_land_01_social_children_nickname.choice.join_the_chant.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "sociable"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "chant_joined",
+          "textKey": "event.active_generic_land_01_social_children_nickname.choice.join_the_chant.outcome.chant_joined.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_children_nickname_i01_adult_scolding"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

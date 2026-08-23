@@ -1,0 +1,90 @@
+{
+  "id": "active_generic_land_01_lt_q2_last_witness",
+  "kind": "scheduled",
+  "titleKey": "event.active_generic_land_01_lt_q2_last_witness.title",
+  "textKey": "event.active_generic_land_01_lt_q2_last_witness.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "answer_precisely",
+      "textKey": "event.active_generic_land_01_lt_q2_last_witness.choice.answer_precisely.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_q2_last_witness.choice.answer_precisely.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_16_common_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "tell_whole_story",
+      "textKey": "event.active_generic_land_01_lt_q2_last_witness.choice.tell_whole_story.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_q2_last_witness.choice.tell_whole_story.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_16_common_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline_even_now",
+      "textKey": "event.active_generic_land_01_lt_q2_last_witness.choice.decline_even_now.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_lt_q2_last_witness.choice.decline_even_now.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_land_01_lt_16_common_return",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

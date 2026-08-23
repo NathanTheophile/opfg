@@ -1,0 +1,174 @@
+{
+  "id": "active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm.title",
+  "textKey": "event.active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm.text",
+  "choices": [
+    {
+      "id": "pre_turn",
+      "textKey": "event.active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm.choice.pre_turn.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "actor": {
+          "type": "player"
+        },
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_rain_whiteout_i02_reverse_squall"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_rain_whiteout_i02_reverse_squall"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "strip_canvas",
+      "textKey": "event.active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm.choice.strip_canvas.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "actor": {
+          "type": "player"
+        },
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_rain_whiteout_i02_reverse_squall"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_rain_whiteout_i02_reverse_squall"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "brace_exposed",
+      "textKey": "event.active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm.choice.brace_exposed.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "brace_exposed",
+          "textKey": "event.active_generic_sea_04_nav_hazard_rain_whiteout_i01_false_calm.outcome.brace_exposed.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "hasShip"
+  }
+}

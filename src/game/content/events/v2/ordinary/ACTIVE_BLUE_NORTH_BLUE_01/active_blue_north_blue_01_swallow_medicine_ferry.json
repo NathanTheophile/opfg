@@ -1,0 +1,150 @@
+{
+  "id": "active_blue_north_blue_01_swallow_medicine_ferry",
+  "kind": "normal",
+  "titleKey": "event.active_blue_north_blue_01_swallow_medicine_ferry.title",
+  "textKey": "event.active_blue_north_blue_01_swallow_medicine_ferry.text",
+  "choices": [
+    {
+      "id": "risk",
+      "textKey": "event.active_blue_north_blue_01_swallow_medicine_ferry.choice.risk.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "risk_criticalfailure",
+            "textKey": "event.active_blue_north_blue_01_swallow_medicine_ferry.choice.risk.outcome.risk_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_swallow_medicine_ferry_i01_missing_vial"
+              }
+            ]
+          },
+          "failure": {
+            "id": "risk_failure",
+            "textKey": "event.active_blue_north_blue_01_swallow_medicine_ferry.choice.risk.outcome.risk_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_swallow_medicine_ferry_i01_missing_vial"
+              }
+            ]
+          },
+          "success": {
+            "id": "risk_success",
+            "textKey": "event.active_blue_north_blue_01_swallow_medicine_ferry.choice.risk.outcome.risk_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_swallow_medicine_ferry_i01_missing_vial"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "risk_criticalsuccess",
+            "textKey": "event.active_blue_north_blue_01_swallow_medicine_ferry.choice.risk.outcome.risk_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_swallow_medicine_ferry_i01_missing_vial"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "approach_1",
+      "textKey": "event.active_blue_north_blue_01_swallow_medicine_ferry.choice.approach_1.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_1_outcome",
+          "textKey": "event.active_blue_north_blue_01_swallow_medicine_ferry.choice.approach_1.outcome.approach_1_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_north_blue_01_swallow_medicine_ferry_i01_missing_vial"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "approach_2",
+      "textKey": "event.active_blue_north_blue_01_swallow_medicine_ferry.choice.approach_2.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_2_outcome",
+          "textKey": "event.active_blue_north_blue_01_swallow_medicine_ferry.choice.approach_2.outcome.approach_2_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_north_blue_01_swallow_medicine_ferry_i01_missing_vial"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationWithin",
+        "locationId": "swallow_island"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "flevance"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "germa_empire"
+        }
+      }
+    ]
+  }
+}

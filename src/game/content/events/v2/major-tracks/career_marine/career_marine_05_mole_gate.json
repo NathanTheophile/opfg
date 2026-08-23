@@ -1,0 +1,171 @@
+{
+  "id": "career_marine_05_mole_gate",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_marine",
+    "chapterId": "active_05",
+    "nodeId": "career_marine_05_mole_gate",
+    "parentNodeIds": [
+      "career_marine_04_sealed_ledger",
+      "career_marine_04_counted_rations",
+      "career_marine_04_warehouse_four",
+      "career_marine_04_missing_signature"
+    ],
+    "selectionPriority": 20
+  },
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_04_sealed_ledger",
+        "outcomeId": "shield_success"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_04_sealed_ledger",
+        "outcomeId": "shield_criticalSuccess"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_04_counted_rations",
+        "outcomeId": "shield"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_04_warehouse_four",
+        "outcomeId": "shield"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_04_missing_signature",
+        "outcomeId": "shield"
+      }
+    ]
+  },
+  "titleKey": "event.career_marine_05_mole_gate.title",
+  "textKey": "event.career_marine_05_mole_gate.text",
+  "choices": [
+    {
+      "id": "duty",
+      "textKey": "event.career_marine_05_mole_gate.choice.duty.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "duty",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_marine_05_mole_gate_i01_resolution"
+            }
+          ],
+          "textKey": "event.career_marine_05_mole_gate.choice.duty.outcome.duty.text"
+        }
+      }
+    },
+    {
+      "id": "shield",
+      "textKey": "event.career_marine_05_mole_gate.choice.shield.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "shield_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_05_mole_gate_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_05_mole_gate.choice.shield.outcome.shield_criticalFailure.text"
+          },
+          "failure": {
+            "id": "shield_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_05_mole_gate_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_05_mole_gate.choice.shield.outcome.shield_failure.text"
+          },
+          "success": {
+            "id": "shield_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_05_mole_gate_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_05_mole_gate.choice.shield.outcome.shield_success.text"
+          },
+          "criticalSuccess": {
+            "id": "shield_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_05_mole_gate_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_05_mole_gate.choice.shield.outcome.shield_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "initiative",
+      "textKey": "event.career_marine_05_mole_gate.choice.initiative.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "initiative",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_marine_05_mole_gate_i01_resolution"
+            }
+          ],
+          "textKey": "event.career_marine_05_mole_gate.choice.initiative.outcome.initiative.text"
+        }
+      }
+    }
+  ]
+}

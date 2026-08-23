@@ -1,0 +1,56 @@
+{
+  "id": "ch_south_blue_01_taya_thread_s04_furrow_salt",
+  "titleKey": "event.ch_south_blue_01_taya_thread_s04_furrow_salt.title",
+  "textKey": "event.ch_south_blue_01_taya_thread_s04_furrow_salt.text",
+  "choices": [
+    {
+      "id": "move_outlet",
+      "textKey": "event.ch_south_blue_01_taya_thread_s04_furrow_salt.choice.move_outlet.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "outlet_moved",
+          "textKey": "event.ch_south_blue_01_taya_thread_s04_furrow_salt.choice.move_outlet.outcome.outlet_moved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_south_blue_01_taya_thread_s05_second_saltwind",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "flush_after_rain",
+      "textKey": "event.ch_south_blue_01_taya_thread_s04_furrow_salt.choice.flush_after_rain.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "salt_flushed",
+          "textKey": "event.ch_south_blue_01_taya_thread_s04_furrow_salt.choice.flush_after_rain.outcome.salt_flushed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_south_blue_01_taya_thread_s05_second_saltwind",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal"
+}

@@ -1,0 +1,181 @@
+{
+  "id": "active_blue_east_blue_01_fishing_net_lane",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_fishing_net_lane.title",
+  "textKey": "event.active_blue_east_blue_01_fishing_net_lane.text",
+  "choices": [
+    {
+      "id": "thread_the_gap",
+      "textKey": "event.active_blue_east_blue_01_fishing_net_lane.choice.thread_the_gap.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "thread_the_gap_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_fishing_net_lane.choice.thread_the_gap.outcome.thread_the_gap_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "thread_the_gap_failure",
+            "textKey": "event.active_blue_east_blue_01_fishing_net_lane.choice.thread_the_gap.outcome.thread_the_gap_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "thread_the_gap_success",
+            "textKey": "event.active_blue_east_blue_01_fishing_net_lane.choice.thread_the_gap.outcome.thread_the_gap_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "thread_the_gap_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_fishing_net_lane.choice.thread_the_gap.outcome.thread_the_gap_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_the_floats",
+      "textKey": "event.active_blue_east_blue_01_fishing_net_lane.choice.read_the_floats.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_the_floats_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_fishing_net_lane.choice.read_the_floats.outcome.read_the_floats_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "read_the_floats_failure",
+            "textKey": "event.active_blue_east_blue_01_fishing_net_lane.choice.read_the_floats.outcome.read_the_floats_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "read_the_floats_success",
+            "textKey": "event.active_blue_east_blue_01_fishing_net_lane.choice.read_the_floats.outcome.read_the_floats_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_the_floats_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_fishing_net_lane.choice.read_the_floats.outcome.read_the_floats_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "slow_and_call",
+      "textKey": "event.active_blue_east_blue_01_fishing_net_lane.choice.slow_and_call.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "slow_and_call_outcome",
+          "textKey": "event.active_blue_east_blue_01_fishing_net_lane.choice.slow_and_call.outcome.slow_and_call_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_east_blue_01_fishing_net_lane_i01_jammed_winch"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

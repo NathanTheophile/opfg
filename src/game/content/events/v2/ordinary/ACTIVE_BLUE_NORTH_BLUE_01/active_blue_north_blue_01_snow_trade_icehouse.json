@@ -1,0 +1,87 @@
+{
+  "id": "active_blue_north_blue_01_snow_trade_icehouse",
+  "kind": "normal",
+  "titleKey": "event.active_blue_north_blue_01_snow_trade_icehouse.title",
+  "textKey": "event.active_blue_north_blue_01_snow_trade_icehouse.text",
+  "choices": [
+    {
+      "id": "move_crates",
+      "textKey": "event.active_blue_north_blue_01_snow_trade_icehouse.choice.move_crates.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "move_crates_outcome",
+          "textKey": "event.active_blue_north_blue_01_snow_trade_icehouse.choice.move_crates.outcome.move_crates_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "brace_wall",
+      "textKey": "event.active_blue_north_blue_01_snow_trade_icehouse.choice.brace_wall.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "brace_wall_outcome",
+          "textKey": "event.active_blue_north_blue_01_snow_trade_icehouse.choice.brace_wall.outcome.brace_wall_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "close_room",
+      "textKey": "event.active_blue_north_blue_01_snow_trade_icehouse.choice.close_room.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "close_room_outcome",
+          "textKey": "event.active_blue_north_blue_01_snow_trade_icehouse.choice.close_room.outcome.close_room_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "snow"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "flevance"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "germa_empire"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "id": "ch_combat_01_low_wall_balance_i1",
+  "titleKey": "event.ch_combat_01_low_wall_balance_i1.title",
+  "textKey": "event.ch_combat_01_low_wall_balance_i1.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "warn_and_step",
+      "textKey": "event.ch_combat_01_low_wall_balance_i1.choice.warn_and_step.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "warned_step",
+          "textKey": "event.ch_combat_01_low_wall_balance_i1.choice.warn_and_step.outcome.warned_step.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_low_wall_balance_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "clear_everyone",
+      "textKey": "event.ch_combat_01_low_wall_balance_i1.choice.clear_everyone.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "everyone_cleared",
+          "textKey": "event.ch_combat_01_low_wall_balance_i1.choice.clear_everyone.outcome.everyone_cleared.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_low_wall_balance_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "test_with_foot",
+      "textKey": "event.ch_combat_01_low_wall_balance_i1.choice.test_with_foot.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stone_tested",
+          "textKey": "event.ch_combat_01_low_wall_balance_i1.choice.test_with_foot.outcome.stone_tested.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_low_wall_balance_i2"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

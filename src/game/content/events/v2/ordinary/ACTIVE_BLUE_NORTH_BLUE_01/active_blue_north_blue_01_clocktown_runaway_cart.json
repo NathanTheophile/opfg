@@ -1,0 +1,145 @@
+{
+  "id": "active_blue_north_blue_01_clocktown_runaway_cart",
+  "kind": "normal",
+  "titleKey": "event.active_blue_north_blue_01_clocktown_runaway_cart.title",
+  "textKey": "event.active_blue_north_blue_01_clocktown_runaway_cart.text",
+  "choices": [
+    {
+      "id": "risk",
+      "textKey": "event.active_blue_north_blue_01_clocktown_runaway_cart.choice.risk.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "risk_criticalfailure",
+            "textKey": "event.active_blue_north_blue_01_clocktown_runaway_cart.choice.risk.outcome.risk_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_clocktown_runaway_cart_i01_broken_axle"
+              }
+            ]
+          },
+          "failure": {
+            "id": "risk_failure",
+            "textKey": "event.active_blue_north_blue_01_clocktown_runaway_cart.choice.risk.outcome.risk_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_clocktown_runaway_cart_i01_broken_axle"
+              }
+            ]
+          },
+          "success": {
+            "id": "risk_success",
+            "textKey": "event.active_blue_north_blue_01_clocktown_runaway_cart.choice.risk.outcome.risk_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_clocktown_runaway_cart_i01_broken_axle"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "risk_criticalsuccess",
+            "textKey": "event.active_blue_north_blue_01_clocktown_runaway_cart.choice.risk.outcome.risk_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_north_blue_01_clocktown_runaway_cart_i01_broken_axle"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "approach_1",
+      "textKey": "event.active_blue_north_blue_01_clocktown_runaway_cart.choice.approach_1.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_1_outcome",
+          "textKey": "event.active_blue_north_blue_01_clocktown_runaway_cart.choice.approach_1.outcome.approach_1_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_north_blue_01_clocktown_runaway_cart_i01_broken_axle"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "approach_2",
+      "textKey": "event.active_blue_north_blue_01_clocktown_runaway_cart.choice.approach_2.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "approach_2_outcome",
+          "textKey": "event.active_blue_north_blue_01_clocktown_runaway_cart.choice.approach_2.outcome.approach_2_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_north_blue_01_clocktown_runaway_cart_i01_broken_axle"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "urban"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "flevance"
+        }
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "locationWithin",
+          "locationId": "germa_empire"
+        }
+      }
+    ]
+  }
+}

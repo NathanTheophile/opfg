@@ -1,0 +1,156 @@
+{
+  "id": "active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe.title",
+  "textKey": "event.active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe.text",
+  "choices": [
+    {
+      "id": "expose_offer",
+      "textKey": "event.active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe.choice.expose_offer.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "expose_offer_criticalfailure",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe.choice.expose_offer.outcome.expose_offer_criticalfailure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe_i01_queue_board"
+              }
+            ]
+          },
+          "failure": {
+            "id": "expose_offer_failure",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe.choice.expose_offer.outcome.expose_offer_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe_i01_queue_board"
+              }
+            ]
+          },
+          "success": {
+            "id": "expose_offer_success",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe.choice.expose_offer.outcome.expose_offer_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe_i01_queue_board"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "expose_offer_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe.choice.expose_offer.outcome.expose_offer_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe_i01_queue_board"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "audit_queue",
+      "textKey": "event.active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe.choice.audit_queue.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "audit_queue_criticalfailure",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe.choice.audit_queue.outcome.audit_queue_criticalfailure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe_i01_queue_board"
+              }
+            ]
+          },
+          "failure": {
+            "id": "audit_queue_failure",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe.choice.audit_queue.outcome.audit_queue_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe_i01_queue_board"
+              }
+            ]
+          },
+          "success": {
+            "id": "audit_queue_success",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe.choice.audit_queue.outcome.audit_queue_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe_i01_queue_board"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "audit_queue_criticalsuccess",
+            "textKey": "event.active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe.choice.audit_queue.outcome.audit_queue_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe_i01_queue_board"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ignore_bribe",
+      "textKey": "event.active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe.choice.ignore_bribe.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ignore_bribe_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_ironcurrent_repair_queue_bribe.choice.ignore_bribe.outcome.ignore_bribe_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "ironcurrent_island"
+      }
+    ]
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "id": "active_revolutionary_01_harbor_passage",
+  "kind": "normal",
+  "titleKey": "event.active_revolutionary_01_harbor_passage.title",
+  "textKey": "event.active_revolutionary_01_harbor_passage.text",
+  "choices": [
+    {
+      "id": "thread_the_quay",
+      "textKey": "event.active_revolutionary_01_harbor_passage.choice.thread_the_quay.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_revolutionary_01_harbor_passage.choice.thread_the_quay.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_revolutionary_01_harbor_passage.choice.thread_the_quay.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_revolutionary_01_harbor_passage.choice.thread_the_quay.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_revolutionary_01_harbor_passage_return",
+                "delayMonths": 6
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_revolutionary_01_harbor_passage.choice.thread_the_quay.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_revolutionary_01_harbor_passage_return",
+                "delayMonths": 6
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "buy_time",
+      "textKey": "event.active_revolutionary_01_harbor_passage.choice.buy_time.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_harbor_passage.choice.buy_time.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -800
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_revolutionary_01_harbor_passage_return",
+              "delayMonths": 6
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 800
+      }
+    },
+    {
+      "id": "ship_diversion",
+      "textKey": "event.active_revolutionary_01_harbor_passage.choice.ship_diversion.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_harbor_passage.choice.ship_diversion.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_revolutionary_01_harbor_passage_return",
+              "delayMonths": 6
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "hasShip"
+          },
+          {
+            "type": "isLeader"
+          }
+        ]
+      }
+    },
+    {
+      "id": "abort",
+      "textKey": "event.active_revolutionary_01_harbor_passage.choice.abort.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_harbor_passage.choice.abort.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  }
+}

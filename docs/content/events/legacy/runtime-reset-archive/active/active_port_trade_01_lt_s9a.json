@@ -1,0 +1,59 @@
+{
+  "id": "active_port_trade_01_lt_s9a",
+  "kind": "scheduled",
+  "titleKey": "event.active_port_trade_01_lt_s9a.title",
+  "textKey": "event.active_port_trade_01_lt_s9a.text",
+  "eligibility": {
+    "type": "locationHasService",
+    "serviceId": "trade"
+  },
+  "choices": [
+    {
+      "id": "reduire",
+      "textKey": "event.active_port_trade_01_lt_s9a.choice.reduire.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reduire",
+          "textKey": "event.active_port_trade_01_lt_s9a.choice.reduire.outcome.reduire.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s10",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "deleguer_textuel",
+      "textKey": "event.active_port_trade_01_lt_s9a.choice.deleguer_textuel.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "deleguer_textuel",
+          "textKey": "event.active_port_trade_01_lt_s9a.choice.deleguer_textuel.outcome.deleguer_textuel.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_lt_s10",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal"
+}

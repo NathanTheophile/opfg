@@ -1,0 +1,145 @@
+{
+  "id": "active_haki_armament_01_life_01_knot_returns",
+  "kind": "scheduled",
+  "titleKey": "event.active_haki_armament_01_life_01_knot_returns.title",
+  "textKey": "event.active_haki_armament_01_life_01_knot_returns.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "ordinary",
+      "textKey": "event.active_haki_armament_01_life_01_knot_returns.choice.ordinary.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_haki_armament_01_life_01_knot_returns.choice.ordinary.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_armament_01_life_02_first_measure",
+                "delayMonths": 10
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_haki_armament_01_life_01_knot_returns.choice.ordinary.outcome.failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_armament_01_life_02_first_measure",
+                "delayMonths": 10
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_haki_armament_01_life_01_knot_returns.choice.ordinary.outcome.success.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_armament_01_life_02_first_measure",
+                "delayMonths": 10
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_haki_armament_01_life_01_knot_returns.choice.ordinary.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_armament_01_life_02_first_measure",
+                "delayMonths": 10
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "haki",
+      "textKey": "event.active_haki_armament_01_life_01_knot_returns.choice.haki.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "success",
+          "textKey": "event.active_haki_armament_01_life_01_knot_returns.choice.haki.outcome.success.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_armament_01_life_02_first_measure",
+              "delayMonths": 10
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "armament",
+        "level": 1
+      }
+    },
+    {
+      "id": "awaken",
+      "textKey": "event.active_haki_armament_01_life_01_knot_returns.choice.awaken.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "awakened",
+          "textKey": "event.active_haki_armament_01_life_01_knot_returns.choice.awaken.outcome.awakened.text",
+          "effects": [
+            {
+              "type": "awakenHaki",
+              "hakiType": "armament"
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_armament_01_life_02_first_measure",
+              "delayMonths": 10
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hakiIsAwakened",
+              "hakiType": "armament"
+            }
+          },
+          {
+            "type": "hakiSourceTotalAtLeast",
+            "hakiType": "armament",
+            "value": 75
+          }
+        ]
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

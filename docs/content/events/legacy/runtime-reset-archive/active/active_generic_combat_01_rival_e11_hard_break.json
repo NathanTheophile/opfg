@@ -1,0 +1,60 @@
+{
+  "id": "active_generic_combat_01_rival_e11_hard_break",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_e11_hard_break.title",
+  "textKey": "event.active_generic_combat_01_rival_e11_hard_break.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "own",
+      "textKey": "event.active_generic_combat_01_rival_e11_hard_break.choice.own.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "own_outcome",
+          "textKey": "event.active_generic_combat_01_rival_e11_hard_break.choice.own.outcome.own_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_e12_hunt_or_end",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "repair",
+      "textKey": "event.active_generic_combat_01_rival_e11_hard_break.choice.repair.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "repair_outcome",
+          "textKey": "event.active_generic_combat_01_rival_e11_hard_break.choice.repair.outcome.repair_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_e12_hunt_or_end",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

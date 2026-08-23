@@ -1,0 +1,171 @@
+{
+  "id": "career_marine_09_ghost_squadron",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_marine",
+    "chapterId": "active_09",
+    "nodeId": "career_marine_09_ghost_squadron",
+    "parentNodeIds": [
+      "career_marine_08_closed_door_order",
+      "career_marine_08_escorted_witness",
+      "career_marine_08_black_seal",
+      "career_marine_08_unnamed_file"
+    ],
+    "selectionPriority": 20
+  },
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_08_closed_door_order",
+        "outcomeId": "initiative"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_08_escorted_witness",
+        "outcomeId": "initiative_success"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_08_escorted_witness",
+        "outcomeId": "initiative_criticalSuccess"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_08_black_seal",
+        "outcomeId": "initiative"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "career_marine_08_unnamed_file",
+        "outcomeId": "initiative"
+      }
+    ]
+  },
+  "titleKey": "event.career_marine_09_ghost_squadron.title",
+  "textKey": "event.career_marine_09_ghost_squadron.text",
+  "choices": [
+    {
+      "id": "duty",
+      "textKey": "event.career_marine_09_ghost_squadron.choice.duty.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "duty",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_marine_09_ghost_squadron_i01_resolution"
+            }
+          ],
+          "textKey": "event.career_marine_09_ghost_squadron.choice.duty.outcome.duty.text"
+        }
+      }
+    },
+    {
+      "id": "shield",
+      "textKey": "event.career_marine_09_ghost_squadron.choice.shield.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shield",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_marine_09_ghost_squadron_i01_resolution"
+            }
+          ],
+          "textKey": "event.career_marine_09_ghost_squadron.choice.shield.outcome.shield.text"
+        }
+      }
+    },
+    {
+      "id": "initiative",
+      "textKey": "event.career_marine_09_ghost_squadron.choice.initiative.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "initiative_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_09_ghost_squadron_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_09_ghost_squadron.choice.initiative.outcome.initiative_criticalFailure.text"
+          },
+          "failure": {
+            "id": "initiative_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_09_ghost_squadron_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_09_ghost_squadron.choice.initiative.outcome.initiative_failure.text"
+          },
+          "success": {
+            "id": "initiative_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_09_ghost_squadron_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_09_ghost_squadron.choice.initiative.outcome.initiative_success.text"
+          },
+          "criticalSuccess": {
+            "id": "initiative_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 4
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_marine_09_ghost_squadron_i01_resolution"
+              }
+            ],
+            "textKey": "event.career_marine_09_ghost_squadron.choice.initiative.outcome.initiative_criticalSuccess.text"
+          }
+        }
+      }
+    }
+  ]
+}

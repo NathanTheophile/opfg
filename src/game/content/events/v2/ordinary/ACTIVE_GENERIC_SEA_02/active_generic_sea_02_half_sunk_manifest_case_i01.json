@@ -1,0 +1,108 @@
+{
+  "id": "active_generic_sea_02_half_sunk_manifest_case_i01",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_02_half_sunk_manifest_case_i01.title",
+  "textKey": "event.active_generic_sea_02_half_sunk_manifest_case_i01.text",
+  "choices": [
+    {
+      "id": "separate_the_layers",
+      "textKey": "event.active_generic_sea_02_half_sunk_manifest_case_i01.choice.separate_the_layers.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "separate_the_layers_criticalFailure",
+            "textKey": "event.active_generic_sea_02_half_sunk_manifest_case_i01.outcome.separate_the_layers_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "separate_the_layers_failure",
+            "textKey": "event.active_generic_sea_02_half_sunk_manifest_case_i01.outcome.separate_the_layers_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_half_sunk_manifest_case_i02"
+              }
+            ]
+          },
+          "success": {
+            "id": "separate_the_layers_success",
+            "textKey": "event.active_generic_sea_02_half_sunk_manifest_case_i01.outcome.separate_the_layers_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_half_sunk_manifest_case_i02"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "separate_the_layers_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_half_sunk_manifest_case_i01.outcome.separate_the_layers_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_half_sunk_manifest_case_i02"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "dry_only_the_vouchers",
+      "textKey": "event.active_generic_sea_02_half_sunk_manifest_case_i01.choice.dry_only_the_vouchers.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "dry_only_the_vouchers_result",
+          "textKey": "event.active_generic_sea_02_half_sunk_manifest_case_i01.outcome.dry_only_the_vouchers_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 700
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_02_half_sunk_manifest_case_i02"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "discard_the_bundle",
+      "textKey": "event.active_generic_sea_02_half_sunk_manifest_case_i01.choice.discard_the_bundle.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "discard_the_bundle_result",
+          "textKey": "event.active_generic_sea_02_half_sunk_manifest_case_i01.outcome.discard_the_bundle_result.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

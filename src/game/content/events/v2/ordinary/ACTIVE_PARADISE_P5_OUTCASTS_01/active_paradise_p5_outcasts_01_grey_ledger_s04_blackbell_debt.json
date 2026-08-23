@@ -1,0 +1,79 @@
+{
+  "id": "active_paradise_p5_outcasts_01_grey_ledger_s04_blackbell_debt",
+  "kind": "scheduled",
+  "titleKey": "event.active_paradise_p5_outcasts_01_grey_ledger_s04_blackbell_debt.title",
+  "textKey": "event.active_paradise_p5_outcasts_01_grey_ledger_s04_blackbell_debt.text",
+  "choices": [
+    {
+      "id": "recouper_la_date",
+      "textKey": "event.active_paradise_p5_outcasts_01_grey_ledger_s04_blackbell_debt.choice.recouper_la_date.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "recouper_la_date_outcome",
+          "textKey": "event.active_paradise_p5_outcasts_01_grey_ledger_s04_blackbell_debt.choice.recouper_la_date.outcome.recouper_la_date_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p5_outcasts_01_grey_ledger_s05_close",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "laisser_la_dette_aux_concernes",
+      "textKey": "event.active_paradise_p5_outcasts_01_grey_ledger_s04_blackbell_debt.choice.laisser_la_dette_aux_concernes.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "laisser_la_dette_aux_concernes_outcome",
+          "textKey": "event.active_paradise_p5_outcasts_01_grey_ledger_s04_blackbell_debt.choice.laisser_la_dette_aux_concernes.outcome.laisser_la_dette_aux_concernes_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_paradise_p5_outcasts_01_grey_ledger_s05_close",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p5_outcasts"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "grand_line_paradise"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "not",
+        "condition": {
+          "type": "currentSeaIs",
+          "seaId": "grand_line_paradise"
+        }
+      },
+      {
+        "type": "locationIs",
+        "locationId": "sabaody_archipelago"
+      }
+    ]
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "id": "active_generic_land_01_forest_snare_line",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_01_forest_snare_line.title",
+  "textKey": "event.active_generic_land_01_forest_snare_line.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "forest"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "study_marks",
+      "textKey": "event.active_generic_land_01_forest_snare_line.choice.study_marks.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_land_01_forest_snare_line.choice.study_marks.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_forest_snare_line_i1_trapped_traveler"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_land_01_forest_snare_line.choice.study_marks.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_forest_snare_line_i1_trapped_traveler"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_land_01_forest_snare_line.choice.study_marks.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_forest_snare_line_i1_trapped_traveler"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_land_01_forest_snare_line.choice.study_marks.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_forest_snare_line_i1_trapped_traveler"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cut_first",
+      "textKey": "event.active_generic_land_01_forest_snare_line.choice.cut_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_forest_snare_line.choice.cut_first.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_forest_snare_line_i1_trapped_traveler"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_trapper",
+      "textKey": "event.active_generic_land_01_forest_snare_line.choice.call_trapper.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_forest_snare_line.choice.call_trapper.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_forest_snare_line_i1_trapped_traveler"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

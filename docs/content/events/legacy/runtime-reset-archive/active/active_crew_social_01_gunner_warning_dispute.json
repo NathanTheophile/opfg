@@ -1,0 +1,92 @@
+{
+  "id": "active_crew_social_01_gunner_warning_dispute",
+  "kind": "normal",
+  "titleKey": "event.active_crew_social_01_gunner_warning_dispute.title",
+  "textKey": "event.active_crew_social_01_gunner_warning_dispute.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "hasCrew"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasCrewRole",
+        "roleId": "gunner"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "allow_warning",
+      "textKey": "event.active_crew_social_01_gunner_warning_dispute.choice.allow_warning.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_gunner_warning_dispute.choice.allow_warning.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_gunner_warning_echo",
+              "delayMonths": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hold_fire",
+      "textKey": "event.active_crew_social_01_gunner_warning_dispute.choice.hold_fire.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_gunner_warning_dispute.choice.hold_fire.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "signal_other_way",
+      "textKey": "event.active_crew_social_01_gunner_warning_dispute.choice.signal_other_way.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_gunner_warning_dispute.choice.signal_other_way.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

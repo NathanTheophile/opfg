@@ -1,0 +1,101 @@
+{
+  "id": "ch_family_social_01_family_badge",
+  "titleKey": "event.ch_family_social_01_family_badge.title",
+  "textKey": "event.ch_family_social_01_family_badge.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 96
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "affiliationIs",
+          "affiliationId": "civilian"
+        }
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "repeat_family_story",
+      "textKey": "event.ch_family_social_01_family_badge.choice.repeat_family_story.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "story_repeated",
+          "textKey": "event.ch_family_social_01_family_badge.choice.repeat_family_story.outcome.story_repeated.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_family_badge_echo",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_why",
+      "textKey": "event.ch_family_social_01_family_badge.choice.ask_why.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "meaning_questioned",
+          "textKey": "event.ch_family_social_01_family_badge.choice.ask_why.outcome.meaning_questioned.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_family_badge_echo",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hide_connection",
+      "textKey": "event.ch_family_social_01_family_badge.choice.hide_connection.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "connection_hidden",
+          "textKey": "event.ch_family_social_01_family_badge.choice.hide_connection.outcome.connection_hidden.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_family_badge_echo",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

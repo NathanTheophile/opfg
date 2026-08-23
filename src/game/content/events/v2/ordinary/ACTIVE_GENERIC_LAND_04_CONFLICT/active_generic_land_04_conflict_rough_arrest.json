@@ -1,0 +1,179 @@
+{
+  "id": "active_generic_land_04_conflict_rough_arrest",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_04_conflict_rough_arrest.title",
+  "textKey": "event.active_generic_land_04_conflict_rough_arrest.text",
+  "choices": [
+    {
+      "id": "call_out",
+      "textKey": "event.active_generic_land_04_conflict_rough_arrest.choice.call_out",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "call_out_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_rough_arrest.outcome.call_out.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "failure": {
+            "id": "call_out_failure",
+            "textKey": "event.active_generic_land_04_conflict_rough_arrest.outcome.call_out.failure",
+            "effects": []
+          },
+          "success": {
+            "id": "call_out_success",
+            "textKey": "event.active_generic_land_04_conflict_rough_arrest.outcome.call_out.success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_rough_arrest_i01_witnesses"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "call_out_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_rough_arrest.outcome.call_out.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_rough_arrest_i01_witnesses"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "spot_money",
+      "textKey": "event.active_generic_land_04_conflict_rough_arrest.choice.spot_money",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "spot_money_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_rough_arrest.outcome.spot_money.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "failure": {
+            "id": "spot_money_failure",
+            "textKey": "event.active_generic_land_04_conflict_rough_arrest.outcome.spot_money.failure",
+            "effects": []
+          },
+          "success": {
+            "id": "spot_money_success",
+            "textKey": "event.active_generic_land_04_conflict_rough_arrest.outcome.spot_money.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_rough_arrest_i01_witnesses"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "spot_money_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_rough_arrest.outcome.spot_money.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_rough_arrest_i01_witnesses"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "marine_intervene",
+      "textKey": "event.active_generic_land_04_conflict_rough_arrest.choice.marine_intervene",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "marine_intervene",
+          "textKey": "event.active_generic_land_04_conflict_rough_arrest.outcome.marine_intervene",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_rough_arrest_i01_witnesses"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      }
+    },
+    {
+      "id": "leave",
+      "textKey": "event.active_generic_land_04_conflict_rough_arrest.choice.leave",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_generic_land_04_conflict_rough_arrest.outcome.leave",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "id": "family_pirate_26_institution_asks_about_family",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_pirate",
+    "chapterId": "adult_family_03",
+    "nodeId": "family_pirate_26_institution_asks_about_family",
+    "parentNodeIds": [
+      "family_pirate_22_bounty_reaches_old_harbor",
+      "family_pirate_22_family_name_on_clean_paper",
+      "family_pirate_22_fallback_debt_without_map"
+    ],
+    "selectionPriority": 10
+  },
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      }
+    ]
+  },
+  "titleKey": "event.family_pirate_26_institution_asks_about_family.title",
+  "textKey": "event.family_pirate_26_institution_asks_about_family.text",
+  "choices": [
+    {
+      "id": "facts_only",
+      "textKey": "event.family_pirate_26_institution_asks_about_family.choice.facts_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "facts_only",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_pirate_26_institution_asks_about_family_i01_evidence"
+            }
+          ],
+          "textKey": "event.family_pirate_26_institution_asks_about_family.choice.facts_only.outcome.facts_only.text"
+        }
+      }
+    },
+    {
+      "id": "protect_innocents_first",
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "family_pirate_13_no_innocents_code"
+      },
+      "textKey": "event.family_pirate_26_institution_asks_about_family.choice.protect_innocents_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "protect_innocents_first",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_pirate_26_institution_asks_about_family_i01_evidence"
+            }
+          ],
+          "textKey": "event.family_pirate_26_institution_asks_about_family.choice.protect_innocents_first.outcome.protect_innocents_first.text"
+        }
+      }
+    },
+    {
+      "id": "recuse",
+      "textKey": "event.family_pirate_26_institution_asks_about_family.choice.recuse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "recuse",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_pirate_26_institution_asks_about_family_i01_evidence"
+            }
+          ],
+          "textKey": "event.family_pirate_26_institution_asks_about_family.choice.recuse.outcome.recuse.text"
+        }
+      }
+    }
+  ]
+}

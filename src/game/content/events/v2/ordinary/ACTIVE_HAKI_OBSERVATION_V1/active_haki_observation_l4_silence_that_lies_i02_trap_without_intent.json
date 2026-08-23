@@ -1,0 +1,116 @@
+{
+  "id": "active_haki_observation_l4_silence_that_lies_i02_trap_without_intent",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l4_silence_that_lies_i02_trap_without_intent.title",
+  "textKey": "event.active_haki_observation_l4_silence_that_lies_i02_trap_without_intent.text",
+  "choices": [
+    {
+      "id": "drop_before_snap",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i02_trap_without_intent.choice.drop_before_snap.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "luck",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "trap_hits",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i02_trap_without_intent.choice.drop_before_snap.outcome.trap_hits.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -9
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i03_hostage_feint"
+              }
+            ]
+          },
+          "failure": {
+            "id": "partial_hit",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i02_trap_without_intent.choice.drop_before_snap.outcome.partial_hit.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i03_hostage_feint"
+              }
+            ]
+          },
+          "success": {
+            "id": "trap_missed",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i02_trap_without_intent.choice.drop_before_snap.outcome.trap_missed.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i03_hostage_feint"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "wire_seen_late_but_enough",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies_i02_trap_without_intent.choice.drop_before_snap.outcome.wire_seen_late_but_enough.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i03_hostage_feint"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "throw_weight",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i02_trap_without_intent.choice.throw_weight.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trap_spent",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i02_trap_without_intent.choice.throw_weight.outcome.trap_spent.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i03_hostage_feint"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "slow_scan",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies_i02_trap_without_intent.choice.slow_scan.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "terrain_matters",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies_i02_trap_without_intent.choice.slow_scan.outcome.terrain_matters.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i03_hostage_feint"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 3
+      }
+    }
+  ]
+}

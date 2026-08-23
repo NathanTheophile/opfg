@@ -1,0 +1,168 @@
+{
+  "id": "active_generic_land_02_commerce_delivery_shortfall",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_delivery_shortfall.title",
+  "textKey": "event.active_generic_land_02_commerce_delivery_shortfall.text",
+  "choices": [
+    {
+      "id": "audit_manifest",
+      "textKey": "event.active_generic_land_02_commerce_delivery_shortfall.choice.audit_manifest.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "audit_manifest_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_delivery_shortfall.choice.audit_manifest.outcome.audit_manifest_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1500
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_delivery_shortfall_i01_broker_settlement"
+              }
+            ]
+          },
+          "failure": {
+            "id": "audit_manifest_failure",
+            "textKey": "event.active_generic_land_02_commerce_delivery_shortfall.choice.audit_manifest.outcome.audit_manifest_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_delivery_shortfall_i01_broker_settlement"
+              }
+            ]
+          },
+          "success": {
+            "id": "audit_manifest_success",
+            "textKey": "event.active_generic_land_02_commerce_delivery_shortfall.choice.audit_manifest.outcome.audit_manifest_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_delivery_shortfall_i01_broker_settlement"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "audit_manifest_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_delivery_shortfall.choice.audit_manifest.outcome.audit_manifest_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_delivery_shortfall_i01_broker_settlement"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1500
+      }
+    },
+    {
+      "id": "hold_porters",
+      "textKey": "event.active_generic_land_02_commerce_delivery_shortfall.choice.hold_porters.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hold_porters_criticalfailure",
+            "textKey": "event.active_generic_land_02_commerce_delivery_shortfall.choice.hold_porters.outcome.hold_porters_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -1000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_delivery_shortfall_i01_broker_settlement"
+              }
+            ]
+          },
+          "failure": {
+            "id": "hold_porters_failure",
+            "textKey": "event.active_generic_land_02_commerce_delivery_shortfall.choice.hold_porters.outcome.hold_porters_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_delivery_shortfall_i01_broker_settlement"
+              }
+            ]
+          },
+          "success": {
+            "id": "hold_porters_success",
+            "textKey": "event.active_generic_land_02_commerce_delivery_shortfall.choice.hold_porters.outcome.hold_porters_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_delivery_shortfall_i01_broker_settlement"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hold_porters_criticalsuccess",
+            "textKey": "event.active_generic_land_02_commerce_delivery_shortfall.choice.hold_porters.outcome.hold_porters_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_02_commerce_delivery_shortfall_i01_broker_settlement"
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    },
+    {
+      "id": "sign_short",
+      "textKey": "event.active_generic_land_02_commerce_delivery_shortfall.choice.sign_short.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sign_short_outcome",
+          "textKey": "event.active_generic_land_02_commerce_delivery_shortfall.choice.sign_short.outcome.sign_short_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  }
+}

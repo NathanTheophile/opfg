@@ -1,0 +1,113 @@
+{
+  "id": "active_fish_man_corridor_01_local_bubble_hull_triage",
+  "kind": "normal",
+  "titleKey": "events.active_fish_man_corridor_01_local_bubble_hull_triage.title",
+  "textKey": "events.active_fish_man_corridor_01_local_bubble_hull_triage.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "fish_man_island"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "bleed_the_pressure",
+      "textKey": "events.active_fish_man_corridor_01_local_bubble_hull_triage.choices.bleed_the_pressure.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 13,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "active_fish_man_corridor_01_local_bubble_hull_triage_bleed_the_pressure_critical_failure",
+            "textKey": "events.active_fish_man_corridor_01_local_bubble_hull_triage.choices.bleed_the_pressure.outcomes.critical_failure",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -8
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              }
+            ]
+          },
+          "failure": {
+            "id": "active_fish_man_corridor_01_local_bubble_hull_triage_bleed_the_pressure_failure",
+            "textKey": "events.active_fish_man_corridor_01_local_bubble_hull_triage.choices.bleed_the_pressure.outcomes.failure",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              }
+            ]
+          },
+          "success": {
+            "id": "active_fish_man_corridor_01_local_bubble_hull_triage_bleed_the_pressure_success",
+            "textKey": "events.active_fish_man_corridor_01_local_bubble_hull_triage.choices.bleed_the_pressure.outcomes.success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "active_fish_man_corridor_01_local_bubble_hull_triage_bleed_the_pressure_critical_success",
+            "textKey": "events.active_fish_man_corridor_01_local_bubble_hull_triage.choices.bleed_the_pressure.outcomes.critical_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_for_a_full_check",
+      "textKey": "events.active_fish_man_corridor_01_local_bubble_hull_triage.choices.pay_for_a_full_check.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "active_fish_man_corridor_01_local_bubble_hull_triage_pay_for_a_full_check_resolved",
+          "textKey": "events.active_fish_man_corridor_01_local_bubble_hull_triage.choices.pay_for_a_full_check.outcomes.resolved",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -3000
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 3000
+      }
+    }
+  ]
+}

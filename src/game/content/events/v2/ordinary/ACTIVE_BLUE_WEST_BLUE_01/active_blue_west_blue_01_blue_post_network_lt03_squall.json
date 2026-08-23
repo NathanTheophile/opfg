@@ -1,0 +1,55 @@
+{
+  "id": "active_blue_west_blue_01_blue_post_network_lt03_squall",
+  "kind": "scheduled",
+  "titleKey": "event.active_blue_west_blue_01_blue_post_network_lt03_squall.title",
+  "textKey": "event.active_blue_west_blue_01_blue_post_network_lt03_squall.text",
+  "choices": [
+    {
+      "id": "keep_open",
+      "textKey": "event.active_blue_west_blue_01_blue_post_network_lt03_squall.choice.keep_open.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_open_outcome",
+          "textKey": "event.active_blue_west_blue_01_blue_post_network_lt03_squall.choice.keep_open.outcome.keep_open_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_west_blue_01_blue_post_network_lt04_open",
+              "delayMonths": 24
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fund_relays",
+      "textKey": "event.active_blue_west_blue_01_blue_post_network_lt03_squall.choice.fund_relays.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fund_relays_outcome",
+          "textKey": "event.active_blue_west_blue_01_blue_post_network_lt03_squall.choice.fund_relays.outcome.fund_relays_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_west_blue_01_blue_post_network_lt04_paid",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

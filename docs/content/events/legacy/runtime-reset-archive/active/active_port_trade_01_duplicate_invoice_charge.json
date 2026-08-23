@@ -1,0 +1,136 @@
+{
+  "id": "active_port_trade_01_duplicate_invoice_charge",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_duplicate_invoice_charge.title",
+  "textKey": "event.active_port_trade_01_duplicate_invoice_charge.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "general_goods"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "reconstruire",
+      "textKey": "event.active_port_trade_01_duplicate_invoice_charge.choice.reconstruire.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_port_trade_01_duplicate_invoice_charge.choice.reconstruire.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_port_trade_01_duplicate_invoice_charge_i1_stamps"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_port_trade_01_duplicate_invoice_charge.choice.reconstruire.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_port_trade_01_duplicate_invoice_charge_i1_stamps"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_port_trade_01_duplicate_invoice_charge.choice.reconstruire.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_port_trade_01_duplicate_invoice_charge_i1_stamps"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_port_trade_01_duplicate_invoice_charge.choice.reconstruire.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_port_trade_01_duplicate_invoice_charge_i1_stamps"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "contester",
+      "textKey": "event.active_port_trade_01_duplicate_invoice_charge.choice.contester.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "contestation",
+          "textKey": "event.active_port_trade_01_duplicate_invoice_charge.choice.contester.outcome.contestation.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_port_trade_01_duplicate_invoice_charge_i1_stamps"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "laisser",
+      "textKey": "event.active_port_trade_01_duplicate_invoice_charge.choice.laisser.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fin",
+          "textKey": "event.active_port_trade_01_duplicate_invoice_charge.choice.laisser.outcome.fin.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "id": "ch_south_blue_01_briss_tide_marks",
+  "titleKey": "event.ch_south_blue_01_briss_tide_marks.title",
+  "textKey": "event.ch_south_blue_01_briss_tide_marks.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "locationWithin",
+            "locationId": "briss_kingdom"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_piles",
+      "textKey": "event.ch_south_blue_01_briss_tide_marks.choice.read_piles.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "misread_tide",
+            "textKey": "event.ch_south_blue_01_briss_tide_marks.choice.read_piles.outcome.misread_tide.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "uncertain_tide",
+            "textKey": "event.ch_south_blue_01_briss_tide_marks.choice.read_piles.outcome.uncertain_tide.text",
+            "effects": []
+          },
+          "success": {
+            "id": "low_water",
+            "textKey": "event.ch_south_blue_01_briss_tide_marks.choice.read_piles.outcome.low_water.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "timing_window",
+            "textKey": "event.ch_south_blue_01_briss_tide_marks.choice.read_piles.outcome.timing_window.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "wait_one_cycle",
+      "textKey": "event.ch_south_blue_01_briss_tide_marks.choice.wait_one_cycle.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "boat_waits",
+          "textKey": "event.ch_south_blue_01_briss_tide_marks.choice.wait_one_cycle.outcome.boat_waits.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_soundings",
+      "textKey": "event.ch_south_blue_01_briss_tide_marks.choice.ask_soundings.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "depth_checked",
+          "textKey": "event.ch_south_blue_01_briss_tide_marks.choice.ask_soundings.outcome.depth_checked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

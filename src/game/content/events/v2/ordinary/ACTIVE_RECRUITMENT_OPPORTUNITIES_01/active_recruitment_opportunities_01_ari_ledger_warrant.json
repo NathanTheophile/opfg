@@ -1,0 +1,143 @@
+{
+  "id": "active_recruitment_opportunities_01_ari_ledger_warrant",
+  "kind": "normal",
+  "cast": [
+    "ari"
+  ],
+  "titleKey": "event.active_recruitment_opportunities_01_ari_ledger_warrant.title",
+  "textKey": "event.active_recruitment_opportunities_01_ari_ledger_warrant.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 227
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "medical"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_recruitment_existing_cast_01_ari_false_name_patient"
+      },
+      {
+        "type": "npcMonthsSinceInteractionAtLeast",
+        "npcId": "ari",
+        "value": 1
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "ari",
+              "status": "crew"
+            }
+          ]
+        }
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "ari"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "take_ari_under_your_cover",
+      "textKey": "event.active_recruitment_opportunities_01_ari_ledger_warrant.choice.take_ari_under_your_cover.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "join",
+          "textKey": "event.active_recruitment_opportunities_01_ari_ledger_warrant.choice.take_ari_under_your_cover.outcome.join.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "ari",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "ari",
+              "amount": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "swap_the_ledger_page",
+      "textKey": "event.active_recruitment_opportunities_01_ari_ledger_warrant.choice.swap_the_ledger_page.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "swap",
+          "textKey": "event.active_recruitment_opportunities_01_ari_ledger_warrant.choice.swap_the_ledger_page.outcome.swap.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "ari",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "tell_ari_to_answer_the_warrant",
+      "textKey": "event.active_recruitment_opportunities_01_ari_ledger_warrant.choice.tell_ari_to_answer_the_warrant.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "surrender",
+          "textKey": "event.active_recruitment_opportunities_01_ari_ledger_warrant.choice.tell_ari_to_answer_the_warrant.outcome.surrender.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "ari",
+              "amount": -6
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

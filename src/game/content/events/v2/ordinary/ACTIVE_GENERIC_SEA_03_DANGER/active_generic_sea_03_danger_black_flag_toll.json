@@ -1,0 +1,84 @@
+{
+  "id": "active_generic_sea_03_danger_black_flag_toll",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_03_danger_black_flag_toll.title",
+  "textKey": "event.active_generic_sea_03_danger_black_flag_toll.text",
+  "choices": [
+    {
+      "id": "pay_toll",
+      "textKey": "event.active_generic_sea_03_danger_black_flag_toll.choice.pay_toll.text",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2000
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_toll",
+          "textKey": "event.active_generic_sea_03_danger_black_flag_toll.outcome.pay_toll.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2000
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_broadside",
+      "textKey": "event.active_generic_sea_03_danger_black_flag_toll.choice.take_broadside.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_broadside",
+          "textKey": "event.active_generic_sea_03_danger_black_flag_toll.outcome.take_broadside.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -4
+            }
+          ],
+          "shipDamageCause": "enemy"
+        }
+      }
+    },
+    {
+      "id": "false_surrender",
+      "textKey": "event.active_generic_sea_03_danger_black_flag_toll.choice.false_surrender.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "false_surrender",
+          "textKey": "event.active_generic_sea_03_danger_black_flag_toll.outcome.false_surrender.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

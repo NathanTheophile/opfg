@@ -1,0 +1,58 @@
+{
+  "id": "active_generic_land_02_commerce_overbooked_berth_i01_loading_window",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_02_commerce_overbooked_berth_i01_loading_window.title",
+  "textKey": "event.active_generic_land_02_commerce_overbooked_berth_i01_loading_window.text",
+  "choices": [
+    {
+      "id": "priority_crates",
+      "textKey": "event.active_generic_land_02_commerce_overbooked_berth_i01_loading_window.choice.priority_crates.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "priority_crates_outcome",
+          "textKey": "event.active_generic_land_02_commerce_overbooked_berth_i01_loading_window.choice.priority_crates.outcome.priority_crates_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "hire_hands",
+      "textKey": "event.active_generic_land_02_commerce_overbooked_berth_i01_loading_window.choice.hire_hands.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hire_hands_outcome",
+          "textKey": "event.active_generic_land_02_commerce_overbooked_berth_i01_loading_window.choice.hire_hands.outcome.hire_hands_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -500
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 500
+      }
+    },
+    {
+      "id": "share_hands",
+      "textKey": "event.active_generic_land_02_commerce_overbooked_berth_i01_loading_window.choice.share_hands.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "share_hands_outcome",
+          "textKey": "event.active_generic_land_02_commerce_overbooked_berth_i01_loading_window.choice.share_hands.outcome.share_hands_outcome.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

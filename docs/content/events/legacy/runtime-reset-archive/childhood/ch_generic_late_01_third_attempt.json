@@ -1,0 +1,90 @@
+{
+  "id": "ch_generic_late_01_third_attempt",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_third_attempt.title",
+  "textKey": "event.ch_generic_late_01_third_attempt.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "try_again",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resilient_gain",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "resilient"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_third_attempt.choice.try_again.outcome.resilient_gain.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_third_attempt.choice.try_again.text",
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "resilient"
+        }
+      }
+    },
+    {
+      "id": "change_method",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "method",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_third_attempt.choice.change_method.outcome.method.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_third_attempt.choice.change_method.text"
+    },
+    {
+      "id": "stop_today",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stop",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_third_attempt.choice.stop_today.outcome.stop.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_third_attempt.choice.stop_today.text"
+    }
+  ]
+}

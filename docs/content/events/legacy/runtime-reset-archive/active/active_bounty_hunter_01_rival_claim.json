@@ -1,0 +1,156 @@
+{
+  "id": "active_bounty_hunter_01_rival_claim",
+  "titleKey": "event.active_bounty_hunter_01_rival_claim.title",
+  "textKey": "event.active_bounty_hunter_01_rival_claim.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "bounty_hunter"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "marine_services"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "argue_proof",
+      "textKey": "event.active_bounty_hunter_01_rival_claim.choice.argue_proof.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_bounty_hunter_01_rival_claim.choice.argue_proof.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 500
+              },
+              {
+                "type": "modifyReputation",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_rival_claim_return",
+                "delayMonths": 4
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_bounty_hunter_01_rival_claim.choice.argue_proof.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 900
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_rival_claim_return",
+                "delayMonths": 4
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_bounty_hunter_01_rival_claim.choice.argue_proof.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 1500
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_rival_claim_return",
+                "delayMonths": 4
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_bounty_hunter_01_rival_claim.choice.argue_proof.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": 1600
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_bounty_hunter_01_rival_claim_return",
+                "delayMonths": 4
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "split",
+      "textKey": "event.active_bounty_hunter_01_rival_claim.choice.split.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_rival_claim.choice.split.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1000
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_rival_claim_return",
+              "delayMonths": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "walk",
+      "textKey": "event.active_bounty_hunter_01_rival_claim.choice.walk.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_rival_claim.choice.walk.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_rival_claim_return",
+              "delayMonths": 4
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

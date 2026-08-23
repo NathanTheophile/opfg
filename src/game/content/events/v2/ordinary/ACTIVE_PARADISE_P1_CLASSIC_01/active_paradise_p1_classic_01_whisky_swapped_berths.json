@@ -1,0 +1,105 @@
+{
+  "id": "active_paradise_p1_classic_01_whisky_swapped_berths",
+  "kind": "normal",
+  "titleKey": "event.active_paradise_p1_classic_01_whisky_swapped_berths.title",
+  "textKey": "event.active_paradise_p1_classic_01_whisky_swapped_berths.text",
+  "choices": [
+    {
+      "id": "compare_the_tokens",
+      "textKey": "event.active_paradise_p1_classic_01_whisky_swapped_berths.choice.compare_the_tokens.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "compare_the_tokens_criticalfailure",
+            "textKey": "event.active_paradise_p1_classic_01_whisky_swapped_berths.choice.compare_the_tokens.outcome.compare_the_tokens_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "compare_the_tokens_failure",
+            "textKey": "event.active_paradise_p1_classic_01_whisky_swapped_berths.choice.compare_the_tokens.outcome.compare_the_tokens_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "compare_the_tokens_success",
+            "textKey": "event.active_paradise_p1_classic_01_whisky_swapped_berths.choice.compare_the_tokens.outcome.compare_the_tokens_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "compare_the_tokens_criticalsuccess",
+            "textKey": "event.active_paradise_p1_classic_01_whisky_swapped_berths.choice.compare_the_tokens.outcome.compare_the_tokens_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "trade_your_berth",
+      "textKey": "event.active_paradise_p1_classic_01_whisky_swapped_berths.choice.trade_your_berth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trade_your_berth_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_whisky_swapped_berths.choice.trade_your_berth.outcome.trade_your_berth_outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "return_every_token",
+      "textKey": "event.active_paradise_p1_classic_01_whisky_swapped_berths.choice.return_every_token.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "return_every_token_outcome",
+          "textKey": "event.active_paradise_p1_classic_01_whisky_swapped_berths.choice.return_every_token.outcome.return_every_token_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasPlayed",
+        "eventId": "active_paradise_route_start_p1_classic"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "whisky_peak"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

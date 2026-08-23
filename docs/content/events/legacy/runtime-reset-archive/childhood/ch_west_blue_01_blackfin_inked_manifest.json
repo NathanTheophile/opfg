@@ -1,0 +1,144 @@
+{
+  "id": "ch_west_blue_01_blackfin_inked_manifest",
+  "kind": "normal",
+  "titleKey": "event.ch_west_blue_01_blackfin_inked_manifest.title",
+  "textKey": "event.ch_west_blue_01_blackfin_inked_manifest.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "west_blue"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "question_clerk",
+      "textKey": "event.ch_west_blue_01_blackfin_inked_manifest.choice.question_clerk.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "clerk_alerted",
+            "textKey": "event.ch_west_blue_01_blackfin_inked_manifest.choice.question_clerk.outcome.clerk_alerted.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_west_blue_01_blackfin_manifest_return",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "failure": {
+            "id": "clerk_evasive",
+            "textKey": "event.ch_west_blue_01_blackfin_inked_manifest.choice.question_clerk.outcome.clerk_evasive.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_west_blue_01_blackfin_manifest_return",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "success": {
+            "id": "clerk_slips",
+            "textKey": "event.ch_west_blue_01_blackfin_inked_manifest.choice.question_clerk.outcome.clerk_slips.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_west_blue_01_blackfin_manifest_return",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "clerk_reveals",
+            "textKey": "event.ch_west_blue_01_blackfin_inked_manifest.choice.question_clerk.outcome.clerk_reveals.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_west_blue_01_blackfin_manifest_return",
+                "delayMonths": 3
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "report_discrepancy",
+      "textKey": "event.ch_west_blue_01_blackfin_inked_manifest.choice.report_discrepancy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "discrepancy_reported",
+          "textKey": "event.ch_west_blue_01_blackfin_inked_manifest.choice.report_discrepancy.outcome.discrepancy_reported.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_blackfin_manifest_return",
+              "delayMonths": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_manifest",
+      "textKey": "event.ch_west_blue_01_blackfin_inked_manifest.choice.leave_manifest.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "manifest_left",
+          "textKey": "event.ch_west_blue_01_blackfin_inked_manifest.choice.leave_manifest.outcome.manifest_left.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_west_blue_01_blackfin_manifest_return",
+              "delayMonths": 3
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

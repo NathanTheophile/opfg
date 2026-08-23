@@ -1,0 +1,199 @@
+{
+  "id": "active_recruitment_new_cast_01_red_knot_crate",
+  "kind": "normal",
+  "titleKey": "event.active_recruitment_new_cast_01_red_knot_crate.title",
+  "textKey": "event.active_recruitment_new_cast_01_red_knot_crate.text",
+  "choices": [
+    {
+      "id": "catch_the_porter",
+      "textKey": "event.active_recruitment_new_cast_01_red_knot_crate.choice.catch_the_porter.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "catch_the_porter_criticalfailure",
+            "textKey": "event.active_recruitment_new_cast_01_red_knot_crate.choice.catch_the_porter.outcome.catch_the_porter_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": -2
+              }
+            ]
+          },
+          "failure": {
+            "id": "catch_the_porter_failure",
+            "textKey": "event.active_recruitment_new_cast_01_red_knot_crate.choice.catch_the_porter.outcome.catch_the_porter_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "catch_the_porter_success",
+            "textKey": "event.active_recruitment_new_cast_01_red_knot_crate.choice.catch_the_porter.outcome.catch_the_porter_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_red_knot_crate_i01_customs_gate"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "catch_the_porter_criticalsuccess",
+            "textKey": "event.active_recruitment_new_cast_01_red_knot_crate.choice.catch_the_porter.outcome.catch_the_porter_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_red_knot_crate_i01_customs_gate"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_the_knots",
+      "textKey": "event.active_recruitment_new_cast_01_red_knot_crate.choice.read_the_knots.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_the_knots_criticalfailure",
+            "textKey": "event.active_recruitment_new_cast_01_red_knot_crate.choice.read_the_knots.outcome.read_the_knots_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": -3
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_the_knots_failure",
+            "textKey": "event.active_recruitment_new_cast_01_red_knot_crate.choice.read_the_knots.outcome.read_the_knots_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "read_the_knots_success",
+            "textKey": "event.active_recruitment_new_cast_01_red_knot_crate.choice.read_the_knots.outcome.read_the_knots_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_red_knot_crate_i01_customs_gate"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_the_knots_criticalsuccess",
+            "textKey": "event.active_recruitment_new_cast_01_red_knot_crate.choice.read_the_knots.outcome.read_the_knots_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_recruit_knot_runner",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_recruitment_new_cast_01_red_knot_crate_i01_customs_gate"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "stay_out",
+      "textKey": "event.active_recruitment_new_cast_01_red_knot_crate.choice.stay_out.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stay_out_outcome",
+          "textKey": "event.active_recruitment_new_cast_01_red_knot_crate.choice.stay_out.outcome.stay_out_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "cast": [
+    "active_recruit_knot_runner"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "active_recruit_knot_runner",
+              "status": "crew"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

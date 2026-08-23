@@ -1,0 +1,193 @@
+{
+  "id": "active_blue_east_blue_01_storm_sail_split",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_storm_sail_split.title",
+  "textKey": "event.active_blue_east_blue_01_storm_sail_split.text",
+  "choices": [
+    {
+      "id": "reef_by_hand",
+      "textKey": "event.active_blue_east_blue_01_storm_sail_split.choice.reef_by_hand.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "reef_by_hand_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_storm_sail_split.choice.reef_by_hand.outcome.reef_by_hand_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyShipHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_storm_sail_split_i01_mast_shudder"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "reef_by_hand_failure",
+            "textKey": "event.active_blue_east_blue_01_storm_sail_split.choice.reef_by_hand.outcome.reef_by_hand_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_storm_sail_split_i01_mast_shudder"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "reef_by_hand_success",
+            "textKey": "event.active_blue_east_blue_01_storm_sail_split.choice.reef_by_hand.outcome.reef_by_hand_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_storm_sail_split_i01_mast_shudder"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "reef_by_hand_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_storm_sail_split.choice.reef_by_hand.outcome.reef_by_hand_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_storm_sail_split_i01_mast_shudder"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "turn_under_wind",
+      "textKey": "event.active_blue_east_blue_01_storm_sail_split.choice.turn_under_wind.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "turn_under_wind_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_storm_sail_split.choice.turn_under_wind.outcome.turn_under_wind_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_storm_sail_split_i01_mast_shudder"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "turn_under_wind_failure",
+            "textKey": "event.active_blue_east_blue_01_storm_sail_split.choice.turn_under_wind.outcome.turn_under_wind_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_storm_sail_split_i01_mast_shudder"
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "turn_under_wind_success",
+            "textKey": "event.active_blue_east_blue_01_storm_sail_split.choice.turn_under_wind.outcome.turn_under_wind_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_storm_sail_split_i01_mast_shudder"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "turn_under_wind_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_storm_sail_split.choice.turn_under_wind.outcome.turn_under_wind_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_storm_sail_split_i01_mast_shudder"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cut_the_sail_free",
+      "textKey": "event.active_blue_east_blue_01_storm_sail_split.choice.cut_the_sail_free.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_the_sail_free_outcome",
+          "textKey": "event.active_blue_east_blue_01_storm_sail_split.choice.cut_the_sail_free.outcome.cut_the_sail_free_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_east_blue_01_storm_sail_split_i01_mast_shudder"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

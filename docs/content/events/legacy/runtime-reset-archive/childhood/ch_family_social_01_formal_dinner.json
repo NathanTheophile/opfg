@@ -1,0 +1,102 @@
+{
+  "id": "ch_family_social_01_formal_dinner",
+  "titleKey": "event.ch_family_social_01_formal_dinner.title",
+  "textKey": "event.ch_family_social_01_formal_dinner.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 174
+      },
+      {
+        "type": "socialClassIs",
+        "socialClassId": "wealthy"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "hold_ground",
+      "textKey": "event.ch_family_social_01_formal_dinner.choice.hold_ground.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "temper_breaks",
+            "textKey": "event.ch_family_social_01_formal_dinner.choice.hold_ground.outcome.temper_breaks.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "endure",
+            "textKey": "event.ch_family_social_01_formal_dinner.choice.hold_ground.outcome.endure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "steady_reply",
+            "textKey": "event.ch_family_social_01_formal_dinner.choice.hold_ground.outcome.steady_reply.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "room_turns",
+            "textKey": "event.ch_family_social_01_formal_dinner.choice.hold_ground.outcome.room_turns.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "change_subject",
+      "textKey": "event.ch_family_social_01_formal_dinner.choice.change_subject.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "subject_changed",
+          "textKey": "event.ch_family_social_01_formal_dinner.choice.change_subject.outcome.subject_changed.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "leave_table",
+      "textKey": "event.ch_family_social_01_formal_dinner.choice.leave_table.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "table_left",
+          "textKey": "event.ch_family_social_01_formal_dinner.choice.leave_table.outcome.table_left.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

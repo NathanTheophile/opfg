@@ -1,0 +1,78 @@
+{
+  "id": "active_civilian_01_lt_night_shift",
+  "titleKey": "event.active_civilian_01_lt_night_shift.title",
+  "textKey": "event.active_civilian_01_lt_night_shift.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "stop_safe",
+      "textKey": "event.active_civilian_01_lt_night_shift.choice.stop_safe.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stop_safe_result",
+          "textKey": "event.active_civilian_01_lt_night_shift.choice.stop_safe.outcome.stop_safe_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_public_trust",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rotate",
+      "textKey": "event.active_civilian_01_lt_night_shift.choice.rotate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rotate_result",
+          "textKey": "event.active_civilian_01_lt_night_shift.choice.rotate.outcome.rotate_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_public_trust",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

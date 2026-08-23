@@ -1,0 +1,129 @@
+{
+  "id": "ch_identity_world_01_sail_kite",
+  "titleKey": "event.ch_identity_world_01_sail_kite.title",
+  "textKey": "event.ch_identity_world_01_sail_kite.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 155
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "coastal"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "trust_gust",
+      "textKey": "event.ch_identity_world_01_sail_kite.choice.trust_gust.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "luck",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "gust_bad",
+            "textKey": "event.ch_identity_world_01_sail_kite.choice.trust_gust.outcome.gust_bad.text",
+            "effects": []
+          },
+          "failure": {
+            "id": "gust_weak",
+            "textKey": "event.ch_identity_world_01_sail_kite.choice.trust_gust.outcome.gust_weak.text",
+            "effects": []
+          },
+          "success": {
+            "id": "gust_good",
+            "textKey": "event.ch_identity_world_01_sail_kite.choice.trust_gust.outcome.gust_good.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "gust_perfect",
+            "textKey": "event.ch_identity_world_01_sail_kite.choice.trust_gust.outcome.gust_perfect.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "luck",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_wind",
+      "textKey": "event.ch_identity_world_01_sail_kite.choice.read_wind.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wind_read",
+          "textKey": "event.ch_identity_world_01_sail_kite.choice.read_wind.outcome.wind_read.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_other_try",
+      "textKey": "event.ch_identity_world_01_sail_kite.choice.let_other_try.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "other_try",
+          "textKey": "event.ch_identity_world_01_sail_kite.choice.let_other_try.outcome.other_try.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_cloth",
+      "textKey": "event.ch_identity_world_01_sail_kite.choice.keep_cloth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cloth_saved",
+          "textKey": "event.ch_identity_world_01_sail_kite.choice.keep_cloth.outcome.cloth_saved.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

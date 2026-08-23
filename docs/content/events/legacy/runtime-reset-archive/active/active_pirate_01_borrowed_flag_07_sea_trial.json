@@ -1,0 +1,106 @@
+{
+  "id": "active_pirate_01_borrowed_flag_07_sea_trial",
+  "kind": "scheduled",
+  "titleKey": "event.active_pirate_01_borrowed_flag_07_sea_trial.title",
+  "textKey": "event.active_pirate_01_borrowed_flag_07_sea_trial.text",
+  "choices": [
+    {
+      "id": "meet_their_captain",
+      "textKey": "event.active_pirate_01_borrowed_flag_07_sea_trial.choice.meet_their_captain.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_pirate_01_borrowed_flag_07_sea_trial.choice.meet_their_captain.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_pirate_01_borrowed_flag_08d_broken_word",
+                "delayMonths": 8
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_pirate_01_borrowed_flag_07_sea_trial.choice.meet_their_captain.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_pirate_01_borrowed_flag_08b_mockery",
+                "delayMonths": 8
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_pirate_01_borrowed_flag_07_sea_trial.choice.meet_their_captain.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_pirate_01_borrowed_flag_08a_terms",
+                "delayMonths": 8
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_pirate_01_borrowed_flag_07_sea_trial.choice.meet_their_captain.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_pirate_01_borrowed_flag_08c_shared_harbor",
+                "delayMonths": 8
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "withdraw_claim",
+      "textKey": "event.active_pirate_01_borrowed_flag_07_sea_trial.choice.withdraw_claim.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_07_sea_trial.choice.withdraw_claim.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "pirate"
+    }
+  },
+  "fallbackEventId": "active_pirate_01_borrowed_flag_departure"
+}

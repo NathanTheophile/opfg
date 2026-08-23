@@ -1,0 +1,117 @@
+{
+  "id": "family_pirate_18_parent_cannot_answer",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_pirate",
+    "chapterId": "adult_family_01",
+    "nodeId": "family_pirate_18_parent_cannot_answer",
+    "parentNodeIds": [
+      "family_pirate_13_flag_means_mine",
+      "family_pirate_13_safe_harbor_key",
+      "family_pirate_13_ledger_of_names",
+      "family_pirate_13_mothers_salt_chart",
+      "family_pirate_13_crew_has_limits",
+      "family_pirate_13_return_the_share",
+      "family_pirate_13_no_innocents_code",
+      "family_pirate_13_own_depth",
+      "family_pirate_13_fallback_pursuit",
+      "family_pirate_13_fallback_household",
+      "family_pirate_13_fallback_legacy"
+    ],
+    "selectionPriority": 20
+  },
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "npcStatusIs",
+        "npcId": "player_parent_1",
+        "status": "dead"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "player_parent_1",
+        "status": "departed"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "player_parent_1",
+        "status": "unavailable"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "player_parent_2",
+        "status": "dead"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "player_parent_2",
+        "status": "departed"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "player_parent_2",
+        "status": "unavailable"
+      }
+    ]
+  },
+  "titleKey": "event.family_pirate_18_parent_cannot_answer.title",
+  "textKey": "event.family_pirate_18_parent_cannot_answer.text",
+  "choices": [
+    {
+      "id": "keep_one_promise",
+      "textKey": "event.family_pirate_18_parent_cannot_answer.choice.keep_one_promise.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_one_promise",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_pirate_18_parent_cannot_answer_i01_promises"
+            }
+          ],
+          "textKey": "event.family_pirate_18_parent_cannot_answer.choice.keep_one_promise.outcome.keep_one_promise.text"
+        }
+      }
+    },
+    {
+      "id": "close_accounts",
+      "textKey": "event.family_pirate_18_parent_cannot_answer.choice.close_accounts.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "close_accounts",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_pirate_18_parent_cannot_answer_i01_promises"
+            }
+          ],
+          "textKey": "event.family_pirate_18_parent_cannot_answer.choice.close_accounts.outcome.close_accounts.text"
+        }
+      }
+    },
+    {
+      "id": "follow_salt_marks",
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "family_pirate_13_mothers_salt_chart"
+      },
+      "textKey": "event.family_pirate_18_parent_cannot_answer.choice.follow_salt_marks.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "follow_salt_marks",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_pirate_18_parent_cannot_answer_i01_promises"
+            }
+          ],
+          "textKey": "event.family_pirate_18_parent_cannot_answer.choice.follow_salt_marks.outcome.follow_salt_marks.text"
+        }
+      }
+    }
+  ]
+}

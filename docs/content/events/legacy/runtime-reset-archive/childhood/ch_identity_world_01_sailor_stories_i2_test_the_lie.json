@@ -1,0 +1,103 @@
+{
+  "id": "ch_identity_world_01_sailor_stories_i2_test_the_lie",
+  "titleKey": "event.ch_identity_world_01_sailor_stories_i2_test_the_lie.title",
+  "textKey": "event.ch_identity_world_01_sailor_stories_i2_test_the_lie.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "spot_reaction",
+      "textKey": "event.ch_identity_world_01_sailor_stories_i2_test_the_lie.choice.spot_reaction.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "wrong_liar",
+            "textKey": "event.ch_identity_world_01_sailor_stories_i2_test_the_lie.choice.spot_reaction.outcome.wrong_liar.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_sailor_stories_i3_last_word"
+              }
+            ]
+          },
+          "failure": {
+            "id": "reaction_missed",
+            "textKey": "event.ch_identity_world_01_sailor_stories_i2_test_the_lie.choice.spot_reaction.outcome.reaction_missed.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_sailor_stories_i3_last_word"
+              }
+            ]
+          },
+          "success": {
+            "id": "reaction_spotted",
+            "textKey": "event.ch_identity_world_01_sailor_stories_i2_test_the_lie.choice.spot_reaction.outcome.reaction_spotted.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_sailor_stories_i3_last_word"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "whole_trick",
+            "textKey": "event.ch_identity_world_01_sailor_stories_i2_test_the_lie.choice.spot_reaction.outcome.whole_trick.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_sailor_stories_i3_last_word"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ask_for_truth",
+      "textKey": "event.ch_identity_world_01_sailor_stories_i2_test_the_lie.choice.ask_for_truth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "truth_requested",
+          "textKey": "event.ch_identity_world_01_sailor_stories_i2_test_the_lie.choice.ask_for_truth.outcome.truth_requested.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_sailor_stories_i3_last_word"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_mystery",
+      "textKey": "event.ch_identity_world_01_sailor_stories_i2_test_the_lie.choice.keep_mystery.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mystery_kept",
+          "textKey": "event.ch_identity_world_01_sailor_stories_i2_test_the_lie.choice.keep_mystery.outcome.mystery_kept.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_sailor_stories_i3_last_word"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

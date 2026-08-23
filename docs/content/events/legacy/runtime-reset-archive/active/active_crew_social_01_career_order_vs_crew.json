@@ -1,0 +1,184 @@
+{
+  "id": "active_crew_social_01_career_order_vs_crew",
+  "kind": "normal",
+  "titleKey": "event.active_crew_social_01_career_order_vs_crew.title",
+  "textKey": "event.active_crew_social_01_career_order_vs_crew.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "hasCrew"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "renegotiate",
+      "textKey": "event.active_crew_social_01_career_order_vs_crew.choice.renegotiate.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_crew_social_01_career_order_vs_crew.choice.renegotiate.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_crew_social_01_career_order_vs_crew.choice.renegotiate.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_crew_social_01_career_order_vs_crew.choice.renegotiate.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_crew_social_01_career_order_vs_crew.choice.renegotiate.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "loyal"
+            },
+            "value": 2,
+            "displayLabelKey": "event.active_crew_social_01_career_order_vs_crew.choice.renegotiate.modifier.loyal"
+          }
+        ]
+      }
+    },
+    {
+      "id": "career_first",
+      "textKey": "event.active_crew_social_01_career_order_vs_crew.choice.career_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_career_order_vs_crew.choice.career_first.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "crew_first",
+      "textKey": "event.active_crew_social_01_career_order_vs_crew.choice.crew_first.text",
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "disloyal"
+        }
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_career_order_vs_crew.choice.crew_first.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "loyal"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "civilian_terms",
+      "textKey": "event.active_crew_social_01_career_order_vs_crew.choice.civilian_terms.text",
+      "availableIf": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_career_order_vs_crew.choice.civilian_terms.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pirate_terms",
+      "textKey": "event.active_crew_social_01_career_order_vs_crew.choice.pirate_terms.text",
+      "availableIf": {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_career_order_vs_crew.choice.pirate_terms.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

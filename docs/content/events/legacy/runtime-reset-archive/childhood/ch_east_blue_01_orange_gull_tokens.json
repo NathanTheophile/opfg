@@ -1,0 +1,140 @@
+{
+  "id": "ch_east_blue_01_orange_gull_tokens",
+  "kind": "normal",
+  "titleKey": "event.ch_east_blue_01_orange_gull_tokens.title",
+  "textKey": "event.ch_east_blue_01_orange_gull_tokens.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationIs",
+        "locationId": "orange_town"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "chase_tokens",
+      "textKey": "event.ch_east_blue_01_orange_gull_tokens.choice.chase_tokens.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "tokens_scatter",
+            "textKey": "event.ch_east_blue_01_orange_gull_tokens.choice.chase_tokens.outcome.tokens_scatter.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "some_recovered",
+            "textKey": "event.ch_east_blue_01_orange_gull_tokens.choice.chase_tokens.outcome.some_recovered.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "tokens_recovered",
+            "textKey": "event.ch_east_blue_01_orange_gull_tokens.choice.chase_tokens.outcome.tokens_recovered.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_east_blue_01_orange_token_return",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "gull_pattern",
+            "textKey": "event.ch_east_blue_01_orange_gull_tokens.choice.chase_tokens.outcome.gull_pattern.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_east_blue_01_orange_token_return",
+                "delayMonths": 12
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "sort_by_stalls",
+      "textKey": "event.ch_east_blue_01_orange_gull_tokens.choice.sort_by_stalls.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sorted_tokens",
+          "textKey": "event.ch_east_blue_01_orange_gull_tokens.choice.sort_by_stalls.outcome.sorted_tokens.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_east_blue_01_orange_token_return",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cover_baskets",
+      "textKey": "event.ch_east_blue_01_orange_gull_tokens.choice.cover_baskets.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "baskets_covered",
+          "textKey": "event.ch_east_blue_01_orange_gull_tokens.choice.cover_baskets.outcome.baskets_covered.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

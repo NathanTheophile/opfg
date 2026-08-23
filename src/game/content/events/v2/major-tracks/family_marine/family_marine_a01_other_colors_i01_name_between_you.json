@@ -1,0 +1,82 @@
+{
+  "id": "family_marine_a01_other_colors_i01_name_between_you",
+  "kind": "immediate",
+  "cast": [
+    "player_parent_1"
+  ],
+  "titleKey": "event.family_marine_a01_other_colors_i01_name_between_you.title",
+  "textKey": "event.family_marine_a01_other_colors_i01_name_between_you.text",
+  "choices": [
+    {
+      "id": "own_path",
+      "textKey": "event.family_marine_a01_other_colors_i01_name_between_you.choice.own_path.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "path_owned",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -5
+            }
+          ],
+          "textKey": "event.family_marine_a01_other_colors_i01_name_between_you.choice.own_path.outcome.path_owned.text"
+        }
+      }
+    },
+    {
+      "id": "name_old_refusal",
+      "availableIf": {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "family_marine_13_decide_for_yourself"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_marine_13_duty_not_obedience"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "family_marine_13_our_name_is_not_theirs"
+          }
+        ]
+      },
+      "textKey": "event.family_marine_a01_other_colors_i01_name_between_you.choice.name_old_refusal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "old_refusal_named",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -8
+            }
+          ],
+          "textKey": "event.family_marine_a01_other_colors_i01_name_between_you.choice.name_old_refusal.outcome.old_refusal_named.text"
+        }
+      }
+    },
+    {
+      "id": "keep_family",
+      "textKey": "event.family_marine_a01_other_colors_i01_name_between_you.choice.keep_family.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "family_kept",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 5
+            }
+          ],
+          "textKey": "event.family_marine_a01_other_colors_i01_name_between_you.choice.keep_family.outcome.family_kept.text"
+        }
+      }
+    }
+  ]
+}

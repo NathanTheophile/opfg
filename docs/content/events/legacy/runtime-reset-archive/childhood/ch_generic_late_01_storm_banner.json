@@ -1,0 +1,136 @@
+{
+  "id": "ch_generic_late_01_storm_banner",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_storm_banner.title",
+  "textKey": "event.ch_generic_late_01_storm_banner.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "coastal"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "village"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "climb_and_unhook",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "banner_cf",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_storm_banner.choice.climb_and_unhook.outcome.banner_cf.text"
+          },
+          "failure": {
+            "id": "banner_f",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_storm_banner.choice.climb_and_unhook.outcome.banner_f.text"
+          },
+          "success": {
+            "id": "banner_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_storm_banner.choice.climb_and_unhook.outcome.banner_s.text"
+          },
+          "criticalSuccess": {
+            "id": "banner_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_storm_banner.choice.climb_and_unhook.outcome.banner_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_storm_banner.choice.climb_and_unhook.text"
+    },
+    {
+      "id": "clear_below",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "clear",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_storm_banner.choice.clear_below.outcome.clear.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_storm_banner.choice.clear_below.text"
+    },
+    {
+      "id": "rope_from_ground",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rope",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_storm_banner.choice.rope_from_ground.outcome.rope.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_storm_banner.choice.rope_from_ground.text"
+    }
+  ]
+}

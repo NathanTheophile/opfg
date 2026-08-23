@@ -1,0 +1,93 @@
+{
+  "id": "ch_v2_race_fishman_01_price_from_below_i02_terms",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_race_fishman_01_price_from_below_i02_terms.title",
+  "textKey": "event.ch_v2_race_fishman_01_price_from_below_i02_terms.text",
+  "choices": [
+    {
+      "id": "accept_nothing",
+      "textKey": "event.ch_v2_race_fishman_01_price_from_below_i02_terms.choice.accept_nothing.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "nothing_asked",
+          "textKey": "event.ch_v2_race_fishman_01_price_from_below_i02_terms.choice.accept_nothing.outcome.nothing_asked.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_fair_return",
+      "textKey": "event.ch_v2_race_fishman_01_price_from_below_i02_terms.choice.ask_fair_return.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "return_negotiated",
+          "textKey": "event.ch_v2_race_fishman_01_price_from_below_i02_terms.choice.ask_fair_return.outcome.return_negotiated.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "name_old_terms",
+      "textKey": "event.ch_v2_race_fishman_01_price_from_below_i02_terms.choice.name_old_terms.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "history_used",
+          "textKey": "event.ch_v2_race_fishman_01_price_from_below_i02_terms.choice.name_old_terms.outcome.history_used.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "neighborhood_merchant",
+              "amount": 3
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "npcRelationshipAtLeast",
+        "npcId": "neighborhood_merchant",
+        "value": 5
+      }
+    },
+    {
+      "id": "refuse_next_time",
+      "textKey": "event.ch_v2_race_fishman_01_price_from_below_i02_terms.choice.refuse_next_time.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "boundary_stated",
+          "textKey": "event.ch_v2_race_fishman_01_price_from_below_i02_terms.choice.refuse_next_time.outcome.boundary_stated.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "neighborhood_merchant"
+  ]
+}

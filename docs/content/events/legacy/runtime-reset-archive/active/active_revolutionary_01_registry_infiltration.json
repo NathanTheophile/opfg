@@ -1,0 +1,146 @@
+{
+  "id": "active_revolutionary_01_registry_infiltration",
+  "kind": "normal",
+  "titleKey": "event.active_revolutionary_01_registry_infiltration.title",
+  "textKey": "event.active_revolutionary_01_registry_infiltration.text",
+  "choices": [
+    {
+      "id": "enter_as_clerk",
+      "textKey": "event.active_revolutionary_01_registry_infiltration.choice.enter_as_clerk.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_revolutionary_01_registry_infiltration.choice.enter_as_clerk.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_registry_infiltration_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_revolutionary_01_registry_infiltration.choice.enter_as_clerk.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_registry_infiltration_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_revolutionary_01_registry_infiltration.choice.enter_as_clerk.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_registry_infiltration_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_revolutionary_01_registry_infiltration.choice.enter_as_clerk.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_registry_infiltration_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "service_entrance",
+      "textKey": "event.active_revolutionary_01_registry_infiltration.choice.service_entrance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_registry_infiltration.choice.service_entrance.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_revolutionary_01_registry_infiltration_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "abort_if_named",
+      "textKey": "event.active_revolutionary_01_registry_infiltration.choice.abort_if_named.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_registry_infiltration.choice.abort_if_named.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "revolutionary_agent"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "government"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "marine_presence"
+          }
+        ]
+      }
+    ]
+  }
+}

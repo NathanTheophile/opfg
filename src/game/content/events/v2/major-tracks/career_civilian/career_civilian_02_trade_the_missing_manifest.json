@@ -1,0 +1,194 @@
+{
+  "id": "career_civilian_02_trade_the_missing_manifest",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_01_inherited_stake",
+            "choiceId": "trade"
+          },
+          {
+            "type": "hasChosen",
+            "eventId": "career_civilian_01_fresh_start",
+            "choiceId": "trade"
+          }
+        ]
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "majorTrack": {
+    "trackId": "career_civilian",
+    "chapterId": "active_02",
+    "nodeId": "career_civilian_02_trade_the_missing_manifest",
+    "parentNodeIds": [
+      "career_civilian_01_inherited_stake",
+      "career_civilian_01_fresh_start"
+    ],
+    "selectionPriority": 20
+  },
+  "titleKey": "event.career_civilian_02_trade_the_missing_manifest.title",
+  "textKey": "event.career_civilian_02_trade_the_missing_manifest.text",
+  "choices": [
+    {
+      "id": "trade",
+      "textKey": "event.career_civilian_02_trade_the_missing_manifest.choice.trade.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "trade_critical_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_02_trade_the_missing_manifest_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_02_trade_the_missing_manifest.choice.trade.outcome.trade_critical_failure.text"
+          },
+          "failure": {
+            "id": "trade_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_02_trade_the_missing_manifest_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_02_trade_the_missing_manifest.choice.trade.outcome.trade_failure.text"
+          },
+          "success": {
+            "id": "trade_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 1500
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_02_trade_the_missing_manifest_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_02_trade_the_missing_manifest.choice.trade.outcome.trade_success.text"
+          },
+          "criticalSuccess": {
+            "id": "trade_critical_success",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 2500
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_civilian_02_trade_the_missing_manifest_i01"
+              }
+            ],
+            "textKey": "event.career_civilian_02_trade_the_missing_manifest.choice.trade.outcome.trade_critical_success.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "horizon",
+      "textKey": "event.career_civilian_02_trade_the_missing_manifest.choice.horizon.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "horizon",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_02_trade_the_missing_manifest.choice.horizon.outcome.horizon.text"
+        }
+      }
+    },
+    {
+      "id": "craft",
+      "textKey": "event.career_civilian_02_trade_the_missing_manifest.choice.craft.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "craft",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_02_trade_the_missing_manifest.choice.craft.outcome.craft.text"
+        }
+      }
+    },
+    {
+      "id": "community",
+      "textKey": "event.career_civilian_02_trade_the_missing_manifest.choice.community.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "community",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.career_civilian_02_trade_the_missing_manifest.choice.community.outcome.community.text"
+        }
+      }
+    }
+  ]
+}

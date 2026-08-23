@@ -1,0 +1,149 @@
+{
+  "id": "active_revolutionary_01_bell_exfiltration",
+  "kind": "normal",
+  "titleKey": "event.active_revolutionary_01_bell_exfiltration.title",
+  "textKey": "event.active_revolutionary_01_bell_exfiltration.text",
+  "choices": [
+    {
+      "id": "read_patrol",
+      "textKey": "event.active_revolutionary_01_bell_exfiltration.choice.read_patrol.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_revolutionary_01_bell_exfiltration.choice.read_patrol.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_bell_exfiltration_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_revolutionary_01_bell_exfiltration.choice.read_patrol.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_bell_exfiltration_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_revolutionary_01_bell_exfiltration.choice.read_patrol.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_bell_exfiltration_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_revolutionary_01_bell_exfiltration.choice.read_patrol.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_revolutionary_01_bell_exfiltration_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "split_group",
+      "textKey": "event.active_revolutionary_01_bell_exfiltration.choice.split_group.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_bell_exfiltration.choice.split_group.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_revolutionary_01_bell_exfiltration_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "protective_front",
+      "textKey": "event.active_revolutionary_01_bell_exfiltration.choice.protective_front.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_bell_exfiltration.choice.protective_front.outcome.done.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_revolutionary_01_bell_exfiltration_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "protective"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "marine_presence"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "government"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          }
+        ]
+      }
+    ]
+  }
+}

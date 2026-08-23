@@ -1,0 +1,197 @@
+{
+  "id": "active_generic_land_04_conflict_spilled_brawl",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_04_conflict_spilled_brawl.title",
+  "textKey": "event.active_generic_land_04_conflict_spilled_brawl.text",
+  "choices": [
+    {
+      "id": "slip_through",
+      "textKey": "event.active_generic_land_04_conflict_spilled_brawl.choice.slip_through",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "slip_through_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_spilled_brawl.outcome.slip_through.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_spilled_brawl_i01_bench"
+              }
+            ]
+          },
+          "failure": {
+            "id": "slip_through_failure",
+            "textKey": "event.active_generic_land_04_conflict_spilled_brawl.outcome.slip_through.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_spilled_brawl_i01_bench"
+              }
+            ]
+          },
+          "success": {
+            "id": "slip_through_success",
+            "textKey": "event.active_generic_land_04_conflict_spilled_brawl.outcome.slip_through.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_spilled_brawl_i01_bench"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "slip_through_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_spilled_brawl.outcome.slip_through.criticalSuccess",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_spilled_brawl_i01_bench"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "stop_fight",
+      "textKey": "event.active_generic_land_04_conflict_spilled_brawl.choice.stop_fight",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "stop_fight_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_spilled_brawl.outcome.stop_fight.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_spilled_brawl_i01_bench"
+              }
+            ]
+          },
+          "failure": {
+            "id": "stop_fight_failure",
+            "textKey": "event.active_generic_land_04_conflict_spilled_brawl.outcome.stop_fight.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_spilled_brawl_i01_bench"
+              }
+            ]
+          },
+          "success": {
+            "id": "stop_fight_success",
+            "textKey": "event.active_generic_land_04_conflict_spilled_brawl.outcome.stop_fight.success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_spilled_brawl_i01_bench"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "stop_fight_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_spilled_brawl.outcome.stop_fight.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_spilled_brawl_i01_bench"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pick_side",
+      "textKey": "event.active_generic_land_04_conflict_spilled_brawl.choice.pick_side",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pick_side",
+          "textKey": "event.active_generic_land_04_conflict_spilled_brawl.outcome.pick_side",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -2
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_spilled_brawl_i01_bench"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "withdraw",
+      "textKey": "event.active_generic_land_04_conflict_spilled_brawl.choice.withdraw",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "withdraw",
+          "textKey": "event.active_generic_land_04_conflict_spilled_brawl.outcome.withdraw",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

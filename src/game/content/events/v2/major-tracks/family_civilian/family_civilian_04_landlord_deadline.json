@@ -1,0 +1,106 @@
+{
+  "id": "family_civilian_04_landlord_deadline",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_civilian",
+    "chapterId": "childhood_04",
+    "nodeId": "family_civilian_04_landlord_deadline",
+    "selectionPriority": 10,
+    "parentNodeIds": [
+      "family_civilian_03_neighbor_debt_circle",
+      "family_civilian_03_trade_fallback"
+    ]
+  },
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_03_neighbor_debt_circle_i01_reaction",
+        "outcomeId": "protect"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_03_trade_fallback_i01_reaction",
+        "outcomeId": "protect"
+      }
+    ]
+  },
+  "titleKey": "event.family_civilian_04_landlord_deadline.title",
+  "textKey": "event.family_civilian_04_landlord_deadline.text",
+  "choices": [
+    {
+      "id": "count",
+      "textKey": "event.family_civilian_04_landlord_deadline.choice.count.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "count",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_04_landlord_deadline_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_04_landlord_deadline.choice.count.outcome.count.text"
+        }
+      }
+    },
+    {
+      "id": "ask",
+      "textKey": "event.family_civilian_04_landlord_deadline.choice.ask.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_04_landlord_deadline_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_04_landlord_deadline.choice.ask.outcome.ask.text"
+        }
+      }
+    },
+    {
+      "id": "wait",
+      "textKey": "event.family_civilian_04_landlord_deadline.choice.wait.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wait",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_04_landlord_deadline_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_04_landlord_deadline.choice.wait.outcome.wait.text"
+        }
+      }
+    },
+    {
+      "id": "remember_basket",
+      "availableIf": {
+        "type": "hasOutcome",
+        "eventId": "family_civilian_03_trade_fallback_i01_reaction",
+        "outcomeId": "refuse"
+      },
+      "textKey": "event.family_civilian_04_landlord_deadline.choice.remember_basket.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "remember_basket",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_civilian_04_landlord_deadline_i01_reaction"
+            }
+          ],
+          "textKey": "event.family_civilian_04_landlord_deadline.choice.remember_basket.outcome.remember_basket.text"
+        }
+      }
+    }
+  ]
+}

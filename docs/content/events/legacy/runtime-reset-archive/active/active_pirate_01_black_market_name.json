@@ -1,0 +1,121 @@
+{
+  "id": "active_pirate_01_black_market_name",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_black_market_name.title",
+  "textKey": "event.active_pirate_01_black_market_name.text",
+  "choices": [
+    {
+      "id": "license_name",
+      "textKey": "event.active_pirate_01_black_market_name.choice.license_name.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_black_market_name.choice.license_name.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 250
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_broker_sells_name",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse",
+      "textKey": "event.active_pirate_01_black_market_name.choice.refuse.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_black_market_name.choice.refuse.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "deceptive_fee",
+      "textKey": "event.active_pirate_01_black_market_name.choice.deceptive_fee.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_black_market_name.choice.deceptive_fee.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 100
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "deceptive"
+      }
+    },
+    {
+      "id": "set_rules",
+      "textKey": "event.active_pirate_01_black_market_name.choice.set_rules.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_black_market_name.choice.set_rules.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_broker_sells_name",
+              "delayMonths": 8
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "black_market"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 5
+      }
+    ]
+  }
+}

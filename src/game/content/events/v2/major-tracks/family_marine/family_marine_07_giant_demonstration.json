@@ -1,0 +1,113 @@
+{
+  "id": "family_marine_07_giant_demonstration",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_marine",
+    "chapterId": "childhood_03",
+    "nodeId": "family_marine_07_giant_demonstration",
+    "parentNodeIds": [
+      "family_marine_04_quartermaster_measure"
+    ],
+    "selectionPriority": 30,
+    "specialPathId": "marine_giant"
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_04_quartermaster_measure_i03_before_father",
+        "outcomeId": "giant_claims_choice"
+      }
+    ]
+  },
+  "titleKey": "event.family_marine_07_giant_demonstration.title",
+  "textKey": "event.family_marine_07_giant_demonstration.text",
+  "choices": [
+    {
+      "id": "as_asked",
+      "textKey": "event.family_marine_07_giant_demonstration.choice.as_asked.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "as_asked",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_07_giant_demonstration_i01_test"
+            }
+          ],
+          "textKey": "event.family_marine_07_giant_demonstration.choice.as_asked.outcome.as_asked.text"
+        }
+      }
+    },
+    {
+      "id": "safer",
+      "textKey": "event.family_marine_07_giant_demonstration.choice.safer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safer",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_07_giant_demonstration_i01_test"
+            }
+          ],
+          "textKey": "event.family_marine_07_giant_demonstration.choice.safer.outcome.safer.text"
+        }
+      }
+    },
+    {
+      "id": "ask_purpose",
+      "textKey": "event.family_marine_07_giant_demonstration.choice.ask_purpose.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "purpose_cf",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_giant_demonstration_i01_test"
+              }
+            ],
+            "textKey": "event.family_marine_07_giant_demonstration.choice.ask_purpose.outcome.purpose_cf.text"
+          },
+          "failure": {
+            "id": "purpose_f",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_giant_demonstration_i01_test"
+              }
+            ],
+            "textKey": "event.family_marine_07_giant_demonstration.choice.ask_purpose.outcome.purpose_f.text"
+          },
+          "success": {
+            "id": "purpose_s",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_giant_demonstration_i01_test"
+              }
+            ],
+            "textKey": "event.family_marine_07_giant_demonstration.choice.ask_purpose.outcome.purpose_s.text"
+          },
+          "criticalSuccess": {
+            "id": "purpose_cs",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_giant_demonstration_i01_test"
+              }
+            ],
+            "textKey": "event.family_marine_07_giant_demonstration.choice.ask_purpose.outcome.purpose_cs.text"
+          }
+        }
+      }
+    }
+  ]
+}

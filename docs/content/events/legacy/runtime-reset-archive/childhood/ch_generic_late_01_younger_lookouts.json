@@ -1,0 +1,126 @@
+{
+  "id": "ch_generic_late_01_younger_lookouts",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_younger_lookouts.title",
+  "textKey": "event.ch_generic_late_01_younger_lookouts.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "refuse_for_them",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "protective_gain",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "protective"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 5
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_younger_lookouts.choice.refuse_for_them.outcome.protective_gain.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_younger_lookouts.choice.refuse_for_them.text",
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "protective"
+        }
+      }
+    },
+    {
+      "id": "take_watch",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_watch",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 4
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_younger_lookouts.choice.take_watch.outcome.take_watch.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_younger_lookouts.choice.take_watch.text"
+    },
+    {
+      "id": "redirect_game",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "redirect",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": 3
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_younger_lookouts.choice.redirect_game.outcome.redirect.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_younger_lookouts.choice.redirect_game.text"
+    },
+    {
+      "id": "walk_away",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "away",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "childhood_younger",
+              "amount": -4
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_younger_lookouts.choice.walk_away.outcome.away.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_younger_lookouts.choice.walk_away.text"
+    }
+  ],
+  "cast": [
+    "childhood_younger"
+  ]
+}

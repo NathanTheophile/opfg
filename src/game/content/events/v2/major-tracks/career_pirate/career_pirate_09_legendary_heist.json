@@ -1,0 +1,173 @@
+{
+  "id": "career_pirate_09_legendary_heist",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_09_legend_or_ruin",
+    "nodeId": "career_pirate_09_legendary_heist",
+    "parentNodeIds": [
+      "career_pirate_08_new_world_gate",
+      "career_pirate_08_stranded_legend",
+      "career_pirate_08_captain_at_crossroads"
+    ],
+    "selectionPriority": 40
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "reputationAtLeast",
+        "value": 35
+      },
+      {
+        "type": "bountyAtLeast",
+        "value": 200000
+      }
+    ]
+  },
+  "titleKey": "event.career_pirate_09_legendary_heist.title",
+  "textKey": "event.career_pirate_09_legendary_heist.text",
+  "choices": [
+    {
+      "id": "pick_window",
+      "textKey": "event.career_pirate_09_legendary_heist.choice.pick_window.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "pick_window_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_09_legendary_heist_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_09_legendary_heist.choice.pick_window.outcome.pick_window_criticalFailure.text"
+          },
+          "failure": {
+            "id": "pick_window_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_09_legendary_heist_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_09_legendary_heist.choice.pick_window.outcome.pick_window_failure.text"
+          },
+          "success": {
+            "id": "pick_window_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 50000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_09_legendary_heist_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_09_legendary_heist.choice.pick_window.outcome.pick_window_success.text"
+          },
+          "criticalSuccess": {
+            "id": "pick_window_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "modifyBounty",
+                "amount": 100000
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_09_legendary_heist_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_09_legendary_heist.choice.pick_window.outcome.pick_window_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "buy_courier",
+      "textKey": "event.career_pirate_09_legendary_heist.choice.buy_courier.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy_courier",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -8000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_09_legendary_heist_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_09_legendary_heist.choice.buy_courier.outcome.buy_courier.text"
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 8000
+      }
+    },
+    {
+      "id": "announce_heist",
+      "textKey": "event.career_pirate_09_legendary_heist.choice.announce_heist.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "announce_heist",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 6
+            },
+            {
+              "type": "modifyBounty",
+              "amount": 80000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_09_legendary_heist_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_09_legendary_heist.choice.announce_heist.outcome.announce_heist.text"
+        }
+      }
+    }
+  ]
+}

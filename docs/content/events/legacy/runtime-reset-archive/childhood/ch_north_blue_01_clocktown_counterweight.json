@@ -1,0 +1,133 @@
+{
+  "id": "ch_north_blue_01_clocktown_counterweight",
+  "titleKey": "event.ch_north_blue_01_clocktown_counterweight.title",
+  "textKey": "event.ch_north_blue_01_clocktown_counterweight.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationIs",
+        "locationId": "deul_clocktown"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_tension",
+      "textKey": "event.ch_north_blue_01_clocktown_counterweight.choice.read_tension.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_tension_critical_failure",
+            "textKey": "event.ch_north_blue_01_clocktown_counterweight.choice.read_tension.outcome.read_tension_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_north_blue_01_clocktown_counterweight_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_tension_failure",
+            "textKey": "event.ch_north_blue_01_clocktown_counterweight.choice.read_tension.outcome.read_tension_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_north_blue_01_clocktown_counterweight_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_tension_success",
+            "textKey": "event.ch_north_blue_01_clocktown_counterweight.choice.read_tension.outcome.read_tension_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_north_blue_01_clocktown_counterweight_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_tension_critical_success",
+            "textKey": "event.ch_north_blue_01_clocktown_counterweight.choice.read_tension.outcome.read_tension_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_north_blue_01_clocktown_counterweight_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_below",
+      "textKey": "event.ch_north_blue_01_clocktown_counterweight.choice.clear_below.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "clear_below_result",
+          "textKey": "event.ch_north_blue_01_clocktown_counterweight.choice.clear_below.outcome.clear_below_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_north_blue_01_clocktown_counterweight_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "steady_tail",
+      "textKey": "event.ch_north_blue_01_clocktown_counterweight.choice.steady_tail.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "steady_tail_result",
+          "textKey": "event.ch_north_blue_01_clocktown_counterweight.choice.steady_tail.outcome.steady_tail_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_north_blue_01_clocktown_counterweight_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

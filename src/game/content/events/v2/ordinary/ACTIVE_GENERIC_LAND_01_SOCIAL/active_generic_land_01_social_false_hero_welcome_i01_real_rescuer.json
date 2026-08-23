@@ -1,0 +1,122 @@
+{
+  "id": "active_generic_land_01_social_false_hero_welcome_i01_real_rescuer",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_01_social_false_hero_welcome_i01_real_rescuer.title",
+  "textKey": "event.active_generic_land_01_social_false_hero_welcome_i01_real_rescuer.text",
+  "choices": [
+    {
+      "id": "give_back_the_stage",
+      "textKey": "event.active_generic_land_01_social_false_hero_welcome_i01_real_rescuer.choice.give_back_the_stage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stage_returned",
+          "textKey": "event.active_generic_land_01_social_false_hero_welcome_i01_real_rescuer.choice.give_back_the_stage.outcome.stage_returned.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_false_hero_welcome_i02_last_word"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "share_the_stage",
+      "textKey": "event.active_generic_land_01_social_false_hero_welcome_i01_real_rescuer.choice.share_the_stage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shared_credit",
+          "textKey": "event.active_generic_land_01_social_false_hero_welcome_i01_real_rescuer.choice.share_the_stage.outcome.shared_credit.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_social_false_hero_welcome_i02_last_word"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "challenge_the_story",
+      "textKey": "event.active_generic_land_01_social_false_hero_welcome_i01_real_rescuer.choice.challenge_the_story.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "argument_sours",
+            "textKey": "event.active_generic_land_01_social_false_hero_welcome_i01_real_rescuer.choice.challenge_the_story.outcome.argument_sours.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_false_hero_welcome_i02_last_word"
+              }
+            ]
+          },
+          "failure": {
+            "id": "story_muddled",
+            "textKey": "event.active_generic_land_01_social_false_hero_welcome_i01_real_rescuer.choice.challenge_the_story.outcome.story_muddled.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_false_hero_welcome_i02_last_word"
+              }
+            ]
+          },
+          "success": {
+            "id": "facts_clear",
+            "textKey": "event.active_generic_land_01_social_false_hero_welcome_i01_real_rescuer.choice.challenge_the_story.outcome.facts_clear.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_false_hero_welcome_i02_last_word"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "crowd_convinced",
+            "textKey": "event.active_generic_land_01_social_false_hero_welcome_i01_real_rescuer.choice.challenge_the_story.outcome.crowd_convinced.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_social_false_hero_welcome_i02_last_word"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

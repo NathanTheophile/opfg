@@ -1,0 +1,106 @@
+{
+  "id": "ch_south_blue_01_sorbet_paint_over_check",
+  "titleKey": "event.ch_south_blue_01_sorbet_paint_over_check.title",
+  "textKey": "event.ch_south_blue_01_sorbet_paint_over_check.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 144
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "locationWithin",
+            "locationId": "sorbet_kingdom"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "shipyard"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "leave_mark",
+      "textKey": "event.ch_south_blue_01_sorbet_paint_over_check.choice.leave_mark.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mark_preserved",
+          "textKey": "event.ch_south_blue_01_sorbet_paint_over_check.choice.leave_mark.outcome.mark_preserved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_south_blue_01_sorbet_inspection_followup",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "copy_mark",
+      "textKey": "event.ch_south_blue_01_sorbet_paint_over_check.choice.copy_mark.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mark_copied",
+          "textKey": "event.ch_south_blue_01_sorbet_paint_over_check.choice.copy_mark.outcome.mark_copied.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_south_blue_01_sorbet_inspection_followup",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "trust_workers",
+      "textKey": "event.ch_south_blue_01_sorbet_paint_over_check.choice.trust_workers.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "workers_decide",
+          "textKey": "event.ch_south_blue_01_sorbet_paint_over_check.choice.trust_workers.outcome.workers_decide.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_south_blue_01_sorbet_inspection_followup",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

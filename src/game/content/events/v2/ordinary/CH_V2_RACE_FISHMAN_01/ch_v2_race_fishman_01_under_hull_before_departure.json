@@ -1,0 +1,192 @@
+{
+  "id": "ch_v2_race_fishman_01_under_hull_before_departure",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_race_fishman_01_under_hull_before_departure.title",
+  "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure.text",
+  "choices": [
+    {
+      "id": "inspect_the_mark",
+      "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure.choice.inspect_the_mark.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "inspect_the_mark_criticalfailure",
+            "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure.choice.inspect_the_mark.outcome.inspect_the_mark_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_fishman_01_under_hull_before_departure_i01_incomplete_view"
+              }
+            ]
+          },
+          "failure": {
+            "id": "inspect_the_mark_failure",
+            "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure.choice.inspect_the_mark.outcome.inspect_the_mark_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_fishman_01_under_hull_before_departure_i01_incomplete_view"
+              }
+            ]
+          },
+          "success": {
+            "id": "inspect_the_mark_success",
+            "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure.choice.inspect_the_mark.outcome.inspect_the_mark_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_fishman_01_under_hull_before_departure_i01_clear_mark"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "inspect_the_mark_criticalsuccess",
+            "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure.choice.inspect_the_mark.outcome.inspect_the_mark_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_fishman_01_under_hull_before_departure_i01_clear_mark"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "hold_safe_position",
+      "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure.choice.hold_safe_position.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "hold_safe_position_criticalfailure",
+            "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure.choice.hold_safe_position.outcome.hold_safe_position_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_fishman_01_under_hull_before_departure_i01_incomplete_view"
+              }
+            ]
+          },
+          "failure": {
+            "id": "hold_safe_position_failure",
+            "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure.choice.hold_safe_position.outcome.hold_safe_position_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_fishman_01_under_hull_before_departure_i01_incomplete_view"
+              }
+            ]
+          },
+          "success": {
+            "id": "hold_safe_position_success",
+            "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure.choice.hold_safe_position.outcome.hold_safe_position_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_fishman_01_under_hull_before_departure_i01_clear_mark"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hold_safe_position_criticalsuccess",
+            "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure.choice.hold_safe_position.outcome.hold_safe_position_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_race_fishman_01_under_hull_before_departure_i01_clear_mark"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "delay_departure",
+      "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure.choice.delay_departure.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "departure_delayed",
+          "textKey": "event.ch_v2_race_fishman_01_under_hull_before_departure.choice.delay_departure.outcome.departure_delayed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "raceIs",
+        "raceId": "fishman"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "coastal"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          }
+        ]
+      }
+    ]
+  }
+}

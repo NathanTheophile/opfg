@@ -1,0 +1,104 @@
+{
+  "id": "active_reverse_mountain_01_i01_first_current",
+  "kind": "immediate",
+  "titleKey": "event.active_reverse_mountain_01_i01_first_current.title",
+  "textKey": "event.active_reverse_mountain_01_i01_first_current.text",
+  "choices": [
+    {
+      "id": "read_angle",
+      "textKey": "event.active_reverse_mountain_01_i01_first_current.choice.read_angle",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_angle_cf",
+            "textKey": "event.active_reverse_mountain_01_i01_first_current.outcome.read_angle_cf",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_i02_red_wall"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_angle_f",
+            "textKey": "event.active_reverse_mountain_01_i01_first_current.outcome.read_angle_f",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_i02_red_wall"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_angle_s",
+            "textKey": "event.active_reverse_mountain_01_i01_first_current.outcome.read_angle_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_i02_red_wall"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_angle_cs",
+            "textKey": "event.active_reverse_mountain_01_i01_first_current.outcome.read_angle_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_i02_red_wall"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "drop_low",
+      "textKey": "event.active_reverse_mountain_01_i01_first_current.choice.drop_low",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "drop_low",
+          "textKey": "event.active_reverse_mountain_01_i01_first_current.outcome.drop_low",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_reverse_mountain_01_i02_red_wall"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

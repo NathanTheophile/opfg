@@ -1,0 +1,159 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "./tokens.css";
+@import "./nine-slice.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-strong: var(--surface-strong);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-pressed: var(--surface-pressed);
+  --color-surface-disabled: var(--surface-disabled);
+  --color-fg: var(--text-primary);
+  --color-fg-secondary: var(--text-secondary);
+  --color-fg-muted: var(--text-muted);
+  --color-gold: var(--accent-gold);
+  --color-gold-strong: var(--accent-gold-strong);
+  --color-critical: var(--critical);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+
+  --shadow-control: var(--opfg-shadow-control);
+  --shadow-panel: var(--opfg-shadow-panel);
+  --shadow-overlay: var(--opfg-shadow-overlay);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  --font-sans: var(--font-ui);
+  --font-display: var(--font-display-family);
+}
+
+:root {
+  color-scheme: dark;
+
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+
+  --layer-background: 0;
+  --layer-game-ui: 10;
+  --layer-overlay: 50;
+  --layer-dice: 100;
+  --layer-system: 200;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html,
+  body,
+  #root {
+    width: 100%;
+    min-width: 100%;
+    min-height: 100%;
+  }
+
+  html {
+    background: var(--background);
+  }
+
+  body {
+    position: relative;
+    margin: 0;
+    min-width: 320px;
+    min-height: 100dvh;
+    overflow: hidden;
+    overscroll-behavior: none;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-ui);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  #root {
+    min-height: 100dvh;
+    isolation: isolate;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  canvas {
+    display: block;
+  }
+}
+
+@layer utilities {
+  .safe-area {
+    padding:
+      var(--safe-area-top)
+      var(--safe-area-right)
+      var(--safe-area-bottom)
+      var(--safe-area-left);
+  }
+
+  .layer-background {
+    z-index: var(--layer-background);
+  }
+
+  .layer-game-ui {
+    z-index: var(--layer-game-ui);
+  }
+
+  .layer-overlay {
+    z-index: var(--layer-overlay);
+  }
+
+  .layer-dice {
+    z-index: var(--layer-dice);
+  }
+
+  .layer-system {
+    z-index: var(--layer-system);
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "id": "active_blue_south_blue_01_forest_medicine_swap",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "forest"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "medical"
+      }
+    ]
+  },
+  "titleKey": "event.active_blue_south_blue_01_forest_medicine_swap.title",
+  "textKey": "event.active_blue_south_blue_01_forest_medicine_swap.text",
+  "choices": [
+    {
+      "id": "trade_labor",
+      "textKey": "event.active_blue_south_blue_01_forest_medicine_swap.choice.trade_labor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "labor",
+          "textKey": "event.active_blue_south_blue_01_forest_medicine_swap.choice.trade_labor.outcome.labor.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "pay_clean",
+      "textKey": "event.active_blue_south_blue_01_forest_medicine_swap.choice.pay_clean.text",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay",
+          "textKey": "event.active_blue_south_blue_01_forest_medicine_swap.choice.pay_clean.outcome.pay.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline_mix",
+      "textKey": "event.active_blue_south_blue_01_forest_medicine_swap.choice.decline_mix.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "decline",
+          "textKey": "event.active_blue_south_blue_01_forest_medicine_swap.choice.decline_mix.outcome.decline.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

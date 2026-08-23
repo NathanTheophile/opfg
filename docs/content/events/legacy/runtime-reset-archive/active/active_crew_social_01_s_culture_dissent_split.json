@@ -1,0 +1,73 @@
+{
+  "id": "active_crew_social_01_s_culture_dissent_split",
+  "kind": "scheduled",
+  "titleKey": "event.active_crew_social_01_s_culture_dissent_split.title",
+  "textKey": "event.active_crew_social_01_s_culture_dissent_split.text",
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "hasCrew"
+    }
+  },
+  "choices": [
+    {
+      "id": "protect_refusal",
+      "textKey": "event.active_crew_social_01_s_culture_dissent_split.choice.protect_refusal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_dissent_split.choice.protect_refusal.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_dissent_protect_1",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "discipline_after_choice",
+      "textKey": "event.active_crew_social_01_s_culture_dissent_split.choice.discipline_after_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_dissent_split.choice.discipline_after_choice.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_discipline_1",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compromise_role",
+      "textKey": "event.active_crew_social_01_s_culture_dissent_split.choice.compromise_role.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_dissent_split.choice.compromise_role.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_compromise_1",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "crewSizeAtLeast",
+    "value": 2
+  }
+}

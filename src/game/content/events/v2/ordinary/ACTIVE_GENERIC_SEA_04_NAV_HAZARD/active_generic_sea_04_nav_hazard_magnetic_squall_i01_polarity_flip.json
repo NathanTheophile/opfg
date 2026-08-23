@@ -1,0 +1,173 @@
+{
+  "id": "active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip.title",
+  "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip.text",
+  "choices": [
+    {
+      "id": "ignore_needles",
+      "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip.choice.ignore_needles.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "actor": {
+          "type": "player"
+        },
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_magnetic_squall_i02_needle_disagreement"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_magnetic_squall_i02_needle_disagreement"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "rebuild_from_motion",
+      "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip.choice.rebuild_from_motion.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "actor": {
+          "type": "player"
+        },
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_magnetic_squall_i02_needle_disagreement"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_04_nav_hazard_magnetic_squall_i02_needle_disagreement"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "bleed_way",
+      "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip.choice.bleed_way.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bleed_way",
+          "textKey": "event.active_generic_sea_04_nav_hazard_magnetic_squall_i01_polarity_flip.outcome.bleed_way.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_04_nav_hazard_magnetic_squall_i02_needle_disagreement"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "hasShip"
+  }
+}

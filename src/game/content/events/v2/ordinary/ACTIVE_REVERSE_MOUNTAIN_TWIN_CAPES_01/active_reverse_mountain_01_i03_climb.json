@@ -1,0 +1,104 @@
+{
+  "id": "active_reverse_mountain_01_i03_climb",
+  "kind": "immediate",
+  "titleKey": "event.active_reverse_mountain_01_i03_climb.title",
+  "textKey": "event.active_reverse_mountain_01_i03_climb.text",
+  "choices": [
+    {
+      "id": "spot_seam",
+      "textKey": "event.active_reverse_mountain_01_i03_climb.choice.spot_seam",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "spot_seam_cf",
+            "textKey": "event.active_reverse_mountain_01_i03_climb.outcome.spot_seam_cf",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_i04_crest"
+              }
+            ]
+          },
+          "failure": {
+            "id": "spot_seam_f",
+            "textKey": "event.active_reverse_mountain_01_i03_climb.outcome.spot_seam_f",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_i04_crest"
+              }
+            ]
+          },
+          "success": {
+            "id": "spot_seam_s",
+            "textKey": "event.active_reverse_mountain_01_i03_climb.outcome.spot_seam_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_i04_crest"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "spot_seam_cs",
+            "textKey": "event.active_reverse_mountain_01_i03_climb.outcome.spot_seam_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_reverse_mountain_01_i04_crest"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "trust_centerline",
+      "textKey": "event.active_reverse_mountain_01_i03_climb.choice.trust_centerline",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "trust_centerline",
+          "textKey": "event.active_reverse_mountain_01_i03_climb.outcome.trust_centerline",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_reverse_mountain_01_i04_crest"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

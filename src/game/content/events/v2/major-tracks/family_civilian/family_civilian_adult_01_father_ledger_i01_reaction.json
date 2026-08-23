@@ -1,0 +1,98 @@
+{
+  "id": "family_civilian_adult_01_father_ledger_i01_reaction",
+  "kind": "immediate",
+  "cast": [
+    "player_parent_1"
+  ],
+  "titleKey": "event.family_civilian_adult_01_father_ledger_i01_reaction.title",
+  "textKey": "event.family_civilian_adult_01_father_ledger_i01_reaction.text",
+  "choices": [
+    {
+      "id": "keep_contact",
+      "textKey": "event.family_civilian_adult_01_father_ledger_i01_reaction.choice.keep_contact.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_contact",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 7
+            }
+          ],
+          "textKey": "event.family_civilian_adult_01_father_ledger_i01_reaction.choice.keep_contact.outcome.keep_contact.text"
+        }
+      }
+    },
+    {
+      "id": "keep_work_separate",
+      "textKey": "event.family_civilian_adult_01_father_ledger_i01_reaction.choice.keep_work_separate.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_work_separate",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.family_civilian_adult_01_father_ledger_i01_reaction.choice.keep_work_separate.outcome.keep_work_separate.text"
+        }
+      }
+    },
+    {
+      "id": "leave_distance",
+      "textKey": "event.family_civilian_adult_01_father_ledger_i01_reaction.choice.leave_distance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_distance",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -5
+            }
+          ],
+          "textKey": "event.family_civilian_adult_01_father_ledger_i01_reaction.choice.leave_distance.outcome.leave_distance.text"
+        }
+      }
+    },
+    {
+      "id": "answer_old_hurt",
+      "availableIf": {
+        "type": "npcRelationshipAtMost",
+        "npcId": "player_parent_1",
+        "value": -10
+      },
+      "textKey": "event.family_civilian_adult_01_father_ledger_i01_reaction.choice.answer_old_hurt.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "answer_old_hurt",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": -2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.family_civilian_adult_01_father_ledger_i01_reaction.choice.answer_old_hurt.outcome.answer_old_hurt.text"
+        }
+      }
+    }
+  ]
+}

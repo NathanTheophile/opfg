@@ -1,0 +1,104 @@
+{
+  "id": "active_civilian_01_lt_classroom_mistake",
+  "titleKey": "event.active_civilian_01_lt_classroom_mistake.title",
+  "textKey": "event.active_civilian_01_lt_classroom_mistake.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "own_cost",
+      "textKey": "event.active_civilian_01_lt_classroom_mistake.choice.own_cost.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "own_cost_result",
+          "textKey": "event.active_civilian_01_lt_classroom_mistake.choice.own_cost.outcome.own_cost_result.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -60
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_shared_method",
+              "delayMonths": 18
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 60
+      }
+    },
+    {
+      "id": "redo_together",
+      "textKey": "event.active_civilian_01_lt_classroom_mistake.choice.redo_together.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "redo_together_result",
+          "textKey": "event.active_civilian_01_lt_classroom_mistake.choice.redo_together.outcome.redo_together_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_shared_method",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fallback",
+      "textKey": "event.active_civilian_01_lt_classroom_mistake.choice.fallback.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fallback_result",
+          "textKey": "event.active_civilian_01_lt_classroom_mistake.choice.fallback.outcome.fallback_result.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_shared_method",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

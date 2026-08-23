@@ -1,0 +1,138 @@
+{
+  "id": "ch_generic_late_01_kitchen_smoke",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_kitchen_smoke.title",
+  "textKey": "event.ch_generic_late_01_kitchen_smoke.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "food"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "cut_the_heat",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "heat_cf",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_kitchen_smoke_i1_blocked_door"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_kitchen_smoke.choice.cut_the_heat.outcome.heat_cf.text"
+          },
+          "failure": {
+            "id": "heat_f",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_kitchen_smoke_i1_blocked_door"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_kitchen_smoke.choice.cut_the_heat.outcome.heat_f.text"
+          },
+          "success": {
+            "id": "heat_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_kitchen_smoke_i1_blocked_door"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_kitchen_smoke.choice.cut_the_heat.outcome.heat_s.text"
+          },
+          "criticalSuccess": {
+            "id": "heat_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_late_01_kitchen_smoke_i1_blocked_door"
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_kitchen_smoke.choice.cut_the_heat.outcome.heat_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_kitchen_smoke.choice.cut_the_heat.text"
+    },
+    {
+      "id": "call_and_water",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "alarm",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_kitchen_smoke_i1_blocked_door"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_kitchen_smoke.choice.call_and_water.outcome.alarm.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_kitchen_smoke.choice.call_and_water.text"
+    },
+    {
+      "id": "get_help",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "help_called",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_late_01_kitchen_smoke_i1_blocked_door"
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_kitchen_smoke.choice.get_help.outcome.help_called.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_kitchen_smoke.choice.get_help.text"
+    }
+  ]
+}

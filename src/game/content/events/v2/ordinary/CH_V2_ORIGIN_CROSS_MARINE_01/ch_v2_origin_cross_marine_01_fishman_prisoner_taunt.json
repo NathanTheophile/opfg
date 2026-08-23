@@ -1,0 +1,91 @@
+{
+  "id": "ch_v2_origin_cross_marine_01_fishman_prisoner_taunt",
+  "kind": "normal",
+  "narrativeFamily": "origin_cross",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 143
+      },
+      {
+        "type": "raceIs",
+        "raceId": "fishman"
+      },
+      {
+        "type": "affiliationIs",
+        "affiliationId": "marine"
+      }
+    ]
+  },
+  "titleKey": "event.ch_v2_origin_cross_marine_01_fishman_prisoner_taunt.title",
+  "textKey": "event.ch_v2_origin_cross_marine_01_fishman_prisoner_taunt.text",
+  "choices": [
+    {
+      "id": "ask_why",
+      "textKey": "event.ch_v2_origin_cross_marine_01_fishman_prisoner_taunt.choice.ask_why.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "question_opened",
+          "textKey": "event.ch_v2_origin_cross_marine_01_fishman_prisoner_taunt.choice.ask_why.outcome.question_opened.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_origin_cross_marine_01_fishman_prisoner_taunt_i01_accusation"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "make_repeat",
+      "textKey": "event.ch_v2_origin_cross_marine_01_fishman_prisoner_taunt.choice.make_repeat.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "taunt_repeated",
+          "textKey": "event.ch_v2_origin_cross_marine_01_fishman_prisoner_taunt.choice.make_repeat.outcome.taunt_repeated.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "luck",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_origin_cross_marine_01_fishman_prisoner_taunt_i01_accusation"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_it_die",
+      "textKey": "event.ch_v2_origin_cross_marine_01_fishman_prisoner_taunt.choice.let_it_die.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "taunt_ignored",
+          "textKey": "event.ch_v2_origin_cross_marine_01_fishman_prisoner_taunt.choice.let_it_die.outcome.taunt_ignored.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

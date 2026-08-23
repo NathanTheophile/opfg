@@ -1,0 +1,105 @@
+{
+  "id": "ch_family_social_01_family_name_price",
+  "titleKey": "event.ch_family_social_01_family_name_price.title",
+  "textKey": "event.ch_family_social_01_family_name_price.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 144
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 174
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "affiliationIs",
+          "affiliationId": "civilian"
+        }
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "general_goods"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "take_advantage",
+      "textKey": "event.ch_family_social_01_family_name_price.choice.take_advantage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "advantage_taken",
+          "textKey": "event.ch_family_social_01_family_name_price.choice.take_advantage.outcome.advantage_taken.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_family_name_price_echo",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_advantage",
+      "textKey": "event.ch_family_social_01_family_name_price.choice.refuse_advantage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "advantage_refused",
+          "textKey": "event.ch_family_social_01_family_name_price.choice.refuse_advantage.outcome.advantage_refused.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_family_name_price_echo",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "redirect_advantage",
+      "textKey": "event.ch_family_social_01_family_name_price.choice.redirect_advantage.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "advantage_redirected",
+          "textKey": "event.ch_family_social_01_family_name_price.choice.redirect_advantage.outcome.advantage_redirected.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_family_social_01_family_name_price_echo",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

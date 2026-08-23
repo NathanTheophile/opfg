@@ -1,0 +1,104 @@
+{
+  "id": "active_civilian_01_lt_outgrown_room",
+  "titleKey": "event.active_civilian_01_lt_outgrown_room.title",
+  "textKey": "event.active_civilian_01_lt_outgrown_room.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "limit_scope",
+      "textKey": "event.active_civilian_01_lt_outgrown_room.choice.limit_scope.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "limit_scope_result",
+          "textKey": "event.active_civilian_01_lt_outgrown_room.choice.limit_scope.outcome.limit_scope_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_competing_request",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "organize_roles",
+      "textKey": "event.active_civilian_01_lt_outgrown_room.choice.organize_roles.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "organize_roles_result",
+          "textKey": "event.active_civilian_01_lt_outgrown_room.choice.organize_roles.outcome.organize_roles_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_competing_request",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "quartermaster",
+      "textKey": "event.active_civilian_01_lt_outgrown_room.choice.quartermaster.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "quartermaster_result",
+          "textKey": "event.active_civilian_01_lt_outgrown_room.choice.quartermaster.outcome.quartermaster_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_civilian_01_lt_competing_request",
+              "delayMonths": 12
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "quartermaster"
+      }
+    }
+  ]
+}

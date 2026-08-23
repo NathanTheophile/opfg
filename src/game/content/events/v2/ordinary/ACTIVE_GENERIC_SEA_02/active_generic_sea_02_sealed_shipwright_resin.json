@@ -1,0 +1,82 @@
+{
+  "id": "active_generic_sea_02_sealed_shipwright_resin",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_02_sealed_shipwright_resin.title",
+  "textKey": "event.active_generic_sea_02_sealed_shipwright_resin.text",
+  "choices": [
+    {
+      "id": "recover_sealed_jars",
+      "textKey": "event.active_generic_sea_02_sealed_shipwright_resin.choice.recover_sealed_jars.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "recover_sealed_jars_result",
+          "textKey": "event.active_generic_sea_02_sealed_shipwright_resin.outcome.recover_sealed_jars_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_02_sealed_shipwright_resin_i01"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_shipwright_choose",
+      "textKey": "event.active_generic_sea_02_sealed_shipwright_resin.choice.let_shipwright_choose.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "let_shipwright_choose_result",
+          "textKey": "event.active_generic_sea_02_sealed_shipwright_resin.outcome.let_shipwright_choose_result.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_02_sealed_shipwright_resin_i01"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    },
+    {
+      "id": "avoid_sticky_cargo",
+      "textKey": "event.active_generic_sea_02_sealed_shipwright_resin.choice.avoid_sticky_cargo.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "avoid_sticky_cargo_result",
+          "textKey": "event.active_generic_sea_02_sealed_shipwright_resin.outcome.avoid_sticky_cargo_result.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

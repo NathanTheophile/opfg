@@ -1,0 +1,49 @@
+{
+  "name": "jam-op-fan-game",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "test": "vitest run --exclude tests/simulation.test.ts --exclude tests/worldReadiness.test.ts --exclude tests/contentValidation.test.ts --exclude tests/eventCatalog.test.ts --exclude tests/sagaContentAuthoring.test.ts --exclude tests/activeGenericSea04NavHazard.test.ts",
+    "simulate": "jiti scripts/simulate.ts",
+    "balance": "jiti scripts/balance.ts",
+    "balance:full": "jiti scripts/balance.ts --runs 1000",
+    "validate-content": "jiti scripts/validate-content.ts",
+    "simulate:fuzz": "jiti scripts/simulate.ts --policy random",
+    "simulate:progression": "jiti scripts/simulate.ts --policy progression",
+    "simulate:minmax": "jiti scripts/simulate.ts --policy minmax",
+    "test:content": "vitest run tests/contentValidation.test.ts tests/eventCatalog.test.ts tests/worldReadiness.test.ts tests/activeGenericSea04NavHazard.test.ts",
+    "test:simulation": "vitest run tests/simulation.test.ts",
+    "test:authoring": "vitest run tests/sagaContentAuthoring.test.ts",
+    "test:full": "npm test && npm run test:content && npm run test:simulation && npm run test:authoring",
+    "verify:release": "npm run test:full && npm run validate-content && npm run build && npm run simulate:progression -- --runs 10 --max-events 1000"
+  },
+  "dependencies": {
+    "@base-ui/react": "latest",
+    "class-variance-authority": "latest",
+    "clsx": "latest",
+    "lucide-react": "latest",
+    "motion": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "shadcn": "latest",
+    "tailwind-merge": "latest",
+    "three": "^0.180.0",
+    "tw-animate-css": "latest"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/three": "^0.185.4",
+    "@vitejs/plugin-react": "latest",
+    "jiti": "^2.7.0",
+    "tailwindcss": "latest",
+    "typescript": "latest",
+    "vite": "latest",
+    "vitest": "latest"
+  }
+}

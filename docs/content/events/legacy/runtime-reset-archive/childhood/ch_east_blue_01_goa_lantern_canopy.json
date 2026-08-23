@@ -1,0 +1,149 @@
+{
+  "id": "ch_east_blue_01_goa_lantern_canopy",
+  "kind": "normal",
+  "titleKey": "event.ch_east_blue_01_goa_lantern_canopy.title",
+  "textKey": "event.ch_east_blue_01_goa_lantern_canopy.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 144
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "locationIs",
+        "locationId": "goa_capital"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "choose_release_rope",
+      "textKey": "event.ch_east_blue_01_goa_lantern_canopy.choice.choose_release_rope.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "wrong_tension",
+            "textKey": "event.ch_east_blue_01_goa_lantern_canopy.choice.choose_release_rope.outcome.wrong_tension.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_goa_canopy_i1"
+              }
+            ]
+          },
+          "failure": {
+            "id": "partial_release",
+            "textKey": "event.ch_east_blue_01_goa_lantern_canopy.choice.choose_release_rope.outcome.partial_release.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_goa_canopy_i1"
+              }
+            ]
+          },
+          "success": {
+            "id": "clean_release",
+            "textKey": "event.ch_east_blue_01_goa_lantern_canopy.choice.choose_release_rope.outcome.clean_release.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_goa_canopy_i1"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "balanced_release",
+            "textKey": "event.ch_east_blue_01_goa_lantern_canopy.choice.choose_release_rope.outcome.balanced_release.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_east_blue_01_goa_canopy_i1"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_arcade",
+      "textKey": "event.ch_east_blue_01_goa_lantern_canopy.choice.clear_arcade.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "arcade_cleared",
+          "textKey": "event.ch_east_blue_01_goa_lantern_canopy.choice.clear_arcade.outcome.arcade_cleared.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_east_blue_01_goa_canopy_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hold_corner",
+      "textKey": "event.ch_east_blue_01_goa_lantern_canopy.choice.hold_corner.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "corner_held",
+          "textKey": "event.ch_east_blue_01_goa_lantern_canopy.choice.hold_corner.outcome.corner_held.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_east_blue_01_goa_canopy_i1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

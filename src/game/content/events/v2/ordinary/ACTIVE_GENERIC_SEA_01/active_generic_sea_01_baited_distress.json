@@ -1,0 +1,198 @@
+{
+  "id": "active_generic_sea_01_baited_distress",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_baited_distress.title",
+  "textKey": "event.active_generic_sea_01_baited_distress.text",
+  "choices": [
+    {
+      "id": "read_the_skiff",
+      "textKey": "event.active_generic_sea_01_baited_distress.choice.read_the_skiff.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_the_skiff_criticalfailure",
+            "textKey": "event.active_generic_sea_01_baited_distress.choice.read_the_skiff.outcome.read_the_skiff_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i01_hooks"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_the_skiff_failure",
+            "textKey": "event.active_generic_sea_01_baited_distress.choice.read_the_skiff.outcome.read_the_skiff_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i01_hooks"
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "read_the_skiff_success",
+            "textKey": "event.active_generic_sea_01_baited_distress.choice.read_the_skiff.outcome.read_the_skiff_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i01_hooks"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_the_skiff_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_baited_distress.choice.read_the_skiff.outcome.read_the_skiff_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i01_hooks"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "bluff_first",
+      "textKey": "event.active_generic_sea_01_baited_distress.choice.bluff_first.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bluff_first_criticalfailure",
+            "textKey": "event.active_generic_sea_01_baited_distress.choice.bluff_first.outcome.bluff_first_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i01_hooks"
+              }
+            ]
+          },
+          "failure": {
+            "id": "bluff_first_failure",
+            "textKey": "event.active_generic_sea_01_baited_distress.choice.bluff_first.outcome.bluff_first_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i01_hooks"
+              }
+            ],
+            "shipDamageCause": "enemy"
+          },
+          "success": {
+            "id": "bluff_first_success",
+            "textKey": "event.active_generic_sea_01_baited_distress.choice.bluff_first.outcome.bluff_first_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_01_baited_distress_i01_hooks"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "bluff_first_criticalsuccess",
+            "textKey": "event.active_generic_sea_01_baited_distress.choice.bluff_first.outcome.bluff_first_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "wide_berth",
+      "textKey": "event.active_generic_sea_01_baited_distress.choice.wide_berth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "wide_berth_outcome",
+          "textKey": "event.active_generic_sea_01_baited_distress.choice.wide_berth.outcome.wide_berth_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "suspicious_refusal",
+      "textKey": "event.active_generic_sea_01_baited_distress.choice.suspicious_refusal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "suspicious_refusal_outcome",
+          "textKey": "event.active_generic_sea_01_baited_distress.choice.suspicious_refusal.outcome.suspicious_refusal_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_baited_distress_i01_hooks"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "suspicious"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

@@ -1,0 +1,180 @@
+.opfg-mobile-side-ui {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  .opfg-mobile-side-ui {
+    display: block;
+  }
+
+  .opfg-mobile-side-tabs {
+    position: fixed;
+    z-index: 84;
+    right: 0;
+    bottom: max(0px, var(--safe-area-bottom));
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.55rem;
+    padding:
+      0.65rem
+      max(0.85rem, var(--safe-area-right))
+      0.7rem
+      max(0.85rem, var(--safe-area-left));
+    border-top: 1px solid rgb(253 230 138 / 0.18);
+    background:
+      linear-gradient(180deg, rgb(6 4 3 / 0.08), rgb(6 4 3 / 0.82) 22%),
+      rgb(8 6 5 / 0.86);
+    box-shadow: 0 -12px 32px rgb(0 0 0 / 0.34);
+    backdrop-filter: blur(10px);
+  }
+
+  .opfg-mobile-side-tab,
+  .opfg-mobile-home-button {
+  --opfg-nine-slice-width: 9px;
+    display: grid;
+    place-items: center;
+    border: 1px solid transparent;
+
+    background: transparent;
+    box-shadow: none;
+    color: var(--text-muted);
+  }
+
+  .opfg-mobile-side-tab {
+    width: 100%;
+    min-width: 0;
+    height: 3.15rem;
+    cursor: pointer;
+    transition:
+      color var(--motion-fast) var(--ease-standard),
+      filter var(--motion-fast) var(--ease-standard);
+  }
+
+  .opfg-mobile-side-tab:hover,
+  .opfg-mobile-side-tab[data-active='true'],
+  .opfg-mobile-home-button:hover {
+    background: transparent;
+    color: var(--gold);
+    filter: brightness(1.08);
+  }
+
+  .opfg-mobile-home-button {
+    position: fixed;
+    z-index: 100;
+    right: max(0.75rem, var(--safe-area-right));
+    bottom: calc(
+      max(0px, var(--safe-area-bottom))
+      + var(--opfg-mobile-bottom-bar-height, 4.75rem)
+      + 0.75rem
+    );
+    width: 3.15rem !important;
+    min-width: 3.15rem;
+    height: 3.15rem;
+    min-height: 3.15rem !important;
+    padding: 0 !important;
+  }
+
+  .opfg-mobile-home-button span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .opfg-mobile-side-drawer {
+    position: fixed;
+    z-index: 140;
+    right: max(0.75rem, var(--safe-area-right));
+    bottom: calc(
+      max(0px, var(--safe-area-bottom))
+      + var(--opfg-mobile-bottom-bar-height, 4.75rem)
+      + 0.75rem
+    );
+    left: max(0.75rem, var(--safe-area-left));
+    width: min(
+      var(--ui-mobile-drawer-width, 21rem),
+      calc(
+        100vw
+        - max(0.75rem, var(--safe-area-left))
+        - max(0.75rem, var(--safe-area-right))
+      )
+    );
+    max-height: calc(
+      100dvh
+      - max(0.75rem, var(--safe-area-top))
+      - max(0px, var(--safe-area-bottom))
+      - var(--opfg-mobile-bottom-bar-height, 4.75rem)
+      - 1.5rem
+    );
+    overflow: auto;
+    overscroll-behavior: contain;
+    animation: opfg-mobile-panel-in var(--motion-normal) var(--ease-emphasized);
+  }
+
+  .opfg-mobile-side-drawer:is([data-drawer='inventory'], [data-drawer='ship']) {
+    top: auto;
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    animation-name: opfg-mobile-panel-horizontal-in;
+  }
+
+  .opfg-mobile-side-drawer .opfg-hud-home-button {
+    display: none !important;
+  }
+
+  .opfg-mobile-side-drawer :is(
+    .opfg-player-stats-module,
+    .opfg-player-stats-rail,
+    .opfg-crew-rail,
+    .opfg-crew-header,
+    .opfg-crew-member-panel,
+    .opfg-hud-panel
+  ) {
+    width: auto;
+    max-width: 100%;
+  }
+
+  .opfg-mobile-side-drawer :is(.opfg-hud-panel, .opfg-player-stats-module) {
+    min-height: auto;
+  }
+}
+
+@media (orientation: landscape) {
+  .opfg-mobile-side-ui {
+    display: none !important;
+  }
+}
+
+@keyframes opfg-mobile-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.55rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes opfg-mobile-panel-horizontal-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 0.55rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opfg-mobile-side-drawer {
+    animation-duration: 1ms;
+  }
+}

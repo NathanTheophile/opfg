@@ -1,0 +1,204 @@
+{
+  "id": "active_generic_sea_05_strange_floating_door",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_sea_05_strange_floating_door.title",
+  "textKey": "event.active_generic_sea_05_strange_floating_door.text",
+  "choices": [
+    {
+      "id": "open_carefully",
+      "textKey": "event.active_generic_sea_05_strange_floating_door.choice.open_carefully.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "open_carefully_criticalfailure",
+            "textKey": "event.active_generic_sea_05_strange_floating_door.choice.open_carefully.outcome.open_carefully_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_floating_door_i01_corridor_wind"
+              }
+            ]
+          },
+          "failure": {
+            "id": "open_carefully_failure",
+            "textKey": "event.active_generic_sea_05_strange_floating_door.choice.open_carefully.outcome.open_carefully_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_floating_door_i01_corridor_wind"
+              }
+            ]
+          },
+          "success": {
+            "id": "open_carefully_success",
+            "textKey": "event.active_generic_sea_05_strange_floating_door.choice.open_carefully.outcome.open_carefully_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_floating_door_i01_corridor_wind"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "open_carefully_criticalsuccess",
+            "textKey": "event.active_generic_sea_05_strange_floating_door.choice.open_carefully.outcome.open_carefully_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_floating_door_i01_corridor_wind"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "knock_back",
+      "textKey": "event.active_generic_sea_05_strange_floating_door.choice.knock_back.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "knock_back_criticalfailure",
+            "textKey": "event.active_generic_sea_05_strange_floating_door.choice.knock_back.outcome.knock_back_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_floating_door_i01_corridor_wind"
+              }
+            ]
+          },
+          "failure": {
+            "id": "knock_back_failure",
+            "textKey": "event.active_generic_sea_05_strange_floating_door.choice.knock_back.outcome.knock_back_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_floating_door_i01_corridor_wind"
+              }
+            ]
+          },
+          "success": {
+            "id": "knock_back_success",
+            "textKey": "event.active_generic_sea_05_strange_floating_door.choice.knock_back.outcome.knock_back_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_floating_door_i01_corridor_wind"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "knock_back_criticalsuccess",
+            "textKey": "event.active_generic_sea_05_strange_floating_door.choice.knock_back.outcome.knock_back_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_floating_door_i01_corridor_wind"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "circle_door",
+      "textKey": "event.active_generic_sea_05_strange_floating_door.choice.circle_door.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "circled",
+          "textKey": "event.active_generic_sea_05_strange_floating_door.choice.circle_door.outcome.circled.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_floating_door_i01_corridor_wind"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "respect_omen",
+      "textKey": "event.active_generic_sea_05_strange_floating_door.choice.respect_omen.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "superstitious"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "respected_omen",
+          "textKey": "event.active_generic_sea_05_strange_floating_door.choice.respect_omen.outcome.respected_omen.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_floating_door_i01_corridor_wind"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

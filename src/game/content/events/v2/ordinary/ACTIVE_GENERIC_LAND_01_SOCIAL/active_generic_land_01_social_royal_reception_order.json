@@ -1,0 +1,90 @@
+{
+  "id": "active_generic_land_01_social_royal_reception_order",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "royal"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_01_social_royal_reception_order.title",
+  "textKey": "event.active_generic_land_01_social_royal_reception_order.text",
+  "choices": [
+    {
+      "id": "present_without_rank",
+      "textKey": "event.active_generic_land_01_social_royal_reception_order.choice.present_without_rank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "no_rank",
+          "textKey": "event.active_generic_land_01_social_royal_reception_order.choice.present_without_rank.outcome.no_rank.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "take_low_place",
+      "textKey": "event.active_generic_land_01_social_royal_reception_order.choice.take_low_place.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "low_place",
+          "textKey": "event.active_generic_land_01_social_royal_reception_order.choice.take_low_place.outcome.low_place.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "claim_reputation",
+      "textKey": "event.active_generic_land_01_social_royal_reception_order.choice.claim_reputation.text",
+      "availableIf": {
+        "type": "reputationAtLeast",
+        "value": 10
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reputation_claimed",
+          "textKey": "event.active_generic_land_01_social_royal_reception_order.choice.claim_reputation.outcome.reputation_claimed.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "reject_the_order",
+      "textKey": "event.active_generic_land_01_social_royal_reception_order.choice.reject_the_order.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "rebellious"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "order_rejected",
+          "textKey": "event.active_generic_land_01_social_royal_reception_order.choice.reject_the_order.outcome.order_rejected.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "active_civilian_01_lt_hands_know_name",
+  "titleKey": "event.active_civilian_01_lt_hands_know_name.title",
+  "textKey": "event.active_civilian_01_lt_hands_know_name.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "civilian"
+    }
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "accept_legacy",
+      "textKey": "event.active_civilian_01_lt_hands_know_name.choice.accept_legacy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accept_legacy_result",
+          "textKey": "event.active_civilian_01_lt_hands_know_name.choice.accept_legacy.outcome.accept_legacy_result.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "addTrait",
+              "traitId": "resourceful"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_working",
+      "textKey": "event.active_civilian_01_lt_hands_know_name.choice.keep_working.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_working_result",
+          "textKey": "event.active_civilian_01_lt_hands_know_name.choice.keep_working.outcome.keep_working_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 2
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

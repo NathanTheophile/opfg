@@ -1,0 +1,170 @@
+{
+  "id": "active_generic_land_05_strange_bell_eating_goat",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_land_05_strange_bell_eating_goat.title",
+  "textKey": "event.active_generic_land_05_strange_bell_eating_goat.text",
+  "choices": [
+    {
+      "id": "hold_horns",
+      "textKey": "event.active_generic_land_05_strange_bell_eating_goat.choice.hold_horns.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "horns_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_bell_eating_goat.choice.hold_horns.outcome.horns_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bell_eating_goat_i01_rope_drag"
+              }
+            ]
+          },
+          "failure": {
+            "id": "horns_failure",
+            "textKey": "event.active_generic_land_05_strange_bell_eating_goat.choice.hold_horns.outcome.horns_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bell_eating_goat_i01_rope_drag"
+              }
+            ]
+          },
+          "success": {
+            "id": "horns_success",
+            "textKey": "event.active_generic_land_05_strange_bell_eating_goat.choice.hold_horns.outcome.horns_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bell_eating_goat_i01_rope_drag"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "horns_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_bell_eating_goat.choice.hold_horns.outcome.horns_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bell_eating_goat_i01_rope_drag"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "lure_food",
+      "textKey": "event.active_generic_land_05_strange_bell_eating_goat.choice.lure_food.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "lure_criticalfailure",
+            "textKey": "event.active_generic_land_05_strange_bell_eating_goat.choice.lure_food.outcome.lure_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bell_eating_goat_i01_rope_drag"
+              }
+            ]
+          },
+          "failure": {
+            "id": "lure_failure",
+            "textKey": "event.active_generic_land_05_strange_bell_eating_goat.choice.lure_food.outcome.lure_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bell_eating_goat_i01_rope_drag"
+              }
+            ]
+          },
+          "success": {
+            "id": "lure_success",
+            "textKey": "event.active_generic_land_05_strange_bell_eating_goat.choice.lure_food.outcome.lure_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bell_eating_goat_i01_rope_drag"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "lure_criticalsuccess",
+            "textKey": "event.active_generic_land_05_strange_bell_eating_goat.choice.lure_food.outcome.lure_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_05_strange_bell_eating_goat_i01_rope_drag"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cut_rope",
+      "textKey": "event.active_generic_land_05_strange_bell_eating_goat.choice.cut_rope.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rope_cut",
+          "textKey": "event.active_generic_land_05_strange_bell_eating_goat.choice.cut_rope.outcome.rope_cut.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_05_strange_bell_eating_goat_i01_rope_drag"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

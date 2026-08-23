@@ -1,0 +1,95 @@
+{
+  "id": "active_crew_social_01_mira_recruitment_offer",
+  "kind": "normal",
+  "titleKey": "event.active_crew_social_01_mira_recruitment_offer.title",
+  "textKey": "event.active_crew_social_01_mira_recruitment_offer.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isLeader"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "crew_recruitment"
+      },
+      {
+        "type": "canRecruitNpc",
+        "npcId": "mira"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "mira",
+        "status": "departed"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "recruit",
+      "textKey": "event.active_crew_social_01_mira_recruitment_offer.choice.recruit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_mira_recruitment_offer.choice.recruit.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "mira",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": 5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_mira_first_course",
+              "delayMonths": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "talk_first",
+      "textKey": "event.active_crew_social_01_mira_recruitment_offer.choice.talk_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_mira_recruitment_offer.choice.talk_first.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "decline",
+      "textKey": "event.active_crew_social_01_mira_recruitment_offer.choice.decline.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_mira_recruitment_offer.choice.decline.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

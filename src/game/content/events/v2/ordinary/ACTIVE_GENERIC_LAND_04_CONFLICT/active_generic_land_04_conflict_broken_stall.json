@@ -1,0 +1,179 @@
+{
+  "id": "active_generic_land_04_conflict_broken_stall",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_04_conflict_broken_stall.title",
+  "textKey": "event.active_generic_land_04_conflict_broken_stall.text",
+  "choices": [
+    {
+      "id": "take_box",
+      "textKey": "event.active_generic_land_04_conflict_broken_stall.choice.take_box",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "take_box_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_broken_stall.outcome.take_box.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              }
+            ]
+          },
+          "failure": {
+            "id": "take_box_failure",
+            "textKey": "event.active_generic_land_04_conflict_broken_stall.outcome.take_box.failure",
+            "effects": []
+          },
+          "success": {
+            "id": "take_box_success",
+            "textKey": "event.active_generic_land_04_conflict_broken_stall.outcome.take_box.success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_broken_stall_i01_collectors"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "take_box_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_broken_stall.outcome.take_box.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_broken_stall_i01_collectors"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "turn_crowd",
+      "textKey": "event.active_generic_land_04_conflict_broken_stall.choice.turn_crowd",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "turn_crowd_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_broken_stall.outcome.turn_crowd.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              }
+            ]
+          },
+          "failure": {
+            "id": "turn_crowd_failure",
+            "textKey": "event.active_generic_land_04_conflict_broken_stall.outcome.turn_crowd.failure",
+            "effects": []
+          },
+          "success": {
+            "id": "turn_crowd_success",
+            "textKey": "event.active_generic_land_04_conflict_broken_stall.outcome.turn_crowd.success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_broken_stall_i01_collectors"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "turn_crowd_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_broken_stall.outcome.turn_crowd.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_broken_stall_i01_collectors"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "protect_merchant",
+      "textKey": "event.active_generic_land_04_conflict_broken_stall.choice.protect_merchant",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "protect_merchant",
+          "textKey": "event.active_generic_land_04_conflict_broken_stall.outcome.protect_merchant",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_broken_stall_i01_collectors"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "protective"
+      }
+    },
+    {
+      "id": "leave",
+      "textKey": "event.active_generic_land_04_conflict_broken_stall.choice.leave",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_generic_land_04_conflict_broken_stall.outcome.leave",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  }
+}

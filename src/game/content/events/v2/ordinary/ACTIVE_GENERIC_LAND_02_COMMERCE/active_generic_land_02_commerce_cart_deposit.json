@@ -1,0 +1,78 @@
+{
+  "id": "active_generic_land_02_commerce_cart_deposit",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_02_commerce_cart_deposit.title",
+  "textKey": "event.active_generic_land_02_commerce_cart_deposit.text",
+  "choices": [
+    {
+      "id": "rent_cart",
+      "textKey": "event.active_generic_land_02_commerce_cart_deposit.choice.rent_cart.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rent_cart_outcome",
+          "textKey": "event.active_generic_land_02_commerce_cart_deposit.choice.rent_cart.outcome.rent_cart_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1000
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2000
+      }
+    },
+    {
+      "id": "carry_by_hand",
+      "textKey": "event.active_generic_land_02_commerce_cart_deposit.choice.carry_by_hand.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "carry_by_hand_outcome",
+          "textKey": "event.active_generic_land_02_commerce_cart_deposit.choice.carry_by_hand.outcome.carry_by_hand_outcome.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyBerries",
+              "amount": 500
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "skip_delivery",
+      "textKey": "event.active_generic_land_02_commerce_cart_deposit.choice.skip_delivery.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "skip_delivery_outcome",
+          "textKey": "event.active_generic_land_02_commerce_cart_deposit.choice.skip_delivery.outcome.skip_delivery_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  }
+}

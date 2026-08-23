@@ -1,0 +1,65 @@
+{
+  "id": "active_crew_social_01_s_culture_discipline_2",
+  "kind": "scheduled",
+  "titleKey": "event.active_crew_social_01_s_culture_discipline_2.title",
+  "textKey": "event.active_crew_social_01_s_culture_discipline_2.text",
+  "priority": 100,
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "hasCrew"
+    }
+  },
+  "choices": [
+    {
+      "id": "credit_structure",
+      "textKey": "event.active_crew_social_01_s_culture_discipline_2.choice.credit_structure.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_discipline_2.choice.credit_structure.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_credit_test",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "remember_cost",
+      "textKey": "event.active_crew_social_01_s_culture_discipline_2.choice.remember_cost.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_s_culture_discipline_2.choice.remember_cost.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_crew_social_01_s_culture_credit_test",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "crewSizeAtLeast",
+    "value": 2
+  }
+}

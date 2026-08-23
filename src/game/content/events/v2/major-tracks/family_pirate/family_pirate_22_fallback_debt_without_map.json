@@ -1,0 +1,86 @@
+{
+  "id": "family_pirate_22_fallback_debt_without_map",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_pirate",
+    "chapterId": "adult_family_02",
+    "nodeId": "family_pirate_22_fallback_debt_without_map",
+    "parentNodeIds": [
+      "family_pirate_18_wanted_name_at_family_door",
+      "family_pirate_18_uniform_over_old_flag",
+      "family_pirate_18_parent_cannot_answer",
+      "family_pirate_18_fallback_message_without_homeport"
+    ],
+    "fallback": true
+  },
+  "titleKey": "event.family_pirate_22_fallback_debt_without_map.title",
+  "textKey": "event.family_pirate_22_fallback_debt_without_map.text",
+  "choices": [
+    {
+      "id": "verify_names",
+      "textKey": "event.family_pirate_22_fallback_debt_without_map.choice.verify_names.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "verify_names",
+          "effects": [],
+          "textKey": "event.family_pirate_22_fallback_debt_without_map.choice.verify_names.outcome.verify_names.text"
+        }
+      }
+    },
+    {
+      "id": "compare_old_ledger",
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "family_pirate_13_ledger_of_names"
+      },
+      "textKey": "event.family_pirate_22_fallback_debt_without_map.choice.compare_old_ledger.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "compare_old_ledger",
+          "effects": [
+            {
+              "type": "setFlag",
+              "flagId": "family_pirate_ledger_sealed"
+            }
+          ],
+          "textKey": "event.family_pirate_22_fallback_debt_without_map.choice.compare_old_ledger.outcome.compare_old_ledger.text"
+        }
+      }
+    },
+    {
+      "id": "pay_small_part",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2500
+      },
+      "textKey": "event.family_pirate_22_fallback_debt_without_map.choice.pay_small_part.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_small_part",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2500
+            }
+          ],
+          "textKey": "event.family_pirate_22_fallback_debt_without_map.choice.pay_small_part.outcome.pay_small_part.text"
+        }
+      }
+    },
+    {
+      "id": "deny_blank_debt",
+      "textKey": "event.family_pirate_22_fallback_debt_without_map.choice.deny_blank_debt.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "deny_blank_debt",
+          "effects": [],
+          "textKey": "event.family_pirate_22_fallback_debt_without_map.choice.deny_blank_debt.outcome.deny_blank_debt.text"
+        }
+      }
+    }
+  ]
+}

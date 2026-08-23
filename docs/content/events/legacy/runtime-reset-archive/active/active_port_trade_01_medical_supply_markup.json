@@ -1,0 +1,100 @@
+{
+  "id": "active_port_trade_01_medical_supply_markup",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_medical_supply_markup.title",
+  "textKey": "event.active_port_trade_01_medical_supply_markup.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "medical"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "payer",
+      "textKey": "event.active_port_trade_01_medical_supply_markup.choice.payer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paye",
+          "textKey": "event.active_port_trade_01_medical_supply_markup.choice.payer.outcome.paye.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -180
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 180
+      }
+    },
+    {
+      "id": "negocier",
+      "textKey": "event.active_port_trade_01_medical_supply_markup.choice.negocier.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "negocie",
+          "textKey": "event.active_port_trade_01_medical_supply_markup.choice.negocier.outcome.negocie.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -120
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 120
+      }
+    },
+    {
+      "id": "refuser",
+      "textKey": "event.active_port_trade_01_medical_supply_markup.choice.refuser.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refus",
+          "textKey": "event.active_port_trade_01_medical_supply_markup.choice.refuser.outcome.refus.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

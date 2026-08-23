@@ -1,0 +1,108 @@
+{
+  "id": "ch_v2_generic_early_01_runaway_scarf_i01_awning",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_generic_early_01_runaway_scarf_i01_awning.title",
+  "textKey": "event.ch_v2_generic_early_01_runaway_scarf_i01_awning.text",
+  "choices": [
+    {
+      "id": "lift_with_handle",
+      "textKey": "event.ch_v2_generic_early_01_runaway_scarf_i01_awning.choice.lift_with_handle.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 8,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "lift_with_handle_criticalfailure",
+            "textKey": "event.ch_v2_generic_early_01_runaway_scarf_i01_awning.choice.lift_with_handle.outcome.lift_with_handle_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_runaway_scarf_i02_return"
+              }
+            ]
+          },
+          "failure": {
+            "id": "lift_with_handle_failure",
+            "textKey": "event.ch_v2_generic_early_01_runaway_scarf_i01_awning.choice.lift_with_handle.outcome.lift_with_handle_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_runaway_scarf_i02_return"
+              }
+            ]
+          },
+          "success": {
+            "id": "lift_with_handle_success",
+            "textKey": "event.ch_v2_generic_early_01_runaway_scarf_i01_awning.choice.lift_with_handle.outcome.lift_with_handle_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_runaway_scarf_i02_return"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "lift_with_handle_criticalsuccess",
+            "textKey": "event.ch_v2_generic_early_01_runaway_scarf_i01_awning.choice.lift_with_handle.outcome.lift_with_handle_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_v2_generic_early_01_runaway_scarf_i02_return"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "stand_on_box",
+      "textKey": "event.ch_v2_generic_early_01_runaway_scarf_i01_awning.choice.stand_on_box.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "box",
+          "textKey": "event.ch_v2_generic_early_01_runaway_scarf_i01_awning.choice.stand_on_box.outcome.box.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_runaway_scarf_i02_return"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hold_box",
+      "textKey": "event.ch_v2_generic_early_01_runaway_scarf_i01_awning.choice.hold_box.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "held_box",
+          "textKey": "event.ch_v2_generic_early_01_runaway_scarf_i01_awning.choice.hold_box.outcome.held_box.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_generic_early_01_runaway_scarf_i02_return"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

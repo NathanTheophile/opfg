@@ -1,0 +1,112 @@
+{
+  "id": "active_haki_observation_l3_world_without_eyes_i02_shouts_point_wrong",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l3_world_without_eyes_i02_shouts_point_wrong.title",
+  "textKey": "event.active_haki_observation_l3_world_without_eyes_i02_shouts_point_wrong.text",
+  "choices": [
+    {
+      "id": "trust_presence",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i02_shouts_point_wrong.choice.trust_presence.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "signal_lost",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i02_shouts_point_wrong.choice.trust_presence.outcome.signal_lost.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you"
+              }
+            ]
+          },
+          "failure": {
+            "id": "detour",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i02_shouts_point_wrong.choice.trust_presence.outcome.detour.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you"
+              }
+            ]
+          },
+          "success": {
+            "id": "found_directly",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i02_shouts_point_wrong.choice.trust_presence.outcome.found_directly.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "echo_ignored",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i02_shouts_point_wrong.choice.trust_presence.outcome.echo_ignored.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "silence_everyone",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i02_shouts_point_wrong.choice.silence_everyone.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "brief_quiet",
+          "textKey": "event.active_haki_observation_l3_world_without_eyes_i02_shouts_point_wrong.choice.silence_everyone.outcome.brief_quiet.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "crawl_to_stillness",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i02_shouts_point_wrong.choice.crawl_to_stillness.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "contact_found",
+          "textKey": "event.active_haki_observation_l3_world_without_eyes_i02_shouts_point_wrong.choice.crawl_to_stillness.outcome.contact_found.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 2
+      }
+    }
+  ]
+}

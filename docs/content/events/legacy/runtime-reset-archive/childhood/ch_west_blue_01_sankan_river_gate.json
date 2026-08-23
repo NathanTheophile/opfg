@@ -1,0 +1,139 @@
+{
+  "id": "ch_west_blue_01_sankan_river_gate",
+  "kind": "normal",
+  "titleKey": "event.ch_west_blue_01_sankan_river_gate.title",
+  "textKey": "event.ch_west_blue_01_sankan_river_gate.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "locationIs",
+        "locationId": "sankan_river_town"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "call_turn",
+      "textKey": "event.ch_west_blue_01_sankan_river_gate.choice.call_turn.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "turn_bad",
+            "textKey": "event.ch_west_blue_01_sankan_river_gate.choice.call_turn.outcome.turn_bad.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_west_blue_01_sankan_gate_i1_barge_pressure"
+              }
+            ]
+          },
+          "failure": {
+            "id": "turn_rough",
+            "textKey": "event.ch_west_blue_01_sankan_river_gate.choice.call_turn.outcome.turn_rough.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_west_blue_01_sankan_gate_i1_barge_pressure"
+              }
+            ]
+          },
+          "success": {
+            "id": "turn_safe",
+            "textKey": "event.ch_west_blue_01_sankan_river_gate.choice.call_turn.outcome.turn_safe.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_west_blue_01_sankan_gate_i1_barge_pressure"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "turn_precise",
+            "textKey": "event.ch_west_blue_01_sankan_river_gate.choice.call_turn.outcome.turn_precise.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_west_blue_01_sankan_gate_i1_barge_pressure"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "clear_moorings",
+      "textKey": "event.ch_west_blue_01_sankan_river_gate.choice.clear_moorings.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "moorings_cleared",
+          "textKey": "event.ch_west_blue_01_sankan_river_gate.choice.clear_moorings.outcome.moorings_cleared.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_west_blue_01_sankan_gate_i1_barge_pressure"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hold_market_rope",
+      "textKey": "event.ch_west_blue_01_sankan_river_gate.choice.hold_market_rope.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "market_rope_held",
+          "textKey": "event.ch_west_blue_01_sankan_river_gate.choice.hold_market_rope.outcome.market_rope_held.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_west_blue_01_sankan_gate_i1_barge_pressure"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

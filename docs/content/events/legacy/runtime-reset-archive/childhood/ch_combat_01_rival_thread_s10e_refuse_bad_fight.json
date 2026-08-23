@@ -1,0 +1,58 @@
+{
+  "id": "ch_combat_01_rival_thread_s10e_refuse_bad_fight",
+  "titleKey": "event.ch_combat_01_rival_thread_s10e_refuse_bad_fight.title",
+  "textKey": "event.ch_combat_01_rival_thread_s10e_refuse_bad_fight.text",
+  "kind": "scheduled",
+  "eligibility": {
+    "type": "isOnLand"
+  },
+  "priority": 100,
+  "choices": [
+    {
+      "id": "leave_early",
+      "textKey": "event.ch_combat_01_rival_thread_s10e_refuse_bad_fight.choice.leave_early.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "left_early",
+          "textKey": "event.ch_combat_01_rival_thread_s10e_refuse_bad_fight.choice.leave_early.outcome.left_early.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_rival_thread_s11e_choose_ground",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "change_ground",
+      "textKey": "event.ch_combat_01_rival_thread_s10e_refuse_bad_fight.choice.change_ground.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ground_changed",
+          "textKey": "event.ch_combat_01_rival_thread_s10e_refuse_bad_fight.choice.change_ground.outcome.ground_changed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_combat_01_rival_thread_s11e_choose_ground",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

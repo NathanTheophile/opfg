@@ -1,0 +1,236 @@
+{
+  "id": "active_rival_revolutionary_01_two_objectives",
+  "kind": "scheduled",
+  "cast": [
+    "active_rival_revolutionary_01_rival"
+  ],
+  "titleKey": "event.active_rival_revolutionary_01_two_objectives.title",
+  "textKey": "event.active_rival_revolutionary_01_two_objectives.text",
+  "choices": [
+    {
+      "id": "give_her_the_ledger",
+      "textKey": "event.active_rival_revolutionary_01_two_objectives.choice.give_her_the_ledger.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "give_her_the_ledger",
+          "textKey": "event.active_rival_revolutionary_01_two_objectives.choice.give_her_the_ledger.outcome.give_her_the_ledger.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "active_rival_revolutionary_01_rival",
+              "amount": 5
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_rival_revolutionary_01_split_command",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_the_ledger",
+      "textKey": "event.active_rival_revolutionary_01_two_objectives.choice.take_the_ledger.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "take_the_ledger_criticalfailure",
+            "textKey": "event.active_rival_revolutionary_01_two_objectives.choice.take_the_ledger.outcome.take_the_ledger_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_revolutionary_01_rival",
+                "amount": -5
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_revolutionary_01_countermand",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "failure": {
+            "id": "take_the_ledger_failure",
+            "textKey": "event.active_rival_revolutionary_01_two_objectives.choice.take_the_ledger.outcome.take_the_ledger_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_revolutionary_01_rival",
+                "amount": -2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_revolutionary_01_countermand",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "success": {
+            "id": "take_the_ledger_success",
+            "textKey": "event.active_rival_revolutionary_01_two_objectives.choice.take_the_ledger.outcome.take_the_ledger_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_revolutionary_01_rival",
+                "amount": 3
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_revolutionary_01_split_command",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "take_the_ledger_criticalsuccess",
+            "textKey": "event.active_rival_revolutionary_01_two_objectives.choice.take_the_ledger.outcome.take_the_ledger_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_revolutionary_01_rival",
+                "amount": 5
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_revolutionary_01_split_command",
+                "delayMonths": 24
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "force_one_command",
+      "textKey": "event.active_rival_revolutionary_01_two_objectives.choice.force_one_command.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "force_one_command_criticalfailure",
+            "textKey": "event.active_rival_revolutionary_01_two_objectives.choice.force_one_command.outcome.force_one_command_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_revolutionary_01_rival",
+                "amount": -8
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_revolutionary_01_countermand",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "failure": {
+            "id": "force_one_command_failure",
+            "textKey": "event.active_rival_revolutionary_01_two_objectives.choice.force_one_command.outcome.force_one_command_failure.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_revolutionary_01_rival",
+                "amount": -6
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_revolutionary_01_countermand",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "success": {
+            "id": "force_one_command_success",
+            "textKey": "event.active_rival_revolutionary_01_two_objectives.choice.force_one_command.outcome.force_one_command_success.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_revolutionary_01_rival",
+                "amount": -2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_revolutionary_01_countermand",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "force_one_command_criticalsuccess",
+            "textKey": "event.active_rival_revolutionary_01_two_objectives.choice.force_one_command.outcome.force_one_command_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyNpcRelationship",
+                "npcId": "active_rival_revolutionary_01_rival",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_rival_revolutionary_01_split_command",
+                "delayMonths": 24
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      }
+    ]
+  },
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "ageAtLeastMonths",
+        "value": 419
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerAffiliationIs",
+          "affiliationId": "revolutionary"
+        }
+      }
+    ]
+  }
+}

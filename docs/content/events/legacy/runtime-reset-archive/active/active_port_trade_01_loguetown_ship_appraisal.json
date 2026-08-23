@@ -1,0 +1,123 @@
+{
+  "id": "active_port_trade_01_loguetown_ship_appraisal",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_loguetown_ship_appraisal.title",
+  "textKey": "event.active_port_trade_01_loguetown_ship_appraisal.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationIs",
+        "locationId": "loguetown"
+      },
+      {
+        "type": "isLeader"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "shipIs",
+            "shipId": "dinghy"
+          },
+          {
+            "type": "shipIs",
+            "shipId": "sloop"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "vendre_dinghy",
+      "textKey": "event.active_port_trade_01_loguetown_ship_appraisal.choice.vendre_dinghy.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "vendue",
+          "textKey": "event.active_port_trade_01_loguetown_ship_appraisal.choice.vendre_dinghy.outcome.vendue.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 500
+            },
+            {
+              "type": "loseShip",
+              "locationId": "loguetown",
+              "travelState": "on_land"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "shipIs",
+            "shipId": "dinghy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vendre_sloop",
+      "textKey": "event.active_port_trade_01_loguetown_ship_appraisal.choice.vendre_sloop.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "vendu",
+          "textKey": "event.active_port_trade_01_loguetown_ship_appraisal.choice.vendre_sloop.outcome.vendu.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1400
+            },
+            {
+              "type": "loseShip",
+              "locationId": "loguetown",
+              "travelState": "on_land"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "shipIs",
+            "shipId": "sloop"
+          }
+        ]
+      }
+    },
+    {
+      "id": "garder",
+      "textKey": "event.active_port_trade_01_loguetown_ship_appraisal.choice.garder.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "garde",
+          "textKey": "event.active_port_trade_01_loguetown_ship_appraisal.choice.garder.outcome.garde.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "id": "active_haki_observation_01_life_07a_stranger_red",
+  "kind": "scheduled",
+  "titleKey": "event.active_haki_observation_01_life_07a_stranger_red.title",
+  "textKey": "event.active_haki_observation_01_life_07a_stranger_red.text",
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "choices": [
+    {
+      "id": "ordinary",
+      "textKey": "event.active_haki_observation_01_life_07a_stranger_red.choice.ordinary.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_haki_observation_01_life_07a_stranger_red.choice.ordinary.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_observation_01_life_08a_warning_arrives",
+                "delayMonths": 10
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_haki_observation_01_life_07a_stranger_red.choice.ordinary.outcome.failure.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_observation_01_life_08a_warning_arrives",
+                "delayMonths": 10
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_haki_observation_01_life_07a_stranger_red.choice.ordinary.outcome.success.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_observation_01_life_08a_warning_arrives",
+                "delayMonths": 10
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_haki_observation_01_life_07a_stranger_red.choice.ordinary.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_haki_observation_01_life_08a_warning_arrives",
+                "delayMonths": 10
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "haki",
+      "textKey": "event.active_haki_observation_01_life_07a_stranger_red.choice.haki.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "success",
+          "textKey": "event.active_haki_observation_01_life_07a_stranger_red.choice.haki.outcome.success.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_haki_observation_01_life_08a_warning_arrives",
+              "delayMonths": 10
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 1
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

@@ -1,0 +1,79 @@
+{
+  "id": "family_civilian_adult_03_neighborhood_request_i01_reaction",
+  "kind": "immediate",
+  "titleKey": "event.family_civilian_adult_03_neighborhood_request_i01_reaction.title",
+  "textKey": "event.family_civilian_adult_03_neighborhood_request_i01_reaction.text",
+  "choices": [
+    {
+      "id": "sign",
+      "textKey": "event.family_civilian_adult_03_neighborhood_request_i01_reaction.choice.sign.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sign",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.family_civilian_adult_03_neighborhood_request_i01_reaction.choice.sign.outcome.sign.text"
+        }
+      }
+    },
+    {
+      "id": "offer_cash",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2500
+      },
+      "textKey": "event.family_civilian_adult_03_neighborhood_request_i01_reaction.choice.offer_cash.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "offer_cash",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2500
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.family_civilian_adult_03_neighborhood_request_i01_reaction.choice.offer_cash.outcome.offer_cash.text"
+        }
+      }
+    },
+    {
+      "id": "refuse_name",
+      "textKey": "event.family_civilian_adult_03_neighborhood_request_i01_reaction.choice.refuse_name.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refuse_name",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": -1
+            }
+          ],
+          "textKey": "event.family_civilian_adult_03_neighborhood_request_i01_reaction.choice.refuse_name.outcome.refuse_name.text"
+        }
+      }
+    }
+  ]
+}

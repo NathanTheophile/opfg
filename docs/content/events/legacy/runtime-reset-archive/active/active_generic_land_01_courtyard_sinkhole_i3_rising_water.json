@@ -1,0 +1,125 @@
+{
+  "id": "active_generic_land_01_courtyard_sinkhole_i3_rising_water",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_01_courtyard_sinkhole_i3_rising_water.title",
+  "textKey": "event.active_generic_land_01_courtyard_sinkhole_i3_rising_water.text",
+  "choices": [
+    {
+      "id": "reach_trapped",
+      "textKey": "event.active_generic_land_01_courtyard_sinkhole_i3_rising_water.choice.reach_trapped.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_generic_land_01_courtyard_sinkhole_i3_rising_water.choice.reach_trapped.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_courtyard_sinkhole_i4_owner_pushes_in"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_generic_land_01_courtyard_sinkhole_i3_rising_water.choice.reach_trapped.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_courtyard_sinkhole_i4_owner_pushes_in"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_generic_land_01_courtyard_sinkhole_i3_rising_water.choice.reach_trapped.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_courtyard_sinkhole_i4_owner_pushes_in"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_generic_land_01_courtyard_sinkhole_i3_rising_water.choice.reach_trapped.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_01_courtyard_sinkhole_i4_owner_pushes_in"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "stop_inflow",
+      "textKey": "event.active_generic_land_01_courtyard_sinkhole_i3_rising_water.choice.stop_inflow.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_courtyard_sinkhole_i3_rising_water.choice.stop_inflow.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_courtyard_sinkhole_i4_owner_pushes_in"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "coordinate_both",
+      "textKey": "event.active_generic_land_01_courtyard_sinkhole_i3_rising_water.choice.coordinate_both.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_generic_land_01_courtyard_sinkhole_i3_rising_water.choice.coordinate_both.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_01_courtyard_sinkhole_i4_owner_pushes_in"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

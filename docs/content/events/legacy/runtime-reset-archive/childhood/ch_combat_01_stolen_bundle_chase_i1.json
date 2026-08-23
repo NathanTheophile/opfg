@@ -1,0 +1,73 @@
+{
+  "id": "ch_combat_01_stolen_bundle_chase_i1",
+  "titleKey": "event.ch_combat_01_stolen_bundle_chase_i1.title",
+  "textKey": "event.ch_combat_01_stolen_bundle_chase_i1.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "watch_hips",
+      "textKey": "event.ch_combat_01_stolen_bundle_chase_i1.choice.watch_hips.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hips_read",
+          "textKey": "event.ch_combat_01_stolen_bundle_chase_i1.choice.watch_hips.outcome.hips_read.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_stolen_bundle_chase_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_short",
+      "textKey": "event.ch_combat_01_stolen_bundle_chase_i1.choice.take_short.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "short_forced",
+          "textKey": "event.ch_combat_01_stolen_bundle_chase_i1.choice.take_short.outcome.short_forced.text",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_stolen_bundle_chase_i2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_long",
+      "textKey": "event.ch_combat_01_stolen_bundle_chase_i1.choice.take_long.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "long_taken",
+          "textKey": "event.ch_combat_01_stolen_bundle_chase_i1.choice.take_long.outcome.long_taken.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_stolen_bundle_chase_i2"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

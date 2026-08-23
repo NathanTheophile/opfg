@@ -1,0 +1,188 @@
+{
+  "id": "active_generic_land_03_mystery_false_notice",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_03_mystery_false_notice.title",
+  "textKey": "event.active_generic_land_03_mystery_false_notice.text",
+  "choices": [
+    {
+      "id": "check_wording",
+      "textKey": "event.active_generic_land_03_mystery_false_notice.choice.check_wording.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "check_wording_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_false_notice.choice.check_wording.outcome.check_wording_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_false_notice_i01_empty_street"
+              }
+            ]
+          },
+          "failure": {
+            "id": "check_wording_failure",
+            "textKey": "event.active_generic_land_03_mystery_false_notice.choice.check_wording.outcome.check_wording_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_false_notice_i01_empty_street"
+              }
+            ]
+          },
+          "success": {
+            "id": "check_wording_success",
+            "textKey": "event.active_generic_land_03_mystery_false_notice.choice.check_wording.outcome.check_wording_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_false_notice_i01_empty_street"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "check_wording_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_false_notice.choice.check_wording.outcome.check_wording_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_false_notice_i01_empty_street"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_seal",
+      "textKey": "event.active_generic_land_03_mystery_false_notice.choice.read_seal.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_seal_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_false_notice.choice.read_seal.outcome.read_seal_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_false_notice_i01_empty_street"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_seal_failure",
+            "textKey": "event.active_generic_land_03_mystery_false_notice.choice.read_seal.outcome.read_seal_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_false_notice_i01_empty_street"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_seal_success",
+            "textKey": "event.active_generic_land_03_mystery_false_notice.choice.read_seal.outcome.read_seal_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_false_notice_i01_empty_street"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_seal_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_false_notice.choice.read_seal.outcome.read_seal_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_false_notice_i01_empty_street"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "tear_down",
+      "textKey": "event.active_generic_land_03_mystery_false_notice.choice.tear_down.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "removed",
+          "textKey": "event.active_generic_land_03_mystery_false_notice.choice.tear_down.outcome.removed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_false_notice_i01_empty_street"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fake_compliance",
+      "textKey": "event.active_generic_land_03_mystery_false_notice.choice.fake_compliance.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "deceptive"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "faked",
+          "textKey": "event.active_generic_land_03_mystery_false_notice.choice.fake_compliance.outcome.faked.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_false_notice_i01_empty_street"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

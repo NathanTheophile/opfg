@@ -1,0 +1,82 @@
+{
+  "id": "ch_generic_late_01_favor_s10",
+  "kind": "scheduled",
+  "titleKey": "event.ch_generic_late_01_favor_s10.title",
+  "textKey": "event.ch_generic_late_01_favor_s10.text",
+  "priority": 100,
+  "scheduledReach": "unrestricted",
+  "choices": [
+    {
+      "id": "own_public_cost",
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "ch_generic_late_01_favor_s09_public"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "public_cost",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_favor_s11",
+              "delayMonths": 18
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_favor_s10.choice.own_public_cost.outcome.public_cost.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_favor_s10.choice.own_public_cost.text"
+    },
+    {
+      "id": "own_hidden_cost",
+      "availableIf": {
+        "type": "hasPlayed",
+        "eventId": "ch_generic_late_01_favor_s09_hidden"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hidden_cost",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_favor_s11",
+              "delayMonths": 18
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_favor_s10.choice.own_hidden_cost.outcome.hidden_cost.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_favor_s10.choice.own_hidden_cost.text"
+    },
+    {
+      "id": "keep_helping",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_late_01_favor_s11",
+              "delayMonths": 18
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_favor_s10.choice.keep_helping.outcome.keep.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_favor_s10.choice.keep_helping.text"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "id": "ch_generic_early_01_three_breaths_s09b_room_to_retreat",
+  "titleKey": "event.ch_generic_early_01_three_breaths_s09b_room_to_retreat.title",
+  "textKey": "event.ch_generic_early_01_three_breaths_s09b_room_to_retreat.text",
+  "kind": "scheduled",
+  "choices": [
+    {
+      "id": "prepare_return",
+      "textKey": "event.ch_generic_early_01_three_breaths_s09b_room_to_retreat.choice.prepare_return.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "return_planned",
+          "textKey": "event.ch_generic_early_01_three_breaths_s09b_room_to_retreat.choice.prepare_return.outcome.return_planned.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s10b_return_by_choice",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_no_return",
+      "textKey": "event.ch_generic_early_01_three_breaths_s09b_room_to_retreat.choice.accept_no_return.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "no_return_needed",
+          "textKey": "event.ch_generic_early_01_three_breaths_s09b_room_to_retreat.choice.accept_no_return.outcome.no_return_needed.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s10b_return_by_choice",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hide_reason",
+      "textKey": "event.ch_generic_early_01_three_breaths_s09b_room_to_retreat.choice.hide_reason.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reason_hidden",
+          "textKey": "event.ch_generic_early_01_three_breaths_s09b_room_to_retreat.choice.hide_reason.outcome.reason_hidden.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s10b_return_by_choice",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

@@ -1,0 +1,138 @@
+{
+  "id": "family_marine_07_sealed_packet",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "family_marine",
+    "chapterId": "childhood_03",
+    "nodeId": "family_marine_07_sealed_packet",
+    "parentNodeIds": [
+      "family_marine_04_you_come_to_base",
+      "family_marine_04_dinner_interrupted"
+    ],
+    "selectionPriority": 10
+  },
+  "eligibility": {
+    "type": "any",
+    "conditions": [
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_04_you_come_to_base_i02_short_alarm",
+        "outcomeId": "find_s"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_04_you_come_to_base_i02_short_alarm",
+        "outcomeId": "find_cs"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_04_you_come_to_base_i02_short_alarm",
+        "outcomeId": "stay_storehouse"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_04_you_come_to_base_i02_short_alarm",
+        "outcomeId": "help_clear"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_04_dinner_interrupted_i02_messenger_waits",
+        "outcomeId": "father_goes"
+      },
+      {
+        "type": "hasOutcome",
+        "eventId": "family_marine_04_dinner_interrupted_i02_messenger_waits",
+        "outcomeId": "compromise"
+      }
+    ]
+  },
+  "titleKey": "event.family_marine_07_sealed_packet.title",
+  "textKey": "event.family_marine_07_sealed_packet.text",
+  "choices": [
+    {
+      "id": "guard",
+      "textKey": "event.family_marine_07_sealed_packet.choice.guard.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "guard",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_07_sealed_packet_i01_wrong_hands"
+            }
+          ],
+          "textKey": "event.family_marine_07_sealed_packet.choice.guard.outcome.guard.text"
+        }
+      }
+    },
+    {
+      "id": "inspect_seal",
+      "textKey": "event.family_marine_07_sealed_packet.choice.inspect_seal.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "seal_cf",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_sealed_packet_i01_wrong_hands"
+              }
+            ],
+            "textKey": "event.family_marine_07_sealed_packet.choice.inspect_seal.outcome.seal_cf.text"
+          },
+          "failure": {
+            "id": "seal_f",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_sealed_packet_i01_wrong_hands"
+              }
+            ],
+            "textKey": "event.family_marine_07_sealed_packet.choice.inspect_seal.outcome.seal_f.text"
+          },
+          "success": {
+            "id": "seal_s",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_sealed_packet_i01_wrong_hands"
+              }
+            ],
+            "textKey": "event.family_marine_07_sealed_packet.choice.inspect_seal.outcome.seal_s.text"
+          },
+          "criticalSuccess": {
+            "id": "seal_cs",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "family_marine_07_sealed_packet_i01_wrong_hands"
+              }
+            ],
+            "textKey": "event.family_marine_07_sealed_packet.choice.inspect_seal.outcome.seal_cs.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "hand_over",
+      "textKey": "event.family_marine_07_sealed_packet.choice.hand_over.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hand_over",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "family_marine_07_sealed_packet_i01_wrong_hands"
+            }
+          ],
+          "textKey": "event.family_marine_07_sealed_packet.choice.hand_over.outcome.hand_over.text"
+        }
+      }
+    }
+  ]
+}

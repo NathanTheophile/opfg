@@ -1,0 +1,106 @@
+{
+  "id": "active_bounty_hunter_01_surrender_in_warehouse",
+  "titleKey": "event.active_bounty_hunter_01_surrender_in_warehouse.title",
+  "textKey": "event.active_bounty_hunter_01_surrender_in_warehouse.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "bounty_hunter"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "industrial"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "accept_surrender",
+      "textKey": "event.active_bounty_hunter_01_surrender_in_warehouse.choice.accept_surrender.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_surrender_in_warehouse.choice.accept_surrender.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyBerries",
+              "amount": 1800
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "check_trap",
+      "textKey": "event.active_bounty_hunter_01_surrender_in_warehouse.choice.check_trap.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_surrender_in_warehouse.choice.check_trap.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "modifyBerries",
+              "amount": 1900
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refuse_terms",
+      "textKey": "event.active_bounty_hunter_01_surrender_in_warehouse.choice.refuse_terms.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_surrender_in_warehouse.choice.refuse_terms.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 1600
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

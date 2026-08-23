@@ -1,0 +1,68 @@
+{
+  "id": "active_generic_combat_01_rival_p7_witness_route",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "titleKey": "event.active_generic_combat_01_rival_p7_witness_route.title",
+  "textKey": "event.active_generic_combat_01_rival_p7_witness_route.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "promise",
+      "textKey": "event.active_generic_combat_01_rival_p7_witness_route.choice.promise.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "promise_outcome",
+          "textKey": "event.active_generic_combat_01_rival_p7_witness_route.choice.promise.outcome.promise_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_p8_roofline_extraction",
+              "delayMonths": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "honest",
+      "textKey": "event.active_generic_combat_01_rival_p7_witness_route.choice.honest.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "honest_outcome",
+          "textKey": "event.active_generic_combat_01_rival_p7_witness_route.choice.honest.outcome.honest_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_generic_combat_01_rival_p8_roofline_extraction",
+              "delayMonths": 12
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

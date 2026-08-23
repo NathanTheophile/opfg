@@ -1,0 +1,108 @@
+{
+  "id": "ch_v2_identity_world_01_privileged_public_queue",
+  "titleKey": "event.ch_v2_identity_world_01_privileged_public_queue.title",
+  "textKey": "event.ch_v2_identity_world_01_privileged_public_queue.text",
+  "kind": "normal",
+  "choices": [
+    {
+      "id": "ask_clerk_rule",
+      "textKey": "event.ch_v2_identity_world_01_privileged_public_queue.choice.ask_clerk_rule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "queue_rule_asked",
+          "textKey": "event.ch_v2_identity_world_01_privileged_public_queue.choice.ask_clerk_rule.outcome.queue_rule_asked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "give_front_person_voice",
+      "textKey": "event.ch_v2_identity_world_01_privileged_public_queue.choice.give_front_person_voice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "front_person_heard",
+          "textKey": "event.ch_v2_identity_world_01_privileged_public_queue.choice.give_front_person_voice.outcome.front_person_heard.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "memorize_order",
+      "textKey": "event.ch_v2_identity_world_01_privileged_public_queue.choice.memorize_order.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "queue_order_noted",
+          "textKey": "event.ch_v2_identity_world_01_privileged_public_queue.choice.memorize_order.outcome.queue_order_noted.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mock_the_queue",
+      "textKey": "event.ch_v2_identity_world_01_privileged_public_queue.choice.mock_the_queue.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "queue_mocked",
+          "textKey": "event.ch_v2_identity_world_01_privileged_public_queue.choice.mock_the_queue.outcome.queue_mocked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 96
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "government"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "royal"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "capital"
+          }
+        ]
+      }
+    ]
+  }
+}

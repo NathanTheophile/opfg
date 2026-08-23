@@ -1,0 +1,146 @@
+{
+  "id": "active_crew_social_01_fighter_shore_provocation",
+  "kind": "normal",
+  "titleKey": "event.active_crew_social_01_fighter_shore_provocation.title",
+  "textKey": "event.active_crew_social_01_fighter_shore_provocation.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "hasCrew"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hasCrewRole",
+        "roleId": "fighter"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "urban"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "village"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "deescalate",
+      "textKey": "event.active_crew_social_01_fighter_shore_provocation.choice.deescalate.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_crew_social_01_fighter_shore_provocation.choice.deescalate.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_crew_social_01_fighter_shore_provocation.choice.deescalate.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_crew_social_01_fighter_shore_provocation.choice.deescalate.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_crew_social_01_fighter_shore_provocation.choice.deescalate.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "disciplined"
+            },
+            "value": 2,
+            "displayLabelKey": "event.active_crew_social_01_fighter_shore_provocation.choice.deescalate.modifier.disciplined"
+          }
+        ]
+      }
+    },
+    {
+      "id": "let_fighter_answer",
+      "textKey": "event.active_crew_social_01_fighter_shore_provocation.choice.let_fighter_answer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_fighter_shore_provocation.choice.let_fighter_answer.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave",
+      "textKey": "event.active_crew_social_01_fighter_shore_provocation.choice.leave.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_fighter_shore_provocation.choice.leave.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

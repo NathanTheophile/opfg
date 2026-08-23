@@ -1,0 +1,123 @@
+{
+  "id": "ch_north_blue_01_pepe_mooring_post",
+  "titleKey": "event.ch_north_blue_01_pepe_mooring_post.title",
+  "textKey": "event.ch_north_blue_01_pepe_mooring_post.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "north_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      },
+      {
+        "type": "locationIs",
+        "locationId": "pepe_port"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "redistribute_line",
+      "textKey": "event.ch_north_blue_01_pepe_mooring_post.choice.redistribute_line.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "redistribute_line_critical_failure",
+            "textKey": "event.ch_north_blue_01_pepe_mooring_post.choice.redistribute_line.outcome.redistribute_line_critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "redistribute_line_failure",
+            "textKey": "event.ch_north_blue_01_pepe_mooring_post.choice.redistribute_line.outcome.redistribute_line_failure.text",
+            "effects": []
+          },
+          "success": {
+            "id": "redistribute_line_success",
+            "textKey": "event.ch_north_blue_01_pepe_mooring_post.choice.redistribute_line.outcome.redistribute_line_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "redistribute_line_critical_success",
+            "textKey": "event.ch_north_blue_01_pepe_mooring_post.choice.redistribute_line.outcome.redistribute_line_critical_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "unload_first",
+      "textKey": "event.ch_north_blue_01_pepe_mooring_post.choice.unload_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "unload_first_result",
+          "textKey": "event.ch_north_blue_01_pepe_mooring_post.choice.unload_first.outcome.unload_first_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "close_berth",
+      "textKey": "event.ch_north_blue_01_pepe_mooring_post.choice.close_berth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "close_berth_result",
+          "textKey": "event.ch_north_blue_01_pepe_mooring_post.choice.close_berth.outcome.close_berth_result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

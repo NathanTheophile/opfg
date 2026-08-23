@@ -1,0 +1,129 @@
+{
+  "id": "active_crew_social_01_hidden_wound",
+  "kind": "normal",
+  "titleKey": "event.active_crew_social_01_hidden_wound.title",
+  "textKey": "event.active_crew_social_01_hidden_wound.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "hasCrew"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_signs",
+      "textKey": "event.active_crew_social_01_hidden_wound.choice.read_signs.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_crew_social_01_hidden_wound.choice.read_signs.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_crew_social_01_i_hidden_wound_confront"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_crew_social_01_hidden_wound.choice.read_signs.outcome.failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_crew_social_01_i_hidden_wound_confront"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_crew_social_01_hidden_wound.choice.read_signs.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_crew_social_01_i_hidden_wound_confront"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_crew_social_01_hidden_wound.choice.read_signs.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_crew_social_01_i_hidden_wound_confront"
+              }
+            ]
+          }
+        },
+        "modifiers": [
+          {
+            "condition": {
+              "type": "hasCrewRole",
+              "roleId": "medic"
+            },
+            "value": 2,
+            "displayLabelKey": "event.active_crew_social_01_hidden_wound.choice.read_signs.modifier.medic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ask_private",
+      "textKey": "event.active_crew_social_01_hidden_wound.choice.ask_private.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_hidden_wound.choice.ask_private.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_crew_social_01_i_hidden_wound_confront"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_it",
+      "textKey": "event.active_crew_social_01_hidden_wound.choice.leave_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_crew_social_01_hidden_wound.choice.leave_it.outcome.resolved.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

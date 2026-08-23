@@ -1,0 +1,104 @@
+{
+  "id": "ch_generic_early_01_three_breaths_s08_storm_inside",
+  "titleKey": "event.ch_generic_early_01_three_breaths_s08_storm_inside.title",
+  "textKey": "event.ch_generic_early_01_three_breaths_s08_storm_inside.text",
+  "kind": "scheduled",
+  "choices": [
+    {
+      "id": "step_forward",
+      "textKey": "event.ch_generic_early_01_three_breaths_s08_storm_inside.choice.step_forward.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "panic_breaks",
+            "textKey": "event.ch_generic_early_01_three_breaths_s08_storm_inside.choice.step_forward.outcome.panic_breaks.text",
+            "effects": []
+          },
+          "failure": {
+            "id": "retreat_after_try",
+            "textKey": "event.ch_generic_early_01_three_breaths_s08_storm_inside.choice.step_forward.outcome.retreat_after_try.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_early_01_three_breaths_s09b_room_to_retreat",
+                "delayMonths": 12
+              }
+            ]
+          },
+          "success": {
+            "id": "forward_with_choice",
+            "textKey": "event.ch_generic_early_01_three_breaths_s08_storm_inside.choice.step_forward.outcome.forward_with_choice.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_early_01_three_breaths_s09a_fear_as_compass",
+                "delayMonths": 12
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "clear_forward",
+            "textKey": "event.ch_generic_early_01_three_breaths_s08_storm_inside.choice.step_forward.outcome.clear_forward.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_generic_early_01_three_breaths_s09a_fear_as_compass",
+                "delayMonths": 12
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "step_back",
+      "textKey": "event.ch_generic_early_01_three_breaths_s08_storm_inside.choice.step_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "retreat_by_choice",
+          "textKey": "event.ch_generic_early_01_three_breaths_s08_storm_inside.choice.step_back.outcome.retreat_by_choice.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_generic_early_01_three_breaths_s09b_room_to_retreat",
+              "delayMonths": 12
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "reject_ritual",
+      "textKey": "event.ch_generic_early_01_three_breaths_s08_storm_inside.choice.reject_ritual.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "thread_end_at_s8",
+          "textKey": "event.ch_generic_early_01_three_breaths_s08_storm_inside.choice.reject_ritual.outcome.thread_end_at_s8.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

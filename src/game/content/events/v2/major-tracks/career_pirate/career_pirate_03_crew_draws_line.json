@@ -1,0 +1,166 @@
+{
+  "id": "career_pirate_03_crew_draws_line",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_03_crew_and_keel",
+    "nodeId": "career_pirate_03_crew_draws_line",
+    "parentNodeIds": [
+      "career_pirate_02_red_sail_toll",
+      "career_pirate_02_harbor_debt",
+      "career_pirate_02_false_manifest",
+      "career_pirate_02_first_story_spreads"
+    ],
+    "selectionPriority": 30
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "hasCrew"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.career_pirate_03_crew_draws_line.title",
+  "textKey": "event.career_pirate_03_crew_draws_line.text",
+  "choices": [
+    {
+      "id": "argue_share",
+      "textKey": "event.career_pirate_03_crew_draws_line.choice.argue_share.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "argue_share_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_03_crew_draws_line_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_03_crew_draws_line.choice.argue_share.outcome.argue_share_criticalFailure.text"
+          },
+          "failure": {
+            "id": "argue_share_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_03_crew_draws_line_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_03_crew_draws_line.choice.argue_share.outcome.argue_share_failure.text"
+          },
+          "success": {
+            "id": "argue_share_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_03_crew_draws_line_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_03_crew_draws_line.choice.argue_share.outcome.argue_share_success.text"
+          },
+          "criticalSuccess": {
+            "id": "argue_share_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_03_crew_draws_line_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_03_crew_draws_line.choice.argue_share.outcome.argue_share_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "equal_split",
+      "textKey": "event.career_pirate_03_crew_draws_line.choice.equal_split.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "equal_split",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_03_crew_draws_line_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_03_crew_draws_line.choice.equal_split.outcome.equal_split.text"
+        }
+      }
+    },
+    {
+      "id": "crew_bonus",
+      "textKey": "event.career_pirate_03_crew_draws_line.choice.crew_bonus.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crew_bonus",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_03_crew_draws_line_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_03_crew_draws_line.choice.crew_bonus.outcome.crew_bonus.text"
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "id": "ch_family_social_01_doorstep_guest",
+  "titleKey": "event.ch_family_social_01_doorstep_guest.title",
+  "textKey": "event.ch_family_social_01_doorstep_guest.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 60
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 96
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read_guest",
+      "textKey": "event.ch_family_social_01_doorstep_guest.choice.read_guest.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "guest_misread",
+            "textKey": "event.ch_family_social_01_doorstep_guest.choice.read_guest.outcome.guest_misread.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "guest_unclear",
+            "textKey": "event.ch_family_social_01_doorstep_guest.choice.read_guest.outcome.guest_unclear.text",
+            "effects": []
+          },
+          "success": {
+            "id": "guest_read",
+            "textKey": "event.ch_family_social_01_doorstep_guest.choice.read_guest.outcome.guest_read.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "guest_details",
+            "textKey": "event.ch_family_social_01_doorstep_guest.choice.read_guest.outcome.guest_details.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "offer_threshold",
+      "textKey": "event.ch_family_social_01_doorstep_guest.choice.offer_threshold.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "threshold_only",
+          "textKey": "event.ch_family_social_01_doorstep_guest.choice.offer_threshold.outcome.threshold_only.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "close_door",
+      "textKey": "event.ch_family_social_01_doorstep_guest.choice.close_door.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "door_closed",
+          "textKey": "event.ch_family_social_01_doorstep_guest.choice.close_door.outcome.door_closed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

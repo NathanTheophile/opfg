@@ -1,0 +1,108 @@
+{
+  "id": "ch_generic_early_01_runaway_ball_i1_under_cart",
+  "titleKey": "event.ch_generic_early_01_runaway_ball_i1_under_cart.title",
+  "textKey": "event.ch_generic_early_01_runaway_ball_i1_under_cart.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "ask_owner",
+      "textKey": "event.ch_generic_early_01_runaway_ball_i1_under_cart.choice.ask_owner.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "owner_warned",
+          "textKey": "event.ch_generic_early_01_runaway_ball_i1_under_cart.choice.ask_owner.outcome.owner_warned.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_runaway_ball_i2_cart_moves"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "reach_under",
+      "textKey": "event.ch_generic_early_01_runaway_ball_i1_under_cart.choice.reach_under.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "stuck_sleeve",
+            "textKey": "event.ch_generic_early_01_runaway_ball_i1_under_cart.choice.reach_under.outcome.stuck_sleeve.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "too_short",
+            "textKey": "event.ch_generic_early_01_runaway_ball_i1_under_cart.choice.reach_under.outcome.too_short.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_runaway_ball_i2_cart_moves"
+              }
+            ]
+          },
+          "success": {
+            "id": "nudge_ball",
+            "textKey": "event.ch_generic_early_01_runaway_ball_i1_under_cart.choice.reach_under.outcome.nudge_ball.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_runaway_ball_i2_cart_moves"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hook_ball",
+            "textKey": "event.ch_generic_early_01_runaway_ball_i1_under_cart.choice.reach_under.outcome.hook_ball.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_generic_early_01_runaway_ball_i2_cart_moves"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "use_stick",
+      "textKey": "event.ch_generic_early_01_runaway_ball_i1_under_cart.choice.use_stick.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "stick_found",
+          "textKey": "event.ch_generic_early_01_runaway_ball_i1_under_cart.choice.use_stick.outcome.stick_found.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_generic_early_01_runaway_ball_i2_cart_moves"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "id": "ch_east_blue_01_shells_drill_whistles",
+  "kind": "normal",
+  "titleKey": "event.ch_east_blue_01_shells_drill_whistles.title",
+  "textKey": "event.ch_east_blue_01_shells_drill_whistles.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationIs",
+        "locationId": "shells_town"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "learn_cadence",
+      "textKey": "event.ch_east_blue_01_shells_drill_whistles.choice.learn_cadence.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cadence_learned",
+          "textKey": "event.ch_east_blue_01_shells_drill_whistles.choice.learn_cadence.outcome.cadence_learned.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "disciplined"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "rebellious"
+            }
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "disciplined"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "watch_feet",
+      "textKey": "event.ch_east_blue_01_shells_drill_whistles.choice.watch_feet.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "street_reading",
+          "textKey": "event.ch_east_blue_01_shells_drill_whistles.choice.watch_feet.outcome.street_reading.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_long_way",
+      "textKey": "event.ch_east_blue_01_shells_drill_whistles.choice.take_long_way.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "quiet_detour",
+          "textKey": "event.ch_east_blue_01_shells_drill_whistles.choice.take_long_way.outcome.quiet_detour.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

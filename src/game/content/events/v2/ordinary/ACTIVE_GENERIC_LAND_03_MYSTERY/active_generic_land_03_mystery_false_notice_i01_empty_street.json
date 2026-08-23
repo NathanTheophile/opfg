@@ -1,0 +1,73 @@
+{
+  "id": "active_generic_land_03_mystery_false_notice_i01_empty_street",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_land_03_mystery_false_notice_i01_empty_street.title",
+  "textKey": "event.active_generic_land_03_mystery_false_notice_i01_empty_street.text",
+  "choices": [
+    {
+      "id": "inspect_cart",
+      "textKey": "event.active_generic_land_03_mystery_false_notice_i01_empty_street.choice.inspect_cart.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "inspected",
+          "textKey": "event.active_generic_land_03_mystery_false_notice_i01_empty_street.choice.inspect_cart.outcome.inspected.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_false_notice_i02_blank_warrants"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "follow_pair",
+      "textKey": "event.active_generic_land_03_mystery_false_notice_i01_empty_street.choice.follow_pair.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "followed",
+          "textKey": "event.active_generic_land_03_mystery_false_notice_i01_empty_street.choice.follow_pair.outcome.followed.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_false_notice_i02_blank_warrants"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "block_street",
+      "textKey": "event.active_generic_land_03_mystery_false_notice_i01_empty_street.choice.block_street.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "called",
+          "textKey": "event.active_generic_land_03_mystery_false_notice_i01_empty_street.choice.block_street.outcome.called.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_false_notice_i02_blank_warrants"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

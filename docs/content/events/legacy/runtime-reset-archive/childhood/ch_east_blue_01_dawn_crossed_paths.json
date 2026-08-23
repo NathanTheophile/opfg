@@ -1,0 +1,125 @@
+{
+  "id": "ch_east_blue_01_dawn_crossed_paths",
+  "kind": "normal",
+  "titleKey": "event.ch_east_blue_01_dawn_crossed_paths.title",
+  "textKey": "event.ch_east_blue_01_dawn_crossed_paths.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 84
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationWithin",
+        "locationId": "dawn_island"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "find_true_path",
+      "textKey": "event.ch_east_blue_01_dawn_crossed_paths.choice.find_true_path.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "wrong_marks",
+            "textKey": "event.ch_east_blue_01_dawn_crossed_paths.choice.find_true_path.outcome.wrong_marks.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "uncertain_path",
+            "textKey": "event.ch_east_blue_01_dawn_crossed_paths.choice.find_true_path.outcome.uncertain_path.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "success": {
+            "id": "true_path",
+            "textKey": "event.ch_east_blue_01_dawn_crossed_paths.choice.find_true_path.outcome.true_path.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "hidden_clues",
+            "textKey": "event.ch_east_blue_01_dawn_crossed_paths.choice.find_true_path.outcome.hidden_clues.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "turn_back",
+      "textKey": "event.ch_east_blue_01_dawn_crossed_paths.choice.turn_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "safe_restart",
+          "textKey": "event.ch_east_blue_01_dawn_crossed_paths.choice.turn_back.outcome.safe_restart.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_marker",
+      "textKey": "event.ch_east_blue_01_dawn_crossed_paths.choice.leave_marker.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "marker_left",
+          "textKey": "event.ch_east_blue_01_dawn_crossed_paths.choice.leave_marker.outcome.marker_left.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "id": "active_bounty_hunter_01_phantom_warrants_s08_contaminated_trail",
+  "titleKey": "event.active_bounty_hunter_01_phantom_warrants_s08_contaminated_trail.title",
+  "textKey": "event.active_bounty_hunter_01_phantom_warrants_s08_contaminated_trail.text",
+  "choices": [
+    {
+      "id": "rebuild_from_people",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s08_contaminated_trail.choice.rebuild_from_people.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s08_contaminated_trail.choice.rebuild_from_people.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s09_rebuild_trail",
+              "delayMonths": 14
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "abandon_bad_series",
+      "textKey": "event.active_bounty_hunter_01_phantom_warrants_s08_contaminated_trail.choice.abandon_bad_series.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_bounty_hunter_01_phantom_warrants_s08_contaminated_trail.choice.abandon_bad_series.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_bounty_hunter_01_phantom_warrants_s09_rebuild_trail",
+              "delayMonths": 14
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "bounty_hunter"
+    }
+  },
+  "eligibility": {
+    "type": "isOnLand"
+  }
+}

@@ -1,0 +1,542 @@
+import type { CareerEndReason, CareerPhase, GameState, ItemStack, MaritimeEmergencyState, NpcState, NpcStats, PowerState, ShipState, TravelState } from '../model/schema';
+import { createDefaultPowerState } from './powers';
+
+export const SAVE_KEY = 'jam-op-fan-game.save';
+export const CURRENT_SAVE_VERSION = 23;
+const NPC_STATUSES = new Set(['known', 'crew', 'departed', 'unavailable', 'dead']);
+
+export interface StorageLike {
+  getItem(key: string): string | null;
+  setItem(key: string, value: string): void;
+  removeItem(key: string): void;
+}
+
+export function serializeGameState(state: GameState): string {
+  return JSON.stringify(state);
+}
+
+export function deserializeGameState(raw: string): GameState | null {
+  let value: unknown;
+  try {
+    value = JSON.parse(raw);
+  } catch {
+    return null;
+  }
+
+  return readGameState(migrateLegacySave(value));
+}
+
+export function saveGameState(storage: StorageLike, state: GameState): boolean {
+  try {
+    storage.setItem(SAVE_KEY, serializeGameState(state));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function loadGameState(storage: StorageLike): GameState | null {
+  try {
+    const raw = storage.getItem(SAVE_KEY);
+    return raw === null ? null : deserializeGameState(raw);
+  } catch {
+    return null;
+  }
+}
+
+export function clearGameState(storage: StorageLike): boolean {
+  try {
+    storage.removeItem(SAVE_KEY);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function readGameState(value: unknown): GameState | null {
+  if (!isRecord(value) || value.version !== CURRENT_SAVE_VERSION) return null;
+  if (!isUint32(value.rngState) || !isNonNegativeInteger(value.ageMonths) || !(value.slotInMonth === 0 || value.slotInMonth === 1)) return null;
+  if (!isCareerPhase(value.careerPhase) || !isTravelState(value.travelState) || !isString(value.locationId)) return null;
+  if (!isRecord(value.player) || !isRecord(value.player.stats) || !isStringArray(value.player.traits)) return null;
+  const inventory = readInventory(value.player.inventory);
+  if (inventory === null || inventory.capacity !== 2) return null;
+  const equipment = readEquipment(value.player.equipment);
+  const logPose = readOptionalStack(value.player.logPose);
+  const companion = readOptionalStack(value.player.companion);
+  if (equipment === null || logPose === undefined || companion === undefined || (companion !== null && companion.quantity !== 1)) return null;
+  const profile = readPlayerProfile(value.player.profile);
+  if (profile === null) return null;
+  const career = readCareerState(value.player.career);
+  if (career === null) return null;
+  if (!isFiniteNumber(value.player.stats.health)) return null;
+  if (!isStatValue(value.player.stats.morale)) return null;
+  if (!isStatValue(value.player.stats.strength)) return null;
+  if (!isStatValue(value.player.stats.agility)) return null;
+  if (!isStatValue(value.player.stats.observation)) return null;
+  if (!isStatValue(value.player.stats.intelligence)) return null;
+  if (!isStatValue(value.player.stats.navigation)) return null;
+  if (!isStatValue(value.player.stats.charisma)) return null;
+  if (!isStatValue(value.player.stats.luck)) return null;
+  const playerPowers = readPowerState(value.player.powers);
+  if (playerPowers === null) return null;
+  const ship = readShip(value.ship);
+  const pendingShip = readShip(value.pendingShip);
+  const maritimeEmergency = readMaritimeEmergency(value.maritimeEmergency);
+  if (ship === undefined || pendingShip === undefined || maritimeEmergency === undefined || typeof value.isLeader !== 'boolean' || !isUniqueStringArray(value.passengerNpcIds) || !isNonNegativeInteger(value.berries)) return null;
+  if (!isRecord(value.crewRoleLastUsedYear) || !Object.values(value.crewRoleLastUsedYear).every(isNonNegativeInteger)) return null;
+  if (!isRecord(value.crewRoleVacatedYear) || !Object.values(value.crewRoleVacatedYear).every(isNonNegativeInteger)) return null;
+  if (typeof value.crewReassignmentPending !== 'boolean' || typeof value.pendingCrewRecruitment !== 'boolean') return null;
+  const pendingOverflow = readPendingOverflow(value.pendingOverflow);
+  if (pendingOverflow === undefined) return null;
+  if (!isStringArray(value.flags)) return null;
+
+  const npcs = readNpcs(value.npcs);
+  const history = readHistory(value.history);
+  const scheduledEvents = readScheduledEvents(value.scheduledEvents);
+  if (npcs === null || history === null || scheduledEvents === null || !isStringArray(value.immediateEventQueue)) return null;
+  const occupiedRoleIds = Object.values(npcs).filter(({ status, crewRoleId }) => status === 'crew' && crewRoleId !== null).map(({ crewRoleId }) => crewRoleId!);
+  if (new Set(occupiedRoleIds).size !== occupiedRoleIds.length) return null;
+  if (!(value.pendingSlotPhase === null || isCareerPhase(value.pendingSlotPhase))) return null;
+  if (!isNonNegativeInteger(value.immediateEventsResolvedInChain) || value.immediateEventsResolvedInChain > 1000) return null;
+  if (!(value.navigationDecisionAgeMonths === null || (isNonNegativeInteger(value.navigationDecisionAgeMonths) && value.navigationDecisionAgeMonths <= value.ageMonths))) return null;
+  if (typeof value.shipMarketArrivalPending !== 'boolean') return null;
+  if (value.passengerNpcIds.some((npcId) => npcs[npcId] === undefined || npcs[npcId].status === 'crew' || npcs[npcId].status === 'dead')) return null;
+  if (!(value.currentEventId === null || isString(value.currentEventId))) return null;
+  if (!(value.careerStatus === 'active' || value.careerStatus === 'ended')) return null;
+  if (!isCareerEndReason(value.careerEndReason)) return null;
+  if (!isNullableString(value.endingId)) return null;
+  if (value.careerStatus === 'active' && value.careerEndReason !== null) return null;
+  if (value.careerStatus === 'ended' && value.careerEndReason === null) return null;
+  if (value.careerStatus === 'active' && value.endingId !== null) return null;
+  if (value.endingId !== null && value.careerEndReason === null) return null;
+  if (value.careerPhase !== 'active' && value.slotInMonth !== 0) return null;
+
+  return {
+    version: CURRENT_SAVE_VERSION,
+    rngState: value.rngState,
+    careerPhase: value.careerPhase,
+    ageMonths: value.ageMonths,
+    slotInMonth: value.slotInMonth,
+    travelState: value.travelState,
+    locationId: value.locationId,
+    player: {
+      profile,
+      career,
+      stats: {
+        health: value.player.stats.health,
+        morale: value.player.stats.morale,
+        strength: value.player.stats.strength,
+        agility: value.player.stats.agility,
+        observation: value.player.stats.observation,
+        intelligence: value.player.stats.intelligence,
+        navigation: value.player.stats.navigation,
+        charisma: value.player.stats.charisma,
+        luck: value.player.stats.luck,
+      },
+      traits: [...value.player.traits],
+      inventory,
+      equipment,
+      logPose,
+      companion,
+      powers: playerPowers,
+    },
+    ship,
+    pendingShip,
+    maritimeEmergency,
+    isLeader: value.isLeader,
+    passengerNpcIds: [...value.passengerNpcIds],
+    crewRoleLastUsedYear: Object.fromEntries(Object.entries(value.crewRoleLastUsedYear).map(([key, year]) => [key, year as number])),
+    crewRoleVacatedYear: Object.fromEntries(Object.entries(value.crewRoleVacatedYear).map(([key, year]) => [key, year as number])),
+    crewReassignmentPending: value.crewReassignmentPending,
+    pendingCrewRecruitment: value.pendingCrewRecruitment,
+    pendingOverflow,
+    berries: value.berries,
+    flags: [...value.flags],
+    npcs,
+    history,
+    scheduledEvents,
+    immediateEventQueue: [...value.immediateEventQueue],
+    pendingSlotPhase: value.pendingSlotPhase,
+    immediateEventsResolvedInChain: value.immediateEventsResolvedInChain,
+    navigationDecisionAgeMonths: value.navigationDecisionAgeMonths,
+    shipMarketArrivalPending: value.shipMarketArrivalPending,
+    currentEventId: value.currentEventId,
+    careerStatus: value.careerStatus,
+    careerEndReason: value.careerEndReason,
+    endingId: value.endingId,
+  };
+}
+
+function migrateLegacySave(value: unknown): unknown {
+  let migrated = value;
+  if (isRecord(migrated) && migrated.version === 7 && isRecord(migrated.player)) {
+    const legacyItems = isStringArray(migrated.items) ? migrated.items : [];
+    const legacyShip = isRecord(migrated.ship) && isIntegerInRange(migrated.ship.condition, 0, 3)
+      ? { shipId: 'starter_sloop', name: 'Wind Finch', health: migrated.ship.condition * 10, cargo: [] }
+      : migrated.ship === null ? null : migrated.ship;
+    const { items: _items, ...withoutItems } = migrated;
+    migrated = {
+      ...withoutItems,
+      version: 8,
+      player: { ...migrated.player, inventory: { capacity: 2, stacks: legacyItems.map((itemId) => ({ itemId, quantity: 1 })) } },
+      ship: legacyShip,
+      pendingShip: null,
+      berries: 0,
+    };
+  }
+  if (isRecord(migrated) && migrated.version === 8) {
+    migrated = { ...migrated, version: 9, isLeader: true, passengerNpcIds: [] };
+  }
+  if (isRecord(migrated) && migrated.version === 9 && isRecord(migrated.player) && isRecord(migrated.player.stats)) {
+    migrated = {
+      ...migrated,
+      version: 10,
+      player: { ...migrated.player, stats: { ...migrated.player.stats, agility: 25 } },
+    };
+  }
+  if (isRecord(migrated) && migrated.version === 10 && isRecord(migrated.player) && isRecord(migrated.player.profile)) {
+    migrated = {
+      ...migrated,
+      version: 11,
+      player: {
+        ...migrated.player,
+        profile: { ...migrated.player.profile, familyStructureId: null, socialClassId: null },
+      },
+    };
+  }
+  if (isRecord(migrated) && migrated.version === 11) {
+    migrated = {
+      ...migrated,
+      version: 12,
+      immediateEventQueue: [],
+      pendingSlotPhase: null,
+      immediateEventsResolvedInChain: 0,
+      navigationDecisionAgeMonths: null,
+    };
+  }
+  if (isRecord(migrated) && migrated.version === 12 && isRecord(migrated.player)) {
+    const player = migrated.player;
+    const stats = isRecord(player.stats) ? { ...player.stats } : player.stats;
+    if (isRecord(stats)) delete stats.awakening;
+    const npcs = isRecord(migrated.npcs) ? Object.fromEntries(Object.entries(migrated.npcs).map(([id, npc]) => [id, isRecord(npc) ? { ...npc, powers: createDefaultPowerState() } : npc])) : migrated.npcs;
+    migrated = { ...migrated, version: 13, player: { ...player, stats, powers: createDefaultPowerState() }, npcs };
+  }
+  if (isRecord(migrated) && migrated.version === 13 && isRecord(migrated.player)) {
+    migrated = {
+      ...migrated,
+      version: 14,
+      player: { ...migrated.player, career: { affiliationId: 'civilian', reputation: 0, bounty: 0, marineRankId: null, titleId: null } },
+      endingId: null,
+    };
+  }
+  if (isRecord(migrated) && migrated.version === 14 && isRecord(migrated.player)) {
+    const career = isRecord(migrated.player.career) ? migrated.player.career : {};
+    const npcs = isRecord(migrated.npcs) ? Object.fromEntries(Object.entries(migrated.npcs).map(([id, npc]) => [id, isRecord(npc) ? { ...npc, raceId: null } : npc])) : migrated.npcs;
+    const migrateShip = (ship: unknown): unknown => isRecord(ship)
+      ? { ...ship, shipId: ship.shipId === 'starter_sloop' ? 'sloop' : ship.shipId === 'trade_cog' ? 'merchant_ship' : ship.shipId }
+      : ship;
+    migrated = {
+      ...migrated,
+      version: 15,
+      locationId: migrated.locationId === 'starter_port' ? 'foosha_village' : migrated.locationId,
+      player: { ...migrated.player, career: { ...career, reputation: isNonNegativeInteger(career.reputation) ? Math.min(career.reputation, 100) : career.reputation, rankId: migrateMarineRankId(career.marineRankId) } },
+      ship: migrateShip(migrated.ship),
+      pendingShip: migrateShip(migrated.pendingShip),
+      npcs,
+    };
+  }
+  if (isRecord(migrated) && migrated.version === 15) {
+    migrated = { ...migrated, version: 16, maritimeEmergency: null };
+  }
+  if (isRecord(migrated) && migrated.version === 16) {
+    migrated = {
+      ...migrated,
+      version: 17,
+      shipMarketArrivalPending:
+        migrated.careerPhase === 'active'
+        && migrated.ship === null
+        && migrated.travelState === 'on_land',
+    };
+  }
+  if (isRecord(migrated) && migrated.version === 17) {
+    const npcs = isRecord(migrated.npcs)
+      ? Object.fromEntries(Object.entries(migrated.npcs).map(([id, npc]) => [id, isRecord(npc) ? { ...npc, lastInteractionAgeMonths: null } : npc]))
+      : migrated.npcs;
+    migrated = { ...migrated, version: 18, npcs };
+  }
+  if (isRecord(migrated) && migrated.version === 18) {
+    const npcs = isRecord(migrated.npcs)
+      ? Object.fromEntries(Object.entries(migrated.npcs).map(([id, npc]) => [id, isRecord(npc) ? { ...npc, displayName: null } : npc]))
+      : migrated.npcs;
+    migrated = { ...migrated, version: 19, npcs };
+  }
+  if (isRecord(migrated) && migrated.version === 21 && isRecord(migrated.player)) {
+    const { companionNpcId: _legacyCompanionNpcId, ...withoutLegacyCompanion } = migrated;
+    migrated = {
+      ...withoutLegacyCompanion,
+      version: 22,
+      player: { ...migrated.player, companion: null },
+    };
+  }
+  if (isRecord(migrated) && migrated.version === 22) {
+    const legacyRoleByNpcId: Record<string, string> = {
+      mira: 'navigator',
+      rohan: 'cook',
+      ari: 'medic',
+      owen: 'shipwright',
+    };
+    const npcs = isRecord(migrated.npcs)
+      ? Object.fromEntries(Object.entries(migrated.npcs).map(([npcId, npc]) => {
+          if (!isRecord(npc)) return [npcId, npc];
+          return [npcId, {
+            ...npc,
+            crewRoleId: npc.status === 'crew' ? legacyRoleByNpcId[npcId] ?? null : null,
+            statsGenerated: true,
+          }];
+        }))
+      : migrated.npcs;
+    const crewReassignmentPending = isRecord(npcs)
+      && Object.values(npcs).some((npc) => isRecord(npc) && npc.status === 'crew' && npc.crewRoleId === null);
+    migrated = {
+      ...migrated,
+      version: 23,
+      npcs,
+      crewRoleVacatedYear: {},
+      crewReassignmentPending,
+      pendingCrewRecruitment: false,
+    };
+  }
+  return migrated;
+}
+
+function readMaritimeEmergency(value: unknown): MaritimeEmergencyState | null | undefined {
+  if (value === null) return null;
+  if (!isRecord(value) || value.kind !== 'shipwreck' || !isString(value.seaId) || !['enemy', 'accident', 'ship_missing', 'sea_monster'].includes(String(value.cause))) return undefined;
+  return { kind: 'shipwreck', seaId: value.seaId, cause: value.cause as MaritimeEmergencyState['cause'] };
+}
+
+function migrateMarineRankId(value: unknown): string | null {
+  if (value === null || value === undefined) return null;
+  const ids: Record<string, string> = { recruit: 'marine_recruit', sailor: 'marine_petty_officer', officer: 'marine_lieutenant', lieutenant: 'marine_commander', commander: 'marine_captain', captain: 'marine_commodore' };
+  return typeof value === 'string' ? ids[value] ?? value : null;
+}
+
+function readCareerState(value: unknown): GameState['player']['career'] | null {
+  if (!isRecord(value)) return null;
+  if (!isCareerAffiliationId(value.affiliationId) || !isIntegerInRange(value.reputation, 0, 100) || !isNonNegativeInteger(value.bounty)) return null;
+  if (!isNullableString(value.rankId) || !isNullableString(value.titleId)) return null;
+  return { affiliationId: value.affiliationId, reputation: value.reputation, bounty: value.bounty, rankId: value.rankId, titleId: value.titleId };
+}
+
+function readInventory(value: unknown): GameState['player']['inventory'] | null {
+  if (!isRecord(value) || !isNonNegativeInteger(value.capacity)) return null;
+  const stacks = readStacks(value.stacks);
+  if (stacks === null || stacks.length > value.capacity) return null;
+  return { capacity: value.capacity, stacks };
+}
+
+function readShip(value: unknown): ShipState | null | undefined {
+  if (value === null) return null;
+  if (!isRecord(value) || !isString(value.shipId) || !isString(value.name) || !isFiniteNumber(value.health) || value.health < 0) return undefined;
+  const cargo = readStacks(value.cargo);
+  if (cargo === null) return undefined;
+  return { shipId: value.shipId, name: value.name, health: value.health, cargo };
+}
+
+function readStacks(value: unknown): ItemStack[] | null {
+  if (!Array.isArray(value)) return null;
+  const seen = new Set<string>();
+  const stacks: ItemStack[] = [];
+  for (const entry of value) {
+    if (!isRecord(entry) || !isString(entry.itemId) || !Number.isInteger(entry.quantity) || (entry.quantity as number) <= 0 || seen.has(entry.itemId) || !Array.isArray(entry.provenance)) return null;
+    const provenance = entry.provenance.flatMap((batch) => isRecord(batch) && (batch.locationId === null || isString(batch.locationId)) && Number.isInteger(batch.quantity) && (batch.quantity as number) > 0 ? [{ locationId: batch.locationId as string | null, quantity: batch.quantity as number }] : []);
+    if (provenance.length !== entry.provenance.length || provenance.reduce((sum, batch) => sum + batch.quantity, 0) !== entry.quantity) return null;
+    seen.add(entry.itemId);
+    stacks.push({ itemId: entry.itemId, quantity: entry.quantity as number, provenance });
+  }
+  return stacks;
+}
+
+function readNpcs(value: unknown): GameState['npcs'] | null {
+  if (!isRecord(value)) return null;
+  const npcs: GameState['npcs'] = {};
+  for (const [npcId, npc] of Object.entries(value)) {
+    if (!isString(npcId) || !isRecord(npc)) return null;
+    if (!isNpcStatus(npc.status)) return null;
+    if (!isFiniteNumber(npc.relationship) || npc.relationship < -100 || npc.relationship > 100) return null;
+    const stats = readNpcStats(npc.stats);
+    if (stats === null) return null;
+    const powers = readPowerState(npc.powers);
+    if (powers === null) return null;
+    if (!isNullableString(npc.raceId) || !isNullableString(npc.displayName) || !isNullableString(npc.crewRoleId) || typeof npc.statsGenerated !== 'boolean') return null;
+    if (!(npc.lastInteractionAgeMonths === null || isNonNegativeInteger(npc.lastInteractionAgeMonths))) return null;
+    if (npc.status !== 'crew' && npc.crewRoleId !== null) return null;
+    npcs[npcId] = {
+      status: npc.status,
+      relationship: npc.relationship,
+      lastInteractionAgeMonths: npc.lastInteractionAgeMonths,
+      raceId: npc.raceId,
+      displayName: npc.displayName,
+      crewRoleId: npc.crewRoleId,
+      statsGenerated: npc.statsGenerated,
+      stats,
+      powers,
+    };
+  }
+  return npcs;
+}
+
+function readPowerState(value: unknown): PowerState | null {
+  if (!isRecord(value) || !isNullableString(value.devilFruitId)) return null;
+  if (!isIntegerInRange(value.devilFruitAwakening, 0, 10) || !isRecord(value.haki)) return null;
+  if (!isIntegerInRange(value.haki.observation, 0, 5) || !isIntegerInRange(value.haki.armament, 0, 5) || !isIntegerInRange(value.haki.conqueror, 0, 5)) return null;
+  if (value.devilFruitId === null && value.devilFruitAwakening !== 0) return null;
+  return { devilFruitId: value.devilFruitId, devilFruitAwakening: value.devilFruitAwakening, haki: { observation: value.haki.observation, armament: value.haki.armament, conqueror: value.haki.conqueror } };
+}
+
+function readNpcStats(value: unknown): NpcStats | null {
+  if (!isRecord(value)) return null;
+  if (!isStatValue(value.health) || !isStatValue(value.morale) || !isStatValue(value.strength)) return null;
+  if (!isStatValue(value.agility) || !isStatValue(value.observation) || !isStatValue(value.intelligence) || !isStatValue(value.navigation) || !isStatValue(value.charisma) || !isStatValue(value.luck)) return null;
+  return {
+    health: value.health,
+    morale: value.morale,
+    strength: value.strength,
+    agility: value.agility,
+    observation: value.observation,
+    intelligence: value.intelligence,
+    navigation: value.navigation,
+    charisma: value.charisma,
+    luck: value.luck,
+  };
+}
+
+function readOptionalStack(value: unknown): ItemStack | null | undefined {
+  if (value === null) return null;
+  const stacks = readStacks([value]);
+  return stacks?.[0];
+}
+
+function readEquipment(value: unknown): GameState['player']['equipment'] | null {
+  if (!Array.isArray(value) || value.length !== 2) return null;
+  const first = readOptionalStack(value[0]);
+  const second = readOptionalStack(value[1]);
+  return first === undefined || second === undefined ? null : [first, second];
+}
+
+function readPendingOverflow(value: unknown): GameState['pendingOverflow'] | undefined {
+  if (value === null) return null;
+  if (!isRecord(value) || !isString(value.itemId) || !isNonNegativeInteger(value.quantity) || value.quantity === 0 || !(value.locationId === null || isString(value.locationId)) || typeof value.mandatory !== 'boolean') return undefined;
+  return { itemId: value.itemId, quantity: value.quantity, locationId: value.locationId, mandatory: value.mandatory };
+}
+
+function readHistory(value: unknown): GameState['history'] | null {
+  if (!Array.isArray(value)) return null;
+  if (!value.every(
+    (entry) =>
+      isRecord(entry) &&
+      isString(entry.eventId) &&
+      isString(entry.choiceId) &&
+      isString(entry.outcomeId) &&
+      isNonNegativeInteger(entry.ageMonths),
+  )) return null;
+  return value.map((entry) => ({
+    eventId: entry.eventId as string,
+    choiceId: entry.choiceId as string,
+    outcomeId: entry.outcomeId as string,
+    ageMonths: entry.ageMonths as number,
+  }));
+}
+
+function readPlayerProfile(value: unknown): GameState['player']['profile'] | null {
+  if (!isRecord(value)) return null;
+  if (!(value.name === null || (typeof value.name === 'string' && value.name.trim().length > 0))) return null;
+  if (!isNullableString(value.raceId) || !isNullableString(value.originSeaId) || !isNullableString(value.affiliationId)) return null;
+  if (!isNullableString(value.familyStructureId) || !isNullableString(value.socialClassId)) return null;
+  return {
+    name: value.name === null ? null : value.name.trim(),
+    raceId: value.raceId,
+    originSeaId: value.originSeaId,
+    affiliationId: value.affiliationId,
+    familyStructureId: value.familyStructureId,
+    socialClassId: value.socialClassId,
+  };
+}
+
+function readScheduledEvents(value: unknown): GameState['scheduledEvents'] | null {
+  if (!Array.isArray(value)) return null;
+  if (!value.every(
+    (entry) =>
+      isRecord(entry) &&
+      isString(entry.eventId) &&
+      isNonNegativeInteger(entry.dueAgeMonths) &&
+      isString(entry.sourceEventId) &&
+      isString(entry.sourceChoiceId),
+  )) return null;
+  return value.map((entry) => ({
+    eventId: entry.eventId as string,
+    dueAgeMonths: entry.dueAgeMonths as number,
+    sourceEventId: entry.sourceEventId as string,
+    sourceChoiceId: entry.sourceChoiceId as string,
+  }));
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isString(value: unknown): value is string {
+  return typeof value === 'string' && value.length > 0;
+}
+
+function isNullableString(value: unknown): value is string | null {
+  return value === null || isString(value);
+}
+
+function isNpcStatus(value: unknown): value is NpcState['status'] {
+  return typeof value === 'string' && NPC_STATUSES.has(value);
+}
+
+function isCareerPhase(value: unknown): value is CareerPhase {
+  return value === 'origins' || value === 'childhood' || value === 'active';
+}
+
+function isTravelState(value: unknown): value is TravelState {
+  return value === 'at_sea' || value === 'on_land';
+}
+
+function isCareerEndReason(value: unknown): value is CareerEndReason | null {
+  return value === null || value === 'death' || value === 'legacy';
+}
+
+function isCareerAffiliationId(value: unknown): value is GameState['player']['career']['affiliationId'] {
+  return value === 'civilian' || value === 'pirate' || value === 'marine' || value === 'revolutionary' || value === 'bounty_hunter';
+}
+
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every(isString);
+}
+
+function isUniqueStringArray(value: unknown): value is string[] {
+  return isStringArray(value) && new Set(value).size === value.length;
+}
+
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === 'number' && Number.isFinite(value);
+}
+
+function isStatValue(value: unknown): value is number {
+  return isFiniteNumber(value) && value >= 0 && value <= 50;
+}
+
+function isNonNegativeInteger(value: unknown): value is number {
+  return typeof value === 'number' && Number.isInteger(value) && value >= 0;
+}
+
+function isUint32(value: unknown): value is number {
+  return isNonNegativeInteger(value) && value <= 0xffffffff;
+}
+
+function isIntegerInRange(value: unknown, minimum: number, maximum: number): value is number {
+  return typeof value === 'number' && Number.isInteger(value) && value >= minimum && value <= maximum;
+}

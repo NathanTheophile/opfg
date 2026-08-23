@@ -1,0 +1,94 @@
+{
+  "id": "ch_v2_generic_late_01_returned_change",
+  "kind": "normal",
+  "titleKey": "event.ch_v2_generic_late_01_returned_change.title",
+  "textKey": "event.ch_v2_generic_late_01_returned_change.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "return_extra",
+      "textKey": "event.ch_v2_generic_late_01_returned_change.choice.return_extra.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "return_extra_outcome",
+          "textKey": "event.ch_v2_generic_late_01_returned_change.choice.return_extra.outcome.text",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "keep_extra",
+      "textKey": "event.ch_v2_generic_late_01_returned_change.choice.keep_extra.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "keep_extra_outcome",
+          "textKey": "event.ch_v2_generic_late_01_returned_change.choice.keep_extra.outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 50
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_on_counter",
+      "textKey": "event.ch_v2_generic_late_01_returned_change.choice.leave_on_counter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_on_counter_outcome",
+          "textKey": "event.ch_v2_generic_late_01_returned_change.choice.leave_on_counter.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "count_aloud",
+      "textKey": "event.ch_v2_generic_late_01_returned_change.choice.count_aloud.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "honest"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "count_aloud_outcome",
+          "textKey": "event.ch_v2_generic_late_01_returned_change.choice.count_aloud.outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

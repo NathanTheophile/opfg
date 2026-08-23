@@ -1,0 +1,69 @@
+{
+  "id": "ch_v2_race_fishman_01_called_again_i01_line_recovered",
+  "kind": "immediate",
+  "titleKey": "event.ch_v2_race_fishman_01_called_again_i01_line_recovered.title",
+  "textKey": "event.ch_v2_race_fishman_01_called_again_i01_line_recovered.text",
+  "choices": [
+    {
+      "id": "hand_line_over",
+      "textKey": "event.ch_v2_race_fishman_01_called_again_i01_line_recovered.choice.hand_line_over.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "line_returned",
+          "textKey": "event.ch_v2_race_fishman_01_called_again_i01_line_recovered.choice.hand_line_over.outcome.line_returned.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_called_again_i02_next_time"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "point_to_the_gaff",
+      "textKey": "event.ch_v2_race_fishman_01_called_again_i01_line_recovered.choice.point_to_the_gaff.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tool_pointed",
+          "textKey": "event.ch_v2_race_fishman_01_called_again_i01_line_recovered.choice.point_to_the_gaff.outcome.tool_pointed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_called_again_i02_next_time"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "finish_meal_first",
+      "textKey": "event.ch_v2_race_fishman_01_called_again_i01_line_recovered.choice.finish_meal_first.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "meal_reclaimed",
+          "textKey": "event.ch_v2_race_fishman_01_called_again_i01_line_recovered.choice.finish_meal_first.outcome.meal_reclaimed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_v2_race_fishman_01_called_again_i02_next_time"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "id": "active_generic_sea_05_strange_invisible_customs",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_sea_05_strange_invisible_customs.title",
+  "textKey": "event.active_generic_sea_05_strange_invisible_customs.text",
+  "choices": [
+    {
+      "id": "invent_manifest",
+      "textKey": "event.active_generic_sea_05_strange_invisible_customs.choice.invent_manifest.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "invent_manifest_criticalfailure",
+            "textKey": "event.active_generic_sea_05_strange_invisible_customs.choice.invent_manifest.outcome.invent_manifest_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_invisible_customs_i01_forehead_stamp"
+              }
+            ]
+          },
+          "failure": {
+            "id": "invent_manifest_failure",
+            "textKey": "event.active_generic_sea_05_strange_invisible_customs.choice.invent_manifest.outcome.invent_manifest_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_invisible_customs_i01_forehead_stamp"
+              }
+            ]
+          },
+          "success": {
+            "id": "invent_manifest_success",
+            "textKey": "event.active_generic_sea_05_strange_invisible_customs.choice.invent_manifest.outcome.invent_manifest_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_invisible_customs_i01_forehead_stamp"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "invent_manifest_criticalsuccess",
+            "textKey": "event.active_generic_sea_05_strange_invisible_customs.choice.invent_manifest.outcome.invent_manifest_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_invisible_customs_i01_forehead_stamp"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "challenge_jurisdiction",
+      "textKey": "event.active_generic_sea_05_strange_invisible_customs.choice.challenge_jurisdiction.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "challenge_jurisdiction_criticalfailure",
+            "textKey": "event.active_generic_sea_05_strange_invisible_customs.choice.challenge_jurisdiction.outcome.challenge_jurisdiction_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_invisible_customs_i01_forehead_stamp"
+              }
+            ]
+          },
+          "failure": {
+            "id": "challenge_jurisdiction_failure",
+            "textKey": "event.active_generic_sea_05_strange_invisible_customs.choice.challenge_jurisdiction.outcome.challenge_jurisdiction_failure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_invisible_customs_i01_forehead_stamp"
+              }
+            ]
+          },
+          "success": {
+            "id": "challenge_jurisdiction_success",
+            "textKey": "event.active_generic_sea_05_strange_invisible_customs.choice.challenge_jurisdiction.outcome.challenge_jurisdiction_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_invisible_customs_i01_forehead_stamp"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "challenge_jurisdiction_criticalsuccess",
+            "textKey": "event.active_generic_sea_05_strange_invisible_customs.choice.challenge_jurisdiction.outcome.challenge_jurisdiction_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_05_strange_invisible_customs_i01_forehead_stamp"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_inspection",
+      "textKey": "event.active_generic_sea_05_strange_invisible_customs.choice.pay_inspection.text",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 200
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paid_fee",
+          "textKey": "event.active_generic_sea_05_strange_invisible_customs.choice.pay_inspection.outcome.paid_fee.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -200
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_invisible_customs_i01_forehead_stamp"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "declare_truth",
+      "textKey": "event.active_generic_sea_05_strange_invisible_customs.choice.declare_truth.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "declared_truth",
+          "textKey": "event.active_generic_sea_05_strange_invisible_customs.choice.declare_truth.outcome.declared_truth.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_05_strange_invisible_customs_i01_forehead_stamp"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

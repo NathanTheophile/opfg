@@ -1,0 +1,185 @@
+{
+  "id": "active_generic_land_04_conflict_wrong_colors",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_04_conflict_wrong_colors.title",
+  "textKey": "event.active_generic_land_04_conflict_wrong_colors.text",
+  "choices": [
+    {
+      "id": "bluff_affiliation",
+      "textKey": "event.active_generic_land_04_conflict_wrong_colors.choice.bluff_affiliation",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "bluff_affiliation_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_wrong_colors.outcome.bluff_affiliation.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_colors_i01_mark"
+              }
+            ]
+          },
+          "failure": {
+            "id": "bluff_affiliation_failure",
+            "textKey": "event.active_generic_land_04_conflict_wrong_colors.outcome.bluff_affiliation.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_colors_i01_mark"
+              }
+            ]
+          },
+          "success": {
+            "id": "bluff_affiliation_success",
+            "textKey": "event.active_generic_land_04_conflict_wrong_colors.outcome.bluff_affiliation.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_colors_i01_mark"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "bluff_affiliation_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_wrong_colors.outcome.bluff_affiliation.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_colors_i01_mark"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "read_leader",
+      "textKey": "event.active_generic_land_04_conflict_wrong_colors.choice.read_leader",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "read_leader_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_wrong_colors.outcome.read_leader.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_colors_i01_mark"
+              }
+            ]
+          },
+          "failure": {
+            "id": "read_leader_failure",
+            "textKey": "event.active_generic_land_04_conflict_wrong_colors.outcome.read_leader.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_colors_i01_mark"
+              }
+            ]
+          },
+          "success": {
+            "id": "read_leader_success",
+            "textKey": "event.active_generic_land_04_conflict_wrong_colors.outcome.read_leader.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_colors_i01_mark"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "read_leader_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_wrong_colors.outcome.read_leader.criticalSuccess",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_wrong_colors_i01_mark"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "deceptive",
+      "textKey": "event.active_generic_land_04_conflict_wrong_colors.choice.deceptive",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "deceptive",
+          "textKey": "event.active_generic_land_04_conflict_wrong_colors.outcome.deceptive",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_wrong_colors_i01_mark"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "deceptive"
+      }
+    },
+    {
+      "id": "back_down",
+      "textKey": "event.active_generic_land_04_conflict_wrong_colors.choice.back_down",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "back_down",
+          "textKey": "event.active_generic_land_04_conflict_wrong_colors.outcome.back_down",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

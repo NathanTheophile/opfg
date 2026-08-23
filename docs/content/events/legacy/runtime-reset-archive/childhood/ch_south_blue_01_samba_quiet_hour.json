@@ -1,0 +1,125 @@
+{
+  "id": "ch_south_blue_01_samba_quiet_hour",
+  "titleKey": "event.ch_south_blue_01_samba_quiet_hour.title",
+  "textKey": "event.ch_south_blue_01_samba_quiet_hour.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "south_blue"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      },
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "locationWithin",
+            "locationId": "samba_kingdom"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "city"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "move_rehearsal",
+      "textKey": "event.ch_south_blue_01_samba_quiet_hour.choice.move_rehearsal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rehearsal_moved",
+          "textKey": "event.ch_south_blue_01_samba_quiet_hour.choice.move_rehearsal.outcome.rehearsal_moved.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "protective"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "not",
+            "condition": {
+              "type": "hasTrait",
+              "traitId": "protective"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "soft_set",
+      "textKey": "event.ch_south_blue_01_samba_quiet_hour.choice.soft_set.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "soft_opening",
+          "textKey": "event.ch_south_blue_01_samba_quiet_hour.choice.soft_set.outcome.soft_opening.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "keep_schedule",
+      "textKey": "event.ch_south_blue_01_samba_quiet_hour.choice.keep_schedule.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "show_goes_on",
+          "textKey": "event.ch_south_blue_01_samba_quiet_hour.choice.keep_schedule.outcome.show_goes_on.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_patients",
+      "textKey": "event.ch_south_blue_01_samba_quiet_hour.choice.ask_patients.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "need_clarified",
+          "textKey": "event.ch_south_blue_01_samba_quiet_hour.choice.ask_patients.outcome.need_clarified.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "kind": "normal"
+}

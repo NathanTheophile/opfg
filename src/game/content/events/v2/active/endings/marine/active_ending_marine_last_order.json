@@ -1,0 +1,93 @@
+{
+  "id": "active_ending_marine_last_order",
+  "kind": "normal",
+  "titleKey": "event.active_ending_marine_last_order.title",
+  "textKey": "event.active_ending_marine_last_order.text",
+  "choices": [
+    {
+      "id": "seal_harbor",
+      "textKey": "event.active_ending_marine_last_order.choice.seal_harbor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "seal_harbor",
+          "textKey": "event.active_ending_marine_last_order.choice.seal_harbor.outcome.seal_harbor.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_marine_last_order_i01"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "open_window",
+      "textKey": "event.active_ending_marine_last_order.choice.open_window.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "open_window",
+          "textKey": "event.active_ending_marine_last_order.choice.open_window.outcome.open_window.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_marine_last_order_i01"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "inspect_order",
+      "textKey": "event.active_ending_marine_last_order.choice.inspect_order.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "inspect_order",
+          "textKey": "event.active_ending_marine_last_order.choice.inspect_order.outcome.inspect_order.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_ending_marine_last_order_i01"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 420
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "bountyAtLeast",
+            "value": 1
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_10_ordered_justice"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_10_white_coat"
+          }
+        ]
+      }
+    ]
+  }
+}

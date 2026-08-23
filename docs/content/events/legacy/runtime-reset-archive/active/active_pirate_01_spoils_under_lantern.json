@@ -1,0 +1,105 @@
+{
+  "id": "active_pirate_01_spoils_under_lantern",
+  "kind": "normal",
+  "titleKey": "event.active_pirate_01_spoils_under_lantern.title",
+  "textKey": "event.active_pirate_01_spoils_under_lantern.text",
+  "choices": [
+    {
+      "id": "audit",
+      "textKey": "event.active_pirate_01_spoils_under_lantern.choice.audit.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_spoils_under_lantern.choice.audit.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_pirate_01_spoils_i1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cover_shortfall",
+      "textKey": "event.active_pirate_01_spoils_under_lantern.choice.cover_shortfall.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_spoils_under_lantern.choice.cover_shortfall.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -100
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 100
+      }
+    },
+    {
+      "id": "dismiss",
+      "textKey": "event.active_pirate_01_spoils_under_lantern.choice.dismiss.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_spoils_under_lantern.choice.dismiss.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "quartermaster_check",
+      "textKey": "event.active_pirate_01_spoils_under_lantern.choice.quartermaster_check.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_spoils_under_lantern.choice.quartermaster_check.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_pirate_01_spoils_i1"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "quartermaster"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "pirate"
+      },
+      {
+        "type": "hasCrew"
+      }
+    ]
+  }
+}

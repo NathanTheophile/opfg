@@ -1,0 +1,192 @@
+{
+  "id": "active_generic_land_03_mystery_borrowed_name",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_03_mystery_borrowed_name.title",
+  "textKey": "event.active_generic_land_03_mystery_borrowed_name.text",
+  "choices": [
+    {
+      "id": "ask_separately",
+      "textKey": "event.active_generic_land_03_mystery_borrowed_name.choice.ask_separately.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "ask_separately_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_borrowed_name.choice.ask_separately.outcome.ask_separately_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_borrowed_name_i01_same_signature"
+              }
+            ]
+          },
+          "failure": {
+            "id": "ask_separately_failure",
+            "textKey": "event.active_generic_land_03_mystery_borrowed_name.choice.ask_separately.outcome.ask_separately_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_borrowed_name_i01_same_signature"
+              }
+            ]
+          },
+          "success": {
+            "id": "ask_separately_success",
+            "textKey": "event.active_generic_land_03_mystery_borrowed_name.choice.ask_separately.outcome.ask_separately_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_borrowed_name_i01_same_signature"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "ask_separately_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_borrowed_name.choice.ask_separately.outcome.ask_separately_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_borrowed_name_i01_same_signature"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "compare_receipts",
+      "textKey": "event.active_generic_land_03_mystery_borrowed_name.choice.compare_receipts.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "compare_receipts_criticalfailure",
+            "textKey": "event.active_generic_land_03_mystery_borrowed_name.choice.compare_receipts.outcome.compare_receipts_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_borrowed_name_i01_same_signature"
+              }
+            ]
+          },
+          "failure": {
+            "id": "compare_receipts_failure",
+            "textKey": "event.active_generic_land_03_mystery_borrowed_name.choice.compare_receipts.outcome.compare_receipts_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_borrowed_name_i01_same_signature"
+              }
+            ]
+          },
+          "success": {
+            "id": "compare_receipts_success",
+            "textKey": "event.active_generic_land_03_mystery_borrowed_name.choice.compare_receipts.outcome.compare_receipts_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_borrowed_name_i01_same_signature"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "compare_receipts_criticalsuccess",
+            "textKey": "event.active_generic_land_03_mystery_borrowed_name.choice.compare_receipts.outcome.compare_receipts_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_03_mystery_borrowed_name_i01_same_signature"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "name_both",
+      "textKey": "event.active_generic_land_03_mystery_borrowed_name.choice.name_both.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "named",
+          "textKey": "event.active_generic_land_03_mystery_borrowed_name.choice.name_both.outcome.named.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_borrowed_name_i01_same_signature"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "suspicious_pause",
+      "textKey": "event.active_generic_land_03_mystery_borrowed_name.choice.suspicious_pause.text",
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "suspicious"
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "paused",
+          "textKey": "event.active_generic_land_03_mystery_borrowed_name.choice.suspicious_pause.outcome.paused.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_03_mystery_borrowed_name_i01_same_signature"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

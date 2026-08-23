@@ -1,0 +1,129 @@
+{
+  "id": "ch_identity_world_01_uniform_drill",
+  "titleKey": "event.ch_identity_world_01_uniform_drill.title",
+  "textKey": "event.ch_identity_world_01_uniform_drill.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 84
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 131
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "marine_presence"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "copy_drill",
+      "textKey": "event.ch_identity_world_01_uniform_drill.choice.copy_drill.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "drill_embarrassment",
+            "textKey": "event.ch_identity_world_01_uniform_drill.choice.copy_drill.outcome.drill_embarrassment.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_uniform_drill_i1_fallen_baton"
+              }
+            ]
+          },
+          "failure": {
+            "id": "drill_messy",
+            "textKey": "event.ch_identity_world_01_uniform_drill.choice.copy_drill.outcome.drill_messy.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_uniform_drill_i1_fallen_baton"
+              }
+            ]
+          },
+          "success": {
+            "id": "drill_clean",
+            "textKey": "event.ch_identity_world_01_uniform_drill.choice.copy_drill.outcome.drill_clean.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_uniform_drill_i1_fallen_baton"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "drill_noticed",
+            "textKey": "event.ch_identity_world_01_uniform_drill.choice.copy_drill.outcome.drill_noticed.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "ch_identity_world_01_uniform_drill_i1_fallen_baton"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "watch_orders",
+      "textKey": "event.ch_identity_world_01_uniform_drill.choice.watch_orders.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hierarchy_seen",
+          "textKey": "event.ch_identity_world_01_uniform_drill.choice.watch_orders.outcome.hierarchy_seen.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_identity_world_01_uniform_drill_i1_fallen_baton"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "avoid_square",
+      "textKey": "event.ch_identity_world_01_uniform_drill.choice.avoid_square.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "square_avoided",
+          "textKey": "event.ch_identity_world_01_uniform_drill.choice.avoid_square.outcome.square_avoided.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

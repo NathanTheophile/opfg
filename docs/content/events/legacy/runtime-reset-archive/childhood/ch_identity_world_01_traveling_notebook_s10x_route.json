@@ -1,0 +1,93 @@
+{
+  "id": "ch_identity_world_01_traveling_notebook_s10x_route",
+  "titleKey": "event.ch_identity_world_01_traveling_notebook_s10x_route.title",
+  "textKey": "event.ch_identity_world_01_traveling_notebook_s10x_route.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "choices": [
+    {
+      "id": "read_route",
+      "textKey": "event.ch_identity_world_01_traveling_notebook_s10x_route.choice.read_route.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "route_fantasy",
+            "textKey": "event.ch_identity_world_01_traveling_notebook_s10x_route.choice.read_route.outcome.route_fantasy.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_traveling_notebook_s11_returned_copy",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "failure": {
+            "id": "route_uncertain",
+            "textKey": "event.ch_identity_world_01_traveling_notebook_s10x_route.choice.read_route.outcome.route_uncertain.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_traveling_notebook_s11_returned_copy",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "success": {
+            "id": "route_plausible",
+            "textKey": "event.ch_identity_world_01_traveling_notebook_s10x_route.choice.read_route.outcome.route_plausible.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_traveling_notebook_s11_returned_copy",
+                "delayMonths": 24
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "route_elegant",
+            "textKey": "event.ch_identity_world_01_traveling_notebook_s10x_route.choice.read_route.outcome.route_elegant.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_traveling_notebook_s11_returned_copy",
+                "delayMonths": 24
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "leave_route_symbolic",
+      "textKey": "event.ch_identity_world_01_traveling_notebook_s10x_route.choice.leave_route_symbolic.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "route_symbolic",
+          "textKey": "event.ch_identity_world_01_traveling_notebook_s10x_route.choice.leave_route_symbolic.outcome.route_symbolic.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_traveling_notebook_s11_returned_copy",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

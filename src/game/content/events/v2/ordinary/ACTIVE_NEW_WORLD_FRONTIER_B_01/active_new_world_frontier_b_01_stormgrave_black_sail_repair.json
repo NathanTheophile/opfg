@@ -1,0 +1,110 @@
+{
+  "id": "active_new_world_frontier_b_01_stormgrave_black_sail_repair",
+  "kind": "normal",
+  "titleKey": "event.active_new_world_frontier_b_01_stormgrave_black_sail_repair.title",
+  "textKey": "event.active_new_world_frontier_b_01_stormgrave_black_sail_repair.text",
+  "choices": [
+    {
+      "id": "pay_rush",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_black_sail_repair.choice.pay_rush.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_rush_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_stormgrave_black_sail_repair.choice.pay_rush.outcome.pay_rush_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2500
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 6
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2500
+      }
+    },
+    {
+      "id": "shipwright_supervise",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_black_sail_repair.choice.shipwright_supervise.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shipwright_supervise_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_stormgrave_black_sail_repair.choice.shipwright_supervise.outcome.shipwright_supervise_outcome.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": 5
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasCrewRole",
+        "roleId": "shipwright"
+      }
+    },
+    {
+      "id": "cheap_patch",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_black_sail_repair.choice.cheap_patch.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cheap_patch_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_stormgrave_black_sail_repair.choice.cheap_patch.outcome.cheap_patch_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -750
+            },
+            {
+              "type": "modifyShipHealth",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 750
+      }
+    },
+    {
+      "id": "leave_yard",
+      "textKey": "event.active_new_world_frontier_b_01_stormgrave_black_sail_repair.choice.leave_yard.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave_yard_outcome",
+          "textKey": "event.active_new_world_frontier_b_01_stormgrave_black_sail_repair.choice.leave_yard.outcome.leave_yard_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "stormgrave_island"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

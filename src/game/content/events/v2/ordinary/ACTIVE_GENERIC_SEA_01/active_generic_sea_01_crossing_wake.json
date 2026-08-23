@@ -1,0 +1,114 @@
+{
+  "id": "active_generic_sea_01_crossing_wake",
+  "kind": "normal",
+  "titleKey": "event.active_generic_sea_01_crossing_wake.title",
+  "textKey": "event.active_generic_sea_01_crossing_wake.text",
+  "choices": [
+    {
+      "id": "yield_early",
+      "textKey": "event.active_generic_sea_01_crossing_wake.choice.yield_early.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "yield_early_outcome",
+          "textKey": "event.active_generic_sea_01_crossing_wake.choice.yield_early.outcome.yield_early_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_crossing_wake_i01_apology_launch"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "hold_line",
+      "textKey": "event.active_generic_sea_01_crossing_wake.choice.hold_line.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hold_line_outcome",
+          "textKey": "event.active_generic_sea_01_crossing_wake.choice.hold_line.outcome.hold_line_outcome.text",
+          "effects": [
+            {
+              "type": "modifyShipHealth",
+              "amount": -1
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_crossing_wake_i01_apology_launch"
+            }
+          ],
+          "shipDamageCause": "accident"
+        }
+      }
+    },
+    {
+      "id": "signal_displeasure",
+      "textKey": "event.active_generic_sea_01_crossing_wake.choice.signal_displeasure.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "signal_displeasure_outcome",
+          "textKey": "event.active_generic_sea_01_crossing_wake.choice.signal_displeasure.outcome.signal_displeasure_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_crossing_wake_i01_apology_launch"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cautious_distance",
+      "textKey": "event.active_generic_sea_01_crossing_wake.choice.cautious_distance.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cautious_distance_outcome",
+          "textKey": "event.active_generic_sea_01_crossing_wake.choice.cautious_distance.outcome.cautious_distance_outcome.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "navigation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_01_crossing_wake_i01_apology_launch"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "cautious"
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      }
+    ]
+  }
+}

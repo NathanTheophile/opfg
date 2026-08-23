@@ -1,0 +1,189 @@
+{
+  "id": "active_generic_land_04_conflict_street_chains",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_04_conflict_street_chains.title",
+  "textKey": "event.active_generic_land_04_conflict_street_chains.text",
+  "choices": [
+    {
+      "id": "clear_people",
+      "textKey": "event.active_generic_land_04_conflict_street_chains.choice.clear_people",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "clear_people_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_street_chains.outcome.clear_people.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_street_chains_i01_crossfire"
+              }
+            ]
+          },
+          "failure": {
+            "id": "clear_people_failure",
+            "textKey": "event.active_generic_land_04_conflict_street_chains.outcome.clear_people.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_street_chains_i01_crossfire"
+              }
+            ]
+          },
+          "success": {
+            "id": "clear_people_success",
+            "textKey": "event.active_generic_land_04_conflict_street_chains.outcome.clear_people.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_street_chains_i01_crossfire"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "clear_people_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_street_chains.outcome.clear_people.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_street_chains_i01_crossfire"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pull_chain",
+      "textKey": "event.active_generic_land_04_conflict_street_chains.choice.pull_chain",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "pull_chain_criticalFailure",
+            "textKey": "event.active_generic_land_04_conflict_street_chains.outcome.pull_chain.criticalFailure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -7
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_street_chains_i01_crossfire"
+              }
+            ]
+          },
+          "failure": {
+            "id": "pull_chain_failure",
+            "textKey": "event.active_generic_land_04_conflict_street_chains.outcome.pull_chain.failure",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_street_chains_i01_crossfire"
+              }
+            ]
+          },
+          "success": {
+            "id": "pull_chain_success",
+            "textKey": "event.active_generic_land_04_conflict_street_chains.outcome.pull_chain.success",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_street_chains_i01_crossfire"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "pull_chain_criticalSuccess",
+            "textKey": "event.active_generic_land_04_conflict_street_chains.outcome.pull_chain.criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_land_04_conflict_street_chains_i01_crossfire"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "step_aside",
+      "textKey": "event.active_generic_land_04_conflict_street_chains.choice.step_aside",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "step_aside",
+          "textKey": "event.active_generic_land_04_conflict_street_chains.outcome.step_aside",
+          "effects": []
+        }
+      }
+    },
+    {
+      "id": "cut_prisoner",
+      "textKey": "event.active_generic_land_04_conflict_street_chains.choice.cut_prisoner",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_prisoner",
+          "textKey": "event.active_generic_land_04_conflict_street_chains.outcome.cut_prisoner",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_street_chains_i01_crossfire"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

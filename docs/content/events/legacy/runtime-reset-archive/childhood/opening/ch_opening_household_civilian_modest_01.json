@@ -1,0 +1,132 @@
+{
+  "id": "ch_opening_household_civilian_modest_01",
+  "kind": "normal",
+  "titleKey": "event.ch_opening_household_civilian_modest_01.title",
+  "textKey": "event.ch_opening_household_civilian_modest_01.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 12
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 23
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "familyStructureIs",
+          "familyStructureId": "orphan"
+        }
+      },
+      {
+        "type": "affiliationIs",
+        "affiliationId": "civilian"
+      },
+      {
+        "type": "socialClassIs",
+        "socialClassId": "modest"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "point_tool",
+      "textKey": "event.ch_opening_household_civilian_modest_01.choice.point_tool.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "tool_found",
+          "textKey": "event.ch_opening_household_civilian_modest_01.choice.point_tool.outcome.tool_found.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 2
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "copy_work",
+      "textKey": "event.ch_opening_household_civilian_modest_01.choice.copy_work.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "work_copied",
+          "textKey": "event.ch_opening_household_civilian_modest_01.choice.copy_work.outcome.work_copied.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "carry_rag",
+      "textKey": "event.ch_opening_household_civilian_modest_01.choice.carry_rag.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "rag_delivered",
+          "textKey": "event.ch_opening_household_civilian_modest_01.choice.carry_rag.outcome.rag_delivered.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "close_shutter",
+      "textKey": "event.ch_opening_household_civilian_modest_01.choice.close_shutter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "shutter_drops",
+          "textKey": "event.ch_opening_household_civilian_modest_01.choice.close_shutter.outcome.shutter_drops.text",
+          "effects": [
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "player_parent_1",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cast": [
+    "player_parent_1"
+  ],
+  "narrativeFamily": "origin_family",
+  "openingRole": "origin_echo"
+}

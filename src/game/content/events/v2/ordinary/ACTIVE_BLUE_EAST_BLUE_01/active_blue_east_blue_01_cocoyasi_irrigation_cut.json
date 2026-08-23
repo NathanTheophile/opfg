@@ -1,0 +1,175 @@
+{
+  "id": "active_blue_east_blue_01_cocoyasi_irrigation_cut",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_cocoyasi_irrigation_cut.title",
+  "textKey": "event.active_blue_east_blue_01_cocoyasi_irrigation_cut.text",
+  "choices": [
+    {
+      "id": "lift_the_gate",
+      "textKey": "event.active_blue_east_blue_01_cocoyasi_irrigation_cut.choice.lift_the_gate.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "lift_the_gate_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_cocoyasi_irrigation_cut.choice.lift_the_gate.outcome.lift_the_gate_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_cocoyasi_irrigation_cut_i01_salt_gate"
+              }
+            ]
+          },
+          "failure": {
+            "id": "lift_the_gate_failure",
+            "textKey": "event.active_blue_east_blue_01_cocoyasi_irrigation_cut.choice.lift_the_gate.outcome.lift_the_gate_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_cocoyasi_irrigation_cut_i01_salt_gate"
+              }
+            ]
+          },
+          "success": {
+            "id": "lift_the_gate_success",
+            "textKey": "event.active_blue_east_blue_01_cocoyasi_irrigation_cut.choice.lift_the_gate.outcome.lift_the_gate_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_cocoyasi_irrigation_cut_i01_salt_gate"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "lift_the_gate_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_cocoyasi_irrigation_cut.choice.lift_the_gate.outcome.lift_the_gate_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_cocoyasi_irrigation_cut_i01_salt_gate"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "trace_the_blockage",
+      "textKey": "event.active_blue_east_blue_01_cocoyasi_irrigation_cut.choice.trace_the_blockage.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "trace_the_blockage_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_cocoyasi_irrigation_cut.choice.trace_the_blockage.outcome.trace_the_blockage_criticalfailure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_cocoyasi_irrigation_cut_i01_salt_gate"
+              }
+            ]
+          },
+          "failure": {
+            "id": "trace_the_blockage_failure",
+            "textKey": "event.active_blue_east_blue_01_cocoyasi_irrigation_cut.choice.trace_the_blockage.outcome.trace_the_blockage_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_cocoyasi_irrigation_cut_i01_salt_gate"
+              }
+            ]
+          },
+          "success": {
+            "id": "trace_the_blockage_success",
+            "textKey": "event.active_blue_east_blue_01_cocoyasi_irrigation_cut.choice.trace_the_blockage.outcome.trace_the_blockage_success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_cocoyasi_irrigation_cut_i01_salt_gate"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "trace_the_blockage_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_cocoyasi_irrigation_cut.choice.trace_the_blockage.outcome.trace_the_blockage_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              },
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_blue_east_blue_01_cocoyasi_irrigation_cut_i01_salt_gate"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "carry_water",
+      "textKey": "event.active_blue_east_blue_01_cocoyasi_irrigation_cut.choice.carry_water.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "carry_water_outcome",
+          "textKey": "event.active_blue_east_blue_01_cocoyasi_irrigation_cut.choice.carry_water.outcome.carry_water_outcome.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_blue_east_blue_01_cocoyasi_irrigation_cut_i01_salt_gate"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationIs",
+        "locationId": "cocoyasi_village"
+      }
+    ]
+  }
+}

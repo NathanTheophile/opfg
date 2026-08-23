@@ -1,0 +1,128 @@
+{
+  "id": "ch_generic_late_01_blurred_tally",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_blurred_tally.title",
+  "textKey": "event.ch_generic_late_01_blurred_tally.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 132
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "reconstruct",
+      "resolution": {
+        "type": "dice",
+        "statId": "intelligence",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "tally_cf",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": -1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_blurred_tally.choice.reconstruct.outcome.tally_cf.text"
+          },
+          "failure": {
+            "id": "tally_f",
+            "effects": [],
+            "textKey": "event.ch_generic_late_01_blurred_tally.choice.reconstruct.outcome.tally_f.text"
+          },
+          "success": {
+            "id": "tally_s",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_blurred_tally.choice.reconstruct.outcome.tally_s.text"
+          },
+          "criticalSuccess": {
+            "id": "tally_cs",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "intelligence",
+                "amount": 2
+              },
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              }
+            ],
+            "textKey": "event.ch_generic_late_01_blurred_tally.choice.reconstruct.outcome.tally_cs.text"
+          }
+        }
+      },
+      "textKey": "event.ch_generic_late_01_blurred_tally.choice.reconstruct.text"
+    },
+    {
+      "id": "recount_stock",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "recount",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_blurred_tally.choice.recount_stock.outcome.recount.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_blurred_tally.choice.recount_stock.text"
+    },
+    {
+      "id": "leave_note",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "note",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_blurred_tally.choice.leave_note.outcome.note.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_blurred_tally.choice.leave_note.text"
+    }
+  ]
+}

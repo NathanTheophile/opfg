@@ -1,0 +1,110 @@
+{
+  "id": "active_haki_armament_l4_harder_than_you_i02_rebound_maul",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_armament_l4_harder_than_you_i02_rebound_maul.title",
+  "textKey": "event.active_haki_armament_l4_harder_than_you_i02_rebound_maul.text",
+  "choices": [
+    {
+      "id": "double_guard",
+      "textKey": "event.active_haki_armament_l4_harder_than_you_i02_rebound_maul.choice.double_guard.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "morale",
+        "successThreshold": 17,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "critical_failure",
+            "textKey": "event.active_haki_armament_l4_harder_than_you_i02_rebound_maul.choice.double_guard.text.outcome.critical_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -10
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l4_harder_than_you_i03_no_free_hits"
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_haki_armament_l4_harder_than_you_i02_rebound_maul.choice.double_guard.text.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -6
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l4_harder_than_you_i03_no_free_hits"
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_haki_armament_l4_harder_than_you_i02_rebound_maul.choice.double_guard.text.outcome.success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l4_harder_than_you_i03_no_free_hits"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "critical_success",
+            "textKey": "event.active_haki_armament_l4_harder_than_you_i02_rebound_maul.choice.double_guard.text.outcome.critical_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_armament_l4_harder_than_you_i03_no_free_hits"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "step_inside",
+      "textKey": "event.active_haki_armament_l4_harder_than_you_i02_rebound_maul.choice.step_inside.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "result",
+          "textKey": "event.active_haki_armament_l4_harder_than_you_i02_rebound_maul.choice.step_inside.text.outcome.result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_armament_l4_harder_than_you_i03_no_free_hits"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "let_deck_take_it",
+      "textKey": "event.active_haki_armament_l4_harder_than_you_i02_rebound_maul.choice.let_deck_take_it.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "result",
+          "textKey": "event.active_haki_armament_l4_harder_than_you_i02_rebound_maul.choice.let_deck_take_it.text.outcome.result.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": -1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_armament_l4_harder_than_you_i03_no_free_hits"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

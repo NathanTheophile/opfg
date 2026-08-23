@@ -1,0 +1,137 @@
+{
+  "id": "active_blue_east_blue_01_crew_notice_board",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_crew_notice_board.title",
+  "textKey": "event.active_blue_east_blue_01_crew_notice_board.text",
+  "choices": [
+    {
+      "id": "talk_to_owen",
+      "textKey": "event.active_blue_east_blue_01_crew_notice_board.choice.talk_to_owen.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "talk_to_owen_outcome",
+          "textKey": "event.active_blue_east_blue_01_crew_notice_board.choice.talk_to_owen.outcome.talk_to_owen_outcome.text",
+          "effects": [
+            {
+              "type": "setNpcStatus",
+              "npcId": "owen",
+              "status": "crew"
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "owen",
+              "amount": 5
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "canRecruitNpc",
+            "npcId": "owen"
+          },
+          {
+            "type": "not",
+            "condition": {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "dead"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "hire_one_day",
+      "textKey": "event.active_blue_east_blue_01_crew_notice_board.choice.hire_one_day.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "hire_one_day_outcome",
+          "textKey": "event.active_blue_east_blue_01_crew_notice_board.choice.hire_one_day.outcome.hire_one_day_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "owen",
+              "amount": 3
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    },
+    {
+      "id": "read_the_board",
+      "textKey": "event.active_blue_east_blue_01_crew_notice_board.choice.read_the_board.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "read_the_board_outcome",
+          "textKey": "event.active_blue_east_blue_01_crew_notice_board.choice.read_the_board.outcome.read_the_board_outcome.text",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "cast": [
+    "owen"
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "crew_recruitment"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "any",
+          "conditions": [
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "dead"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "departed"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "unavailable"
+            },
+            {
+              "type": "npcStatusIs",
+              "npcId": "owen",
+              "status": "crew"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

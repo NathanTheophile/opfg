@@ -1,0 +1,115 @@
+{
+  "id": "active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you",
+  "kind": "immediate",
+  "titleKey": "event.active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you.title",
+  "textKey": "event.active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you.text",
+  "choices": [
+    {
+      "id": "guide_around_gap",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you.choice.guide_around_gap.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "one_slips",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you.choice.guide_around_gap.outcome.one_slips.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i04_count_the_presences"
+              }
+            ]
+          },
+          "failure": {
+            "id": "scramble",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you.choice.guide_around_gap.outcome.scramble.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i04_count_the_presences"
+              }
+            ]
+          },
+          "success": {
+            "id": "clean_guidance",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you.choice.guide_around_gap.outcome.clean_guidance.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i04_count_the_presences"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "timed_steps",
+            "textKey": "event.active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you.choice.guide_around_gap.outcome.timed_steps.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l3_world_without_eyes_i04_count_the_presences"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "mark_edge",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you.choice.mark_edge.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "edge_marked",
+          "textKey": "event.active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you.choice.mark_edge.outcome.edge_marked.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l3_world_without_eyes_i04_count_the_presences"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "sense_cluster",
+      "textKey": "event.active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you.choice.sense_cluster.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cluster_read",
+          "textKey": "event.active_haki_observation_l3_world_without_eyes_i03_floor_moves_beneath_you.choice.sense_cluster.outcome.cluster_read.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l3_world_without_eyes_i04_count_the_presences"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 2
+      }
+    }
+  ]
+}

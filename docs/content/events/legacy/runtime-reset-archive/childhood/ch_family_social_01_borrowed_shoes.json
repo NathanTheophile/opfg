@@ -1,0 +1,128 @@
+{
+  "id": "ch_family_social_01_borrowed_shoes",
+  "titleKey": "event.ch_family_social_01_borrowed_shoes.title",
+  "textKey": "event.ch_family_social_01_borrowed_shoes.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 48
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 96
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "socialClassIs",
+            "socialClassId": "poor"
+          },
+          {
+            "type": "socialClassIs",
+            "socialClassId": "modest"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "patch_fast",
+      "textKey": "event.ch_family_social_01_borrowed_shoes.choice.patch_fast.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "patch_tore",
+            "textKey": "event.ch_family_social_01_borrowed_shoes.choice.patch_fast.outcome.patch_tore.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": -1
+              },
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              }
+            ]
+          },
+          "failure": {
+            "id": "patch_holds_badly",
+            "textKey": "event.ch_family_social_01_borrowed_shoes.choice.patch_fast.outcome.patch_holds_badly.text",
+            "effects": []
+          },
+          "success": {
+            "id": "patch_holds",
+            "textKey": "event.ch_family_social_01_borrowed_shoes.choice.patch_fast.outcome.patch_holds.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "patch_clean",
+            "textKey": "event.ch_family_social_01_borrowed_shoes.choice.patch_fast.outcome.patch_clean.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "agility",
+                "amount": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "admit_problem",
+      "textKey": "event.ch_family_social_01_borrowed_shoes.choice.admit_problem.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "admitted_problem",
+          "textKey": "event.ch_family_social_01_borrowed_shoes.choice.admit_problem.outcome.admitted_problem.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "go_barefoot",
+      "textKey": "event.ch_family_social_01_borrowed_shoes.choice.go_barefoot.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "went_barefoot",
+          "textKey": "event.ch_family_social_01_borrowed_shoes.choice.go_barefoot.outcome.went_barefoot.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "id": "active_revolutionary_01_sealed_order_review",
+  "kind": "scheduled",
+  "titleKey": "event.active_revolutionary_01_sealed_order_review.title",
+  "textKey": "event.active_revolutionary_01_sealed_order_review.text",
+  "choices": [
+    {
+      "id": "defend_choice",
+      "textKey": "event.active_revolutionary_01_sealed_order_review.choice.defend_choice.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_sealed_order_review.choice.defend_choice.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_critique",
+      "textKey": "event.active_revolutionary_01_sealed_order_review.choice.accept_critique.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "done",
+          "textKey": "event.active_revolutionary_01_sealed_order_review.choice.accept_critique.outcome.done.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "revolutionary"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "priority": 200,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "revolutionary"
+    }
+  }
+}

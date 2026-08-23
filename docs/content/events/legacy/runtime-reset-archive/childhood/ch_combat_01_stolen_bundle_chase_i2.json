@@ -1,0 +1,69 @@
+{
+  "id": "ch_combat_01_stolen_bundle_chase_i2",
+  "titleKey": "event.ch_combat_01_stolen_bundle_chase_i2.title",
+  "textKey": "event.ch_combat_01_stolen_bundle_chase_i2.text",
+  "kind": "immediate",
+  "choices": [
+    {
+      "id": "hold_cloth_only",
+      "textKey": "event.ch_combat_01_stolen_bundle_chase_i2.choice.hold_cloth_only.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cloth_held",
+          "textKey": "event.ch_combat_01_stolen_bundle_chase_i2.choice.hold_cloth_only.outcome.cloth_held.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "strength",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_stolen_bundle_chase_i3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step_back",
+      "textKey": "event.ch_combat_01_stolen_bundle_chase_i2.choice.step_back.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "exit_blocked",
+          "textKey": "event.ch_combat_01_stolen_bundle_chase_i2.choice.step_back.outcome.exit_blocked.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_stolen_bundle_chase_i3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_owner",
+      "textKey": "event.ch_combat_01_stolen_bundle_chase_i2.choice.call_owner.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "owner_called",
+          "textKey": "event.ch_combat_01_stolen_bundle_chase_i2.choice.call_owner.outcome.owner_called.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "ch_combat_01_stolen_bundle_chase_i3"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

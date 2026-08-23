@@ -1,0 +1,116 @@
+{
+  "id": "active_generic_sea_02_cargo_net_below_flotsam_i01",
+  "kind": "immediate",
+  "titleKey": "event.active_generic_sea_02_cargo_net_below_flotsam_i01.title",
+  "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam_i01.text",
+  "eligibility": {
+    "type": "hasShip"
+  },
+  "choices": [
+    {
+      "id": "cut_one_crate_free",
+      "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam_i01.choice.cut_one_crate_free.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_one_crate_free_result",
+          "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam_i01.outcome.cut_one_crate_free_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_02_cargo_net_below_flotsam_i02"
+            },
+            {
+              "type": "modifyStat",
+              "statId": "agility",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "raise_a_second_corner",
+      "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam_i01.choice.raise_a_second_corner.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "strength",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "raise_a_second_corner_criticalFailure",
+            "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam_i01.outcome.raise_a_second_corner_criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -5
+              },
+              {
+                "type": "modifyHealth",
+                "amount": -3
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "raise_a_second_corner_failure",
+            "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam_i01.outcome.raise_a_second_corner_failure.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_cargo_net_below_flotsam_i02"
+              }
+            ]
+          },
+          "success": {
+            "id": "raise_a_second_corner_success",
+            "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam_i01.outcome.raise_a_second_corner_success.text",
+            "effects": [
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_cargo_net_below_flotsam_i02"
+              },
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "raise_a_second_corner_criticalSuccess",
+            "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam_i01.outcome.raise_a_second_corner_criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "strength",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_generic_sea_02_cargo_net_below_flotsam_i02"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "cut_the_net_loose",
+      "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam_i01.choice.cut_the_net_loose.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "cut_the_net_loose_result",
+          "textKey": "event.active_generic_sea_02_cargo_net_below_flotsam_i01.outcome.cut_the_net_loose_result.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_sea_02_cargo_net_below_flotsam_i02"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

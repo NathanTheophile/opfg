@@ -1,0 +1,89 @@
+{
+  "id": "ch_east_blue_01_cocoyasi_irrigation_shell",
+  "kind": "normal",
+  "titleKey": "event.ch_east_blue_01_cocoyasi_irrigation_shell.title",
+  "textKey": "event.ch_east_blue_01_cocoyasi_irrigation_shell.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 72
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 107
+      },
+      {
+        "type": "locationIs",
+        "locationId": "cocoyasi_village"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "make_bypass",
+      "textKey": "event.ch_east_blue_01_cocoyasi_irrigation_shell.choice.make_bypass.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bypass_built",
+          "textKey": "event.ch_east_blue_01_cocoyasi_irrigation_shell.choice.make_bypass.outcome.bypass_built.text",
+          "effects": [
+            {
+              "type": "addTrait",
+              "traitId": "resourceful"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "not",
+        "condition": {
+          "type": "hasTrait",
+          "traitId": "resourceful"
+        }
+      }
+    },
+    {
+      "id": "clear_by_hand",
+      "textKey": "event.ch_east_blue_01_cocoyasi_irrigation_shell.choice.clear_by_hand.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "channel_cleared",
+          "textKey": "event.ch_east_blue_01_cocoyasi_irrigation_shell.choice.clear_by_hand.outcome.channel_cleared.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fetch_gardener",
+      "textKey": "event.ch_east_blue_01_cocoyasi_irrigation_shell.choice.fetch_gardener.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "gardener_warned",
+          "textKey": "event.ch_east_blue_01_cocoyasi_irrigation_shell.choice.fetch_gardener.outcome.gardener_warned.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

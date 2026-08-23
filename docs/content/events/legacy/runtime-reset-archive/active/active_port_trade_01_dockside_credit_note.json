@@ -1,0 +1,85 @@
+{
+  "id": "active_port_trade_01_dockside_credit_note",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_dockside_credit_note.title",
+  "textKey": "event.active_port_trade_01_dockside_credit_note.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "accepter",
+      "textKey": "event.active_port_trade_01_dockside_credit_note.choice.accepter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "accepte",
+          "textKey": "event.active_port_trade_01_dockside_credit_note.choice.accepter.outcome.accepte.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_credit_note_matures",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "acompte",
+      "textKey": "event.active_port_trade_01_dockside_credit_note.choice.acompte.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "acompte",
+          "textKey": "event.active_port_trade_01_dockside_credit_note.choice.acompte.outcome.acompte.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": 70
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_port_trade_01_credit_note_matures",
+              "delayMonths": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "comptant",
+      "textKey": "event.active_port_trade_01_dockside_credit_note.choice.comptant.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refus_credit",
+          "textKey": "event.active_port_trade_01_dockside_credit_note.choice.comptant.outcome.refus_credit.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

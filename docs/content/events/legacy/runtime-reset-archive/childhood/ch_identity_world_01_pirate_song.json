@@ -1,0 +1,171 @@
+{
+  "id": "ch_identity_world_01_pirate_song",
+  "titleKey": "event.ch_identity_world_01_pirate_song.title",
+  "textKey": "event.ch_identity_world_01_pirate_song.text",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 120
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 179
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasTag",
+            "tagId": "port"
+          },
+          {
+            "type": "locationHasTag",
+            "tagId": "trade"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "food"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "question_singer",
+      "textKey": "event.ch_identity_world_01_pirate_song.choice.question_singer.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "singer_mocks",
+            "textKey": "event.ch_identity_world_01_pirate_song.choice.question_singer.outcome.singer_mocks.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_pirate_song_s01_song_returns",
+                "delayMonths": 30
+              }
+            ]
+          },
+          "failure": {
+            "id": "singer_evades",
+            "textKey": "event.ch_identity_world_01_pirate_song.choice.question_singer.outcome.singer_evades.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_pirate_song_s01_song_returns",
+                "delayMonths": 30
+              }
+            ]
+          },
+          "success": {
+            "id": "singer_answers",
+            "textKey": "event.ch_identity_world_01_pirate_song.choice.question_singer.outcome.singer_answers.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_pirate_song_s01_song_returns",
+                "delayMonths": 30
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "room_quiets",
+            "textKey": "event.ch_identity_world_01_pirate_song.choice.question_singer.outcome.room_quiets.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "ch_identity_world_01_pirate_song_s01_song_returns",
+                "delayMonths": 30
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "enjoy_song",
+      "textKey": "event.ch_identity_world_01_pirate_song.choice.enjoy_song.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "song_enjoyed",
+          "textKey": "event.ch_identity_world_01_pirate_song.choice.enjoy_song.outcome.song_enjoyed.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_pirate_song_s01_song_returns",
+              "delayMonths": 30
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "reject_song",
+      "textKey": "event.ch_identity_world_01_pirate_song.choice.reject_song.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "song_rejected",
+          "textKey": "event.ch_identity_world_01_pirate_song.choice.reject_song.outcome.song_rejected.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_pirate_song_s01_song_returns",
+              "delayMonths": 30
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "leave_room",
+      "textKey": "event.ch_identity_world_01_pirate_song.choice.leave_room.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "room_left",
+          "textKey": "event.ch_identity_world_01_pirate_song.choice.leave_room.outcome.room_left.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_identity_world_01_pirate_song_s01_song_returns",
+              "delayMonths": 30
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "id": "active_generic_sea_05_strange_bottled_horizons",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isAtSea"
+      }
+    ]
+  },
+  "titleKey": "event.active_generic_sea_05_strange_bottled_horizons.title",
+  "textKey": "event.active_generic_sea_05_strange_bottled_horizons.text",
+  "choices": [
+    {
+      "id": "buy_glimpse",
+      "textKey": "event.active_generic_sea_05_strange_bottled_horizons.choice.buy_glimpse.text",
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 150
+      },
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "bought_glimpse",
+          "textKey": "event.active_generic_sea_05_strange_bottled_horizons.choice.buy_glimpse.outcome.bought_glimpse.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -150
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "inspect_jars",
+      "textKey": "event.active_generic_sea_05_strange_bottled_horizons.choice.inspect_jars.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "inspected",
+          "textKey": "event.active_generic_sea_05_strange_bottled_horizons.choice.inspect_jars.outcome.inspected.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "call_scam",
+      "textKey": "event.active_generic_sea_05_strange_bottled_horizons.choice.call_scam.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "called_scam",
+          "textKey": "event.active_generic_sea_05_strange_bottled_horizons.choice.call_scam.outcome.called_scam.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": -1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send_away",
+      "textKey": "event.active_generic_sea_05_strange_bottled_horizons.choice.send_away.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "sent_away",
+          "textKey": "event.active_generic_sea_05_strange_bottled_horizons.choice.send_away.outcome.sent_away.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "id": "active_generic_land_04_conflict_cart_seizure",
+  "kind": "normal",
+  "titleKey": "event.active_generic_land_04_conflict_cart_seizure.title",
+  "textKey": "event.active_generic_land_04_conflict_cart_seizure.text",
+  "choices": [
+    {
+      "id": "block_wheel",
+      "textKey": "event.active_generic_land_04_conflict_cart_seizure.choice.block_wheel",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "block_wheel",
+          "textKey": "event.active_generic_land_04_conflict_cart_seizure.outcome.block_wheel",
+          "effects": [
+            {
+              "type": "modifyHealth",
+              "amount": -2
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_cart_seizure_i01_wheel"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "take_ledger",
+      "textKey": "event.active_generic_land_04_conflict_cart_seizure.choice.take_ledger",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_ledger",
+          "textKey": "event.active_generic_land_04_conflict_cart_seizure.outcome.take_ledger",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_cart_seizure_i01_wheel"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "buy_minutes",
+      "textKey": "event.active_generic_land_04_conflict_cart_seizure.choice.buy_minutes",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy_minutes",
+          "textKey": "event.active_generic_land_04_conflict_cart_seizure.outcome.buy_minutes",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1200
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_generic_land_04_conflict_cart_seizure_i01_wheel"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1200
+      }
+    },
+    {
+      "id": "leave",
+      "textKey": "event.active_generic_land_04_conflict_cart_seizure.choice.leave",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "leave",
+          "textKey": "event.active_generic_land_04_conflict_cart_seizure.outcome.leave",
+          "effects": []
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  }
+}

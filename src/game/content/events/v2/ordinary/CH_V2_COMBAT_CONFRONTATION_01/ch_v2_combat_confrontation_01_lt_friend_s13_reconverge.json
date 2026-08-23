@@ -1,0 +1,84 @@
+{
+  "id": "ch_v2_combat_confrontation_01_lt_friend_s13_reconverge",
+  "kind": "scheduled",
+  "priority": 100,
+  "titleKey": "event.ch_v2_combat_confrontation_01_lt_friend_s13_reconverge.title",
+  "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s13_reconverge.text",
+  "choices": [
+    {
+      "id": "remember_start",
+      "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s13_reconverge.choice.remember_start",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "remember_start_outcome",
+          "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s13_reconverge.outcome.remember_start_outcome",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_confrontation_01_lt_friend_s14_equal_terms",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ask_now",
+      "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s13_reconverge.choice.ask_now",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "ask_now_outcome",
+          "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s13_reconverge.outcome.ask_now_outcome",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_confrontation_01_lt_friend_s14_equal_terms",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "send_rule",
+      "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s13_reconverge.choice.send_rule",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "send_rule_outcome",
+          "textKey": "event.ch_v2_combat_confrontation_01_lt_friend_s13_reconverge.outcome.send_rule_outcome",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "ch_v2_combat_confrontation_01_lt_friend_s14_equal_terms",
+              "delayMonths": 24
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "cancelIf": {
+    "type": "npcStatusIs",
+    "npcId": "childhood_friend",
+    "status": "dead"
+  },
+  "scheduledReach": "unrestricted"
+}

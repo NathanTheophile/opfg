@@ -1,0 +1,140 @@
+{
+  "id": "active_port_trade_01_broker_information_sale",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_broker_information_sale.title",
+  "textKey": "event.active_port_trade_01_broker_information_sale.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      },
+      {
+        "type": "locationHasTag",
+        "tagId": "port"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "recouper",
+      "textKey": "event.active_port_trade_01_broker_information_sale.choice.recouper.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "observation",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "criticalFailure",
+            "textKey": "event.active_port_trade_01_broker_information_sale.choice.recouper.outcome.criticalFailure.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": -1
+              },
+              {
+                "type": "modifyBerries",
+                "amount": -60
+              }
+            ]
+          },
+          "failure": {
+            "id": "failure",
+            "textKey": "event.active_port_trade_01_broker_information_sale.choice.recouper.outcome.failure.text",
+            "effects": [
+              {
+                "type": "modifyBerries",
+                "amount": -40
+              }
+            ]
+          },
+          "success": {
+            "id": "success",
+            "textKey": "event.active_port_trade_01_broker_information_sale.choice.recouper.outcome.success.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 1
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 90
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "criticalSuccess",
+            "textKey": "event.active_port_trade_01_broker_information_sale.choice.recouper.outcome.criticalSuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "observation",
+                "amount": 2
+              },
+              {
+                "type": "modifyBerries",
+                "amount": 140
+              }
+            ]
+          }
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 60
+      }
+    },
+    {
+      "id": "acheter",
+      "textKey": "event.active_port_trade_01_broker_information_sale.choice.acheter.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "achat",
+          "textKey": "event.active_port_trade_01_broker_information_sale.choice.acheter.outcome.achat.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -70
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 70
+      }
+    },
+    {
+      "id": "refuser",
+      "textKey": "event.active_port_trade_01_broker_information_sale.choice.refuser.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "refus",
+          "textKey": "event.active_port_trade_01_broker_information_sale.choice.refuser.outcome.refus.text",
+          "effects": []
+        }
+      }
+    }
+  ]
+}

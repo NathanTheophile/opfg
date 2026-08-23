@@ -1,0 +1,154 @@
+{
+  "id": "active_haki_observation_l4_silence_that_lies",
+  "kind": "normal",
+  "titleKey": "event.active_haki_observation_l4_silence_that_lies.title",
+  "textKey": "event.active_haki_observation_l4_silence_that_lies.text",
+  "choices": [
+    {
+      "id": "pivot_second",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies.choice.pivot_second.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "agility",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "double_feint",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies.choice.pivot_second.outcome.double_feint.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -8
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i01_attack_that_stops"
+              }
+            ]
+          },
+          "failure": {
+            "id": "late_pivot",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies.choice.pivot_second.outcome.late_pivot.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -4
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i01_attack_that_stops"
+              }
+            ]
+          },
+          "success": {
+            "id": "second_stopped",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies.choice.pivot_second.outcome.second_stopped.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i01_attack_that_stops"
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "feint_seen",
+            "textKey": "event.active_haki_observation_l4_silence_that_lies.choice.pivot_second.outcome.feint_seen.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "morale",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "active_haki_observation_l4_silence_that_lies_i01_attack_that_stops"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "back_to_wall",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies.choice.back_to_wall.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "angle_reduced",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies.choice.back_to_wall.outcome.angle_reduced.text",
+          "effects": [
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i01_attack_that_stops"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "wait_commitment",
+      "textKey": "event.active_haki_observation_l4_silence_that_lies.choice.wait_commitment.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "commitment_only",
+          "textKey": "event.active_haki_observation_l4_silence_that_lies.choice.wait_commitment.outcome.commitment_only.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "active_haki_observation_l4_silence_that_lies_i01_attack_that_stops"
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 3
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 180
+      },
+      {
+        "type": "isOnLand"
+      },
+      {
+        "type": "hakiSourceTotalAtLeast",
+        "hakiType": "observation",
+        "value": 90
+      },
+      {
+        "type": "hakiAtLeast",
+        "hakiType": "observation",
+        "level": 3
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "hakiAtLeast",
+          "hakiType": "observation",
+          "level": 4
+        }
+      }
+    ]
+  }
+}

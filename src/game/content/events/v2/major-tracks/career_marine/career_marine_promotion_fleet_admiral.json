@@ -1,0 +1,74 @@
+{
+  "id": "career_marine_promotion_fleet_admiral",
+  "kind": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "careerAffiliationIs",
+        "affiliationId": "marine"
+      },
+      {
+        "type": "reputationAtLeast",
+        "value": 88
+      },
+      {
+        "type": "careerRankAtLeast",
+        "rankId": "marine_admiral"
+      },
+      {
+        "type": "not",
+        "condition": {
+          "type": "careerRankAtLeast",
+          "rankId": "marine_fleet_admiral"
+        }
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_10_ordered_justice"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_10_human_scale"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_10_moving_justice"
+          },
+          {
+            "type": "hasPlayed",
+            "eventId": "career_marine_10_white_coat"
+          }
+        ]
+      }
+    ]
+  },
+  "titleKey": "event.career_marine_promotion_fleet_admiral.title",
+  "textKey": "event.career_marine_promotion_fleet_admiral.text",
+  "choices": [
+    {
+      "id": "assume_rank",
+      "textKey": "event.career_marine_promotion_fleet_admiral.choice.assume_rank.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "promoted",
+          "effects": [
+            {
+              "type": "setCareerRank",
+              "rankId": "marine_fleet_admiral"
+            }
+          ],
+          "textKey": "event.career_marine_promotion_fleet_admiral.choice.assume_rank.outcome.promoted.text"
+        }
+      }
+    }
+  ]
+}

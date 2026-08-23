@@ -1,0 +1,121 @@
+{
+  "id": "career_pirate_05_island_tax",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_05_code_under_fire",
+    "nodeId": "career_pirate_05_island_tax",
+    "parentNodeIds": [
+      "career_pirate_04_navy_net",
+      "career_pirate_04_port_under_siege",
+      "career_pirate_04_double_crossed_buyer",
+      "career_pirate_04_poster_on_wall"
+    ],
+    "selectionPriority": 30
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "reputationAtLeast",
+        "value": 15
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.career_pirate_05_island_tax.title",
+  "textKey": "event.career_pirate_05_island_tax.text",
+  "choices": [
+    {
+      "id": "pay_tax",
+      "textKey": "event.career_pirate_05_island_tax.choice.pay_tax.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_tax",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -2500
+            },
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_05_island_tax_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_05_island_tax.choice.pay_tax.outcome.pay_tax.text"
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 2500
+      }
+    },
+    {
+      "id": "take_table",
+      "textKey": "event.career_pirate_05_island_tax.choice.take_table.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "take_table",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "modifyBounty",
+              "amount": 15000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_05_island_tax_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_05_island_tax.choice.take_table.outcome.take_table.text"
+        }
+      }
+    },
+    {
+      "id": "buy_fishers",
+      "textKey": "event.career_pirate_05_island_tax.choice.buy_fishers.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "buy_fishers",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -4000
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_05_island_tax_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_05_island_tax.choice.buy_fishers.outcome.buy_fishers.text"
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 4000
+      }
+    }
+  ]
+}

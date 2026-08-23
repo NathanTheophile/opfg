@@ -1,0 +1,132 @@
+{
+  "id": "active_port_trade_01_perishable_shortage",
+  "kind": "normal",
+  "titleKey": "event.active_port_trade_01_perishable_shortage.title",
+  "textKey": "event.active_port_trade_01_perishable_shortage.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "careerPhaseIs",
+            "phase": "active"
+          },
+          {
+            "type": "ageAtLeastMonths",
+            "value": 180
+          },
+          {
+            "type": "isOnLand"
+          }
+        ]
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "food"
+      },
+      {
+        "type": "locationHasService",
+        "serviceId": "trade"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "acheter_normal",
+      "textKey": "event.active_port_trade_01_perishable_shortage.choice.acheter_normal.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "normal",
+          "textKey": "event.active_port_trade_01_perishable_shortage.choice.acheter_normal.outcome.normal.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -80
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 80
+      }
+    },
+    {
+      "id": "lot_entier",
+      "textKey": "event.active_port_trade_01_perishable_shortage.choice.lot_entier.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "lot",
+          "textKey": "event.active_port_trade_01_perishable_shortage.choice.lot_entier.outcome.lot.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -350
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "berriesAtLeast",
+            "value": 350
+          },
+          {
+            "type": "hasTrait",
+            "traitId": "greedy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "partager",
+      "textKey": "event.active_port_trade_01_perishable_shortage.choice.partager.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "partage",
+          "textKey": "event.active_port_trade_01_perishable_shortage.choice.partager.outcome.partage.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "hasTrait",
+        "traitId": "generous"
+      }
+    },
+    {
+      "id": "observer",
+      "textKey": "event.active_port_trade_01_perishable_shortage.choice.observer.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "observe",
+          "textKey": "event.active_port_trade_01_perishable_shortage.choice.observer.outcome.observe.text",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

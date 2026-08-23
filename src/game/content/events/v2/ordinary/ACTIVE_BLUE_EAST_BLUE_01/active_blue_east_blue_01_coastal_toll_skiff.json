@@ -1,0 +1,198 @@
+{
+  "id": "active_blue_east_blue_01_coastal_toll_skiff",
+  "kind": "normal",
+  "titleKey": "event.active_blue_east_blue_01_coastal_toll_skiff.title",
+  "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff.text",
+  "choices": [
+    {
+      "id": "call_their_bluff",
+      "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff.choice.call_their_bluff.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "call_their_bluff_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff.choice.call_their_bluff.outcome.call_their_bluff_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -5
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_east_blue_01_coastal_toll_skiff_s02_receipt",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "failure": {
+            "id": "call_their_bluff_failure",
+            "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff.choice.call_their_bluff.outcome.call_their_bluff_failure.text",
+            "effects": [
+              {
+                "type": "modifyHealth",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_east_blue_01_coastal_toll_skiff_s02_receipt",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "success": {
+            "id": "call_their_bluff_success",
+            "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff.choice.call_their_bluff.outcome.call_their_bluff_success.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_east_blue_01_coastal_toll_skiff_s02_receipt",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "call_their_bluff_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff.choice.call_their_bluff.outcome.call_their_bluff_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_east_blue_01_coastal_toll_skiff_s02_receipt",
+                "delayMonths": 3
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "outmaneuver_them",
+      "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff.choice.outmaneuver_them.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "navigation",
+        "successThreshold": 14,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "outmaneuver_them_criticalfailure",
+            "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff.choice.outmaneuver_them.outcome.outmaneuver_them_criticalfailure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -2
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_east_blue_01_coastal_toll_skiff_s02_receipt",
+                "delayMonths": 3
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "failure": {
+            "id": "outmaneuver_them_failure",
+            "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff.choice.outmaneuver_them.outcome.outmaneuver_them_failure.text",
+            "effects": [
+              {
+                "type": "modifyShipHealth",
+                "amount": -1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_east_blue_01_coastal_toll_skiff_s02_receipt",
+                "delayMonths": 3
+              }
+            ],
+            "shipDamageCause": "accident"
+          },
+          "success": {
+            "id": "outmaneuver_them_success",
+            "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff.choice.outmaneuver_them.outcome.outmaneuver_them_success.text",
+            "effects": [
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_east_blue_01_coastal_toll_skiff_s02_receipt",
+                "delayMonths": 3
+              }
+            ]
+          },
+          "criticalSuccess": {
+            "id": "outmaneuver_them_criticalsuccess",
+            "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff.choice.outmaneuver_them.outcome.outmaneuver_them_criticalsuccess.text",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "navigation",
+                "amount": 1
+              },
+              {
+                "type": "scheduleEvent",
+                "eventId": "active_blue_east_blue_01_coastal_toll_skiff_s02_receipt",
+                "delayMonths": 3
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "pay_the_toll",
+      "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff.choice.pay_the_toll.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "pay_the_toll_outcome",
+          "textKey": "event.active_blue_east_blue_01_coastal_toll_skiff.choice.pay_the_toll.outcome.pay_the_toll_outcome.text",
+          "effects": [
+            {
+              "type": "modifyBerries",
+              "amount": -1000
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_east_blue_01_coastal_toll_skiff_s02_receipt",
+              "delayMonths": 3
+            }
+          ]
+        }
+      },
+      "availableIf": {
+        "type": "berriesAtLeast",
+        "value": 1000
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "currentSeaIs",
+        "seaId": "east_blue"
+      },
+      {
+        "type": "isAtSea"
+      },
+      {
+        "type": "hasShip"
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 414
+      }
+    ]
+  }
+}

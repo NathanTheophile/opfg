@@ -1,0 +1,162 @@
+{
+  "id": "career_pirate_07_crew_legend",
+  "kind": "normal",
+  "majorTrack": {
+    "trackId": "career_pirate",
+    "chapterId": "active_07_sea_knows_your_flag",
+    "nodeId": "career_pirate_07_crew_legend",
+    "parentNodeIds": [
+      "career_pirate_06_paradise_whisper",
+      "career_pirate_06_blue_kingpin",
+      "career_pirate_06_scarred_hull",
+      "career_pirate_06_captains_table"
+    ],
+    "selectionPriority": 30
+  },
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "crewSizeAtLeast",
+        "value": 3
+      },
+      {
+        "type": "isOnLand"
+      }
+    ]
+  },
+  "titleKey": "event.career_pirate_07_crew_legend.title",
+  "textKey": "event.career_pirate_07_crew_legend.text",
+  "choices": [
+    {
+      "id": "share_spotlight",
+      "textKey": "event.career_pirate_07_crew_legend.choice.share_spotlight.text",
+      "resolution": {
+        "type": "dice",
+        "statId": "charisma",
+        "successThreshold": 11,
+        "outcomes": {
+          "criticalFailure": {
+            "id": "share_spotlight_criticalFailure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_07_crew_legend_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_07_crew_legend.choice.share_spotlight.outcome.share_spotlight_criticalFailure.text"
+          },
+          "failure": {
+            "id": "share_spotlight_failure",
+            "effects": [
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": -1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_07_crew_legend_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_07_crew_legend.choice.share_spotlight.outcome.share_spotlight_failure.text"
+          },
+          "success": {
+            "id": "share_spotlight_success",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 3
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 1
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_07_crew_legend_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_07_crew_legend.choice.share_spotlight.outcome.share_spotlight_success.text"
+          },
+          "criticalSuccess": {
+            "id": "share_spotlight_criticalSuccess",
+            "effects": [
+              {
+                "type": "modifyReputation",
+                "amount": 5
+              },
+              {
+                "type": "modifyStat",
+                "statId": "charisma",
+                "amount": 2
+              },
+              {
+                "type": "queueImmediateEvent",
+                "eventId": "career_pirate_07_crew_legend_i01"
+              }
+            ],
+            "textKey": "event.career_pirate_07_crew_legend.choice.share_spotlight.outcome.share_spotlight_criticalSuccess.text"
+          }
+        }
+      }
+    },
+    {
+      "id": "captain_symbol",
+      "textKey": "event.career_pirate_07_crew_legend.choice.captain_symbol.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "captain_symbol",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 4
+            },
+            {
+              "type": "modifyBounty",
+              "amount": 15000
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_07_crew_legend_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_07_crew_legend.choice.captain_symbol.outcome.captain_symbol.text"
+        }
+      }
+    },
+    {
+      "id": "crew_flag",
+      "textKey": "event.career_pirate_07_crew_legend.choice.crew_flag.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "crew_flag",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 3
+            },
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            },
+            {
+              "type": "queueImmediateEvent",
+              "eventId": "career_pirate_07_crew_legend_i01"
+            }
+          ],
+          "textKey": "event.career_pirate_07_crew_legend.choice.crew_flag.outcome.crew_flag.text"
+        }
+      }
+    }
+  ]
+}

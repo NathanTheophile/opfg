@@ -1,0 +1,54 @@
+{
+  "id": "active_blue_north_blue_01_lt_s01_bell_letter",
+  "kind": "scheduled",
+  "titleKey": "event.active_blue_north_blue_01_lt_s01_bell_letter.title",
+  "textKey": "event.active_blue_north_blue_01_lt_s01_bell_letter.text",
+  "choices": [
+    {
+      "id": "reinforce",
+      "textKey": "event.active_blue_north_blue_01_lt_s01_bell_letter.choice.reinforce.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reinforce_outcome",
+          "textKey": "event.active_blue_north_blue_01_lt_s01_bell_letter.choice.reinforce.outcome.reinforce_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_north_blue_01_lt_s02_safe_tunnel",
+              "delayMonths": 18
+            },
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "reopen",
+      "textKey": "event.active_blue_north_blue_01_lt_s01_bell_letter.choice.reopen.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "reopen_outcome",
+          "textKey": "event.active_blue_north_blue_01_lt_s01_bell_letter.choice.reopen.outcome.reopen_outcome.text",
+          "effects": [
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_blue_north_blue_01_lt_s02_fast_reopen",
+              "delayMonths": 18
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "eligibility": {
+    "type": "careerPhaseIs",
+    "phase": "active"
+  },
+  "priority": 100,
+  "scheduledReach": "unrestricted"
+}

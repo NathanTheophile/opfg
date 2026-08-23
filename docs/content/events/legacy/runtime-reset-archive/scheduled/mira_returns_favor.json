@@ -1,0 +1,56 @@
+{
+  "id": "mira_returns_favor",
+  "titleKey": "event.mira_returns_favor.title",
+  "textKey": "event.mira_returns_favor.text",
+  "kind": "scheduled",
+  "priority": 100,
+  "scheduledReach": "normal",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "active"
+      },
+      {
+        "type": "hasChosen",
+        "eventId": "mira_castaway",
+        "choiceId": "rescue_dropoff"
+      },
+      {
+        "type": "npcStatusIs",
+        "npcId": "mira",
+        "status": "departed"
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "accept_mira_favor",
+      "textKey": "event.mira_returns_favor.choice.accept_mira_favor.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "mira_favor_received",
+          "textKey": "event.mira_returns_favor.choice.accept_mira_favor.outcome.mira_favor_received.text",
+          "effects": [
+            {
+              "type": "addItem",
+              "itemId": "mira_letter_of_passage",
+              "quantity": 1
+            },
+            {
+              "type": "modifyNpcRelationship",
+              "npcId": "mira",
+              "amount": 10
+            },
+            {
+              "type": "setFlag",
+              "flagId": "mira_returned_favor"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

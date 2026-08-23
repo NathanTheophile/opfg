@@ -1,0 +1,84 @@
+{
+  "id": "active_pirate_01_borrowed_flag_01_echo",
+  "kind": "scheduled",
+  "titleKey": "event.active_pirate_01_borrowed_flag_01_echo.title",
+  "textKey": "event.active_pirate_01_borrowed_flag_01_echo.text",
+  "choices": [
+    {
+      "id": "approve",
+      "textKey": "event.active_pirate_01_borrowed_flag_01_echo.choice.approve.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_01_echo.choice.approve.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_02_first_claim",
+              "delayMonths": 8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "forbid",
+      "textKey": "event.active_pirate_01_borrowed_flag_01_echo.choice.forbid.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_01_echo.choice.forbid.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 1
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_02_first_claim",
+              "delayMonths": 8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "set_code",
+      "textKey": "event.active_pirate_01_borrowed_flag_01_echo.choice.set_code.text",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "resolved",
+          "textKey": "event.active_pirate_01_borrowed_flag_01_echo.choice.set_code.outcome.resolved.text",
+          "effects": [
+            {
+              "type": "modifyReputation",
+              "amount": 2
+            },
+            {
+              "type": "scheduleEvent",
+              "eventId": "active_pirate_01_borrowed_flag_02_first_claim",
+              "delayMonths": 8
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "priority": 100,
+  "scheduledReach": "normal",
+  "cancelIf": {
+    "type": "not",
+    "condition": {
+      "type": "careerAffiliationIs",
+      "affiliationId": "pirate"
+    }
+  },
+  "fallbackEventId": "active_pirate_01_borrowed_flag_departure"
+}

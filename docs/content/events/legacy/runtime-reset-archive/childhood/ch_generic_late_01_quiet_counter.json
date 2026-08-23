@@ -1,0 +1,114 @@
+{
+  "id": "ch_generic_late_01_quiet_counter",
+  "kind": "normal",
+  "titleKey": "event.ch_generic_late_01_quiet_counter.title",
+  "textKey": "event.ch_generic_late_01_quiet_counter.text",
+  "eligibility": {
+    "type": "all",
+    "conditions": [
+      {
+        "type": "careerPhaseIs",
+        "phase": "childhood"
+      },
+      {
+        "type": "ageAtLeastMonths",
+        "value": 108
+      },
+      {
+        "type": "ageAtMostMonths",
+        "value": 167
+      },
+      {
+        "type": "any",
+        "conditions": [
+          {
+            "type": "locationHasService",
+            "serviceId": "food"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "general_goods"
+          },
+          {
+            "type": "locationHasService",
+            "serviceId": "trade"
+          }
+        ]
+      }
+    ]
+  },
+  "choices": [
+    {
+      "id": "say_no",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "boundary",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "morale",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_quiet_counter.choice.say_no.outcome.boundary.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_quiet_counter.choice.say_no.text"
+    },
+    {
+      "id": "take_details",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "details",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "observation",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_quiet_counter.choice.take_details.outcome.details.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_quiet_counter.choice.take_details.text"
+    },
+    {
+      "id": "fetch_owner",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "fetch",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "charisma",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_quiet_counter.choice.fetch_owner.outcome.fetch.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_quiet_counter.choice.fetch_owner.text"
+    },
+    {
+      "id": "improvise",
+      "resolution": {
+        "type": "deterministic",
+        "outcome": {
+          "id": "provisional",
+          "effects": [
+            {
+              "type": "modifyStat",
+              "statId": "intelligence",
+              "amount": 1
+            }
+          ],
+          "textKey": "event.ch_generic_late_01_quiet_counter.choice.improvise.outcome.provisional.text"
+        }
+      },
+      "textKey": "event.ch_generic_late_01_quiet_counter.choice.improvise.text"
+    }
+  ]
+}
