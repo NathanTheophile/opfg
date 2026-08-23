@@ -1,5 +1,5 @@
 import type { DevilFruitType } from '../content/schema';
-import type { ItemId, RaceId, SeaId } from '../model/schema';
+import type { HakiType, ItemId, RaceId, SeaId } from '../model/schema';
 import type { LocalizationKey } from '../localization/keys';
 
 export const ACHIEVEMENT_IDS = [
@@ -14,20 +14,11 @@ export const ACHIEVEMENT_IDS = [
   'family_pirate_collection',
   'family_revolutionary_collection',
   'family_all_collections',
-  'grade_marine_admiral',
   'grade_marine_fleet_admiral',
-  'bounty_first',
-  'bounty_10m',
   'bounty_100m',
-  'bounty_1b',
   'power_first_devil_fruit',
-  'power_all_devil_fruit_types',
-  'power_first_haki',
-  'power_devil_fruit_awakened',
-  'world_start_east_blue',
-  'world_start_west_blue',
-  'world_start_north_blue',
-  'world_start_south_blue',
+  'power_haki_observation',
+  'power_haki_armament',
   'world_start_all_blues',
   'world_reach_paradise',
   'world_reach_new_world',
@@ -48,10 +39,7 @@ export type AchievementCondition =
   | { type: 'careerRankReached'; rankId: string }
   | { type: 'bountyAtLeast'; value: number }
   | { type: 'consumedAnyDevilFruit' }
-  | { type: 'consumedAllDevilFruitTypes'; fruitTypes: DevilFruitType[] }
-  | { type: 'hakiAwakened' }
-  | { type: 'devilFruitAwakened' }
-  | { type: 'startedOriginSea'; seaId: SeaId }
+  | { type: 'hakiAwakened'; hakiType: Extract<HakiType, 'observation' | 'armament'> }
   | { type: 'startedAllOriginSeas'; seaIds: SeaId[] }
   | { type: 'currentSeaReached'; seaId: SeaId }
   | { type: 'crewSizeAtLeast'; value: number }

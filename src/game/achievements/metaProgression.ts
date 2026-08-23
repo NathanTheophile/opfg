@@ -64,14 +64,8 @@ export function evaluateAchievement(
       return gameState.player.career.bounty >= condition.value;
     case 'consumedAnyDevilFruit':
       return meta.consumedDevilFruitTypes.length > 0;
-    case 'consumedAllDevilFruitTypes':
-      return condition.fruitTypes.every((type) => meta.consumedDevilFruitTypes.includes(type));
     case 'hakiAwakened':
-      return Object.values(gameState.player.powers.haki).some((level) => level > 0);
-    case 'devilFruitAwakened':
-      return gameState.player.powers.devilFruitId !== null && gameState.player.powers.devilFruitAwakening >= 10;
-    case 'startedOriginSea':
-      return meta.startedOriginSeaIds.includes(condition.seaId);
+      return gameState.player.powers.haki[condition.hakiType] > 0;
     case 'startedAllOriginSeas':
       return condition.seaIds.every((id) => meta.startedOriginSeaIds.includes(id));
     case 'currentSeaReached':
